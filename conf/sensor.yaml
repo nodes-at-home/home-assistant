@@ -41,12 +41,12 @@
         - upload
 
 #------------------------------------------------------------------------------
-  - platform: octoprint
-    name: OctoPrint
-    monitored_conditions:
-      - Temperatures
-      - Current State
-      - Job Percentage
+  # - platform: octoprint
+    # name: OctoPrint
+    # monitored_conditions:
+      # - Temperatures
+      # - Current State
+      # - Job Percentage
 
 #------------------------------------------------------------------------------
   - platform: mqtt
