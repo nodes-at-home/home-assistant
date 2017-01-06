@@ -1,0 +1,43 @@
+###
+### zone.yaml
+###
+### 04.11.2016 split up
+###
+
+    - name: Home
+      passive: True
+      radius: 200
+      latitude: 52.651089
+      longitude: 13.5338005
+      icon: mdi:account-multiple
+
+    - name: Wohnung Hannover
+      latitude: 52.357277
+      longitude: 9.767105
+      radius: 200
+      icon: mdi:home-outline
+
+    - name: Zuhause
+      latitude: 52.651089
+      longitude: 13.5338005
+      radius: 200
+      icon: mdi:home
+
+    - name: FI Hannover
+      latitude: 52.334167
+      longitude: 9.8232433
+      radius: 200
+      icon: mdi:domain
+
+    - name: FI Münster
+      latitude: 51.98433
+      longitude: 7.63262
+      radius: 200
+      icon: mdi:domain
+
+    - name: BA P'Berg
+      latitude: 52.541312
+      longitude: 13.426212
+      radius: 200
+      icon: mdi:domain
+

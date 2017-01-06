@@ -1,0 +1,426 @@
+###
+### customize.yaml
+###
+### 04.11.2016 split up
+###
+
+#------------------------------------------------------------------------------
+sensor.dht11terrace_temperature:
+    friendly_name: Temperatur Terrasse
+
+sensor.dht11terrace_humidity:
+    friendly_name: Luftfeuchtigkeit
+    entity_picture: /local/images/DHT22.jpg
+
+sensor.dht11terrace_voltage:
+    friendly_name: Terasse
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11terrace_lastvoltage:
+    friendly_name: Terasse
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11terrace_hello:
+    friendly_name: Terrasse
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11terrace_lastboot:
+    friendly_name: Terrasse
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11terrace_version:
+    friendly_name: Terrasse
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+sensor.dht11lounge_temperature:
+    friendly_name: Temperatur Wohnzimmer
+
+sensor.dht11lounge_humidity:
+    friendly_name: Luftfeuchtigkeit
+    entity_picture: /local/images/DHT11.jpg
+
+sensor.dht11lounge_voltage:
+    friendly_name: Wohnzimmer
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11lounge_lastvoltage:
+    friendly_name: Wohnzimmer
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11lounge_hello:
+    friendly_name: Wohnzimmer
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11lounge_lastboot:
+    friendly_name: Wohnzimmer
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11lounge_version:
+    friendly_name: Wohnzimmer
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+sensor.dht11roof_temperature:
+    friendly_name: Temperatur Dachboden
+
+sensor.dht11roof_humidity:
+    friendly_name: Luftfeuchtigkeit
+    entity_picture: /local/images/DHT22.jpg
+
+sensor.dht11roof_voltage:
+    friendly_name: Dachboden
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11roof_lastvoltage:
+    friendly_name: Dachboden
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11roof_hello:
+    friendly_name: Dachboden
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11roof_lastboot:
+    friendly_name: Dachboden
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.dht11roof_version:
+    friendly_name: Dachboden
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+sensor.yr_symbol:
+    friendly_name: Aktuell (yr.no)
+
+#------------------------------------------------------------------------------
+sensor.owm_condition:
+    friendly_name: Aktuell (open weather)
+
+sensor.owm_forecast:
+    friendly_name: Vorhersage (open weather)
+
+#------------------------------------------------------------------------------
+sensor.speedtest_ping:
+    friendly_name: Ping
+    entity_picture: /local/images/o2dsl2.jpg
+
+sensor.speedtest_download:
+    friendly_name: Download
+    entity_picture: /local/images/o2dsl2.jpg
+
+sensor.speedtest_upload:
+    friendly_name: Upload
+    entity_picture: /local/images/o2dsl2.jpg
+
+#------------------------------------------------------------------------------
+light.rfhubfirst_lampkitchenlongstrip:
+    friendly_name: Lange Ledleiste
+
+light.rfhubfirst_lampkitchenshortstrip:
+    friendly_name: Kurze Ledleiste
+
+light.rfhubfirst_lamploungeblackbowl:
+    friendly_name: Bodenlampe
+
+light.rfhubfirst_lamploungereading:
+    friendly_name: Leselampe
+
+light.rfhubfirst_lamploungewhiteball:
+    friendly_name: Stehlampe an der Couch
+
+light.rfhubfirst_lampstudypillar:
+    friendly_name: Stehlampe am Drucker
+
+light.rfhubfirst_NoName1C:
+    friendly_name: Weihnachtsbaum
+
+#------------------------------------------------------------------------------
+switch.kitchen_short_led_strip:
+    friendly_name: Kurze Ledleiste
+    icon: mdi:lightbulb
+
+switch.kitchen_long_led_strip:
+    friendly_name: Lange Ledleiste
+    icon: mdi:lightbulb
+
+switch.heater_circulating_pump:
+    friendly_name: Zirkulationspumpe Heizung
+    entity_picture: /local/images/circulation_pump.jpg
+
+#------------------------------------------------------------------------------
+sensor.rfhubfirst_voltage:
+    friendly_name: RF Hub
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.rfhubfirst_lastvoltage:
+    friendly_name: RF Hub
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.rfhubfirst_hello:
+    friendly_name: RF Hub
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.rfhubfirst_lastboot:
+    friendly_name: RF Hub
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.rfhubfirst_version:
+    friendly_name: RF Hub
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+cover.relaygarage:
+    friendly_name: Garagentoröffner
+
+sensor.relaygarage_state:
+    friendly_name: Status
+
+sensor.relaygarage_temperature:
+    friendly_name: Temperatur Garage
+
+sensor.relaygarage_humidity:
+    friendly_name: Luftfeuchtigkeit
+    entity_picture: /local/images/DHT22.jpg
+
+sensor.relaygarage_voltage:
+    friendly_name: Garagentoröffner
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaygarage_lastvoltage:
+    friendly_name: Garagentoröffner
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaygarage_hello:
+    friendly_name: Garagentoröffner
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaygarage_lastboot:
+    friendly_name: Garagentoröffner
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaygarage_version:
+    friendly_name: Garagentoröffner
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+weblink.home_assistant:
+    entity_picture: /local/images/home-assistant.jpg
+
+#------------------------------------------------------------------------------
+light.sonoffgarage_lamp:
+    friendly_name: Außenlicht
+
+sensor.sonoffgarage_voltage:
+    friendly_name: 'Außenlicht Garage'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.sonoffgarage_lastvoltage:
+    friendly_name: 'Außenlicht Garage'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.sonoffgarage_hello:
+    friendly_name: 'Außenlicht Garage'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.sonoffgarage_lastboot:
+    friendly_name: 'Außenlicht Garage'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.sonoffgarage_version:
+    friendly_name: 'Außenlicht Garage'
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+switch.sonoffutilityroom_pump:
+    friendly_name: 'Zirkulationspumpe Heizung'
+    entity_picture: /local/images/circulation_pump.jpg
+
+sensor.sonoffutilityroom_voltage:
+    friendly_name: 'Zirkulationspumpe Heizung'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.sonoffutilityroom_lastvoltage:
+    friendly_name: 'Zirkulationspumpe Heizung'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.sonoffutilityroom_hello:
+    friendly_name: 'Zirkulationspumpe Heizung'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.sonoffutilityroom_lastboot:
+    friendly_name: 'Zirkulationspumpe Heizung'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.sonoffutilityroom_version:
+    friendly_name: 'Zirkulationspumpe Heizung'
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+light.relayterrace_lamp:
+    friendly_name: Lampe
+
+sensor.relayterrace_voltage:
+    friendly_name: Terassenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relayterrace_lastvoltage:
+    friendly_name: Terassenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relayterrace_hello:
+    friendly_name: Terassenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relayterrace_lastboot:
+    friendly_name: Terassenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relayterrace_version:
+    friendly_name: Terassenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+light.relaybackyard_lamp:
+    friendly_name: Lampe
+
+sensor.relaybackyard_voltage:
+    friendly_name: Hinterhofschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaybackyard_lastvoltage:
+    friendly_name: Hinterhofschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaybackyard_hello:
+    friendly_name: Hinterhofschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaybackyard_lastboot:
+    friendly_name: Hinterhofschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaybackyard_version:
+    friendly_name: Hinterhofschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+light.relaycarport_lamp:
+    friendly_name: Steckdose
+
+sensor.relaycarport_voltage:
+    friendly_name: Steckdosenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaycarport_lastvoltage:
+    friendly_name: Steckdosenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaycarport_hello:
+    friendly_name: Steckdosenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaycarport_lastboot:
+    friendly_name: Steckdosenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relaycarport_version:
+    friendly_name: Steckdosenschalter
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+light.xmastreedining_leds:
+    friendly_name: Bunter Weihnachtsbaum
+
+sensor.xmastreedining_voltage:
+    friendly_name: Bunter Weihnachtsbaum
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.xmastreedining_lastvoltage:
+    friendly_name: Bunter Weihnachtsbaum
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.xmastreedining_hello:
+    friendly_name: Bunter Weihnachtsbaum
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.xmastreedining_lastboot:
+    friendly_name: Bunter Weihnachtsbaum
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.xmastreedining_version:
+    friendly_name: Bunter Weihnachtsbaum
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+binary_sensor.buttonno1:
+    friendly_name: Drücker No1
+
+sensor.buttonno1_voltage:
+    friendly_name: Drücker No1
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttonno1_lastvoltage:
+    friendly_name: Drücker No1
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttonno1_hello:
+    friendly_name: Drücker No1
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttonno1_lastboot:
+    friendly_name: Drücker No1
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttonno1_version:
+    friendly_name: Drücker No1
+    entity_picture: /local/images/esp-01.jpg
+
+#------------------------------------------------------------------------------
+binary_sensor.buttongarage:
+    friendly_name: Drücker Garage
+
+sensor.buttongarage_voltage:
+    friendly_name: Drücker Garage
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttongarage_lastvoltage:
+    friendly_name: Drücker Garage
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttongarage_hello:
+    friendly_name: Drücker Garage
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttongarage_lastboot:
+    friendly_name: Drücker Garage
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttongarage_version:
+    friendly_name: Drücker Garage
+    entity_picture: /local/images/esp-01.jpg
+
+#------------------------------------------------------------------------------
+binary_sensor.buttonno3:
+    friendly_name: Drücker No3
+
+sensor.buttonno3_voltage:
+    friendly_name: Drücker No3
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttonno3_lastvoltage:
+    friendly_name: Drücker No3
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttonno3_hello:
+    friendly_name: Drücker No3
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttonno3_lastboot:
+    friendly_name: Drücker No3
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.buttonno3_version:
+    friendly_name: Drücker No3
+    entity_picture: /local/images/esp-01.jpg
+
+#------------------------------------------------------------------------------

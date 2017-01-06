@@ -1,0 +1,228 @@
+###
+### automation.yaml
+###
+### 04.11.2016 split up
+###
+
+#------------------------------------------------------------------------------------
+# outdoor lights at night
+  - alias: outer_lights_on_at_night
+    hide_entity: False
+    trigger:
+      - platform: sun
+        event: sunset
+        offset: "00:00:00"
+    action:
+        service: light.turn_on
+        entity_id:
+            - group.automatic_night_lights
+
+  - alias: outer_lights_off_at_morning
+    hide_entity: False
+    trigger:
+      - platform: sun
+        event: sunrise
+        offset: "+00:00:00"
+    action:
+        service: light.turn_off
+        entity_id:
+            - group.automatic_night_lights
+
+#------------------------------------------------------------------------------------
+# heater pump
+  - alias: heater_circulating_pump_on
+    hide_entity: False
+    trigger:                    # any event
+      - platform: time
+        after: '05:00:00'
+      - platform: time
+        after: '05:30:00'
+      - platform: time
+        after: '08:00:00'
+      - platform: state
+        entity_id: group.family_devices
+        state: 'home'
+      - platform: state
+        entity_id: input_boolean.manual_holiday_indicator
+        # any state
+    condition:                  # all conditions
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: group.family_devices
+            state: 'home'
+          - condition: or
+            conditions:
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: input_boolean.manual_holiday_indicator
+                    state: 'on'
+                  - condition: time         # any day
+                    after: '08:00:00'
+                    before: '22:00:00'
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: input_boolean.manual_holiday_indicator
+                    state: 'off'
+                  - condition: or
+                    conditions:
+                      - condition: time
+                        after: '05:00:00'
+                        before: '22:00:00'
+                        weekday:
+                          - mon
+                      - condition: time
+                        after: '05:30:00'
+                        before: '22:00:00'
+                        weekday:
+                          - tue
+                          - wed
+                          - thu
+                          - fri
+                      - condition: time
+                        after: '08:00:00'
+                        before: '22:00:00'
+                        weekday:
+                          - sat
+                          - sun
+    action:
+        service: switch.turn_on
+        entity_id:
+            - switch.sonoffutilityroom_pump
+
+  - alias: heater_circulating_pump_off
+    hide_entity: False
+    trigger:                    # any event, no condition necessary
+      - platform: time
+        after: '22:00:00'
+      - platform: state
+        entity_id: group.family_devices
+        state: 'not_home'
+      - platform: state
+        entity_id: input_boolean.manual_holiday_indicator
+        # any state
+    condition:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_boolean.manual_holiday_indicator
+            state: 'off'
+          - condition: state
+            entity_id: group.family_devices
+            state: 'not_home'
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: input_boolean.manual_holiday_indicator
+                state: 'on'
+              - condition: time
+                before: '08:00:00'
+                after: '22:00:00'
+    action:
+        service: switch.turn_off
+        entity_id:
+            - switch.sonoffutilityroom_pump
+
+#------------------------------------------------------------------------------------
+# daily lights
+  - alias: lights_on_at_coming_home_or_sunset
+    hide_entity: False
+    trigger:
+      - platform: state
+        entity_id: group.family_devices
+        state: 'home'
+      - platform: sun
+        event: sunset
+        offset: "-00:30:00"
+    condition:
+      - condition: sun
+        after: sunset
+        after_offset: "-00:30:00"
+      - condition: time
+        before: '22:00:00'
+    action:
+        service: homeassistant.turn_on
+        entity_id: group.daily_lights
+
+  - alias: lights_off_at_getting_out_or_sunrise
+    hide_entity: False
+    trigger:
+      - platform: state
+        entity_id: group.family_devices
+        state: 'not_home'
+      - platform: sun
+        event: sunrise
+        offset: "+00:00:00"
+    action:
+        service: homeassistant.turn_off
+        entity_id: group.daily_lights
+
+  - alias: movie_lights_off
+    hide_entity: False
+    trigger:
+        platform: state
+        entity_id: media_player.sony_bravia_tv
+        from: "on"
+        to: "off"
+    condition:
+      - condition: time
+        after: '21:00:00'
+        before: '06:00:00'
+    action:
+        service: homeassistant.turn_off
+        entity_id: group.daily_lights
+
+#------------------------------------------------------------------------------------
+# buttons
+
+  - alias: button_no1
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.buttonno1
+        state: 'on'
+    ### TODO add open/close garage here, use
+    ###     https://home-assistant.io/getting-started/scripts-service-calls/
+    ###     https://home-assistant.io/getting-started/scripts/
+    action:
+      - service: light.toggle
+        entity_id: light.xmastreedining_leds
+
+  - alias: button_no3
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.buttonno3
+        state: 'on'
+    ### TODO add open/close garage here, use
+    ###     https://home-assistant.io/getting-started/scripts-service-calls/
+    ###     https://home-assistant.io/getting-started/scripts/
+    action:
+      - service: light.toggle
+        entity_id: light.xmastreedining_leds
+
+  - alias: open_close_garage_door
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.buttongarage
+        state: 'on'
+    ### TODO add open/close garage here, use
+    ###     https://home-assistant.io/getting-started/scripts-service-calls/
+    ###     https://home-assistant.io/getting-started/scripts/
+    action:
+      - service: light.toggle
+        entity_id: light.xmastreedining_leds
+
+#------------------------------------------------------------------------------------
+  # - alias: AnAus
+    # hide_entity: False
+    # trigger:
+        # platform: time
+        # seconds: '/20'
+    # action:
+        # service: light.toggle
+        # # entity_id: group.rooms_terrace, group.rooms_backyard
+        # entity_id: group.rooms_backyard, group.rooms_terrace

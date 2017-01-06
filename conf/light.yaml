@@ -1,0 +1,113 @@
+###
+### light.yaml
+###
+### 04.11.2016 split up
+###
+
+  - platform: mqtt
+    name: "rfhub@first_NoName1C"
+    state_topic: "nodes@home/switch/rfhub/first/noName1C/state"
+    command_topic: "nodes@home/switch/rfhub/first/noName1C"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@first_lampKitchenLongStrip"
+    state_topic: "nodes@home/switch/rfhub/first/lampKitchenLongStrip/state"
+    command_topic: "nodes@home/switch/rfhub/first/lampKitchenLongStrip"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@first_lampKitchenShortStrip"
+    state_topic: "nodes@home/switch/rfhub/first/lampKitchenShortStrip/state"
+    command_topic: "nodes@home/switch/rfhub/first/lampKitchenShortStrip"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@first_noName3D"
+    state_topic: "nodes@home/switch/rfhub/first/noName3D/state"
+    command_topic: "nodes@home/switch/rfhub/first/noName3D"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@first_lampStudyPillar"
+    state_topic: "nodes@home/switch/rfhub/first/lampStudyPillar/state"
+    command_topic: "nodes@home/switch/rfhub/first/lampStudyPillar"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@first_lampLoungeWhiteBall"
+    state_topic: "nodes@home/switch/rfhub/first/lampLoungeWhiteBall/state"
+    command_topic: "nodes@home/switch/rfhub/first/lampLoungeWhiteBall"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@first_lampLoungeBlackBowl"
+    state_topic: "nodes@home/switch/rfhub/first/lampLoungeBlackBowl/state"
+    command_topic: "nodes@home/switch/rfhub/first/lampLoungeBlackBowl"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@first_lampLoungeReading"
+    state_topic: "nodes@home/switch/rfhub/first/lampLoungeReading/state"
+    command_topic: "nodes@home/switch/rfhub/first/lampLoungeReading"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@first_lamp1"
+    state_topic: "nodes@home/switch/rfhub/first/lamp1/state"
+    command_topic: "nodes@home/switch/rfhub/first/lamp1"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "test@nowhere_noName3D"
+    state_topic: "nodes@home/switch/test/nowhere/noName3D/state"
+    command_topic: "nodes@home/switch/test/nowhere/noName3D"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "sonoff@garage_lamp"
+    command_topic: nodes@home/switch/sonoff/garage/lamp
+    state_topic: nodes@home/switch/sonoff/garage/lamp/value/state
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "relay@terrace_lamp"
+    command_topic: nodes@home/switch/relay/terrace/lamp
+    state_topic: nodes@home/switch/relay/terrace/lamp/value/state
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "relay@backyard_lamp"
+    command_topic: nodes@home/switch/relay/backyard/lamp
+    state_topic: nodes@home/switch/relay/backyard/lamp/value/state
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "relay@carport_lamp"
+    command_topic: nodes@home/switch/relay/carport/lamp
+    state_topic: nodes@home/switch/relay/carport/lamp/value/state
+    optimistic: false
+    retain: true
+
+  - platform: mqtt_json
+    name: "xmastree@dining_leds"
+    command_topic: nodes@home/light/xmastree/dining/leds
+    state_topic: nodes@home/light/xmastree/dining/leds/value/state
+    rgb: true
+    brightness: true
+    optimistic: false
+    retain: true
+

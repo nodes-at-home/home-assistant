@@ -1,0 +1,27 @@
+###
+### binary_sensor.yaml
+###
+### 28.12.2016 split up
+###
+
+  # - platform: octoprint
+    # name: OctoPrint
+    # monitored_conditions:
+        # - Printing
+        # - Printing Error
+        
+  - platform: mqtt
+    name: button@no1
+    state_topic: "nodes@home/sensor/button/no1/value/state"
+    qos: 0
+
+  - platform: mqtt
+    name: button@garage
+    state_topic: "nodes@home/sensor/button/garage/value/state"
+    qos: 0
+
+  - platform: mqtt
+    name: button@no3
+    state_topic: "nodes@home/sensor/button/no3/value/state"
+    qos: 0
+
