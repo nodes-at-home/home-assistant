@@ -178,9 +178,34 @@ input_boolean:
         name: Feiertag
         initial: off
         icon: mdi:update
+    pixel_node_time:
+        name: Zeitanzeige
+        initial: on
+    pixel_node_date:
+        name: Datumsanzeige
+        initial: on
+    pixel_node_weekday:
+        name: Wochentagsanzeige
+        initial: on
 
 # -------------------------------------------------------------------------------
+#
+input_slider:
+    pixel_node_display_duration:
+        name: Anzeigedauer
+        initial: 3
+        min: 1
+        max: 10
+        step: 1
+    pixel_node_display_brightness:
+        name: Anzeigehelligkeit
+        initial: 0
+        min: 0
+        max: 15
+        step: 1
 
+# -------------------------------------------------------------------------------
+#
 automation: !include conf/automation.yaml
 
 # -------------------------------------------------------------------------------

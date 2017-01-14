@@ -102,10 +102,10 @@
     rooms_kitchen:
         name: Küche
         entities:
-            # - light.rfhubfirst_lampkitchenshortstrip
-            # - light.rfhubfirst_lampkitchenlongstrip
-            - switch.kitchen_short_led_strip
-            - switch.kitchen_long_led_strip
+            - light.rfhubfirst_lampkitchenshortstrip
+            - light.rfhubfirst_lampkitchenlongstrip
+            # - switch.kitchen_short_led_strip
+            # - switch.kitchen_long_led_strip
 
     rooms_garage:
         name: Garage
@@ -191,6 +191,7 @@
             - sensor.buttonno1_lastboot
             - sensor.buttongarage_lastboot
             - sensor.buttonno3_lastboot
+            - sensor.pixelkitchen_lastboot
 
     nodes_version:
         name: Version
@@ -209,6 +210,7 @@
             - sensor.buttonno1_version
             - sensor.buttongarage_version
             - sensor.buttonno3_version
+            - sensor.pixelkitchen_version
 
     nodes_lastvoltage:
         name: Last Voltage Message
@@ -227,6 +229,7 @@
             - sensor.buttonno1_lastvoltage
             - sensor.buttongarage_lastvoltage
             - sensor.buttonno3_lastvoltage
+            - sensor.pixelkitchen_lastvoltage
 
     nodes_voltage:
         name: Spannungspegel
@@ -245,6 +248,7 @@
             - sensor.buttonno1_voltage
             - sensor.buttongarage_voltage
             - sensor.buttonno3_voltage
+            - sensor.pixelkitchen_voltage
 
 # ---------------------------------------------------------------------------
     system:
@@ -281,6 +285,7 @@
         entities:
             - group.automation_rules
             - group.automation_preferences
+            - group.automation_pixel_node_preferences
             - group.automation_hidden_entities
 
     automation_rules:
@@ -297,11 +302,22 @@
             - automation.open_close_garage_door
             - automation.button_no1
             - automation.button_no3
+            - automation.pixel_node_preferences
+            - automation.pixel_node_show_terrace_temperature
 
     automation_preferences:
         name: Einstellungen
         entities:
             - input_boolean.manual_holiday_indicator
+
+    automation_pixel_node_preferences:
+        name: Einstellungen PixelNode
+        entities:
+            - input_boolean.pixel_node_time
+            - input_boolean.pixel_node_date
+            - input_boolean.pixel_node_weekday
+            - input_slider.pixel_node_display_duration
+            - input_slider.pixel_node_display_brightness
 
     automation_hidden_entities:
         name: Verstecktes

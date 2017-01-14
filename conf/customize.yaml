@@ -424,3 +424,24 @@ sensor.buttonno3_version:
     entity_picture: /local/images/esp-01.jpg
 
 #------------------------------------------------------------------------------
+sensor.pixelkitchen_voltage:
+    friendly_name: Pixeldisplay
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.pixelkitchen_lastvoltage:
+    friendly_name: Pixeldisplay
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.pixelkitchen_hello:
+    friendly_name: Pixeldisplay
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.pixelkitchen_lastboot:
+    friendly_name: Pixeldisplay
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.pixelkitchen_version:
+    friendly_name: Pixeldisplay
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------

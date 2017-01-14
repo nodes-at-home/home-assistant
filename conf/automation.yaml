@@ -217,6 +217,60 @@
         entity_id: light.xmastreedining_leds
 
 #------------------------------------------------------------------------------------
+# pixel node
+
+  - alias: pixel_node_preferences
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: input_boolean.pixel_node_time
+      - platform: state
+        entity_id: input_boolean.pixel_node_date
+      - platform: state
+        entity_id: input_boolean.pixel_node_weekday
+      - platform: state
+        entity_id: input_slider.pixel_node_display_duration
+      - platform: state
+        entity_id: input_slider.pixel_node_display_brightness
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/display/pixel/kitchen/command
+            payload: >
+                {
+                    "display": {
+                        "duration": {{ states ( 'input_slider.pixel_node_display_duration' ) | round ( 0 ) }},
+                        "brightness": {{ states ( 'input_slider.pixel_node_display_brightness' ) | round ( 0 ) }},
+                        "time": "{{ states ( 'input_boolean.pixel_node_time' ) }}",
+                        "date": "{{ states ( 'input_boolean.pixel_node_date' ) }}",
+                        "weekday": "{{ states ( 'input_boolean.pixel_node_weekday' ) }}"
+                    }
+                }
+            qos: 0
+            retain: true
+
+  - alias: pixel_node_show_terrace_temperature
+    hide_entity: false
+    trigger:
+      - platform: mqtt
+        topic: nodes@home/sensor/DHT11/terrace/value/temperature
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/display/pixel/kitchen/command
+            payload: >
+                {
+                    "messages": [
+                        {
+                            "line": 0,
+                            "text": "Außen: {{ trigger.payload_json.value }}°C"
+                        }
+                    ]
+                }
+            qos: 0
+            retain: true
+
+#------------------------------------------------------------------------------------
   # - alias: AnAus
     # hide_entity: False
     # trigger:
