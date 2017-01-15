@@ -304,11 +304,19 @@
             - automation.button_no3
             - automation.pixel_node_preferences
             - automation.pixel_node_show_terrace_temperature
+            - automation.pixel_node_show_lounge_temperature
 
     automation_preferences:
         name: Einstellungen
         entities:
             - input_boolean.manual_holiday_indicator
+
+    automation_hidden_entities:
+        name: Verstecktes
+        entities:
+            - binary_sensor.buttonno1
+            - binary_sensor.buttongarage
+            - binary_sensor.buttonno3
 
     automation_pixel_node_preferences:
         name: Einstellungen PixelNode
@@ -318,13 +326,16 @@
             - input_boolean.pixel_node_weekday
             - input_slider.pixel_node_display_duration
             - input_slider.pixel_node_display_brightness
-
-    automation_hidden_entities:
-        name: Verstecktes
-        entities:
-            - binary_sensor.buttonno1
-            - binary_sensor.buttongarage
-            - binary_sensor.buttonno3
+            - input_boolean.pixel_node_msg0
+            - input_boolean.pixel_node_msg1
+            - input_boolean.pixel_node_msg2
+            - input_boolean.pixel_node_msg3
+            - input_boolean.pixel_node_msg4
+            - input_boolean.pixel_node_msg5
+            - input_boolean.pixel_node_msg6
+            - input_boolean.pixel_node_msg7
+            - input_boolean.pixel_node_msg8
+            - input_boolean.pixel_node_msg9
 
 # ---------------------------------------------------------------------------
     # octoprint:

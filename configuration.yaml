@@ -173,27 +173,14 @@ group: !include conf/group.yaml
 
 # -------------------------------------------------------------------------------
 #
-input_boolean:
-    manual_holiday_indicator:
-        name: Feiertag
-        initial: off
-        icon: mdi:update
-    pixel_node_time:
-        name: Zeitanzeige
-        initial: on
-    pixel_node_date:
-        name: Datumsanzeige
-        initial: on
-    pixel_node_weekday:
-        name: Wochentagsanzeige
-        initial: on
+input_boolean: !include conf/input_boolean.yaml
 
 # -------------------------------------------------------------------------------
 #
 input_slider:
     pixel_node_display_duration:
         name: Anzeigedauer
-        initial: 3
+        initial: 5
         min: 1
         max: 10
         step: 1

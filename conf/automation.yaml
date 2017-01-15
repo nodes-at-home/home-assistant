@@ -232,6 +232,26 @@
         entity_id: input_slider.pixel_node_display_duration
       - platform: state
         entity_id: input_slider.pixel_node_display_brightness
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg0
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg1
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg2
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg3
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg4
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg5
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg6
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg7
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg8
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg9
     action:
       - service: mqtt.publish
         data_template:
@@ -243,7 +263,19 @@
                         "brightness": {{ states ( 'input_slider.pixel_node_display_brightness' ) | round ( 0 ) }},
                         "time": "{{ states ( 'input_boolean.pixel_node_time' ) }}",
                         "date": "{{ states ( 'input_boolean.pixel_node_date' ) }}",
-                        "weekday": "{{ states ( 'input_boolean.pixel_node_weekday' ) }}"
+                        "weekday": "{{ states ( 'input_boolean.pixel_node_weekday' ) }}",
+                        "enabled": [
+                            "{{ states ( 'input_boolean.pixel_node_msg0' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg1' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg2' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg3' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg4' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg5' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg6' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg7' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg8' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg9' ) }}"
+                        ]
                     }
                 }
             qos: 0
@@ -263,7 +295,28 @@
                     "messages": [
                         {
                             "line": 0,
-                            "text": "Außen: {{ trigger.payload_json.value }}°C"
+                            "text": " Außen: {{ trigger.payload_json.value }}°C"
+                        }
+                    ]
+                }
+            qos: 0
+            retain: true
+
+  - alias: pixel_node_show_lounge_temperature
+    hide_entity: false
+    trigger:
+      - platform: mqtt
+        topic: nodes@home/sensor/DHT11/lounge/value/temperature
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/display/pixel/kitchen/command
+            payload: >
+                {
+                    "messages": [
+                        {
+                            "line": 1,
+                            "text": " Innen: {{ trigger.payload_json.value }}°C"
                         }
                     ]
                 }

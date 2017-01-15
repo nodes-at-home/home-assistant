@@ -1,0 +1,49 @@
+###
+### input_boolean.yaml
+###
+### 15.01.2017 new
+###
+    manual_holiday_indicator:
+        name: Feiertag
+        initial: off
+        icon: mdi:update
+    pixel_node_time:
+        name: Zeitanzeige
+        initial: on
+    pixel_node_date:
+        name: Datumsanzeige
+        initial: on
+    pixel_node_weekday:
+        name: Wochentagsanzeige
+        initial: off
+    pixel_node_msg0:
+        name: Anzeige Textzeile 0 - Außentemperatur
+        initial: on
+    pixel_node_msg1:
+        name: Anzeige Textzeile 1 - Innentemperatur
+        initial: off
+    pixel_node_msg2:
+        name: Anzeige Textzeile 2 - Temperaturvorhersage heute
+        initial: on
+    pixel_node_msg3:
+        name: Anzeige Textzeile 3 - Wettervorhersage heute
+        initial: on
+    pixel_node_msg4:
+        name: Anzeige Textzeile 4 - Temperaturvorhersage morgen
+        initial: off
+    pixel_node_msg5:
+        name: Anzeige Textzeile 5 - Wettervorhersage morgen
+        initial: off
+    pixel_node_msg6:
+        name: Anzeige Textzeile 6 - Undines Arbeitsweg
+        initial: on
+    pixel_node_msg7:
+        name: Anzeige Textzeile 7 - Andreas Arbeitsweg
+        initial: on
+    pixel_node_msg8:
+        name: Anzeige Textzeile 8
+        initial: on
+    pixel_node_msg9:
+        name: Anzeige Textzeile 9
+        initial: on
+
