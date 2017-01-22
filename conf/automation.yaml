@@ -252,6 +252,26 @@
         entity_id: input_boolean.pixel_node_msg8
       - platform: state
         entity_id: input_boolean.pixel_node_msg9
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg10
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg11
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg12
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg13
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg14
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg15
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg16
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg17
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg18
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg19
     action:
       - service: mqtt.publish
         data_template:
@@ -274,7 +294,17 @@
                             "{{ states ( 'input_boolean.pixel_node_msg6' ) }}",
                             "{{ states ( 'input_boolean.pixel_node_msg7' ) }}",
                             "{{ states ( 'input_boolean.pixel_node_msg8' ) }}",
-                            "{{ states ( 'input_boolean.pixel_node_msg9' ) }}"
+                            "{{ states ( 'input_boolean.pixel_node_msg9' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg10' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg11' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg12' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg13' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg14' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg15' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg16' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg17' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg18' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg19' ) }}"
                         ]
                     }
                 }

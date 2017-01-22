@@ -35,15 +35,45 @@
         name: Anzeige Textzeile 5 - Wettervorhersage morgen
         initial: off
     pixel_node_msg6:
-        name: Anzeige Textzeile 6 - Undines Arbeitsweg
+        name: Anzeige Textzeile 6 - Info Müll
         initial: on
     pixel_node_msg7:
-        name: Anzeige Textzeile 7 - Andreas Arbeitsweg
+        name: Anzeige Textzeile 7 - Info Papier
         initial: on
     pixel_node_msg8:
-        name: Anzeige Textzeile 8
+        name: Anzeige Textzeile 8 - Info Gelber Sack
         initial: on
     pixel_node_msg9:
-        name: Anzeige Textzeile 9
+        name: Anzeige Textzeile 9 - ...
+        initial: on
+    pixel_node_msg10:
+        name: Anzeige Textzeile 10 - Arbeitsweg Andreas
+        initial: on
+    pixel_node_msg11:
+        name: Anzeige Textzeile 11 - Arbeitsweg Undine
+        initial: on
+    pixel_node_msg12:
+        name: Anzeige Textzeile 12 - ...
+        initial: on
+    pixel_node_msg13:
+        name: Anzeige Textzeile 13 - ...
+        initial: on
+    pixel_node_msg14:
+        name: Anzeige Textzeile 14 - ...
+        initial: on
+    pixel_node_msg15:
+        name: Anzeige Textzeile 15 - ...
+        initial: on
+    pixel_node_msg16:
+        name: Anzeige Textzeile 16 - ...
+        initial: on
+    pixel_node_msg17:
+        name: Anzeige Textzeile 17 - ...
+        initial: on
+    pixel_node_msg18:
+        name: Anzeige Textzeile 18 - ...
+        initial: on
+    pixel_node_msg19:
+        name: Anzeige Textzeile 19 - ...
         initial: on
 
