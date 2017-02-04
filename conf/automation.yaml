@@ -142,6 +142,9 @@
         after_offset: "-00:30:00"
       - condition: time
         before: '22:00:00'
+      - condition: state
+        entity_id: group.family_devices
+        state: 'home'
     action:
         service: homeassistant.turn_on
         entity_id: group.daily_lights
