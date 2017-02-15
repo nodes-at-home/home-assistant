@@ -53,6 +53,7 @@ influxdb:
     - sensor.DHT11roof_humidity
     - sensor.DHT11lounge_humidity
     - sensor.relaygarage_humidity
+    - sensor.DHT11lounge_pressure
 
 # -------------------------------------------------------------------------------
 # weblinks

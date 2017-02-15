@@ -40,6 +40,10 @@ sensor.dht11lounge_humidity:
     friendly_name: Luftfeuchtigkeit
     entity_picture: /local/images/DHT11.jpg
 
+sensor.dht11lounge_pressure:
+    friendly_name: Luftdruck
+    # entity_picture: /local/images/DHT11.jpg
+
 sensor.dht11lounge_voltage:
     friendly_name: Wohnzimmer
     entity_picture: /local/images/nodemcu.jpg
@@ -173,7 +177,7 @@ cover.relaygarage:
     friendly_name: Garagentoröffner
 
 sensor.relaygarage_state:
-    friendly_name: Status
+    friendly_name: Garagentor
 
 sensor.relaygarage_temperature:
     friendly_name: Temperatur Garage

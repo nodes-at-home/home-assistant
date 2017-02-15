@@ -44,16 +44,18 @@
             - sensor.owm_humidity
             - sensor.owm_pressure
             # - binary_sensor.octoprint_printing
+            - sensor.relaygarage_state
             - group.default_view_temperatures
             - group.default_view_weather
 
     default_view_temperatures:
-        name: Temperaturen
+        name: Messwerte
         entities:
             - sensor.dht11terrace_temperature
             - sensor.dht11roof_temperature
             - sensor.relaygarage_temperature
             - sensor.dht11lounge_temperature
+            - sensor.dht11lounge_pressure
 
     default_view_weather:
         name: Wetter
@@ -98,6 +100,7 @@
             - light.rfhubfirst_lampStudyPillar
             - sensor.dht11lounge_temperature
             - sensor.dht11lounge_humidity
+            - sensor.dht11lounge_pressure
 
     rooms_kitchen:
         name: Küche

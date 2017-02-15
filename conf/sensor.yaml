@@ -158,6 +158,14 @@
     value_template: '{{ value_json.value }}'
 
   - platform: mqtt
+    state_topic: nodes@home/sensor/DHT11/lounge/value/pressure
+    name: "DHT11@lounge_pressure"
+    qos: 0
+    unit_of_measurement: "hPa"
+    # value_template: '{{ value_json.value | round ( 0 ) }}'
+    value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
     state_topic: nodes@home/sensor/DHT11/lounge/value/voltage
     name: "DHT11@lounge_voltage"
     qos: 0
