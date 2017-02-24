@@ -13,11 +13,11 @@ sensor.dht11terrace_humidity:
     entity_picture: /local/images/DHT22.jpg
 
 sensor.dht11terrace_voltage:
-    friendly_name: Terasse
+    friendly_name: Terrasse
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.dht11terrace_lastvoltage:
-    friendly_name: Terasse
+    friendly_name: Terrasse
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.dht11terrace_hello:
@@ -216,23 +216,23 @@ light.sonoffgarage_lamp:
 
 sensor.sonoffgarage_voltage:
     friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffgarage_lastvoltage:
     friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffgarage_hello:
     friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffgarage_lastboot:
     friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffgarage_version:
     friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
 switch.sonoffutilityroom_pump:
@@ -241,46 +241,46 @@ switch.sonoffutilityroom_pump:
 
 sensor.sonoffutilityroom_voltage:
     friendly_name: 'Zirkulationspumpe Heizung'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffutilityroom_lastvoltage:
     friendly_name: 'Zirkulationspumpe Heizung'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffutilityroom_hello:
     friendly_name: 'Zirkulationspumpe Heizung'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffutilityroom_lastboot:
     friendly_name: 'Zirkulationspumpe Heizung'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffutilityroom_version:
     friendly_name: 'Zirkulationspumpe Heizung'
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
 light.relayterrace_lamp:
     friendly_name: Lampe
 
 sensor.relayterrace_voltage:
-    friendly_name: Terassenschalter
+    friendly_name: Terrassenschalter
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relayterrace_lastvoltage:
-    friendly_name: Terassenschalter
+    friendly_name: Terrassenschalter
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relayterrace_hello:
-    friendly_name: Terassenschalter
+    friendly_name: Terrassenschalter
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relayterrace_lastboot:
-    friendly_name: Terassenschalter
+    friendly_name: Terrassenschalter
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relayterrace_version:
-    friendly_name: Terassenschalter
+    friendly_name: Terrassenschalter
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
@@ -447,5 +447,77 @@ sensor.pixelkitchen_lastboot:
 sensor.pixelkitchen_version:
     friendly_name: Pixeldisplay
     entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+light.sonofflocation1_socket:
+    friendly_name: Schaltbare Steckdose 1
+
+sensor.sonofflocation1_voltage:
+    friendly_name: 'Schaltbare Steckdose 1'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonofflocation1_lastvoltage:
+    friendly_name: 'Schaltbare Steckdose 1'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonofflocation1_hello:
+    friendly_name: 'Schaltbare Steckdose 1'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonofflocation1_lastboot:
+    friendly_name: 'Schaltbare Steckdose 1'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonofflocation1_version:
+    friendly_name: 'Schaltbare Steckdose 1'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+#------------------------------------------------------------------------------
+light.sonofflocation2_socket:
+    friendly_name: Schaltbare Steckdose 2
+
+sensor.sonofflocation2_voltage:
+    friendly_name: 'Schaltbare Steckdose 2'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonofflocation2_lastvoltage:
+    friendly_name: 'Schaltbare Steckdose 2'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonofflocation2_hello:
+    friendly_name: 'Schaltbare Steckdose 2'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonofflocation2_lastboot:
+    friendly_name: 'Schaltbare Steckdose 2'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonofflocation2_version:
+    friendly_name: 'Schaltbare Steckdose 2'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+#------------------------------------------------------------------------------
+light.sonoffterrace_lamp:
+    friendly_name: Lampe
+
+sensor.sonoffterrace_voltage:
+    friendly_name: Terrasseschalter
+    entity_picture: /local/images/sonoff_touch.jpg
+
+sensor.sonoffterrace_lastvoltage:
+    friendly_name: Terrasseschalter
+    entity_picture: /local/images/sonoff_touch.jpg
+
+sensor.sonoffterrace_hello:
+    friendly_name: Terrasseschalter
+    entity_picture: /local/images/sonoff_touch.jpg
+
+sensor.sonoffterrace_lastboot:
+    friendly_name: Terrasseschalter
+    entity_picture: /local/images/sonoff_touch.jpg
+
+sensor.sonoffterrace_version:
+    friendly_name: Terrasseschalter
+    entity_picture: /local/images/sonoff_touch.jpg
 
 #------------------------------------------------------------------------------
