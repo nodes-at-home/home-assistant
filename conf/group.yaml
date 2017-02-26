@@ -17,7 +17,8 @@
     automatic_night_lights:
         name: 'Nachtlichter'
         entities:
-            - light.relayterrace_lamp
+            # - light.relayterrace_lamp
+            - light.sonoffterrace_lamp
             - light.relaybackyard_lamp
             - light.sonoffgarage_lamp
 
@@ -89,7 +90,7 @@
             - group.rooms_backyard
             - group.rooms_roof
             - group.rooms_utilitiyroom
-            - group.rooms_xmas_lights
+            - group.rooms_dining
             - group.rooms_sockets
 
     rooms_lounge:
@@ -146,17 +147,18 @@
             - switch.sonoffutilityroom_pump
             # - input_boolean.manual_holiday_indicator
 
-    rooms_xmas_lights:
-        name: 'Weihnachtsbaum & Co'
+    rooms_dining:
+        name: 'Esszimmer'
         entities:
-          - light.rfhubfirst_noname1c
-          - light.xmastreedining_leds
+          - light.sonofflocation2_socket
+          # - light.rfhubfirst_noname1c
+          # - light.xmastreedining_leds
 
     rooms_sockets:
         name: Steckdosen
         entities:
           - light.sonofflocation1_socket
-          - light.sonofflocation2_socket
+          # - light.sonofflocation2_socket
 
 # ---------------------------------------------------------------------------
 
@@ -322,6 +324,8 @@
             - automation.outer_lights_on_at_night
             - automation.lights_on_at_coming_home_or_sunset
             - automation.lights_off_at_getting_out_or_sunrise
+            - automation.terrarium_lights_on
+            - automation.terrarium_lights_off
             - automation.open_close_garage_door
             - automation.button_no1
             - automation.button_no3

@@ -474,7 +474,7 @@ sensor.sonofflocation1_version:
 
 #------------------------------------------------------------------------------
 light.sonofflocation2_socket:
-    friendly_name: Schaltbare Steckdose 2
+    friendly_name: Terrarium
 
 sensor.sonofflocation2_voltage:
     friendly_name: 'Schaltbare Steckdose 2'
