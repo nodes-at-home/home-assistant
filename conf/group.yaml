@@ -28,6 +28,7 @@
         entities:
           - group.rooms_lounge
           - group.rooms_kitchen
+          - light.sonofflocation1_socket
           - group.rooms_xmas_lights
 
     # ---------------------------------------------------------------------------
@@ -91,7 +92,6 @@
             - group.rooms_roof
             - group.rooms_utilitiyroom
             - group.rooms_dining
-            - group.rooms_sockets
 
     rooms_lounge:
         name: Wohnzimmer
@@ -150,15 +150,10 @@
     rooms_dining:
         name: 'Esszimmer'
         entities:
+          - light.sonofflocation1_socket
           - light.sonofflocation2_socket
           # - light.rfhubfirst_noname1c
           # - light.xmastreedining_leds
-
-    rooms_sockets:
-        name: Steckdosen
-        entities:
-          - light.sonofflocation1_socket
-          # - light.sonofflocation2_socket
 
 # ---------------------------------------------------------------------------
 

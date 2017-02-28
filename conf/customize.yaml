@@ -450,7 +450,7 @@ sensor.pixelkitchen_version:
 
 #------------------------------------------------------------------------------
 light.sonofflocation1_socket:
-    friendly_name: Schaltbare Steckdose 1
+    friendly_name: Schrank
 
 sensor.sonofflocation1_voltage:
     friendly_name: 'Schaltbare Steckdose 1'
