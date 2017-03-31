@@ -260,28 +260,28 @@ sensor.sonoffutilityroom_version:
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
-light.relayterrace_lamp:
-    friendly_name: Lampe
+light.relay1dining_lamp:
+    friendly_name: Lampe linker Schrank
 
-sensor.relayterrace_voltage:
-    friendly_name: Terrassenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay1dining_voltage:
+    friendly_name: Schrankschalter links
+    entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relayterrace_lastvoltage:
-    friendly_name: Terrassenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay1dining_lastvoltage:
+    friendly_name: Schrankschalter links
+    entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relayterrace_hello:
-    friendly_name: Terrassenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay1dining_hello:
+    friendly_name: Schrankschalter links
+    entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relayterrace_lastboot:
-    friendly_name: Terrassenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay1dining_lastboot:
+    friendly_name: Schrankschalter links
+    entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relayterrace_version:
-    friendly_name: Terrassenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay1dining_version:
+    friendly_name: Schrankschalter links
+    entity_picture: /local/images/wifi-relay.jpg
 
 #------------------------------------------------------------------------------
 light.relaybackyard_lamp:
@@ -289,47 +289,47 @@ light.relaybackyard_lamp:
 
 sensor.relaybackyard_voltage:
     friendly_name: Hinterhofschalter
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wifi-relay.jpg
 
 sensor.relaybackyard_lastvoltage:
     friendly_name: Hinterhofschalter
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wifi-relay.jpg
 
 sensor.relaybackyard_hello:
     friendly_name: Hinterhofschalter
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wifi-relay.jpg
 
 sensor.relaybackyard_lastboot:
     friendly_name: Hinterhofschalter
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wifi-relay.jpg
 
 sensor.relaybackyard_version:
     friendly_name: Hinterhofschalter
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wifi-relay.jpg
 
 #------------------------------------------------------------------------------
-light.relaycarport_lamp:
-    friendly_name: Steckdose
+light.relay2dining_lamp:
+    friendly_name: Lampe rechter Schrank
 
-sensor.relaycarport_voltage:
-    friendly_name: Steckdosenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay2dining_voltage:
+    friendly_name: Schrankschalter rechts
+    entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaycarport_lastvoltage:
-    friendly_name: Steckdosenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay2dining_lastvoltage:
+    friendly_name: Schrankschalter rechts
+    entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaycarport_hello:
-    friendly_name: Steckdosenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay2dining_hello:
+    friendly_name: Schrankschalter rechts
+    entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaycarport_lastboot:
-    friendly_name: Steckdosenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay2dining_lastboot:
+    friendly_name: Schrankschalter rechts
+    entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaycarport_version:
-    friendly_name: Steckdosenschalter
-    entity_picture: /local/images/nodemcu.jpg
+sensor.relay2dining_version:
+    friendly_name: Schrankschalter rechts
+    entity_picture: /local/images/wifi-relay.jpg
 
 #------------------------------------------------------------------------------
 light.xmastreedining_leds:

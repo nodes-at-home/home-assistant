@@ -262,34 +262,34 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/terrace
-    name: "relay@terrace_hello"
+    state_topic: nodes@home/switch/relay1/dining
+    name: "relay1@dining_hello"
     qos: 0
     # value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/terrace
-    name: "relay@terrace_version"
+    state_topic: nodes@home/switch/relay1/dining
+    name: "relay1@dining_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/terrace
-    name: "relay@terrace_lastboot"
+    state_topic: nodes@home/switch/relay1/dining
+    name: "relay1@dining_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/terrace/value/voltage
-    name: "relay@terrace_voltage"
+    state_topic: nodes@home/switch/relay1/dining/value/voltage
+    name: "relay1@dining_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/terrace/value/voltage
-    name: "relay@terrace_lastvoltage"
+    state_topic: nodes@home/switch/relay1/dining/value/voltage
+    name: "relay1@dining_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
@@ -328,34 +328,34 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/carport
-    name: "relay@carport_hello"
+    state_topic: nodes@home/switch/relay2/dining
+    name: "relay2@dining_hello"
     qos: 0
     # value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/carport
-    name: "relay@carport_version"
+    state_topic: nodes@home/switch/relay2/dining
+    name: "relay2@dining_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/carport
-    name: "relay@carport_lastboot"
+    state_topic: nodes@home/switch/relay2/dining
+    name: "relay2@dining_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/carport/value/voltage
-    name: "relay@carport_voltage"
+    state_topic: nodes@home/switch/relay2/dining/value/voltage
+    name: "relay2@dining_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay/carport/value/voltage
-    name: "relay@carport_lastvoltage"
+    state_topic: nodes@home/switch/relay2/dining/value/voltage
+    name: "relay2@dining_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 

@@ -82,9 +82,9 @@
     retain: true
 
   - platform: mqtt
-    name: "relay@terrace_lamp"
-    command_topic: nodes@home/switch/relay/terrace/lamp
-    state_topic: nodes@home/switch/relay/terrace/lamp/value/state
+    name: "relay1@dining_lamp"
+    command_topic: nodes@home/switch/relay1/dining/lamp
+    state_topic: nodes@home/switch/relay1/dining/lamp/value/state
     optimistic: false
     retain: true
 
@@ -96,9 +96,9 @@
     retain: true
 
   - platform: mqtt
-    name: "relay@carport_lamp"
-    command_topic: nodes@home/switch/relay/carport/lamp
-    state_topic: nodes@home/switch/relay/carport/lamp/value/state
+    name: "relay2@dining_lamp"
+    command_topic: nodes@home/switch/relay2/dining/lamp
+    state_topic: nodes@home/switch/relay2/dining/lamp/value/state
     optimistic: false
     retain: true
 
