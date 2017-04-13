@@ -521,3 +521,75 @@ sensor.sonoffterrace_version:
     entity_picture: /local/images/sonoff_touch.jpg
 
 #------------------------------------------------------------------------------
+light.sonoffyardgate_lamp:
+    friendly_name: Außenlicht
+
+sensor.sonoffyardgate_voltage:
+    friendly_name: 'Außenlicht Gartentor'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonoffyardgate_lastvoltage:
+    friendly_name: 'Außenlicht Gartentor'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonoffyardgate_hello:
+    friendly_name: 'Außenlicht Gartentor'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonoffyardgate_lastboot:
+    friendly_name: 'Außenlicht Gartentor'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonoffyardgate_version:
+    friendly_name: 'Außenlicht Gartentor'
+    entity_picture: /local/images/sonoff.jpg
+
+#------------------------------------------------------------------------------
+light.sonofflocation3_lamp:
+    friendly_name: Sonoff Schalter
+
+sensor.sonofflocation3_voltage:
+    friendly_name: 'Sonoff Schalter 3'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonofflocation3_lastvoltage:
+    friendly_name: 'Sonoff Schalter 3'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonofflocation3_hello:
+    friendly_name: 'Sonoff Schalter 3'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonofflocation3_lastboot:
+    friendly_name: 'Sonoff Schalter 3'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonofflocation3_version:
+    friendly_name: 'Sonoff Schalter 3'
+    entity_picture: /local/images/sonoff.jpg
+
+#------------------------------------------------------------------------------
+light.sonofflocation4_lamp:
+    friendly_name: Sonoff Schalter
+
+sensor.sonofflocation4_voltage:
+    friendly_name: 'Sonoff Schalter 4'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonofflocation4_lastvoltage:
+    friendly_name: 'Sonoff Schalter 4'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonofflocation4_hello:
+    friendly_name: 'Sonoff Schalter 4'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonofflocation4_lastboot:
+    friendly_name: 'Sonoff Schalter 4'
+    entity_picture: /local/images/sonoff.jpg
+
+sensor.sonofflocation4_version:
+    friendly_name: 'Sonoff Schalter 4'
+    entity_picture: /local/images/sonoff.jpg
+
+#------------------------------------------------------------------------------

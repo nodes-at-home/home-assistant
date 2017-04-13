@@ -131,3 +131,24 @@
     state_topic: nodes@home/switch/sonoff/terrace/lamp/value/state
     optimistic: false
     retain: true
+
+  - platform: mqtt
+    name: "sonoff@yardgate_lamp"
+    command_topic: nodes@home/switch/sonoff/yardgate/lamp
+    state_topic: nodes@home/switch/sonoff/yardgate/lamp/value/state
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "sonoff@location3_lamp"
+    command_topic: nodes@home/switch/sonoff/location3/lamp
+    state_topic: nodes@home/switch/sonoff/location3/lamp/value/state
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "sonoff@location4_lamp"
+    command_topic: nodes@home/switch/sonoff/location4/lamp
+    state_topic: nodes@home/switch/sonoff/location4/lamp/value/state
+    optimistic: false
+    retain: true

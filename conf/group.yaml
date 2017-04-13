@@ -20,23 +20,21 @@
             - light.sonoffterrace_lamp
             - light.relaybackyard_lamp
             - light.sonoffgarage_lamp
+            - light.sonoffyardgate_lamp
 
     # ---------------------------------------------------------------------------
     daily_lights:
         name: 'Die üblichen Lichter'
         entities:
-          # - group.rooms_lounge
           - light.rfhubfirst_lampLoungeWhiteBall
           - light.rfhubfirst_lamploungeblackbowl
           - light.rfhubfirst_lampLoungeReading
           # - light.rfhubfirst_lampStudyPillar
-          # - group.rooms_kitchen
           - light.rfhubfirst_lampkitchenshortstrip
           - light.rfhubfirst_lampkitchenlongstrip
           - group.rooms_xmas_lights
           - light.relay1dining_lamp
-          - light.sonofflocation1_socket
-          # - light.relay2dining_lamp
+          - light.relay2dining_lamp
 
     # ---------------------------------------------------------------------------
     default_view:
@@ -95,6 +93,7 @@
             - group.rooms_kitchen
             - group.rooms_garage
             - group.rooms_terrace
+            - group.rooms_yardgate
             - group.rooms_backyard
             - group.rooms_roof
             - group.rooms_utilitiyroom
@@ -139,6 +138,11 @@
             - sensor.dht11roof_temperature
             - sensor.dht11roof_humidity
 
+    rooms_yardgate:
+        name: Gartentor
+        entities:
+            - light.sonoffyardgate_lamp
+
     rooms_backyard:
         name: Hinterhof
         entities:
@@ -155,8 +159,7 @@
         entities:
           - light.sonofflocation2_socket # Terrarium
           - light.relay1dining_lamp
-          # - light.relay2dining_lamp
-          - light.sonofflocation1_socket
+          - light.relay2dining_lamp
           # Xmas
           # - light.rfhubfirst_noname1c
           # - light.xmastreedining_leds
@@ -209,6 +212,9 @@
             - sensor.sonoffterrace_lastboot
             - sensor.relay1dining_lastboot
             - sensor.relay2dining_lastboot
+            - sensor.sonoffyardgate_lastboot
+            - sensor.sonofflocation3_lastboot
+            - sensor.sonofflocation4_lastboot
 
     nodes_version:
         name: Version
@@ -231,6 +237,9 @@
             - sensor.sonoffterrace_version
             - sensor.relay1dining_version
             - sensor.relay2dining_version
+            - sensor.sonoffyardgate_version
+            - sensor.sonofflocation3_version
+            - sensor.sonofflocation4_version
 
     nodes_lastvoltage:
         name: Last Voltage Message
@@ -253,6 +262,9 @@
             - sensor.sonoffterrace_lastvoltage
             - sensor.relay1dining_lastvoltage
             - sensor.relay2dining_lastvoltage
+            - sensor.sonoffyardgate_lastvoltage
+            - sensor.sonofflocation3_lastvoltage
+            - sensor.sonofflocation4_lastvoltage
 
     nodes_voltage:
         name: Spannungspegel
@@ -275,6 +287,9 @@
             - sensor.sonoffterrace_voltage
             - sensor.relay1dining_voltage
             - sensor.relay2dining_voltage
+            - sensor.sonoffyardgate_voltage
+            - sensor.sonofflocation3_voltage
+            - sensor.sonofflocation4_voltage
 
 # ---------------------------------------------------------------------------
     system:
@@ -406,16 +421,20 @@
             # - sensor.octoprint_target_bed_temp
 
 # ---------------------------------------------------------------------------
-    # test:
-        # name: Test
-        # view: yes
-        # entities:
-            # - group.test_test
+    test:
+        name: Test
+        view: yes
+        entities:
+            - group.test_test
 
-    # test_test:
-        # name: Der Sensor
-        # entities:
-            # - binary_sensor.buttongarage
-            # - light.rfhubfirst_lampLoungeWhiteBall
+    test_test:
+        name: Der Sensor
+        entities:
+            - sensor.dht11test_temperature
+            - sensor.dht11test_humidity
+            - sensor.dht11test_version
+            - sensor.dht11test_lastboot
+            - sensor.dht11test_voltage
+            - sensor.dht11test_lastvoltage
 
 # ---------------------------------------------------------------------------

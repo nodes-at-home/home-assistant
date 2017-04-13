@@ -697,3 +697,145 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/sensor/DHT11/test/value/temperature
+    name: "DHT11@test_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/DHT11/test/value/humidity
+    name: "DHT11@test_humidity"
+    qos: 0
+    unit_of_measurement: "%"
+    value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/DHT11/test
+    name: "DHT11@test_hello"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/DHT11/test
+    name: "DHT11@test_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/DHT11/test
+    name: "DHT11@test_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/DHT11/test/value/voltage
+    name: "DHT11@test_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/DHT11/test/value/voltage
+    name: "DHT11@test_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/yardgate
+    name: "sonoff@yardgate_hello"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/yardgate
+    name: "sonoff@yardgate_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/yardgate
+    name: "sonoff@yardgate_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/yardgate/value/voltage
+    name: "sonoff@yardgate_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/yardgate/value/voltage
+    name: "sonoff@yardgate_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location3
+    name: "sonoff@location3_hello"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location3
+    name: "sonoff@location3_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location3
+    name: "sonoff@location3_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location3/value/voltage
+    name: "sonoff@location3_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location3/value/voltage
+    name: "sonoff@location3_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location4
+    name: "sonoff@location4_hello"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location4
+    name: "sonoff@location4_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location4
+    name: "sonoff@location4_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location4/value/voltage
+    name: "sonoff@location4_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/location4/value/voltage
+    name: "sonoff@location4_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
