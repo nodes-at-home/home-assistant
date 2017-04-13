@@ -174,7 +174,7 @@ sensor.rfhubfirst_version:
 
 #------------------------------------------------------------------------------
 cover.relaygarage:
-    friendly_name: Garagentoröffner
+    friendly_name: Garagentor
 
 sensor.relaygarage_state:
     friendly_name: Garagentor
@@ -187,23 +187,23 @@ sensor.relaygarage_humidity:
     entity_picture: /local/images/DHT22.jpg
 
 sensor.relaygarage_voltage:
-    friendly_name: Garagentoröffner
+    friendly_name: Garagentor
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relaygarage_lastvoltage:
-    friendly_name: Garagentoröffner
+    friendly_name: Garagentor
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relaygarage_hello:
-    friendly_name: Garagentoröffner
+    friendly_name: Garagentor
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relaygarage_lastboot:
-    friendly_name: Garagentoröffner
+    friendly_name: Garagentor
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relaygarage_version:
-    friendly_name: Garagentoröffner
+    friendly_name: Garagentor
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
@@ -450,7 +450,7 @@ sensor.pixelkitchen_version:
 
 #------------------------------------------------------------------------------
 light.sonofflocation1_socket:
-    friendly_name: Schrank
+    friendly_name: 'Lampe rechter Schrank'
 
 sensor.sonofflocation1_voltage:
     friendly_name: 'Schaltbare Steckdose 1'

@@ -35,7 +35,8 @@
           - light.rfhubfirst_lampkitchenlongstrip
           - group.rooms_xmas_lights
           - light.relay1dining_lamp
-          - light.relay2dining_lamp
+          - light.sonofflocation1_socket
+          # - light.relay2dining_lamp
 
     # ---------------------------------------------------------------------------
     default_view:
@@ -154,7 +155,8 @@
         entities:
           - light.sonofflocation2_socket # Terrarium
           - light.relay1dining_lamp
-          - light.relay2dining_lamp
+          # - light.relay2dining_lamp
+          - light.sonofflocation1_socket
           # Xmas
           # - light.rfhubfirst_noname1c
           # - light.xmastreedining_leds
