@@ -115,6 +115,7 @@
         entities:
             - light.rfhubfirst_lampkitchenshortstrip
             - light.rfhubfirst_lampkitchenlongstrip
+            - light.sonoffkitchen_led
 
     rooms_garage:
         name: Garage
@@ -215,6 +216,7 @@
             - sensor.sonoffyardgate_lastboot
             - sensor.sonofflocation3_lastboot
             - sensor.sonofflocation4_lastboot
+            - sensor.sonoffkitchen_lastboot
 
     nodes_version:
         name: Version
@@ -240,6 +242,7 @@
             - sensor.sonoffyardgate_version
             - sensor.sonofflocation3_version
             - sensor.sonofflocation4_version
+            - sensor.sonoffkitchen_version
 
     nodes_lastvoltage:
         name: Last Voltage Message
@@ -265,6 +268,7 @@
             - sensor.sonoffyardgate_lastvoltage
             - sensor.sonofflocation3_lastvoltage
             - sensor.sonofflocation4_lastvoltage
+            - sensor.sonoffkitchen_lastvoltage
 
     nodes_voltage:
         name: Spannungspegel
@@ -290,6 +294,7 @@
             - sensor.sonoffyardgate_voltage
             - sensor.sonofflocation3_voltage
             - sensor.sonofflocation4_voltage
+            - sensor.sonoffkitchen_voltage
 
 # ---------------------------------------------------------------------------
     system:

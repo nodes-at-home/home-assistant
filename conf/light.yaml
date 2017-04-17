@@ -152,3 +152,14 @@
     state_topic: nodes@home/switch/sonoff/location4/lamp/value/state
     optimistic: false
     retain: true
+
+  - platform: mqtt
+    name: "sonoff@kitchen_led"
+    command_topic: nodes@home/light/sonoff/kitchen/led
+    state_topic: nodes@home/light/sonoff/kitchen/led/state
+    brightness_command_topic: nodes@home/light/sonoff/kitchen/brightness
+    brightness_state_topic: nodes@home/light/sonoff/kitchen/brightness/state
+    color_temp_command_topic: nodes@home/light/sonoff/kitchen/color
+    color_temp_state_topic: nodes@home/light/sonoff/kitchen/color/state
+    optimistic: false
+    retain: true

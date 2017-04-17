@@ -593,3 +593,27 @@ sensor.sonofflocation4_version:
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
+light.sonoffkitchen_led:
+    friendly_name: Ledlicht
+
+sensor.sonoffkitchen_voltage:
+    friendly_name: 'Sonoff Led'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.sonoffkitchen_lastvoltage:
+    friendly_name: 'Sonoff Led'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.sonoffkitchen_hello:
+    friendly_name: 'Sonoff Led'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.sonoffkitchen_lastboot:
+    friendly_name: 'Sonoff Led'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.sonoffkitchen_version:
+    friendly_name: 'Sonoff Led'
+    entity_picture: /local/images/sonoff_led.jpg
+
+#------------------------------------------------------------------------------
