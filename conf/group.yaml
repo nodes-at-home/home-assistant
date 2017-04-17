@@ -32,7 +32,7 @@
           # - light.rfhubfirst_lampStudyPillar
           - light.rfhubfirst_lampkitchenshortstrip
           - light.rfhubfirst_lampkitchenlongstrip
-          - group.rooms_xmas_lights
+          # - group.rooms_xmas_lights
           - light.relay1dining_lamp
           - light.relay2dining_lamp
 
@@ -203,20 +203,21 @@
             - sensor.sonoffgarage_lastboot
             - sensor.relaybackyard_lastboot
             - sensor.sonoffutilityroom_lastboot
-            - sensor.xmastreedining_lastboot
+            # - sensor.xmastreedining_lastboot
             - sensor.buttonno1_lastboot
             - sensor.buttongarage_lastboot
             - sensor.buttonno3_lastboot
             - sensor.pixelkitchen_lastboot
-            - sensor.sonofflocation1_lastboot
             - sensor.sonofflocation2_lastboot
             - sensor.sonoffterrace_lastboot
             - sensor.relay1dining_lastboot
             - sensor.relay2dining_lastboot
             - sensor.sonoffyardgate_lastboot
+            - sensor.sonoffkitchen_lastboot
+            - sensor.sonofflocation1_lastboot
+            # - sensor.sonofflocation2_lastboot
             - sensor.sonofflocation3_lastboot
             - sensor.sonofflocation4_lastboot
-            - sensor.sonoffkitchen_lastboot
 
     nodes_version:
         name: Version
@@ -229,20 +230,21 @@
             - sensor.sonoffgarage_version
             - sensor.relaybackyard_version
             - sensor.sonoffutilityroom_version
-            - sensor.xmastreedining_version
+            # - sensor.xmastreedining_version
             - sensor.buttonno1_version
             - sensor.buttongarage_version
             - sensor.buttonno3_version
             - sensor.pixelkitchen_version
-            - sensor.sonofflocation1_version
             - sensor.sonofflocation2_version
             - sensor.sonoffterrace_version
             - sensor.relay1dining_version
             - sensor.relay2dining_version
             - sensor.sonoffyardgate_version
+            - sensor.sonoffkitchen_version
+            - sensor.sonofflocation1_version
+            # - sensor.sonofflocation2_version
             - sensor.sonofflocation3_version
             - sensor.sonofflocation4_version
-            - sensor.sonoffkitchen_version
 
     nodes_lastvoltage:
         name: Last Voltage Message
@@ -255,20 +257,21 @@
             - sensor.sonoffgarage_lastvoltage
             - sensor.relaybackyard_lastvoltage
             - sensor.sonoffutilityroom_lastvoltage
-            - sensor.xmastreedining_lastvoltage
+            # - sensor.xmastreedining_lastvoltage
             - sensor.buttonno1_lastvoltage
             - sensor.buttongarage_lastvoltage
             - sensor.buttonno3_lastvoltage
             - sensor.pixelkitchen_lastvoltage
-            - sensor.sonofflocation1_lastvoltage
             - sensor.sonofflocation2_lastvoltage
             - sensor.sonoffterrace_lastvoltage
             - sensor.relay1dining_lastvoltage
             - sensor.relay2dining_lastvoltage
             - sensor.sonoffyardgate_lastvoltage
+            - sensor.sonoffkitchen_lastvoltage
+            - sensor.sonofflocation1_lastvoltage
+            # - sensor.sonofflocation2_lastvoltage
             - sensor.sonofflocation3_lastvoltage
             - sensor.sonofflocation4_lastvoltage
-            - sensor.sonoffkitchen_lastvoltage
 
     nodes_voltage:
         name: Spannungspegel
@@ -281,20 +284,21 @@
             - sensor.sonoffgarage_voltage
             - sensor.relaybackyard_voltage
             - sensor.sonoffutilityroom_voltage
-            - sensor.xmastreedining_voltage
+            # - sensor.xmastreedining_voltage
             - sensor.buttonno1_voltage
             - sensor.buttongarage_voltage
             - sensor.buttonno3_voltage
             - sensor.pixelkitchen_voltage
-            - sensor.sonofflocation1_voltage
             - sensor.sonofflocation2_voltage
             - sensor.sonoffterrace_voltage
             - sensor.relay1dining_voltage
             - sensor.relay2dining_voltage
             - sensor.sonoffyardgate_voltage
+            - sensor.sonoffkitchen_voltage
+            - sensor.sonofflocation1_voltage
+            # - sensor.sonofflocation2_voltage
             - sensor.sonofflocation3_voltage
             - sensor.sonofflocation4_voltage
-            - sensor.sonoffkitchen_voltage
 
 # ---------------------------------------------------------------------------
     system:

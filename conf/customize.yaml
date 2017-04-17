@@ -477,23 +477,28 @@ light.sonofflocation2_socket:
     friendly_name: Terrarium
 
 sensor.sonofflocation2_voltage:
-    friendly_name: 'Schaltbare Steckdose 2'
+    # friendly_name: 'Schaltbare Steckdose 2'
+    friendly_name: 'Terrarium'
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonofflocation2_lastvoltage:
-    friendly_name: 'Schaltbare Steckdose 2'
+    # friendly_name: 'Schaltbare Steckdose 2'
+    friendly_name: 'Terrarium'
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonofflocation2_hello:
-    friendly_name: 'Schaltbare Steckdose 2'
+    # friendly_name: 'Schaltbare Steckdose 2'
+    friendly_name: 'Terrarium'
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonofflocation2_lastboot:
-    friendly_name: 'Schaltbare Steckdose 2'
+    # friendly_name: 'Schaltbare Steckdose 2'
+    friendly_name: 'Terrarium'
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonofflocation2_version:
-    friendly_name: 'Schaltbare Steckdose 2'
+    # friendly_name: 'Schaltbare Steckdose 2'
+    friendly_name: 'Terrarium'
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
