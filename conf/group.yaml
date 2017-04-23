@@ -204,10 +204,6 @@
             - sensor.relaybackyard_lastboot
             - sensor.sonoffutilityroom_lastboot
             # - sensor.xmastreedining_lastboot
-            - sensor.buttonno1_lastboot
-            - sensor.buttongarage_lastboot
-            - sensor.buttonno3_lastboot
-            - sensor.pixelkitchen_lastboot
             - sensor.sonofflocation2_lastboot
             - sensor.sonoffterrace_lastboot
             - sensor.relay1dining_lastboot
@@ -218,6 +214,10 @@
             # - sensor.sonofflocation2_lastboot
             - sensor.sonofflocation3_lastboot
             - sensor.sonofflocation4_lastboot
+            - sensor.buttonno1_lastboot
+            - sensor.buttongarage_lastboot
+            - sensor.buttonno3_lastboot
+            - sensor.pixelkitchen_lastboot
 
     nodes_version:
         name: Version
@@ -231,10 +231,6 @@
             - sensor.relaybackyard_version
             - sensor.sonoffutilityroom_version
             # - sensor.xmastreedining_version
-            - sensor.buttonno1_version
-            - sensor.buttongarage_version
-            - sensor.buttonno3_version
-            - sensor.pixelkitchen_version
             - sensor.sonofflocation2_version
             - sensor.sonoffterrace_version
             - sensor.relay1dining_version
@@ -245,6 +241,10 @@
             # - sensor.sonofflocation2_version
             - sensor.sonofflocation3_version
             - sensor.sonofflocation4_version
+            - sensor.buttonno1_version
+            - sensor.buttongarage_version
+            - sensor.buttonno3_version
+            - sensor.pixelkitchen_version
 
     nodes_lastvoltage:
         name: Last Voltage Message
@@ -258,10 +258,6 @@
             - sensor.relaybackyard_lastvoltage
             - sensor.sonoffutilityroom_lastvoltage
             # - sensor.xmastreedining_lastvoltage
-            - sensor.buttonno1_lastvoltage
-            - sensor.buttongarage_lastvoltage
-            - sensor.buttonno3_lastvoltage
-            - sensor.pixelkitchen_lastvoltage
             - sensor.sonofflocation2_lastvoltage
             - sensor.sonoffterrace_lastvoltage
             - sensor.relay1dining_lastvoltage
@@ -272,6 +268,10 @@
             # - sensor.sonofflocation2_lastvoltage
             - sensor.sonofflocation3_lastvoltage
             - sensor.sonofflocation4_lastvoltage
+            - sensor.buttonno1_lastvoltage
+            - sensor.buttongarage_lastvoltage
+            - sensor.buttonno3_lastvoltage
+            - sensor.pixelkitchen_lastvoltage
 
     nodes_voltage:
         name: Spannungspegel
@@ -285,10 +285,6 @@
             - sensor.relaybackyard_voltage
             - sensor.sonoffutilityroom_voltage
             # - sensor.xmastreedining_voltage
-            - sensor.buttonno1_voltage
-            - sensor.buttongarage_voltage
-            - sensor.buttonno3_voltage
-            - sensor.pixelkitchen_voltage
             - sensor.sonofflocation2_voltage
             - sensor.sonoffterrace_voltage
             - sensor.relay1dining_voltage
@@ -299,6 +295,10 @@
             # - sensor.sonofflocation2_voltage
             - sensor.sonofflocation3_voltage
             - sensor.sonofflocation4_voltage
+            - sensor.buttonno1_voltage
+            - sensor.buttongarage_voltage
+            - sensor.buttonno3_voltage
+            - sensor.pixelkitchen_voltage
 
 # ---------------------------------------------------------------------------
     system:
@@ -351,8 +351,10 @@
             - automation.lights_off_at_getting_out_or_sunrise
             - automation.terrarium_lights_on
             - automation.terrarium_lights_off
-            - automation.open_close_garage_door
+            - automation.open_garage_door
+            - automation.close_garage_door
             - automation.button_no1
+            - automation.button_no2_garage
             - automation.button_no3
             - automation.pixel_node_preferences
             - automation.pixel_node_show_terrace_temperature

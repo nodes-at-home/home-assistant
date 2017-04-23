@@ -210,12 +210,19 @@
       - platform: state
         entity_id: binary_sensor.buttonno1
         state: 'on'
-    ### TODO add open/close garage here, use
-    ###     https://home-assistant.io/getting-started/scripts-service-calls/
-    ###     https://home-assistant.io/getting-started/scripts/
     action:
       - service: light.toggle
         entity_id: light.xmastreedining_leds
+
+  - alias: button_no2_garage
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.buttongarage
+        state: '_on'
+    action:
+      - service: light.toggle
+        entity_id: light.relay2dining_lamp
 
   - alias: button_no3
     hide_entity: false
@@ -223,25 +230,37 @@
       - platform: state
         entity_id: binary_sensor.buttonno3
         state: 'on'
-    ### TODO add open/close garage here, use
-    ###     https://home-assistant.io/getting-started/scripts-service-calls/
-    ###     https://home-assistant.io/getting-started/scripts/
     action:
       - service: light.toggle
         entity_id: light.xmastreedining_leds
 
-  - alias: open_close_garage_door
+  - alias: open_garage_door
     hide_entity: false
     trigger:
       - platform: state
         entity_id: binary_sensor.buttongarage
         state: 'on'
-    ### TODO add open/close garage here, use
-    ###     https://home-assistant.io/getting-started/scripts-service-calls/
-    ###     https://home-assistant.io/getting-started/scripts/
+    condition:
+      - condition: state
+        entity_id: cover.relaygarage
+        state: 'closed'
     action:
-      - service: light.toggle
-        entity_id: light.xmastreedining_leds
+      - service: cover.open_cover
+        entity_id: cover.relaygarage
+
+  - alias: close_garage_door
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.buttongarage
+        state: 'on'
+    condition:
+      - condition: state
+        entity_id: cover.relaygarage
+        state: 'open'
+    action:
+      - service: cover.close_cover
+        entity_id: cover.relaygarage
 
 #------------------------------------------------------------------------------------
 # pixel node
