@@ -551,26 +551,26 @@ sensor.sonoffyardgate_version:
 
 #------------------------------------------------------------------------------
 light.sonofflocation3_lamp:
-    friendly_name: Sonoff Schalter
+    friendly_name: Stehlampe
 
 sensor.sonofflocation3_voltage:
-    friendly_name: 'Sonoff Schalter 3'
+    friendly_name: 'Stehlampe Galerie'
     entity_picture: /local/images/sonoff.jpg
 
 sensor.sonofflocation3_lastvoltage:
-    friendly_name: 'Sonoff Schalter 3'
+    friendly_name: 'Stehlampe Galerie'
     entity_picture: /local/images/sonoff.jpg
 
 sensor.sonofflocation3_hello:
-    friendly_name: 'Sonoff Schalter 3'
+    friendly_name: 'Stehlampe Galerie'
     entity_picture: /local/images/sonoff.jpg
 
 sensor.sonofflocation3_lastboot:
-    friendly_name: 'Sonoff Schalter 3'
+    friendly_name: 'Stehlampe Galerie'
     entity_picture: /local/images/sonoff.jpg
 
 sensor.sonofflocation3_version:
-    friendly_name: 'Sonoff Schalter 3'
+    friendly_name: 'Stehlampe Galerie'
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------

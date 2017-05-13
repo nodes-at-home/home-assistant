@@ -130,9 +130,9 @@
     condition:
       - condition: or
         conditions:
-          - condition: state
-            entity_id: input_boolean.manual_holiday_indicator
-            state: 'off'
+          # - condition: state
+            # entity_id: input_boolean.manual_holiday_indicator
+            # state: 'off'
           - condition: state
             entity_id: group.family_devices
             state: 'not_home'
@@ -171,7 +171,9 @@
         state: 'home'
     action:
         service: homeassistant.turn_on
-        entity_id: group.daily_lights
+        entity_id: 
+            - group.daily_lights
+            - light.sonofflocation3_lamp
 
   - alias: lights_off_at_getting_out_or_sunrise
     hide_entity: False
@@ -184,7 +186,9 @@
         offset: "+00:00:00"
     action:
         service: homeassistant.turn_off
-        entity_id: group.daily_lights
+        entity_id: 
+            - group.daily_lights
+            - light.sonofflocation3_lamp
 
   - alias: movie_lights_off
     hide_entity: False
@@ -198,8 +202,13 @@
         after: '21:00:00'
         before: '06:00:00'
     action:
-        service: homeassistant.turn_off
-        entity_id: group.daily_lights
+      - service: homeassistant.turn_off
+        entity_id: 
+            - group.daily_lights
+      - delay: 00:07:00
+      - service: homeassistant.turn_off
+        entity_id: 
+            - light.sonofflocation3_lamp
 
 #------------------------------------------------------------------------------------
 # buttons

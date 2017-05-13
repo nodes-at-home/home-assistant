@@ -44,7 +44,7 @@
         name: Anzeige Textzeile 8 - Info Gelber Sack
         initial: on
     pixel_node_msg9:
-        name: Anzeige Textzeile 9 - ...
+        name: Anzeige Textzeile 9 - Info Biotonne
         initial: on
     pixel_node_msg10:
         name: Anzeige Textzeile 10 - Arbeitsweg Andreas

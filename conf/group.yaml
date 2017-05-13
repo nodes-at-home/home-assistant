@@ -98,6 +98,7 @@
             - group.rooms_roof
             - group.rooms_utilitiyroom
             - group.rooms_dining
+            - group.rooms_gallery
 
     rooms_lounge:
         name: Wohnzimmer
@@ -165,6 +166,11 @@
           # - light.rfhubfirst_noname1c
           # - light.xmastreedining_leds
 
+    rooms_gallery:
+        name: 'Galerie'
+        entities:
+          - light.sonofflocation3_lamp
+
 # ---------------------------------------------------------------------------
 
     media:
@@ -209,10 +215,9 @@
             - sensor.relay1dining_lastboot
             - sensor.relay2dining_lastboot
             - sensor.sonoffyardgate_lastboot
+            - sensor.sonofflocation3_lastboot
             - sensor.sonoffkitchen_lastboot
             - sensor.sonofflocation1_lastboot
-            # - sensor.sonofflocation2_lastboot
-            - sensor.sonofflocation3_lastboot
             - sensor.sonofflocation4_lastboot
             - sensor.buttonno1_lastboot
             - sensor.buttongarage_lastboot
@@ -236,10 +241,9 @@
             - sensor.relay1dining_version
             - sensor.relay2dining_version
             - sensor.sonoffyardgate_version
+            - sensor.sonofflocation3_version
             - sensor.sonoffkitchen_version
             - sensor.sonofflocation1_version
-            # - sensor.sonofflocation2_version
-            - sensor.sonofflocation3_version
             - sensor.sonofflocation4_version
             - sensor.buttonno1_version
             - sensor.buttongarage_version
@@ -263,10 +267,9 @@
             - sensor.relay1dining_lastvoltage
             - sensor.relay2dining_lastvoltage
             - sensor.sonoffyardgate_lastvoltage
+            - sensor.sonofflocation3_lastvoltage
             - sensor.sonoffkitchen_lastvoltage
             - sensor.sonofflocation1_lastvoltage
-            # - sensor.sonofflocation2_lastvoltage
-            - sensor.sonofflocation3_lastvoltage
             - sensor.sonofflocation4_lastvoltage
             - sensor.buttonno1_lastvoltage
             - sensor.buttongarage_lastvoltage
@@ -290,10 +293,9 @@
             - sensor.relay1dining_voltage
             - sensor.relay2dining_voltage
             - sensor.sonoffyardgate_voltage
+            - sensor.sonofflocation3_voltage
             - sensor.sonoffkitchen_voltage
             - sensor.sonofflocation1_voltage
-            # - sensor.sonofflocation2_voltage
-            - sensor.sonofflocation3_voltage
             - sensor.sonofflocation4_voltage
             - sensor.buttonno1_voltage
             - sensor.buttongarage_voltage
@@ -389,7 +391,7 @@
             - input_boolean.pixel_node_msg6
             - input_boolean.pixel_node_msg7
             - input_boolean.pixel_node_msg8
-            # - input_boolean.pixel_node_msg9
+            - input_boolean.pixel_node_msg9
             - input_boolean.pixel_node_msg10
             - input_boolean.pixel_node_msg11
             # - input_boolean.pixel_node_msg12
