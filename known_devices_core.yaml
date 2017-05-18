@@ -15,7 +15,7 @@ undine_xperia:
 
 nora_xperia:
   name: Nora
-  mac: C4:3A:BE:20:A0:20
+  mac: E0:63:E5:65:80:D1
   picture:
   track: yes
   hide_if_away: no
