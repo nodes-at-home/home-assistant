@@ -110,6 +110,7 @@
             - sensor.dht11lounge_temperature
             - sensor.dht11lounge_humidity
             - sensor.dht11lounge_pressure
+            - switch.rfhubfirst_NoName1D
 
     rooms_kitchen:
         name: Küche

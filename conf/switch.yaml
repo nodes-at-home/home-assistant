@@ -33,5 +33,14 @@
     state_topic: nodes@home/switch/sonoff/utilityroom/pump/value/state
     optimistic: false
     retain: true
+    
+  - platform: mqtt
+    name: "rfhub@first_NoName1D"
+    state_topic: "nodes@home/switch/rfhub/first/noName1D/state"
+    command_topic: "nodes@home/switch/rfhub/first/noName1D"
+    optimistic: true
+    retain: true
+
+
 
 

@@ -138,6 +138,10 @@ light.rfhubfirst_lampstudypillar:
 light.rfhubfirst_NoName1C:
     friendly_name: Weihnachtsbaum
 
+switch.rfhubfirst_NoName1D:
+    friendly_name: 3D Drucker K8200
+    entity_picture: /local/images/k8200.jpg
+
 #------------------------------------------------------------------------------
 switch.kitchen_short_led_strip:
     friendly_name: Kurze Ledleiste
