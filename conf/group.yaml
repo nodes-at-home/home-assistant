@@ -29,7 +29,7 @@
           - light.rfhubfirst_lampLoungeWhiteBall
           - light.rfhubfirst_lamploungeblackbowl
           - light.rfhubfirst_lampLoungeReading
-          # - light.rfhubfirst_lampStudyPillar
+          - light.rfhubfirst_lampStudyPillar
           - light.rfhubfirst_lampkitchenshortstrip
           - light.rfhubfirst_lampkitchenlongstrip
           # - group.rooms_xmas_lights
