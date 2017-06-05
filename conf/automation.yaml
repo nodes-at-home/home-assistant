@@ -223,22 +223,24 @@
       - service: light.toggle
         entity_id: light.xmastreedining_leds
 
-  - alias: button_no2_garage
-    hide_entity: false
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.buttongarage
-        state: '_on'
-    action:
-      - service: light.toggle
-        entity_id: light.relay2dining_lamp
+  # - alias: button_no2_garage
+    # hide_entity: false
+    # trigger:
+      # - platform: state
+        # entity_id: binary_sensor.buttongarage
+        # state: 'on'
+    # action:
+      # - service: light.toggle
+        # # entity_id: light.relay2dining_lamp
+        # entity_id: light.rfhubfirst_lampStudyPillar
+
 
   - alias: button_no3
     hide_entity: false
     trigger:
       - platform: state
         entity_id: binary_sensor.buttonno3
-        state: 'on'
+        state: '_on'
     action:
       - service: light.toggle
         entity_id: light.xmastreedining_leds
