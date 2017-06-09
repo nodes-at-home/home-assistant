@@ -376,7 +376,7 @@
     action:
       - service: mqtt.publish
         data_template:
-            topic: nodes@home/display/pixel/kitchen/command
+            topic: nodes@home/display/pixel/kitchen/message/temperature/outdoor
             payload: >
                 {
                     "messages": [
@@ -397,7 +397,7 @@
     action:
       - service: mqtt.publish
         data_template:
-            topic: nodes@home/display/pixel/kitchen/command
+            topic: nodes@home/display/pixel/kitchen/message/temperature/indoor
             payload: >
                 {
                     "messages": [
