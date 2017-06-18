@@ -130,9 +130,9 @@
     condition:
       - condition: or
         conditions:
-          # - condition: state
-            # entity_id: input_boolean.manual_holiday_indicator
-            # state: 'off'
+          - condition: state
+            entity_id: input_boolean.manual_holiday_indicator
+            state: 'off'
           - condition: state
             entity_id: group.family_devices
             state: 'not_home'
@@ -404,6 +404,27 @@
                         {
                             "line": 1,
                             "text": " Innen: {{ trigger.payload_json.value }}°C"
+                        }
+                    ]
+                }
+            qos: 0
+            retain: true
+
+  - alias: pixel_node_show_pool_temperature
+    hide_entity: false
+    trigger:
+      - platform: mqtt
+        topic: nodes@home/sensor/ds18b20/pool/value/temperature
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/display/pixel/kitchen/message/temperature/pool
+            payload: >
+                {
+                    "messages": [
+                        {
+                            "line": 12,
+                            "text": " Pool: {{ trigger.payload_json.value | round ( 1 ) }}°C"
                         }
                     ]
                 }

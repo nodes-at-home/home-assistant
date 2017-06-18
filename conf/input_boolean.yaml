@@ -53,13 +53,13 @@
         name: Anzeige Textzeile 11 - Arbeitsweg Undine
         initial: on
     pixel_node_msg12:
-        name: Anzeige Textzeile 12 - ...
+        name: Anzeige Textzeile 12 - Pooltemperatur
         initial: on
     pixel_node_msg13:
-        name: Anzeige Textzeile 13 - ...
+        name: Anzeige Textzeile 13 - Abfahrt S-Bahn 1
         initial: on
     pixel_node_msg14:
-        name: Anzeige Textzeile 14 - ...
+        name: Anzeige Textzeile 14 - Abfahrt S-Bahn 2
         initial: on
     pixel_node_msg15:
         name: Anzeige Textzeile 15 - ...

@@ -626,3 +626,27 @@ sensor.sonoffkitchen_version:
     entity_picture: /local/images/sonoff_led.jpg
 
 #------------------------------------------------------------------------------
+sensor.ds18b20pool_temperature:
+    friendly_name: Temperatur Pool
+
+sensor.ds18b20pool_voltage:
+    friendly_name: Pool
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20pool_lastvoltage:
+    friendly_name: Pool
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20pool_hello:
+    friendly_name: Pool
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20pool_lastboot:
+    friendly_name: Pool
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20pool_version:
+    friendly_name: Pool
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
