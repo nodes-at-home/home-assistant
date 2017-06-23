@@ -631,22 +631,22 @@ sensor.ds18b20pool_temperature:
 
 sensor.ds18b20pool_voltage:
     friendly_name: Pool
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wemos_mini.jpg
 
 sensor.ds18b20pool_lastvoltage:
     friendly_name: Pool
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wemos_mini.jpg
 
 sensor.ds18b20pool_hello:
     friendly_name: Pool
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wemos_mini.jpg
 
 sensor.ds18b20pool_lastboot:
     friendly_name: Pool
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wemos_mini.jpg
 
 sensor.ds18b20pool_version:
     friendly_name: Pool
-    entity_picture: /local/images/nodemcu.jpg
+    entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
