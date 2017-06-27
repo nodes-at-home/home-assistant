@@ -650,3 +650,24 @@ sensor.ds18b20pool_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
+sensor.oledkitchen_voltage:
+    friendly_name: OLED Display
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.oledkitchen_lastvoltage:
+    friendly_name: OLED Display
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.oledkitchen_hello:
+    friendly_name: OLED Display
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.oledkitchen_lastboot:
+    friendly_name: OLED Display
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.oledkitchen_version:
+    friendly_name: OLED Display
+    entity_picture: /local/images/wemos_mini.jpg
+
+#------------------------------------------------------------------------------

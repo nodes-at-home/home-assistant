@@ -887,6 +887,13 @@
 
   - platform: mqtt
     state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
+    name: "ds18b20@pool_voltage_original"
+    qos: 0
+    unit_of_measurement: "mV"
+    value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
     name: "ds18b20@pool_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
@@ -906,6 +913,45 @@
   - platform: mqtt
     state_topic: nodes@home/sensor/ds18b20/pool
     name: "ds18b20@pool_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/display/oled/kitchen/value/voltage
+    name: "oled@kitchen_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/display/oled/kitchen/value/voltage
+    name: "oled@kitchen_voltage_original"
+    qos: 0
+    unit_of_measurement: "mV"
+    value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/display/oled/kitchen/value/voltage
+    name: "oled@kitchen_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/display/oled/kitchen
+    name: "oled@kitchen_hello"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/display/oled/kitchen
+    name: "oled@kitchen_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/display/oled/kitchen
+    name: "oled@kitchen_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 

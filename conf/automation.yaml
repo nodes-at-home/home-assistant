@@ -190,7 +190,7 @@
             - group.daily_lights
             - light.sonofflocation3_lamp
 
-  - alias: movie_lights_off
+  - alias: lights_off_at_tv_switched_off
     hide_entity: False
     trigger:
         platform: state
@@ -368,7 +368,10 @@
             qos: 0
             retain: true
 
-  - alias: pixel_node_show_terrace_temperature
+#------------------------------------------------------------------------------------
+# display
+
+  - alias: display_show_outdoor_temperature
     hide_entity: false
     trigger:
       - platform: mqtt
@@ -388,8 +391,15 @@
                 }
             qos: 0
             retain: true
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/display/oled/kitchen/message/outdoor
+            payload: >
+                Out {{ trigger.payload_json.value }}°C
+            qos: 0
+            retain: true
 
-  - alias: pixel_node_show_lounge_temperature
+  - alias: display_show_indoor_temperature
     hide_entity: false
     trigger:
       - platform: mqtt
@@ -409,8 +419,15 @@
                 }
             qos: 0
             retain: true
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/display/oled/kitchen/message/indoor
+            payload: >
+                In {{ trigger.payload_json.value }}°C
+            qos: 0
+            retain: true
 
-  - alias: pixel_node_show_pool_temperature
+  - alias: display_show_pool_temperature
     hide_entity: false
     trigger:
       - platform: mqtt
@@ -428,6 +445,13 @@
                         }
                     ]
                 }
+            qos: 0
+            retain: true
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/display/oled/kitchen/message/pool
+            payload: >
+                Pool {{ trigger.payload_json.value | round ( 1 ) }}°C
             qos: 0
             retain: true
 

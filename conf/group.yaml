@@ -227,6 +227,7 @@
             - sensor.buttongarage_lastboot
             - sensor.buttonno3_lastboot
             - sensor.pixelkitchen_lastboot
+            - sensor.oledkitchen_lastboot
 
     nodes_version:
         name: Version
@@ -254,6 +255,7 @@
             - sensor.buttongarage_version
             - sensor.buttonno3_version
             - sensor.pixelkitchen_version
+            - sensor.oledkitchen_version
 
     nodes_lastvoltage:
         name: Last Voltage Message
@@ -281,6 +283,7 @@
             - sensor.buttongarage_lastvoltage
             - sensor.buttonno3_lastvoltage
             - sensor.pixelkitchen_lastvoltage
+            - sensor.oledkitchen_lastvoltage
 
     nodes_voltage:
         name: Spannungspegel
@@ -308,6 +311,7 @@
             - sensor.buttongarage_voltage
             - sensor.buttonno3_voltage
             - sensor.pixelkitchen_voltage
+            - sensor.oledkitchen_voltage
 
 # ---------------------------------------------------------------------------
     system:
@@ -353,11 +357,11 @@
           # - group.all_automations
             - automation.heater_circulating_pump_on
             - automation.heater_circulating_pump_off
-            - automation.movie_lights_off
             - automation.outer_lights_off_at_morning
             - automation.outer_lights_on_at_night
             - automation.lights_on_at_coming_home_or_sunset
             - automation.lights_off_at_getting_out_or_sunrise
+            - automation.lights_off_at_tv_switched_off
             - automation.terrarium_lights_on
             - automation.terrarium_lights_off
             - automation.open_garage_door
@@ -366,9 +370,9 @@
             - automation.button_no2_garage
             - automation.button_no3
             - automation.pixel_node_preferences
-            - automation.pixel_node_show_terrace_temperature
-            - automation.pixel_node_show_lounge_temperature
-            - automation.pixel_node_show_pool_temperature
+            - automation.display_show_outdoor_temperature
+            - automation.display_show_indoor_temperature
+            - automation.display_show_pool_temperature
 
     automation_preferences:
         name: Einstellungen
