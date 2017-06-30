@@ -58,14 +58,14 @@
     hide_entity: False
     trigger:                    # any event
       - platform: time
-        after: '05:00:00'
+        at: '05:00:00'
       - platform: time
-        after: '05:30:00'
+        at: '05:30:00'
       - platform: time
-        after: '08:00:00'
+        at: '08:00:00'
       - platform: state
         entity_id: group.family_devices
-        state: 'home'
+        to: 'home'
       - platform: state
         entity_id: input_boolean.manual_holiday_indicator
         # any state
@@ -120,10 +120,10 @@
     hide_entity: False
     trigger:                    # any event, no condition necessary
       - platform: time
-        after: '22:00:00'
+        at: '22:00:00'
       - platform: state
         entity_id: group.family_devices
-        state: 'not_home'
+        to: 'not_home'
       - platform: state
         entity_id: input_boolean.manual_holiday_indicator
         # any state
@@ -156,7 +156,7 @@
     trigger:
       - platform: state
         entity_id: group.family_devices
-        state: 'home'
+        to: 'home'
       - platform: sun
         event: sunset
         offset: "00:00:00"
@@ -180,7 +180,7 @@
     trigger:
       - platform: state
         entity_id: group.family_devices
-        state: 'not_home'
+        to: 'not_home'
       - platform: sun
         event: sunrise
         offset: "+00:00:00"
@@ -218,7 +218,7 @@
     trigger:
       - platform: state
         entity_id: binary_sensor.buttonno1
-        state: 'on'
+        to: 'on'
     action:
       - service: light.toggle
         entity_id: light.xmastreedining_leds
@@ -228,7 +228,7 @@
     # trigger:
       # - platform: state
         # entity_id: binary_sensor.buttongarage
-        # state: 'on'
+        # to: 'on'
     # action:
       # - service: light.toggle
         # # entity_id: light.relay2dining_lamp
@@ -240,7 +240,7 @@
     trigger:
       - platform: state
         entity_id: binary_sensor.buttonno3
-        state: '_on'
+        to: '_on'
     action:
       - service: light.toggle
         entity_id: light.xmastreedining_leds
@@ -250,7 +250,7 @@
     trigger:
       - platform: state
         entity_id: binary_sensor.buttongarage
-        state: 'on'
+        to: 'on'
     condition:
       - condition: state
         entity_id: cover.relaygarage
@@ -264,7 +264,7 @@
     trigger:
       - platform: state
         entity_id: binary_sensor.buttongarage
-        state: 'on'
+        to: 'on'
     condition:
       - condition: state
         entity_id: cover.relaygarage

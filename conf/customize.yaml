@@ -633,6 +633,9 @@ sensor.ds18b20pool_voltage:
     friendly_name: Pool
     entity_picture: /local/images/wemos_mini.jpg
 
+sensor.ds18b20pool_voltage_original:
+    friendly_name: Pool
+
 sensor.ds18b20pool_lastvoltage:
     friendly_name: Pool
     entity_picture: /local/images/wemos_mini.jpg
@@ -653,6 +656,9 @@ sensor.ds18b20pool_version:
 sensor.oledkitchen_voltage:
     friendly_name: OLED Display
     entity_picture: /local/images/wemos_mini.jpg
+
+sensor.oledkitchen_voltage_original:
+    friendly_name: OLED Display
 
 sensor.oledkitchen_lastvoltage:
     friendly_name: OLED Display

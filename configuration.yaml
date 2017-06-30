@@ -44,19 +44,20 @@ influxdb:
   database: home_assistant
   username: ha
   password: ha
-  whitelist:
-    - sensor.DHT11terrace_temperature
-    - sensor.DHT11roof_temperature
-    - sensor.DHT11lounge_temperature
-    - sensor.relaygarage_temperature
-    - sensor.DHT11terrace_humidity
-    - sensor.DHT11roof_humidity
-    - sensor.DHT11lounge_humidity
-    - sensor.relaygarage_humidity
-    - sensor.DHT11lounge_pressure
-    - sensor.ds18b20pool_temperature
-    - sensor.ds18b20pool_voltage_original
-    - sensor.oledkitchen_voltage_original
+  include:
+    entities:
+        - sensor.DHT11terrace_temperature
+        - sensor.DHT11roof_temperature
+        - sensor.DHT11lounge_temperature
+        - sensor.relaygarage_temperature
+        - sensor.DHT11terrace_humidity
+        - sensor.DHT11roof_humidity
+        - sensor.DHT11lounge_humidity
+        - sensor.relaygarage_humidity
+        - sensor.DHT11lounge_pressure
+        - sensor.ds18b20pool_temperature
+        - sensor.ds18b20pool_voltage_original
+        - sensor.oledkitchen_voltage_original
 
 # -------------------------------------------------------------------------------
 # weblinks
