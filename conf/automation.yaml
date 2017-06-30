@@ -395,7 +395,7 @@
         data_template:
             topic: nodes@home/display/oled/kitchen/message/outdoor
             payload: >
-                Out {{ trigger.payload_json.value }}°C
+                { "title": "Terasse", "text": "{{trigger.payload_json.value}}°C" }
             qos: 0
             retain: true
 
@@ -423,7 +423,7 @@
         data_template:
             topic: nodes@home/display/oled/kitchen/message/indoor
             payload: >
-                In {{ trigger.payload_json.value }}°C
+                { "title": "Wohnzimmer", "text": "{{trigger.payload_json.value}}°C" }
             qos: 0
             retain: true
 
@@ -451,7 +451,7 @@
         data_template:
             topic: nodes@home/display/oled/kitchen/message/pool
             payload: >
-                Pool {{ trigger.payload_json.value | round ( 1 ) }}°C
+                { "title": "Pool", "text": "{{trigger.payload_json.value | round ( 1 )}}°C" }
             qos: 0
             retain: true
 

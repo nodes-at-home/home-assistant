@@ -56,7 +56,7 @@ influxdb:
     - sensor.DHT11lounge_pressure
     - sensor.ds18b20pool_temperature
     - sensor.ds18b20pool_voltage_original
-    # - sensor.oledkitchen_voltage_original
+    - sensor.oledkitchen_voltage_original
 
 # -------------------------------------------------------------------------------
 # weblinks
