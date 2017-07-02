@@ -6,27 +6,27 @@
 
 #------------------------------------------------------------------------------------
 # outdoor lights at night
-  - alias: outer_lights_on_at_night
+  - alias: outdoor_lights_on_at_night
     hide_entity: False
     trigger:
       - platform: sun
         event: sunset
         offset: "00:00:00"
     action:
-        service: light.turn_on
+      - service: light.turn_on
         entity_id:
-            - group.automatic_night_lights
+            - group.automatic_outdoor_lights
 
-  - alias: outer_lights_off_at_morning
+  - alias: outdoor_lights_off_at_morning
     hide_entity: False
     trigger:
       - platform: sun
         event: sunrise
         offset: "+00:00:00"
     action:
-        service: light.turn_off
+      - service: light.turn_off
         entity_id:
-            - group.automatic_night_lights
+            - group.automatic_outdoor_lights
 
 #------------------------------------------------------------------------------------
 # terrarium lights
@@ -37,7 +37,7 @@
         event: sunrise
         offset: "+00:00:00"
     action:
-        service: light.turn_on
+      - service: light.turn_on
         entity_id:
             - light.sonofflocation2_socket
 
@@ -48,7 +48,7 @@
         event: sunset
         offset: "00:00:00"
     action:
-        service: light.turn_off
+      - service: light.turn_off
         entity_id:
             - light.sonofflocation2_socket
 
@@ -112,7 +112,7 @@
                           - sat
                           - sun
     action:
-        service: switch.turn_on
+      - service: switch.turn_on
         entity_id:
             - switch.sonoffutilityroom_pump
 
@@ -145,13 +145,13 @@
                 before: '08:00:00'
                 after: '22:00:00'
     action:
-        service: switch.turn_off
+      - service: switch.turn_off
         entity_id:
             - switch.sonoffutilityroom_pump
 
 #------------------------------------------------------------------------------------
-# daily lights
-  - alias: lights_on_at_coming_home_or_sunset
+# indoor lights
+  - alias: indoor_lights_on_at_coming_home_or_sunset
     hide_entity: False
     trigger:
       - platform: state
@@ -170,12 +170,11 @@
         entity_id: group.family_devices
         state: 'home'
     action:
-        service: homeassistant.turn_on
+      - service: homeassistant.turn_on
         entity_id: 
-            - group.daily_lights
-            - light.sonofflocation3_lamp
+            - group.automatic_indoor_lights
 
-  - alias: lights_off_at_getting_out_or_sunrise
+  - alias: indoor_lights_off_at_getting_out_or_sunrise
     hide_entity: False
     trigger:
       - platform: state
@@ -185,12 +184,11 @@
         event: sunrise
         offset: "+00:00:00"
     action:
-        service: homeassistant.turn_off
+      - service: homeassistant.turn_off
         entity_id: 
-            - group.daily_lights
-            - light.sonofflocation3_lamp
+            - group.automatic_indoor_lights
 
-  - alias: lights_off_at_tv_switched_off
+  - alias: indoor_lights_off_when_tv_switched_off
     hide_entity: False
     trigger:
         platform: state
@@ -204,24 +202,24 @@
     action:
       - service: homeassistant.turn_off
         entity_id: 
-            - group.daily_lights
+            - group.automatic_indoor_lights_immediatly_switched
       - delay: 00:07:00
       - service: homeassistant.turn_off
         entity_id: 
-            - light.sonofflocation3_lamp
+            - group.automatic_indoor_lights_delayed_switched
 
 #------------------------------------------------------------------------------------
 # buttons
 
-  - alias: button_no1
-    hide_entity: false
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.buttonno1
-        to: 'on'
-    action:
-      - service: light.toggle
-        entity_id: light.xmastreedining_leds
+  # - alias: button_no1_indoor
+    # hide_entity: false
+    # trigger:
+      # - platform: state
+        # entity_id: binary_sensor.buttonindoor
+        # to: 'on'
+    # action:
+      # - service: light.toggle
+        # entity_id: light.rfhubfirst_lampkitchenshortstrip
 
   # - alias: button_no2_garage
     # hide_entity: false
@@ -244,6 +242,36 @@
     action:
       - service: light.toggle
         entity_id: light.xmastreedining_leds
+        
+  - alias: indoor_lights_on_by_button
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.buttonindoor
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: light.relay1dining_lamp
+        state: 'off'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: 
+            - group.automatic_indoor_lights
+        
+  - alias: indoor_lights_off_by_button
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.buttonindoor
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: light.relay1dining_lamp
+        state: 'on'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: 
+            - group.automatic_indoor_lights
 
   - alias: open_garage_door
     hide_entity: false

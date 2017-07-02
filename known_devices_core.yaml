@@ -16,14 +16,12 @@ undine_xperia:
 nora_xperia:
   name: Nora
   mac: E0:63:E5:65:80:D1
-  picture:
   track: yes
   hide_if_away: no
 
 nina_huawei:
   name: Nina
   mac: A4:71:74:E9:A3:30
-  picture:
   track: yes
   hide_if_away: no
 

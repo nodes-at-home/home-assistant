@@ -360,27 +360,27 @@ sensor.xmastreedining_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-binary_sensor.buttonno1:
-    friendly_name: Drücker No1
+binary_sensor.buttonindoor:
+    friendly_name: Drücker Innenlicht
 
-sensor.buttonno1_voltage:
-    friendly_name: Drücker No1
+sensor.buttonindoor_voltage:
+    friendly_name: Drücker Innenlicht
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonno1_lastvoltage:
-    friendly_name: Drücker No1
+sensor.buttonindoor_lastvoltage:
+    friendly_name: Drücker Innenlicht
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonno1_hello:
-    friendly_name: Drücker No1
+sensor.buttonindoor_hello:
+    friendly_name: Drücker Innenlicht
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonno1_lastboot:
-    friendly_name: Drücker No1
+sensor.buttonindoor_lastboot:
+    friendly_name: Drücker Innenlicht
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonno1_version:
-    friendly_name: Drücker No1
+sensor.buttonindoor_version:
+    friendly_name: Drücker Innenlicht
     entity_picture: /local/images/esp-01.jpg
 
 #------------------------------------------------------------------------------

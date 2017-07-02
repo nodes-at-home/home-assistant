@@ -14,7 +14,7 @@
             - device_tracker.nina_huawei
 
     # ---------------------------------------------------------------------------
-    automatic_night_lights:
+    automatic_outdoor_lights:
         name: 'Nachtlichter'
         entities:
             - light.sonoffterrace_lamp
@@ -23,7 +23,7 @@
             - light.sonoffyardgate_lamp
 
     # ---------------------------------------------------------------------------
-    daily_lights:
+    automatic_indoor_lights_immediatly_switched:
         name: 'Die üblichen Lichter'
         entities:
           - light.rfhubfirst_lampLoungeWhiteBall
@@ -36,6 +36,17 @@
           - light.relay1dining_lamp
           - light.relay2dining_lamp
 
+    automatic_indoor_lights_delayed_switched:
+        name: 'Die länger leuchtenden Lichter'
+        entities:
+          - light.sonofflocation3_lamp
+
+    automatic_indoor_lights:
+        name: 'Alle Lichter'
+        entities:
+          - group.automatic_indoor_lights_immediatly_switched
+          - group.automatic_indoor_lights_delayed_switched
+          
     # ---------------------------------------------------------------------------
     default_view:
         name: Home
@@ -223,7 +234,7 @@
             - sensor.sonoffkitchen_lastboot
             - sensor.sonofflocation1_lastboot
             - sensor.sonofflocation4_lastboot
-            - sensor.buttonno1_lastboot
+            - sensor.buttonindoor_lastboot
             - sensor.buttongarage_lastboot
             - sensor.buttonno3_lastboot
             - sensor.pixelkitchen_lastboot
@@ -251,7 +262,7 @@
             - sensor.sonoffkitchen_version
             - sensor.sonofflocation1_version
             - sensor.sonofflocation4_version
-            - sensor.buttonno1_version
+            - sensor.buttonindoor_version
             - sensor.buttongarage_version
             - sensor.buttonno3_version
             - sensor.pixelkitchen_version
@@ -279,7 +290,7 @@
             - sensor.sonoffkitchen_lastvoltage
             - sensor.sonofflocation1_lastvoltage
             - sensor.sonofflocation4_lastvoltage
-            - sensor.buttonno1_lastvoltage
+            - sensor.buttonindoor_lastvoltage
             - sensor.buttongarage_lastvoltage
             - sensor.buttonno3_lastvoltage
             - sensor.pixelkitchen_lastvoltage
@@ -307,7 +318,7 @@
             - sensor.sonoffkitchen_voltage
             - sensor.sonofflocation1_voltage
             - sensor.sonofflocation4_voltage
-            - sensor.buttonno1_voltage
+            - sensor.buttonindoor_voltage
             - sensor.buttongarage_voltage
             - sensor.buttonno3_voltage
             - sensor.pixelkitchen_voltage
@@ -357,22 +368,22 @@
           # - group.all_automations
             - automation.heater_circulating_pump_on
             - automation.heater_circulating_pump_off
-            - automation.outer_lights_off_at_morning
-            - automation.outer_lights_on_at_night
-            - automation.lights_on_at_coming_home_or_sunset
-            - automation.lights_off_at_getting_out_or_sunrise
-            - automation.lights_off_at_tv_switched_off
+            - automation.outdoor_lights_on_at_night
+            - automation.outdoor_lights_off_at_morning
+            - automation.indoor_lights_on_at_coming_home_or_sunset
+            - automation.indoor_lights_off_at_getting_out_or_sunrise
+            - automation.indoor_lights_off_when_tv_switched_off
+            - automation.indoor_lights_on_by_button
+            - automation.indoor_lights_off_by_button
             - automation.terrarium_lights_on
             - automation.terrarium_lights_off
             - automation.open_garage_door
             - automation.close_garage_door
-            - automation.button_no1
-            - automation.button_no2_garage
-            - automation.button_no3
             - automation.pixel_node_preferences
             - automation.display_show_outdoor_temperature
             - automation.display_show_indoor_temperature
             - automation.display_show_pool_temperature
+        # - automation.button_no3
 
     automation_preferences:
         name: Einstellungen
@@ -382,7 +393,7 @@
     automation_hidden_entities:
         name: Verstecktes
         entities:
-            - binary_sensor.buttonno1
+            - binary_sensor.buttonindoor
             - binary_sensor.buttongarage
             - binary_sensor.buttonno3
 

@@ -11,8 +11,8 @@
         # - Printing Error
         
   - platform: mqtt
-    name: button@no1
-    state_topic: "nodes@home/sensor/button/no1/value/state"
+    name: button@indoor
+    state_topic: "nodes@home/sensor/button/indoor/value/state"
     qos: 0
 
   - platform: mqtt

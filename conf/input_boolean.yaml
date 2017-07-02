@@ -21,7 +21,7 @@
         initial: on
     pixel_node_msg1:
         name: Anzeige Textzeile 1 - Innentemperatur
-        initial: off
+        initial: on
     pixel_node_msg2:
         name: Anzeige Textzeile 2 - Temperaturvorhersage heute
         initial: on
@@ -57,10 +57,10 @@
         initial: on
     pixel_node_msg13:
         name: Anzeige Textzeile 13 - Abfahrt S-Bahn 1
-        initial: on
+        initial: off
     pixel_node_msg14:
         name: Anzeige Textzeile 14 - Abfahrt S-Bahn 2
-        initial: on
+        initial: off
     pixel_node_msg15:
         name: Anzeige Textzeile 15 - ...
         initial: on
