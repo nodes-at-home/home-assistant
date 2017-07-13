@@ -24,4 +24,8 @@
     name: button@no3
     state_topic: "nodes@home/sensor/button/no3/value/state"
     qos: 0
+    
+  - platform: workday
+    country: DE
+    province: BB
 

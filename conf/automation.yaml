@@ -58,17 +58,12 @@
     hide_entity: False
     trigger:                    # any event
       - platform: time
-        at: '05:00:00'
-      - platform: time
         at: '05:30:00'
       - platform: time
         at: '08:00:00'
       - platform: state
         entity_id: group.family_devices
         to: 'home'
-      - platform: state
-        entity_id: input_boolean.manual_holiday_indicator
-        # any state
     condition:                  # all conditions
       - condition: and
         conditions:
@@ -80,37 +75,19 @@
               - condition: and
                 conditions:
                   - condition: state
-                    entity_id: input_boolean.manual_holiday_indicator
+                    entity_id: binary_sensor.workday_sensor
                     state: 'on'
-                  - condition: time         # any day
-                    after: '08:00:00'
+                  - condition: time
+                    after: '05:30:00'
                     before: '22:00:00'
               - condition: and
                 conditions:
                   - condition: state
-                    entity_id: input_boolean.manual_holiday_indicator
+                    entity_id: binary_sensor.workday_sensor
                     state: 'off'
-                  - condition: or
-                    conditions:
-                      - condition: time
-                        after: '05:00:00'
-                        before: '22:00:00'
-                        weekday:
-                          - mon
-                      - condition: time
-                        after: '05:30:00'
-                        before: '22:00:00'
-                        weekday:
-                          - tue
-                          - wed
-                          - thu
-                          - fri
-                      - condition: time
-                        after: '08:00:00'
-                        before: '22:00:00'
-                        weekday:
-                          - sat
-                          - sun
+                  - condition: time         # any day
+                    after: '08:00:00'
+                    before: '22:00:00'
     action:
       - service: switch.turn_on
         entity_id:
@@ -124,26 +101,6 @@
       - platform: state
         entity_id: group.family_devices
         to: 'not_home'
-      - platform: state
-        entity_id: input_boolean.manual_holiday_indicator
-        # any state
-    condition:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: input_boolean.manual_holiday_indicator
-            state: 'off'
-          - condition: state
-            entity_id: group.family_devices
-            state: 'not_home'
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: input_boolean.manual_holiday_indicator
-                state: 'on'
-              - condition: time
-                before: '08:00:00'
-                after: '22:00:00'
     action:
       - service: switch.turn_off
         entity_id:
