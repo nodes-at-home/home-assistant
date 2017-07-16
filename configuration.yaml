@@ -30,7 +30,7 @@ homeassistant:
 mqtt:
   broker: localhost
   port: 1883
-  client_id: home-assistant
+  client_id: home_assistant_prod
   keepalive: 120
   protocol: 3.1.1
 
