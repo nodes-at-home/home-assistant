@@ -408,27 +408,27 @@ sensor.buttongarage_version:
     entity_picture: /local/images/esp-01.jpg
 
 #------------------------------------------------------------------------------
-binary_sensor.buttonno3:
-    friendly_name: Drücker No3
+binary_sensor.buttonpool:
+    friendly_name: Drücker Pool
 
-sensor.buttonno3_voltage:
-    friendly_name: Drücker No3
+sensor.buttonpool_voltage:
+    friendly_name: Drücker Pool
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonno3_lastvoltage:
-    friendly_name: Drücker No3
+sensor.buttonpool_lastvoltage:
+    friendly_name: Drücker Pool
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonno3_hello:
-    friendly_name: Drücker No3
+sensor.buttonpool_hello:
+    friendly_name: Drücker Pool
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonno3_lastboot:
-    friendly_name: Drücker No3
+sensor.buttonpool_lastboot:
+    friendly_name: Drücker Pool
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonno3_version:
-    friendly_name: Drücker No3
+sensor.buttonpool_version:
+    friendly_name: Drücker Pool
     entity_picture: /local/images/esp-01.jpg
 
 #------------------------------------------------------------------------------

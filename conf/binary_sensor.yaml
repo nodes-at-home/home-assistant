@@ -21,8 +21,8 @@
     qos: 0
 
   - platform: mqtt
-    name: button@no3
-    state_topic: "nodes@home/sensor/button/no3/value/state"
+    name: button@pool
+    state_topic: "nodes@home/sensor/button/pool/value/state"
     qos: 0
     
   - platform: workday

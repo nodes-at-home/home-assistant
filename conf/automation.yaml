@@ -168,38 +168,6 @@
 #------------------------------------------------------------------------------------
 # buttons
 
-  # - alias: button_no1_indoor
-    # hide_entity: false
-    # trigger:
-      # - platform: state
-        # entity_id: binary_sensor.buttonindoor
-        # to: 'on'
-    # action:
-      # - service: light.toggle
-        # entity_id: light.rfhubfirst_lampkitchenshortstrip
-
-  # - alias: button_no2_garage
-    # hide_entity: false
-    # trigger:
-      # - platform: state
-        # entity_id: binary_sensor.buttongarage
-        # to: 'on'
-    # action:
-      # - service: light.toggle
-        # # entity_id: light.relay2dining_lamp
-        # entity_id: light.rfhubfirst_lampStudyPillar
-
-
-  - alias: button_no3
-    hide_entity: false
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.buttonno3
-        to: '_on'
-    action:
-      - service: light.toggle
-        entity_id: light.xmastreedining_leds
-        
   - alias: indoor_lights_on_by_button
     hide_entity: false
     trigger:
@@ -258,6 +226,16 @@
       - service: cover.close_cover
         entity_id: cover.relaygarage
 
+  - alias: button_pool
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.buttonpool
+        to: 'on'
+    action:
+      - service: light.toggle
+        entity_id: light.rfhubfirst_lampStudyPillar
+        
 #------------------------------------------------------------------------------------
 # pixel node
 

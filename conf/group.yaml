@@ -236,7 +236,7 @@
             - sensor.sonofflocation4_lastboot
             - sensor.buttonindoor_lastboot
             - sensor.buttongarage_lastboot
-            - sensor.buttonno3_lastboot
+            - sensor.buttonpool_lastboot
             - sensor.pixelkitchen_lastboot
             - sensor.oledkitchen_lastboot
 
@@ -264,7 +264,7 @@
             - sensor.sonofflocation4_version
             - sensor.buttonindoor_version
             - sensor.buttongarage_version
-            - sensor.buttonno3_version
+            - sensor.buttonpool_version
             - sensor.pixelkitchen_version
             - sensor.oledkitchen_version
 
@@ -292,7 +292,7 @@
             - sensor.sonofflocation4_lastvoltage
             - sensor.buttonindoor_lastvoltage
             - sensor.buttongarage_lastvoltage
-            - sensor.buttonno3_lastvoltage
+            - sensor.buttonpool_lastvoltage
             - sensor.pixelkitchen_lastvoltage
             - sensor.oledkitchen_lastvoltage
 
@@ -320,7 +320,7 @@
             - sensor.sonofflocation4_voltage
             - sensor.buttonindoor_voltage
             - sensor.buttongarage_voltage
-            - sensor.buttonno3_voltage
+            - sensor.buttonpool_voltage
             - sensor.pixelkitchen_voltage
             - sensor.oledkitchen_voltage
 
@@ -383,7 +383,7 @@
             - automation.display_show_outdoor_temperature
             - automation.display_show_indoor_temperature
             - automation.display_show_pool_temperature
-        # - automation.button_no3
+            - automation.button_pool
 
     automation_preferences:
         name: Einstellungen
@@ -395,7 +395,7 @@
         entities:
             - binary_sensor.buttonindoor
             - binary_sensor.buttongarage
-            - binary_sensor.buttonno3
+            - binary_sensor.buttonpool
 
     automation_pixel_node_preferences:
         name: Einstellungen PixelNode
