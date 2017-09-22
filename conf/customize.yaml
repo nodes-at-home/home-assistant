@@ -152,7 +152,7 @@ switch.kitchen_long_led_strip:
     icon: mdi:lightbulb
 
 switch.heater_circulating_pump:
-    friendly_name: Zirkulationspumpe Heizung
+    friendly_name: Zirkulationspumpe
     entity_picture: /local/images/circulation_pump.jpg
 
 #------------------------------------------------------------------------------
@@ -244,23 +244,23 @@ switch.sonoffutilityroom_pump:
     entity_picture: /local/images/circulation_pump.jpg
 
 sensor.sonoffutilityroom_voltage:
-    friendly_name: 'Zirkulationspumpe Heizung'
+    friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffutilityroom_lastvoltage:
-    friendly_name: 'Zirkulationspumpe Heizung'
+    friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffutilityroom_hello:
-    friendly_name: 'Zirkulationspumpe Heizung'
+    friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffutilityroom_lastboot:
-    friendly_name: 'Zirkulationspumpe Heizung'
+    friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
 sensor.sonoffutilityroom_version:
-    friendly_name: 'Zirkulationspumpe Heizung'
+    friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
