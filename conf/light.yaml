@@ -111,12 +111,12 @@
     optimistic: false
     retain: true
 
-  - platform: mqtt
-    name: "sonoff@location1_socket"
-    command_topic: nodes@home/switch/sonoff/location1/socket
-    state_topic: nodes@home/switch/sonoff/location1/socket/value/state
-    optimistic: false
-    retain: true
+  # - platform: mqtt
+    # name: "sonoff@location1_socket"
+    # command_topic: nodes@home/switch/sonoff/location1/socket
+    # state_topic: nodes@home/switch/sonoff/location1/socket/value/state
+    # optimistic: false
+    # retain: true
 
   - platform: mqtt
     name: "sonoff@location2_socket"

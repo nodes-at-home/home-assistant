@@ -602,33 +602,33 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location1
-    name: "sonoff@location1_hello"
+    state_topic: nodes@home/switch/sonoff/brewery
+    name: "sonoff@brewery_hello"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location1
-    name: "sonoff@location1_version"
+    state_topic: nodes@home/switch/sonoff/brewery
+    name: "sonoff@brewery_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location1
-    name: "sonoff@location1_lastboot"
+    state_topic: nodes@home/switch/sonoff/brewery
+    name: "sonoff@brewery_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location1/value/voltage
-    name: "sonoff@location1_voltage"
+    state_topic: nodes@home/switch/sonoff/brewery/value/voltage
+    name: "sonoff@brewery_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location1/value/voltage
-    name: "sonoff@location1_lastvoltage"
+    state_topic: nodes@home/switch/sonoff/brewery/value/voltage
+    name: "sonoff@brewery_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
@@ -887,13 +887,6 @@
 
   - platform: mqtt
     state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
-    name: "ds18b20@pool_voltage_original"
-    qos: 0
-    unit_of_measurement: "mV"
-    value_template: '{{ value_json.value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
     name: "ds18b20@pool_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
@@ -918,18 +911,57 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/display/oled/kitchen/value/voltage
-    name: "oled@kitchen_voltage"
+    state_topic: nodes@home/sensor/ds18b20/brewery/value/temperature
+    name: "ds18b20@brewery_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/brewery/value/temperature2
+    name: "ds18b20@brewery_temperature2"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
+    name: "ds18b20@brewery_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/display/oled/kitchen/value/voltage
-    name: "oled@kitchen_voltage_original"
+    state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
+    name: "ds18b20@brewery_lastvoltage"
     qos: 0
-    unit_of_measurement: "mV"
-    value_template: '{{ value_json.value }}'
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/brewery
+    name: "ds18b20@brewery_hello"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/brewery
+    name: "ds18b20@brewery_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/brewery
+    name: "ds18b20@brewery_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/display/oled/kitchen/value/voltage
+    name: "oled@kitchen_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
     state_topic: nodes@home/display/oled/kitchen/value/voltage

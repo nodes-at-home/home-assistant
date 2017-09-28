@@ -453,27 +453,27 @@ sensor.pixelkitchen_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-light.sonofflocation1_socket:
-    friendly_name: 'Lampe rechter Schrank'
+switch.sonoffbrewery_socket:
+    friendly_name: 'Heizung Sudkessel'
 
-sensor.sonofflocation1_voltage:
-    friendly_name: 'Schaltbare Steckdose 1'
+sensor.sonoffbrewery_voltage:
+    friendly_name: 'Heizung Sudkessel'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonofflocation1_lastvoltage:
-    friendly_name: 'Schaltbare Steckdose 1'
+sensor.sonoffbrewery_lastvoltage:
+    friendly_name: 'Heizung Sudkessel'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonofflocation1_hello:
-    friendly_name: 'Schaltbare Steckdose 1'
+sensor.sonoffbrewery_hello:
+    friendly_name: 'Heizung Sudkessel'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonofflocation1_lastboot:
-    friendly_name: 'Schaltbare Steckdose 1'
+sensor.sonoffbrewery_lastboot:
+    friendly_name: 'Heizung Sudkessel'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonofflocation1_version:
-    friendly_name: 'Schaltbare Steckdose 1'
+sensor.sonoffbrewery_version:
+    friendly_name: 'Heizung Sudkessel'
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
@@ -633,9 +633,6 @@ sensor.ds18b20pool_voltage:
     friendly_name: Pool
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ds18b20pool_voltage_original:
-    friendly_name: Pool
-
 sensor.ds18b20pool_lastvoltage:
     friendly_name: Pool
     entity_picture: /local/images/wemos_mini.jpg
@@ -653,12 +650,36 @@ sensor.ds18b20pool_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
+sensor.ds18b20brewery_temperature:
+    friendly_name: Temperatur Sudkessel
+
+sensor.ds18b20brewery_temperature2:
+    friendly_name: Außentemperatur Sudkessel
+
+sensor.ds18b20brewery_voltage:
+    friendly_name: Sensor Sudkessel
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ds18b20brewery_lastvoltage:
+    friendly_name: Sensor Sudkessel
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ds18b20brewery_hello:
+    friendly_name: Sensor Sudkessel
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ds18b20brewery_lastboot:
+    friendly_name: Sensor Sudkessel
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ds18b20brewery_version:
+    friendly_name: Sensor Sudkessel
+    entity_picture: /local/images/wemos_mini.jpg
+
+#------------------------------------------------------------------------------
 sensor.oledkitchen_voltage:
     friendly_name: OLED Display
     entity_picture: /local/images/wemos_mini.jpg
-
-sensor.oledkitchen_voltage_original:
-    friendly_name: OLED Display
 
 sensor.oledkitchen_lastvoltage:
     friendly_name: OLED Display

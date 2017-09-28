@@ -40,6 +40,15 @@
     command_topic: "nodes@home/switch/rfhub/first/noName1D"
     optimistic: true
     retain: true
+    
+  - platform: mqtt
+    name: "sonoff@brewery_socket"
+    command_topic: nodes@home/switch/sonoff/brewery/socket
+    state_topic: nodes@home/switch/sonoff/brewery/socket/value/state
+    optimistic: false
+    retain: true
+
+    
 
 
 

@@ -123,6 +123,7 @@
             - group.rooms_utilitiyroom
             - group.rooms_dining
             - group.rooms_gallery
+            - group.rooms_brewery
 
     rooms_lounge:
         name: Wohnzimmer
@@ -197,6 +198,13 @@
         entities:
           - light.sonofflocation3_lamp
 
+    rooms_brewery:
+        name: 'Brauerei'
+        entities:
+          - sensor.ds18b20brewery_temperature
+          - sensor.ds18b20brewery_temperature2
+          - switch.sonoffbrewery_socket
+
 # ---------------------------------------------------------------------------
 
     media:
@@ -244,7 +252,8 @@
             - sensor.sonofflocation3_lastboot
             - sensor.ds18b20pool_lastboot
             - sensor.sonoffkitchen_lastboot
-            - sensor.sonofflocation1_lastboot
+            - sensor.ds18b20brewery_lastboot
+            - sensor.sonoffbrewery_lastboot
             - sensor.sonofflocation4_lastboot
             - sensor.buttonindoor_lastboot
             - sensor.buttongarage_lastboot
@@ -272,7 +281,8 @@
             - sensor.sonofflocation3_version
             - sensor.ds18b20pool_version
             - sensor.sonoffkitchen_version
-            - sensor.sonofflocation1_version
+            - sensor.ds18b20brewery_version
+            - sensor.sonoffbrewery_version
             - sensor.sonofflocation4_version
             - sensor.buttonindoor_version
             - sensor.buttongarage_version
@@ -300,7 +310,8 @@
             - sensor.sonofflocation3_lastvoltage
             - sensor.ds18b20pool_lastvoltage
             - sensor.sonoffkitchen_lastvoltage
-            - sensor.sonofflocation1_lastvoltage
+            - sensor.ds18b20brewery_lastvoltage
+            - sensor.sonoffbrewery_lastvoltage
             - sensor.sonofflocation4_lastvoltage
             - sensor.buttonindoor_lastvoltage
             - sensor.buttongarage_lastvoltage
@@ -328,7 +339,8 @@
             - sensor.sonofflocation3_voltage
             - sensor.ds18b20pool_voltage
             - sensor.sonoffkitchen_voltage
-            - sensor.sonofflocation1_voltage
+            - sensor.ds18b20brewery_voltage
+            - sensor.sonoffbrewery_voltage
             - sensor.sonofflocation4_voltage
             - sensor.buttonindoor_voltage
             - sensor.buttongarage_voltage
