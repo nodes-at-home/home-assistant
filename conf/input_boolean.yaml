@@ -3,10 +3,15 @@
 ###
 ### 15.01.2017 new
 ###
-    manual_holiday_indicator:
-        name: Feiertag
-        initial: off
-        icon: mdi:update
+    button_indoor_activated:
+        name: Drücker Innenlicht aktiv
+        initial: on
+    button_garage_activated:
+        name: Drücker Garage aktiv
+        initial: on
+    button_pool_activated:
+        name: Drücker Pool aktiv
+        initial: on
     pixel_node_time:
         name: Zeitanzeige
         initial: on

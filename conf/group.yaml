@@ -382,9 +382,8 @@
         view: yes
         entities:
             - group.automation_rules
-            - group.automation_preferences
-            - group.automation_pixel_node_preferences
             - group.automation_hidden_entities
+            - group.automation_pixel_node_preferences
 
     automation_rules:
         name: Regeln
@@ -410,16 +409,14 @@
             - automation.display_show_pool_temperature
             - automation.button_pool
 
-    automation_preferences:
-        name: Einstellungen
-        entities:
-            - input_boolean.manual_holiday_indicator
-
     automation_hidden_entities:
-        name: Verstecktes
+        name: Drücker
         entities:
+            - input_boolean.button_indoor_activated
             - binary_sensor.buttonindoor
+            - input_boolean.button_garage_activated
             - binary_sensor.buttongarage
+            - input_boolean.button_pool_activated
             - binary_sensor.buttonpool
 
     automation_pixel_node_preferences:
@@ -484,7 +481,7 @@
 # ---------------------------------------------------------------------------
     test:
         name: Test
-        view: yes
+        view: no
         entities:
             - group.test_test
 

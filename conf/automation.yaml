@@ -203,6 +203,9 @@
         to: 'on'
     condition:
       - condition: state
+        entity_id: input_boolean.button_indoor_activated
+        state: 'on'
+      - condition: state
         entity_id: light.relay1dining_lamp
         state: 'off'
     action:
@@ -217,6 +220,9 @@
         entity_id: binary_sensor.buttonindoor
         to: 'on'
     condition:
+      - condition: state
+        entity_id: input_boolean.button_indoor_activated
+        state: 'on'
       - condition: state
         entity_id: light.relay1dining_lamp
         state: 'on'
@@ -233,6 +239,9 @@
         to: 'on'
     condition:
       - condition: state
+        entity_id: input_boolean.button_garage_activated
+        state: 'on'
+      - condition: state
         entity_id: cover.relaygarage
         state: 'closed'
     action:
@@ -247,6 +256,9 @@
         to: 'on'
     condition:
       - condition: state
+        entity_id: input_boolean.button_garage_activated
+        state: 'on'
+      - condition: state
         entity_id: cover.relaygarage
         state: 'open'
     action:
@@ -259,9 +271,14 @@
       - platform: state
         entity_id: binary_sensor.buttonpool
         to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.button_pool_activated
+        state: 'on'
     action:
       - service: light.toggle
-        entity_id: light.rfhubfirst_lampStudyPillar
+        #entity_id: light.rfhubfirst_lampStudyPillar
+        entity_id: light.sonoffkitchen_led
         
 #------------------------------------------------------------------------------------
 # pixel node
