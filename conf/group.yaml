@@ -10,7 +10,7 @@
         entities:
             - device_tracker.andreas_xperia
             - device_tracker.undine_xperia
-            - device_tracker.nora_xperia
+            - device_tracker.nora_galaxy
             - device_tracker.nina_huawei
 
     # ---------------------------------------------------------------------------
@@ -51,6 +51,7 @@
         name: 'Alle auszuschaltende Lichter'
         entities:
           - light.rfhubfirst_lampLoungeWhiteBall
+          - light.sonoffkitchen_led
 
     automatic_indoor_lights_by_night:
         name: 'Alle Lichter in der Nacht'
@@ -66,7 +67,7 @@
         entities:
             - device_tracker.andreas_xperia
             - device_tracker.undine_xperia
-            - device_tracker.nora_xperia
+            - device_tracker.nora_galaxy
             - device_tracker.nina_huawei
             # - group.family_devices
             - sun.sun
