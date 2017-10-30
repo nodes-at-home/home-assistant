@@ -29,30 +29,6 @@
             - group.automatic_outdoor_lights
 
 #------------------------------------------------------------------------------------
-# terrarium lights
-  - alias: terrarium_lights_on
-    hide_entity: False
-    trigger:
-      - platform: sun
-        event: sunrise
-        offset: "+00:00:00"
-    action:
-      - service: light.turn_on
-        entity_id:
-            - light.sonofflocation2_socket
-
-  - alias: terrarium_lights_off
-    hide_entity: False
-    trigger:
-      - platform: sun
-        event: sunset
-        offset: "00:00:00"
-    action:
-      - service: light.turn_off
-        entity_id:
-            - light.sonofflocation2_socket
-
-#------------------------------------------------------------------------------------
 # heater pump
   - alias: heater_circulating_pump_on
     hide_entity: False
@@ -166,6 +142,8 @@
         event: sunrise
         offset: "+00:00:00"
     action:
+      - service: scene.turn_on
+        entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off
         entity_id: 
             - group.automatic_indoor_lights
@@ -183,6 +161,8 @@
         after: '21:00:00'
         before: '06:00:00'
     action:
+      - service: scene.turn_on
+        entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off
         entity_id: 
             - group.automatic_indoor_lights_immediatly_switched
@@ -205,6 +185,7 @@
       - condition: state
         entity_id: input_boolean.button_indoor_activated
         state: 'on'
+      # indicator for indoor night lights
       - condition: state
         entity_id: light.relay1dining_lamp
         state: 'off'
@@ -223,6 +204,7 @@
       - condition: state
         entity_id: input_boolean.button_indoor_activated
         state: 'on'
+      # indicator for indoor night lights
       - condition: state
         entity_id: light.relay1dining_lamp
         state: 'on'
@@ -276,10 +258,95 @@
         entity_id: input_boolean.button_pool_activated
         state: 'on'
     action:
-      - service: light.toggle
-        #entity_id: light.rfhubfirst_lampStudyPillar
-        entity_id: light.sonoffkitchen_led
+      # - service: light.toggle
+        # #entity_id: light.rfhubfirst_lampStudyPillar
+        # entity_id: light.sonoffkitchen_led
         
+#------------------------------------------------------------------------------------
+# kitchen led
+  - alias: kitchen_desk_light_on
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.gesturekitchen
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.buttonpool
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.gesture_kitchen_activated
+        state: 'on'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: light.sonoffkitchen_led
+            state: 'off'
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: light.sonoffkitchen_led
+                state: 'on'
+              - condition: template
+                value_template: '{{ states.light.sonoffkitchen_led.attributes.color_temp == 500 }}'
+    action:
+      - service: scene.turn_on
+        entity_id: scene.kitchen_full_light
+
+  - alias: kitchen_desk_light_off
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.gesturekitchen
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.buttonpool
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.gesture_kitchen_activated
+        state: 'on'
+      - condition: state
+        entity_id: light.sonoffkitchen_led
+        state: 'on'
+      # indicator for indoor night lights
+      - condition: state
+        entity_id: light.relay1dining_lamp
+        state: 'off'
+    action:
+      - service: scene.turn_on
+        entity_id: scene.kitchen_background_light
+      - service: light.turn_off
+        entity_id: light.sonoffkitchen_led
+
+  - alias: kitchen_desk_light_off_at_night
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.gesturekitchen
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.buttonpool
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.gesture_kitchen_activated
+        state: 'on'
+      # indicator for indoor night lights
+      - condition: state
+        entity_id: light.relay1dining_lamp
+        state: 'on'
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: light.sonoffkitchen_led
+            state: 'on'
+          - condition: template
+            value_template: '{{ states.light.sonoffkitchen_led.attributes.color_temp != 500 }}'
+    action:
+      - service: scene.turn_on
+        entity_id: scene.kitchen_background_light
+
 #------------------------------------------------------------------------------------
 # pixel node
 
@@ -463,12 +530,3 @@
             retain: true
 
 #------------------------------------------------------------------------------------
-  # - alias: AnAus
-    # hide_entity: False
-    # trigger:
-        # platform: time
-        # seconds: '/20'
-    # action:
-        # service: light.toggle
-        # # entity_id: group.rooms_terrace, group.rooms_backyard
-        # entity_id: group.rooms_backyard, group.rooms_terrace

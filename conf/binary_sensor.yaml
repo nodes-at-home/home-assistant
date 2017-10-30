@@ -25,6 +25,11 @@
     state_topic: "nodes@home/sensor/button/pool/value/state"
     qos: 0
     
+  - platform: mqtt
+    name: gesture@kitchen
+    state_topic: "nodes@home/sensor/gesture/kitchen/value/state"
+    qos: 0
+    
   - platform: workday
     country: DE
     province: BB

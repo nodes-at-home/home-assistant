@@ -478,31 +478,26 @@ sensor.sonoffbrewery_version:
 
 #------------------------------------------------------------------------------
 light.sonofflocation2_socket:
-    friendly_name: Terrarium
+    friendly_name: Schaltbare Steckdose
 
 sensor.sonofflocation2_voltage:
-    # friendly_name: 'Schaltbare Steckdose 2'
-    friendly_name: 'Terrarium'
+    friendly_name: 'Schaltbare Steckdose'
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonofflocation2_lastvoltage:
-    # friendly_name: 'Schaltbare Steckdose 2'
-    friendly_name: 'Terrarium'
+    friendly_name: 'Schaltbare Steckdose'
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonofflocation2_hello:
-    # friendly_name: 'Schaltbare Steckdose 2'
-    friendly_name: 'Terrarium'
+    friendly_name: 'Schaltbare Steckdose'
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonofflocation2_lastboot:
-    # friendly_name: 'Schaltbare Steckdose 2'
-    friendly_name: 'Terrarium'
+    friendly_name: 'Schaltbare Steckdose'
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonofflocation2_version:
-    # friendly_name: 'Schaltbare Steckdose 2'
-    friendly_name: 'Terrarium'
+    friendly_name: 'Schaltbare Steckdose'
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
@@ -698,3 +693,30 @@ sensor.oledkitchen_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
+binary_sensor.gesturekitchen:
+    friendly_name: Gestensensor Küche
+
+sensor.gesturekitchen_voltage:
+    friendly_name: Gestensensor Küche
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.gesturekitchen_lastvoltage:
+    friendly_name: Gestensensor Küche
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.gesturekitchen_hello:
+    friendly_name: Gestensensor Küche
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.gesturekitchen_lastboot:
+    friendly_name: Gestensensor Küche
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.gesturekitchen_version:
+    friendly_name: Gestensensor Küche
+    entity_picture: /local/images/wemos_mini.jpg
+
+#------------------------------------------------------------------------------
+
+sensor.log_db_file_size:
+    friendly_name: Datenbank

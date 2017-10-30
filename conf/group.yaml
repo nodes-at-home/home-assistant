@@ -35,6 +35,8 @@
           # - group.rooms_xmas_lights
           - light.relay1dining_lamp
           - light.relay2dining_lamp
+          - light.sonoffkitchen_led
+          - light.sonofflocation2_socket
 
     automatic_indoor_lights_delayed_switched:
         name: 'Länger leuchtenden Lichter'
@@ -51,7 +53,6 @@
         name: 'Alle auszuschaltende Lichter'
         entities:
           - light.rfhubfirst_lampLoungeWhiteBall
-          - light.sonoffkitchen_led
 
     automatic_indoor_lights_by_night:
         name: 'Alle Lichter in der Nacht'
@@ -59,6 +60,7 @@
           - light.sonofflocation3_lamp
           - light.relay1dining_lamp
           - light.relay2dining_lamp
+          - light.sonoffkitchen_led
           
     # ---------------------------------------------------------------------------
     default_view:
@@ -253,6 +255,7 @@
             - sensor.sonofflocation3_lastboot
             - sensor.ds18b20pool_lastboot
             - sensor.sonoffkitchen_lastboot
+            - sensor.gesturekitchen_lastboot
             - sensor.ds18b20brewery_lastboot
             - sensor.sonoffbrewery_lastboot
             - sensor.sonofflocation4_lastboot
@@ -282,6 +285,7 @@
             - sensor.sonofflocation3_version
             - sensor.ds18b20pool_version
             - sensor.sonoffkitchen_version
+            - sensor.gesturekitchen_version
             - sensor.ds18b20brewery_version
             - sensor.sonoffbrewery_version
             - sensor.sonofflocation4_version
@@ -311,6 +315,7 @@
             - sensor.sonofflocation3_lastvoltage
             - sensor.ds18b20pool_lastvoltage
             - sensor.sonoffkitchen_lastvoltage
+            - sensor.gesturekitchen_lastvoltage
             - sensor.ds18b20brewery_lastvoltage
             - sensor.sonoffbrewery_lastvoltage
             - sensor.sonofflocation4_lastvoltage
@@ -340,6 +345,7 @@
             - sensor.sonofflocation3_voltage
             - sensor.ds18b20pool_voltage
             - sensor.sonoffkitchen_voltage
+            - sensor.gesturekitchen_voltage
             - sensor.ds18b20brewery_voltage
             - sensor.sonoffbrewery_voltage
             - sensor.sonofflocation4_voltage
@@ -358,6 +364,7 @@
             - group.system_server
             - group.system_dsl
             - configurator.sony_bravia_tv
+            - sensor.log_db_file_size
 
     system_dsl:
         name: DSL
@@ -409,6 +416,9 @@
             - automation.display_show_indoor_temperature
             - automation.display_show_pool_temperature
             - automation.button_pool
+            - automation.kitchen_desk_light_on
+            - automation.kitchen_desk_light_off
+            - automation.kitchen_desk_light_off_at_night
 
     automation_hidden_entities:
         name: Drücker
@@ -419,6 +429,8 @@
             - binary_sensor.buttongarage
             - input_boolean.button_pool_activated
             - binary_sensor.buttonpool
+            - input_boolean.gesture_kitchen_activated
+            - binary_sensor.gesturekitchen
 
     automation_pixel_node_preferences:
         name: Einstellungen PixelNode

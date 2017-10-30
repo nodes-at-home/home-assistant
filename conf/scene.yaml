@@ -1,0 +1,19 @@
+###
+### scene.yaml
+###
+### 29.10.2017 new
+###
+
+    - name: kitchen_full_light
+      entities:
+        light.sonoffkitchen_led:
+            state: ON
+            brightness: 70
+            color_temp: 300
+
+    - name: kitchen_background_light
+      entities:
+        light.sonoffkitchen_led:
+            state: ON
+            brightness: 8
+            color_temp: 500
