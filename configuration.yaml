@@ -89,9 +89,15 @@ device_tracker:
 
   - platform: fritz
     host: 192.168.2.1
+    consider_home: 180
+    interval_seconds: 60
+    track_new_devices: false
 
   - platform: fritz
     host: 192.168.2.3
+    consider_home: 180
+    interval_seconds: 60
+    track_new_devices: false
 
   # - platform: owntracks
     # max_gps_accuracy: 1500

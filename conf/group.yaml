@@ -12,6 +12,8 @@
             - device_tracker.undine_xperia
             - device_tracker.nora_galaxy
             - device_tracker.nina_huawei
+            - device_tracker.niklas_galaxy
+            - device_tracker.dominik_handy
 
     # ---------------------------------------------------------------------------
     automatic_outdoor_lights:
@@ -71,6 +73,8 @@
             - device_tracker.undine_xperia
             - device_tracker.nora_galaxy
             - device_tracker.nina_huawei
+            - device_tracker.niklas_galaxy
+            - device_tracker.dominik_handy
             # - group.family_devices
             - sun.sun
             - sensor.owm_temperature
