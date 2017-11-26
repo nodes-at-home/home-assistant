@@ -645,10 +645,10 @@ sensor.ds18b20pool_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-sensor.ds18b20brewery_temperature:
+sensor.ds18b20brewery_brew_temperature:
     friendly_name: Temperatur Sudkessel
 
-sensor.ds18b20brewery_temperature2:
+sensor.ds18b20brewery_outer_temperature:
     friendly_name: Außentemperatur Sudkessel
 
 sensor.ds18b20brewery_voltage:
@@ -669,6 +669,30 @@ sensor.ds18b20brewery_lastboot:
 
 sensor.ds18b20brewery_version:
     friendly_name: Sensor Sudkessel
+    entity_picture: /local/images/wemos_mini.jpg
+
+#------------------------------------------------------------------------------
+sensor.ds18b20fermenter_temperature:
+    friendly_name: Temperatur Gärfass
+
+sensor.ds18b20fermenter_voltage:
+    friendly_name: Sensor Gärfass
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ds18b20fermenter_lastvoltage:
+    friendly_name: Sensor Gärfass
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ds18b20fermenter_hello:
+    friendly_name: Sensor Gärfass
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ds18b20fermenter_lastboot:
+    friendly_name: Sensor Gärfass
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ds18b20fermenter_version:
+    friendly_name: Sensor Gärfass
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------

@@ -912,17 +912,17 @@
 #------------------------------------------------------------------------------
   - platform: mqtt
     state_topic: nodes@home/sensor/ds18b20/brewery/value/temperature
-    name: "ds18b20@brewery_temperature"
+    name: "ds18b20@brewery_brew_temperature"
     qos: 0
     unit_of_measurement: "°C"
-    value_template: '{{ value_json.value | round ( 1 ) }}'
+    value_template: '{{ value_json.brew | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/brewery/value/temperature2
-    name: "ds18b20@brewery_temperature2"
+    state_topic: nodes@home/sensor/ds18b20/brewery/value/temperature
+    name: "ds18b20@brewery_outer_temperature"
     qos: 0
     unit_of_measurement: "°C"
-    value_template: '{{ value_json.value | round ( 1 ) }}'
+    value_template: '{{ value_json.outer | round ( 1 ) }}'
 
   - platform: mqtt
     state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
@@ -952,6 +952,45 @@
   - platform: mqtt
     state_topic: nodes@home/sensor/ds18b20/brewery
     name: "ds18b20@brewery_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/fermenter/value/temperature
+    name: "ds18b20@fermenter_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/fermenter/value/voltage
+    name: "ds18b20@fermenter_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/fermenter/value/voltage
+    name: "ds18b20@fermenter_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/fermenter
+    name: "ds18b20@fermenter_hello"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/fermenter
+    name: "ds18b20@fermenter_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/fermenter
+    name: "ds18b20@fermenter_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 

@@ -208,8 +208,9 @@
     rooms_brewery:
         name: 'Brauerei'
         entities:
-          - sensor.ds18b20brewery_temperature
-          - sensor.ds18b20brewery_temperature2
+          - sensor.ds18b20brewery_brew_temperature
+          - sensor.ds18b20brewery_outer_temperature
+          - sensor.ds18b20fermenter_temperature
           - switch.sonoffbrewery_socket
 
 # ---------------------------------------------------------------------------
@@ -261,6 +262,7 @@
             - sensor.sonoffkitchen_lastboot
             - sensor.gesturekitchen_lastboot
             - sensor.ds18b20brewery_lastboot
+            - sensor.ds18b20fermenter_lastboot
             - sensor.sonoffbrewery_lastboot
             - sensor.sonofflocation4_lastboot
             - sensor.buttonindoor_lastboot
@@ -291,6 +293,7 @@
             - sensor.sonoffkitchen_version
             - sensor.gesturekitchen_version
             - sensor.ds18b20brewery_version
+            - sensor.ds18b20fermenter_version
             - sensor.sonoffbrewery_version
             - sensor.sonofflocation4_version
             - sensor.buttonindoor_version
@@ -321,6 +324,7 @@
             - sensor.sonoffkitchen_lastvoltage
             - sensor.gesturekitchen_lastvoltage
             - sensor.ds18b20brewery_lastvoltage
+            - sensor.ds18b20fermenter_lastvoltage
             - sensor.sonoffbrewery_lastvoltage
             - sensor.sonofflocation4_lastvoltage
             - sensor.buttonindoor_lastvoltage
@@ -351,6 +355,7 @@
             - sensor.sonoffkitchen_voltage
             - sensor.gesturekitchen_voltage
             - sensor.ds18b20brewery_voltage
+            - sensor.ds18b20fermenter_voltage
             - sensor.sonoffbrewery_voltage
             - sensor.sonofflocation4_voltage
             - sensor.buttonindoor_voltage
