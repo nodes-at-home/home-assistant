@@ -212,6 +212,8 @@
           - sensor.ds18b20brewery_outer_temperature
           - sensor.ds18b20fermenter_temperature
           - switch.sonoffbrewery_socket
+          - sensor.spindlefermenter_temperature
+          - sensor.spindlefermenter_tilt
 
 # ---------------------------------------------------------------------------
 
@@ -264,6 +266,7 @@
             - sensor.ds18b20brewery_lastboot
             - sensor.ds18b20fermenter_lastboot
             - sensor.sonoffbrewery_lastboot
+            - sensor.spindlefermenter_lastboot
             - sensor.sonofflocation4_lastboot
             - sensor.buttonindoor_lastboot
             - sensor.buttongarage_lastboot
@@ -295,6 +298,7 @@
             - sensor.ds18b20brewery_version
             - sensor.ds18b20fermenter_version
             - sensor.sonoffbrewery_version
+            - sensor.spindlefermenter_version
             - sensor.sonofflocation4_version
             - sensor.buttonindoor_version
             - sensor.buttongarage_version
@@ -326,6 +330,7 @@
             - sensor.ds18b20brewery_lastvoltage
             - sensor.ds18b20fermenter_lastvoltage
             - sensor.sonoffbrewery_lastvoltage
+            - sensor.spindlefermenter_lastvoltage
             - sensor.sonofflocation4_lastvoltage
             - sensor.buttonindoor_lastvoltage
             - sensor.buttongarage_lastvoltage
@@ -357,6 +362,7 @@
             - sensor.ds18b20brewery_voltage
             - sensor.ds18b20fermenter_voltage
             - sensor.sonoffbrewery_voltage
+            - sensor.spindlefermenter_voltage
             - sensor.sonofflocation4_voltage
             - sensor.buttonindoor_voltage
             - sensor.buttongarage_voltage
