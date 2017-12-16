@@ -189,7 +189,7 @@
         state: 'on'
       # indicator for indoor night lights
       - condition: state
-        entity_id: light.relay1dining_lamp
+        entity_id: light.relaydining1_lamp
         state: 'off'
     action:
       - service: homeassistant.turn_on
@@ -208,7 +208,7 @@
         state: 'on'
       # indicator for indoor night lights
       - condition: state
-        entity_id: light.relay1dining_lamp
+        entity_id: light.relaydining1_lamp
         state: 'on'
     action:
       - service: homeassistant.turn_off
@@ -261,7 +261,7 @@
         state: 'on'
     action:
       # - service: light.toggle
-        # #entity_id: light.rfhubfirst_lampStudyPillar
+        # entity_id: light.rfhublounge_lampStudyPillar
         # entity_id: light.sonoffkitchen_led
         
 #------------------------------------------------------------------------------------
@@ -310,7 +310,7 @@
         state: 'on'
       # indicator for indoor night lights
       - condition: state
-        entity_id: light.relay1dining_lamp
+        entity_id: light.relaydining1_lamp
         state: 'off'
     action:
       - service: scene.turn_on
@@ -333,7 +333,7 @@
         state: 'on'
       # indicator for indoor night lights
       - condition: state
-        entity_id: light.relay1dining_lamp
+        entity_id: light.relaydining1_lamp
         state: 'on'
       - condition: and
         conditions:
@@ -448,7 +448,7 @@
     hide_entity: false
     trigger:
       - platform: mqtt
-        topic: nodes@home/sensor/DHT11/terrace/value/temperature
+        topic: nodes@home/sensor/DHT22/terrace/value/temperature
     action:
       - service: mqtt.publish
         data_template:
@@ -476,7 +476,7 @@
     hide_entity: false
     trigger:
       - platform: mqtt
-        topic: nodes@home/sensor/DHT11/lounge/value/temperature
+        topic: nodes@home/sensor/DHT22/lounge/value/temperature
     action:
       - service: mqtt.publish
         data_template:

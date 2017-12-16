@@ -46,18 +46,16 @@ influxdb:
   password: ha
   include:
     entities:
-        - sensor.DHT11terrace_temperature
-        - sensor.DHT11roof_temperature
-        - sensor.DHT11lounge_temperature
+        - sensor.DHT22terrace_temperature
+        - sensor.DHT22roof_temperature
+        - sensor.DHT22lounge_temperature
         - sensor.relaygarage_temperature
-        - sensor.DHT11terrace_humidity
-        - sensor.DHT11roof_humidity
-        - sensor.DHT11lounge_humidity
+        - sensor.DHT22terrace_humidity
+        - sensor.DHT22roof_humidity
+        - sensor.DHT22lounge_humidity
         - sensor.relaygarage_humidity
-        - sensor.DHT11lounge_pressure
+        - sensor.DHT22lounge_pressure
         - sensor.ds18b20pool_temperature
-        - sensor.ds18b20pool_voltage_original
-        - sensor.oledkitchen_voltage_original
 
 # -------------------------------------------------------------------------------
 # weblinks

@@ -5,65 +5,65 @@
 ###
 
   - platform: mqtt
-    name: "rfhub@first_NoName1C"
-    state_topic: "nodes@home/switch/rfhub/first/noName1C/state"
-    command_topic: "nodes@home/switch/rfhub/first/noName1C"
+    name: "rfhub@lounge_NoName1C"
+    state_topic: "nodes@home/switch/rfhub/lounge/noName1C/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/noName1C"
     optimistic: true
     retain: true
 
   - platform: mqtt
-    name: "rfhub@first_lampKitchenLongStrip"
-    state_topic: "nodes@home/switch/rfhub/first/lampKitchenLongStrip/state"
-    command_topic: "nodes@home/switch/rfhub/first/lampKitchenLongStrip"
+    name: "rfhub@lounge_lampKitchenLongStrip"
+    state_topic: "nodes@home/switch/rfhub/lounge/lampKitchenLongStrip/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/lampKitchenLongStrip"
     optimistic: true
     retain: true
 
   - platform: mqtt
-    name: "rfhub@first_lampKitchenShortStrip"
-    state_topic: "nodes@home/switch/rfhub/first/lampKitchenShortStrip/state"
-    command_topic: "nodes@home/switch/rfhub/first/lampKitchenShortStrip"
+    name: "rfhub@lounge_lampKitchenShortStrip"
+    state_topic: "nodes@home/switch/rfhub/lounge/lampKitchenShortStrip/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/lampKitchenShortStrip"
     optimistic: true
     retain: true
 
   - platform: mqtt
-    name: "rfhub@first_noName3D"
-    state_topic: "nodes@home/switch/rfhub/first/noName3D/state"
-    command_topic: "nodes@home/switch/rfhub/first/noName3D"
+    name: "rfhub@lounge_noName3D"
+    state_topic: "nodes@home/switch/rfhub/lounge/noName3D/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/noName3D"
     optimistic: true
     retain: true
 
   - platform: mqtt
-    name: "rfhub@first_lampStudyPillar"
-    state_topic: "nodes@home/switch/rfhub/first/lampStudyPillar/state"
-    command_topic: "nodes@home/switch/rfhub/first/lampStudyPillar"
+    name: "rfhub@lounge_lampStudyPillar"
+    state_topic: "nodes@home/switch/rfhub/lounge/lampStudyPillar/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/lampStudyPillar"
     optimistic: true
     retain: true
 
   - platform: mqtt
-    name: "rfhub@first_lampLoungeWhiteBall"
-    state_topic: "nodes@home/switch/rfhub/first/lampLoungeWhiteBall/state"
-    command_topic: "nodes@home/switch/rfhub/first/lampLoungeWhiteBall"
+    name: "rfhub@lounge_lampLoungeWhiteBall"
+    state_topic: "nodes@home/switch/rfhub/lounge/lampLoungeWhiteBall/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/lampLoungeWhiteBall"
     optimistic: true
     retain: true
 
   - platform: mqtt
-    name: "rfhub@first_lampLoungeBlackBowl"
-    state_topic: "nodes@home/switch/rfhub/first/lampLoungeBlackBowl/state"
-    command_topic: "nodes@home/switch/rfhub/first/lampLoungeBlackBowl"
+    name: "rfhub@lounge_lampLoungeBlackBowl"
+    state_topic: "nodes@home/switch/rfhub/lounge/lampLoungeBlackBowl/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/lampLoungeBlackBowl"
     optimistic: true
     retain: true
 
   - platform: mqtt
-    name: "rfhub@first_lampLoungeReading"
-    state_topic: "nodes@home/switch/rfhub/first/lampLoungeReading/state"
-    command_topic: "nodes@home/switch/rfhub/first/lampLoungeReading"
+    name: "rfhub@lounge_lampLoungeReading"
+    state_topic: "nodes@home/switch/rfhub/lounge/lampLoungeReading/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/lampLoungeReading"
     optimistic: true
     retain: true
 
   - platform: mqtt
-    name: "rfhub@first_lamp1"
-    state_topic: "nodes@home/switch/rfhub/first/lamp1/state"
-    command_topic: "nodes@home/switch/rfhub/first/lamp1"
+    name: "rfhub@lounge_lamp1"
+    state_topic: "nodes@home/switch/rfhub/lounge/lamp1/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/lamp1"
     optimistic: true
     retain: true
 
@@ -77,79 +77,65 @@
   - platform: mqtt
     name: "sonoff@garage_lamp"
     command_topic: nodes@home/switch/sonoff/garage/lamp
-    state_topic: nodes@home/switch/sonoff/garage/lamp/value/state
+    state_topic: nodes@home/switch/sonoff/garage/lamp/state
     optimistic: false
     retain: true
 
   - platform: mqtt
-    name: "relay1@dining_lamp"
-    command_topic: nodes@home/switch/relay1/dining/lamp
-    state_topic: nodes@home/switch/relay1/dining/lamp/value/state
+    name: "relay@dining1_lamp"
+    command_topic: nodes@home/switch/relay/dining1/lamp
+    state_topic: nodes@home/switch/relay/dining1/lamp/state
     optimistic: false
     retain: true
 
   - platform: mqtt
     name: "relay@backyard_lamp"
     command_topic: nodes@home/switch/relay/backyard/lamp
-    state_topic: nodes@home/switch/relay/backyard/lamp/value/state
+    state_topic: nodes@home/switch/relay/backyard/lamp/state
     optimistic: false
     retain: true
 
   - platform: mqtt
-    name: "relay2@dining_lamp"
-    command_topic: nodes@home/switch/relay2/dining/lamp
-    state_topic: nodes@home/switch/relay2/dining/lamp/value/state
+    name: "relay@dining2_lamp"
+    command_topic: nodes@home/switch/relay/dining2/lamp
+    state_topic: nodes@home/switch/relay/dining2/lamp/state
     optimistic: false
     retain: true
 
   - platform: mqtt_json
     name: "xmastree@dining_leds"
     command_topic: nodes@home/light/xmastree/dining/leds
-    state_topic: nodes@home/light/xmastree/dining/leds/value/state
+    state_topic: nodes@home/light/xmastree/dining/leds/state
     rgb: true
     brightness: true
-    optimistic: false
-    retain: true
-
-  # - platform: mqtt
-    # name: "sonoff@location1_socket"
-    # command_topic: nodes@home/switch/sonoff/location1/socket
-    # state_topic: nodes@home/switch/sonoff/location1/socket/value/state
-    # optimistic: false
-    # retain: true
-
-  - platform: mqtt
-    name: "sonoff@location2_socket"
-    command_topic: nodes@home/switch/sonoff/location2/socket
-    state_topic: nodes@home/switch/sonoff/location2/socket/value/state
     optimistic: false
     retain: true
 
   - platform: mqtt
     name: "sonoff@terrace_lamp"
     command_topic: nodes@home/switch/sonoff/terrace/lamp
-    state_topic: nodes@home/switch/sonoff/terrace/lamp/value/state
+    state_topic: nodes@home/switch/sonoff/terrace/lamp/state
     optimistic: false
     retain: true
 
   - platform: mqtt
     name: "sonoff@yardgate_lamp"
     command_topic: nodes@home/switch/sonoff/yardgate/lamp
-    state_topic: nodes@home/switch/sonoff/yardgate/lamp/value/state
+    state_topic: nodes@home/switch/sonoff/yardgate/lamp/state
     optimistic: false
     retain: true
 
   - platform: mqtt
-    name: "sonoff@location3_lamp"
-    command_topic: nodes@home/switch/sonoff/location3/lamp
-    state_topic: nodes@home/switch/sonoff/location3/lamp/value/state
+    name: "sonoff@gallery_lamp"
+    command_topic: nodes@home/switch/sonoff/gallery/lamp
+    state_topic: nodes@home/switch/sonoff/gallery/lamp/state
     optimistic: false
     retain: true
 
   - platform: mqtt
     name: "sonoff@location4_lamp"
     command_topic: nodes@home/switch/sonoff/location4/lamp
-    state_topic: nodes@home/switch/sonoff/location4/lamp/value/state
+    state_topic: nodes@home/switch/sonoff/location4/lamp/state
     optimistic: false
     retain: true
 

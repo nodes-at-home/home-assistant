@@ -50,22 +50,22 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/terrace/value/temperature
-    name: "DHT11@terrace_temperature"
+    state_topic: nodes@home/sensor/DHT22/terrace/value/temperature
+    name: "DHT22@terrace_temperature"
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/terrace/value/humidity
-    name: "DHT11@terrace_humidity"
+    state_topic: nodes@home/sensor/DHT22/terrace/value/humidity
+    name: "DHT22@terrace_humidity"
     qos: 0
     unit_of_measurement: "%"
     value_template: '{{ value_json.value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/terrace/value/voltage
-    name: "DHT11@terrace_voltage"
+    state_topic: nodes@home/sensor/DHT22/terrace/value/voltage
+    name: "DHT22@terrace_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
@@ -73,126 +73,126 @@
     # value_template: '{{ value_json.value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/terrace/value/voltage
-    name: "DHT11@terrace_lastvoltage"
+    state_topic: nodes@home/sensor/DHT22/terrace/value/voltage
+    name: "DHT22@terrace_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/terrace
-    name: "DHT11@terrace_hello"
+    state_topic: nodes@home/sensor/DHT22/terrace
+    name: "DHT22@terrace_hello"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/terrace
-    name: "DHT11@terrace_version"
+    state_topic: nodes@home/sensor/DHT22/terrace
+    name: "DHT22@terrace_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/terrace
-    name: "DHT11@terrace_lastboot"
+    state_topic: nodes@home/sensor/DHT22/terrace
+    name: "DHT22@terrace_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/roof/value/temperature
-    name: "DHT11@roof_temperature"
+    state_topic: nodes@home/sensor/DHT22/roof/value/temperature
+    name: "DHT22@roof_temperature"
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/roof/value/humidity
-    name: "DHT11@roof_humidity"
+    state_topic: nodes@home/sensor/DHT22/roof/value/humidity
+    name: "DHT22@roof_humidity"
     qos: 0
     unit_of_measurement: "%"
     value_template: '{{ value_json.value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/roof/value/voltage
-    name: "DHT11@roof_voltage"
+    state_topic: nodes@home/sensor/DHT22/roof/value/voltage
+    name: "DHT22@roof_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/roof/value/voltage
-    name: "DHT11@roof_lastvoltage"
+    state_topic: nodes@home/sensor/DHT22/roof/value/voltage
+    name: "DHT22@roof_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/roof
-    name: "DHT11@roof_hello"
+    state_topic: nodes@home/sensor/DHT22/roof
+    name: "DHT22@roof_hello"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/roof
-    name: "DHT11@roof_version"
+    state_topic: nodes@home/sensor/DHT22/roof
+    name: "DHT22@roof_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/roof
-    name: "DHT11@roof_lastboot"
+    state_topic: nodes@home/sensor/DHT22/roof
+    name: "DHT22@roof_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/lounge/value/temperature
-    name: "DHT11@lounge_temperature"
+    state_topic: nodes@home/sensor/DHT22/lounge/value/temperature
+    name: "DHT22@lounge_temperature"
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/lounge/value/humidity
-    name: "DHT11@lounge_humidity"
+    state_topic: nodes@home/sensor/DHT22/lounge/value/humidity
+    name: "DHT22@lounge_humidity"
     qos: 0
     unit_of_measurement: "%"
     value_template: '{{ value_json.value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/lounge/value/pressure
-    name: "DHT11@lounge_pressure"
+    state_topic: nodes@home/sensor/DHT22/lounge/value/pressure
+    name: "DHT22@lounge_pressure"
     qos: 0
     unit_of_measurement: "hPa"
     # value_template: '{{ value_json.value | round ( 0 ) }}'
     value_template: '{{ value_json.value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/lounge/value/voltage
-    name: "DHT11@lounge_voltage"
+    state_topic: nodes@home/sensor/DHT22/lounge/value/voltage
+    name: "DHT22@lounge_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/lounge/value/voltage
-    name: "DHT11@lounge_lastvoltage"
+    state_topic: nodes@home/sensor/DHT22/lounge/value/voltage
+    name: "DHT22@lounge_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/lounge
-    name: "DHT11@lounge_hello"
+    state_topic: nodes@home/sensor/DHT22/lounge
+    name: "DHT22@lounge_hello"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/lounge
-    name: "DHT11@lounge_version"
+    state_topic: nodes@home/sensor/DHT22/lounge
+    name: "DHT22@lounge_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/DHT11/lounge
-    name: "DHT11@lounge_lastboot"
+    state_topic: nodes@home/sensor/DHT22/lounge
+    name: "DHT22@lounge_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
@@ -262,34 +262,34 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/relay1/dining
-    name: "relay1@dining_hello"
+    state_topic: nodes@home/switch/relay/dining1
+    name: "relay@dining1_hello"
     qos: 0
     # value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay1/dining
-    name: "relay1@dining_version"
+    state_topic: nodes@home/switch/relay/dining1
+    name: "relay@dining1_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay1/dining
-    name: "relay1@dining_lastboot"
+    state_topic: nodes@home/switch/relay/dining1
+    name: "relay@dining1_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay1/dining/value/voltage
-    name: "relay1@dining_voltage"
+    state_topic: nodes@home/switch/relay/dining1/value/voltage
+    name: "relay@dining1_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay1/dining/value/voltage
-    name: "relay1@dining_lastvoltage"
+    state_topic: nodes@home/switch/relay/dining1/value/voltage
+    name: "relay@dining1_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
@@ -328,66 +328,66 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/relay2/dining
-    name: "relay2@dining_hello"
+    state_topic: nodes@home/switch/relay/dining2
+    name: "relay@dining2_hello"
     qos: 0
     # value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay2/dining
-    name: "relay2@dining_version"
+    state_topic: nodes@home/switch/relay/dining2
+    name: "relay@dining2_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay2/dining
-    name: "relay2@dining_lastboot"
+    state_topic: nodes@home/switch/relay/dining2
+    name: "relay@dining2_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay2/dining/value/voltage
-    name: "relay2@dining_voltage"
+    state_topic: nodes@home/switch/relay/dining2/value/voltage
+    name: "relay@dining2_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/relay2/dining/value/voltage
-    name: "relay2@dining_lastvoltage"
+    state_topic: nodes@home/switch/relay/dining2/value/voltage
+    name: "relay@dining2_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/rfhub/first
-    name: "rfhub@first_hello"
+    state_topic: nodes@home/switch/rfhub/lounge
+    name: "rfhub@lounge_hello"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/rfhub/first
-    name: "rfhub@first_version"
+    state_topic: nodes@home/switch/rfhub/lounge
+    name: "rfhub@lounge_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/rfhub/first
-    name: "rfhub@first_lastboot"
+    state_topic: nodes@home/switch/rfhub/lounge
+    name: "rfhub@lounge_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/rfhub/first/value/voltage
-    name: "rfhub@first_voltage"
+    state_topic: nodes@home/switch/rfhub/lounge/value/voltage
+    name: "rfhub@lounge_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/rfhub/first/value/voltage
-    name: "rfhub@first_lastvoltage"
+    state_topic: nodes@home/switch/rfhub/lounge/value/voltage
+    name: "rfhub@lounge_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
@@ -634,33 +634,33 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location2
-    name: "sonoff@location2_hello"
+    state_topic: nodes@home/switch/sonoff/pool
+    name: "sonoff@pool_hello"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location2
-    name: "sonoff@location2_version"
+    state_topic: nodes@home/switch/sonoff/pool
+    name: "sonoff@pool_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location2
-    name: "sonoff@location2_lastboot"
+    state_topic: nodes@home/switch/sonoff/pool
+    name: "sonoff@pool_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location2/value/voltage
-    name: "sonoff@location2_voltage"
+    state_topic: nodes@home/switch/sonoff/pool/value/voltage
+    name: "sonoff@pool_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location2/value/voltage
-    name: "sonoff@location2_lastvoltage"
+    state_topic: nodes@home/switch/sonoff/pool/value/voltage
+    name: "sonoff@pool_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
@@ -776,33 +776,33 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location3
-    name: "sonoff@location3_hello"
+    state_topic: nodes@home/switch/sonoff/gallery
+    name: "sonoff@gallery_hello"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location3
-    name: "sonoff@location3_version"
+    state_topic: nodes@home/switch/sonoff/gallery
+    name: "sonoff@gallery_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location3
-    name: "sonoff@location3_lastboot"
+    state_topic: nodes@home/switch/sonoff/gallery
+    name: "sonoff@gallery_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location3/value/voltage
-    name: "sonoff@location3_voltage"
+    state_topic: nodes@home/switch/sonoff/gallery/value/voltage
+    name: "sonoff@gallery_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location3/value/voltage
-    name: "sonoff@location3_lastvoltage"
+    state_topic: nodes@home/switch/sonoff/gallery/value/voltage
+    name: "sonoff@gallery_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 

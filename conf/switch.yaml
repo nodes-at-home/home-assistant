@@ -30,23 +30,31 @@
   - platform: mqtt
     name: "sonoff@utilityroom_pump"
     command_topic: nodes@home/switch/sonoff/utilityroom/pump
-    state_topic: nodes@home/switch/sonoff/utilityroom/pump/value/state
+    state_topic: nodes@home/switch/sonoff/utilityroom/pump/state
     optimistic: false
     retain: true
     
   - platform: mqtt
-    name: "rfhub@first_NoName1D"
-    state_topic: "nodes@home/switch/rfhub/first/noName1D/state"
-    command_topic: "nodes@home/switch/rfhub/first/noName1D"
+    name: "rfhub@lounge_NoName1D"
+    state_topic: "nodes@home/switch/rfhub/lounge/noName1D/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/noName1D"
     optimistic: true
     retain: true
     
   - platform: mqtt
     name: "sonoff@brewery_socket"
     command_topic: nodes@home/switch/sonoff/brewery/socket
-    state_topic: nodes@home/switch/sonoff/brewery/socket/value/state
+    state_topic: nodes@home/switch/sonoff/brewery/socket/state
     optimistic: false
     retain: true
+    
+  - platform: mqtt
+    name: "sonoff@pool_socket"
+    command_topic: nodes@home/switch/sonoff/pool/socket
+    state_topic: nodes@home/switch/sonoff/pool/socket/state
+    optimistic: false
+    retain: true
+    
 
     
 

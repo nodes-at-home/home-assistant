@@ -28,22 +28,21 @@
     automatic_indoor_lights_immediatly_switched:
         name: 'Alle  anzuschaltenden Lichter'
         entities:
-          # - light.rfhubfirst_lampLoungeWhiteBall
-          - light.rfhubfirst_lamploungeblackbowl
-          - light.rfhubfirst_lampLoungeReading
-          - light.rfhubfirst_lampStudyPillar
-          - light.rfhubfirst_lampkitchenshortstrip
-          - light.rfhubfirst_lampkitchenlongstrip
+          # - light.rfhublounge_lampLoungeWhiteBall
+          - light.rfhublounge_lamploungeblackbowl
+          - light.rfhublounge_lampLoungeReading
+          - light.rfhublounge_lampStudyPillar
+          - light.rfhublounge_lampkitchenshortstrip
+          - light.rfhublounge_lampkitchenlongstrip
           # - group.rooms_xmas_lights
-          - light.relay1dining_lamp
-          - light.relay2dining_lamp
+          - light.relaydining1_lamp
+          - light.relaydining2_lamp
           - light.sonoffkitchen_led
-          - light.sonofflocation2_socket
 
     automatic_indoor_lights_delayed_switched:
         name: 'Länger leuchtenden Lichter'
         entities:
-          - light.sonofflocation3_lamp
+          - light.sonoffgallery_lamp
 
     automatic_indoor_lights:
         name: 'Alle Lichter'
@@ -54,14 +53,14 @@
     automatic_indoor_lights_immediatly_switched_off_extra:
         name: 'Alle auszuschaltende Lichter'
         entities:
-          - light.rfhubfirst_lampLoungeWhiteBall
+          - light.rfhublounge_lampLoungeWhiteBall
 
     automatic_indoor_lights_by_night:
         name: 'Alle Lichter in der Nacht'
         entities:
-          - light.sonofflocation3_lamp
-          - light.relay1dining_lamp
-          - light.relay2dining_lamp
+          - light.sonoffgallery_lamp
+          - light.relaydining1_lamp
+          - light.relaydining2_lamp
           - light.sonoffkitchen_led
           
     # ---------------------------------------------------------------------------
@@ -88,11 +87,11 @@
     default_view_temperatures:
         name: Messwerte
         entities:
-            - sensor.dht11terrace_temperature
-            - sensor.dht11roof_temperature
+            - sensor.DHT22terrace_temperature
+            - sensor.DHT22roof_temperature
             - sensor.relaygarage_temperature
-            - sensor.dht11lounge_temperature
-            - sensor.dht11lounge_pressure
+            - sensor.DHT22lounge_temperature
+            - sensor.DHT22lounge_pressure
             - sensor.ds18b20pool_temperature
 
     default_view_weather:
@@ -135,20 +134,20 @@
     rooms_lounge:
         name: Wohnzimmer
         entities:
-            - light.rfhubfirst_lampLoungeWhiteBall
-            - light.rfhubfirst_lamploungeblackbowl
-            - light.rfhubfirst_lampLoungeReading
-            - light.rfhubfirst_lampStudyPillar
-            - sensor.dht11lounge_temperature
-            - sensor.dht11lounge_humidity
-            - sensor.dht11lounge_pressure
-            - switch.rfhubfirst_NoName1D
+            - light.rfhublounge_lampLoungeWhiteBall
+            - light.rfhublounge_lamploungeblackbowl
+            - light.rfhublounge_lampLoungeReading
+            - light.rfhublounge_lampStudyPillar
+            - sensor.DHT22lounge_temperature
+            - sensor.DHT22lounge_humidity
+            - sensor.DHT22lounge_pressure
+            - switch.rfhublounge_NoName1D
 
     rooms_kitchen:
         name: Küche
         entities:
-            - light.rfhubfirst_lampkitchenshortstrip
-            - light.rfhubfirst_lampkitchenlongstrip
+            - light.rfhublounge_lampkitchenshortstrip
+            - light.rfhublounge_lampkitchenlongstrip
             - light.sonoffkitchen_led
 
     rooms_garage:
@@ -164,15 +163,16 @@
         name: Terrasse
         entities:
             - light.sonoffterrace_lamp
-            - sensor.dht11terrace_temperature
-            - sensor.dht11terrace_humidity
+            - sensor.DHT22terrace_temperature
+            - sensor.DHT22terrace_humidity
             - sensor.ds18b20pool_temperature
+            - switch.sonoffpool_socket
 
     rooms_roof:
         name: Dachboden
         entities:
-            - sensor.dht11roof_temperature
-            - sensor.dht11roof_humidity
+            - sensor.DHT22roof_temperature
+            - sensor.DHT22roof_humidity
 
     rooms_yardgate:
         name: Gartentor
@@ -193,17 +193,16 @@
     rooms_dining:
         name: 'Esszimmer'
         entities:
-          - light.sonofflocation2_socket # Terrarium
-          - light.relay1dining_lamp
-          - light.relay2dining_lamp
+          - light.relaydining1_lamp
+          - light.relaydining2_lamp
           # Xmas
-          # - light.rfhubfirst_noname1c
+          # - light.rfhublounge_noname1c
           # - light.xmastreedining_leds
 
     rooms_gallery:
         name: 'Galerie'
         entities:
-          - light.sonofflocation3_lamp
+          - light.sonoffgallery_lamp
 
     rooms_brewery:
         name: 'Brauerei'
@@ -245,21 +244,21 @@
     nodes_lastboot:
         name: Last Boot
         entities:
-            - sensor.dht11lounge_lastboot
-            - sensor.dht11roof_lastboot
-            - sensor.dht11terrace_lastboot
-            - sensor.rfhubfirst_lastboot
+            - sensor.DHT22lounge_lastboot
+            - sensor.DHT22roof_lastboot
+            - sensor.DHT22terrace_lastboot
+            - sensor.rfhublounge_lastboot
             - sensor.relaygarage_lastboot
             - sensor.sonoffgarage_lastboot
             - sensor.relaybackyard_lastboot
             - sensor.sonoffutilityroom_lastboot
             # - sensor.xmastreedining_lastboot
-            - sensor.sonofflocation2_lastboot
+            - sensor.sonoffpool_lastboot
             - sensor.sonoffterrace_lastboot
-            - sensor.relay1dining_lastboot
-            - sensor.relay2dining_lastboot
+            - sensor.relaydining1_lastboot
+            - sensor.relaydining2_lastboot
             - sensor.sonoffyardgate_lastboot
-            - sensor.sonofflocation3_lastboot
+            - sensor.sonoffgallery_lastboot
             - sensor.ds18b20pool_lastboot
             - sensor.sonoffkitchen_lastboot
             - sensor.gesturekitchen_lastboot
@@ -277,21 +276,21 @@
     nodes_version:
         name: Version
         entities:
-            - sensor.dht11lounge_version
-            - sensor.dht11roof_version
-            - sensor.dht11terrace_version
-            - sensor.rfhubfirst_version
+            - sensor.DHT22lounge_version
+            - sensor.DHT22roof_version
+            - sensor.DHT22terrace_version
+            - sensor.rfhublounge_version
             - sensor.relaygarage_version
             - sensor.sonoffgarage_version
             - sensor.relaybackyard_version
             - sensor.sonoffutilityroom_version
             # - sensor.xmastreedining_version
-            - sensor.sonofflocation2_version
+            - sensor.sonoffpool_version
             - sensor.sonoffterrace_version
-            - sensor.relay1dining_version
-            - sensor.relay2dining_version
+            - sensor.relaydining1_version
+            - sensor.relaydining2_version
             - sensor.sonoffyardgate_version
-            - sensor.sonofflocation3_version
+            - sensor.sonoffgallery_version
             - sensor.ds18b20pool_version
             - sensor.sonoffkitchen_version
             - sensor.gesturekitchen_version
@@ -309,21 +308,21 @@
     nodes_lastvoltage:
         name: Last Voltage Message
         entities:
-            - sensor.dht11lounge_lastboot
-            - sensor.dht11roof_lastvoltage
-            - sensor.dht11terrace_lastvoltage
-            - sensor.rfhubfirst_lastvoltage
+            - sensor.DHT22lounge_lastboot
+            - sensor.DHT22roof_lastvoltage
+            - sensor.DHT22terrace_lastvoltage
+            - sensor.rfhublounge_lastvoltage
             - sensor.relaygarage_lastvoltage
             - sensor.sonoffgarage_lastvoltage
             - sensor.relaybackyard_lastvoltage
             - sensor.sonoffutilityroom_lastvoltage
             # - sensor.xmastreedining_lastvoltage
-            - sensor.sonofflocation2_lastvoltage
+            - sensor.sonoffpool_lastvoltage
             - sensor.sonoffterrace_lastvoltage
-            - sensor.relay1dining_lastvoltage
-            - sensor.relay2dining_lastvoltage
+            - sensor.relaydining1_lastvoltage
+            - sensor.relaydining2_lastvoltage
             - sensor.sonoffyardgate_lastvoltage
-            - sensor.sonofflocation3_lastvoltage
+            - sensor.sonoffgallery_lastvoltage
             - sensor.ds18b20pool_lastvoltage
             - sensor.sonoffkitchen_lastvoltage
             - sensor.gesturekitchen_lastvoltage
@@ -341,21 +340,21 @@
     nodes_voltage:
         name: Spannungspegel
         entities:
-            - sensor.dht11lounge_voltage
-            - sensor.dht11roof_voltage
-            - sensor.dht11terrace_voltage
-            - sensor.rfhubfirst_voltage
+            - sensor.DHT22lounge_voltage
+            - sensor.DHT22roof_voltage
+            - sensor.DHT22terrace_voltage
+            - sensor.rfhublounge_voltage
             - sensor.relaygarage_voltage
             - sensor.sonoffgarage_voltage
             - sensor.relaybackyard_voltage
             - sensor.sonoffutilityroom_voltage
             # - sensor.xmastreedining_voltage
-            - sensor.sonofflocation2_voltage
+            - sensor.sonoffpool_voltage
             - sensor.sonoffterrace_voltage
-            - sensor.relay1dining_voltage
-            - sensor.relay2dining_voltage
+            - sensor.relaydining1_voltage
+            - sensor.relaydining2_voltage
             - sensor.sonoffyardgate_voltage
-            - sensor.sonofflocation3_voltage
+            - sensor.sonoffgallery_voltage
             - sensor.ds18b20pool_voltage
             - sensor.sonoffkitchen_voltage
             - sensor.gesturekitchen_voltage
@@ -397,7 +396,6 @@
             - sensor.ram_use
             - sensor.disk_use_
             - sensor.last_boot
-            - sensor.rfhubfirst
 
 # ---------------------------------------------------------------------------
     automation:
