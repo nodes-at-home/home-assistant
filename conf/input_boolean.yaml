@@ -3,6 +3,9 @@
 ###
 ### 15.01.2017 new
 ###
+    light_simulation:
+        name: Lichtsimulation
+        initial: off
     button_indoor_activated:
         name: Drücker Innenlicht aktiv
         initial: on

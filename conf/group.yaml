@@ -405,6 +405,7 @@
             - group.automation_rules
             - group.automation_hidden_entities
             - group.automation_pixel_node_preferences
+            - group.automation_light_simulation
 
     automation_rules:
         name: Regeln
@@ -418,10 +419,9 @@
             - automation.indoor_lights_by_night_on_at_coming_home            
             - automation.indoor_lights_off_at_getting_out_or_sunrise
             - automation.indoor_lights_off_when_tv_switched_off
+            - automation.indoor_lights_off_after_random_delay
             - automation.indoor_lights_on_by_button
             - automation.indoor_lights_off_by_button
-            - automation.terrarium_lights_on
-            - automation.terrarium_lights_off
             - automation.open_garage_door
             - automation.close_garage_door
             - automation.pixel_node_preferences
@@ -444,7 +444,7 @@
             - binary_sensor.buttonpool
             - input_boolean.gesture_kitchen_activated
             - binary_sensor.gesturekitchen
-
+            
     automation_pixel_node_preferences:
         name: Einstellungen PixelNode
         entities:
@@ -473,6 +473,11 @@
             # - input_boolean.pixel_node_msg17
             # - input_boolean.pixel_node_msg18
             # - input_boolean.pixel_node_msg19
+
+    automation_light_simulation:
+        name: Lichtsimulation
+        entities:
+            - input_boolean.light_simulation
 
 # ---------------------------------------------------------------------------
     # octoprint:
@@ -531,22 +536,5 @@
             - switch.ip_webcam_torch
             - switch.ip_webcam_video_recording
             - switch.ip_webcam_white_balance_lock
-
-# ---------------------------------------------------------------------------
-    test:
-        name: Test
-        view: no
-        entities:
-            - group.test_test
-
-    test_test:
-        name: Der Sensor
-        entities:
-            - sensor.dht11test_temperature
-            - sensor.dht11test_humidity
-            - sensor.dht11test_version
-            - sensor.dht11test_lastboot
-            - sensor.dht11test_voltage
-            - sensor.dht11test_lastvoltage
 
 # ---------------------------------------------------------------------------

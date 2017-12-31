@@ -99,9 +99,14 @@
         after_offset: "00:00:00"
       - condition: time
         before: '22:00:00'
-      - condition: state
-        entity_id: group.family_devices
-        state: 'home'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: group.family_devices
+            state: 'home'
+          - condition: state
+            entity_id: input_boolean.light_simulation
+            state: 'on'
     action:
       - service: homeassistant.turn_on
         entity_id: 
@@ -173,6 +178,25 @@
       - service: homeassistant.turn_off
         entity_id: 
             - group.automatic_indoor_lights_delayed_switched
+
+  - alias: indoor_lights_off_after_random_delay
+    hide_entity: False
+    trigger:
+      - platform: time
+        at: '22:00:00'
+    condition:
+      - condition: state
+        entity_id: input_boolean.light_simulation
+        state: 'on'
+    action:
+      # switch off between 22:00 amd 24:00
+      - delay: '{{ ( range ( 0, 2 ) | random | int ) }}:{{ ( range ( 0, 60 ) | random | int ) }}:00'
+      - service: scene.turn_on
+        entity_id: scene.kitchen_background_light
+      - service: homeassistant.turn_off
+        entity_id: 
+            - group.automatic_indoor_lights
+            - group.automatic_indoor_lights_immediatly_switched_off_extra
 
 #------------------------------------------------------------------------------------
 # buttons
