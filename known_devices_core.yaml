@@ -1,7 +1,7 @@
 
 andreas_xperia:
   name: Andreas
-  mac: 00:EB:2D:F9:8D:83
+  mac: 28:3F:69:CB:36:EA
   picture: /local/images/Glumanda_klein.jpg
   track: yes
   hide_if_away: no
@@ -13,15 +13,27 @@ undine_xperia:
   track: yes
   hide_if_away: no
 
-nora_xperia:
+nora_galaxy:
   name: Nora
-  mac: E0:63:E5:65:80:D1
+  mac: 5C:51:81:03:52:99
   track: yes
   hide_if_away: no
 
 nina_huawei:
   name: Nina
   mac: A4:71:74:E9:A3:30
+  track: yes
+  hide_if_away: no
+
+niklas_galaxy:
+  name: Niklas
+  mac: 14:1F:78:CC:47:2B
+  track: yes
+  hide_if_away: no
+
+dominik_handy:
+  name: Dominik
+  mac: 7C:0B:C6:46:1A:1C
   track: yes
   hide_if_away: no
 
