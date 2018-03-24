@@ -55,9 +55,17 @@
     optimistic: false
     retain: true
     
+  - platform: mqtt
+    name: "ssr@brewery_socket1"
+    command_topic: nodes@home/switch/ssr/brewery/socket1
+    state_topic: nodes@home/switch/ssr/brewery/socket1/state
+    optimistic: false
+    retain: true
 
+  - platform: mqtt
+    name: "ssr@brewery_socket2"
+    command_topic: nodes@home/switch/ssr/brewery/socket2
+    state_topic: nodes@home/switch/ssr/brewery/socket2/state
+    optimistic: false
+    retain: true
     
-
-
-
-

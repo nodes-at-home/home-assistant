@@ -1,4 +1,5 @@
 ###
+###
 ### customize.yaml
 ###
 ### 04.11.2016 split up
@@ -765,6 +766,33 @@ sensor.spindlefermenter_lastboot:
 
 sensor.spindlefermenter_version:
     friendly_name: Spindel Gärfass
+    entity_picture: /local/images/wemos_mini.jpg
+
+#------------------------------------------------------------------------------
+switch.ssrbrewery_socket1:
+    friendly_name: 'Heizung Sudkessel'
+
+switch.ssrbrewery_socket2:
+    friendly_name: 'Rührwerk Sudkessel'
+
+sensor.ssrbrewery_voltage:
+    friendly_name: Schaltkasten
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ssrbrewery_lastvoltage:
+    friendly_name: Schaltkasten
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ssrbrewery_hello:
+    friendly_name: Schaltkasten
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ssrbrewery_lastboot:
+    friendly_name: Schaltkasten
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ssrbrewery_version:
+    friendly_name: Schaltkasten
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
