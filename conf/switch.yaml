@@ -42,13 +42,6 @@
     retain: true
     
   - platform: mqtt
-    name: "sonoff@brewery_socket"
-    command_topic: nodes@home/switch/sonoff/brewery/socket
-    state_topic: nodes@home/switch/sonoff/brewery/socket/state
-    optimistic: false
-    retain: true
-    
-  - platform: mqtt
     name: "sonoff@pool_socket"
     command_topic: nodes@home/switch/sonoff/pool/socket
     state_topic: nodes@home/switch/sonoff/pool/socket/state
@@ -57,15 +50,15 @@
     
   - platform: mqtt
     name: "ssr@brewery_socket1"
-    command_topic: nodes@home/switch/ssr/brewery/socket1
-    state_topic: nodes@home/switch/ssr/brewery/socket1/state
+    command_topic: nodes@home/control/ssr/brewery/socket1
+    state_topic: nodes@home/control/ssr/brewery/socket1/state
     optimistic: false
     retain: true
 
   - platform: mqtt
     name: "ssr@brewery_socket2"
-    command_topic: nodes@home/switch/ssr/brewery/socket2
-    state_topic: nodes@home/switch/ssr/brewery/socket2/state
+    command_topic: nodes@home/control/ssr/brewery/socket2
+    state_topic: nodes@home/control/ssr/brewery/socket2/state
     optimistic: false
     retain: true
     

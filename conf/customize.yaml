@@ -454,30 +454,6 @@ sensor.pixelkitchen_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-switch.sonoffbrewery_socket:
-    friendly_name: 'Heizung Sudkessel'
-
-sensor.sonoffbrewery_voltage:
-    friendly_name: 'Heizung Sudkessel'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoffbrewery_lastvoltage:
-    friendly_name: 'Heizung Sudkessel'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoffbrewery_hello:
-    friendly_name: 'Heizung Sudkessel'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoffbrewery_lastboot:
-    friendly_name: 'Heizung Sudkessel'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoffbrewery_version:
-    friendly_name: 'Heizung Sudkessel'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-#------------------------------------------------------------------------------
 switch.sonoffpool_socket:
     friendly_name: Poolpumpe
 
@@ -646,33 +622,6 @@ sensor.ds18b20pool_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-sensor.ds18b20brewery_brew_temperature:
-    friendly_name: Temperatur Sudkessel
-
-sensor.ds18b20brewery_outer_temperature:
-    friendly_name: Außentemperatur Sudkessel
-
-sensor.ds18b20brewery_voltage:
-    friendly_name: Sensor Sudkessel
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.ds18b20brewery_lastvoltage:
-    friendly_name: Sensor Sudkessel
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.ds18b20brewery_hello:
-    friendly_name: Sensor Sudkessel
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.ds18b20brewery_lastboot:
-    friendly_name: Sensor Sudkessel
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.ds18b20brewery_version:
-    friendly_name: Sensor Sudkessel
-    entity_picture: /local/images/wemos_mini.jpg
-
-#------------------------------------------------------------------------------
 sensor.ds18b20fermenter_temperature:
     friendly_name: Temperatur Gärfass
 
@@ -769,6 +718,9 @@ sensor.spindlefermenter_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
+sensor.ssrbrewery_temperature:
+    friendly_name: Temperatur Sudkessel
+
 switch.ssrbrewery_socket1:
     friendly_name: 'Heizung Sudkessel'
 
@@ -776,23 +728,23 @@ switch.ssrbrewery_socket2:
     friendly_name: 'Rührwerk Sudkessel'
 
 sensor.ssrbrewery_voltage:
-    friendly_name: Schaltkasten
+    friendly_name: Schaltkasten Brauerei
     entity_picture: /local/images/wemos_mini.jpg
 
 sensor.ssrbrewery_lastvoltage:
-    friendly_name: Schaltkasten
+    friendly_name: Schaltkasten Brauerei
     entity_picture: /local/images/wemos_mini.jpg
 
 sensor.ssrbrewery_hello:
-    friendly_name: Schaltkasten
+    friendly_name: Schaltkasten Brauerei
     entity_picture: /local/images/wemos_mini.jpg
 
 sensor.ssrbrewery_lastboot:
-    friendly_name: Schaltkasten
+    friendly_name: Schaltkasten Brauerei
     entity_picture: /local/images/wemos_mini.jpg
 
 sensor.ssrbrewery_version:
-    friendly_name: Schaltkasten
+    friendly_name: Schaltkasten Brauerei
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------

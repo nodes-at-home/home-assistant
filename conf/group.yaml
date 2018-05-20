@@ -207,9 +207,7 @@
     rooms_brewery:
         name: 'Brauerei'
         entities:
-          - sensor.ds18b20brewery_brew_temperature
-          - sensor.ds18b20brewery_outer_temperature
-###          - switch.sonoffbrewery_socket
+          - sensor.ssrbrewery_temperature
           - switch.ssrbrewery_socket1
           - switch.ssrbrewery_socket2
           - sensor.ds18b20fermenter_temperature
@@ -264,9 +262,7 @@
             - sensor.ds18b20pool_lastboot
             - sensor.sonoffkitchen_lastboot
             - sensor.gesturekitchen_lastboot
-            - sensor.ds18b20brewery_lastboot
             - sensor.ds18b20fermenter_lastboot
-            - sensor.sonoffbrewery_lastboot
             - sensor.ssrbrewery_lastboot
             - sensor.spindlefermenter_lastboot
             - sensor.sonofflocation4_lastboot
@@ -297,9 +293,7 @@
             - sensor.ds18b20pool_version
             - sensor.sonoffkitchen_version
             - sensor.gesturekitchen_version
-            - sensor.ds18b20brewery_version
             - sensor.ds18b20fermenter_version
-            - sensor.sonoffbrewery_version
             - sensor.ssrbrewery_version
             - sensor.spindlefermenter_version
             - sensor.sonofflocation4_version
@@ -330,9 +324,7 @@
             - sensor.ds18b20pool_lastvoltage
             - sensor.sonoffkitchen_lastvoltage
             - sensor.gesturekitchen_lastvoltage
-            - sensor.ds18b20brewery_lastvoltage
             - sensor.ds18b20fermenter_lastvoltage
-            - sensor.sonoffbrewery_lastvoltage
             - sensor.ssrbrewery_lastvoltage
             - sensor.spindlefermenter_lastvoltage
             - sensor.sonofflocation4_lastvoltage
@@ -363,9 +355,7 @@
             - sensor.ds18b20pool_voltage
             - sensor.sonoffkitchen_voltage
             - sensor.gesturekitchen_voltage
-            - sensor.ds18b20brewery_voltage
             - sensor.ds18b20fermenter_voltage
-            - sensor.sonoffbrewery_voltage
             - sensor.ssrbrewery_voltage
             - sensor.spindlefermenter_voltage
             - sensor.sonofflocation4_voltage

@@ -602,38 +602,6 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/brewery
-    name: "sonoff@brewery_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/brewery
-    name: "sonoff@brewery_version"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/brewery
-    name: "sonoff@brewery_lastboot"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/brewery/value/voltage
-    name: "sonoff@brewery_voltage"
-    qos: 0
-    unit_of_measurement: "V"
-    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/brewery/value/voltage
-    name: "sonoff@brewery_lastvoltage"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
-
-#------------------------------------------------------------------------------
-  - platform: mqtt
     state_topic: nodes@home/switch/sonoff/pool
     name: "sonoff@pool_hello"
     qos: 0
@@ -865,52 +833,6 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/brewery/value/temperature
-    name: "ds18b20@brewery_brew_temperature"
-    qos: 0
-    unit_of_measurement: "°C"
-    value_template: '{{ value_json.brew | round ( 1 ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/brewery/value/temperature
-    name: "ds18b20@brewery_outer_temperature"
-    qos: 0
-    unit_of_measurement: "°C"
-    value_template: '{{ value_json.outer | round ( 1 ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
-    name: "ds18b20@brewery_voltage"
-    qos: 0
-    unit_of_measurement: "V"
-    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
-    name: "ds18b20@brewery_lastvoltage"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/brewery
-    name: "ds18b20@brewery_hello"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/brewery
-    name: "ds18b20@brewery_version"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/brewery
-    name: "ds18b20@brewery_lastboot"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
-
-#------------------------------------------------------------------------------
-  - platform: mqtt
     state_topic: nodes@home/sensor/ds18b20/fermenter/value/temperature
     name: "ds18b20@fermenter_temperature"
     qos: 0
@@ -1060,32 +982,39 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/ssr/brewery
+    state_topic: nodes@home/control/ssr/brewery/value/temperature
+    name: "ssr@brewery_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/control/ssr/brewery
     name: "ssr@brewery_hello"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/ssr/brewery
+    state_topic: nodes@home/control/ssr/brewery
     name: "ssr@brewery_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/ssr/brewery
+    state_topic: nodes@home/control/ssr/brewery
     name: "ssr@brewery_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/ssr/brewery/value/voltage
+    state_topic: nodes@home/control/ssr/brewery/value/voltage
     name: "ssr@brewery_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/ssr/brewery/value/voltage
+    state_topic: nodes@home/control/ssr/brewery/value/voltage
     name: "ssr@brewery_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
