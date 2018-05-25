@@ -424,10 +424,11 @@
             - automation.display_show_outdoor_temperature
             - automation.display_show_indoor_temperature
             - automation.display_show_pool_temperature
-            - automation.button_pool
             - automation.kitchen_desk_light_on
             - automation.kitchen_desk_light_off
             - automation.kitchen_desk_light_off_at_night
+            - automation.button_pool
+            - automation.pool_pump_on_off
 
     automation_hidden_entities:
         name: Drücker

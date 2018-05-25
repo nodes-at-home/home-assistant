@@ -61,7 +61,7 @@
                   - condition: state
                     entity_id: binary_sensor.workday_sensor
                     state: 'off'
-                  - condition: time         # any day
+                  - condition: time
                     after: '08:00:00'
                     before: '22:00:00'
     action:
@@ -273,21 +273,6 @@
       - service: cover.close_cover
         entity_id: cover.relaygarage
 
-  - alias: button_pool
-    hide_entity: false
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.buttonpool
-        to: 'on'
-    condition:
-      - condition: state
-        entity_id: input_boolean.button_pool_activated
-        state: 'on'
-    action:
-      # - service: light.toggle
-        # entity_id: light.rfhublounge_lampStudyPillar
-        # entity_id: light.sonoffkitchen_led
-        
 #------------------------------------------------------------------------------------
 # kitchen led
   - alias: kitchen_desk_light_on
@@ -322,9 +307,6 @@
       - platform: state
         entity_id: binary_sensor.gesturekitchen
         to: 'on'
-      - platform: state
-        entity_id: binary_sensor.buttonpool
-        to: 'on'
     condition:
       - condition: state
         entity_id: input_boolean.gesture_kitchen_activated
@@ -348,9 +330,6 @@
       - platform: state
         entity_id: binary_sensor.gesturekitchen
         to: 'on'
-      - platform: state
-        entity_id: binary_sensor.buttonpool
-        to: 'on'
     condition:
       - condition: state
         entity_id: input_boolean.gesture_kitchen_activated
@@ -370,6 +349,39 @@
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
 
+#------------------------------------------------------------------------------------
+# pool
+
+  - alias: pool_pump_on_off
+    hide_entity: False
+    trigger:
+      - platform: time
+        at: '11:00:00'
+      - platform: time
+        at: '20:00:00'
+    action:
+      - service: switch.turn_on
+        entity_id:
+            - switch.sonoffpool_socket
+      - delay: 02:00:00
+      - service: switch.turn_off
+        entity_id:
+            - switch.sonoffpool_socket
+
+  - alias: button_pool
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.buttonpool
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.button_pool_activated
+        state: 'on'
+    action:
+      - service: switch.toggle
+        entity_id: switch.sonoffpool_socket
+        
 #------------------------------------------------------------------------------------
 # pixel node
 
