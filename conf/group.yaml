@@ -402,6 +402,7 @@
             - group.automation_hidden_entities
             - group.automation_pixel_node_preferences
             - group.automation_light_simulation
+            - group.automation_pool
 
     automation_rules:
         name: Regeln
@@ -475,6 +476,11 @@
         name: Lichtsimulation
         entities:
             - input_boolean.light_simulation
+
+    automation_pool:
+        name: Pool
+        entities:
+            - input_slider.pool_pump_duration
 
 # ---------------------------------------------------------------------------
     # octoprint:

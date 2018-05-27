@@ -456,6 +456,7 @@ sensor.pixelkitchen_version:
 #------------------------------------------------------------------------------
 switch.sonoffpool_socket:
     friendly_name: Poolpumpe
+    entity_picture: /local/images/poolpump.jpg
 
 sensor.sonoffpool_voltage:
     friendly_name: 'Steckdose Pool'
