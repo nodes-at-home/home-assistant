@@ -6,21 +6,24 @@
 
     pixel_node_display_duration:
         name: Anzeigedauer
-        initial: 5
+        mode: slider
         min: 1
         max: 10
         step: 1
-        
+        initial: 5
+
     pixel_node_display_brightness:
         name: Anzeigehelligkeit
-        initial: 0
+        mode: slider
         min: 0
         max: 15
         step: 1
+        initial: 0
 
     pool_pump_duration:
         name: Pumpdauer
-        initial: 90
+        mode: slider
         min: 15
         max: 240
         step: 15
+        initial: 90

@@ -449,8 +449,8 @@
             - input_boolean.pixel_node_time
             - input_boolean.pixel_node_date
             - input_boolean.pixel_node_weekday
-            - input_slider.pixel_node_display_duration
-            - input_slider.pixel_node_display_brightness
+            - input_number.pixel_node_display_duration
+            - input_number.pixel_node_display_brightness
             - input_boolean.pixel_node_msg0
             - input_boolean.pixel_node_msg1
             - input_boolean.pixel_node_msg2
@@ -480,7 +480,7 @@
     automation_pool:
         name: Pool
         entities:
-            - input_slider.pool_pump_duration
+            - input_number.pool_pump_duration
 
 # ---------------------------------------------------------------------------
     # octoprint:

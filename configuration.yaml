@@ -30,7 +30,7 @@ homeassistant:
 mqtt:
   broker: localhost
   port: 1883
-  client_id: home_assistant_prod
+  client_id: home_assistant_prod_1
   keepalive: 120
   protocol: 3.1.1
 
@@ -222,7 +222,7 @@ scene: !include conf/scene.yaml
 
 # -------------------------------------------------------------------------------
 #
-input_slider: !include conf/input_number.yaml
+input_number: !include conf/input_number.yaml
 
 # -------------------------------------------------------------------------------
 #

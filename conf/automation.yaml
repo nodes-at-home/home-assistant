@@ -364,7 +364,7 @@
         entity_id:
             - switch.sonoffpool_socket
 #      - delay: 02:00:00
-      - delay: "{{ '%02d' % (((states ( 'input_slider.pool_pump_duration' ) | int) / 60) | int)  }}:{{ '%02d' % (states ( 'input_slider.pool_pump_duration' ) | int % 60) }}"
+      - delay: "{{ '%02d' % (((states ( 'input_number.pool_pump_duration' ) | int) / 60) | int)  }}:{{ '%02d' % (states ( 'input_number.pool_pump_duration' ) | int % 60) }}"
       - service: switch.turn_off
         entity_id:
             - switch.sonoffpool_socket
@@ -396,9 +396,9 @@
       - platform: state
         entity_id: input_boolean.pixel_node_weekday
       - platform: state
-        entity_id: input_slider.pixel_node_display_duration
+        entity_id: input_number.pixel_node_display_duration
       - platform: state
-        entity_id: input_slider.pixel_node_display_brightness
+        entity_id: input_number.pixel_node_display_brightness
       - platform: state
         entity_id: input_boolean.pixel_node_msg0
       - platform: state
@@ -446,8 +446,8 @@
             payload: >
                 {
                     "display": {
-                        "duration": {{ states ( 'input_slider.pixel_node_display_duration' ) | round ( 0 ) }},
-                        "brightness": {{ states ( 'input_slider.pixel_node_display_brightness' ) | round ( 0 ) }},
+                        "duration": {{ states ( 'input_number.pixel_node_display_duration' ) | round ( 0 ) }},
+                        "brightness": {{ states ( 'input_number.pixel_node_display_brightness' ) | round ( 0 ) }},
                         "time": "{{ states ( 'input_boolean.pixel_node_time' ) }}",
                         "date": "{{ states ( 'input_boolean.pixel_node_date' ) }}",
                         "weekday": "{{ states ( 'input_boolean.pixel_node_weekday' ) }}",
