@@ -80,12 +80,6 @@
 
   - platform: mqtt
     state_topic: nodes@home/sensor/DHT22/terrace
-    name: "DHT22@terrace_hello"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/DHT22/terrace
     name: "DHT22@terrace_version"
     qos: 0
     value_template: '{{ value }}'
@@ -123,12 +117,6 @@
     name: "DHT22@roof_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/DHT22/roof
-    name: "DHT22@roof_hello"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
 
   - platform: mqtt
     state_topic: nodes@home/sensor/DHT22/roof
@@ -180,12 +168,6 @@
 
   - platform: mqtt
     state_topic: nodes@home/sensor/DHT22/lounge
-    name: "DHT22@lounge_hello"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/DHT22/lounge
     name: "DHT22@lounge_version"
     qos: 0
     value_template: '{{ value }}'
@@ -197,12 +179,6 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/utilityroom
-    name: "sonoff@utilityroom_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/switch/sonoff/utilityroom
     name: "sonoff@utilityroom_version"
@@ -231,12 +207,6 @@
 #------------------------------------------------------------------------------
   - platform: mqtt
     state_topic: nodes@home/switch/sonoff/garage
-    name: "sonoff@garage_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/garage
     name: "sonoff@garage_version"
     qos: 0
     value_template: '{{ value }}'
@@ -261,13 +231,6 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/switch/relay/dining1
-    name: "relay@dining1_hello"
-    qos: 0
-    # value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-    value_template: '{{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/switch/relay/dining1
     name: "relay@dining1_version"
@@ -296,13 +259,6 @@
 #------------------------------------------------------------------------------
   - platform: mqtt
     state_topic: nodes@home/switch/relay/backyard
-    name: "relay@backyard_hello"
-    qos: 0
-    # value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/relay/backyard
     name: "relay@backyard_version"
     qos: 0
     value_template: '{{ value }}'
@@ -329,13 +285,6 @@
 #------------------------------------------------------------------------------
   - platform: mqtt
     state_topic: nodes@home/switch/relay/dining2
-    name: "relay@dining2_hello"
-    qos: 0
-    # value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/relay/dining2
     name: "relay@dining2_version"
     qos: 0
     value_template: '{{ value }}'
@@ -360,12 +309,6 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/switch/rfhub/lounge
-    name: "rfhub@lounge_hello"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/switch/rfhub/lounge
     name: "rfhub@lounge_version"
@@ -421,12 +364,6 @@
 
   - platform: mqtt
     state_topic: nodes@home/cover/relay/garage
-    name: "relay@garage_hello"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/cover/relay/garage
     name: "relay@garage_version"
     qos: 0
     value_template: '{{ value }}'
@@ -442,12 +379,6 @@
     state_topic: nodes@home/cover/relay/garage/value/position
 
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/light/xmastree/dining
-    name: "xmastree@dining_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/light/xmastree/dining
     name: "xmastree@dining_version"
@@ -473,12 +404,6 @@
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/sensor/button/indoor
-    name: "button@indoor_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/sensor/button/indoor
     name: "button@indoor_version"
@@ -507,12 +432,6 @@
 #------------------------------------------------------------------------------
   - platform: mqtt
     state_topic: nodes@home/sensor/button/garage
-    name: "button@garage_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/button/garage
     name: "button@garage_version"
     qos: 0
     value_template: '{{ value }}'
@@ -537,12 +456,6 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/sensor/button/pool
-    name: "button@pool_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/sensor/button/pool
     name: "button@pool_version"
@@ -571,12 +484,6 @@
 #------------------------------------------------------------------------------
   - platform: mqtt
     state_topic: nodes@home/display/pixel/kitchen
-    name: "pixel@kitchen_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/display/pixel/kitchen
     name: "pixel@kitchen_version"
     qos: 0
     value_template: '{{ value }}'
@@ -601,12 +508,6 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/pool
-    name: "sonoff@pool_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/switch/sonoff/pool
     name: "sonoff@pool_version"
@@ -635,12 +536,6 @@
 #------------------------------------------------------------------------------
   - platform: mqtt
     state_topic: nodes@home/switch/sonoff/terrace
-    name: "sonoff@terrace_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/terrace
     name: "sonoff@terrace_version"
     qos: 0
     value_template: '{{ value }}'
@@ -665,12 +560,6 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/yardgate
-    name: "sonoff@yardgate_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/switch/sonoff/yardgate
     name: "sonoff@yardgate_version"
@@ -699,12 +588,6 @@
 #------------------------------------------------------------------------------
   - platform: mqtt
     state_topic: nodes@home/switch/sonoff/gallery
-    name: "sonoff@gallery_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/gallery
     name: "sonoff@gallery_version"
     qos: 0
     value_template: '{{ value }}'
@@ -731,12 +614,6 @@
 #------------------------------------------------------------------------------
   - platform: mqtt
     state_topic: nodes@home/switch/sonoff/location4
-    name: "sonoff@location4_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location4
     name: "sonoff@location4_version"
     qos: 0
     value_template: '{{ value }}'
@@ -761,12 +638,6 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/light/sonoff/kitchen
-    name: "sonoff@kitchen_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/light/sonoff/kitchen
     name: "sonoff@kitchen_version"
@@ -815,12 +686,6 @@
 
   - platform: mqtt
     state_topic: nodes@home/sensor/ds18b20/pool
-    name: "ds18b20@pool_hello"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/pool
     name: "ds18b20@pool_version"
     qos: 0
     value_template: '{{ value }}'
@@ -833,40 +698,34 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/fermenter/value/temperature
-    name: "ds18b20@fermenter_temperature"
+    state_topic: nodes@home/sensor/ds18b20/brewery/value/temperature
+    name: "ds18b20@brewery_temperature"
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/fermenter/value/voltage
-    name: "ds18b20@fermenter_voltage"
+    state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
+    name: "ds18b20@brewery_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/fermenter/value/voltage
-    name: "ds18b20@fermenter_lastvoltage"
+    state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
+    name: "ds18b20@brewery_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/fermenter
-    name: "ds18b20@fermenter_hello"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/fermenter
-    name: "ds18b20@fermenter_version"
+    state_topic: nodes@home/sensor/ds18b20/brewery
+    name: "ds18b20@brewery_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/ds18b20/fermenter
-    name: "ds18b20@fermenter_lastboot"
+    state_topic: nodes@home/sensor/ds18b20/brewery
+    name: "ds18b20@brewery_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
@@ -886,12 +745,6 @@
 
   - platform: mqtt
     state_topic: nodes@home/display/oled/kitchen
-    name: "oled@kitchen_hello"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }} - {{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/display/oled/kitchen
     name: "oled@kitchen_version"
     qos: 0
     value_template: '{{ value }}'
@@ -903,12 +756,6 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
-  - platform: mqtt
-    state_topic: nodes@home/sensor/gesture/kitchen
-    name: "gesture@kitchen_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
   - platform: mqtt
     state_topic: nodes@home/sensor/gesture/kitchen
     name: "gesture@kitchen_version"
@@ -951,12 +798,6 @@
 
   - platform: mqtt
     state_topic: nodes@home/sensor/spindle/fermenter
-    name: "spindle@fermenter_hello"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/spindle/fermenter
     name: "spindle@fermenter_version"
     qos: 0
     value_template: '{{ value }}'
@@ -987,12 +828,6 @@
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value | round ( 1 ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/control/ssr/brewery
-    name: "ssr@brewery_hello"
-    qos: 0
-    value_template: '{{ value }}'
 
   - platform: mqtt
     state_topic: nodes@home/control/ssr/brewery
