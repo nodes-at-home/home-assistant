@@ -641,6 +641,29 @@ sensor.ssrbrewery_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
+sensor.electricityutilityroom_power:
+    friendly_name: Elektroverbrauch
+
+sensor.electricityutilityroom_counter:
+    friendly_name: Elektrozähler
+
+sensor.electricityutilityroom_voltage:
+    friendly_name: Elektrozähler
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.electricityutilityroom_lastvoltage:
+    friendly_name: Elektrozähler
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.electricityutilityroom_lastboot:
+    friendly_name: Elektrozähler
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.electricityutilityroom_version:
+    friendly_name: Elektrozähler
+    entity_picture: /local/images/wemos_mini.jpg
+
+#------------------------------------------------------------------------------
 
 sensor.log_db_file_size:
     friendly_name: Datenbank

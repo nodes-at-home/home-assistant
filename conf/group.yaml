@@ -188,7 +188,8 @@
         name: Hauswirtschaftsraum
         entities:
             - switch.sonoffutilityroom_pump
-            # - input_boolean.manual_holiday_indicator
+            - sensor.electricityutilityroom_power
+            - sensor.electricityutilityroom_counter
 
     rooms_dining:
         name: 'Esszimmer'
@@ -270,7 +271,8 @@
             - sensor.buttongarage_lastboot
             - sensor.buttonpool_lastboot
             - sensor.pixelkitchen_lastboot
-            - sensor.oledkitchen_lastboot
+            #- sensor.oledkitchen_lastboot
+            - sensor.electricityutilityroom_lastboot
 
     nodes_version:
         name: Version
@@ -301,7 +303,8 @@
             - sensor.buttongarage_version
             - sensor.buttonpool_version
             - sensor.pixelkitchen_version
-            - sensor.oledkitchen_version
+            #- sensor.oledkitchen_version
+            - sensor.electricityutilityroom_version
 
     nodes_lastvoltage:
         name: Last Voltage Message
@@ -332,7 +335,8 @@
             - sensor.buttongarage_lastvoltage
             - sensor.buttonpool_lastvoltage
             - sensor.pixelkitchen_lastvoltage
-            - sensor.oledkitchen_lastvoltage
+            #- sensor.oledkitchen_lastvoltage
+            - sensor.electricityutilityroom_lastvoltage
 
     nodes_voltage:
         name: Spannungspegel
@@ -363,7 +367,8 @@
             - sensor.buttongarage_voltage
             - sensor.buttonpool_voltage
             - sensor.pixelkitchen_voltage
-            - sensor.oledkitchen_voltage
+            #- sensor.oledkitchen_voltage
+            - sensor.electricityutilityroom_voltage
 
 # ---------------------------------------------------------------------------
     system:
