@@ -566,3 +566,18 @@
             retain: true
 
 #------------------------------------------------------------------------------------
+# effect delay for rgb led
+
+  - alias: send_effect_delay
+    trigger:
+        platform: state
+        entity_id: input_number.effect_delay
+    action:
+        service: mqtt.publish
+        data_template:
+            topic: nodes@home/light/ws2812/terrace/service/set
+            payload: '{"delay":{{ trigger.to_state.state | int }}}'
+            qos: 0
+            retain: false
+
+#------------------------------------------------------------------------------------

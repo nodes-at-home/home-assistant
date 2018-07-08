@@ -895,6 +895,34 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
 #------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/light/ws2812/terrace/value/voltage
+    name: "ws2812@terrace_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+    # unit_of_measurement: "mV"
+    # value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/light/ws2812/terrace/value/voltage
+    name: "ws2812@terrace_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/light/ws2812/terrace
+    name: "ws2812@terrace_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/light/ws2812/terrace
+    name: "ws2812@terrace_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
 
   # https://community.home-assistant.io/t/recorder-purge-function/17154/11
   - platform: command_line

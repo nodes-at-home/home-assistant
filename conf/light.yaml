@@ -149,3 +149,13 @@
     color_temp_state_topic: nodes@home/light/sonoff/kitchen/color/state
     optimistic: false
     retain: true
+
+  - platform: mqtt_json
+    name: ws2812@terrace
+    command_topic: nodes@home/light/ws2812/terrace/led
+    state_topic: nodes@home/light/ws2812/terrace/led/state
+    brightness: true
+    rgb: true
+    effect: true
+    effect_list: [static, blink, random_color, rainbow, fire, fire_soft, fire_intense, halloween]
+    retain: true

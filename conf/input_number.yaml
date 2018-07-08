@@ -27,3 +27,11 @@
         max: 240
         step: 15
         initial: 90
+
+    effect_delay:
+        name: Effektperiode (ms)
+        mode: slider
+        min: 100
+        max: 5000
+        step: 100
+        initial: 1500

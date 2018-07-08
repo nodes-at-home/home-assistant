@@ -664,6 +664,27 @@ sensor.electricityutilityroom_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
+light.ws2812terrace:
+    friendly_name: Lichterkette
 
+sensor.ws2812terrace_voltage:
+    friendly_name: Lichterkette
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812terrace_lastvoltage:
+    friendly_name: Lichterkette
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812terrace_lastboot:
+    friendly_name: Lichterkette
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812terrace_version:
+    friendly_name: Lichterkette
+    entity_picture: /local/images/wemos_mini.jpg
+
+#------------------------------------------------------------------------------
 sensor.log_db_file_size:
     friendly_name: Datenbank
+
+#------------------------------------------------------------------------------
