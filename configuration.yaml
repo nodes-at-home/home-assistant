@@ -162,6 +162,12 @@ updater:
 ###conversation:
 
 # -------------------------------------------------------------------------------
+# Enables the recorder component.
+recorder:
+    purge_keep_days: 30
+    purge_interval: 1
+
+# -------------------------------------------------------------------------------
 # Enables support for tracking state changes over time.
 history:
     include:
@@ -170,6 +176,21 @@ history:
             - light
             - switch
             - cover
+            - media_player
+            - device_tracker
+        # entities:
+
+# -------------------------------------------------------------------------------
+# Enables support for logbook component.
+logbook:
+    include:
+        domains:
+            - sensor
+            - light
+            - switch
+            - cover
+            - media_player
+            - device_tracker
         # entities:
         
 # -------------------------------------------------------------------------------
