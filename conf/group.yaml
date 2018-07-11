@@ -397,10 +397,11 @@
         name: Server (Raspberry Pi 3)
         entities:
             # - weblink.home_assistant
-            - sensor.CPU
-            - sensor.cpu_use
-            - sensor.ram_use
+            - sensor.processor_use
+            - sensor.memory_use
+            - sensor.memory_use_percent
             - sensor.disk_use_
+            - sensor.disk_use_percent_
             - sensor.last_boot
 
 # ---------------------------------------------------------------------------
