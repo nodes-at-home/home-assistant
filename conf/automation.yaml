@@ -573,9 +573,15 @@
         platform: state
         entity_id: input_number.effect_delay
     action:
-        service: mqtt.publish
+      - service: mqtt.publish
         data_template:
-            topic: nodes@home/light/ws2812/terrace/service/set
+            topic: nodes@home/light/ws2812/terrace1/service/set
+            payload: '{"delay":{{ trigger.to_state.state | int }}}'
+            qos: 0
+            retain: false
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/light/ws2812/terrace2/service/set
             payload: '{"delay":{{ trigger.to_state.state | int }}}'
             qos: 0
             retain: false

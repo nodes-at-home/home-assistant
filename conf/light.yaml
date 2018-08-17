@@ -151,9 +151,19 @@
     retain: true
 
   - platform: mqtt_json
-    name: ws2812@terrace
-    command_topic: nodes@home/light/ws2812/terrace/led
-    state_topic: nodes@home/light/ws2812/terrace/led/state
+    name: ws2812@terrace1
+    command_topic: nodes@home/light/ws2812/terrace1/led
+    state_topic: nodes@home/light/ws2812/terrace1/led/state
+    brightness: true
+    rgb: true
+    effect: true
+    effect_list: [static, blink, random_color, rainbow]
+    retain: true
+
+  - platform: mqtt_json
+    name: ws2812@terrace2
+    command_topic: nodes@home/light/ws2812/terrace2/led
+    state_topic: nodes@home/light/ws2812/terrace2/led/state
     brightness: true
     rgb: true
     effect: true

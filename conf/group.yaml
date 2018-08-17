@@ -167,7 +167,8 @@
             - sensor.DHT22terrace_humidity
             - sensor.ds18b20pool_temperature
             - switch.sonoffpool_socket
-            - light.ws2812terrace
+            - light.ws2812terrace1
+            - light.ws2812terrace2
 
     rooms_roof:
         name: Dachboden
@@ -274,7 +275,8 @@
             - sensor.pixelkitchen_lastboot
             #- sensor.oledkitchen_lastboot
             - sensor.electricityutilityroom_lastboot
-            - sensor.ws2812terrace_lastboot
+            - sensor.ws2812terrace1_lastboot
+            - sensor.ws2812terrace2_lastboot
 
     nodes_version:
         name: Version
@@ -307,7 +309,8 @@
             - sensor.pixelkitchen_version
             #- sensor.oledkitchen_version
             - sensor.electricityutilityroom_version
-            - sensor.ws2812terrace_version
+            - sensor.ws2812terrace1_version
+            - sensor.ws2812terrace2_version
 
     nodes_lastvoltage:
         name: Last Voltage Message
@@ -340,7 +343,8 @@
             - sensor.pixelkitchen_lastvoltage
             #- sensor.oledkitchen_lastvoltage
             - sensor.electricityutilityroom_lastvoltage
-            - sensor.ws2812terrace_lastvoltage
+            - sensor.ws2812terrace1_lastvoltage
+            - sensor.ws2812terrace2_lastvoltage
 
     nodes_voltage:
         name: Spannungspegel
@@ -373,7 +377,8 @@
             - sensor.pixelkitchen_voltage
             #- sensor.oledkitchen_voltage
             - sensor.electricityutilityroom_voltage
-            - sensor.ws2812terrace_voltage
+            - sensor.ws2812terrace1_voltage
+            - sensor.ws2812terrace2_voltage
 
 # ---------------------------------------------------------------------------
     system:
@@ -406,7 +411,7 @@
 
 # ---------------------------------------------------------------------------
     automation:
-        name: Automatisierung
+        name: Einstellungen
         view: yes
         entities:
             - group.automation_rules

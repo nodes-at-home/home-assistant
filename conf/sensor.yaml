@@ -899,8 +899,8 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/light/ws2812/terrace/value/voltage
-    name: "ws2812@terrace_voltage"
+    state_topic: nodes@home/light/ws2812/terrace1/value/voltage
+    name: "ws2812@terrace1_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
@@ -908,20 +908,48 @@
     # value_template: '{{ value_json.value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/light/ws2812/terrace/value/voltage
-    name: "ws2812@terrace_lastvoltage"
+    state_topic: nodes@home/light/ws2812/terrace1/value/voltage
+    name: "ws2812@terrace1_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/light/ws2812/terrace
-    name: "ws2812@terrace_version"
+    state_topic: nodes@home/light/ws2812/terrace1
+    name: "ws2812@terrace1_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/light/ws2812/terrace
-    name: "ws2812@terrace_lastboot"
+    state_topic: nodes@home/light/ws2812/terrace1
+    name: "ws2812@terrace1_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/light/ws2812/terrace2/value/voltage
+    name: "ws2812@terrace2_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+    # unit_of_measurement: "mV"
+    # value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/light/ws2812/terrace2/value/voltage
+    name: "ws2812@terrace2_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/light/ws2812/terrace2
+    name: "ws2812@terrace2_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/light/ws2812/terrace2
+    name: "ws2812@terrace2_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
