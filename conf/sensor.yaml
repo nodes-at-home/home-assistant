@@ -961,3 +961,15 @@
     command: "du -m /home/homeassistant/.homeassistant/home-assistant_v2.db | cut -f1"
     unit_of_measurement: 'MB'
     value_template: '{{ value | int - 1 }}'
+
+#------------------------------------------------------------------------------
+
+  # CPU temperature
+  # https://community.home-assistant.io/t/displaying-cpu-temperature-within-home-assistant/8641/11
+  - platform: command_line
+    name: cpu_temp
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ (value | multiply(0.001)) | round(1) }}'
+
+#------------------------------------------------------------------------------

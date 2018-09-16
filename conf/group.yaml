@@ -390,6 +390,7 @@
             - group.system_dsl
             - configurator.sony_bravia_tv
             - sensor.log_db_file_size
+            - sensor.cpu_temp
 
     system_dsl:
         name: DSL
