@@ -384,6 +384,24 @@
         entity_id: switch.sonoffpool_socket
         
 #------------------------------------------------------------------------------------
+# bedroom
+
+  - alias: bedroom_lights_toggle
+    hide_entity: False
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.ttp223bedroom_touch1
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.touch_bedroom_activated
+        state: 'on'
+    action:
+      - service: switch.toggle
+        entity_id:
+            - switch.sonoffbedroom_socket
+
+#------------------------------------------------------------------------------------
 # pixel node
 
   - alias: pixel_node_preferences

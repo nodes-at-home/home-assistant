@@ -130,6 +130,7 @@
             - group.rooms_dining
             - group.rooms_gallery
             - group.rooms_brewery
+            - group.rooms_bedroom
 
     rooms_lounge:
         name: Wohnzimmer
@@ -217,6 +218,11 @@
           - sensor.spindlefermenter_temperature
           - sensor.spindlefermenter_tilt
 
+    rooms_bedroom:
+        name: 'Schlafzimmer'
+        entities:
+          - switch.sonoffbedroom_socket
+
 # ---------------------------------------------------------------------------
 
     media:
@@ -265,6 +271,8 @@
             - sensor.ds18b20pool_lastboot
             - sensor.sonoffkitchen_lastboot
             - sensor.gesturekitchen_lastboot
+            - sensor.ttp223bedroom_lastboot
+            - sensor.sonoffbedroom_lastboot
             - sensor.ds18b20brewery_lastboot
             - sensor.ssrbrewery_lastboot
             - sensor.spindlefermenter_lastboot
@@ -299,6 +307,8 @@
             - sensor.ds18b20pool_version
             - sensor.sonoffkitchen_version
             - sensor.gesturekitchen_version
+            - sensor.ttp223bedroom_version
+            - sensor.sonoffbedroom_version
             - sensor.ds18b20brewery_version
             - sensor.ssrbrewery_version
             - sensor.spindlefermenter_version
@@ -333,6 +343,8 @@
             - sensor.ds18b20pool_lastvoltage
             - sensor.sonoffkitchen_lastvoltage
             - sensor.gesturekitchen_lastvoltage
+            - sensor.ttp223bedroom_lastvoltage
+            - sensor.sonoffbedroom_lastvoltage
             - sensor.ds18b20brewery_lastvoltage
             - sensor.ssrbrewery_lastvoltage
             - sensor.spindlefermenter_lastvoltage
@@ -367,6 +379,8 @@
             - sensor.ds18b20pool_voltage
             - sensor.sonoffkitchen_voltage
             - sensor.gesturekitchen_voltage
+            - sensor.ttp223bedroom_voltage
+            - sensor.sonoffbedroom_voltage
             - sensor.ds18b20brewery_voltage
             - sensor.ssrbrewery_voltage
             - sensor.spindlefermenter_voltage
@@ -437,6 +451,7 @@
             - automation.indoor_lights_off_after_random_delay
             - automation.indoor_lights_on_by_button
             - automation.indoor_lights_off_by_button
+            - automation.bedroom_lights_toggle
             - automation.open_garage_door
             - automation.close_garage_door
             - automation.pixel_node_preferences
@@ -461,6 +476,8 @@
             - binary_sensor.buttonpool
             - input_boolean.gesture_kitchen_activated
             - binary_sensor.gesturekitchen
+            - input_boolean.touch_bedroom_activated
+            - binary_sensor.ttp223bedroom_touch1
             
     automation_pixel_node_preferences:
         name: Einstellungen PixelNode

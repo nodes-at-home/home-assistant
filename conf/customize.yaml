@@ -415,6 +415,44 @@ sensor.sonoffpool_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
+sensor.ttp223bedroom_voltage:
+    friendly_name: 'Touchsensor Schlafzimmer'
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ttp223bedroom_lastvoltage:
+    friendly_name: 'Touchsensor Schlafzimmer'
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ttp223bedroom_lastboot:
+    friendly_name: 'Touchsensor Schlafzimmer'
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ttp223bedroom_version:
+    friendly_name: 'Touchsensor Schlafzimmer'
+    entity_picture: /local/images/wemos_mini.jpg
+
+#------------------------------------------------------------------------------
+switch.sonoffbedroom_socket:
+    friendly_name: Schrankbeleuchtung
+    icon: mdi:lightbulb
+
+sensor.sonoffbedroom_voltage:
+    friendly_name: 'Steckdose Schlafzimmerschrank'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonoffbedroom_lastvoltage:
+    friendly_name: 'Steckdose Schlafzimmerschrank'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonoffbedroom_lastboot:
+    friendly_name: 'Steckdose Schlafzimmerschrank'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+sensor.sonoffbedroom_version:
+    friendly_name: 'Steckdose Schlafzimmerschrank'
+    entity_picture: /local/images/sonoff_s20.jpg
+
+#------------------------------------------------------------------------------
 light.sonoffterrace_lamp:
     friendly_name: Lampe
 

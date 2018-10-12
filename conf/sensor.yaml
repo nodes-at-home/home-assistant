@@ -538,6 +538,32 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/bedroom
+    name: "sonoff@bedroom_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/bedroom
+    name: "sonoff@bedroom_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/bedroom/value/voltage
+    name: "sonoff@bedroom_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/switch/sonoff/bedroom/value/voltage
+    name: "sonoff@bedroom_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
+  - platform: mqtt
     state_topic: nodes@home/switch/sonoff/terrace
     name: "sonoff@terrace_version"
     qos: 0
@@ -950,6 +976,34 @@
   - platform: mqtt
     state_topic: nodes@home/light/ws2812/terrace2
     name: "ws2812@terrace2_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+#------------------------------------------------------------------------------
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ttp223/bedroom/value/voltage
+    name: "ttp223@bedroom_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+    # unit_of_measurement: "mV"
+    # value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ttp223/bedroom/value/voltage
+    name: "ttp223@bedroom_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ttp223/bedroom
+    name: "ttp223@bedroom_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ttp223/bedroom
+    name: "ttp223@bedroom_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 

@@ -30,6 +30,11 @@
     state_topic: "nodes@home/sensor/gesture/kitchen/value/state"
     qos: 0
     
+  - platform: mqtt
+    name: "ttp223@bedroom_touch1"
+    state_topic: nodes@home/sensor/ttp223/bedroom/touch1/value/state
+    qos: 0
+
   - platform: workday
     country: DE
     province: BB

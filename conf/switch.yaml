@@ -49,6 +49,13 @@
     retain: true
     
   - platform: mqtt
+    name: "sonoff@bedroom_socket"
+    command_topic: nodes@home/switch/sonoff/bedroom/socket
+    state_topic: nodes@home/switch/sonoff/bedroom/socket/state
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
     name: "ssr@brewery_socket1"
     command_topic: nodes@home/control/ssr/brewery/socket1
     state_topic: nodes@home/control/ssr/brewery/socket1/state

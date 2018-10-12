@@ -18,6 +18,9 @@
     gesture_kitchen_activated:
         name: Gestensensor Küche aktiv
         initial: on
+    touch_bedroom_activated:
+        name: Touchsensor Schlafzimmer aktiv
+        initial: on
     pixel_node_time:
         name: Zeitanzeige
         initial: on
