@@ -238,6 +238,7 @@
       - service: homeassistant.turn_off
         entity_id: 
             - group.automatic_indoor_lights
+            - group.automatic_indoor_lights_immediatly_switched_off_extra
 
   - alias: open_garage_door
     hide_entity: false

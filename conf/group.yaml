@@ -34,10 +34,11 @@
           - light.rfhublounge_lampStudyPillar
           - light.rfhublounge_lampkitchenshortstrip
           - light.rfhublounge_lampkitchenlongstrip
-          # - group.rooms_xmas_lights
           - light.relaydining1_lamp
           - light.relaydining2_lamp
           - light.sonoffkitchen_led
+          - switch.sonoffxmastree_socket
+          - switch.sonofflocation1_socket
 
     automatic_indoor_lights_delayed_switched:
         name: 'Länger leuchtenden Lichter'
@@ -54,6 +55,7 @@
         name: 'Alle auszuschaltende Lichter'
         entities:
           - light.rfhublounge_lampLoungeWhiteBall
+          - light.sonoffbedroom_socket
 
     automatic_indoor_lights_by_night:
         name: 'Alle Lichter in der Nacht'
@@ -62,6 +64,8 @@
           - light.relaydining1_lamp
           - light.relaydining2_lamp
           - light.sonoffkitchen_led
+          - switch.sonoffxmastree_socket
+          - switch.sonofflocation1_socket
           
     # ---------------------------------------------------------------------------
     default_view:
@@ -143,6 +147,7 @@
             - sensor.DHT22lounge_humidity
             - sensor.DHT22lounge_pressure
             - switch.rfhublounge_NoName1D
+            - switch.sonoffk8200_socket
 
     rooms_kitchen:
         name: Küche
@@ -199,14 +204,16 @@
         entities:
           - light.relaydining1_lamp
           - light.relaydining2_lamp
+          - switch.sonoffxmastree_socket
           # Xmas
           # - light.rfhublounge_noname1c
           # - light.xmastreedining_leds
 
     rooms_gallery:
-        name: 'Galerie'
+        name: 'Galerie / Flur'
         entities:
           - light.sonoffgallery_lamp
+          - switch.sonofflocation1_socket
 
     rooms_brewery:
         name: 'Brauerei'
@@ -273,6 +280,9 @@
             - sensor.gesturekitchen_lastboot
             - sensor.ttp223bedroom_lastboot
             - sensor.sonoffbedroom_lastboot
+            - sensor.sonoffk8200_lastboot
+            - sensor.sonoffxmastree_lastboot
+            - sensor.sonofflocation1_lastboot
             - sensor.ds18b20brewery_lastboot
             - sensor.ssrbrewery_lastboot
             - sensor.spindlefermenter_lastboot
@@ -309,6 +319,9 @@
             - sensor.gesturekitchen_version
             - sensor.ttp223bedroom_version
             - sensor.sonoffbedroom_version
+            - sensor.sonoffk8200_version
+            - sensor.sonoffxmastree_version
+            - sensor.sonofflocation1_version
             - sensor.ds18b20brewery_version
             - sensor.ssrbrewery_version
             - sensor.spindlefermenter_version
@@ -345,6 +358,9 @@
             - sensor.gesturekitchen_lastvoltage
             - sensor.ttp223bedroom_lastvoltage
             - sensor.sonoffbedroom_lastvoltage
+            - sensor.sonoffk8200_lastvoltage
+            - sensor.sonoffxmastree_lastvoltage
+            - sensor.sonofflocation1_lastvoltage
             - sensor.ds18b20brewery_lastvoltage
             - sensor.ssrbrewery_lastvoltage
             - sensor.spindlefermenter_lastvoltage
@@ -381,6 +397,9 @@
             - sensor.gesturekitchen_voltage
             - sensor.ttp223bedroom_voltage
             - sensor.sonoffbedroom_voltage
+            - sensor.sonoffk8200_voltage
+            - sensor.sonoffxmastree_voltage
+            - sensor.sonofflocation1_voltage
             - sensor.ds18b20brewery_voltage
             - sensor.ssrbrewery_voltage
             - sensor.spindlefermenter_voltage
