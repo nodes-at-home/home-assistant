@@ -76,7 +76,7 @@
         name: Anzeige Textzeile 14 - Abfahrt S-Bahn 2
         initial: on
     pixel_node_msg15:
-        name: Anzeige Textzeile 15 - Wetter Brisbane
+        name: Anzeige Textzeile 15 - Wetter Urlaubsort
         initial: off
     pixel_node_msg16:
         name: Anzeige Textzeile 16 - ...
