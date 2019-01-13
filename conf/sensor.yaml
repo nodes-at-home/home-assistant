@@ -720,32 +720,6 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location1
-    name: "sonoff@location1_version"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location1
-    name: "sonoff@location1_lastboot"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location1/value/voltage
-    name: "sonoff@location1_voltage"
-    qos: 0
-    unit_of_measurement: "V"
-    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/location1/value/voltage
-    name: "sonoff@location1_lastvoltage"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
-
-#------------------------------------------------------------------------------
-  - platform: mqtt
     state_topic: nodes@home/light/sonoff/kitchen
     name: "sonoff@kitchen_version"
     qos: 0

@@ -124,13 +124,6 @@ light.rfhublounge_lamploungewhiteball:
 light.rfhublounge_lampstudypillar:
     friendly_name: Stehlampe am Drucker
 
-light.rfhublounge_NoName1C:
-    friendly_name: Weihnachtsbaum
-
-switch.rfhublounge_NoName1D:
-    friendly_name: 3D Drucker K8200
-    entity_picture: /local/images/k8200.jpg
-
 #------------------------------------------------------------------------------
 switch.kitchen_short_led_strip:
     friendly_name: Kurze Ledleiste
@@ -418,13 +411,13 @@ sensor.sonoffpool_version:
 binary_sensor.ttp223bedroom_touch1:
     friendly_name: 'Touchsensor 1 Schlafzimmer'
 
-binary_sensor.ttp223bedroom_touch1:
+binary_sensor.ttp223bedroom_touch2:
     friendly_name: 'Touchsensor 2 Schlafzimmer'
 
-binary_sensor.ttp223bedroom_touch1:
+binary_sensor.ttp223bedroom_touch3:
     friendly_name: 'Touchsensor 3 Schlafzimmer'
 
-binary_sensor.ttp223bedroom_touch1:
+binary_sensor.ttp223bedroom_touch4:
     friendly_name: 'Touchsensor 4 Schlafzimmer'
 
 sensor.ttp223bedroom_voltage:
@@ -756,6 +749,7 @@ sensor.ws2812terrace2_version:
 #-------------------------------------------------------------------------  -----
 switch.sonoffk8200_socket:
     friendly_name: 3D Drucker K8200
+    entity_picture: /local/images/k8200.jpg
 
 sensor.sonoffk8200_voltage:
     friendly_name: 'Steckdose K8200'
@@ -776,6 +770,7 @@ sensor.sonoffk8200_version:
 #-------------------------------------------------------------------------  -----
 switch.sonoffxmastree_socket:
     friendly_name: Weihnachtsbaum
+    icon: mdi:lightbulb
 
 sensor.sonoffxmastree_voltage:
     friendly_name: 'Steckdose Weihnachtsbaum'
@@ -791,26 +786,6 @@ sensor.sonoffxmastree_lastboot:
 
 sensor.sonoffxmastree_version:
     friendly_name: 'Steckdose Weihnachtsbaum'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-#-------------------------------------------------------------------------  -----
-switch.sonofflocation1_socket:
-    friendly_name: Giraffe
-
-sensor.sonofflocation1_voltage:
-    friendly_name: 'Steckdose Giraffe'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonofflocation1_lastvoltage:
-    friendly_name: 'Steckdose Giraffe'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonofflocation1_lastboot:
-    friendly_name: 'Steckdose Giraffe'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonofflocation1_version:
-    friendly_name: 'Steckdose Giraffe'
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
