@@ -35,6 +35,21 @@
     state_topic: nodes@home/sensor/ttp223/bedroom/touch1/value/state
     qos: 0
 
+  - platform: mqtt
+    name: "ttp223@bedroom_touch2"
+    state_topic: nodes@home/sensor/ttp223/bedroom/touch2/value/state
+    qos: 0
+
+  - platform: mqtt
+    name: "ttp223@bedroom_touch3"
+    state_topic: nodes@home/sensor/ttp223/bedroom/touch3/value/state
+    qos: 0
+
+  - platform: mqtt
+    name: "ttp223@bedroom_touch4"
+    state_topic: nodes@home/sensor/ttp223/bedroom/touch4/value/state
+    qos: 0
+
   - platform: workday
     country: DE
     province: BB

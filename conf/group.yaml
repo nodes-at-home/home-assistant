@@ -497,7 +497,10 @@
             - binary_sensor.gesturekitchen
             - input_boolean.touch_bedroom_activated
             - binary_sensor.ttp223bedroom_touch1
-            
+            - binary_sensor.ttp223bedroom_touch2
+            - binary_sensor.ttp223bedroom_touch3
+            - binary_sensor.ttp223bedroom_touch4
+
     automation_pixel_node_preferences:
         name: Einstellungen PixelNode
         entities:

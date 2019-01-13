@@ -415,6 +415,18 @@ sensor.sonoffpool_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
+binary_sensor.ttp223bedroom_touch1:
+    friendly_name: 'Touchsensor 1 Schlafzimmer'
+
+binary_sensor.ttp223bedroom_touch1:
+    friendly_name: 'Touchsensor 2 Schlafzimmer'
+
+binary_sensor.ttp223bedroom_touch1:
+    friendly_name: 'Touchsensor 3 Schlafzimmer'
+
+binary_sensor.ttp223bedroom_touch1:
+    friendly_name: 'Touchsensor 4 Schlafzimmer'
+
 sensor.ttp223bedroom_voltage:
     friendly_name: 'Touchsensor Schlafzimmer'
     entity_picture: /local/images/wemos_mini.jpg
