@@ -694,27 +694,27 @@
 
 #------------------------------------------------------------------------------
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/xmastree
-    name: "sonoff@xmastree_version"
+    state_topic: nodes@home/switch/sonoff/gallery1
+    name: "sonoff@gallery1_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/xmastree
-    name: "sonoff@xmastree_lastboot"
+    state_topic: nodes@home/switch/sonoff/gallery1
+    name: "sonoff@gallery1_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/xmastree/value/voltage
-    name: "sonoff@xmastree_voltage"
+    state_topic: nodes@home/switch/sonoff/gallery1/value/voltage
+    name: "sonoff@gallery1_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/xmastree/value/voltage
-    name: "sonoff@xmastree_lastvoltage"
+    state_topic: nodes@home/switch/sonoff/gallery1/value/voltage
+    name: "sonoff@gallery1_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 

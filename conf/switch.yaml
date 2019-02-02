@@ -77,9 +77,9 @@
     retain: true
 
   - platform: mqtt
-    name: "sonoff@xmastree_socket"
-    command_topic: nodes@home/switch/sonoff/xmastree/socket
-    state_topic: nodes@home/switch/sonoff/xmastree/socket/state
+    name: "sonoff@gallery1_socket"
+    command_topic: nodes@home/switch/sonoff/gallery1/socket
+    state_topic: nodes@home/switch/sonoff/gallery1/socket/state
     optimistic: false
     retain: true
 

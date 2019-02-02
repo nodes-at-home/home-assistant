@@ -768,24 +768,24 @@ sensor.sonoffk8200_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #-------------------------------------------------------------------------  -----
-switch.sonoffxmastree_socket:
-    friendly_name: Weihnachtsbaum
+switch.sonoffgallery1_socket:
+    friendly_name: Lichterkette
     icon: mdi:lightbulb
 
-sensor.sonoffxmastree_voltage:
-    friendly_name: 'Steckdose Weihnachtsbaum'
+sensor.sonoffgallery1_voltage:
+    friendly_name: 'Steckdose Lichterkette'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffxmastree_lastvoltage:
-    friendly_name: 'Steckdose Weihnachtsbaum'
+sensor.sonoffgallery1_lastvoltage:
+    friendly_name: 'Steckdose Lichterkette'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffxmastree_lastboot:
-    friendly_name: 'Steckdose Weihnachtsbaum'
+sensor.sonoffgallery1_lastboot:
+    friendly_name: 'Steckdose Lichterkette'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffxmastree_version:
-    friendly_name: 'Steckdose Weihnachtsbaum'
+sensor.sonoffgallery1_version:
+    friendly_name: 'Steckdose Lichterkette'
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
