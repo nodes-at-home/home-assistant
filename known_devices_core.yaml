@@ -1,14 +1,14 @@
 
 andreas_xperia:
   name: Andreas
-  mac: 28:3F:69:CB:36:EA
+  mac: 38:78:62:8B:11:34
   picture: /local/images/Glumanda_klein.jpg
   track: yes
   hide_if_away: no
 
 undine_xperia:
   name: Undine
-  mac: 58:48:22:F9:2A:13
+  mac: 38:78:62:7C:6A:BD
   picture: /local/images/Undine.jpg
   track: yes
   hide_if_away: no
