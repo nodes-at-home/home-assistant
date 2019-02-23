@@ -76,11 +76,11 @@
         name: Anzeige Textzeile 14 - Abfahrt S-Bahn 2
         initial: on
     pixel_node_msg15:
-        name: Anzeige Textzeile 15 - Wetter Urlaubsort
-        initial: off
-    pixel_node_msg16:
-        name: Anzeige Textzeile 16 - ...
+        name: Anzeige Textzeile 15 - Abfahrt Bus 893
         initial: on
+    pixel_node_msg16:
+        name: Anzeige Textzeile 16 - Wetter Urlaubsort
+        initial: off
     pixel_node_msg17:
         name: Anzeige Textzeile 17 - ...
         initial: on
