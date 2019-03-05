@@ -501,6 +501,7 @@
             - input_boolean.pixel_node_weekday
             - input_number.pixel_node_display_duration
             - input_number.pixel_node_display_brightness
+            - input_number.pixel_node_display_shakeperiod
             - input_boolean.pixel_node_msg0
             - input_boolean.pixel_node_msg1
             - input_boolean.pixel_node_msg2
@@ -518,7 +519,7 @@
             - input_boolean.pixel_node_msg14
             - input_boolean.pixel_node_msg15
             - input_boolean.pixel_node_msg16
-            # - input_boolean.pixel_node_msg17
+            - input_boolean.pixel_node_msg17
             # - input_boolean.pixel_node_msg18
             # - input_boolean.pixel_node_msg19
 

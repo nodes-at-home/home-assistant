@@ -476,6 +476,7 @@
                     "display": {
                         "duration": {{ states ( 'input_number.pixel_node_display_duration' ) | round ( 0 ) }},
                         "brightness": {{ states ( 'input_number.pixel_node_display_brightness' ) | round ( 0 ) }},
+                        "shakeperiod": {{ states ( 'input_number.pixel_node_display_shakeperiod' ) | round ( 0 ) }},
                         "time": "{{ states ( 'input_boolean.pixel_node_time' ) }}",
                         "date": "{{ states ( 'input_boolean.pixel_node_date' ) }}",
                         "weekday": "{{ states ( 'input_boolean.pixel_node_weekday' ) }}",

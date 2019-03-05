@@ -82,7 +82,7 @@
         name: Anzeige Textzeile 16 - Wetter Urlaubsort
         initial: off
     pixel_node_msg17:
-        name: Anzeige Textzeile 17 - ...
+        name: Anzeige Textzeile 17 - Spruch des Tages
         initial: on
     pixel_node_msg18:
         name: Anzeige Textzeile 18 - ...
