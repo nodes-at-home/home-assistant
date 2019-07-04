@@ -30,20 +30,6 @@
       - type: last_boot
 
 #------------------------------------------------------------------------------
-  # - platform: cpuspeed
-    # name: "CPU"
-
-  - platform: speedtest
-    name: "Speedtest"
-    minute:
-        - 0
-        - 30
-    monitored_conditions:
-        - ping
-        - download
-        - upload
-
-#------------------------------------------------------------------------------
   # - platform: octoprint
     # name: OctoPrint
     # monitored_conditions:

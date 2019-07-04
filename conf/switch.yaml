@@ -4,28 +4,28 @@
 ### 06.11.2016 split up
 ###
 
-  - platform: rpi_rf
-    gpio: 17
-    switches:
-        # Funksteckdose 1/3
-        heater_circulating_pump:
-            pulselength: 320
-            # code in rfNode.lua: 19514
-            code_on: 87121
-            # code in rfNode.lua: 19518
-            code_off: 87124
-        kitchen_short_led_strip:
-            pulselength: 320
-            # code in rfNode.lua: 19190
-            code_on: 86353
-            # code in rfNode.lua: 19194
-            code_off: 86356
-        kitchen_long_led_strip:
-            pulselength: 320
-            # code in rfNode.lua: 18218
-            code_on: 83281
-            # code in rfNode.lua: 18222
-            code_off: 83284
+  # - platform: rpi_rf
+    # gpio: 17
+    # switches:
+        # # Funksteckdose 1/3
+        # heater_circulating_pump:
+            # pulselength: 320
+            # # code in rfNode.lua: 19514
+            # code_on: 87121
+            # # code in rfNode.lua: 19518
+            # code_off: 87124
+        # kitchen_short_led_strip:
+            # pulselength: 320
+            # # code in rfNode.lua: 19190
+            # code_on: 86353
+            # # code in rfNode.lua: 19194
+            # code_off: 86356
+        # kitchen_long_led_strip:
+            # pulselength: 320
+            # # code in rfNode.lua: 18218
+            # code_on: 83281
+            # # code in rfNode.lua: 18222
+            # code_off: 83284
 
   - platform: mqtt
     name: "sonoff@utilityroom_pump"

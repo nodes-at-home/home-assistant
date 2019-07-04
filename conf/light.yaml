@@ -102,8 +102,9 @@
     optimistic: false
     retain: true
 
-  - platform: mqtt_json
+  - platform: mqtt
     name: "xmastree@dining_leds"
+    schema: json
     command_topic: nodes@home/light/xmastree/dining/leds
     state_topic: nodes@home/light/xmastree/dining/leds/state
     rgb: true
@@ -150,8 +151,9 @@
     optimistic: false
     retain: true
 
-  - platform: mqtt_json
+  - platform: mqtt
     name: ws2812@terrace1
+    schema: json
     command_topic: nodes@home/light/ws2812/terrace1/led
     state_topic: nodes@home/light/ws2812/terrace1/led/state
     brightness: true
@@ -160,8 +162,9 @@
     effect_list: [static, blink, random_color, rainbow]
     retain: true
 
-  - platform: mqtt_json
+  - platform: mqtt
     name: ws2812@terrace2
+    schema: json
     command_topic: nodes@home/light/ws2812/terrace2/led
     state_topic: nodes@home/light/ws2812/terrace2/led/state
     brightness: true

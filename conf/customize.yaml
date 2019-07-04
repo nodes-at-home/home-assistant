@@ -6,78 +6,78 @@
 ###
 
 #------------------------------------------------------------------------------
-sensor.DHT22terrace_temperature:
+sensor.DHT22_terrace_temperature:
     friendly_name: Temperatur Terrasse
 
-sensor.DHT22terrace_humidity:
+sensor.DHT22_terrace_humidity:
     friendly_name: Luftfeuchtigkeit
     entity_picture: /local/images/DHT22.jpg
 
-sensor.DHT22terrace_voltage:
+sensor.DHT22_terrace_voltage:
     friendly_name: Terrasse
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22terrace_lastvoltage:
+sensor.DHT22_terrace_lastvoltage:
     friendly_name: Terrasse
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22terrace_lastboot:
+sensor.DHT22_terrace_lastboot:
     friendly_name: Terrasse
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22terrace_version:
+sensor.DHT22_terrace_version:
     friendly_name: Terrasse
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-sensor.DHT22lounge_temperature:
+sensor.DHT22_lounge_temperature:
     friendly_name: Temperatur Wohnzimmer
 
-sensor.DHT22lounge_humidity:
+sensor.DHT22_lounge_humidity:
     friendly_name: Luftfeuchtigkeit
     entity_picture: /local/images/DHT22.jpg
 
-sensor.DHT22lounge_pressure:
+sensor.DHT22_lounge_pressure:
     friendly_name: Luftdruck
     # entity_picture: /local/images/DHT22.jpg
 
-sensor.DHT22lounge_voltage:
+sensor.DHT22_lounge_voltage:
     friendly_name: Wohnzimmer
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22lounge_lastvoltage:
+sensor.DHT22_lounge_lastvoltage:
     friendly_name: Wohnzimmer
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22lounge_lastboot:
+sensor.DHT22_lounge_lastboot:
     friendly_name: Wohnzimmer
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22lounge_version:
+sensor.DHT22_lounge_version:
     friendly_name: Wohnzimmer
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-sensor.DHT22roof_temperature:
+sensor.DHT22_roof_temperature:
     friendly_name: Temperatur Dachboden
 
-sensor.DHT22roof_humidity:
+sensor.DHT22_roof_humidity:
     friendly_name: Luftfeuchtigkeit
     entity_picture: /local/images/DHT22.jpg
 
-sensor.DHT22roof_voltage:
+sensor.DHT22_roof_voltage:
     friendly_name: Dachboden
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22roof_lastvoltage:
+sensor.DHT22_roof_lastvoltage:
     friendly_name: Dachboden
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22roof_lastboot:
+sensor.DHT22_roof_lastboot:
     friendly_name: Dachboden
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22roof_version:
+sensor.DHT22_roof_version:
     friendly_name: Dachboden
     entity_picture: /local/images/nodemcu.jpg
 
@@ -106,22 +106,22 @@ sensor.speedtest_upload:
     entity_picture: /local/images/o2dsl2.jpg
 
 #------------------------------------------------------------------------------
-light.rfhublounge_lampkitchenlongstrip:
+light.rfhub_lounge_lampkitchenlongstrip:
     friendly_name: Lange Ledleiste
 
-light.rfhublounge_lampkitchenshortstrip:
+light.rfhub_lounge_lampkitchenshortstrip:
     friendly_name: Kurze Ledleiste
 
-light.rfhublounge_lamploungeblackbowl:
+light.rfhub_lounge_lamploungeblackbowl:
     friendly_name: Bodenlampe
 
-light.rfhublounge_lamploungereading:
+light.rfhub_lounge_lamploungereading:
     friendly_name: Leselampe
 
-light.rfhublounge_lamploungewhiteball:
+light.rfhub_lounge_lamploungewhiteball:
     friendly_name: Stehlampe an der Couch
 
-light.rfhublounge_lampstudypillar:
+light.rfhub_lounge_lampstudypillar:
     friendly_name: Stehlampe am Drucker
 
 #------------------------------------------------------------------------------
@@ -138,49 +138,49 @@ switch.heater_circulating_pump:
     entity_picture: /local/images/circulation_pump.jpg
 
 #------------------------------------------------------------------------------
-sensor.rfhublounge_voltage:
+sensor.rfhub_lounge_voltage:
     friendly_name: RF Hub
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.rfhublounge_lastvoltage:
+sensor.rfhub_lounge_lastvoltage:
     friendly_name: RF Hub
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.rfhublounge_lastboot:
+sensor.rfhub_lounge_lastboot:
     friendly_name: RF Hub
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.rfhublounge_version:
+sensor.rfhub_lounge_version:
     friendly_name: RF Hub
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-cover.relaygarage:
+cover.relay_garage:
     friendly_name: Garagentor
 
-sensor.relaygarage_state:
+sensor.relay_garage_state:
     friendly_name: Garagentor
 
-sensor.relaygarage_temperature:
+sensor.relay_garage_temperature:
     friendly_name: Temperatur Garage
 
-sensor.relaygarage_humidity:
+sensor.relay_garage_humidity:
     friendly_name: Luftfeuchtigkeit
     entity_picture: /local/images/DHT22.jpg
 
-sensor.relaygarage_voltage:
+sensor.relay_garage_voltage:
     friendly_name: Garagentor
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.relaygarage_lastvoltage:
+sensor.relay_garage_lastvoltage:
     friendly_name: Garagentor
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.relaygarage_lastboot:
+sensor.relay_garage_lastboot:
     friendly_name: Garagentor
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.relaygarage_version:
+sensor.relay_garage_version:
     friendly_name: Garagentor
     entity_picture: /local/images/nodemcu.jpg
 
@@ -189,602 +189,602 @@ weblink.home_assistant:
     entity_picture: /local/images/home-assistant.jpg
 
 #------------------------------------------------------------------------------
-light.sonoffgarage_lamp:
+light.sonoff_garage_lamp:
     friendly_name: Außenlicht
 
-sensor.sonoffgarage_voltage:
+sensor.sonoff_garage_voltage:
     friendly_name: 'Außenlicht Garage'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffgarage_lastvoltage:
+sensor.sonoff_garage_lastvoltage:
     friendly_name: 'Außenlicht Garage'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffgarage_lastboot:
+sensor.sonoff_garage_lastboot:
     friendly_name: 'Außenlicht Garage'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffgarage_version:
+sensor.sonoff_garage_version:
     friendly_name: 'Außenlicht Garage'
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
-switch.sonoffutilityroom_pump:
+switch.sonoff_utilityroom_pump:
     friendly_name: 'Zirkulationspumpe Heizung'
     entity_picture: /local/images/circulation_pump.jpg
 
-sensor.sonoffutilityroom_voltage:
+sensor.sonoff_utilityroom_voltage:
     friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffutilityroom_lastvoltage:
+sensor.sonoff_utilityroom_lastvoltage:
     friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffutilityroom_lastboot:
+sensor.sonoff_utilityroom_lastboot:
     friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffutilityroom_version:
+sensor.sonoff_utilityroom_version:
     friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
-light.relaydining1_lamp:
+light.relay_dining1_lamp:
     friendly_name: Lampe linker Schrank
 
-sensor.relaydining1_voltage:
+sensor.relay_dining1_voltage:
     friendly_name: Schrankschalter links
     entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaydining1_lastvoltage:
+sensor.relay_dining1_lastvoltage:
     friendly_name: Schrankschalter links
     entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaydining1_lastboot:
+sensor.relay_dining1_lastboot:
     friendly_name: Schrankschalter links
     entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaydining1_version:
+sensor.relay_dining1_version:
     friendly_name: Schrankschalter links
     entity_picture: /local/images/wifi-relay.jpg
 
 #------------------------------------------------------------------------------
-light.relaybackyard_lamp:
+light.relay_backyard_lamp:
     friendly_name: Lampe
 
-sensor.relaybackyard_voltage:
+sensor.relay_backyard_voltage:
     friendly_name: Hinterhofschalter
     entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaybackyard_lastvoltage:
+sensor.relay_backyard_lastvoltage:
     friendly_name: Hinterhofschalter
     entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaybackyard_lastboot:
+sensor.relay_backyard_lastboot:
     friendly_name: Hinterhofschalter
     entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaybackyard_version:
+sensor.relay_backyard_version:
     friendly_name: Hinterhofschalter
     entity_picture: /local/images/wifi-relay.jpg
 
 #------------------------------------------------------------------------------
-light.relaydining2_lamp:
+light.relay_dining2_lamp:
     friendly_name: Lampe rechter Schrank
 
-sensor.relaydining2_voltage:
+sensor.relay_dining2_voltage:
     friendly_name: Schrankschalter rechts
     entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaydining2_lastvoltage:
+sensor.relay_dining2_lastvoltage:
     friendly_name: Schrankschalter rechts
     entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaydining2_lastboot:
+sensor.relay_dining2_lastboot:
     friendly_name: Schrankschalter rechts
     entity_picture: /local/images/wifi-relay.jpg
 
-sensor.relaydining2_version:
+sensor.relay_dining2_version:
     friendly_name: Schrankschalter rechts
     entity_picture: /local/images/wifi-relay.jpg
 
 #------------------------------------------------------------------------------
-light.xmastreedining_leds:
+light.xmastree_dining_leds:
     friendly_name: Bunter Weihnachtsbaum
 
-sensor.xmastreedining_voltage:
-    friendly_name: Bunter Weihnachtsbaum
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.xmastreedining_lastvoltage:
+sensor.xmastree_dining_voltage:
     friendly_name: Bunter Weihnachtsbaum
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.xmastreedining_lastboot:
+sensor.xmastree_dining_lastvoltage:
     friendly_name: Bunter Weihnachtsbaum
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.xmastreedining_version:
+sensor.xmastree_dining_lastboot:
+    friendly_name: Bunter Weihnachtsbaum
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.xmastree_dining_version:
     friendly_name: Bunter Weihnachtsbaum
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-binary_sensor.buttonindoor:
+binary_sensor.button_indoor:
     friendly_name: Drücker Innenlicht
 
-sensor.buttonindoor_voltage:
-    friendly_name: Drücker Innenlicht
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.buttonindoor_lastvoltage:
+sensor.button_indoor_voltage:
     friendly_name: Drücker Innenlicht
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonindoor_lastboot:
+sensor.button_indoor_lastvoltage:
     friendly_name: Drücker Innenlicht
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonindoor_version:
+sensor.button_indoor_lastboot:
+    friendly_name: Drücker Innenlicht
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.button_indoor_version:
     friendly_name: Drücker Innenlicht
     entity_picture: /local/images/esp-01.jpg
 
 #------------------------------------------------------------------------------
-binary_sensor.buttongarage:
+binary_sensor.button_garage:
     friendly_name: Drücker Garage
 
-sensor.buttongarage_voltage:
-    friendly_name: Drücker Garage
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.buttongarage_lastvoltage:
+sensor.button_garage_voltage:
     friendly_name: Drücker Garage
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttongarage_lastboot:
+sensor.button_garage_lastvoltage:
     friendly_name: Drücker Garage
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttongarage_version:
+sensor.button_garage_lastboot:
+    friendly_name: Drücker Garage
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.button_garage_version:
     friendly_name: Drücker Garage
     entity_picture: /local/images/esp-01.jpg
 
 #------------------------------------------------------------------------------
-binary_sensor.buttonpool:
+binary_sensor.button_pool:
     friendly_name: Drücker Pool
 
-sensor.buttonpool_voltage:
-    friendly_name: Drücker Pool
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.buttonpool_lastvoltage:
+sensor.button_pool_voltage:
     friendly_name: Drücker Pool
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonpool_lastboot:
+sensor.button_pool_lastvoltage:
     friendly_name: Drücker Pool
     entity_picture: /local/images/esp-01.jpg
 
-sensor.buttonpool_version:
+sensor.button_pool_lastboot:
+    friendly_name: Drücker Pool
+    entity_picture: /local/images/esp-01.jpg
+
+sensor.button_pool_version:
     friendly_name: Drücker Pool
     entity_picture: /local/images/esp-01.jpg
 
 #------------------------------------------------------------------------------
-sensor.pixelkitchen_voltage:
+sensor.pixel_kitchen_voltage:
     friendly_name: Pixeldisplay
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.pixelkitchen_lastvoltage:
+sensor.pixel_kitchen_lastvoltage:
     friendly_name: Pixeldisplay
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.pixelkitchen_lastboot:
+sensor.pixel_kitchen_lastboot:
     friendly_name: Pixeldisplay
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.pixelkitchen_version:
+sensor.pixel_kitchen_version:
     friendly_name: Pixeldisplay
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-switch.sonoffpool_socket:
+switch.sonoff_pool_socket:
     friendly_name: Poolpumpe
     entity_picture: /local/images/poolpump.jpg
 
-sensor.sonoffpool_voltage:
+sensor.sonoff_pool_voltage:
     friendly_name: 'Steckdose Pool'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffpool_lastvoltage:
+sensor.sonoff_pool_lastvoltage:
     friendly_name: 'Steckdose Pool'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffpool_lastboot:
+sensor.sonoff_pool_lastboot:
     friendly_name: 'Steckdose Pool'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffpool_version:
+sensor.sonoff_pool_version:
     friendly_name: 'Steckdose Pool'
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
-binary_sensor.ttp223bedroom_touch1:
+binary_sensor.ttp223_bedroom_touch1:
     friendly_name: 'Touchsensor 1 Schlafzimmer'
 
-binary_sensor.ttp223bedroom_touch2:
+binary_sensor.ttp223_bedroom_touch2:
     friendly_name: 'Touchsensor 2 Schlafzimmer'
 
-binary_sensor.ttp223bedroom_touch3:
+binary_sensor.ttp223_bedroom_touch3:
     friendly_name: 'Touchsensor 3 Schlafzimmer'
 
-binary_sensor.ttp223bedroom_touch4:
+binary_sensor.ttp223_bedroom_touch4:
     friendly_name: 'Touchsensor 4 Schlafzimmer'
 
-sensor.ttp223bedroom_voltage:
+sensor.ttp223_bedroom_voltage:
     friendly_name: 'Touchsensor Schlafzimmer'
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ttp223bedroom_lastvoltage:
+sensor.ttp223_bedroom_lastvoltage:
     friendly_name: 'Touchsensor Schlafzimmer'
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ttp223bedroom_lastboot:
+sensor.ttp223_bedroom_lastboot:
     friendly_name: 'Touchsensor Schlafzimmer'
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ttp223bedroom_version:
+sensor.ttp223_bedroom_version:
     friendly_name: 'Touchsensor Schlafzimmer'
     entity_picture: /local/images/wemos_mini.jpg
 
 #-------------------------------------------------------------------------  -----
-switch.sonoffbedroom_socket:
+switch.sonoff_bedroom_socket:
     friendly_name: Schrankbeleuchtung
     icon: mdi:lightbulb
 
-sensor.sonoffbedroom_voltage:
+sensor.sonoff_bedroom_voltage:
     friendly_name: 'Steckdose Schlafzimmerschrank'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffbedroom_lastvoltage:
+sensor.sonoff_bedroom_lastvoltage:
     friendly_name: 'Steckdose Schlafzimmerschrank'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffbedroom_lastboot:
+sensor.sonoff_bedroom_lastboot:
     friendly_name: 'Steckdose Schlafzimmerschrank'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffbedroom_version:
+sensor.sonoff_bedroom_version:
     friendly_name: 'Steckdose Schlafzimmerschrank'
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
-light.sonoffterrace_lamp:
+light.sonoff_terrace_lamp:
     friendly_name: Lampe
 
-sensor.sonoffterrace_voltage:
+sensor.sonoff_terrace_voltage:
     friendly_name: Terrasseschalter
     entity_picture: /local/images/sonoff_touch.jpg
 
-sensor.sonoffterrace_lastvoltage:
+sensor.sonoff_terrace_lastvoltage:
     friendly_name: Terrasseschalter
     entity_picture: /local/images/sonoff_touch.jpg
 
-sensor.sonoffterrace_lastboot:
+sensor.sonoff_terrace_lastboot:
     friendly_name: Terrasseschalter
     entity_picture: /local/images/sonoff_touch.jpg
 
-sensor.sonoffterrace_version:
+sensor.sonoff_terrace_version:
     friendly_name: Terrasseschalter
     entity_picture: /local/images/sonoff_touch.jpg
 
 #------------------------------------------------------------------------------
-light.sonoffyardgate_lamp:
+light.sonoff_yardgate_lamp:
     friendly_name: Außenlicht
 
-sensor.sonoffyardgate_voltage:
+sensor.sonoff_yardgate_voltage:
     friendly_name: 'Außenlicht Gartentor'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffyardgate_lastvoltage:
+sensor.sonoff_yardgate_lastvoltage:
     friendly_name: 'Außenlicht Gartentor'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffyardgate_lastboot:
+sensor.sonoff_yardgate_lastboot:
     friendly_name: 'Außenlicht Gartentor'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffyardgate_version:
+sensor.sonoff_yardgate_version:
     friendly_name: 'Außenlicht Gartentor'
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
-light.sonoffgallery_lamp:
+light.sonoff_gallery_lamp:
     friendly_name: Stehlampe
 
-sensor.sonoffgallery_voltage:
+sensor.sonoff_gallery_voltage:
     friendly_name: 'Stehlampe Galerie'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffgallery_lastvoltage:
+sensor.sonoff_gallery_lastvoltage:
     friendly_name: 'Stehlampe Galerie'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffgallery_lastboot:
+sensor.sonoff_gallery_lastboot:
     friendly_name: 'Stehlampe Galerie'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoffgallery_version:
+sensor.sonoff_gallery_version:
     friendly_name: 'Stehlampe Galerie'
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
-light.sonofflocation4_lamp:
+light.sonoff_location4_lamp:
     friendly_name: Sonoff Schalter
 
-sensor.sonofflocation4_voltage:
+sensor.sonoff_location4_voltage:
     friendly_name: 'Sonoff Schalter 4'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonofflocation4_lastvoltage:
+sensor.sonoff_location4_lastvoltage:
     friendly_name: 'Sonoff Schalter 4'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonofflocation4_lastboot:
+sensor.sonoff_location4_lastboot:
     friendly_name: 'Sonoff Schalter 4'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonofflocation4_version:
+sensor.sonoff_location4_version:
     friendly_name: 'Sonoff Schalter 4'
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
-light.sonoffkitchen_led:
+light.sonoff_kitchen_led:
     friendly_name: Ledlicht
 
-sensor.sonoffkitchen_voltage:
+sensor.sonoff_kitchen_voltage:
     friendly_name: 'Sonoff Led'
     entity_picture: /local/images/sonoff_led.jpg
 
-sensor.sonoffkitchen_lastvoltage:
+sensor.sonoff_kitchen_lastvoltage:
     friendly_name: 'Sonoff Led'
     entity_picture: /local/images/sonoff_led.jpg
 
-sensor.sonoffkitchen_lastboot:
+sensor.sonoff_kitchen_lastboot:
     friendly_name: 'Sonoff Led'
     entity_picture: /local/images/sonoff_led.jpg
 
-sensor.sonoffkitchen_version:
+sensor.sonoff_kitchen_version:
     friendly_name: 'Sonoff Led'
     entity_picture: /local/images/sonoff_led.jpg
 
 #------------------------------------------------------------------------------
-sensor.ds18b20pool_temperature:
+sensor.ds18b20_pool_temperature:
     friendly_name: Temperatur Pool
 
-sensor.ds18b20pool_voltage:
+sensor.ds18b20_pool_voltage:
     friendly_name: Pool
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ds18b20pool_lastvoltage:
+sensor.ds18b20_pool_lastvoltage:
     friendly_name: Pool
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ds18b20pool_lastboot:
+sensor.ds18b20_pool_lastboot:
     friendly_name: Pool
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ds18b20pool_version:
+sensor.ds18b20_pool_version:
     friendly_name: Pool
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-sensor.ds18b20brewery_temperature:
+sensor.ds18b20_brewery_temperature:
     friendly_name: Temperatur Nachguss
 
-sensor.ds18b20brewery_voltage:
+sensor.ds18b20_brewery_voltage:
     friendly_name: Sensor Nachguss
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ds18b20brewery_lastvoltage:
+sensor.ds18b20_brewery_lastvoltage:
     friendly_name: Sensor Nachguss
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ds18b20brewery_lastboot:
+sensor.ds18b20_brewery_lastboot:
     friendly_name: Sensor Nachguss
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ds18b20brewery_version:
+sensor.ds18b20_brewery_version:
     friendly_name: Sensor Nachguss
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-sensor.oledkitchen_voltage:
+sensor.oled_kitchen_voltage:
     friendly_name: OLED Display
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.oledkitchen_lastvoltage:
+sensor.oled_kitchen_lastvoltage:
     friendly_name: OLED Display
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.oledkitchen_lastboot:
+sensor.oled_kitchen_lastboot:
     friendly_name: OLED Display
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.oledkitchen_version:
+sensor.oled_kitchen_version:
     friendly_name: OLED Display
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-binary_sensor.gesturekitchen:
+binary_sensor.gesture_kitchen:
     friendly_name: Gestensensor Küche
 
-sensor.gesturekitchen_voltage:
-    friendly_name: Gestensensor Küche
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.gesturekitchen_lastvoltage:
+sensor.gesture_kitchen_voltage:
     friendly_name: Gestensensor Küche
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.gesturekitchen_lastboot:
+sensor.gesture_kitchen_lastvoltage:
     friendly_name: Gestensensor Küche
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.gesturekitchen_version:
+sensor.gesture_kitchen_lastboot:
+    friendly_name: Gestensensor Küche
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.gesture_kitchen_version:
     friendly_name: Gestensensor Küche
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-sensor.spindlefermenter_temperature:
+sensor.spindle_fermenter_temperature:
     friendly_name: Temperatur Gärspindel
 
-sensor.spindlefermenter_tilt:
+sensor.spindle_fermenter_tilt:
     friendly_name: Neigung Gärspindel
 
-sensor.spindlefermenter_voltage:
+sensor.spindle_fermenter_voltage:
     friendly_name: Spindel Gärfass
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.spindlefermenter_lastvoltage:
+sensor.spindle_fermenter_lastvoltage:
     friendly_name: Spindel Gärfass
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.spindlefermenter_lastboot:
+sensor.spindle_fermenter_lastboot:
     friendly_name: Spindel Gärfass
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.spindlefermenter_version:
+sensor.spindle_fermenter_version:
     friendly_name: Spindel Gärfass
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-sensor.ssrbrewery_temperature:
+sensor.ssr_brewery_temperature:
     friendly_name: Temperatur Sudkessel
 
-switch.ssrbrewery_socket1:
+switch.ssr_brewery_socket1:
     friendly_name: 'Heizung Sudkessel'
 
-switch.ssrbrewery_socket2:
+switch.ssr_brewery_socket2:
     friendly_name: 'Rührwerk Sudkessel'
 
-sensor.ssrbrewery_voltage:
+sensor.ssr_brewery_voltage:
     friendly_name: Schaltkasten Brauerei
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ssrbrewery_lastvoltage:
+sensor.ssr_brewery_lastvoltage:
     friendly_name: Schaltkasten Brauerei
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ssrbrewery_lastboot:
+sensor.ssr_brewery_lastboot:
     friendly_name: Schaltkasten Brauerei
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ssrbrewery_version:
+sensor.ssr_brewery_version:
     friendly_name: Schaltkasten Brauerei
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-sensor.electricityutilityroom_power:
+sensor.electricity_utilityroom_power:
     friendly_name: Elektroverbrauch
 
-sensor.electricityutilityroom_counter:
+sensor.electricity_utilityroom_counter:
     friendly_name: Elektrozähler
 
-sensor.electricityutilityroom_voltage:
-    friendly_name: Elektrozähler
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.electricityutilityroom_lastvoltage:
+sensor.electricity_utilityroom_voltage:
     friendly_name: Elektrozähler
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.electricityutilityroom_lastboot:
+sensor.electricity_utilityroom_lastvoltage:
     friendly_name: Elektrozähler
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.electricityutilityroom_version:
+sensor.electricity_utilityroom_lastboot:
+    friendly_name: Elektrozähler
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.electricity_utilityroom_version:
     friendly_name: Elektrozähler
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-light.ws2812terrace1:
+light.ws2812_terrace1:
     friendly_name: Lichterball
 
-sensor.ws2812terrace1_voltage:
-    friendly_name: Lichterball
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.ws2812terrace1_lastvoltage:
+sensor.ws2812_terrace1_voltage:
     friendly_name: Lichterball
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ws2812terrace1_lastboot:
+sensor.ws2812_terrace1_lastvoltage:
     friendly_name: Lichterball
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ws2812terrace1_version:
+sensor.ws2812_terrace1_lastboot:
+    friendly_name: Lichterball
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812_terrace1_version:
     friendly_name: Lichterball
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-light.ws2812terrace2:
+light.ws2812_terrace2:
     friendly_name: Lichterkette
 
-sensor.ws2812terrace2_voltage:
-    friendly_name: Lichterkette
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.ws2812terrace2_lastvoltage:
+sensor.ws2812_terrace2_voltage:
     friendly_name: Lichterkette
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ws2812terrace2_lastboot:
+sensor.ws2812_terrace2_lastvoltage:
     friendly_name: Lichterkette
     entity_picture: /local/images/wemos_mini.jpg
 
-sensor.ws2812terrace2_version:
+sensor.ws2812_terrace2_lastboot:
+    friendly_name: Lichterkette
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812_terrace2_version:
     friendly_name: Lichterkette
     entity_picture: /local/images/wemos_mini.jpg
 
 #-------------------------------------------------------------------------  -----
-switch.sonoffk8200_socket:
+switch.sonoff_k8200_socket:
     friendly_name: 3D Drucker K8200
     entity_picture: /local/images/k8200.jpg
 
-sensor.sonoffk8200_voltage:
+sensor.sonoff_k8200_voltage:
     friendly_name: 'Steckdose K8200'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffk8200_lastvoltage:
+sensor.sonoff_k8200_lastvoltage:
     friendly_name: 'Steckdose K8200'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffk8200_lastboot:
+sensor.sonoff_k8200_lastboot:
     friendly_name: 'Steckdose K8200'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffk8200_version:
+sensor.sonoff_k8200_version:
     friendly_name: 'Steckdose K8200'
     entity_picture: /local/images/sonoff_s20.jpg
 
 #-------------------------------------------------------------------------  -----
-switch.sonoffgallery1_socket:
+switch.sonoff_gallery1_socket:
     friendly_name: Lichterkette
     icon: mdi:lightbulb
 
-sensor.sonoffgallery1_voltage:
+sensor.sonoff_gallery1_voltage:
     friendly_name: 'Steckdose Lichterkette'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffgallery1_lastvoltage:
+sensor.sonoff_gallery1_lastvoltage:
     friendly_name: 'Steckdose Lichterkette'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffgallery1_lastboot:
+sensor.sonoff_gallery1_lastboot:
     friendly_name: 'Steckdose Lichterkette'
     entity_picture: /local/images/sonoff_s20.jpg
 
-sensor.sonoffgallery1_version:
+sensor.sonoff_gallery1_version:
     friendly_name: 'Steckdose Lichterkette'
     entity_picture: /local/images/sonoff_s20.jpg
 
