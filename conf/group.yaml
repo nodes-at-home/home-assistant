@@ -78,9 +78,9 @@
             - device_tracker.dominik_handy
             # - group.family_devices
             - sun.sun
-            - sensor.owm_temperature
-            - sensor.owm_humidity
-            - sensor.owm_pressure
+            #- sensor.owm_temperature
+            #- sensor.owm_humidity
+            #- sensor.owm_pressure
             # - binary_sensor.octoprint_printing
             - sensor.relay_garage_state
             - group.default_view_temperatures
@@ -569,31 +569,31 @@
             # - sensor.octoprint_target_bed_temp
 
 # ---------------------------------------------------------------------------
-    webcam:
-        name: Webcam
-        view: yes
-        entities:
-            - sensor.ip_webcam_audio_connections
-            - sensor.ip_webcam_battery_level
-            - sensor.ip_webcam_battery_temperature
-            - sensor.ip_webcam_battery_voltage
-            - sensor.ip_webcam_light_level
-            - sensor.ip_webcam_motion
-            - sensor.ip_webcam_pressure
-            - camera.ip_webcam
-            - group.webcam_switches
+    # webcam:
+        # name: Webcam
+        # view: yes
+        # entities:
+            # - sensor.ip_webcam_audio_connections
+            # - sensor.ip_webcam_battery_level
+            # - sensor.ip_webcam_battery_temperature
+            # - sensor.ip_webcam_battery_voltage
+            # - sensor.ip_webcam_light_level
+            # - sensor.ip_webcam_motion
+            # - sensor.ip_webcam_pressure
+            # - camera.ip_webcam
+            # - group.webcam_switches
             
-    webcam_switches:
-        name: Einstellungen
-        entities:
-            - switch.ip_webcam_exposure_lock
-            - switch.ip_webcam_focus
-            - switch.ip_webcam_frontfacing_camera
-            - switch.ip_webcam_gps_active
-            - switch.ip_webcam_night_vision
-            - switch.ip_webcam_overlay
-            - switch.ip_webcam_torch
-            - switch.ip_webcam_video_recording
-            - switch.ip_webcam_white_balance_lock
+    # webcam_switches:
+        # name: Einstellungen
+        # entities:
+            # - switch.ip_webcam_exposure_lock
+            # - switch.ip_webcam_focus
+            # - switch.ip_webcam_frontfacing_camera
+            # - switch.ip_webcam_gps_active
+            # - switch.ip_webcam_night_vision
+            # - switch.ip_webcam_overlay
+            # - switch.ip_webcam_torch
+            # - switch.ip_webcam_video_recording
+            # - switch.ip_webcam_white_balance_lock
 
 # ---------------------------------------------------------------------------

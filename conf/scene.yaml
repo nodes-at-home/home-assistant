@@ -6,14 +6,14 @@
 
     - name: kitchen_full_light
       entities:
-        light.sonoffkitchen_led:
+        light.sonoff_kitchen_led:
             state: ON
             brightness: 70
             color_temp: 300
 
     - name: kitchen_background_light
       entities:
-        light.sonoffkitchen_led:
+        light.sonoff_kitchen_led:
             state: ON
             brightness: 8
             color_temp: 500

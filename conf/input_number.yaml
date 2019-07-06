@@ -10,7 +10,7 @@
         min: 1
         max: 10
         step: 1
-        initial: 5
+        initial: 3
 
     pixel_node_display_brightness:
         name: Anzeigehelligkeit
@@ -18,7 +18,7 @@
         min: 0
         max: 15
         step: 1
-        initial: 0
+        initial: 2
 
     pixel_node_display_shakeperiod:
         name: Shakeperiode (ms)

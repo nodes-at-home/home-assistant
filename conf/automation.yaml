@@ -1,4 +1,5 @@
 ###
+###
 ### automation.yaml
 ###
 ### 04.11.2016 split up
@@ -67,7 +68,7 @@
     action:
       - service: switch.turn_on
         entity_id:
-            - switch.sonoffutilityroom_pump
+            - switch.sonoff_utilityroom_pump
 
   - alias: heater_circulating_pump_off
     hide_entity: False
@@ -80,7 +81,7 @@
     action:
       - service: switch.turn_off
         entity_id:
-            - switch.sonoffutilityroom_pump
+            - switch.sonoff_utilityroom_pump
 
 #------------------------------------------------------------------------------------
 # indoor lights
@@ -205,7 +206,7 @@
     hide_entity: false
     trigger:
       - platform: state
-        entity_id: binary_sensor.buttonindoor
+        entity_id: binary_sensor.button_indoor
         to: 'on'
     condition:
       - condition: state
@@ -213,7 +214,7 @@
         state: 'on'
       # indicator for indoor night lights
       - condition: state
-        entity_id: light.relaydining1_lamp
+        entity_id: light.relay_dining1_lamp
         state: 'off'
     action:
       - service: homeassistant.turn_on
@@ -224,7 +225,7 @@
     hide_entity: false
     trigger:
       - platform: state
-        entity_id: binary_sensor.buttonindoor
+        entity_id: binary_sensor.button_indoor
         to: 'on'
     condition:
       - condition: state
@@ -232,7 +233,7 @@
         state: 'on'
       # indicator for indoor night lights
       - condition: state
-        entity_id: light.relaydining1_lamp
+        entity_id: light.relay_dining1_lamp
         state: 'on'
     action:
       - service: homeassistant.turn_off
@@ -244,35 +245,35 @@
     hide_entity: false
     trigger:
       - platform: state
-        entity_id: binary_sensor.buttongarage
+        entity_id: binary_sensor.button_garage
         to: 'on'
     condition:
       - condition: state
         entity_id: input_boolean.button_garage_activated
         state: 'on'
       - condition: state
-        entity_id: cover.relaygarage
+        entity_id: cover.relay_garage
         state: 'closed'
     action:
       - service: cover.open_cover
-        entity_id: cover.relaygarage
+        entity_id: cover.relay_garage
 
   - alias: close_garage_door
     hide_entity: false
     trigger:
       - platform: state
-        entity_id: binary_sensor.buttongarage
+        entity_id: binary_sensor.button_garage
         to: 'on'
     condition:
       - condition: state
         entity_id: input_boolean.button_garage_activated
         state: 'on'
       - condition: state
-        entity_id: cover.relaygarage
+        entity_id: cover.relay_garage
         state: 'open'
     action:
       - service: cover.close_cover
-        entity_id: cover.relaygarage
+        entity_id: cover.relay_garage
 
 #------------------------------------------------------------------------------------
 # kitchen led
@@ -280,7 +281,7 @@
     hide_entity: false
     trigger:
       - platform: state
-        entity_id: binary_sensor.gesturekitchen
+        entity_id: binary_sensor.gesture_kitchen
         to: 'on'
     condition:
       - condition: state
@@ -289,15 +290,15 @@
       - condition: or
         conditions:
           - condition: state
-            entity_id: light.sonoffkitchen_led
+            entity_id: light.sonoff_kitchen_led
             state: 'off'
           - condition: and
             conditions:
               - condition: state
-                entity_id: light.sonoffkitchen_led
+                entity_id: light.sonoff_kitchen_led
                 state: 'on'
               - condition: template
-                value_template: '{{ states.light.sonoffkitchen_led.attributes.color_temp == 500 }}'
+                value_template: '{{ states.light.sonoff_kitchen_led.attributes.color_temp == 500 }}'
     action:
       - service: scene.turn_on
         entity_id: scene.kitchen_full_light
@@ -306,30 +307,30 @@
     hide_entity: false
     trigger:
       - platform: state
-        entity_id: binary_sensor.gesturekitchen
+        entity_id: binary_sensor.gesture_kitchen
         to: 'on'
     condition:
       - condition: state
         entity_id: input_boolean.gesture_kitchen_activated
         state: 'on'
       - condition: state
-        entity_id: light.sonoffkitchen_led
+        entity_id: light.sonoff_kitchen_led
         state: 'on'
       # indicator for indoor night lights
       - condition: state
-        entity_id: light.relaydining1_lamp
+        entity_id: light.relay_dining1_lamp
         state: 'off'
     action:
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
       - service: light.turn_off
-        entity_id: light.sonoffkitchen_led
+        entity_id: light.sonoff_kitchen_led
 
   - alias: kitchen_desk_light_off_at_night
     hide_entity: false
     trigger:
       - platform: state
-        entity_id: binary_sensor.gesturekitchen
+        entity_id: binary_sensor.gesture_kitchen
         to: 'on'
     condition:
       - condition: state
@@ -337,15 +338,15 @@
         state: 'on'
       # indicator for indoor night lights
       - condition: state
-        entity_id: light.relaydining1_lamp
+        entity_id: light.relay_dining1_lamp
         state: 'on'
       - condition: and
         conditions:
           - condition: state
-            entity_id: light.sonoffkitchen_led
+            entity_id: light.sonoff_kitchen_led
             state: 'on'
           - condition: template
-            value_template: '{{ states.light.sonoffkitchen_led.attributes.color_temp != 500 }}'
+            value_template: '{{ states.light.sonoff_kitchen_led.attributes.color_temp != 500 }}'
     action:
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
@@ -363,18 +364,18 @@
     action:
       - service: switch.turn_on
         entity_id:
-            - switch.sonoffpool_socket
+            - switch.sonoff_pool_socket
 #      - delay: 02:00:00
       - delay: "{{ '%02d' % (((states ( 'input_number.pool_pump_duration' ) | int) / 60) | int)  }}:{{ '%02d' % (states ( 'input_number.pool_pump_duration' ) | int % 60) }}"
       - service: switch.turn_off
         entity_id:
-            - switch.sonoffpool_socket
+            - switch.sonoff_pool_socket
 
   - alias: button_pool
     hide_entity: false
     trigger:
       - platform: state
-        entity_id: binary_sensor.buttonpool
+        entity_id: binary_sensor.button_pool
         to: 'on'
     condition:
       - condition: state
@@ -382,7 +383,7 @@
         state: 'on'
     action:
       - service: switch.toggle
-        entity_id: switch.sonoffpool_socket
+        entity_id: switch.sonoff_pool_socket
         
 #------------------------------------------------------------------------------------
 # bedroom
@@ -391,16 +392,16 @@
     hide_entity: False
     trigger:
       - platform: state
-        entity_id: binary_sensor.ttp223bedroom_touch1
+        entity_id: binary_sensor.ttp223_bedroom_touch1
         to: 'on'
       - platform: state
-        entity_id: binary_sensor.ttp223bedroom_touch2
+        entity_id: binary_sensor.ttp223_bedroom_touch2
         to: 'on'
       - platform: state
-        entity_id: binary_sensor.ttp223bedroom_touch3
+        entity_id: binary_sensor.ttp223_bedroom_touch3
         to: 'on'
       - platform: state
-        entity_id: binary_sensor.ttp223bedroom_touch4
+        entity_id: binary_sensor.ttp223_bedroom_touch4
         to: 'on'
     condition:
       - condition: state
@@ -409,7 +410,7 @@
     action:
       - service: switch.toggle
         entity_id:
-            - switch.sonoffbedroom_socket
+            - switch.sonoff_bedroom_socket
 
 #------------------------------------------------------------------------------------
 # pixel node

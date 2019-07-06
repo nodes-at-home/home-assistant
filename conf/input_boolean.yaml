@@ -44,10 +44,10 @@
         initial: on
     pixel_node_msg4:
         name: Anzeige Textzeile 4 - Temperaturvorhersage morgen
-        initial: off
+        initial: on
     pixel_node_msg5:
         name: Anzeige Textzeile 5 - Wettervorhersage morgen
-        initial: off
+        initial: on
     pixel_node_msg6:
         name: Anzeige Textzeile 6 - Info Müll
         initial: on
@@ -77,13 +77,13 @@
         initial: on
     pixel_node_msg15:
         name: Anzeige Textzeile 15 - Abfahrt Bus 893
-        initial: on
+        initial: off
     pixel_node_msg16:
         name: Anzeige Textzeile 16 - Wetter Urlaubsort
         initial: off
     pixel_node_msg17:
         name: Anzeige Textzeile 17 - Spruch des Tages
-        initial: on
+        initial: off
     pixel_node_msg18:
         name: Anzeige Textzeile 18 - ...
         initial: on

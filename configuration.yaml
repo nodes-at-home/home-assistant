@@ -28,10 +28,9 @@ homeassistant:
 # mqtt broker
 
 mqtt:
-  ###broker: localhost
-  broker: 10.0.75.1
+  broker: localhost
   port: 1883
-  client_id: home_assistant_mig
+  client_id: home_assistant_prod
   keepalive: 120
   protocol: 3.1.1
 
@@ -47,17 +46,17 @@ influxdb:
   password: ha
   include:
     entities:
-        - sensor.DHT22terrace_temperature
-        - sensor.DHT22roof_temperature
-        - sensor.DHT22lounge_temperature
-        - sensor.relaygarage_temperature
-        - sensor.DHT22terrace_humidity
-        - sensor.DHT22roof_humidity
-        - sensor.DHT22lounge_humidity
-        - sensor.relaygarage_humidity
-        - sensor.DHT22lounge_pressure
-        - sensor.ds18b20pool_temperature
-        - sensor.ds18b20pool_voltage
+        - sensor.DHT22_terrace_temperature
+        - sensor.DHT22_roof_temperature
+        - sensor.DHT22_lounge_temperature
+        - sensor.relay_garage_temperature
+        - sensor.DHT22_terrace_humidity
+        - sensor.DHT22_roof_humidity
+        - sensor.DHT22_lounge_humidity
+        - sensor.relay_garage_humidity
+        - sensor.DHT22_lounge_pressure
+        - sensor.ds18b20_pool_temperature
+        - sensor.ds18b20_pool_voltage
 
 # -------------------------------------------------------------------------------
 # weblinks
@@ -92,12 +91,6 @@ device_tracker:
     consider_home: 180
     interval_seconds: 60
     track_new_devices: false
-
-  # - platform: fritz
-    # host: 192.168.2.3
-    # consider_home: 180
-    # interval_seconds: 60
-    # track_new_devices: false
 
   # - platform: owntracks
     # max_gps_accuracy: 1500
