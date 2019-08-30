@@ -1,0 +1,10 @@
+###
+### 22.08.2019 split up
+###
+
+name: Shakeperiode (ms)
+mode: slider
+min: 10
+max: 300
+step: 10
+initial: 130

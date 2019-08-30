@@ -1,0 +1,13 @@
+###
+### 22.08.2019 split up
+###
+
+name: Server (Raspberry Pi 3)
+entities:
+    # - weblink.home_assistant
+    - sensor.processor_use
+    - sensor.memory_use
+    - sensor.memory_use_percent
+    - sensor.disk_use
+    - sensor.disk_use_percent
+    - sensor.last_boot

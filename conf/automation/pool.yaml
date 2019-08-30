@@ -1,0 +1,34 @@
+###
+### 22.08.2019 split up
+###
+
+  - alias: pool_pump_on_off
+    hide_entity: False
+    trigger:
+      - platform: time
+        at: '11:00:00'
+      - platform: time
+        at: '20:00:00'
+    action:
+      - service: switch.turn_on
+        entity_id:
+            - switch.sonoff_pool_socket
+#      - delay: 02:00:00
+      - delay: "{{ '%02d' % (((states ( 'input_number.pool_pump_duration' ) | int) / 60) | int)  }}:{{ '%02d' % (states ( 'input_number.pool_pump_duration' ) | int % 60) }}"
+      - service: switch.turn_off
+        entity_id:
+            - switch.sonoff_pool_socket
+
+  - alias: button_pool
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.button_pool
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.button_pool_activated
+        state: 'on'
+    action:
+      - service: switch.toggle
+        entity_id: switch.sonoff_pool_socket

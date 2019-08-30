@@ -1,0 +1,32 @@
+###
+### 22.08.2019 split up
+###
+
+name: Einstellungen PixelNode
+entities:
+    - input_boolean.pixel_node_time
+    - input_boolean.pixel_node_date
+    - input_boolean.pixel_node_weekday
+    - input_number.pixel_node_display_duration
+    - input_number.pixel_node_display_brightness
+    - input_number.pixel_node_display_shakeperiod
+    - input_boolean.pixel_node_msg0
+    - input_boolean.pixel_node_msg1
+    - input_boolean.pixel_node_msg2
+    - input_boolean.pixel_node_msg3
+    - input_boolean.pixel_node_msg4
+    - input_boolean.pixel_node_msg5
+    - input_boolean.pixel_node_msg6
+    - input_boolean.pixel_node_msg7
+    - input_boolean.pixel_node_msg8
+    - input_boolean.pixel_node_msg9
+    - input_boolean.pixel_node_msg10
+    - input_boolean.pixel_node_msg11
+    - input_boolean.pixel_node_msg12
+    - input_boolean.pixel_node_msg13
+    - input_boolean.pixel_node_msg14
+    - input_boolean.pixel_node_msg15
+    - input_boolean.pixel_node_msg16
+    - input_boolean.pixel_node_msg17
+    # - input_boolean.pixel_node_msg18
+    # - input_boolean.pixel_node_msg19

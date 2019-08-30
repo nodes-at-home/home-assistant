@@ -1,0 +1,7 @@
+###
+### 22.08.2019 split up
+###
+
+name: Gartentor
+entities:
+    - light.sonoff_yardgate_lamp

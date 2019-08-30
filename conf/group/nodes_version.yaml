@@ -1,0 +1,40 @@
+###
+### 22.08.2019 split up
+###
+
+name: Version
+entities:
+    - sensor.DHT22_lounge_version
+    - sensor.DHT22_roof_version
+    - sensor.DHT22_terrace_version
+    - sensor.rfhub_lounge_version
+    - sensor.relay_garage_version
+    - sensor.sonoff_garage_version
+    - sensor.relay_backyard_version
+    - sensor.sonoff_utilityroom_version
+    # - sensor.xmastree_dining_version
+    - sensor.sonoff_pool_version
+    - sensor.sonoff_terrace_version
+    - sensor.relay_dining1_version
+    - sensor.relay_dining2_version
+    - sensor.sonoff_yardgate_version
+    - sensor.sonoff_gallery_version
+    - sensor.ds18b20_pool_version
+    - sensor.sonoff_kitchen_version
+    - sensor.gesture_kitchen_version
+    - sensor.ttp223_bedroom_version
+    - sensor.sonoff_bedroom_version
+    - sensor.sonoff_k8200_version
+    - sensor.sonoff_gallery1_version
+    - sensor.ds18b20_brewery_version
+    - sensor.ssr_brewery_version
+    - sensor.spindle_fermenter_version
+    - sensor.sonoff_location4_version
+    - sensor.button_indoor_version
+    - sensor.button_garage_version
+    - sensor.button_pool_version
+    - sensor.pixel_kitchen_version
+    #- sensor.oled_kitchen_version
+    - sensor.electricity_utilityroom_version
+    - sensor.ws2812_terrace1_version
+    - sensor.ws2812_terrace2_version

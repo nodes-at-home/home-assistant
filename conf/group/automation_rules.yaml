@@ -1,0 +1,31 @@
+###
+### 22.08.2019 split up
+###
+
+name: Regeln
+entities:
+  # - group.all_automations
+    - automation.heater_circulating_pump_on
+    - automation.heater_circulating_pump_off
+    - automation.outdoor_lights_on_at_night
+    - automation.outdoor_lights_off_at_morning
+    - automation.indoor_lights_on_at_coming_home_or_sunset
+    - automation.indoor_lights_by_night_on_at_coming_home            
+    - automation.indoor_lights_off_at_getting_out_or_sunrise
+    - automation.indoor_lights_off_when_tv_switched_off
+    - automation.indoor_lights_off_after_random_delay
+    - automation.indoor_lights_on_by_button
+    - automation.indoor_lights_off_by_button
+    - automation.bedroom_lights_toggle
+    - automation.open_garage_door
+    - automation.close_garage_door
+    - automation.pixel_node_preferences
+    #- automation.display_show_outdoor_temperature
+    #- automation.display_show_indoor_temperature
+    #- automation.display_show_pool_temperature
+    - automation.kitchen_desk_light_on
+    - automation.kitchen_desk_light_off
+    - automation.kitchen_desk_light_off_at_night
+    - automation.button_pool
+    - automation.pool_pump_on_off
+    - automation.send_effect_delay

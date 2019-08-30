@@ -1,0 +1,13 @@
+###
+### 22.08.2019 split up
+###
+
+name: Terrasse
+entities:
+    - light.sonoff_terrace_lamp
+    - sensor.DHT22_terrace_temperature
+    - sensor.DHT22_terrace_humidity
+    - sensor.ds18b20_pool_temperature
+    - switch.sonoff_pool_socket
+    - light.ws2812_terrace1
+    - light.ws2812_terrace2

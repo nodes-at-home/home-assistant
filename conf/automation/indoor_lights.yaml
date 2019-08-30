@@ -1,0 +1,117 @@
+###
+### 22.08.2019 split up
+###
+
+  - alias: indoor_lights_on_at_coming_home_or_sunset
+    hide_entity: False
+    trigger:
+      - platform: state
+        entity_id: group.family_devices
+        to: 'home'
+      - platform: sun
+        event: sunset
+        offset: "00:00:00"
+    condition:
+      - condition: sun
+        after: sunset
+        after_offset: "00:00:00"
+      - condition: time
+        before: '22:00:00'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: group.family_devices
+            state: 'home'
+          - condition: state
+            entity_id: input_boolean.light_simulation
+            state: 'on'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: 
+            - group.automatic_indoor_lights
+
+  - alias: indoor_lights_by_night_on_at_coming_home
+    hide_entity: False
+    trigger:
+      - platform: state
+        entity_id: group.family_devices
+        to: 'home'
+    condition:
+      - condition: sun
+        after: sunset
+        after_offset: "00:00:00"
+      - condition: time
+        after: '22:00:00'
+        before: '04:00:00'
+      - condition: state
+        entity_id: group.family_devices
+        state: 'home'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: 
+            - group.automatic_indoor_lights_by_night
+      - delay: 00:15:00
+      - service: homeassistant.turn_off
+        entity_id: 
+            - group.automatic_indoor_lights_by_night
+
+  - alias: indoor_lights_off_at_getting_out_or_sunrise
+    hide_entity: False
+    trigger:
+      - platform: state
+        entity_id: group.family_devices
+        to: 'not_home'
+      - platform: sun
+        event: sunrise
+        offset: "+00:00:00"
+    action:
+      - service: scene.turn_on
+        entity_id: scene.kitchen_background_light
+      - service: homeassistant.turn_off
+        entity_id: 
+            - group.automatic_indoor_lights
+            - group.automatic_indoor_lights_immediatly_switched_off_extra
+
+  - alias: indoor_lights_off_when_tv_switched_off
+    hide_entity: False
+    trigger:
+        platform: state
+        entity_id: media_player.sony_bravia_tv
+        from: "on"
+        to: "off"
+        for:
+            minutes: 1
+    condition:
+      - condition: time
+        after: '21:00:00'
+        before: '06:00:00'
+    action:
+      - service: scene.turn_on
+        entity_id: scene.kitchen_background_light
+      - service: homeassistant.turn_off
+        entity_id: 
+            - group.automatic_indoor_lights_immediatly_switched
+            - group.automatic_indoor_lights_immediatly_switched_off_extra
+      - delay: 00:07:00
+      - service: homeassistant.turn_off
+        entity_id: 
+            - group.automatic_indoor_lights_delayed_switched
+
+  - alias: indoor_lights_off_after_random_delay
+    hide_entity: False
+    trigger:
+      - platform: time
+        at: '22:00:00'
+    condition:
+      - condition: state
+        entity_id: input_boolean.light_simulation
+        state: 'on'
+    action:
+      # switch off between 22:00 amd 24:00
+      - delay: '{{ ( range ( 0, 2 ) | random | int ) }}:{{ ( range ( 0, 60 ) | random | int ) }}:00'
+      - service: scene.turn_on
+        entity_id: scene.kitchen_background_light
+      - service: homeassistant.turn_off
+        entity_id: 
+            - group.automatic_indoor_lights
+            - group.automatic_indoor_lights_immediatly_switched_off_extra

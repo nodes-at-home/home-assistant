@@ -1,0 +1,55 @@
+###
+### 22.08.2019 split up
+###
+
+  - alias: heater_circulating_pump_on
+    hide_entity: False
+    trigger:                    # any event
+      - platform: time
+        at: '05:30:00'
+      - platform: time
+        at: '08:00:00'
+      - platform: state
+        entity_id: group.family_devices
+        to: 'home'
+    condition:                  # all conditions
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: group.family_devices
+            state: 'home'
+          - condition: or
+            conditions:
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: binary_sensor.workday_sensor
+                    state: 'on'
+                  - condition: time
+                    after: '05:30:00'
+                    before: '22:00:00'
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: binary_sensor.workday_sensor
+                    state: 'off'
+                  - condition: time
+                    after: '08:00:00'
+                    before: '22:00:00'
+    action:
+      - service: switch.turn_on
+        entity_id:
+            - switch.sonoff_utilityroom_pump
+
+  - alias: heater_circulating_pump_off
+    hide_entity: False
+    trigger:                    # any event, no condition necessary
+      - platform: time
+        at: '22:00:00'
+      - platform: state
+        entity_id: group.family_devices
+        to: 'not_home'
+    action:
+      - service: switch.turn_off
+        entity_id:
+            - switch.sonoff_utilityroom_pump

@@ -1,0 +1,46 @@
+###
+### 22.08.2019 split up
+###
+
+  - platform: mqtt
+    state_topic: nodes@home/cover/relay/garage/value/temperature
+    name: "relay@garage_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/cover/relay/garage/value/humidity
+    name: "relay@garage_humidity"
+    qos: 0
+    unit_of_measurement: "%"
+    value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/cover/relay/garage/value/voltage
+    name: "relay@garage_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/cover/relay/garage/value/voltage
+    name: "relay@garage_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/cover/relay/garage
+    name: "relay@garage_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/cover/relay/garage
+    name: "relay@garage_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    name: "relay@garage_state"
+    state_topic: nodes@home/cover/relay/garage/value/position

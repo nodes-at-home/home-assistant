@@ -1,0 +1,8 @@
+###
+### 22.08.2019 split up
+###
+
+  - platform: mqtt
+    name: "ttp223@bedroom_touch4"
+    state_topic: nodes@home/sensor/ttp223/bedroom/touch4/value/state
+    qos: 0

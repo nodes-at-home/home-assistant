@@ -1,0 +1,35 @@
+###
+### 22.08.2019 split up
+###
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/pool/value/temperature
+    name: "ds18b20@pool_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
+    name: "ds18b20@pool_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
+    name: "ds18b20@pool_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/pool
+    name: "ds18b20@pool_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/ds18b20/pool
+    name: "ds18b20@pool_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

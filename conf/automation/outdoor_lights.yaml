@@ -1,0 +1,25 @@
+###
+### 22.08.2019 split up
+###
+
+  - alias: outdoor_lights_on_at_night
+    hide_entity: False
+    trigger:
+      - platform: sun
+        event: sunset
+        offset: "00:00:00"
+    action:
+      - service: light.turn_on
+        entity_id:
+            - group.automatic_outdoor_lights
+
+  - alias: outdoor_lights_off_at_morning
+    hide_entity: False
+    trigger:
+      - platform: sun
+        event: sunrise
+        offset: "+00:00:00"
+    action:
+      - service: light.turn_off
+        entity_id:
+            - group.automatic_outdoor_lights

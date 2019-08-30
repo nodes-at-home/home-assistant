@@ -77,11 +77,6 @@ media_player:
     host: 192.168.2.104
 
 # -------------------------------------------------------------------------------
-# octoprint:
-  # host: 192.168.2.114
-  # api_key: !secret api_key_octoprint
-
-# -------------------------------------------------------------------------------
 # tracker
 
 device_tracker:
@@ -106,33 +101,6 @@ speedtestdotnet:
     - download
     - upload
 
-# -------------------------------------------------------------------------------
-# webcam
-
-# android_ip_webcam:
-  # - host: 192.168.2.115
-    # port: 8000
-    # name: ip_webcam
-    # motion_sensor: true
-    # sensors:
-      # - audio_connections
-      # - battery_level
-      # - battery_temp
-      # - battery_voltage
-      # - light
-      # - motion
-      # - pressure
-    # switches:
-      # - exposure_lock
-      # - ffc
-      # - focus
-      # - gps_active
-      # - night_vision
-      # - overlay
-      # - torch
-      # - whitebalance_lock
-      # - video_recording
-      
 # -------------------------------------------------------------------------------
 # define all zones explicite and manual
 # pictures from https://materialdesignicons.com/
@@ -207,50 +175,15 @@ sun:
 
 # -------------------------------------------------------------------------------
 #
-sensor: !include conf/sensor.yaml
-
-# -------------------------------------------------------------------------------
-#
-binary_sensor: !include conf/binary_sensor.yaml
-
-# -------------------------------------------------------------------------------
-#
-light: !include conf/light.yaml
-
-# -------------------------------------------------------------------------------
-#
-switch: !include conf/switch.yaml
-
-# -------------------------------------------------------------------------------
-#
-cover:
-  - platform: mqtt
-    name: "relay@garage"
-    state_topic: nodes@home/cover/relay/garage/value/position
-    command_topic: nodes@home/cover/relay/garage/command
-    state_open: "open"
-    state_closed: "closed"
-    retain: false
-    optimistic: false
-
-# -------------------------------------------------------------------------------
-#
-group: !include conf/group.yaml
-
-# -------------------------------------------------------------------------------
-#
-input_boolean: !include conf/input_boolean.yaml
-
-# -------------------------------------------------------------------------------
-#
-scene: !include conf/scene.yaml
-
-# -------------------------------------------------------------------------------
-#
-input_number: !include conf/input_number.yaml
-
-# -------------------------------------------------------------------------------
-#
-automation: !include conf/automation.yaml
+sensor:         !include_dir_merge_list     conf/sensor
+binary_sensor:  !include_dir_merge_list     conf/binary_sensor
+light:          !include_dir_merge_list     conf/light
+switch:         !include_dir_merge_list     conf/switch
+cover:          !include_dir_merge_list     conf/cover
+group:          !include_dir_named          conf/group
+input_boolean:  !include_dir_merge_named    conf/input_boolean
+scene:          !include                    conf/scene.yaml
+input_number:   !include_dir_named          conf/input_number
+automation:     !include_dir_merge_list     conf/automation
 
 # -------------------------------------------------------------------------------

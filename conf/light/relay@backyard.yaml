@@ -1,0 +1,10 @@
+###
+### 22.08.2019 split up
+###
+
+  - platform: mqtt
+    name: "relay@backyard_lamp"
+    command_topic: nodes@home/switch/relay/backyard/lamp
+    state_topic: nodes@home/switch/relay/backyard/lamp/state
+    optimistic: false
+    retain: true

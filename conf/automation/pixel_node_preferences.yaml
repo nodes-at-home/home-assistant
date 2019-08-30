@@ -1,0 +1,98 @@
+###
+### 22.08.2019 split up
+###
+
+  - alias: pixel_node_preferences
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: input_boolean.pixel_node_time
+      - platform: state
+        entity_id: input_boolean.pixel_node_date
+      - platform: state
+        entity_id: input_boolean.pixel_node_weekday
+      - platform: state
+        entity_id: input_number.pixel_node_display_duration
+      - platform: state
+        entity_id: input_number.pixel_node_display_brightness
+      - platform: state
+        entity_id: input_number.pixel_node_display_shakeperiod
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg0
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg1
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg2
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg3
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg4
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg5
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg6
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg7
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg8
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg9
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg10
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg11
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg12
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg13
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg14
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg15
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg16
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg17
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg18
+      - platform: state
+        entity_id: input_boolean.pixel_node_msg19
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/display/pixel/kitchen/command
+            payload: >
+                {
+                    "display": {
+                        "duration": {{ states ( 'input_number.pixel_node_display_duration' ) | round ( 0 ) }},
+                        "brightness": {{ states ( 'input_number.pixel_node_display_brightness' ) | round ( 0 ) }},
+                        "shakeperiod": {{ states ( 'input_number.pixel_node_display_shakeperiod' ) | round ( 0 ) }},
+                        "time": "{{ states ( 'input_boolean.pixel_node_time' ) }}",
+                        "date": "{{ states ( 'input_boolean.pixel_node_date' ) }}",
+                        "weekday": "{{ states ( 'input_boolean.pixel_node_weekday' ) }}",
+                        "enabled": [
+                            "{{ states ( 'input_boolean.pixel_node_msg0' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg1' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg2' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg3' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg4' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg5' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg6' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg7' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg8' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg9' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg10' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg11' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg12' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg13' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg14' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg15' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg16' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg17' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg18' ) }}",
+                            "{{ states ( 'input_boolean.pixel_node_msg19' ) }}"
+                        ]
+                    }
+                }
+            qos: 0
+            retain: true
