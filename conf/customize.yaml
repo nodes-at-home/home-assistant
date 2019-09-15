@@ -190,7 +190,7 @@ weblink.home_assistant:
 
 #------------------------------------------------------------------------------
 light.sonoff_garage_lamp:
-    friendly_name: Außenlicht
+    friendly_name: Außenlicht Garage
 
 sensor.sonoff_garage_voltage:
     friendly_name: 'Außenlicht Garage'
@@ -251,7 +251,7 @@ sensor.relay_dining1_version:
 
 #------------------------------------------------------------------------------
 light.relay_backyard_lamp:
-    friendly_name: Lampe
+    friendly_name: Außenlicht Hinterhof
 
 sensor.relay_backyard_voltage:
     friendly_name: Hinterhofschalter
@@ -459,7 +459,7 @@ sensor.sonoff_bedroom_version:
 
 #------------------------------------------------------------------------------
 light.sonoff_terrace_lamp:
-    friendly_name: Lampe
+    friendly_name: Außenlicht Terasse
 
 sensor.sonoff_terrace_voltage:
     friendly_name: Terrasseschalter
@@ -479,7 +479,7 @@ sensor.sonoff_terrace_version:
 
 #------------------------------------------------------------------------------
 light.sonoff_yardgate_lamp:
-    friendly_name: Außenlicht
+    friendly_name: Außenlicht Gartentor
 
 sensor.sonoff_yardgate_voltage:
     friendly_name: 'Außenlicht Gartentor'
@@ -539,7 +539,7 @@ sensor.sonoff_location4_version:
 
 #------------------------------------------------------------------------------
 light.sonoff_kitchen_led:
-    friendly_name: Ledlicht
+    friendly_name: Küchenarbeitslicht
 
 sensor.sonoff_kitchen_voltage:
     friendly_name: 'Sonoff Led'

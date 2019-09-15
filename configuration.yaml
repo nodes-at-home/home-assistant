@@ -70,6 +70,13 @@ weblink:
       icon: mdi:printer-3d
 
 # -------------------------------------------------------------------------------
+# weather platform for lovelace card
+
+weather:
+  - platform: openweathermap
+    api_key: !secret api_key_openweather
+
+# -------------------------------------------------------------------------------
 # media player
 
 media_player:
@@ -114,6 +121,9 @@ zone: !include conf/zone.yaml
 # -------------------------------------------------------------------------------
 # Enables the frontend
 frontend:
+
+lovelace:
+    mode: yaml
 
 # -------------------------------------------------------------------------------
 http:

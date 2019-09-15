@@ -2,7 +2,7 @@
 ### 22.08.2019 split up
 ###
 
-name: 'Nachtlichter'
+name: 'Außenlichter'
 entities:
     - light.sonoff_terrace_lamp
     - light.relay_backyard_lamp

@@ -1,0 +1,568 @@
+title: Mein Zuhause
+views:
+
+  - title: Überblick
+    path: home
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: picture-elements
+                image: /local/images/blank_100x5.png
+                title: Anwesenheiten
+                elements:
+                  - type: state-badge
+                    entity: device_tracker.andreas_xperia
+                    style:
+                      top: 40%
+                      left: 5%
+                  - type: state-badge
+                    entity: device_tracker.undine_xperia
+                    style:
+                      top: 40%
+                      left: 9%
+                  - type: state-badge
+                    entity: device_tracker.nora_galaxy
+                    style:
+                      top: 40%
+                      left: 13%
+                  - type: state-badge
+                    entity: device_tracker.nina_huawei
+                    style:
+                      top: 40%
+                      left: 17%
+                  - type: state-badge
+                    entity: device_tracker.niklas_galaxy
+                    style:
+                      top: 40%
+                      left: 21%
+                  - type: state-badge
+                    entity: device_tracker.dominik_handy
+                    style:
+                      top: 40%
+                      left: 25%
+                  - type: state-badge
+                    entity: sun.sun
+                    style:
+                      top: 40%
+                      left: 92%
+                  - type: state-badge
+                    entity: sensor.relay_garage_state
+                    style:
+                      top: 40%
+                      left: 96%
+          - type: horizontal-stack
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: horizontal-stack
+                    cards:
+                      - type: weather-forecast
+                        name: Wettervorhersage
+                        entity: weather.openweathermap
+                  - type: horizontal-stack
+                    cards:
+                      - type: sensor
+                        entity: sensor.dht22_terrace_temperature
+                        graph: line
+                        detail: 2
+                        hours_to_show: 24
+                      - type: sensor
+                        icon: mdi:show_chart
+                        entity: sensor.dht22_lounge_pressure
+                        graph: line
+                        detail: 2
+                        hours_to_show: 24
+                      - type: sensor
+                        entity: sensor.ds18b20_pool_temperature
+                        graph: line
+                        detail: 2
+                        hours_to_show: 24
+              - type: vertical-stack
+                cards:
+                  - type: horizontal-stack
+                    cards:
+                      - type: entity-button
+                        entity: group.automatic_indoor_lights
+                        icon: mdi:lightbulb
+                        tap_action:
+                            action: toggle
+                        hold_action:
+                            action: more-info
+                      - type: entity-button
+                        entity: group.automatic_outdoor_lights
+                        icon: mdi:lightbulb
+                  - type: horizontal-stack
+                    cards:
+                      - type: markdown
+                        content: "Weiter Aktionen"
+                  - type: horizontal-stack
+                    cards:
+                      - type: light
+                        entity: light.sonoff_kitchen_led
+                      - type: light
+                        entity: light.ws2812_terrace1
+                      - type: light
+                        entity: light.ws2812_terrace2
+                      - type: entity-button
+                        entity: switch.sonoff_k8200_socket
+                        icon_height: ab
+          # - type: horizontal-stack
+            # cards:
+              # - type: media-control
+                # entity: media_player.sony_bravia_tv
+                
+  - title: Innen
+    path: indoor
+    panel: false
+    cards:
+      - type: entities
+        title: Erdgeschoss
+        show_header_toggle: true
+        entities:
+          - light.rfhub_lounge_lampkitchenshortstrip
+          - light.rfhub_lounge_lampkitchenlongstrip
+          - light.sonoff_kitchen_led
+          - type: divider
+          - light.relay_dining1_lamp
+          - light.relay_dining2_lamp
+          # Xmas
+          # - light.rfhub_lounge_noname1c
+          # - light.xmastreedining_leds
+          - type: divider
+          - light.rfhub_lounge_lamploungewhiteball
+          - light.rfhub_lounge_lamploungeblackbowl
+          - light.rfhub_lounge_lamploungereading
+          - light.rfhub_lounge_lampstudypillar
+          - switch.sonoff_k8200_socket
+          - type: divider
+          - light.sonoff_gallery_lamp
+          - type: divider
+          - switch.sonoff_utilityroom_pump
+          # - sensor.electricity_utilityroom_power
+          # - sensor.electricity_utilityroom_counter
+      - type: entities
+        title: Obergeschoss
+        show_header_toggle: true
+        entities:
+          - switch.sonoff_bedroom_socket
+          - switch.sonoff_gallery1_socket
+    
+  - title: Außen
+    path: outdoor
+    panel: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            title: Garagentor
+            show_header_toggle: true
+            entities:
+                - cover.relay_garage
+                - sensor.relay_garage_state
+          - type: entities
+            title: Außenlichter
+            show_header_toggle: true
+            entities:
+                - light.sonoff_terrace_lamp
+                - light.relay_backyard_lamp
+                - light.sonoff_garage_lamp
+                - light.sonoff_yardgate_lamp
+                - light.ws2812_terrace1
+                - light.ws2812_terrace2
+          - type: entities
+            title: Pool
+            show_header_toggle: false
+            entities:
+                - switch.sonoff_pool_socket
+    
+  - title: Sensorwerte
+    path: values
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.dht22_terrace_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                icon: mdi:show_chart
+                entity: sensor.dht22_lounge_pressure
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.ds18b20_pool_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.dht22_roof_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.relay_garage_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_lounge_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.dht22_lounge_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_roof_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.relay_garage_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+
+  - title: Enstellungen
+    path: options
+    panel: true
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Regeln
+                show_header_toggle: true
+                entities:
+                    - automation.heater_circulating_pump_on
+                    - automation.heater_circulating_pump_off
+                    - automation.outdoor_lights_on_at_night
+                    - automation.outdoor_lights_off_at_morning
+                    - automation.indoor_lights_on_at_coming_home_or_sunset
+                    - automation.indoor_lights_by_night_on_at_coming_home            
+                    - automation.indoor_lights_off_at_getting_out_or_sunrise
+                    - automation.indoor_lights_off_when_tv_switched_off
+                    - automation.indoor_lights_off_after_random_delay
+                    - automation.indoor_lights_on_by_button
+                    - automation.indoor_lights_off_by_button
+                    - automation.bedroom_lights_toggle
+                    - automation.open_garage_door
+                    - automation.close_garage_door
+                    - automation.pixel_node_preferences
+                    #- automation.display_show_outdoor_temperature
+                    #- automation.display_show_indoor_temperature
+                    #- automation.display_show_pool_temperature
+                    - automation.kitchen_desk_light_on
+                    - automation.kitchen_desk_light_off
+                    - automation.kitchen_desk_light_off_at_night
+                    - automation.button_pool
+                    - automation.pool_pump_on_off
+                    - automation.send_effect_delay
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Drücker
+                show_header_toggle: true
+                entities:
+                    - input_boolean.button_indoor_activated
+                    - binary_sensor.button_indoor
+                    - input_boolean.button_garage_activated
+                    - binary_sensor.button_garage
+                    - input_boolean.button_pool_activated
+                    - binary_sensor.button_pool
+                    - input_boolean.gesture_kitchen_activated
+                    - binary_sensor.gesture_kitchen
+                    - input_boolean.touch_bedroom_activated
+                    - binary_sensor.ttp223_bedroom_touch1
+                    - binary_sensor.ttp223_bedroom_touch2
+                    - binary_sensor.ttp223_bedroom_touch3
+                    - binary_sensor.ttp223_bedroom_touch4
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Einstellungen PixelNode
+                show_header_toggle: false
+                entities:
+                    - input_boolean.pixel_node_time
+                    - input_boolean.pixel_node_date
+                    - input_boolean.pixel_node_weekday
+                    - input_number.pixel_node_display_duration
+                    - input_number.pixel_node_display_brightness
+                    - input_number.pixel_node_display_shakeperiod
+                    - input_boolean.pixel_node_msg0
+                    - input_boolean.pixel_node_msg1
+                    - input_boolean.pixel_node_msg2
+                    - input_boolean.pixel_node_msg3
+                    - input_boolean.pixel_node_msg4
+                    - input_boolean.pixel_node_msg5
+                    - input_boolean.pixel_node_msg6
+                    - input_boolean.pixel_node_msg7
+                    - input_boolean.pixel_node_msg8
+                    - input_boolean.pixel_node_msg9
+                    - input_boolean.pixel_node_msg10
+                    - input_boolean.pixel_node_msg11
+                    - input_boolean.pixel_node_msg12
+                    - input_boolean.pixel_node_msg13
+                    - input_boolean.pixel_node_msg14
+                    - input_boolean.pixel_node_msg15
+                    - input_boolean.pixel_node_msg16
+                    - input_boolean.pixel_node_msg17
+                    # - input_boolean.pixel_node_msg18
+                    # - input_boolean.pixel_node_msg19
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Lichtsimulation
+                show_header_toggle: false
+                entities:
+                    - input_boolean.light_simulation
+              - type: entities
+                title: Lichterkette
+                show_header_toggle: false
+                entities:
+                    - input_number.effect_delay
+              - type: entities
+                title: Pool
+                show_header_toggle: false
+                entities:
+                    - input_number.pool_pump_duration
+    
+  - title: Geräte
+    path: nodes
+    panel: true
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: entities
+            title: Version
+            show_header_toggle: false
+            entities:
+                - sensor.dht22_lounge_version
+                - sensor.dht22_roof_version
+                - sensor.dht22_terrace_version
+                - sensor.rfhub_lounge_version
+                - sensor.relay_garage_version
+                - sensor.sonoff_garage_version
+                - sensor.relay_backyard_version
+                - sensor.sonoff_utilityroom_version
+                # - sensor.xmastree_dining_version
+                - sensor.sonoff_pool_version
+                - sensor.sonoff_terrace_version
+                - sensor.relay_dining1_version
+                - sensor.relay_dining2_version
+                - sensor.sonoff_yardgate_version
+                - sensor.sonoff_gallery_version
+                - sensor.ds18b20_pool_version
+                - sensor.sonoff_kitchen_version
+                - sensor.gesture_kitchen_version
+                - sensor.ttp223_bedroom_version
+                - sensor.sonoff_bedroom_version
+                - sensor.sonoff_k8200_version
+                - sensor.sonoff_gallery1_version
+                - sensor.ds18b20_brewery_version
+                - sensor.ssr_brewery_version
+                - sensor.spindle_fermenter_version
+                - sensor.sonoff_location4_version
+                - sensor.button_indoor_version
+                - sensor.button_garage_version
+                - sensor.button_pool_version
+                - sensor.pixel_kitchen_version
+                #- sensor.oled_kitchen_version
+                - sensor.electricity_utilityroom_version
+                - sensor.ws2812_terrace1_version
+                - sensor.ws2812_terrace2_version
+          - type: entities
+            title: Last Boot
+            show_header_toggle: false
+            entities:
+                - sensor.dht22_lounge_lastboot
+                - sensor.dht22_roof_lastboot
+                - sensor.dht22_terrace_lastboot
+                - sensor.rfhub_lounge_lastboot
+                - sensor.relay_garage_lastboot
+                - sensor.sonoff_garage_lastboot
+                - sensor.relay_backyard_lastboot
+                - sensor.sonoff_utilityroom_lastboot
+                # - sensor.xmastree_dining_lastboot
+                - sensor.sonoff_pool_lastboot
+                - sensor.sonoff_terrace_lastboot
+                - sensor.relay_dining1_lastboot
+                - sensor.relay_dining2_lastboot
+                - sensor.sonoff_yardgate_lastboot
+                - sensor.sonoff_gallery_lastboot
+                - sensor.ds18b20_pool_lastboot
+                - sensor.sonoff_kitchen_lastboot
+                - sensor.gesture_kitchen_lastboot
+                - sensor.ttp223_bedroom_lastboot
+                - sensor.sonoff_bedroom_lastboot
+                - sensor.sonoff_k8200_lastboot
+                - sensor.sonoff_gallery1_lastboot
+                - sensor.ds18b20_brewery_lastboot
+                - sensor.ssr_brewery_lastboot
+                - sensor.spindle_fermenter_lastboot
+                - sensor.sonoff_location4_lastboot
+                - sensor.button_indoor_lastboot
+                - sensor.button_garage_lastboot
+                - sensor.button_pool_lastboot
+                - sensor.pixel_kitchen_lastboot
+                #- sensor.oled_kitchen_lastboot
+                - sensor.electricity_utilityroom_lastboot
+                - sensor.ws2812_terrace1_lastboot
+                - sensor.ws2812_terrace2_lastboot
+          - type: entities
+            title: Last Voltage Message
+            show_header_toggle: false
+            entities:
+                - sensor.dht22_lounge_lastvoltage
+                - sensor.dht22_roof_lastvoltage
+                - sensor.dht22_terrace_lastvoltage
+                - sensor.rfhub_lounge_lastvoltage
+                - sensor.relay_garage_lastvoltage
+                - sensor.sonoff_garage_lastvoltage
+                - sensor.relay_backyard_lastvoltage
+                - sensor.sonoff_utilityroom_lastvoltage
+                # - sensor.xmastree_dining_lastvoltage
+                - sensor.sonoff_pool_lastvoltage
+                - sensor.sonoff_terrace_lastvoltage
+                - sensor.relay_dining1_lastvoltage
+                - sensor.relay_dining2_lastvoltage
+                - sensor.sonoff_yardgate_lastvoltage
+                - sensor.sonoff_gallery_lastvoltage
+                - sensor.ds18b20_pool_lastvoltage
+                - sensor.sonoff_kitchen_lastvoltage
+                - sensor.gesture_kitchen_lastvoltage
+                - sensor.ttp223_bedroom_lastvoltage
+                - sensor.sonoff_bedroom_lastvoltage
+                - sensor.sonoff_k8200_lastvoltage
+                - sensor.sonoff_gallery1_lastvoltage
+                - sensor.ds18b20_brewery_lastvoltage
+                - sensor.ssr_brewery_lastvoltage
+                - sensor.spindle_fermenter_lastvoltage
+                - sensor.sonoff_location4_lastvoltage
+                - sensor.button_indoor_lastvoltage
+                - sensor.button_garage_lastvoltage
+                - sensor.button_pool_lastvoltage
+                - sensor.pixel_kitchen_lastvoltage
+                #- sensor.oled_kitchen_lastvoltage
+                - sensor.electricity_utilityroom_lastvoltage
+                - sensor.ws2812_terrace1_lastvoltage
+                - sensor.ws2812_terrace2_lastvoltage
+          - type: entities
+            title: Spannungspegel
+            show_header_toggle: false
+            entities:
+                - sensor.dht22_lounge_voltage
+                - sensor.dht22_roof_voltage
+                - sensor.dht22_terrace_voltage
+                - sensor.rfhub_lounge_voltage
+                - sensor.relay_garage_voltage
+                - sensor.sonoff_garage_voltage
+                - sensor.relay_backyard_voltage
+                - sensor.sonoff_utilityroom_voltage
+                # - sensor.xmastree_dining_voltage
+                - sensor.sonoff_pool_voltage
+                - sensor.sonoff_terrace_voltage
+                - sensor.relay_dining1_voltage
+                - sensor.relay_dining2_voltage
+                - sensor.sonoff_yardgate_voltage
+                - sensor.sonoff_gallery_voltage
+                - sensor.ds18b20_pool_voltage
+                - sensor.sonoff_kitchen_voltage
+                - sensor.gesture_kitchen_voltage
+                - sensor.ttp223_bedroom_voltage
+                - sensor.sonoff_bedroom_voltage
+                - sensor.sonoff_k8200_voltage
+                - sensor.sonoff_gallery1_voltage
+                - sensor.ds18b20_brewery_voltage
+                - sensor.ssr_brewery_voltage
+                - sensor.spindle_fermenter_voltage
+                - sensor.sonoff_location4_voltage
+                - sensor.button_indoor_voltage
+                - sensor.button_garage_voltage
+                - sensor.button_pool_voltage
+                - sensor.pixel_kitchen_voltage
+                #- sensor.oled_kitchen_voltage
+                - sensor.electricity_utilityroom_voltage
+                - sensor.ws2812_terrace1_voltage
+                - sensor.ws2812_terrace2_voltage
+                
+  - title: System
+    path: system
+    panel: false
+    badges:
+      - updater.updater
+      ###- configurator.sony_bravia_tv
+      - sensor.log_db_file_size
+      - sensor.cpu_temp
+    cards:
+      - type: entities
+        title: Raspberry Pi Server
+        show_header_toggle: false
+        entities:
+            - sensor.processor_use
+            - sensor.memory_use
+            - sensor.memory_use_percent
+            - sensor.disk_use
+            - sensor.disk_use_percent
+            - sensor.last_boot
+      - type: entities
+        title: DSL
+        show_header_toggle: false
+        entities:
+            - sensor.speedtest_ping
+            - sensor.speedtest_download
+            - sensor.speedtest_upload
+      
+  - title: Brauerei
+    path: brewery
+    panel: false
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Steuerung
+                show_header_toggle: false
+                entities:
+                  - switch.ssr_brewery_socket1
+                  - switch.ssr_brewery_socket2
+          - type: vertical-stack
+            cards:
+              - type: sensor
+                entity: sensor.ssr_brewery_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 10
+              - type: sensor
+                entity: sensor.ds18b20_brewery_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 1
+          - type: vertical-stack
+            cards:
+              - type: sensor
+                entity: sensor.spindle_fermenter_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 168
+              - type: sensor
+                entity: sensor.spindle_fermenter_tilt
+                graph: line
+                detail: 2
+                hours_to_show: 168
