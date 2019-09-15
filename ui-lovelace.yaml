@@ -44,12 +44,22 @@ views:
                       top: 40%
                       left: 25%
                   - type: state-badge
+                    entity: sensor.relay_garage_state
+                    style:
+                      top: 40%
+                      left: 80%
+                  - type: state-badge
                     entity: sun.sun
+                    style:
+                      top: 40%
+                      left: 84%
+                  - type: state-badge
+                    entity: sensor.cpu_temp
                     style:
                       top: 40%
                       left: 92%
                   - type: state-badge
-                    entity: sensor.relay_garage_state
+                    entity: updater.updater
                     style:
                       top: 40%
                       left: 96%
