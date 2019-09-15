@@ -10,7 +10,7 @@ sensor.DHT22_terrace_temperature:
     friendly_name: Temperatur Terrasse
 
 sensor.DHT22_terrace_humidity:
-    friendly_name: Luftfeuchtigkeit
+    friendly_name: Luftfeuchtigkeit Terasse
     entity_picture: /local/images/DHT22.jpg
 
 sensor.DHT22_terrace_voltage:
@@ -34,7 +34,7 @@ sensor.DHT22_lounge_temperature:
     friendly_name: Temperatur Wohnzimmer
 
 sensor.DHT22_lounge_humidity:
-    friendly_name: Luftfeuchtigkeit
+    friendly_name: Luftfeuchtigkeit Wohnzimmer
     entity_picture: /local/images/DHT22.jpg
 
 sensor.DHT22_lounge_pressure:
@@ -62,7 +62,7 @@ sensor.DHT22_roof_temperature:
     friendly_name: Temperatur Dachboden
 
 sensor.DHT22_roof_humidity:
-    friendly_name: Luftfeuchtigkeit
+    friendly_name: Luftfeuchtigkeit Dachboden
     entity_picture: /local/images/DHT22.jpg
 
 sensor.DHT22_roof_voltage:
@@ -165,7 +165,7 @@ sensor.relay_garage_temperature:
     friendly_name: Temperatur Garage
 
 sensor.relay_garage_humidity:
-    friendly_name: Luftfeuchtigkeit
+    friendly_name: Luftfeuchtigkeit Garage
     entity_picture: /local/images/DHT22.jpg
 
 sensor.relay_garage_voltage:
