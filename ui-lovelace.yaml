@@ -107,7 +107,7 @@ views:
                   - type: horizontal-stack
                     cards:
                       - type: markdown
-                        content: "Weiter Aktionen"
+                        content: "Weitere Aktionen"
                   - type: horizontal-stack
                     cards:
                       - type: light
@@ -119,10 +119,8 @@ views:
                       - type: entity-button
                         entity: switch.sonoff_k8200_socket
                         icon_height: ab
-          # - type: horizontal-stack
-            # cards:
-              # - type: media-control
-                # entity: media_player.sony_bravia_tv
+                  - type: media-control
+                    entity: media_player.sony_bravia_tv
                 
   - title: Innen
     path: indoor
