@@ -498,43 +498,23 @@ sensor.sonoff_yardgate_version:
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
-light.sonoff_gallery_lamp:
+light.sonoff_corridor_lamp:
     friendly_name: Stehlampe
 
-sensor.sonoff_gallery_voltage:
-    friendly_name: 'Stehlampe Galerie'
+sensor.sonoff_corridor_voltage:
+    friendly_name: 'Stehlampe Flur'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoff_gallery_lastvoltage:
-    friendly_name: 'Stehlampe Galerie'
+sensor.sonoff_corridor_lastvoltage:
+    friendly_name: 'Stehlampe Flur'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoff_gallery_lastboot:
-    friendly_name: 'Stehlampe Galerie'
+sensor.sonoff_corridor_lastboot:
+    friendly_name: 'Stehlampe Flur'
     entity_picture: /local/images/sonoff.jpg
 
-sensor.sonoff_gallery_version:
-    friendly_name: 'Stehlampe Galerie'
-    entity_picture: /local/images/sonoff.jpg
-
-#------------------------------------------------------------------------------
-light.sonoff_location4_lamp:
-    friendly_name: Sonoff Schalter
-
-sensor.sonoff_location4_voltage:
-    friendly_name: 'Sonoff Schalter 4'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_location4_lastvoltage:
-    friendly_name: 'Sonoff Schalter 4'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_location4_lastboot:
-    friendly_name: 'Sonoff Schalter 4'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_location4_version:
-    friendly_name: 'Sonoff Schalter 4'
+sensor.sonoff_corridor_version:
+    friendly_name: 'Stehlampe Flur'
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------

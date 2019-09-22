@@ -4,5 +4,5 @@
 
 name: 'Nachleuchtende Innenlichter'
 entities:
-  - light.sonoff_gallery_lamp
+  - light.sonoff_corridor_lamp
   - switch.sonoff_gallery1_socket
