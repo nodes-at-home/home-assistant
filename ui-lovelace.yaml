@@ -99,15 +99,19 @@ views:
                   - type: horizontal-stack
                     cards:
                       - type: entity-button
-                        entity: group.automatic_indoor_lights
-                        icon: mdi:lightbulb
+                        entity: light.automatic_indoor_lights
+#                        icon: mdi:lightbulb
                         tap_action:
                             action: toggle
                         hold_action:
                             action: more-info
                       - type: entity-button
-                        entity: group.automatic_outdoor_lights
-                        icon: mdi:lightbulb
+                        entity: light.automatic_outdoor_lights
+#                        icon: mdi:lightbulb
+                        tap_action:
+                            action: toggle
+                        hold_action:
+                            action: more-info
                   - type: horizontal-stack
                     cards:
                       - type: markdown
@@ -160,7 +164,7 @@ views:
         show_header_toggle: true
         entities:
           - switch.sonoff_bedroom_socket
-          - switch.sonoff_gallery1_socket
+          - light.sonoff_gallery1_socket
     
   - title: Außen
     path: outdoor
@@ -656,13 +660,13 @@ views:
           - type: horizontal-stack
             cards:
               - type: entity-button
-                entity: group.automatic_indoor_lights
+                entity: light.automatic_indoor_lights
                 icon: mdi:lightbulb
                 tap_action:
                     action: toggle
                 hold_action:
               - type: entity-button
-                entity: group.automatic_outdoor_lights
+                entity: light.automatic_outdoor_lights
                 icon: mdi:lightbulb
 
           - type: horizontal-stack

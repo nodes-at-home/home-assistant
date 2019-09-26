@@ -748,7 +748,7 @@ sensor.sonoff_k8200_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #-------------------------------------------------------------------------  -----
-switch.sonoff_gallery1_socket:
+light.sonoff_gallery1_socket:
     friendly_name: Lichterkette
     icon: mdi:lightbulb
 
