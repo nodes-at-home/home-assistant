@@ -769,6 +769,12 @@ sensor.sonoff_gallery1_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
+light.automatic_indoor_lights:
+    friendly_name: Innenlichter
+light.automatic_outdoor_lights:
+    friendly_name: Außenlichter
+
+#------------------------------------------------------------------------------
 sensor.log_db_file_size:
     friendly_name: Datenbank
 
