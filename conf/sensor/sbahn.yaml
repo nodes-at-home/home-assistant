@@ -1,0 +1,15 @@
+###
+### 30.09.2019 for tileboard
+###
+
+  - platform: mqtt
+    state_topic: nodes@home/display/pixel/kitchen/message/traffic/sbahn
+    name: "traffic_sbahn_1"
+    qos: 0
+    value_template: '{{ value_json.messages [0].text }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/display/pixel/kitchen/message/traffic/sbahn
+    name: "traffic_sbahn_2"
+    qos: 0
+    value_template: '{{ value_json.messages [1].text }}'

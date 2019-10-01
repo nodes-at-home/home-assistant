@@ -2,7 +2,7 @@ resources:
   - url: /local/kiosk.js
     type: js
 
-title: Mein Zuhause
+title: !env_var HA_TITLE
 views:
 
   - title: Überblick
@@ -126,7 +126,9 @@ views:
                         entity: light.ws2812_terrace2
                       - type: entity-button
                         entity: switch.sonoff_k8200_socket
-                        icon_height: ab
+                        icon: mdi:printer
+                        style:
+                          - height: 200px
                   - type: media-control
                     entity: media_player.sony_bravia_tv
                 
