@@ -5,3 +5,4 @@ secrets.yaml
 .storage/
 .uuid
 known_devices.yaml
+bravia.conf

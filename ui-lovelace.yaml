@@ -126,7 +126,7 @@ views:
                         entity: light.ws2812_terrace2
                       - type: entity-button
                         entity: switch.sonoff_k8200_socket
-                        icon: mdi:printer
+                        icon: mdi:printer-3d
                         style:
                           - height: 200px
                   - type: media-control
