@@ -12,7 +12,7 @@ var CONFIG = {
 	customTheme: null, // CUSTOM_THEMES.TRANSPARENT, CUSTOM_THEMES.MATERIAL, CUSTOM_THEMES.MOBILE, CUSTOM_THEMES.COMPACT, CUSTOM_THEMES.HOMEKIT, CUSTOM_THEMES.WINPHONE, CUSTOM_THEMES.WIN95
 	transition: TRANSITIONS.ANIMATED_GPU, //ANIMATED_GPU, ANIMATED or SIMPLE (better perfomance)
 	entitySize: ENTITY_SIZES.NORMAL, //SMALL, NORMAL, BIG are available
-	tileSize: 150,
+	tileSize: 145,
 	tileMargin: 6,
 	serverUrl: "http://" + location.hostname + ":8123",
 	wsUrl: "ws://" + location.hostname + ":8123/api/websocket",
@@ -26,7 +26,7 @@ var CONFIG = {
 	events: [],
 	timeFormat: 24,
 	menuPosition: MENU_POSITIONS.LEFT, // LEFT or BOTTOM
-	hideScrollbar: false, // horizontal scrollbar
+	hideScrollbar: true, // horizontal scrollbar
 	groupsAlign: GROUP_ALIGNS.HORIZONTALLY, // or VERTICALLY
 
 	header: { // https://github.com/resoai/TileBoard/wiki/Header-configuration
@@ -70,13 +70,13 @@ var CONFIG = {
 			bg: 'images/bg1.jpeg',
 			icon: 'mdi-home-outline', // home icon
 			styles: {
-				padding: '75px 0px'
+				padding: '5px 0px'
 			},
 			groups: [
 				{
-					title: '',
-					width: 1,
-					height: 3,
+					//title: '',
+					width: 4,
+					height: 2,
 					items: [
 						{
 							position: [0, 0],
@@ -154,20 +154,6 @@ var CONFIG = {
 						},
 						{
 							position: [1, 0],
-							title: 'Innenlichter',
-							id: 'light.automatic_indoor_lights',
-							type: TYPES.LIGHT,
-							states: {
-								on: "On",
-								off: "Off"
-							},					  
-							icons: {
-								on: "mdi-lightbulb-on",
-								off: "mdi-lightbulb"
-							}
-						},
-						{
-							position: [2, 0],
 							type: TYPES.SENSOR,
 							title: 'Außentemperatur',
 							id: 'sensor.dht22_terrace_temperature',
@@ -175,13 +161,28 @@ var CONFIG = {
 							state: false
 						},
 						{
-							position: [3, 0],
+							position: [2, 0],
 							type: TYPES.COVER,
 							title: 'Garagentor',
 							id: 'cover.relay_garage',
 							states: {
-								open: 'Open',
-								closed: 'Closed'
+								open: 'Offen',
+								closed: 'Geschlossen'
+							}
+						},
+						{
+							position: [3, 0],
+							type: TYPES.LIGHT,
+							id: 'light.automatic_indoor_lights',
+							title: 'Innenlichter',
+							//subtitle: 'indoor',
+							states: {
+								on: "An",
+								off: "Aus"
+							},					  
+							icons: {
+								on: "mdi-lightbulb-on",
+								off: "mdi-lightbulb"
 							}
 						},
 						{
@@ -205,7 +206,7 @@ var CONFIG = {
 			]
 		},
 		{
-			//title: 'Second page',
+			//title: 'Lichter',
 			bg: 'images/bg2.png',
 			icon: 'mdi-lightbulb',
 			styles: {
@@ -214,17 +215,18 @@ var CONFIG = {
 			groups: [
 				{
 					title: '',
-					width: 2,
-					height: 3,
+					width: 4,
+					height: 2,
 					items: [
 						{
 							position: [0, 0],
-							title: 'Innenlichter',
-							id: 'light.automatic_indoor_lights',
 							type: TYPES.LIGHT,
+							id: 'light.automatic_indoor_lights',
+							title: 'Innenlichter',
+							subtitle: 'indoor',
 							states: {
-								on: "On",
-								off: "Off"
+								on: "An",
+								off: "Aus"
 							},					  
 							icons: {
 								on: "mdi-lightbulb-on",
@@ -233,18 +235,129 @@ var CONFIG = {
 						},
 						{
 							position: [0, 1],
-							title: 'Außenlichter',
-							id: 'light.automatic_outdoor_lights',
 							type: TYPES.LIGHT,
+							id: 'light.automatic_outdoor_lights',
+							title: 'Außenlichter',
+							subtitle: 'outdoor',
 							states: {
-								on: "On",
-								off: "Off"
+								on: "An",
+								off: "Aus"
 							},					  
 							icons: {
 								on: "mdi-lightbulb-on",
 								off: "mdi-lightbulb"
 							}
 						},
+						{
+							position: [1, 0],
+							type: TYPES.LIGHT,
+							id: 'light.sonoff_kitchen_led',
+							title: 'Arbeitslicht',
+							subtitle: 'Küche',
+							states: {
+								on: "On",
+								off: "Off"
+							},
+							icons: {
+								on: "mdi-lightbulb-on",
+								off: "mdi-lightbulb",
+							},
+							sliders: [
+								{
+									title: 'Brightness',
+									field: 'brightness',
+									max: 255,
+									min: 0,
+									step: 5,
+									request: {
+										type: "call_service",
+										domain: "light",
+										service: "turn_on",
+										field: "brightness"
+									}
+								},
+								{
+									title: 'Color temp',
+									field: 'color_temp',
+									max: 588,
+									min: 153,
+									step: 15,
+									request: {
+										type: "call_service",
+										domain: "light",
+										service: "turn_on",
+										field: "color_temp"
+									}
+								}
+							],
+							colorpicker: true
+						},
+						{
+							position: [3, 0],
+							type: TYPES.SWITCH,
+							id: 'switch.sonoff_k8200_socket',
+							title: 'K8200',
+							subtitle: 'Wohnzimmer',
+							states: {
+								on: "On",
+								off: "Off"
+							},
+							icons: {
+								on: "mdi-printer-3d",
+								off: "mdi-printer-3d",
+							}
+						},
+						{
+							position: [3, 1],
+							type: TYPES.INPUT_BOOLEAN,
+							id: 'input_boolean.light_simulation',
+							title: 'Lichtsimulation',
+							subtitle: 'Einstellung',
+							states: {
+								on: "On",
+								off: "Off"
+							},
+							icons: {
+								on: "mdi-dip-switch",
+								off: "mdi-dip-switch",
+							}
+						},
+					]
+				},
+			]
+		},
+		{
+			hidden: true,
+			//title: 'Wettervorhersage',
+			bg: 'images/bg2.png',
+			icon: 'mdi-weather-partly-rainy',
+			styles: {
+				padding: '75px 0px'
+			},
+			groups: [
+				{
+					//title: '',
+					width: 4,
+					height: 2,
+					items: [
+					]
+				},
+			]
+		},
+		{
+			hidden: true,
+			//title: 'Brauerei',
+			bg: 'images/bg2.png',
+			icon: 'mdi-glass-mug',
+			styles: {
+				padding: '5px 0px'
+			},
+			groups: [
+				{
+					//title: '',
+					width: 4,
+					height: 2,
+					items: [
 					]
 				},
 			]
