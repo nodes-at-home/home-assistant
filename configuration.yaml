@@ -24,13 +24,15 @@ homeassistant:
 
   customize: !include conf/customize.yaml
 
+system_health:
+
 # -------------------------------------------------------------------------------
 # mqtt broker
 
 mqtt:
   broker: mosquitto
   port: 1883
-  client_id: home_assistant_prod
+  client_id: home_assistant
   keepalive: 120
   protocol: 3.1.1
 

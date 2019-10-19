@@ -1,0 +1,10 @@
+###
+### 22.08.2019 split up
+###
+
+name: Helligkeit
+mode: slider
+min: 5
+max: 100
+step: 5
+initial: 40

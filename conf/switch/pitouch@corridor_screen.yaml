@@ -1,0 +1,10 @@
+###
+### 18.10.2019 pitouch
+###
+
+  - platform: mqtt
+    name: "pitouch@corridor_screen"
+    command_topic: nodes@home/display/pitouch/corridor/screen
+    state_topic: nodes@home/display/pitouch/corridor/screen/state
+    optimistic: false
+    retain: true

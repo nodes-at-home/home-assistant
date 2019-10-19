@@ -1,0 +1,64 @@
+###
+### 22.08.2019 split up
+###
+
+  - alias: pitouch_screen_on
+    hide_entity: False
+    trigger:
+      - platform: time
+        at: '05:30:00'
+      - platform: state
+        entity_id: group.family_devices
+        to: 'home'
+    condition:
+      - condition: state
+        entity_id: group.family_devices
+        state: 'home'
+    action:
+      - service: switch.turn_on
+        entity_id:
+            - switch.pitouch_corridor_screen
+
+  - alias: pitouch_screen_off
+    hide_entity: False
+    trigger:
+      - platform: time
+        at: '00:01:00'
+      - platform: state
+        entity_id: group.family_devices
+        to: 'not home'
+    action:
+      - service: switch.turn_off
+        entity_id:
+            - switch.pitouch_corridor_screen
+
+  - alias: pitouch_screen_off_after_tv_off
+    hide_entity: False
+    trigger:
+        platform: state
+        entity_id: media_player.sony_bravia_tv
+        from: "on"
+        to: "off"
+        for:
+            minutes: 1
+    condition:
+      - condition: time
+        after: '21:00:00'
+        before: '06:00:00'
+    action:
+      - delay: 00:15:00
+      - service: switch.turn_off
+        entity_id:
+            - switch.pitouch_corridor_screen
+
+  - alias: pitouch_send_brightness
+    trigger:
+        platform: state
+        entity_id: input_number.pitouch_brightness
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: nodes@home/display/pitouch/corridor/brightness
+            payload: '{{ trigger.to_state.state | int }}'
+            qos: 0
+            retain: true

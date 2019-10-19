@@ -771,8 +771,18 @@ sensor.sonoff_gallery1_version:
 #------------------------------------------------------------------------------
 light.automatic_indoor_lights:
     friendly_name: Innenlichter
+
 light.automatic_outdoor_lights:
     friendly_name: Außenlichter
+
+#------------------------------------------------------------------------------
+switch.pitouch_corridor_screen:
+    friendly_name: Bildschirm
+    icon: mdi:television
+
+sensor.pitouch_corridor_ambientlight:
+    friendly_name: Umgebungslicht
+    icon: mdi:leak
 
 #------------------------------------------------------------------------------
 sensor.log_db_file_size:

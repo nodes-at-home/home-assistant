@@ -1,6 +1,6 @@
-resources:
-  - url: /local/kiosk.js
-    type: js
+# resources:
+  # - url: /local/kiosk.js
+    # type: js
 
 title: !env_var HA_TITLE
 views:
@@ -291,6 +291,10 @@ views:
                     - automation.button_pool
                     - automation.pool_pump_on_off
                     - automation.send_effect_delay
+                    - automation.pitouch_screen_on
+                    - automation.pitouch_screen_off
+                    - automation.pitouch_screen_off_after_tv_off
+                    - automation.pitouch_send_brightness
           - type: vertical-stack
             cards:
               - type: entities
@@ -345,7 +349,7 @@ views:
           - type: vertical-stack
             cards:
               - type: entities
-                title: Lichtsimulation
+                title: Abwesenheit
                 show_header_toggle: false
                 entities:
                     - input_boolean.light_simulation
@@ -359,6 +363,13 @@ views:
                 show_header_toggle: false
                 entities:
                     - input_number.pool_pump_duration
+              - type: entities
+                title: PiTouch
+                show_header_toggle: false
+                entities:
+                    - switch.pitouch_corridor_screen
+                    - input_number.pitouch_brightness
+                    - sensor.pitouch_corridor_ambientlight
     
   - title: Geräte
     path: nodes
@@ -580,106 +591,3 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 168
-
-  - title: Touchscreen
-    path: kiosk
-    panel: true
-    cards:
-      - type: vertical-stack
-        cards:
-        
-            # Badges
-          - type: horizontal-stack
-            cards:
-              - type: picture-elements
-                image: /local/images/blank_100x5.png
-                title: " "
-                elements:
-                  - type: state-badge
-                    entity: device_tracker.andreas_xperia
-                    style:
-                      top:  40%
-                      left: 5%
-                  - type: state-badge
-                    entity: device_tracker.undine_xperia
-                    style:
-                      top:  40%
-                      left: 13%
-                  - type: state-badge
-                    entity: device_tracker.nora_galaxy
-                    style:
-                      top:  40%
-                      left: 21%
-                  - type: state-badge
-                    entity: device_tracker.nina_huawei
-                    style:
-                      top:  40%
-                      left: 29%
-                  - type: state-badge
-                    entity: device_tracker.niklas_galaxy
-                    style:
-                      top:  40%
-                      left: 37%
-                  - type: state-badge
-                    entity: device_tracker.dominik_handy
-                    style:
-                      top:  40%
-                      left: 45%
-                  - type: state-badge
-                    entity: sensor.relay_garage_state
-                    style:
-                      top: 40%
-                      left: 95%
-                      
-            # row
-          - type: horizontal-stack
-            cards:
-              - type: weather-forecast
-                name: Wettervorhersage
-                entity: weather.openweathermap
-
-            # row
-          - type: horizontal-stack
-            cards:
-              - type: sensor
-                entity: sensor.dht22_terrace_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                icon: mdi:show_chart
-                entity: sensor.dht22_lounge_pressure
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.ds18b20_pool_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
-
-            # row
-          - type: horizontal-stack
-            cards:
-              - type: entity-button
-                entity: light.automatic_indoor_lights
-                icon: mdi:lightbulb
-                tap_action:
-                    action: toggle
-                hold_action:
-              - type: entity-button
-                entity: light.automatic_outdoor_lights
-                icon: mdi:lightbulb
-
-          - type: horizontal-stack
-            cards:
-              - type: light
-                entity: light.sonoff_kitchen_led
-              - type: light
-                entity: light.ws2812_terrace1
-              - type: light
-                entity: light.ws2812_terrace2
-              - type: entity-button
-                entity: switch.sonoff_k8200_socket
-                icon_height: ab
-                
