@@ -1,10 +1,13 @@
 ###
-### 18.10.2019 pitouch
+### 21.10.2019 pitouch
 ###
 
   - platform: mqtt
     name: "pitouch@corridor_screen"
     command_topic: nodes@home/display/pitouch/corridor/screen
     state_topic: nodes@home/display/pitouch/corridor/screen/state
+    brightness_command_topic: nodes@home/display/pitouch/corridor/brightness
+    brightness_state_topic: nodes@home/display/pitouch/corridor/brightness/state
+    brightness_scale: 100
     optimistic: false
     retain: true

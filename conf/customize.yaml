@@ -776,7 +776,7 @@ light.automatic_outdoor_lights:
     friendly_name: Außenlichter
 
 #------------------------------------------------------------------------------
-switch.pitouch_corridor_screen:
+light.pitouch_corridor_screen:
     friendly_name: Bildschirm
     icon: mdi:television
 

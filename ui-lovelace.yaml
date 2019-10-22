@@ -157,6 +157,8 @@ views:
           - switch.sonoff_k8200_socket
           - type: divider
           - light.sonoff_corridor_lamp
+          - light.pitouch_corridor_screen
+          - sensor.pitouch_corridor_ambientlight
           - type: divider
           - switch.sonoff_utilityroom_pump
           # - sensor.electricity_utilityroom_power
@@ -294,7 +296,6 @@ views:
                     - automation.pitouch_screen_on
                     - automation.pitouch_screen_off
                     - automation.pitouch_screen_off_after_tv_off
-                    - automation.pitouch_send_brightness
           - type: vertical-stack
             cards:
               - type: entities
@@ -363,13 +364,6 @@ views:
                 show_header_toggle: false
                 entities:
                     - input_number.pool_pump_duration
-              - type: entities
-                title: PiTouch
-                show_header_toggle: false
-                entities:
-                    - switch.pitouch_corridor_screen
-                    - input_number.pitouch_brightness
-                    - sensor.pitouch_corridor_ambientlight
     
   - title: Geräte
     path: nodes
