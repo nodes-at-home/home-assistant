@@ -7,13 +7,35 @@
     trigger:
       - platform: time
         at: '05:30:00'
+      - platform: time
+        at: '08:00:00'
       - platform: state
         entity_id: group.family_devices
         to: 'home'
     condition:
-      - condition: state
-        entity_id: group.family_devices
-        state: 'home'
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: group.family_devices
+            state: 'home'
+          - condition: or
+            conditions:
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: binary_sensor.workday_sensor
+                    state: 'on'
+                  - condition: time
+                    after: '05:30:00'
+                    before: '22:00:00'
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: binary_sensor.workday_sensor
+                    state: 'off'
+                  - condition: time
+                    after: '08:00:00'
+                    before: '22:00:00'
     action:
       - service: light.turn_on
         entity_id:
@@ -26,7 +48,7 @@
         at: '00:01:00'
       - platform: state
         entity_id: group.family_devices
-        to: 'not home'
+        to: 'not_home'
     action:
       - service: light.turn_off
         entity_id:
