@@ -7,4 +7,4 @@
     name: "pitouch@corridor_ambientlight"
     qos: 0
     #unit_of_measurement: "X"
-    value_template: '{{ value_json.clear | round ( 0 ) }}'
+    value_template: '{{ value_json.ambient }}'
