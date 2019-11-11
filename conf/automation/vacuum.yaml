@@ -1,0 +1,98 @@
+###
+### 08.11.2019 new
+###
+
+  - alias: send_alert_after_daily_vacuum_to_empty_the_dustbin
+    initial_state: false
+    trigger:
+      - platform: state
+        entity_id: device_tracker.galaxy_note_fan_edition
+        to: 'home'
+        for:
+            minutes: 5
+    condition:
+        condition: and
+        conditions:
+          - condition: state
+            entity_id: input_boolean.daily_vacuum_done
+            state: 'on'
+          - condition: time
+            after: '08:30:00'
+            before: '23:30:00'
+          - condition: template
+            value_template: >
+                {% if states.automation.send_alert_after_daily_vacuum_to_empty_the_dustbin.last_triggered is not none %}
+                {% if as_timestamp(now()) | int   -  as_timestamp(states.automation.send_alert_after_daily_vacuum_to_empty_the_dustbin.attributes.last_triggered) | int > 1800 %} true {% else %} false
+                {% endif %}
+                {% else %}
+                 false
+                {% endif %}
+          - condition: state
+            entity_id: input_boolean.daily_vacuum
+            state: 'on'
+    action:
+      - service: media_player.volume_set
+        data_template:
+            entity_id: media_player.sony_bravia_tv
+            volume_level: 0.7
+      - service: tts.google_say
+        entity_id: media_player.sony_bravia_tv
+        data_template:
+            message: 'Der Saugroboter muss geleert werden!'
+            cache: false
+
+  - alias: reset_daily_vacuum_done_state_at_midnight
+    trigger:
+      - platform: time
+        at: '0:00:00'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.daily_vacuum_done
+
+  - alias: start_cleaning_room
+    initial_state: false
+    hide_entity: True
+    trigger:
+      - platform: state
+        entity_id: input_select.vacuum_room
+        from: 'Raumauswahl'
+    action:
+      - service: script.turn_on
+        data_template:
+            entity_id: >
+                {% if is_state("input_select.vacuum_room", "room1") %}
+                 script.vacuum_room1
+                {% elif is_state("input_select.vacuum_room", "room2") %}
+                 script.vacuum_room2
+                {% else %}
+                {% endif %}
+      - service: input_select.select_option
+        entity_id: input_select.vacuum_room
+        data_template:
+            option: 'Raumauswahl'
+        
+  - alias: start_daily_vacuum
+    trigger:
+      - platform: time_pattern
+        minutes: "/5"
+    condition:
+        condition: and
+        conditions:
+          - condition: state
+            entity_id: group.family_devices
+            state: 'not_home'
+          - condition: state
+            entity_id: input_boolean.daily_vacuum_done
+            state: 'off'
+          - condition: time
+            after: '08:00:00'
+            before: '17:00:00'
+          - condition: state
+            entity_id: input_boolean.daily_vacuum
+            state: 'on'
+    action:
+      #- delay: '00:00:30'
+      # - service: vacuum.turn_on
+        # entity_id: vacuum.roborock_s6
+      - service: input_boolean.toggle
+        entity_id: input_boolean.daily_vacuum_done

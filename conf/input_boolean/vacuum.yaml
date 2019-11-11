@@ -1,0 +1,16 @@
+###
+### 22.08.2019 split up
+###
+
+# hidden flag, daily run done
+daily_vacuum_done:
+    name: Tägliche Reinigung erledigt
+    initial: 'off'
+    
+daily_vacuum:
+    name: Tägliche Reinigung
+    initial: 'on'
+    
+dustbin_notification:
+    name: Benachrichtigung
+    initial: 'on'

@@ -178,8 +178,30 @@ logbook:
         # entities:
         
 # -------------------------------------------------------------------------------
-# View all events in a logbook
-#logbook:
+# hostname
+input_text:
+  hostname:
+    initial: !env_var PARENT_HOSTNAME
+# -------------------------------------------------------------------------------
+# roborock s6
+vacuum:
+  - platform: xiaomi_miio
+    name: Roborock S6
+    host: 192.168.2.129
+    token: !secret token_vacuum
+
+input_select:
+  vacuum_room:
+    name: Raumauswahl
+    options:
+      - Select Input
+      - Küche
+      - Esszimmer
+      - Wohnzimmer
+      - Korridor
+      - Flur
+      - Dusche
+      - Hauswirtschaftsraum
 
 # -------------------------------------------------------------------------------
 # Track the sun

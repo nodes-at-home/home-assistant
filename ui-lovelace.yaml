@@ -1,6 +1,7 @@
-# resources:
-  # - url: /local/kiosk.js
-    # type: js
+resources:
+  # https://github.com/custom-cards/vertical-stack-in-card
+  - url: /local/vertical-stack-in-card.js
+    type: js
 
 title: !env_var HA_TITLE
 views:
@@ -257,6 +258,85 @@ views:
                 detail: 2
                 hours_to_show: 24
 
+  - title: Automatisierung
+    path: automation
+    panel: true
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Zirkulationspumpe
+                show_header_toggle: true
+                entities:
+                    - automation.heater_circulating_pump_on
+                    - automation.heater_circulating_pump_off
+              - type: entities
+                title: Außenlichter
+                show_header_toggle: true
+                entities:
+                    - automation.outdoor_lights_on_at_night
+                    - automation.outdoor_lights_off_at_morning
+              - type: entities
+                title: Innenlichter
+                show_header_toggle: true
+                entities:
+                    - automation.indoor_lights_on_at_coming_home_or_sunset
+                    - automation.indoor_lights_by_night_on_at_coming_home            
+                    - automation.indoor_lights_off_at_getting_out_or_sunrise
+                    - automation.indoor_lights_off_when_tv_switched_off
+                    - automation.indoor_lights_off_after_random_delay
+                    - automation.indoor_lights_on_by_button
+                    - automation.indoor_lights_off_by_button
+                    - automation.bedroom_lights_toggle
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Garage
+                show_header_toggle: true
+                entities:
+                    - automation.open_garage_door
+                    - automation.close_garage_door
+                    - automation.pixel_node_preferences
+                    #- automation.display_show_outdoor_temperature
+                    #- automation.display_show_indoor_temperature
+                    #- automation.display_show_pool_temperature
+              - type: entities
+                title: Küche
+                show_header_toggle: true
+                entities:
+                    - automation.kitchen_desk_light_on
+                    - automation.kitchen_desk_light_off
+                    - automation.kitchen_desk_light_off_at_night
+              - type: entities
+                title: Pool
+                show_header_toggle: true
+                entities:
+                    - automation.button_pool
+                    - automation.pool_pump_on_off
+              - type: entities
+                title: Led-Lichter
+                show_header_toggle: true
+                entities:
+                    - automation.send_effect_delay
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Pitouch
+                show_header_toggle: true
+                entities:
+                    - automation.pitouch_screen_on
+                    - automation.pitouch_screen_off
+                    - automation.pitouch_screen_off_after_tv_off
+              - type: entities
+                title: Pitouch
+                show_header_toggle: true
+                entities:
+                    - automation.send_alert_after_daily_vacuum_to_empty_the_dustbin
+                    - automation.reset_daily_vacuum_done_state_at_midnight
+                    - automation.start_cleaning_room
+                    - automation.start_daily_vacuum
   - title: Enstellungen
     path: options
     panel: true
@@ -266,38 +346,11 @@ views:
           - type: vertical-stack
             cards:
               - type: entities
-                title: Regeln
-                show_header_toggle: true
+                title: Status
+                show_header_toggle: false
                 entities:
-                    - automation.heater_circulating_pump_on
-                    - automation.heater_circulating_pump_off
-                    - automation.outdoor_lights_on_at_night
-                    - automation.outdoor_lights_off_at_morning
-                    - automation.indoor_lights_on_at_coming_home_or_sunset
-                    - automation.indoor_lights_by_night_on_at_coming_home            
-                    - automation.indoor_lights_off_at_getting_out_or_sunrise
-                    - automation.indoor_lights_off_when_tv_switched_off
-                    - automation.indoor_lights_off_after_random_delay
-                    - automation.indoor_lights_on_by_button
-                    - automation.indoor_lights_off_by_button
-                    - automation.bedroom_lights_toggle
-                    - automation.open_garage_door
-                    - automation.close_garage_door
-                    - automation.pixel_node_preferences
-                    #- automation.display_show_outdoor_temperature
-                    #- automation.display_show_indoor_temperature
-                    #- automation.display_show_pool_temperature
-                    - automation.kitchen_desk_light_on
-                    - automation.kitchen_desk_light_off
-                    - automation.kitchen_desk_light_off_at_night
-                    - automation.button_pool
-                    - automation.pool_pump_on_off
-                    - automation.send_effect_delay
-                    - automation.pitouch_screen_on
-                    - automation.pitouch_screen_off
-                    - automation.pitouch_screen_off_after_tv_off
-          - type: vertical-stack
-            cards:
+                    - binary_sensor.prod_mode
+                    - binary_sensor.dev_mode
               - type: entities
                 title: Drücker
                 show_header_toggle: true
@@ -364,6 +417,13 @@ views:
                 show_header_toggle: false
                 entities:
                     - input_number.pool_pump_duration
+              - type: entities
+                title: Saugroboter
+                show_header_toggle: false
+                entities:
+                    - input_boolean.daily_vacuum_done
+                    - input_boolean.daily_vacuum
+                    - input_boolean.dustbin_notification
     
   - title: Geräte
     path: nodes
@@ -585,3 +645,238 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 168
+
+  # https://sharethelove.io/picture-elements-cards/xiaomi-vacuum-card
+  # https://community.home-assistant.io/t/xiaomi-vacuum-cleaner-card/64456/52
+  - title: Staubsauger
+    path: vacuum
+    panel: false
+    cards:
+      - type: custom:vertical-stack-in-card
+        cards:
+        - type: picture-elements
+          title: Saugroboter
+          image: '/local/images/roborock.png'
+          elements:
+            # central
+            - type: state-label
+              tap_action: more-info
+              entity: vacuum.roborock_s6
+              style:
+               top: 14%
+               right: 38%
+               color: rgb(255, 255, 255)
+               transform: translate(0%,-50%)
+               font-family: Trebuchet MS
+               font-size: 150%
+               font-weight: bold
+               border-color: rgb(34, 154, 210)
+               border-radius: 6px
+               background-color: '#cccccc'
+            - type: state-label
+              entity: sensor.vacuum_cleaned_area
+              prefix: "Fläche: "
+              style:
+                top: 79%
+                left: 31%
+                color: '#84a6ba'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+            - type: state-label
+              entity: sensor.vacuum_cleaning_time
+              prefix: "Zeit: "
+              style:
+                top: 79%
+                left: 51%
+                color: '#84a6ba'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+            # left
+            - type: state-label
+              entity: sensor.vacuum_operation
+              style:
+               top: 10%
+               left: 1%
+               color: rgb(255, 255, 255)
+               transform: translate(0%,-50%)
+               pointer-events: none
+               font-family: Trebuchet MS
+               font-size: 90%
+               font-weight: bold
+               border-color: rgb(34, 154, 210)
+               background-color: '#3090C7'
+               border-radius: 6px
+            - type: state-label
+              entity: sensor.vacuum_status
+              prefix: "Status: "
+              style:
+                top: 40%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: '#3090C7'
+            - type: state-label
+              entity: sensor.vacuum_battery
+              prefix: "Batterie: "
+              style:
+                top: 50%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: rgb(34, 154, 210)
+            - type: state-label
+              entity: sensor.vacuum_fan_speed
+              prefix: "Sauger: "
+              style:
+                top: 60%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: rgb(34, 154, 210)
+            # bottom
+            - type: icon
+              icon: mdi:play
+              tap_action: call-service
+              entity: vacuum.roborock_s6
+              service: vacuum.start
+              style:
+               top: 90%
+               left: 20%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:stop
+              tap_action: call-service
+              entity: vacuum.roborock_s6
+              service: vacuum.stop
+              style:
+               top: 90%
+               left: 35%
+               color: '#3090C7'
+            - type: icon
+              tap_action: call-service
+              icon: mdi:home
+              entity: vacuum.roborock_s6
+              service: vacuum.return_to_base
+              style:
+               top: 90%
+               left: 50%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:crosshairs
+              tap_action: call-service
+              entity: vacuum.roborock_s6
+              service: vacuum.clean_spot
+              style:
+               top: 90%
+               left: 65%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:bell-ring
+              tap_action: call-service
+              entity: vacuum.roborock_s6
+              service: vacuum.locate
+              style:
+               top: 90%
+               left: 80%
+               color: '#3090C7'
+            # right
+            - type: state-label
+              entity: sensor.vacuum_accessories
+              style:
+               top: 10%
+               right: 1%
+               color: rgb(255, 255, 255)
+               transform: translate(0%,-50%)
+               pointer-events: none
+               font-family: Trebuchet MS
+               font-size: 90%
+               font-weight: bold
+               border-color: rgb(34, 154, 210)
+               background-color: '#3090C7'
+               border-radius: 6px
+            - type: state-label
+              entity: sensor.vacuum_cleanmainbrush
+              prefix: "Hauptbürste: "
+              style:
+                top: 35%
+                right: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 76%
+                font-weight: bold
+                border-right-style: solid
+                border-color: rgb(34, 154, 210)
+            - type: state-label
+              entity: sensor.vacuum_cleansidebrush
+              prefix: "Seitenbürste: "
+              style:
+                top: 45%
+                right: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 76%
+                font-weight: bold
+                border-right-style: solid
+                border-color: rgb(34, 154, 210)
+            - type: state-label
+              entity: sensor.vacuum_cleanfilter
+              prefix: "Filter: "
+              style:
+                top: 55%
+                right: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 76%
+                font-weight: bold
+                border-right-style: solid
+                border-color: rgb(34, 154, 210)
+                opacity: 0.8
+            - type: state-label
+              entity: sensor.vacuum_sensordirtyleft
+              prefix: "Sensor: "
+              style:
+                top: 65%
+                right: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 76%
+                font-weight: bold
+                border-right-style: solid
+                border-color: rgb(34, 154, 210)
+        - type: entities
+          entities:
+          - entity: input_select.vacuum_room
+        - type: glance
+          columns: 2
+          entities:
+          - entity: input_boolean.daily_vacuum
+          - entity: input_boolean.dustbin_notification
