@@ -660,8 +660,9 @@ views:
           elements:
             # central
             - type: state-label
-              tap_action: more-info
               entity: vacuum.roborock_s6
+              tap_action: 
+                action: more-info
               style:
                top: 14%
                right: 38%
@@ -757,45 +758,50 @@ views:
             # bottom
             - type: icon
               icon: mdi:play
-              tap_action: call-service
-              entity: vacuum.roborock_s6
-              service: vacuum.start
+              tap_action:
+                entity: vacuum.roborock_s6
+                action: call-service
+                service: vacuum.start
               style:
                top: 90%
                left: 20%
                color: '#3090C7'
             - type: icon
               icon: mdi:stop
-              tap_action: call-service
-              entity: vacuum.roborock_s6
-              service: vacuum.stop
+              tap_action:
+                entity: vacuum.roborock_s6
+                action: call-service
+                service: vacuum.stop
               style:
                top: 90%
                left: 35%
                color: '#3090C7'
             - type: icon
-              tap_action: call-service
               icon: mdi:home
-              entity: vacuum.roborock_s6
-              service: vacuum.return_to_base
+              tap_action:
+                entity: vacuum.roborock_s6
+                action: call-service
+                service: vacuum.return_to_base
               style:
                top: 90%
                left: 50%
                color: '#3090C7'
             - type: icon
               icon: mdi:crosshairs
-              tap_action: call-service
-              entity: vacuum.roborock_s6
-              service: vacuum.clean_spot
+              tap_action:
+                entity: vacuum.roborock_s6
+                action: call-service
+                service: vacuum.clean_spot
               style:
                top: 90%
                left: 65%
                color: '#3090C7'
             - type: icon
               icon: mdi:bell-ring
-              tap_action: call-service
-              entity: vacuum.roborock_s6
-              service: vacuum.locate
+              tap_action:
+                entity: vacuum.roborock_s6
+                action: call-service
+                service: vacuum.locate
               style:
                top: 90%
                left: 80%
