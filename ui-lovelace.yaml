@@ -147,6 +147,7 @@ views:
           - type: divider
           - light.relay_dining1_lamp
           - light.relay_dining2_lamp
+          - light.rfhub_lounge_lamptree
           # Xmas
           # - light.rfhub_lounge_noname1c
           # - light.xmastreedining_leds

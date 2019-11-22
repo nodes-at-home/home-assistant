@@ -124,6 +124,10 @@ light.rfhub_lounge_lamploungewhiteball:
 light.rfhub_lounge_lampstudypillar:
     friendly_name: Stehlampe am Drucker
 
+light.rfhub_lounge_lamptree:
+    friendly_name: Lichterbirke
+    icon: mdi:tree
+
 #------------------------------------------------------------------------------
 switch.kitchen_short_led_strip:
     friendly_name: Kurze Ledleiste

@@ -3,7 +3,7 @@
 ###
 
   - platform: mqtt
-    name: "rfhub@lounge_NoName1C"
+    name: "rfhub@lounge_lampTree"
     state_topic: "nodes@home/switch/rfhub/lounge/noName1C/state"
     command_topic: "nodes@home/switch/rfhub/lounge/noName1C"
     optimistic: true
