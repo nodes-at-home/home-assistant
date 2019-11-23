@@ -169,7 +169,7 @@ views:
         title: Obergeschoss
         show_header_toggle: true
         entities:
-          - switch.sonoff_bedroom_socket
+          - light.sonoff_bedroom_socket
           - light.sonoff_gallery1_socket
     
   - title: Außen

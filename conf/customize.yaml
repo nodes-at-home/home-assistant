@@ -441,9 +441,8 @@ sensor.ttp223_bedroom_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #-------------------------------------------------------------------------  -----
-switch.sonoff_bedroom_socket:
+light.sonoff_bedroom_socket:
     friendly_name: Schrankbeleuchtung
-    icon: mdi:lightbulb
 
 sensor.sonoff_bedroom_voltage:
     friendly_name: 'Steckdose Schlafzimmerschrank'
