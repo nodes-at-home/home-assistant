@@ -148,8 +148,8 @@ views:
           - light.relay_dining1_lamp
           - light.relay_dining2_lamp
           - light.rfhub_lounge_lamptree
+          - light.rfhub_lounge_lightweb
           # Xmas
-          # - light.rfhub_lounge_noname1c
           # - light.xmastreedining_leds
           - type: divider
           - light.rfhub_lounge_lamploungewhiteball

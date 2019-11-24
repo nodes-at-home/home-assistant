@@ -128,6 +128,9 @@ light.rfhub_lounge_lamptree:
     friendly_name: Lichterbirke
     icon: mdi:tree
 
+light.rfhub_lounge_lightWeb:
+    friendly_name: Lichternetz
+
 #------------------------------------------------------------------------------
 switch.kitchen_short_led_strip:
     friendly_name: Kurze Ledleiste
