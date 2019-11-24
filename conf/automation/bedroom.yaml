@@ -22,6 +22,6 @@
         entity_id: input_boolean.touch_bedroom_activated
         state: 'on'
     action:
-      - service: switch.toggle
+      - service: light.toggle
         entity_id:
-            - switch.sonoff_bedroom_socket
+            - light.sonoff_bedroom_socket
