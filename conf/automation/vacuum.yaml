@@ -49,27 +49,49 @@
       - service: homeassistant.turn_off
         entity_id: input_boolean.daily_vacuum_done
 
-  - alias: start_cleaning_room
+  - alias: start_cleaning_ground_floor_room
     initial_state: false
     hide_entity: True
     trigger:
       - platform: state
-        entity_id: input_select.vacuum_room
-        from: 'Raumauswahl'
+        entity_id: input_select.vacuum_ground_floor_room
+        from: 'Auswahl'
     action:
-      - service: script.turn_on
-        data_template:
-            entity_id: >
-                {% if is_state("input_select.vacuum_room", "room1") %}
-                 script.vacuum_room1
-                {% elif is_state("input_select.vacuum_room", "room2") %}
-                 script.vacuum_room2
-                {% else %}
-                {% endif %}
+      # - service: script.turn_on
+        # data_template:
+            # entity_id: >
+                # {% if is_state("input_select.vacuum_ground_floor_room", "room1") %}
+                 # script.vacuum_room1
+                # {% elif is_state("input_select.vacuum_ground_floor_room", "room2") %}
+                 # script.vacuum_room2
+                # {% else %}
+                # {% endif %}
       - service: input_select.select_option
-        entity_id: input_select.vacuum_room
+        entity_id: input_select.vacuum_ground_floor_room
         data_template:
-            option: 'Raumauswahl'
+            option: 'Auswahl'
+
+  - alias: start_cleaning_first_floor_room
+    initial_state: false
+    hide_entity: True
+    trigger:
+      - platform: state
+        entity_id: input_select.vacuum_first_floor_room
+        from: 'Auswahl'
+    action:
+      # - service: script.turn_on
+        # data_template:
+            # entity_id: >
+                # {% if is_state("input_select.vacuum_first_floor_room", "room1") %}
+                 # script.vacuum_room1
+                # {% elif is_state("input_select.vacuum_first_floor_room", "room2") %}
+                 # script.vacuum_room2
+                # {% else %}
+                # {% endif %}
+      - service: input_select.select_option
+        entity_id: input_select.vacuum_first_floor_room
+        data_template:
+            option: 'Auswahl'
         
   - alias: start_daily_vacuum
     trigger:
@@ -79,20 +101,24 @@
         condition: and
         conditions:
           - condition: state
-            entity_id: group.family_devices
-            state: 'not_home'
+            entity_id: input_boolean.daily_vacuum
+            state: 'on'
           - condition: state
-            entity_id: input_boolean.daily_vacuum_done
-            state: 'off'
+            entity_id: binary_sensor.workday_sensor
+            state: 'on'
           - condition: time
             after: '08:00:00'
             before: '17:00:00'
           - condition: state
-            entity_id: input_boolean.daily_vacuum
-            state: 'on'
+            entity_id: input_boolean.daily_vacuum_done
+            state: 'off'
+          - condition: state
+            entity_id: group.family_devices
+            state: 'not_home'
     action:
       #- delay: '00:00:30'
       # - service: vacuum.turn_on
-        # entity_id: vacuum.roborock_s6
+        # entity_id: vacuum.roborock_s6_ground_floor
+        # entity_id: vacuum.roborock_s6_first_floor
       - service: input_boolean.toggle
         entity_id: input_boolean.daily_vacuum_done

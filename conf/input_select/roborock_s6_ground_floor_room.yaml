@@ -1,0 +1,14 @@
+###
+### 28.11.2019 new
+###
+
+name: Raum
+options:
+  - Auswahl
+  - Küche
+  - Esszimmer
+  - Wohnzimmer
+  - Korridor
+  - Flur
+  - Dusche
+  - Hauswirtschaftsraum

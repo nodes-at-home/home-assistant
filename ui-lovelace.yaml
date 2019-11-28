@@ -132,7 +132,7 @@ views:
                           - height: 200px
                   - type: media-control
                     entity: media_player.sony_bravia_tv
-                
+
   - title: Innen
     path: indoor
     panel: false
@@ -171,7 +171,7 @@ views:
         entities:
           - light.sonoff_bedroom_socket
           - light.sonoff_gallery1_socket
-    
+
   - title: Außen
     path: outdoor
     panel: false
@@ -199,7 +199,7 @@ views:
             show_header_toggle: false
             entities:
                 - switch.sonoff_pool_socket
-    
+
   - title: Sensorwerte
     path: values
     panel: true
@@ -284,7 +284,7 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.indoor_lights_on_at_coming_home_or_sunset
-                    - automation.indoor_lights_by_night_on_at_coming_home            
+                    - automation.indoor_lights_by_night_on_at_coming_home
                     - automation.indoor_lights_off_at_getting_out_or_sunrise
                     - automation.indoor_lights_off_when_tv_switched_off
                     - automation.indoor_lights_off_after_random_delay
@@ -331,13 +331,15 @@ views:
                     - automation.pitouch_screen_off
                     - automation.pitouch_screen_off_after_tv_off
               - type: entities
-                title: Pitouch
+                title: Saugroboter
                 show_header_toggle: true
                 entities:
                     - automation.send_alert_after_daily_vacuum_to_empty_the_dustbin
                     - automation.reset_daily_vacuum_done_state_at_midnight
-                    - automation.start_cleaning_room
+                    - automation.start_cleaning_ground_floor_room
+                    - automation.start_cleaning_first_floor_room
                     - automation.start_daily_vacuum
+
   - title: Enstellungen
     path: options
     panel: true
@@ -425,7 +427,7 @@ views:
                     - input_boolean.daily_vacuum_done
                     - input_boolean.daily_vacuum
                     - input_boolean.dustbin_notification
-    
+
   - title: Geräte
     path: nodes
     panel: true
@@ -580,7 +582,7 @@ views:
                 - sensor.electricity_utilityroom_voltage
                 - sensor.ws2812_terrace1_voltage
                 - sensor.ws2812_terrace2_voltage
-                
+
   - title: System
     path: system
     panel: false
@@ -607,7 +609,7 @@ views:
             - sensor.speedtest_ping
             - sensor.speedtest_download
             - sensor.speedtest_upload
-      
+
   - title: Brauerei
     path: brewery
     panel: true
@@ -656,13 +658,13 @@ views:
       - type: custom:vertical-stack-in-card
         cards:
         - type: picture-elements
-          title: Saugroboter
+          title: Erdgeschoss
           image: '/local/images/roborock.png'
           elements:
             # central
             - type: state-label
-              entity: vacuum.roborock_s6
-              tap_action: 
+              entity: vacuum.roborock_s6_ground_floor
+              tap_action:
                 action: more-info
               style:
                top: 14%
@@ -676,7 +678,7 @@ views:
                border-radius: 6px
                background-color: '#cccccc'
             - type: state-label
-              entity: sensor.vacuum_cleaned_area
+              entity: sensor.roborock_s6_ground_floor_cleaned_area
               prefix: "Fläche: "
               style:
                 top: 79%
@@ -688,7 +690,7 @@ views:
                 font-size: 80%
                 font-weight: bold
             - type: state-label
-              entity: sensor.vacuum_cleaning_time
+              entity: sensor.roborock_s6_ground_floor_cleaning_time
               prefix: "Zeit: "
               style:
                 top: 79%
@@ -715,7 +717,7 @@ views:
                background-color: '#3090C7'
                border-radius: 6px
             - type: state-label
-              entity: sensor.vacuum_status
+              entity: sensor.roborock_s6_ground_floor_status
               prefix: "Status: "
               style:
                 top: 40%
@@ -729,7 +731,7 @@ views:
                 border-left-style: solid
                 border-color: '#3090C7'
             - type: state-label
-              entity: sensor.vacuum_battery
+              entity: sensor.roborock_s6_ground_floor_battery
               prefix: "Batterie: "
               style:
                 top: 50%
@@ -743,7 +745,7 @@ views:
                 border-left-style: solid
                 border-color: rgb(34, 154, 210)
             - type: state-label
-              entity: sensor.vacuum_fan_speed
+              entity: sensor.roborock_s6_ground_floor_fan_speed
               prefix: "Sauger: "
               style:
                 top: 60%
@@ -760,19 +762,32 @@ views:
             - type: icon
               icon: mdi:play
               tap_action:
-                entity: vacuum.roborock_s6
                 action: call-service
                 service: vacuum.start
+                service_data:
+                    entity_id: vacuum.roborock_s6_ground_floor
               style:
                top: 90%
                left: 20%
                color: '#3090C7'
             - type: icon
+              icon: mdi:pause
+              tap_action:
+                action: call-service
+                service: vacuum.pause
+                service_data:
+                    entity_id: vacuum.roborock_s6_ground_floor
+              style:
+               top: 90%
+               left: 24%
+               color: '#3090C7'
+            - type: icon
               icon: mdi:stop
               tap_action:
-                entity: vacuum.roborock_s6
                 action: call-service
                 service: vacuum.stop
+                service_data:
+                    entity_id: vacuum.roborock_s6_ground_floor
               style:
                top: 90%
                left: 35%
@@ -780,9 +795,10 @@ views:
             - type: icon
               icon: mdi:home
               tap_action:
-                entity: vacuum.roborock_s6
                 action: call-service
                 service: vacuum.return_to_base
+                service_data:
+                    entity_id: vacuum.roborock_s6_ground_floor
               style:
                top: 90%
                left: 50%
@@ -790,9 +806,10 @@ views:
             - type: icon
               icon: mdi:crosshairs
               tap_action:
-                entity: vacuum.roborock_s6
                 action: call-service
                 service: vacuum.clean_spot
+                service_data:
+                    entity_id: vacuum.roborock_s6_ground_floor
               style:
                top: 90%
                left: 65%
@@ -800,9 +817,10 @@ views:
             - type: icon
               icon: mdi:bell-ring
               tap_action:
-                entity: vacuum.roborock_s6
                 action: call-service
                 service: vacuum.locate
+                service_data:
+                    entity_id: vacuum.roborock_s6_ground_floor
               style:
                top: 90%
                left: 80%
@@ -823,7 +841,7 @@ views:
                background-color: '#3090C7'
                border-radius: 6px
             - type: state-label
-              entity: sensor.vacuum_cleanmainbrush
+              entity: sensor.roborock_s6_ground_floor_cleanmainbrush
               prefix: "Hauptbürste: "
               style:
                 top: 35%
@@ -837,7 +855,7 @@ views:
                 border-right-style: solid
                 border-color: rgb(34, 154, 210)
             - type: state-label
-              entity: sensor.vacuum_cleansidebrush
+              entity: sensor.roborock_s6_ground_floor_cleansidebrush
               prefix: "Seitenbürste: "
               style:
                 top: 45%
@@ -851,7 +869,7 @@ views:
                 border-right-style: solid
                 border-color: rgb(34, 154, 210)
             - type: state-label
-              entity: sensor.vacuum_cleanfilter
+              entity: sensor.roborock_s6_ground_floor_cleanfilter
               prefix: "Filter: "
               style:
                 top: 55%
@@ -866,7 +884,7 @@ views:
                 border-color: rgb(34, 154, 210)
                 opacity: 0.8
             - type: state-label
-              entity: sensor.vacuum_sensordirtyleft
+              entity: sensor.roborock_s6_ground_floor_sensordirtyleft
               prefix: "Sensor: "
               style:
                 top: 65%
@@ -881,9 +899,259 @@ views:
                 border-color: rgb(34, 154, 210)
         - type: entities
           entities:
-          - entity: input_select.vacuum_room
-        - type: glance
-          columns: 2
+          - entity: input_select.roborock_s6_ground_floor_room
+        # - type: glance
+          # columns: 2
+          # entities:
+          # - entity: input_boolean.daily_vacuum
+          # - entity: input_boolean.dustbin_notification
+      - type: custom:vertical-stack-in-card
+        cards:
+        - type: picture-elements
+          title: Obergeschoss
+          image: '/local/images/roborock.png'
+          elements:
+            # central
+            - type: state-label
+              entity: vacuum.roborock_s6_first_floor
+              tap_action:
+                action: more-info
+              style:
+               top: 14%
+               right: 38%
+               color: rgb(255, 255, 255)
+               transform: translate(0%,-50%)
+               font-family: Trebuchet MS
+               font-size: 150%
+               font-weight: bold
+               border-color: rgb(34, 154, 210)
+               border-radius: 6px
+               background-color: '#cccccc'
+            - type: state-label
+              entity: sensor.roborock_s6_first_floor_cleaned_area
+              prefix: "Fläche: "
+              style:
+                top: 79%
+                left: 31%
+                color: '#84a6ba'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+            - type: state-label
+              entity: sensor.roborock_s6_first_floor_cleaning_time
+              prefix: "Zeit: "
+              style:
+                top: 79%
+                left: 51%
+                color: '#84a6ba'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+            # left
+            - type: state-label
+              entity: sensor.vacuum_operation
+              style:
+               top: 10%
+               left: 1%
+               color: rgb(255, 255, 255)
+               transform: translate(0%,-50%)
+               pointer-events: none
+               font-family: Trebuchet MS
+               font-size: 90%
+               font-weight: bold
+               border-color: rgb(34, 154, 210)
+               background-color: '#3090C7'
+               border-radius: 6px
+            - type: state-label
+              entity: sensor.roborock_s6_first_floor_status
+              prefix: "Status: "
+              style:
+                top: 40%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: '#3090C7'
+            - type: state-label
+              entity: sensor.roborock_s6_first_floor_battery
+              prefix: "Batterie: "
+              style:
+                top: 50%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: rgb(34, 154, 210)
+            - type: state-label
+              entity: sensor.roborock_s6_first_floor_fan_speed
+              prefix: "Sauger: "
+              style:
+                top: 60%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: rgb(34, 154, 210)
+            # bottom
+            - type: icon
+              icon: mdi:play
+              tap_action:
+                action: call-service
+                service: vacuum.start
+                service_data:
+                    entity_id: vacuum.roborock_s6_first_floor
+              style:
+               top: 90%
+               left: 20%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:pause
+              tap_action:
+                action: call-service
+                service: vacuum.pause
+                service_data:
+                    entity_id: vacuum.roborock_s6_first_floor
+              style:
+               top: 90%
+               left: 24%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:stop
+              tap_action:
+                action: call-service
+                service: vacuum.stop
+                service_data:
+                    entity_id: vacuum.roborock_s6_first_floor
+              style:
+               top: 90%
+               left: 35%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:home
+              tap_action:
+                action: call-service
+                service: vacuum.return_to_base
+                service_data:
+                    entity_id: vacuum.roborock_s6_first_floor
+              style:
+               top: 90%
+               left: 50%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:crosshairs
+              tap_action:
+                action: call-service
+                service: vacuum.clean_spot
+                service_data:
+                    entity_id: vacuum.roborock_s6_first_floor
+              style:
+               top: 90%
+               left: 65%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:bell-ring
+              tap_action:
+                action: call-service
+                service: vacuum.locate
+                service_data:
+                    entity_id: vacuum.roborock_s6_first_floor
+              style:
+               top: 90%
+               left: 80%
+               color: '#3090C7'
+            # right
+            - type: state-label
+              entity: sensor.vacuum_accessories
+              style:
+               top: 10%
+               right: 1%
+               color: rgb(255, 255, 255)
+               transform: translate(0%,-50%)
+               pointer-events: none
+               font-family: Trebuchet MS
+               font-size: 90%
+               font-weight: bold
+               border-color: rgb(34, 154, 210)
+               background-color: '#3090C7'
+               border-radius: 6px
+            - type: state-label
+              entity: sensor.roborock_s6_first_floor_cleanmainbrush
+              prefix: "Hauptbürste: "
+              style:
+                top: 35%
+                right: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 76%
+                font-weight: bold
+                border-right-style: solid
+                border-color: rgb(34, 154, 210)
+            - type: state-label
+              entity: sensor.roborock_s6_first_floor_cleansidebrush
+              prefix: "Seitenbürste: "
+              style:
+                top: 45%
+                right: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 76%
+                font-weight: bold
+                border-right-style: solid
+                border-color: rgb(34, 154, 210)
+            - type: state-label
+              entity: sensor.roborock_s6_first_floor_cleanfilter
+              prefix: "Filter: "
+              style:
+                top: 55%
+                right: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 76%
+                font-weight: bold
+                border-right-style: solid
+                border-color: rgb(34, 154, 210)
+                opacity: 0.8
+            - type: state-label
+              entity: sensor.roborock_s6_first_floor_sensordirtyleft
+              prefix: "Sensor: "
+              style:
+                top: 65%
+                right: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 76%
+                font-weight: bold
+                border-right-style: solid
+                border-color: rgb(34, 154, 210)
+        - type: entities
           entities:
-          - entity: input_boolean.daily_vacuum
-          - entity: input_boolean.dustbin_notification
+          - entity: input_select.roborock_s6_first_floor_room
+        # - type: glance
+          # columns: 2
+          # entities:
+          # - entity: input_boolean.daily_vacuum
+          # - entity: input_boolean.dustbin_notification
