@@ -3,6 +3,20 @@
 ###
 
   - platform: mqtt
+    name: "rfhub@lounge_schwibbogen1"
+    state_topic: "nodes@home/switch/rfhub/lounge/noName3A/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/noName3A"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@lounge_schwibbogen2"
+    state_topic: "nodes@home/switch/rfhub/lounge/noName3B/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/noName3B"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
     name: "rfhub@lounge_lampTree"
     state_topic: "nodes@home/switch/rfhub/lounge/noName1C/state"
     command_topic: "nodes@home/switch/rfhub/lounge/noName1C"

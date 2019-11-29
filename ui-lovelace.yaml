@@ -132,7 +132,7 @@ views:
                           - height: 200px
                   - type: media-control
                     entity: media_player.sony_bravia_tv
-
+                
   - title: Innen
     path: indoor
     panel: false
@@ -156,6 +156,8 @@ views:
           - light.rfhub_lounge_lamploungeblackbowl
           - light.rfhub_lounge_lamploungereading
           - light.rfhub_lounge_lampstudypillar
+          - light.rfhub_lounge_schwibbogen1
+          - light.rfhub_lounge_schwibbogen2
           - switch.sonoff_k8200_socket
           - type: divider
           - light.sonoff_corridor_lamp
@@ -171,7 +173,7 @@ views:
         entities:
           - light.sonoff_bedroom_socket
           - light.sonoff_gallery1_socket
-
+    
   - title: Außen
     path: outdoor
     panel: false
@@ -199,7 +201,7 @@ views:
             show_header_toggle: false
             entities:
                 - switch.sonoff_pool_socket
-
+    
   - title: Sensorwerte
     path: values
     panel: true
@@ -284,7 +286,7 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.indoor_lights_on_at_coming_home_or_sunset
-                    - automation.indoor_lights_by_night_on_at_coming_home
+                    - automation.indoor_lights_by_night_on_at_coming_home            
                     - automation.indoor_lights_off_at_getting_out_or_sunrise
                     - automation.indoor_lights_off_when_tv_switched_off
                     - automation.indoor_lights_off_after_random_delay
@@ -427,7 +429,7 @@ views:
                     - input_boolean.daily_vacuum_done
                     - input_boolean.daily_vacuum
                     - input_boolean.dustbin_notification
-
+    
   - title: Geräte
     path: nodes
     panel: true
@@ -582,7 +584,7 @@ views:
                 - sensor.electricity_utilityroom_voltage
                 - sensor.ws2812_terrace1_voltage
                 - sensor.ws2812_terrace2_voltage
-
+                
   - title: System
     path: system
     panel: false
@@ -609,7 +611,7 @@ views:
             - sensor.speedtest_ping
             - sensor.speedtest_download
             - sensor.speedtest_upload
-
+      
   - title: Brauerei
     path: brewery
     panel: true
@@ -664,7 +666,7 @@ views:
             # central
             - type: state-label
               entity: vacuum.roborock_s6_ground_floor
-              tap_action:
+              tap_action: 
                 action: more-info
               style:
                top: 14%
@@ -914,7 +916,7 @@ views:
             # central
             - type: state-label
               entity: vacuum.roborock_s6_first_floor
-              tap_action:
+              tap_action: 
                 action: more-info
               style:
                top: 14%

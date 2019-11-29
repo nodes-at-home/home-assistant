@@ -128,8 +128,14 @@ light.rfhub_lounge_lamptree:
     friendly_name: Lichterbirke
     icon: mdi:tree
 
-light.rfhub_lounge_lightWeb:
+light.rfhub_lounge_lightweb:
     friendly_name: Lichternetz
+
+light.rfhub_lounge_schwibbogen1:
+    friendly_name: Schwibbogen links
+
+light.rfhub_lounge_schwibbogen2:
+    friendly_name: Schwibbogen rechts
 
 #------------------------------------------------------------------------------
 switch.kitchen_short_led_strip:
