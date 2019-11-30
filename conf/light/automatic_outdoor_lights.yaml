@@ -9,3 +9,5 @@
       - light.relay_backyard_lamp
       - light.sonoff_garage_lamp
       - light.sonoff_yardgate_lamp
+      - light.rfhub_lounge_schwibbogen1
+      - light.rfhub_lounge_schwibbogen2

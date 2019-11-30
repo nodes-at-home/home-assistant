@@ -156,8 +156,6 @@ views:
           - light.rfhub_lounge_lamploungeblackbowl
           - light.rfhub_lounge_lamploungereading
           - light.rfhub_lounge_lampstudypillar
-          - light.rfhub_lounge_schwibbogen1
-          - light.rfhub_lounge_schwibbogen2
           - switch.sonoff_k8200_socket
           - type: divider
           - light.sonoff_corridor_lamp
@@ -184,18 +182,20 @@ views:
             title: Garagentor
             show_header_toggle: true
             entities:
-                - cover.relay_garage
-                - sensor.relay_garage_state
+              - cover.relay_garage
+              - sensor.relay_garage_state
           - type: entities
             title: Außenlichter
             show_header_toggle: true
             entities:
-                - light.sonoff_terrace_lamp
-                - light.relay_backyard_lamp
-                - light.sonoff_garage_lamp
-                - light.sonoff_yardgate_lamp
-                - light.ws2812_terrace1
-                - light.ws2812_terrace2
+              - light.sonoff_terrace_lamp
+              - light.relay_backyard_lamp
+              - light.sonoff_garage_lamp
+              - light.sonoff_yardgate_lamp
+              - light.ws2812_terrace1
+              - light.ws2812_terrace2
+              - light.rfhub_lounge_schwibbogen1
+              - light.rfhub_lounge_schwibbogen2
           - type: entities
             title: Pool
             show_header_toggle: false

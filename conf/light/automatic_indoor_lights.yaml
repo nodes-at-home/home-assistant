@@ -13,8 +13,6 @@
       - light.rfhub_lounge_lampkitchenlongstrip
       - light.rfhub_lounge_lamptree
       - light.rfhub_lounge_lightweb
-      - light.rfhub_lounge_schwibbogen1
-      - light.rfhub_lounge_schwibbogen2
       - light.relay_dining1_lamp
       - light.relay_dining2_lamp
       - light.sonoff_kitchen_led
