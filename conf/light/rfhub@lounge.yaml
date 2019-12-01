@@ -31,6 +31,20 @@
     retain: true
 
   - platform: mqtt
+    name: "rfhub@lounge_star"
+    state_topic: "nodes@home/switch/rfhub/lounge/lamp1/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/lamp1"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
+    name: "rfhub@lounge_drops"
+    state_topic: "nodes@home/switch/rfhub/lounge/noName3D/state"
+    command_topic: "nodes@home/switch/rfhub/lounge/noName3D"
+    optimistic: true
+    retain: true
+
+  - platform: mqtt
     name: "rfhub@lounge_lampKitchenLongStrip"
     state_topic: "nodes@home/switch/rfhub/lounge/lampKitchenLongStrip/state"
     command_topic: "nodes@home/switch/rfhub/lounge/lampKitchenLongStrip"
