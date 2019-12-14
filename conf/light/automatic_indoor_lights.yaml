@@ -15,6 +15,6 @@
       - light.rfhub_lounge_lightweb
       - light.relay_dining1_lamp
       - light.relay_dining2_lamp
-      - light.sonoff_kitchen_led
+      #- light.sonoff_kitchen_led
       - light.sonoff_corridor_lamp
       - light.sonoff_gallery1_socket

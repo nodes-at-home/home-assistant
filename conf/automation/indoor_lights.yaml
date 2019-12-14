@@ -29,6 +29,7 @@
       - service: homeassistant.turn_on
         entity_id: 
             - light.automatic_indoor_lights
+            - light.sonoff_kitchen_led # is not in group light.automatic_inddor_lights
 
   - alias: indoor_lights_by_night_on_at_coming_home
     hide_entity: False
