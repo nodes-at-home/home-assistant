@@ -104,21 +104,25 @@
             entity_id: input_boolean.daily_vacuum
             state: 'on'
           - condition: state
+            entity_id: input_boolean.daily_vacuum_done
+            state: 'off'
+          - condition: state
             entity_id: binary_sensor.workday_sensor
             state: 'on'
           - condition: time
             after: '08:00:00'
             before: '17:00:00'
-          - condition: state
-            entity_id: input_boolean.daily_vacuum_done
-            state: 'off'
+            weekday:
+              - mon
+              - wed
           - condition: state
             entity_id: group.family_devices
             state: 'not_home'
     action:
-      #- delay: '00:00:30'
-      # - service: vacuum.turn_on
-        # entity_id: vacuum.roborock_s6_ground_floor
-        # entity_id: vacuum.roborock_s6_first_floor
+      - delay: '00:00:30'
+      - service: vacuum.turn_on
+        entity_id: 
+          - vacuum.roborock_s6_ground_floor
+          - vacuum.roborock_s6_first_floor
       - service: input_boolean.toggle
         entity_id: input_boolean.daily_vacuum_done
