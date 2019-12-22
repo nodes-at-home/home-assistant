@@ -104,6 +104,9 @@
             entity_id: binary_sensor.prod_mode
             state: 'on'
           - condition: state
+            entity_id: input_boolean.light_simulation
+            state: 'off'
+          - condition: state
             entity_id: input_boolean.daily_vacuum
             state: 'on'
           - condition: state
