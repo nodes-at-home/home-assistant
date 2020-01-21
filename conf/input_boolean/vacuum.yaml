@@ -9,7 +9,7 @@ daily_vacuum_done:
     
 daily_vacuum:
     name: Tägliche Reinigung
-    initial: 'on'
+    initial: 'off'
     
 dustbin_notification:
     name: Benachrichtigung
