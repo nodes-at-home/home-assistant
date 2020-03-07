@@ -34,7 +34,7 @@ views:
                       top: 40%
                       left: 13%
                   - type: state-badge
-                    entity: device_tracker.nina_huawei
+                    entity: device_tracker.nina_galaxy
                     style:
                       top: 40%
                       left: 17%

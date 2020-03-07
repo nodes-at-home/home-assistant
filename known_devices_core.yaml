@@ -19,9 +19,9 @@ nora_galaxy:
   track: yes
   hide_if_away: no
 
-nina_huawei:
+nina_galaxy:
   name: Nina
-  mac: A4:71:74:E9:A3:30
+  mac: F0:EE:10:81:B7:80
   track: yes
   hide_if_away: no
 
