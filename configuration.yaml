@@ -61,17 +61,6 @@ influxdb:
         - sensor.ds18b20_pool_voltage
 
 # -------------------------------------------------------------------------------
-# weblinks
-
-weblink:
-  entities:
-    - name: Home Assistant
-      url: https://home-assistant.io
-    - name: OctoPrint
-      url: http://192.168.2.114
-      icon: mdi:printer-3d
-
-# -------------------------------------------------------------------------------
 # weather platform for lovelace card
 
 weather:
