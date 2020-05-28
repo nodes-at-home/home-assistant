@@ -3,7 +3,6 @@
 ###
 
   - alias: indoor_lights_on_at_coming_home_or_sunset
-    hide_entity: False
     trigger:
       - platform: state
         entity_id: group.family_devices
@@ -32,7 +31,6 @@
             - light.sonoff_kitchen_led # is not in group light.automatic_inddor_lights
 
   - alias: indoor_lights_by_night_on_at_coming_home
-    hide_entity: False
     trigger:
       - platform: state
         entity_id: group.family_devices
@@ -57,7 +55,6 @@
             - light.automatic_indoor_lights_by_night
 
   - alias: indoor_lights_off_at_getting_out_or_sunrise
-    hide_entity: False
     trigger:
       - platform: state
         entity_id: group.family_devices
@@ -74,7 +71,6 @@
             - light.automatic_indoor_lights_immediatly_switched_off_extra
 
   - alias: indoor_lights_off_when_tv_switched_off
-    hide_entity: False
     trigger:
         platform: state
         entity_id: media_player.sony_bravia_tv
@@ -99,7 +95,6 @@
             - light.automatic_indoor_lights_delayed_switched
 
   - alias: indoor_lights_off_after_random_delay
-    hide_entity: False
     trigger:
       - platform: time
         at: '22:00:00'

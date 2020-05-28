@@ -3,7 +3,6 @@
 ###
 
   - alias: heater_circulating_pump_on
-    hide_entity: False
     trigger:                    # any event
       - platform: time
         at: '05:30:00'
@@ -42,7 +41,6 @@
             - switch.sonoff_utilityroom_pump
 
   - alias: heater_circulating_pump_off
-    hide_entity: False
     trigger:                    # any event, no condition necessary
       - platform: time
         at: '22:00:00'

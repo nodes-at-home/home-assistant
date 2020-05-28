@@ -3,7 +3,6 @@
 ###
 
   - alias: display_show_outdoor_temperature
-    hide_entity: false
     trigger:
       - platform: mqtt
         topic: nodes@home/sensor/DHT22/terrace/value/temperature
@@ -31,7 +30,6 @@
             retain: true
 
   - alias: display_show_indoor_temperature
-    hide_entity: false
     trigger:
       - platform: mqtt
         topic: nodes@home/sensor/DHT22/lounge/value/temperature
@@ -59,7 +57,6 @@
             retain: true
 
   - alias: display_show_pool_temperature
-    hide_entity: false
     trigger:
       - platform: mqtt
         topic: nodes@home/sensor/ds18b20/pool/value/temperature

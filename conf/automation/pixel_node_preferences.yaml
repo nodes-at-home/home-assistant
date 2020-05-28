@@ -3,7 +3,6 @@
 ###
 
   - alias: pixel_node_preferences
-    hide_entity: false
     trigger:
       - platform: state
         entity_id: input_boolean.pixel_node_time

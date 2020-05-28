@@ -3,7 +3,6 @@
 ###
 
   - alias: pool_pump_on_off
-    hide_entity: False
     trigger:
       - platform: time
         at: '11:00:00'
@@ -20,7 +19,6 @@
             - switch.sonoff_pool_socket
 
   - alias: button_pool
-    hide_entity: false
     trigger:
       - platform: state
         entity_id: binary_sensor.button_pool

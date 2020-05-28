@@ -3,7 +3,6 @@
 ###
 
   - alias: send_alert_after_daily_vacuum_to_empty_the_dustbin
-    initial_state: false
     trigger:
       - platform: state
         entity_id: device_tracker.galaxy_note_fan_edition
@@ -51,7 +50,6 @@
 
   - alias: start_cleaning_ground_floor_room
     initial_state: false
-    hide_entity: True
     trigger:
       - platform: state
         entity_id: input_select.vacuum_ground_floor_room
@@ -73,7 +71,6 @@
 
   - alias: start_cleaning_first_floor_room
     initial_state: false
-    hide_entity: True
     trigger:
       - platform: state
         entity_id: input_select.vacuum_first_floor_room
