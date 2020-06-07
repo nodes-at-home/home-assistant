@@ -137,8 +137,8 @@ updater:
 # -------------------------------------------------------------------------------
 # Enables the recorder component.
 recorder:
+    auto_purge: on
     purge_keep_days: 30
-    purge_interval: 1
 
 # -------------------------------------------------------------------------------
 # Enables support for tracking state changes over time.
