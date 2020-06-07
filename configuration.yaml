@@ -115,6 +115,10 @@ frontend:
 
 lovelace:
     mode: yaml
+    resources:
+      # https://github.com/custom-cards/vertical-stack-in-card
+      - url: /local/vertical-stack-in-card.js
+        type: js
 
 # -------------------------------------------------------------------------------
 http:

@@ -1,7 +1,6 @@
-resources:
-  # https://github.com/custom-cards/vertical-stack-in-card
-  - url: /local/vertical-stack-in-card.js
-    type: js
+#
+# lovelace configuration - one big file for all
+#
 
 title: !env_var HA_TITLE
 views:
