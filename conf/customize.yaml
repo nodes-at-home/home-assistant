@@ -807,3 +807,6 @@ sensor.log_db_file_size:
     friendly_name: Datenbank
 
 #------------------------------------------------------------------------------
+binary_sensor.gardena_smart_system_connection:
+    friendly_name: Gardena
+#------------------------------------------------------------------------------

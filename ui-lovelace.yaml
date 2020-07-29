@@ -48,6 +48,11 @@ views:
                       top: 40%
                       left: 25%
                   - type: state-badge
+                    entity: binary_sensor.gardena_smart_system_connection
+                    style:
+                      top: 40%
+                      left: 75%
+                  - type: state-badge
                     entity: sensor.relay_garage_state
                     style:
                       top: 40%
@@ -654,8 +659,8 @@ views:
 
   # https://sharethelove.io/picture-elements-cards/xiaomi-vacuum-card
   # https://community.home-assistant.io/t/xiaomi-vacuum-cleaner-card/64456/52
-  - title: Staubsauger
-    path: vacuum
+  - title: Roboter
+    path: robots
     panel: false
     cards:
       - type: custom:vertical-stack-in-card
@@ -1158,3 +1163,182 @@ views:
           # entities:
           # - entity: input_boolean.daily_vacuum
           # - entity: input_boolean.dustbin_notification
+      - type: custom:vertical-stack-in-card
+        cards:
+        - type: picture-elements
+          title: Garten
+          image: '/local/images/mower.jpg'
+          elements:
+            # central
+            - type: state-label
+              entity: vacuum.sileno
+              tap_action:
+                action: more-info
+              style:
+               top: 14%
+               right: 38%
+               color: rgb(255, 255, 255)
+               transform: translate(0%,-50%)
+               font-family: Trebuchet MS
+               font-size: 150%
+               font-weight: bold
+               border-color: rgb(34, 154, 210)
+               border-radius: 6px
+               background-color: '#cccccc'
+            - type: state-label
+              entity: vacuum.sileno
+              attribute: operating_hours
+              prefix: "Zeit: "
+              suffix: " h"
+              style:
+                top: 79%
+                left: 45%
+                color: '#84a6ba'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+            # left
+            - type: state-label
+              entity: sensor.vacuum_operation
+              style:
+               top: 10%
+               left: 1%
+               color: rgb(255, 255, 255)
+               transform: translate(0%,-50%)
+               pointer-events: none
+               font-family: Trebuchet MS
+               font-size: 90%
+               font-weight: bold
+               border-color: rgb(34, 154, 210)
+               background-color: '#3090C7'
+               border-radius: 6px
+            - type: state-label
+              entity: vacuum.sileno
+              attribute: activity
+              prefix: "Status: "
+              style:
+                top: 40%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: '#3090C7'
+            - type: state-label
+              entity: sensor.sileno_battery_level
+              prefix: "Batterie: "
+              style:
+                top: 50%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: rgb(34, 154, 210)
+            - type: state-label
+              entity: vacuum.sileno
+              attribute: error
+              prefix: "Fehler: "
+              style:
+                top: 60%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: rgb(34, 154, 210)
+            - type: state-label
+              entity: vacuum.sileno
+              attribute: last_error
+              prefix: "Meldung: "
+              style:
+                top: 70%
+                left: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 80%
+                font-weight: bold
+                border-left-style: solid
+                border-color: rgb(34, 154, 210)
+            # bottom
+            - type: icon
+              icon: mdi:play
+              tap_action:
+                action: call-service
+                service: vacuum.start
+                service_data:
+                    entity_id: vacuum.sileno
+              style:
+               top: 90%
+               left: 35%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:stop
+              tap_action:
+                action: call-service
+                service: vacuum.stop
+                service_data:
+                    entity_id: vacuum.sileno
+              style:
+               top: 90%
+               left: 50%
+               color: '#3090C7'
+            - type: icon
+              icon: mdi:home
+              tap_action:
+                action: call-service
+                service: vacuum.return_to_base
+                service_data:
+                    entity_id: vacuum.sileno
+              style:
+               top: 90%
+               left: 65%
+               color: '#3090C7'
+            # right
+            - type: state-label
+              entity: vacuum.sileno
+              attribute: rf_link_state
+              #prefix: "Netzwerk: "
+              style:
+               top: 10%
+               right: 1%
+               color: rgb(255, 255, 255)
+               transform: translate(0%,-50%)
+               pointer-events: none
+               font-family: Trebuchet MS
+               font-size: 90%
+               font-weight: bold
+               border-color: rgb(34, 154, 210)
+               background-color: '#3090C7'
+               border-radius: 6px
+            - type: state-label
+              entity: vacuum.sileno
+              attribute: rf_link_level
+              prefix: "Level: "
+              style:
+                top: 40%
+                right: 1%
+                color: '#ffffff'
+                transform: translate(0%,-50%)
+                pointer-events: none
+                font-family: Trebuchet MS
+                font-size: 76%
+                font-weight: bold
+                border-right-style: solid
+                border-color: rgb(34, 154, 210)
+        - type: entities
+          entities:
+          - entity: sensor.sileno_battery_level

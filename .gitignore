@@ -6,3 +6,4 @@ secrets.yaml
 .uuid
 known_devices.yaml
 bravia.conf
+__pycache__/
