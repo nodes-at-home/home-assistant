@@ -7,4 +7,4 @@ mode: slider
 min: 15
 max: 240
 step: 15
-initial: 90
+initial: 120

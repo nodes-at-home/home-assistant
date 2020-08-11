@@ -51,7 +51,7 @@ views:
                     entity: binary_sensor.gardena_smart_system_connection
                     style:
                       top: 40%
-                      left: 75%
+                      left: 76%
                   - type: state-badge
                     entity: sensor.relay_garage_state
                     style:
@@ -96,6 +96,11 @@ views:
                         hours_to_show: 24
                       - type: sensor
                         entity: sensor.ds18b20_pool_temperature
+                        graph: line
+                        detail: 2
+                        hours_to_show: 24
+                      - type: sensor
+                        entity: sensor.dht22_office_temperature
                         graph: line
                         detail: 2
                         hours_to_show: 24
@@ -162,7 +167,6 @@ views:
           - light.rfhub_lounge_lampstudypillar
           - switch.sonoff_k8200_socket
           - type: divider
-          - light.sonoff_corridor_lamp
           - light.pitouch_corridor_screen
           - sensor.pitouch_corridor_ambientlight
           - type: divider
@@ -175,6 +179,7 @@ views:
         entities:
           - light.sonoff_bedroom_socket
           - light.sonoff_gallery1_socket
+          - light.sonoff_corridor_lamp
     
   - title: Außen
     path: outdoor
@@ -217,12 +222,6 @@ views:
           - type: horizontal-stack
             cards:
               - type: sensor
-                entity: sensor.dht22_terrace_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                icon: mdi:show_chart
                 entity: sensor.dht22_lounge_pressure
                 graph: line
                 detail: 2
@@ -232,8 +231,24 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 24
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
           - type: horizontal-stack
             cards:
+              - type: sensor
+                entity: sensor.dht22_lounge_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_terrace_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
               - type: sensor
                 entity: sensor.dht22_roof_temperature
                 graph: line
@@ -245,12 +260,23 @@ views:
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.dht22_lounge_temperature
+                entity: sensor.dht22_office_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
           - type: horizontal-stack
             cards:
+              - type: sensor
+                icon: mdi:show_chart
+                entity: sensor.dht22_lounge_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_terrace_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
               - type: sensor
                 entity: sensor.dht22_roof_humidity
                 graph: line
@@ -262,7 +288,7 @@ views:
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.dht22_lounge_humidity
+                entity: sensor.dht22_office_humidity
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -449,6 +475,7 @@ views:
                 - sensor.dht22_lounge_version
                 - sensor.dht22_roof_version
                 - sensor.dht22_terrace_version
+                - sensor.dht22_office_version
                 - sensor.rfhub_lounge_version
                 - sensor.relay_garage_version
                 - sensor.sonoff_garage_version
@@ -469,13 +496,11 @@ views:
                 - sensor.sonoff_k8200_version
                 - sensor.sonoff_gallery1_version
                 - sensor.ds18b20_brewery_version
-                - sensor.ssr_brewery_version
                 - sensor.spindle_fermenter_version
                 - sensor.button_indoor_version
                 - sensor.button_garage_version
                 - sensor.button_pool_version
                 - sensor.pixel_kitchen_version
-                #- sensor.oled_kitchen_version
                 - sensor.electricity_utilityroom_version
                 - sensor.ws2812_terrace1_version
                 - sensor.ws2812_terrace2_version
@@ -486,6 +511,7 @@ views:
                 - sensor.dht22_lounge_lastboot
                 - sensor.dht22_roof_lastboot
                 - sensor.dht22_terrace_lastboot
+                - sensor.dht22_office_lastboot
                 - sensor.rfhub_lounge_lastboot
                 - sensor.relay_garage_lastboot
                 - sensor.sonoff_garage_lastboot
@@ -506,13 +532,11 @@ views:
                 - sensor.sonoff_k8200_lastboot
                 - sensor.sonoff_gallery1_lastboot
                 - sensor.ds18b20_brewery_lastboot
-                - sensor.ssr_brewery_lastboot
                 - sensor.spindle_fermenter_lastboot
                 - sensor.button_indoor_lastboot
                 - sensor.button_garage_lastboot
                 - sensor.button_pool_lastboot
                 - sensor.pixel_kitchen_lastboot
-                #- sensor.oled_kitchen_lastboot
                 - sensor.electricity_utilityroom_lastboot
                 - sensor.ws2812_terrace1_lastboot
                 - sensor.ws2812_terrace2_lastboot
@@ -523,6 +547,7 @@ views:
                 - sensor.dht22_lounge_lastvoltage
                 - sensor.dht22_roof_lastvoltage
                 - sensor.dht22_terrace_lastvoltage
+                - sensor.dht22_office_lastvoltage
                 - sensor.rfhub_lounge_lastvoltage
                 - sensor.relay_garage_lastvoltage
                 - sensor.sonoff_garage_lastvoltage
@@ -543,13 +568,11 @@ views:
                 - sensor.sonoff_k8200_lastvoltage
                 - sensor.sonoff_gallery1_lastvoltage
                 - sensor.ds18b20_brewery_lastvoltage
-                - sensor.ssr_brewery_lastvoltage
                 - sensor.spindle_fermenter_lastvoltage
                 - sensor.button_indoor_lastvoltage
                 - sensor.button_garage_lastvoltage
                 - sensor.button_pool_lastvoltage
                 - sensor.pixel_kitchen_lastvoltage
-                #- sensor.oled_kitchen_lastvoltage
                 - sensor.electricity_utilityroom_lastvoltage
                 - sensor.ws2812_terrace1_lastvoltage
                 - sensor.ws2812_terrace2_lastvoltage
@@ -560,6 +583,7 @@ views:
                 - sensor.dht22_lounge_voltage
                 - sensor.dht22_roof_voltage
                 - sensor.dht22_terrace_voltage
+                - sensor.dht22_office_voltage
                 - sensor.rfhub_lounge_voltage
                 - sensor.relay_garage_voltage
                 - sensor.sonoff_garage_voltage
@@ -580,13 +604,11 @@ views:
                 - sensor.sonoff_k8200_voltage
                 - sensor.sonoff_gallery1_voltage
                 - sensor.ds18b20_brewery_voltage
-                - sensor.ssr_brewery_voltage
                 - sensor.spindle_fermenter_voltage
                 - sensor.button_indoor_voltage
                 - sensor.button_garage_voltage
                 - sensor.button_pool_voltage
                 - sensor.pixel_kitchen_voltage
-                #- sensor.oled_kitchen_voltage
                 - sensor.electricity_utilityroom_voltage
                 - sensor.ws2812_terrace1_voltage
                 - sensor.ws2812_terrace2_voltage

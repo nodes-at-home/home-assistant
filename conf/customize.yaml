@@ -7,7 +7,7 @@
 
 #------------------------------------------------------------------------------
 sensor.DHT22_terrace_temperature:
-    friendly_name: Temperatur Terrasse
+    friendly_name: Terrasse
 
 sensor.DHT22_terrace_humidity:
     friendly_name: Luftfeuchtigkeit Terasse
@@ -31,7 +31,7 @@ sensor.DHT22_terrace_version:
 
 #------------------------------------------------------------------------------
 sensor.DHT22_lounge_temperature:
-    friendly_name: Temperatur Wohnzimmer
+    friendly_name: Wohnzimmer
 
 sensor.DHT22_lounge_humidity:
     friendly_name: Luftfeuchtigkeit Wohnzimmer
@@ -59,7 +59,7 @@ sensor.DHT22_lounge_version:
 
 #------------------------------------------------------------------------------
 sensor.DHT22_roof_temperature:
-    friendly_name: Temperatur Dachboden
+    friendly_name: Dachboden
 
 sensor.DHT22_roof_humidity:
     friendly_name: Luftfeuchtigkeit Dachboden
@@ -79,6 +79,30 @@ sensor.DHT22_roof_lastboot:
 
 sensor.DHT22_roof_version:
     friendly_name: Dachboden
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+sensor.DHT22_office_temperature:
+    friendly_name: Büro
+
+sensor.DHT22_office_humidity:
+    friendly_name: Luftfeuchtigkeit Büro
+    entity_picture: /local/images/DHT22.jpg
+
+sensor.DHT22_office_voltage:
+    friendly_name: Büro
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.DHT22_office_lastvoltage:
+    friendly_name: Büro
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.DHT22_office_lastboot:
+    friendly_name: Büro
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.DHT22_office_version:
+    friendly_name: Büro
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
@@ -181,7 +205,7 @@ sensor.relay_garage_state:
     friendly_name: Garagentor
 
 sensor.relay_garage_temperature:
-    friendly_name: Temperatur Garage
+    friendly_name: Garage
 
 sensor.relay_garage_humidity:
     friendly_name: Luftfeuchtigkeit Garage
@@ -557,7 +581,7 @@ sensor.sonoff_kitchen_version:
 
 #------------------------------------------------------------------------------
 sensor.ds18b20_pool_temperature:
-    friendly_name: Temperatur Pool
+    friendly_name: Pool
 
 sensor.ds18b20_pool_voltage:
     friendly_name: Pool
@@ -577,7 +601,7 @@ sensor.ds18b20_pool_version:
 
 #------------------------------------------------------------------------------
 sensor.ds18b20_brewery_temperature:
-    friendly_name: Temperatur Nachguss
+    friendly_name: Nachguss
 
 sensor.ds18b20_brewery_voltage:
     friendly_name: Sensor Nachguss
@@ -634,7 +658,7 @@ sensor.gesture_kitchen_version:
 
 #------------------------------------------------------------------------------
 sensor.spindle_fermenter_temperature:
-    friendly_name: Temperatur Gärspindel
+    friendly_name: Gärspindel
 
 sensor.spindle_fermenter_tilt:
     friendly_name: Neigung Gärspindel
@@ -664,22 +688,6 @@ switch.ssr_brewery_socket1:
 
 switch.ssr_brewery_socket2:
     friendly_name: 'Rührwerk Sudkessel'
-
-sensor.ssr_brewery_voltage:
-    friendly_name: Schaltkasten Brauerei
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.ssr_brewery_lastvoltage:
-    friendly_name: Schaltkasten Brauerei
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.ssr_brewery_lastboot:
-    friendly_name: Schaltkasten Brauerei
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.ssr_brewery_version:
-    friendly_name: Schaltkasten Brauerei
-    entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
 sensor.electricity_utilityroom_power:
