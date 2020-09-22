@@ -70,9 +70,9 @@ influxdb:
 # -------------------------------------------------------------------------------
 # weather platform for lovelace card
 
-weather:
-  - platform: openweathermap
-    api_key: !secret api_key_openweather
+# weather:
+  # - platform: openweathermap
+    # api_key: !secret api_key_openweather
 
 # -------------------------------------------------------------------------------
 # media player

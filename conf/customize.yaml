@@ -106,10 +106,6 @@ sensor.DHT22_office_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-sensor.yr_symbol:
-    friendly_name: Aktuell (yr.no)
-
-#------------------------------------------------------------------------------
 sensor.owm_condition:
     friendly_name: Aktuell (open weather)
 
