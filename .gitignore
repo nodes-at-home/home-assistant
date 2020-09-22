@@ -7,3 +7,4 @@ secrets.yaml
 known_devices.yaml
 bravia.conf
 __pycache__/
+*.pem

@@ -196,6 +196,15 @@ vacuum:
     token: !secret token_vacuum_first_floor
 
 # -------------------------------------------------------------------------------
+# Bosch Smart Home
+# https://github.com/tschamm/boschshc-hass
+boschshc:
+   ip_address: '192.168.2.155'
+   ssl_certificate: '/config/custom_components/bsh-client-cert.pem'
+   ssl_key: '/config/custom_components/bsh-client-key.pem'
+   name: 'SHC-Controller'
+
+# -------------------------------------------------------------------------------
 # Track the sun
 sun:
 

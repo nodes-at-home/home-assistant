@@ -178,8 +178,14 @@ views:
         show_header_toggle: true
         entities:
           - light.sonoff_bedroom_socket
+          - binary_sensor.rauchwarnmelder_schlafz_check_state
+          - type: divider
           - light.sonoff_gallery1_socket
+          - type: divider
           - light.sonoff_corridor_lamp
+          - binary_sensor.rauchwarnmelder_buro_check_state
+          - type: divider
+          - binary_sensor.rauchwarnmelder_kinderz_check_state
     
   - title: Außen
     path: outdoor
@@ -678,6 +684,26 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 168
+
+  - title: Bosch Smart Home
+    path: bsh
+    panel: false
+    cards:
+      - type: entities
+        title: Rauchmelder
+        show_header_toggle: false
+        entities:
+            - binary_sensor.rauchwarnmelder_buro
+            - binary_sensor.rauchwarnmelder_buro_check_state
+            - sensor.rauchwarnmelder_buro
+            - type: divider
+            - binary_sensor.rauchwarnmelder_schlafz
+            - binary_sensor.rauchwarnmelder_schlafz_check_state
+            - sensor.rauchwarnmelder_schlafz
+            - type: divider
+            - binary_sensor.rauchwarnmelder_kinderz
+            - binary_sensor.rauchwarnmelder_kinderz_check_state
+            - sensor.rauchwarnmelder_kinderz
 
   # https://sharethelove.io/picture-elements-cards/xiaomi-vacuum-card
   # https://community.home-assistant.io/t/xiaomi-vacuum-cleaner-card/64456/52
