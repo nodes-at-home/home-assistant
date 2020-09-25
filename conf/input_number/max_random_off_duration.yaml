@@ -1,0 +1,10 @@
+###
+### 24.09.2020
+###
+
+name: max. Zufallsdauer (min)
+mode: slider
+min: 60
+max: 120
+step: 10
+# initial: 120

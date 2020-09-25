@@ -113,8 +113,8 @@
             entity_id: binary_sensor.workday_sensor
             state: 'on'
           - condition: time
-            after: '08:00:00'
-            before: '17:00:00'
+            after: input_datetime.vacuum_period_start
+            before: input_datetime.vacuum_period_end
             weekday:
               - mon
               - wed

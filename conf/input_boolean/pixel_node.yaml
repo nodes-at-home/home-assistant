@@ -4,70 +4,70 @@
 
 pixel_node_time:
     name: Zeitanzeige
-    initial: on
+    # initial: on
 pixel_node_date:
     name: Datumsanzeige
-    initial: on
+    # initial: on
 pixel_node_weekday:
     name: Wochentagsanzeige
-    initial: off
+    # initial: off
 pixel_node_msg0:
     name: Anzeige Textzeile 0 - Außentemperatur
-    initial: on
+    # initial: on
 pixel_node_msg1:
     name: Anzeige Textzeile 1 - Innentemperatur
-    initial: on
+    # initial: on
 pixel_node_msg2:
     name: Anzeige Textzeile 2 - Temperaturvorhersage heute
-    initial: on
+    # initial: on
 pixel_node_msg3:
     name: Anzeige Textzeile 3 - Wettervorhersage heute
-    initial: on
+    # initial: on
 pixel_node_msg4:
     name: Anzeige Textzeile 4 - Temperaturvorhersage morgen
-    initial: on
+    # initial: on
 pixel_node_msg5:
     name: Anzeige Textzeile 5 - Wettervorhersage morgen
-    initial: on
+    # initial: on
 pixel_node_msg6:
     name: Anzeige Textzeile 6 - Info Müll
-    initial: on
+    # initial: on
 pixel_node_msg7:
     name: Anzeige Textzeile 7 - Info Papier
-    initial: on
+    # initial: on
 pixel_node_msg8:
     name: Anzeige Textzeile 8 - Info Gelber Sack
-    initial: on
+    # initial: on
 pixel_node_msg9:
     name: Anzeige Textzeile 9 - Info Biotonne
-    initial: on
+    # initial: on
 pixel_node_msg10:
     name: Anzeige Textzeile 10 - Arbeitsweg Andreas
-    initial: on
+    # initial: on
 pixel_node_msg11:
     name: Anzeige Textzeile 11 - Arbeitsweg Undine
-    initial: off
+    # initial: off
 pixel_node_msg12:
     name: Anzeige Textzeile 12 - Pooltemperatur
-    initial: on
+    # initial: on
 pixel_node_msg13:
     name: Anzeige Textzeile 13 - Abfahrt S-Bahn 1
-    initial: on
+    # initial: on
 pixel_node_msg14:
     name: Anzeige Textzeile 14 - Abfahrt S-Bahn 2
-    initial: on
+    # initial: on
 pixel_node_msg15:
     name: Anzeige Textzeile 15 - Abfahrt Bus 893
-    initial: off
+    # initial: off
 pixel_node_msg16:
     name: Anzeige Textzeile 16 - Wetter Urlaubsort
-    initial: off
+    # initial: off
 pixel_node_msg17:
     name: Anzeige Textzeile 17 - Spruch des Tages
-    initial: off
+    # initial: off
 pixel_node_msg18:
     name: Anzeige Textzeile 18 - ...
-    initial: on
+    # initial: on
 pixel_node_msg19:
     name: Anzeige Textzeile 19 - ...
-    initial: on
+    # initial: on

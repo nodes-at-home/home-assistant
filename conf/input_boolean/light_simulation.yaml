@@ -4,4 +4,4 @@
 
 light_simulation:
     name: Lichtsimulation
-    initial: off
+    # initial: off

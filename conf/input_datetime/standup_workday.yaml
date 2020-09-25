@@ -1,0 +1,8 @@
+###
+### 23.09.2020
+###
+
+name: Aufstehen Arbeitstag
+has_date: false
+has_time: true
+# initial: '5:30'

@@ -1,0 +1,10 @@
+###
+### 24.09.2020
+###
+
+name: Nachlauf Gruppe 1 (min)
+mode: slider
+min: 0
+max: 5
+step: 1
+# initial: 0

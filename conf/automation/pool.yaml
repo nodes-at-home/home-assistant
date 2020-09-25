@@ -5,15 +5,16 @@
   - alias: pool_pump_on_off
     trigger:
       - platform: time
-        at: '11:00:00'
+        at: input_datetime.start1
       - platform: time
-        at: '20:00:00'
+        at: input_datetime.start2
     action:
       - service: switch.turn_on
         entity_id:
             - switch.sonoff_pool_socket
-#      - delay: 02:00:00
-      - delay: "{{ '%02d' % (((states ( 'input_number.pool_pump_duration' ) | int) / 60) | int)  }}:{{ '%02d' % (states ( 'input_number.pool_pump_duration' ) | int % 60) }}"
+      #- delay: "{{ '%02d' % (((states ( 'input_number.pool_pump_duration' ) | int) / 60) | int)  }}:{{ '%02d' % (states ( 'input_number.pool_pump_duration' ) | int % 60) }}"
+      - delay:
+            minutes: input_number.pool_pump_duration
       - service: switch.turn_off
         entity_id:
             - switch.sonoff_pool_socket

@@ -7,4 +7,4 @@ mode: slider
 min: 100
 max: 5000
 step: 100
-initial: 1500
+# initial: 1500

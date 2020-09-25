@@ -5,12 +5,12 @@
 # hidden flag, daily run done
 daily_vacuum_done:
     name: Tägliche Reinigung erledigt
-    initial: 'off'
+    # initial: 'off'
     
 daily_vacuum:
     name: Tägliche Reinigung
-    initial: 'off'
+    # initial: 'off'
     
 dustbin_notification:
     name: Benachrichtigung
-    initial: 'on'
+    # initial: 'on'

@@ -15,7 +15,7 @@
         after: sunset
         after_offset: "00:00:00"
       - condition: time
-        before: '22:00:00'
+        before: input_datetime.sleep
       - condition: or
         conditions:
           - condition: state
@@ -40,8 +40,8 @@
         after: sunset
         after_offset: "00:00:00"
       - condition: time
-        after: '22:00:00'
-        before: '04:00:00'
+        after: input_datetime.sleep
+        before: input_datetime.nightlight_end
       - condition: state
         entity_id: group.family_devices
         state: 'home'
@@ -49,7 +49,7 @@
       - service: homeassistant.turn_on
         entity_id: 
             - light.automatic_indoor_lights_by_night
-      - delay: 00:15:00
+      - delay: input_number.nightlight_duration
       - service: homeassistant.turn_off
         entity_id: 
             - light.automatic_indoor_lights_by_night
@@ -80,16 +80,20 @@
             minutes: 1
     condition:
       - condition: time
-        after: '21:00:00'
-        before: '06:00:00'
+        after: input_datetime.tv_off_period_start
+        before: input_datetime.tv_off_period_end
     action:
+      - delay:
+            minutes: input_number.tvoff_lightsoff_delay1
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off
         entity_id: 
             - light.automatic_indoor_lights_immediatly_switched
             - light.automatic_indoor_lights_immediatly_switched_off_extra
-      - delay: 00:07:00
+      # - delay: input_number.tvoff_lightsoff_delay2
+      - delay:
+            minutes: "{{ ( states ( 'input_number.tvoff_lightsoff_delay2' ) - states ( 'input_number.tvoff_lightsoff_delay1' ) ) | int }}"
       - service: homeassistant.turn_off
         entity_id: 
             - light.automatic_indoor_lights_delayed_switched
@@ -97,14 +101,16 @@
   - alias: indoor_lights_off_after_random_delay
     trigger:
       - platform: time
-        at: '22:00:00'
+        at: input_datetime.sleep
     condition:
       - condition: state
         entity_id: input_boolean.light_simulation
         state: 'on'
     action:
       # switch off between 22:00 amd 24:00
-      - delay: '{{ ( range ( 0, 2 ) | random | int ) }}:{{ ( range ( 0, 60 ) | random | int ) }}:00'
+      # - delay: '{{ ( range ( 0, 2 ) | random | int ) }}:{{ ( range ( 0, 60 ) | random | int ) }}:00'
+      - delay:
+            - minutes: "{{ range ( 0, input_number.max_random_off_duration ) | random | int }}"
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off

@@ -4,6 +4,8 @@
 
   - alias: pixel_node_preferences
     trigger:
+      - platform: homeassistant
+        event: start
       - platform: state
         entity_id: input_boolean.pixel_node_time
       - platform: state

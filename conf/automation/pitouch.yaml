@@ -5,9 +5,9 @@
   - alias: pitouch_screen_on
     trigger:
       - platform: time
-        at: '05:30:00'
+        at: input_datetime.standup_workday
       - platform: time
-        at: '08:00:00'
+        at: input_datetime.standup_weekend
       - platform: state
         entity_id: group.family_devices
         to: 'home'
@@ -25,16 +25,16 @@
                     entity_id: binary_sensor.workday_sensor
                     state: 'on'
                   - condition: time
-                    after: '05:30:00'
-                    before: '22:00:00'
+                    after: input_datetime.standup_workday
+                    before: input_datetime.sleep
               - condition: and
                 conditions:
                   - condition: state
                     entity_id: binary_sensor.workday_sensor
                     state: 'off'
                   - condition: time
-                    after: '08:00:00'
-                    before: '22:00:00'
+                    after: input_datetime.standup_weekend
+                    before: input_datetime.sleep
     action:
       - service: light.turn_on
         entity_id:
@@ -43,7 +43,7 @@
   - alias: pitouch_screen_off
     trigger:
       - platform: time
-        at: '00:01:00'
+        at: input_datetime.pitouch_off
       - platform: state
         entity_id: group.family_devices
         to: 'not_home'
@@ -62,10 +62,11 @@
             minutes: 1
     condition:
       - condition: time
-        after: '21:00:00'
-        before: '06:00:00'
+        after: input_datetime.tv_off_period_start
+        before: input_datetime.tv_off_period_end
     action:
-      - delay: 00:15:00
+      - delay:
+            minutes: input_number.pitouch_delay
       - service: light.turn_off
         entity_id:
             - light.pitouch_corridor_screen
