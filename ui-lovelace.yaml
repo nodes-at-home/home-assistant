@@ -379,6 +379,11 @@ views:
                     - automation.start_cleaning_ground_floor_room
                     - automation.start_cleaning_first_floor_room
                     - automation.start_daily_vacuum
+              - type: entities
+                title: Einstellungen
+                show_header_toggle: true
+                entities:
+                    - automation.set_default_values
 
   - title: Enstellungen
     path: options

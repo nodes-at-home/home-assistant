@@ -1,0 +1,194 @@
+###
+### 26.09.2020
+###
+
+  - alias: set_default_values
+    trigger:
+    action:
+
+      #--------------------------------------------------------------------------
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.button_indoor_activated
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.button_garage_activated
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.button_pool_activated
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.gesture_kitchen_activated
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.touch_bedroom_activated
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.light_simulation
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_time
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_date
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.pixel_node_weekday
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg0
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg1
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg2
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg3
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg4
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg5
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg6
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg7
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg8
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg9
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg10
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.pixel_node_msg11
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg12
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg13
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg14
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.pixel_node_msg15
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.pixel_node_msg16
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.pixel_node_msg17
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg18
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.pixel_node_msg19
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.daily_vacuum_done
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.daily_vacuum
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.dustbin_notification
+
+      #--------------------------------------------------------------------------
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.nightlight_end
+            time: '04:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.pitouch_off
+            time: '23:30:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.pool_pump_start1
+            time: '11:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.pool_pump_start2
+            time: '20:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.sleep
+            time: '22:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.standup_weekend
+            time: '08:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.standup_workday
+            time: '05:30:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.tv_off_period_end
+            time: '06:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.tv_off_period_start
+            time: '21:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.vacuum_period_end
+            time: '17:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.vacuum_period_start
+            time: '08:00:00'
+
+      #--------------------------------------------------------------------------
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.effect_delay
+            value: 1500
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.max_random_off_duration
+            value: 120
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.nightlight_duration
+            value: 15
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.pitouch_delay
+            value: 15
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.pixel_node_display_brightness
+            value: 2
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.pixel_node_display_duration
+            value: 3
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.pixel_node_display_shakeperiod
+            value: 130
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.pool_pump_duration
+            value: 120
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.tvoff_lightsoff_delay1
+            value: 0
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.tvoff_lightsoff_delay2
+            value: 7
+
