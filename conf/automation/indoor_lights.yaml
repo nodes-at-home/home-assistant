@@ -84,7 +84,7 @@
         before: input_datetime.tv_off_period_end
     action:
       - delay:
-            minutes: input_number.tvoff_lightsoff_delay1
+            minutes: "{{ states ( 'input_number.tvoff_lightsoff_delay1' ) | int }}"
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off
@@ -93,7 +93,7 @@
             - light.automatic_indoor_lights_immediatly_switched_off_extra
       # - delay: input_number.tvoff_lightsoff_delay2
       - delay:
-            minutes: "{{ ( states ( 'input_number.tvoff_lightsoff_delay2' ) - states ( 'input_number.tvoff_lightsoff_delay1' ) ) | int }}"
+            minutes: "{{ ( states ( 'input_number.tvoff_lightsoff_delay2' ) | int - states ( 'input_number.tvoff_lightsoff_delay1' ) | int ) }}"
       - service: homeassistant.turn_off
         entity_id: 
             - light.automatic_indoor_lights_delayed_switched

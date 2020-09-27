@@ -66,7 +66,7 @@
         before: input_datetime.tv_off_period_end
     action:
       - delay:
-            minutes: input_number.pitouch_delay
+            minutes: "{{ states ( 'input_number.pitouch_delay' ) | int }}"
       - service: light.turn_off
         entity_id:
             - light.pitouch_corridor_screen
