@@ -14,7 +14,7 @@
             - switch.sonoff_pool_socket
       #- delay: "{{ '%02d' % (((states ( 'input_number.pool_pump_duration' ) | int) / 60) | int)  }}:{{ '%02d' % (states ( 'input_number.pool_pump_duration' ) | int % 60) }}"
       - delay:
-            minutes: input_number.pool_pump_duration
+            minutes: "{{ states ( 'input_number.pool_pump_duration' ) | int }}"
       - service: switch.turn_off
         entity_id:
             - switch.sonoff_pool_socket
@@ -31,3 +31,13 @@
     action:
       - service: switch.toggle
         entity_id: switch.sonoff_pool_socket
+
+  - alias: set_pool_nonworking
+    trigger:
+    action:
+      - service: mqtt.publish
+        data:
+            topic: nodes@home/sensor/ds18b20/pool/value/temperature
+            payload: "{\"value\":\"außer Betrieb\",\"unit\":\"\"}"
+            qos: 1
+            retain: true
