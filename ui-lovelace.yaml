@@ -48,6 +48,11 @@ views:
                       top: 40%
                       left: 25%
                   - type: state-badge
+                    entity: binary_sensor.eingangstur
+                    style:
+                      top: 40%
+                      left: 70%
+                  - type: state-badge
                     entity: binary_sensor.gardena_smart_system_connection
                     style:
                       top: 40%
