@@ -35,6 +35,7 @@ logger:
   default: warn
   logs:
     homeassistant.components.automation: debug
+    boschshcpy: debug
 
 # -------------------------------------------------------------------------------
 # mqtt broker
