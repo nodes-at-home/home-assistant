@@ -186,7 +186,7 @@
       - service: input_number.set_value
         data:
             entity_id: input_number.tvoff_lightsoff_delay1
-            value: 0
+            value: 1
       - service: input_number.set_value
         data:
             entity_id: input_number.tvoff_lightsoff_delay2
