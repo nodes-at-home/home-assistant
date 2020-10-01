@@ -743,6 +743,9 @@ views:
             - binary_sensor.rauchwarnmelder_kinderz
             - binary_sensor.rauchwarnmelder_kinderz_check_state
             - sensor.rauchwarnmelder_kinderz
+            - type: divider
+            - binary_sensor.eingangstur
+            - sensor.eingangstur
 
   # https://sharethelove.io/picture-elements-cards/xiaomi-vacuum-card
   # https://community.home-assistant.io/t/xiaomi-vacuum-cleaner-card/64456/52
