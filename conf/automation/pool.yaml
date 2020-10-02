@@ -5,9 +5,9 @@
   - alias: pool_pump_on_off
     trigger:
       - platform: time
-        at: input_datetime.start1
+        at: input_datetime.pool_pump_start1
       - platform: time
-        at: input_datetime.start2
+        at: input_datetime.pool_pump_start2
     action:
       - service: switch.turn_on
         entity_id:
