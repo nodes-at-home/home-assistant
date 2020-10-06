@@ -223,6 +223,11 @@ views:
         show_header_toggle: false
         entities:
             - switch.sonoff_pool_socket
+      - type: entities
+        title: Türen
+        show_header_toggle: false
+        entities:
+            - binary_sensor.eingangstur
     
   - title: Sensorwerte
     path: values
