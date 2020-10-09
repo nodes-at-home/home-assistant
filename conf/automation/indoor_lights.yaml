@@ -91,7 +91,6 @@
         entity_id: 
             - light.automatic_indoor_lights_immediatly_switched
             - light.automatic_indoor_lights_immediatly_switched_off_extra
-      # - delay: input_number.tvoff_lightsoff_delay2
       - delay:
             minutes: "{{ ( states ( 'input_number.tvoff_lightsoff_delay2' ) | int - states ( 'input_number.tvoff_lightsoff_delay1' ) | int ) }}"
       - service: homeassistant.turn_off
@@ -108,9 +107,8 @@
         state: 'on'
     action:
       # switch off between 22:00 amd 24:00
-      # - delay: '{{ ( range ( 0, 2 ) | random | int ) }}:{{ ( range ( 0, 60 ) | random | int ) }}:00'
       - delay:
-            - minutes: "{{ range ( 0, input_number.max_random_off_duration ) | random | int }}"
+            minutes: "{{ range ( 0,  states ( 'input_number.max_random_off_duration' ) | int ) | random | int }}"
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off
