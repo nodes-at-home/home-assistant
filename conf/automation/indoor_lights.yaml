@@ -68,6 +68,7 @@
       - service: homeassistant.turn_off
         entity_id: 
             - light.automatic_indoor_lights
+            - light.automatic_indoor_lights_delayed_switched
             - light.automatic_indoor_lights_immediatly_switched_off_extra
 
   - alias: indoor_lights_off_when_tv_switched_off
