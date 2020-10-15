@@ -117,3 +117,16 @@
             - light.automatic_indoor_lights_immediatly_switched
             - light.automatic_indoor_lights_delayed_switched
             - light.automatic_indoor_lights_immediatly_switched_off_extra
+
+  - alias: indoor_lights_simulation_off_at_coming_home
+    trigger:
+      - platform: state
+        entity_id: group.family_devices
+        to: 'home'
+    condition:
+      - condition: state
+        entity_id: input_boolean.light_simulation
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.light_simulation
