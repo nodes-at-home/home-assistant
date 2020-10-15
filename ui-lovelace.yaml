@@ -53,27 +53,27 @@ views:
                       top: 40%
                       left: 70%
                   - type: state-badge
-                    entity: binary_sensor.gardena_smart_system_connection
+                    entity: binary_sensor.dachboden
                     style:
                       top: 40%
-                      left: 76%
+                      left: 74%
                   - type: state-badge
                     entity: sensor.relay_garage_state
                     style:
                       top: 40%
-                      left: 80%
+                      left: 78%
                   - type: state-badge
                     entity: sun.sun
                     style:
                       top: 40%
-                      left: 84%
+                      left: 85%
                   - type: state-badge
                     entity: sensor.cpu_temp
                     style:
                       top: 40%
                       left: 92%
                   - type: state-badge
-                    entity: updater.updater
+                    entity: binary_sensor.gardena_smart_system_connection
                     style:
                       top: 40%
                       left: 96%
@@ -338,6 +338,7 @@ views:
                     - automation.indoor_lights_off_at_getting_out_or_sunrise
                     - automation.indoor_lights_off_when_tv_switched_off
                     - automation.indoor_lights_off_after_random_delay
+                    - automation.indoor_lights_simulation_off_at_coming_home
                     - automation.indoor_lights_on_by_button
                     - automation.indoor_lights_off_by_button
                     - automation.bedroom_lights_toggle
@@ -667,7 +668,6 @@ views:
     path: system
     panel: false
     badges:
-      - updater.updater
       ###- configurator.sony_bravia_tv
       - sensor.log_db_file_size
       - sensor.cpu_temp
@@ -748,9 +748,15 @@ views:
             - binary_sensor.rauchwarnmelder_kinderz
             - binary_sensor.rauchwarnmelder_kinderz_check_state
             - sensor.rauchwarnmelder_kinderz
-            - type: divider
+      - type: entities
+        title: Tür-/Fensterkontakte
+        show_header_toggle: false
+        entities:
             - binary_sensor.eingangstur
             - sensor.eingangstur
+            - type: divider
+            - binary_sensor.dachboden
+            - sensor.dachboden
 
   # https://sharethelove.io/picture-elements-cards/xiaomi-vacuum-card
   # https://community.home-assistant.io/t/xiaomi-vacuum-cleaner-card/64456/52
