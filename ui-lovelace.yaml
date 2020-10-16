@@ -48,6 +48,11 @@ views:
                       top: 40%
                       left: 25%
                   - type: state-badge
+                    entity: alarm_control_panel.intrusiondetectionsystem
+                    style:
+                      top: 40%
+                      left: 66%
+                  - type: state-badge
                     entity: binary_sensor.eingangstur
                     style:
                       top: 40%

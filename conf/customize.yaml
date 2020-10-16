@@ -814,3 +814,9 @@ sensor.log_db_file_size:
 binary_sensor.gardena_smart_system_connection:
     friendly_name: Gardena
 #------------------------------------------------------------------------------
+alarm_control_panel.intrusiondetectionsystem:
+    friendly_name: Alarm
+#------------------------------------------------------------------------------
+sensor.cpu_temp:
+    friendly_name: CPU
+#------------------------------------------------------------------------------
