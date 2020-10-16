@@ -447,6 +447,26 @@ sensor.sonoff_pool_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
+switch.shelly_roof_socket:
+    friendly_name: Dachboden
+
+sensor.shelly_roof_voltage:
+    friendly_name: 'Licht Dachboden'
+    entity_picture: /local/images/shelly.jpg
+
+sensor.shelly_roof_lastvoltage:
+    friendly_name: 'Licht Dachboden'
+    entity_picture: /local/images/shelly.jpg
+
+sensor.shelly_roof_lastboot:
+    friendly_name: 'Licht Dachboden'
+    entity_picture: /local/images/shelly.jpg
+
+sensor.shelly_roof_version:
+    friendly_name: 'Licht Dachboden'
+    entity_picture: /local/images/shelly.jpg
+
+#------------------------------------------------------------------------------
 binary_sensor.ttp223_bedroom_touch1:
     friendly_name: 'Touchsensor 1 Schlafzimmer'
 

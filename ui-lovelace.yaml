@@ -196,6 +196,12 @@ views:
           - binary_sensor.rauchwarnmelder_buro_check_state
           - type: divider
           - binary_sensor.rauchwarnmelder_kinderz_check_state
+      - type: entities
+        title: Dachgeschoss
+        show_header_toggle: true
+        entities:
+          - binary_sensor.dachboden
+          - light.shelly_roof_socket
     
   - title: Außen
     path: outdoor
@@ -343,6 +349,7 @@ views:
                     - automation.indoor_lights_off_at_getting_out_or_sunrise
                     - automation.indoor_lights_off_when_tv_switched_off
                     - automation.indoor_lights_off_after_random_delay
+                    - automation.indoor_roof_light
                     - automation.indoor_lights_simulation_off_at_coming_home
                     - automation.indoor_lights_on_by_button
                     - automation.indoor_lights_off_by_button
@@ -551,6 +558,7 @@ views:
                 - sensor.sonoff_bedroom_version
                 - sensor.sonoff_k8200_version
                 - sensor.sonoff_gallery1_version
+                - sensor.shelly_roof_version
                 - sensor.ds18b20_brewery_version
                 - sensor.spindle_fermenter_version
                 - sensor.button_indoor_version
@@ -587,6 +595,7 @@ views:
                 - sensor.sonoff_bedroom_lastboot
                 - sensor.sonoff_k8200_lastboot
                 - sensor.sonoff_gallery1_lastboot
+                - sensor.shelly_roof_lastboot
                 - sensor.ds18b20_brewery_lastboot
                 - sensor.spindle_fermenter_lastboot
                 - sensor.button_indoor_lastboot
@@ -623,6 +632,7 @@ views:
                 - sensor.sonoff_bedroom_lastvoltage
                 - sensor.sonoff_k8200_lastvoltage
                 - sensor.sonoff_gallery1_lastvoltage
+                - sensor.shelly_roof_lastvoltage
                 - sensor.ds18b20_brewery_lastvoltage
                 - sensor.spindle_fermenter_lastvoltage
                 - sensor.button_indoor_lastvoltage
@@ -659,6 +669,7 @@ views:
                 - sensor.sonoff_bedroom_voltage
                 - sensor.sonoff_k8200_voltage
                 - sensor.sonoff_gallery1_voltage
+                - sensor.shelly_roof_voltage
                 - sensor.ds18b20_brewery_voltage
                 - sensor.spindle_fermenter_voltage
                 - sensor.button_indoor_voltage

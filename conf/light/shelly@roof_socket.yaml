@@ -1,0 +1,10 @@
+###
+### 16.10.2020
+###
+
+  - platform: mqtt
+    name: "shelly@roof_socket"
+    command_topic: nodes@home/switch/shelly/roof/socket
+    state_topic: nodes@home/switch/shelly/roof/socket/state
+    optimistic: false
+    retain: true

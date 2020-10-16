@@ -130,3 +130,11 @@
     action:
       - service: input_boolean.turn_off
         entity_id: input_boolean.light_simulation
+
+  - alias: indoor_roof_light
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.dachboden
+    action:
+      - service: switch.turn_{{ trigger.to_state.state }}
+        entity_id: switch.shelly_roof_socket
