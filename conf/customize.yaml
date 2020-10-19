@@ -447,7 +447,7 @@ sensor.sonoff_pool_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
-switch.shelly_roof_socket:
+light.shelly_roof_socket:
     friendly_name: Dachboden
 
 sensor.shelly_roof_voltage:
