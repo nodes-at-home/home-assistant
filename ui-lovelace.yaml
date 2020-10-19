@@ -196,12 +196,15 @@ views:
           - binary_sensor.rauchwarnmelder_buro_check_state
           - type: divider
           - binary_sensor.rauchwarnmelder_kinderz_check_state
+          - type: divider
+          - binary_sensor.rauchwarnmelder_galerie_check_state
       - type: entities
         title: Dachgeschoss
         show_header_toggle: true
         entities:
           - binary_sensor.dachboden
           - light.shelly_roof_socket
+          - binary_sensor.rauchwarnmelder_dachboden_check_state
     
   - title: Außen
     path: outdoor
@@ -764,6 +767,14 @@ views:
             - binary_sensor.rauchwarnmelder_kinderz
             - binary_sensor.rauchwarnmelder_kinderz_check_state
             - sensor.rauchwarnmelder_kinderz
+            - type: divider
+            - binary_sensor.rauchwarnmelder_galerie
+            - binary_sensor.rauchwarnmelder_galerie_check_state
+            - sensor.rauchwarnmelder_galerie
+            - type: divider
+            - binary_sensor.rauchwarnmelder_dachboden
+            - binary_sensor.rauchwarnmelder_dachboden_check_state
+            - sensor.rauchwarnmelder_dachboden
       - type: entities
         title: Tür-/Fensterkontakte
         show_header_toggle: false
