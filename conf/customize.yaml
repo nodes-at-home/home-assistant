@@ -467,6 +467,26 @@ sensor.shelly_roof_version:
     entity_picture: /local/images/shelly.jpg
 
 #------------------------------------------------------------------------------
+light.shelly_bath_socket:
+    friendly_name: Bad
+
+sensor.shelly_bath_voltage:
+    friendly_name: 'Licht Bad'
+    entity_picture: /local/images/shelly.jpg
+
+sensor.shelly_bath_lastvoltage:
+    friendly_name: 'Licht Bad'
+    entity_picture: /local/images/shelly.jpg
+
+sensor.shelly_bath_lastboot:
+    friendly_name: 'Licht Bad'
+    entity_picture: /local/images/shelly.jpg
+
+sensor.shelly_bath_version:
+    friendly_name: 'Licht Bad'
+    entity_picture: /local/images/shelly.jpg
+
+#------------------------------------------------------------------------------
 binary_sensor.ttp223_bedroom_touch1:
     friendly_name: 'Touchsensor 1 Schlafzimmer'
 

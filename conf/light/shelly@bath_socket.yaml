@@ -1,0 +1,10 @@
+###
+### 25.10.2020
+###
+
+  - platform: mqtt
+    name: "shelly@bath_socket"
+    command_topic: nodes@home/switch/shelly/bath/socket
+    state_topic: nodes@home/switch/shelly/bath/socket/state
+    optimistic: false
+    retain: true
