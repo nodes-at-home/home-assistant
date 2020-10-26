@@ -487,6 +487,26 @@ sensor.shelly_bath_version:
     entity_picture: /local/images/shelly.jpg
 
 #------------------------------------------------------------------------------
+light.shelly_shower_socket:
+    friendly_name: Dusche
+
+sensor.shelly_shower_voltage:
+    friendly_name: 'Licht Dusche'
+    entity_picture: /local/images/shelly.jpg
+
+sensor.shelly_shower_lastvoltage:
+    friendly_name: 'Licht Dusche'
+    entity_picture: /local/images/shelly.jpg
+
+sensor.shelly_shower_lastboot:
+    friendly_name: 'Licht Dusche'
+    entity_picture: /local/images/shelly.jpg
+
+sensor.shelly_shower_version:
+    friendly_name: 'Licht Dusche'
+    entity_picture: /local/images/shelly.jpg
+
+#------------------------------------------------------------------------------
 binary_sensor.ttp223_bedroom_touch1:
     friendly_name: 'Touchsensor 1 Schlafzimmer'
 

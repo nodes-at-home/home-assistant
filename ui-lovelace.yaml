@@ -180,6 +180,8 @@ views:
           - light.pitouch_corridor_screen
           - sensor.pitouch_corridor_ambientlight
           - type: divider
+          - light.shelly_shower_socket
+          - type: divider
           - switch.sonoff_utilityroom_pump
           # - sensor.electricity_utilityroom_power
           # - sensor.electricity_utilityroom_counter
@@ -564,6 +566,7 @@ views:
                 - sensor.sonoff_gallery1_version
                 - sensor.shelly_roof_version
                 - sensor.shelly_bath_version
+                - sensor.shelly_shower_version
                 - sensor.ds18b20_brewery_version
                 - sensor.spindle_fermenter_version
                 - sensor.button_indoor_version
@@ -602,6 +605,7 @@ views:
                 - sensor.sonoff_gallery1_lastboot
                 - sensor.shelly_roof_lastboot
                 - sensor.shelly_bath_lastboot
+                - sensor.shelly_shower_lastboot
                 - sensor.ds18b20_brewery_lastboot
                 - sensor.spindle_fermenter_lastboot
                 - sensor.button_indoor_lastboot
@@ -640,6 +644,7 @@ views:
                 - sensor.sonoff_gallery1_lastvoltage
                 - sensor.shelly_roof_lastvoltage
                 - sensor.shelly_bath_lastvoltage
+                - sensor.shelly_shower_lastvoltage
                 - sensor.ds18b20_brewery_lastvoltage
                 - sensor.spindle_fermenter_lastvoltage
                 - sensor.button_indoor_lastvoltage
@@ -678,6 +683,7 @@ views:
                 - sensor.sonoff_gallery1_voltage
                 - sensor.shelly_roof_voltage
                 - sensor.shelly_bath_voltage
+                - sensor.shelly_shower_voltage
                 - sensor.ds18b20_brewery_voltage
                 - sensor.spindle_fermenter_voltage
                 - sensor.button_indoor_voltage
