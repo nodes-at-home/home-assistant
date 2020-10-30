@@ -146,7 +146,7 @@
         entity_id: light.shelly_bath_socket
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.light_timout' ) | int }}"
+            minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
     action:
       - service: light.turn_off
         entity_id: light.shelly_bath_socket
@@ -157,7 +157,7 @@
         entity_id: light.shelly_shower_socket
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.light_timout' ) | int }}"
+            minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
     action:
       - service: light.turn_off
         entity_id: light.shelly_shower_socket
