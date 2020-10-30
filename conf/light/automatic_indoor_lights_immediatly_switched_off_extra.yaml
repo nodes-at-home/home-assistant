@@ -10,3 +10,6 @@
       - light.rfhub_lounge_lampLoungeWhiteBall
       - light.sonoff_bedroom_socket
       - light.sonoff_kitchen_led
+      - light.shelly_roof_socket
+      - light.shelly_bath_socket
+      - light.shelly_shower_socket

@@ -49,7 +49,8 @@
       - service: homeassistant.turn_on
         entity_id: 
             - light.automatic_indoor_lights_by_night
-      - delay: input_number.nightlight_duration
+      - delay:
+            minutes: "{{ states ( 'input_number.nightlight_duration' ) | int }}"
       - service: homeassistant.turn_off
         entity_id: 
             - light.automatic_indoor_lights_by_night
@@ -138,3 +139,25 @@
     action:
       - service: light.turn_{{ trigger.to_state.state }}
         entity_id: light.shelly_roof_socket
+
+  - alias: indoor_bath_light_off_after_timeout
+    trigger:
+      - platform: state
+        entity_id: light.shelly_bath_socket
+        to: "on"
+        for:
+            minutes: "{{ states ( 'input_number.light_timout' ) | int }}"
+    action:
+      - service: light.turn_off
+        entity_id: light.shelly_bath_socket
+
+  - alias: indoor_shower_light_off_after_timeout
+    trigger:
+      - platform: state
+        entity_id: light.shelly_shower_socket
+        to: "on"
+        for:
+            minutes: "{{ states ( 'input_number.light_timout' ) | int }}"
+    action:
+      - service: light.turn_off
+        entity_id: light.shelly_shower_socket

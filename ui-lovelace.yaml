@@ -356,6 +356,8 @@ views:
                     - automation.indoor_lights_off_when_tv_switched_off
                     - automation.indoor_lights_off_after_random_delay
                     - automation.indoor_roof_light
+                    - automation.indoor_bath_light_off_after_timeout
+                    - automation.indoor_shower_light_off_after_timeout
                     - automation.indoor_lights_simulation_off_at_coming_home
                     - automation.indoor_lights_on_by_button
                     - automation.indoor_lights_off_by_button
@@ -501,6 +503,7 @@ views:
                     - input_datetime.standup_workday
                     - input_datetime.standup_weekend
                     - input_datetime.sleep
+                    - input_number.light_timeout
               - type: entities
                 title: Fernseher aus
                 entities:

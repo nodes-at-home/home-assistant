@@ -1,0 +1,10 @@
+###
+### 26.10.2020
+###
+
+name: Licht aus nach (min)
+mode: slider
+min: 5
+max: 60
+step: 5
+# initial: 15

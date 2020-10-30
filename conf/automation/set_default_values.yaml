@@ -191,4 +191,7 @@
         data:
             entity_id: input_number.tvoff_lightsoff_delay2
             value: 7
-
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.light_timeout
+            value: 15
