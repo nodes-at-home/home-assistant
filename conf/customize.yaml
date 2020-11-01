@@ -745,6 +745,9 @@ switch.ssr_brewery_socket1:
 switch.ssr_brewery_socket2:
     friendly_name: 'Rührwerk Sudkessel'
 
+switch.ssr_brewery_valve:
+    friendly_name: 'Ventil Kühlwasser'
+
 #------------------------------------------------------------------------------
 sensor.electricity_utilityroom_power:
     friendly_name: Elektroverbrauch

@@ -737,6 +737,7 @@ views:
                 entities:
                   - switch.ssr_brewery_socket1
                   - switch.ssr_brewery_socket2
+                  - switch.ssr_brewery_valve
           - type: vertical-stack
             cards:
               - type: sensor
