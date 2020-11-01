@@ -158,7 +158,7 @@ views:
     cards:
       - type: entities
         title: Erdgeschoss
-        show_header_toggle: true
+        show_header_toggle: false
         entities:
           - light.rfhub_lounge_lampkitchenshortstrip
           - light.rfhub_lounge_lampkitchenlongstrip
@@ -187,7 +187,7 @@ views:
           # - sensor.electricity_utilityroom_counter
       - type: entities
         title: Obergeschoss
-        show_header_toggle: true
+        show_header_toggle: false
         entities:
           - light.sonoff_gallery1_socket
           - binary_sensor.rauchwarnmelder_galerie_check_state
@@ -203,7 +203,7 @@ views:
           - light.shelly_bath_socket
       - type: entities
         title: Dachgeschoss
-        show_header_toggle: true
+        show_header_toggle: false
         entities:
           - binary_sensor.dachboden
           - light.shelly_roof_socket

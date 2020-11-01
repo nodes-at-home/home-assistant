@@ -3,7 +3,7 @@
 ###
 
   - platform: group
-    name: automatic_indoor_lights_immediatly_switched
+    name: automatic_indoor_lights_immediatly_switched_off
     entities:
       # - light.rfhub_lounge_lampLoungeWhiteBall
       - light.rfhub_lounge_lamploungeblackbowl

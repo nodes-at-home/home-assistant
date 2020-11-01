@@ -3,7 +3,7 @@
 ###
 
   - platform: group
-    name: automatic_indoor_lights_delayed_switched
+    name: automatic_indoor_lights_delayed_switched_off
     entities:
       - light.sonoff_corridor_lamp
       - light.sonoff_gallery1_socket
