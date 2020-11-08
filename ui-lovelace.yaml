@@ -170,21 +170,25 @@ views:
           - light.rfhub_lounge_lightweb
           # Xmas
           # - light.xmastreedining_leds
+          - binary_sensor.rauchwarnmelder_esszimmer_check_state
           - type: divider
           - light.rfhub_lounge_lamploungewhiteball
           - light.rfhub_lounge_lamploungeblackbowl
           - light.rfhub_lounge_lamploungereading
           - light.rfhub_lounge_lampstudypillar
           - switch.sonoff_k8200_socket
+          - binary_sensor.rauchwarnmelder_wohnz_check_state
           - type: divider
           - light.pitouch_corridor_screen
           - sensor.pitouch_corridor_ambientlight
+          - binary_sensor.rauchwarnmelder_flur_check_state
           - type: divider
           - light.shelly_shower_socket
           - type: divider
           - switch.sonoff_utilityroom_pump
           # - sensor.electricity_utilityroom_power
           # - sensor.electricity_utilityroom_counter
+          - binary_sensor.rauchwarnmelder_hauswirt_check_state
       - type: entities
         title: Obergeschoss
         show_header_toggle: false
@@ -768,7 +772,26 @@ views:
     panel: false
     cards:
       - type: entities
-        title: Rauchmelder
+        title: Rauchmelder Erdgeschoss
+        show_header_toggle: false
+        entities:
+            - binary_sensor.rauchwarnmelder_flur
+            - binary_sensor.rauchwarnmelder_flur_check_state
+            - sensor.rauchwarnmelder_flur
+            - type: divider
+            - binary_sensor.rauchwarnmelder_esszimmer
+            - binary_sensor.rauchwarnmelder_esszimmer_check_state
+            - sensor.rauchwarnmelder_esszimmer
+            - type: divider
+            - binary_sensor.rauchwarnmelder_wohnz
+            - binary_sensor.rauchwarnmelder_wohnz_check_state
+            - sensor.rauchwarnmelder_wohnz
+            - type: divider
+            - binary_sensor.rauchwarnmelder_hauswirt
+            - binary_sensor.rauchwarnmelder_hauswirt_check_state
+            - sensor.rauchwarnmelder_hauswirt
+      - type: entities
+        title: Rauchmelder Obergeschoss
         show_header_toggle: false
         entities:
             - binary_sensor.rauchwarnmelder_buro
