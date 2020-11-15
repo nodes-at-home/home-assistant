@@ -556,24 +556,24 @@ sensor.sonoff_bedroom_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
-light.sonoff_terrace_lamp:
+light.shelly_terrace_lamp:
     friendly_name: Außenlicht Terasse
 
-sensor.sonoff_terrace_voltage:
+sensor.shelly_terrace_voltage:
     friendly_name: Terrasseschalter
-    entity_picture: /local/images/sonoff_touch.jpg
+    entity_picture: /local/images/shelly.jpg
 
-sensor.sonoff_terrace_lastvoltage:
+sensor.shelly_terrace_lastvoltage:
     friendly_name: Terrasseschalter
-    entity_picture: /local/images/sonoff_touch.jpg
+    entity_picture: /local/images/shelly.jpg
 
-sensor.sonoff_terrace_lastboot:
+sensor.shelly_terrace_lastboot:
     friendly_name: Terrasseschalter
-    entity_picture: /local/images/sonoff_touch.jpg
+    entity_picture: /local/images/shelly.jpg
 
-sensor.sonoff_terrace_version:
+sensor.shelly_terrace_version:
     friendly_name: Terrasseschalter
-    entity_picture: /local/images/sonoff_touch.jpg
+    entity_picture: /local/images/shelly.jpg
 
 #------------------------------------------------------------------------------
 light.sonoff_yardgate_lamp:

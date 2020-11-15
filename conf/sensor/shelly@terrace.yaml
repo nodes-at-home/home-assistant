@@ -3,26 +3,26 @@
 ###
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/terrace
-    name: "sonoff@terrace_version"
+    state_topic: nodes@home/switch/shelly/terrace
+    name: "shelly@terrace_version"
     qos: 0
     value_template: '{{ value }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/terrace
-    name: "sonoff@terrace_lastboot"
+    state_topic: nodes@home/switch/shelly/terrace
+    name: "shelly@terrace_lastboot"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/terrace/value/voltage
-    name: "sonoff@terrace_voltage"
+    state_topic: nodes@home/switch/shelly/terrace/value/voltage
+    name: "shelly@terrace_voltage"
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - platform: mqtt
-    state_topic: nodes@home/switch/sonoff/terrace/value/voltage
-    name: "sonoff@terrace_lastvoltage"
+    state_topic: nodes@home/switch/shelly/terrace/value/voltage
+    name: "shelly@terrace_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

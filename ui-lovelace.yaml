@@ -227,7 +227,7 @@ views:
         title: Außenlichter
         show_header_toggle: true
         entities:
-          - light.sonoff_terrace_lamp
+          - light.shelly_terrace_lamp
           - light.relay_backyard_lamp
           - light.sonoff_garage_lamp
           - light.sonoff_yardgate_lamp
@@ -559,7 +559,7 @@ views:
                 - sensor.sonoff_utilityroom_version
                 # - sensor.xmastree_dining_version
                 - sensor.sonoff_pool_version
-                - sensor.sonoff_terrace_version
+                - sensor.shelly_terrace_version
                 - sensor.relay_dining1_version
                 - sensor.relay_dining2_version
                 - sensor.sonoff_yardgate_version
@@ -598,7 +598,7 @@ views:
                 - sensor.sonoff_utilityroom_lastboot
                 # - sensor.xmastree_dining_lastboot
                 - sensor.sonoff_pool_lastboot
-                - sensor.sonoff_terrace_lastboot
+                - sensor.shelly_terrace_lastboot
                 - sensor.relay_dining1_lastboot
                 - sensor.relay_dining2_lastboot
                 - sensor.sonoff_yardgate_lastboot
@@ -637,7 +637,7 @@ views:
                 - sensor.sonoff_utilityroom_lastvoltage
                 # - sensor.xmastree_dining_lastvoltage
                 - sensor.sonoff_pool_lastvoltage
-                - sensor.sonoff_terrace_lastvoltage
+                - sensor.shelly_terrace_lastvoltage
                 - sensor.relay_dining1_lastvoltage
                 - sensor.relay_dining2_lastvoltage
                 - sensor.sonoff_yardgate_lastvoltage
@@ -676,7 +676,7 @@ views:
                 - sensor.sonoff_utilityroom_voltage
                 # - sensor.xmastree_dining_voltage
                 - sensor.sonoff_pool_voltage
-                - sensor.sonoff_terrace_voltage
+                - sensor.shelly_terrace_voltage
                 - sensor.relay_dining1_voltage
                 - sensor.relay_dining2_voltage
                 - sensor.sonoff_yardgate_voltage
