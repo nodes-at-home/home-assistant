@@ -148,6 +148,13 @@
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
+      - platform: sun
+        event: sunrise
+        offset: "0:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) / 60) }}:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) % 60) }}"
+    condition:
+      - condition: state
+        entity_id: sun.sun
+        state: 'above_horizon'
     action:
       - service: light.turn_off
         entity_id: light.shelly_bath_socket
@@ -159,6 +166,13 @@
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
+      - platform: sun
+        event: sunrise
+        offset: "0:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) / 60) }}:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) % 60) }}"
+    condition:
+      - condition: state
+        entity_id: sun.sun
+        state: 'above_horizon'
     action:
       - service: light.turn_off
         entity_id: light.shelly_shower_socket
