@@ -148,9 +148,9 @@
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
-      - platform: sun
-        event: sunrise
-        offset: "0:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) / 60) }}:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) % 60) }}"
+      # - platform: sun
+        # event: sunrise
+        # offset: "0:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) / 60) }}:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) % 60) }}"
     condition:
       - condition: state
         entity_id: sun.sun
@@ -166,9 +166,9 @@
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
-      - platform: sun
-        event: sunrise
-        offset: "0:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) / 60) }}:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) % 60) }}"
+      # - platform: sun
+        # event: sunrise
+        # offset: "0:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) / 60) }}:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) % 60) }}"
     condition:
       - condition: state
         entity_id: sun.sun
