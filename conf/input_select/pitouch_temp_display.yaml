@@ -1,0 +1,8 @@
+###
+### 19.121.2020 new
+###
+
+name: Temperaturanzeige
+options:
+  - Pool
+  - Garage
