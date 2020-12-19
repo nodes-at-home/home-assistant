@@ -525,6 +525,7 @@ views:
                 entities:
                     - input_number.pitouch_delay
                     - input_datetime.pitouch_off
+                    - input_select.pitouch_temp_display
               - type: entities
                 title: Lichterkette
                 show_header_toggle: false

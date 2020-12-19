@@ -8,3 +8,19 @@
     qos: 0
     unit_of_measurement: " "
     value_template: '{{ value_json.ambient | round ( 0 ) }}'
+
+  - platform: template
+    sensors:
+        tileboard_temperature_template:
+            friendly_name_template: >-
+                {% if ( states ( 'input_select.pitouch_temp_display' ) == 'Pool' ) %}
+                    Pooltemperatur
+                {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Garage' ) %}
+                    Garagentemperatur
+                {% endif %}
+            value_template: >-
+                {% if ( states ( 'input_select.pitouch_temp_display' ) == 'Pool' ) %}
+                    "{{ states ( 'sensor.ds18b20_pool_temperature' ) }}"
+                {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Garage' ) %}
+                    "{{ states ( 'sensor.relay_garage_temperature' ) }}"
+                {% endif %}
