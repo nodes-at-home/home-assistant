@@ -20,7 +20,7 @@
                 {% endif %}
             value_template: >-
                 {% if ( states ( 'input_select.pitouch_temp_display' ) == 'Pool' ) %}
-                    "{{ states ( 'sensor.ds18b20_pool_temperature' ) }}"
+                    {{ states ( 'sensor.ds18b20_pool_temperature' ) }}
                 {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Garage' ) %}
-                    "{{ states ( 'sensor.relay_garage_temperature' ) }}"
+                    {{ states ( 'sensor.relay_garage_temperature' ) }}
                 {% endif %}
