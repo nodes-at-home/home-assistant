@@ -811,6 +811,26 @@ sensor.ws2812_terrace2_version:
     friendly_name: Lichterkette
     entity_picture: /local/images/wemos_mini.jpg
 
+#------------------------------------------------------------------------------
+light.ws2812_xmasstar:
+    friendly_name: Weihnachtsstern
+
+sensor.ws2812_xmasstar_voltage:
+    friendly_name: Weihnachtsstern
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812_xmasstar_lastvoltage:
+    friendly_name: Weihnachtsstern
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812_xmasstar_lastboot:
+    friendly_name: Weihnachtsstern
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812_xmasstar_version:
+    friendly_name: Weihnachtsstern
+    entity_picture: /local/images/wemos_mini.jpg
+
 #-------------------------------------------------------------------------  -----
 switch.sonoff_k8200_socket:
     friendly_name: 3D Drucker K8200

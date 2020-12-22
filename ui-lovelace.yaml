@@ -114,6 +114,8 @@ views:
                         graph: line
                         detail: 2
                         hours_to_show: 24
+                  - type: media-control
+                    entity: media_player.sony_bravia_tv
               - type: vertical-stack
                 cards:
                   - type: horizontal-stack
@@ -132,6 +134,11 @@ views:
                             action: toggle
                         hold_action:
                             action: more-info
+                      # - type: entity-button
+                        # entity: switch.sonoff_k8200_socket
+                        # icon: mdi:printer-3d
+                        # style:
+                          # - height: 200px
                   - type: horizontal-stack
                     cards:
                       - type: markdown
@@ -144,13 +151,21 @@ views:
                         entity: light.ws2812_terrace1
                       - type: light
                         entity: light.ws2812_terrace2
+                      - type: light
+                        entity: light.ws2812_xmasstar
+                  - type: horizontal-stack
+                    cards:
                       - type: entity-button
                         entity: switch.sonoff_k8200_socket
                         icon: mdi:printer-3d
-                        style:
-                          - height: 200px
-                  - type: media-control
-                    entity: media_player.sony_bravia_tv
+                        # style:
+                          # - height: 200px
+                      - type: markdown
+                        content: " "
+                      - type: markdown
+                        content: " "
+                      - type: markdown
+                        content: " "
                 
   - title: Innen
     path: indoor
@@ -179,6 +194,7 @@ views:
           - switch.sonoff_k8200_socket
           - binary_sensor.rauchwarnmelder_wohnz_check_state
           - type: divider
+          - light.ws2812_xmasstar
           - light.pitouch_corridor_screen
           - sensor.pitouch_corridor_ambientlight
           - binary_sensor.rauchwarnmelder_flur_check_state
@@ -584,6 +600,7 @@ views:
                 - sensor.electricity_utilityroom_version
                 - sensor.ws2812_terrace1_version
                 - sensor.ws2812_terrace2_version
+                - sensor.ws2812_xmasstar_version
           - type: entities
             title: Last Boot
             show_header_toggle: false
@@ -623,6 +640,7 @@ views:
                 - sensor.electricity_utilityroom_lastboot
                 - sensor.ws2812_terrace1_lastboot
                 - sensor.ws2812_terrace2_lastboot
+                - sensor.ws2812_xmasstar_lastboot
           - type: entities
             title: Last Voltage Message
             show_header_toggle: false
@@ -662,6 +680,7 @@ views:
                 - sensor.electricity_utilityroom_lastvoltage
                 - sensor.ws2812_terrace1_lastvoltage
                 - sensor.ws2812_terrace2_lastvoltage
+                - sensor.ws2812_xmasstar_lastvoltage
           - type: entities
             title: Spannungspegel
             show_header_toggle: false
@@ -701,6 +720,7 @@ views:
                 - sensor.electricity_utilityroom_voltage
                 - sensor.ws2812_terrace1_voltage
                 - sensor.ws2812_terrace2_voltage
+                - sensor.ws2812_xmasstar_voltage
                 
   - title: System
     path: system
