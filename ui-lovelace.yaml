@@ -376,7 +376,9 @@ views:
                     - automation.indoor_lights_off_when_tv_switched_off
                     - automation.indoor_lights_off_after_random_delay
                     - automation.indoor_roof_light
+                    - automation.indoor_bath_light_trigger_at_sunrise
                     - automation.indoor_bath_light_off_after_timeout
+                    - automation.indoor_shower_light_trigger_at_sunrise
                     - automation.indoor_shower_light_off_after_timeout
                     - automation.indoor_lights_simulation_off_at_coming_home
                     - automation.indoor_lights_on_by_button
@@ -469,6 +471,13 @@ views:
                     - binary_sensor.ttp223_bedroom_touch3
                     - binary_sensor.ttp223_bedroom_touch4
               - type: entities
+                title: Pool
+                show_header_toggle: false
+                entities:
+                    - input_number.pool_pump_duration
+                    - input_datetime.pool_pump_start1
+                    - input_datetime.pool_pump_start2
+              - type: entities
                 title: Saugroboter
                 show_header_toggle: false
                 entities:
@@ -524,6 +533,8 @@ views:
                     - input_datetime.standup_weekend
                     - input_datetime.sleep
                     - input_number.light_timeout
+                    - input_boolean.light_delay_bath
+                    - input_boolean.light_delay_shower
               - type: entities
                 title: Fernseher aus
                 entities:
@@ -547,13 +558,6 @@ views:
                 show_header_toggle: false
                 entities:
                     - input_number.effect_delay
-              - type: entities
-                title: Pool
-                show_header_toggle: false
-                entities:
-                    - input_number.pool_pump_duration
-                    - input_datetime.pool_pump_start1
-                    - input_datetime.pool_pump_start2
     
   - title: Geräte
     path: nodes

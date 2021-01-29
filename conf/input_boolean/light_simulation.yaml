@@ -5,3 +5,11 @@
 light_simulation:
     name: Lichtsimulation
     # initial: off
+
+light_delay_bath:
+    name: Lichtnachlauf Bad
+    # initial: off
+
+light_delay_shower:
+    name: Lichtnachlauf Dusche
+    # initial: off

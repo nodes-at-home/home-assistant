@@ -71,7 +71,7 @@
             - light.automatic_indoor_lights_immediatly_switched_off
             - light.automatic_indoor_lights_delayed_switched_off
             - light.automatic_indoor_lights_immediatly_switched_off_extra
-            - light.automatic_indoor_lights_switched_off_extra
+            ###- light.automatic_indoor_lights_switched_off_extra
 
   - alias: indoor_lights_off_when_tv_switched_off
     trigger:
@@ -141,6 +141,19 @@
       - service: light.turn_{{ trigger.to_state.state }}
         entity_id: light.shelly_roof_socket
 
+  - alias: indoor_bath_light_trigger_at_sunrise
+    trigger:
+      - platform: sun
+        event: sunrise
+        offset: "+00:00:00"
+    condition:
+      - condition: state
+        entity_id: light.shelly_bath_socket
+        state: 'on'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.light_delay_bath
+
   - alias: indoor_bath_light_off_after_timeout
     trigger:
       - platform: state
@@ -148,9 +161,11 @@
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
-      # - platform: sun
-        # event: sunrise
-        # offset: "0:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) / 60) }}:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) % 60) }}"
+      - platform: state
+        entity_id: input_boolean.light_delay_bath
+        to: "on"
+        for:
+            minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
     condition:
       - condition: state
         entity_id: sun.sun
@@ -158,6 +173,21 @@
     action:
       - service: light.turn_off
         entity_id: light.shelly_bath_socket
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.light_delay_bath
+
+  - alias: indoor_shower_light_trigger_at_sunrise
+    trigger:
+      - platform: sun
+        event: sunrise
+        offset: "+00:00:00"
+    condition:
+      - condition: state
+        entity_id: light.shelly_shower_socket
+        state: 'on'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.light_delay_shower
 
   - alias: indoor_shower_light_off_after_timeout
     trigger:
@@ -166,9 +196,6 @@
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
-      # - platform: sun
-        # event: sunrise
-        # offset: "0:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) / 60) }}:{{ '%02d' % ((states ( 'input_number.light_timeout' ) | int) % 60) }}"
     condition:
       - condition: state
         entity_id: sun.sun
@@ -176,3 +203,5 @@
     action:
       - service: light.turn_off
         entity_id: light.shelly_shower_socket
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.light_delay_shower
