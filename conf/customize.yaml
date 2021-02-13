@@ -636,6 +636,26 @@ sensor.sonoff_kitchen_version:
     entity_picture: /local/images/sonoff_led.jpg
 
 #------------------------------------------------------------------------------
+light.led_corridor_led:
+    friendly_name: Korridorschranklicht
+
+sensor.led_corridor_voltage:
+    friendly_name: 'Ledstrip'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.led_corridor_lastvoltage:
+    friendly_name: 'Ledstrip'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.led_corridor_lastboot:
+    friendly_name: 'Ledstrip'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.led_corridor_version:
+    friendly_name: 'Ledstrip'
+    entity_picture: /local/images/sonoff_led.jpg
+
+#------------------------------------------------------------------------------
 sensor.ds18b20_pool_temperature:
     friendly_name: Pool
 

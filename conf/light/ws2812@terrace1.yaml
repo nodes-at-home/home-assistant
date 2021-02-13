@@ -11,4 +11,5 @@
     rgb: true
     effect: true
     effect_list: [static, blink, random_color, rainbow]
+    optimistic: false
     retain: true

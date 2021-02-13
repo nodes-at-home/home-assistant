@@ -134,11 +134,6 @@ views:
                             action: toggle
                         hold_action:
                             action: more-info
-                      # - type: entity-button
-                        # entity: switch.sonoff_k8200_socket
-                        # icon: mdi:printer-3d
-                        # style:
-                          # - height: 200px
                   - type: horizontal-stack
                     cards:
                       - type: markdown
@@ -148,24 +143,22 @@ views:
                       - type: light
                         entity: light.sonoff_kitchen_led
                       - type: light
+                        entity: light.led_corridor_led
+                      - type: light
                         entity: light.ws2812_terrace1
                       - type: light
                         entity: light.ws2812_terrace2
-                      - type: light
-                        entity: light.ws2812_xmasstar
                   - type: horizontal-stack
                     cards:
                       - type: entity-button
                         entity: switch.sonoff_k8200_socket
                         icon: mdi:printer-3d
-                        # style:
-                          # - height: 200px
                       - type: markdown
                         content: " "
                       - type: markdown
                         content: " "
-                      - type: markdown
-                        content: " "
+                      - type: light
+                        entity: light.ws2812_xmasstar
                 
   - title: Innen
     path: indoor
@@ -183,6 +176,7 @@ views:
           - light.relay_dining2_lamp
           - light.rfhub_lounge_lamptree
           - light.rfhub_lounge_lightweb
+          - light.ws2812_xmasstar
           # Xmas
           # - light.xmastreedining_leds
           - binary_sensor.rauchwarnmelder_esszimmer_check_state
@@ -194,7 +188,7 @@ views:
           - switch.sonoff_k8200_socket
           - binary_sensor.rauchwarnmelder_wohnz_check_state
           - type: divider
-          - light.ws2812_xmasstar
+          - light.led_corridor_led
           - light.pitouch_corridor_screen
           - sensor.pitouch_corridor_ambientlight
           - binary_sensor.rauchwarnmelder_flur_check_state
@@ -587,6 +581,7 @@ views:
                 - sensor.sonoff_corridor_version
                 - sensor.ds18b20_pool_version
                 - sensor.sonoff_kitchen_version
+                - sensor.led_corridor_version
                 - sensor.gesture_kitchen_version
                 - sensor.ttp223_bedroom_version
                 - sensor.sonoff_bedroom_version
@@ -627,6 +622,7 @@ views:
                 - sensor.sonoff_corridor_lastboot
                 - sensor.ds18b20_pool_lastboot
                 - sensor.sonoff_kitchen_lastboot
+                - sensor.led_corridor_lastboot
                 - sensor.gesture_kitchen_lastboot
                 - sensor.ttp223_bedroom_lastboot
                 - sensor.sonoff_bedroom_lastboot
@@ -667,6 +663,7 @@ views:
                 - sensor.sonoff_corridor_lastvoltage
                 - sensor.ds18b20_pool_lastvoltage
                 - sensor.sonoff_kitchen_lastvoltage
+                - sensor.led_corridor_lastvoltage
                 - sensor.gesture_kitchen_lastvoltage
                 - sensor.ttp223_bedroom_lastvoltage
                 - sensor.sonoff_bedroom_lastvoltage
@@ -707,6 +704,7 @@ views:
                 - sensor.sonoff_corridor_voltage
                 - sensor.ds18b20_pool_voltage
                 - sensor.sonoff_kitchen_voltage
+                - sensor.led_corridor_voltage
                 - sensor.gesture_kitchen_voltage
                 - sensor.ttp223_bedroom_voltage
                 - sensor.sonoff_bedroom_voltage
