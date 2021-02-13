@@ -7,3 +7,4 @@
     entities:
       - light.sonoff_corridor_lamp
       - light.sonoff_gallery1_socket
+      - light.led_corridor_led
