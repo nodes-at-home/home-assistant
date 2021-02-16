@@ -202,7 +202,7 @@ vacuum:
 # -------------------------------------------------------------------------------
 # Bosch Smart Home
 # https://github.com/tschamm/boschshc-hass
-boschshc:
+bosch_shc:
    ip_address: '192.168.2.155'
    ssl_certificate: '/config/custom_components/bsh-client-cert.pem'
    ssl_key: '/config/custom_components/bsh-client-key.pem'

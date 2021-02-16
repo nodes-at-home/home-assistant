@@ -179,40 +179,40 @@ views:
           - light.ws2812_xmasstar
           # Xmas
           # - light.xmastreedining_leds
-          - binary_sensor.rauchwarnmelder_esszimmer_check_state
+          - binary_sensor.rauchwarnmelder_esszimmer
           - type: divider
           - light.rfhub_lounge_lamploungewhiteball
           - light.rfhub_lounge_lamploungeblackbowl
           - light.rfhub_lounge_lamploungereading
           - light.rfhub_lounge_lampstudypillar
           - switch.sonoff_k8200_socket
-          - binary_sensor.rauchwarnmelder_wohnz_check_state
+          - binary_sensor.rauchwarnmelder_wohnz
           - type: divider
           - light.led_corridor_led
           - light.pitouch_corridor_screen
           - sensor.pitouch_corridor_ambientlight
-          - binary_sensor.rauchwarnmelder_flur_check_state
+          - binary_sensor.rauchwarnmelder_flur
           - type: divider
           - light.shelly_shower_socket
           - type: divider
           - switch.sonoff_utilityroom_pump
           # - sensor.electricity_utilityroom_power
           # - sensor.electricity_utilityroom_counter
-          - binary_sensor.rauchwarnmelder_hauswirt_check_state
+          - binary_sensor.rauchwarnmelder_hauswirt
       - type: entities
         title: Obergeschoss
         show_header_toggle: false
         entities:
           - light.sonoff_gallery1_socket
-          - binary_sensor.rauchwarnmelder_galerie_check_state
+          - binary_sensor.rauchwarnmelder_galerie
           - type: divider
           - light.sonoff_bedroom_socket
-          - binary_sensor.rauchwarnmelder_schlafz_check_state
+          - binary_sensor.rauchwarnmelder_schlafz
           - type: divider
           - light.sonoff_corridor_lamp
-          - binary_sensor.rauchwarnmelder_buro_check_state
+          - binary_sensor.rauchwarnmelder_buro
           - type: divider
-          - binary_sensor.rauchwarnmelder_kinderz_check_state
+          - binary_sensor.rauchwarnmelder_kinderz
           - type: divider
           - light.shelly_bath_socket
       - type: entities
@@ -221,7 +221,7 @@ views:
         entities:
           - binary_sensor.dachboden
           - light.shelly_roof_socket
-          - binary_sensor.rauchwarnmelder_dachboden_check_state
+          - binary_sensor.rauchwarnmelder_dachboden
     
   - title: Außen
     path: outdoor
@@ -799,52 +799,43 @@ views:
         show_header_toggle: false
         entities:
             - binary_sensor.rauchwarnmelder_flur
-            - binary_sensor.rauchwarnmelder_flur_check_state
-            - sensor.rauchwarnmelder_flur
+            - sensor.rauchwarnmelder_flur_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_esszimmer
-            - binary_sensor.rauchwarnmelder_esszimmer_check_state
-            - sensor.rauchwarnmelder_esszimmer
+            - sensor.rauchwarnmelder_esszimmer_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_wohnz
-            - binary_sensor.rauchwarnmelder_wohnz_check_state
-            - sensor.rauchwarnmelder_wohnz
+            - sensor.rauchwarnmelder_wohnz_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_hauswirt
-            - binary_sensor.rauchwarnmelder_hauswirt_check_state
-            - sensor.rauchwarnmelder_hauswirt
+            - sensor.rauchwarnmelder_hauswirt_battery
       - type: entities
         title: Rauchmelder Obergeschoss
         show_header_toggle: false
         entities:
             - binary_sensor.rauchwarnmelder_buro
-            - binary_sensor.rauchwarnmelder_buro_check_state
-            - sensor.rauchwarnmelder_buro
+            - sensor.rauchwarnmelder_buro_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_schlafz
-            - binary_sensor.rauchwarnmelder_schlafz_check_state
-            - sensor.rauchwarnmelder_schlafz
+            - sensor.rauchwarnmelder_schlafz_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_kinderz
-            - binary_sensor.rauchwarnmelder_kinderz_check_state
-            - sensor.rauchwarnmelder_kinderz
+            - sensor.rauchwarnmelder_kinderz_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_galerie
-            - binary_sensor.rauchwarnmelder_galerie_check_state
-            - sensor.rauchwarnmelder_galerie
+            - sensor.rauchwarnmelder_galerie_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_dachboden
-            - binary_sensor.rauchwarnmelder_dachboden_check_state
-            - sensor.rauchwarnmelder_dachboden
+            - sensor.rauchwarnmelder_dachboden_battery
       - type: entities
         title: Tür-/Fensterkontakte
         show_header_toggle: false
         entities:
             - binary_sensor.eingangstur
-            - sensor.eingangstur
+            - sensor.eingangstur_battery
             - type: divider
             - binary_sensor.dachboden
-            - sensor.dachboden
+            - sensor.dachboden_battery
 
   # https://sharethelove.io/picture-elements-cards/xiaomi-vacuum-card
   # https://community.home-assistant.io/t/xiaomi-vacuum-cleaner-card/64456/52

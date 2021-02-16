@@ -1,0 +1,46 @@
+{
+    "title": "Bosch SHC",
+    "config": {
+        "flow_title": "Bosch SHC: {name}",
+        "step": {
+            "confirm_discovery": {
+                "description": "Möchten Sie das {model} bei {host} einrichten?"
+            },
+            "credentials": {
+                "data": {
+                    "ssl_certificate": "Öffentlicher Schlüssel des SSL-Zertifikats",
+                    "ssl_key": "Privater Schlüssel des SSL-Zertifikats"
+                }
+            },
+            "user": {
+                "description": "Richten Sie Ihre Bosch SHC-Instanz ein, um die Überwachung und Steuerung zu ermöglichen.",
+                "title": "SHC-Authentifizierungsparameter",
+                "data": {
+                    "host": "Host",
+                    "ssl_certificate": "Öffentlicher Schlüssel des SSL-Zertifikats",
+                    "ssl_key": "Privater Schlüssel des SSL-Zertifikats"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Verbindung fehlgeschlagen",
+            "invalid_auth": "Ungültige Authentifizierung",
+            "unknown": "Unerwarteter Fehler"
+        },
+        "abort": {
+            "already_configured": "Gerät ist bereits konfiguriert"
+        }
+    },
+    "device_automation":{
+        "trigger_subtype": {
+            "LOWER_BUTTON": "Unterer Knopf",
+            "UPPER_BUTTON": "Oberer Knopf"
+        },
+        "trigger_type": {
+            "PRESS_SHORT": "{subtype} kurz gedrückt",
+            "PRESS_LONG": "{subtype} lang gedrückt",
+            "MOTION": "Bewegung erkannt",
+            "SCENARIO": "Szenario ausgelöst: {subtype}"
+        }
+    }
+}

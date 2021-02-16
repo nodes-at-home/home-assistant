@@ -2,13 +2,11 @@
 import logging
 
 from boschshcpy import SHCCameraEyes, SHCSession, SHCSmartPlug
-
 from homeassistant.components.switch import (
     DEVICE_CLASS_OUTLET,
     DEVICE_CLASS_SWITCH,
     SwitchEntity,
 )
-from homeassistant.const import CONF_IP_ADDRESS
 
 from .const import DOMAIN
 from .entity import SHCEntity
@@ -17,26 +15,32 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
-    """Set up the sensor platform."""
+    """Set up the switch platform."""
 
     entities = []
     session: SHCSession = hass.data[DOMAIN][config_entry.entry_id]
-    ip_address = config_entry.data[CONF_IP_ADDRESS]
 
-    for device in session.device_helper.smart_plugs:
-        _LOGGER.debug("Found smart plug: %s (%s)", device.name, device.id)
-        room_name=session.room(device.room_id).name
-        entities.append(SmartPlugSwitch(device=device, room_name=room_name, controller_ip=ip_address))
+    for switch in (
+        session.device_helper.smart_plugs
+    ):
 
-    for device in session.device_helper.light_controls:
-        _LOGGER.debug("Found light controls: %s (%s)", device.name, device.id)
-        room_name=session.room(device.room_id).name
-        entities.append(SmartPlugSwitch(device=device, room_name=room_name, controller_ip=ip_address))
+        entities.append(
+            SmartPlugSwitch(
+                device=switch,
+                parent_id=session.information.name,
+                entry_id=config_entry.entry_id,
+            )
+        )
 
-    for device in session.device_helper.camera_eyes:
-        _LOGGER.debug("Found camera eyes: %s (%s)", device.name, device.id)
-        room_name=session.room(device.room_id).name
-        entities.append(CameraEyesSwitch(device=device, room_name=room_name, controller_ip=ip_address))
+    for switch in session.device_helper.camera_eyes:
+
+        entities.append(
+            CameraEyesSwitch(
+                device=switch,
+                parent_id=session.information.name,
+                entry_id=config_entry.entry_id,
+            )
+        )
 
     if entities:
         async_add_entities(entities)
@@ -94,6 +98,10 @@ class CameraEyesSwitch(SHCEntity, SwitchEntity):
     def should_poll(self):
         """Polling needed."""
         return True  # No long polling implemented for camera eyes
+
+    def update(self):
+        """Trigger an update of the device."""
+        self._device.update()
 
     @property
     def is_on(self):

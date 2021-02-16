@@ -2,16 +2,15 @@
 import logging
 
 from boschshcpy import SHCSession, SHCShutterControl
-
 from homeassistant.components.cover import (
     ATTR_POSITION,
+    DEVICE_CLASS_SHUTTER,
     SUPPORT_CLOSE,
     SUPPORT_OPEN,
     SUPPORT_SET_POSITION,
     SUPPORT_STOP,
     CoverEntity,
 )
-from homeassistant.const import CONF_IP_ADDRESS
 
 from .const import DOMAIN
 from .entity import SHCEntity
@@ -20,16 +19,19 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
-    """Set up the cover platform."""
+    """Set up the SHC cover platform."""
 
     entities = []
     session: SHCSession = hass.data[DOMAIN][config_entry.entry_id]
-    ip_address = config_entry.data[CONF_IP_ADDRESS]
 
-    for device in session.device_helper.shutter_controls:
-        _LOGGER.debug("Found shutter control: %s (%s)", device.name, device.id)
-        room_name=session.room(device.room_id).name
-        entities.append(ShutterControlCover(device=device, room_name=room_name, controller_ip=ip_address))
+    for cover in session.device_helper.shutter_controls:
+        entities.append(
+            ShutterControlCover(
+                device=cover,
+                parent_id=session.information.name,
+                entry_id=config_entry.entry_id,
+            )
+        )
 
     if entities:
         async_add_entities(entities)
@@ -42,6 +44,11 @@ class ShutterControlCover(SHCEntity, CoverEntity):
     def supported_features(self):
         """Flag supported features."""
         return SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_STOP | SUPPORT_SET_POSITION
+
+    @property
+    def device_class(self):
+        """Return the class of this device, from component DEVICE_CLASSES."""
+        return DEVICE_CLASS_SHUTTER
 
     @property
     def current_cover_position(self):
