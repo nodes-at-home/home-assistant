@@ -44,6 +44,11 @@
       - platform: state
         entity_id: binary_sensor.button_garage
         to: 'on'
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Garage auf'
     condition:
       - condition: state
         entity_id: input_boolean.button_garage_activated
@@ -60,6 +65,11 @@
       - platform: state
         entity_id: binary_sensor.button_garage
         to: 'on'
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Garage zu'
     condition:
       - condition: state
         entity_id: input_boolean.button_garage_activated
