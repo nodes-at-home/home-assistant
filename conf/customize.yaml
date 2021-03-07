@@ -158,6 +158,7 @@ light.rfhub_lounge_schwibbogen2:
     friendly_name: Schwibbogen rechts
 
 light.rfhub_lounge_star:
+light.rfhub_lounge_star:
     friendly_name: Stern
 
 light.rfhub_lounge_drops:
@@ -174,7 +175,8 @@ switch.kitchen_long_led_strip:
 
 switch.heater_circulating_pump:
     friendly_name: Zirkulationspumpe
-    entity_picture: /local/images/circulation_pump.jpg
+    # entity_picture: /local/images/circulation_pump.jpg
+    icon: mdi:pump
 
 #------------------------------------------------------------------------------
 sensor.rfhub_lounge_voltage:
@@ -428,7 +430,9 @@ sensor.pixel_kitchen_version:
 #------------------------------------------------------------------------------
 switch.sonoff_pool_socket:
     friendly_name: Poolpumpe
-    entity_picture: /local/images/poolpump.jpg
+    # entity_picture: /local/images/poolpump.jpg
+    # icon: mdi:water-pump
+    icon: mdi:pump
 
 sensor.sonoff_pool_voltage:
     friendly_name: 'Steckdose Pool'
@@ -854,7 +858,8 @@ sensor.ws2812_xmasstar_version:
 #-------------------------------------------------------------------------  -----
 switch.sonoff_k8200_socket:
     friendly_name: 3D Drucker K8200
-    entity_picture: /local/images/k8200.jpg
+    # entity_picture: /local/images/k8200.jpg
+    icon: mdi:printer-3d
 
 sensor.sonoff_k8200_voltage:
     friendly_name: 'Steckdose K8200'
@@ -892,6 +897,27 @@ sensor.sonoff_gallery1_lastboot:
 sensor.sonoff_gallery1_version:
     friendly_name: 'Steckdose Lichterkette'
     entity_picture: /local/images/sonoff_s20.jpg
+
+#------------------------------------------------------------------------------
+switch.relay_garden_valve:
+    friendly_name: Hecke
+    icon: mdi:watering-can
+
+sensor.relay_garden_voltage:
+    friendly_name: 'Bewässerung Hecke'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relay_garden_lastvoltage:
+    friendly_name: 'Bewässerung Hecke'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relay_garden_lastboot:
+    friendly_name: 'Bewässerung Hecke'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relay_garden_version:
+    friendly_name: 'Bewässerung Hecke'
+    entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
 light.automatic_indoor_lights:

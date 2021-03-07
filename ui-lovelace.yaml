@@ -153,12 +153,16 @@ views:
                       - type: entity-button
                         entity: switch.sonoff_k8200_socket
                         icon: mdi:printer-3d
-                      - type: markdown
-                        content: " "
-                      - type: markdown
-                        content: " "
+                      - type: entity-button
+                        entity: switch.relay_garden_valve
+                        icon: mdi:watering-can
+                      - type: entity-button
+                        entity: switch.sonoff_pool_socket
+                        icon: mdi:pump
                       - type: light
                         entity: light.ws2812_xmasstar
+                      # - type: markdown
+                        # content: " "
                 
   - title: Innen
     path: indoor
@@ -254,6 +258,11 @@ views:
         show_header_toggle: false
         entities:
             - switch.sonoff_pool_socket
+      - type: entities
+        title: Garten
+        show_header_toggle: false
+        entities:
+            - switch.relay_garden_valve
       - type: entities
         title: Türen
         show_header_toggle: false
@@ -574,6 +583,7 @@ views:
                 - sensor.sonoff_utilityroom_version
                 # - sensor.xmastree_dining_version
                 - sensor.sonoff_pool_version
+                - sensor.relay_garden_version
                 - sensor.shelly_terrace_version
                 - sensor.relay_dining1_version
                 - sensor.relay_dining2_version
@@ -615,6 +625,7 @@ views:
                 - sensor.sonoff_utilityroom_lastboot
                 # - sensor.xmastree_dining_lastboot
                 - sensor.sonoff_pool_lastboot
+                - sensor.relay_garden_lastboot
                 - sensor.shelly_terrace_lastboot
                 - sensor.relay_dining1_lastboot
                 - sensor.relay_dining2_lastboot
@@ -656,6 +667,7 @@ views:
                 - sensor.sonoff_utilityroom_lastvoltage
                 # - sensor.xmastree_dining_lastvoltage
                 - sensor.sonoff_pool_lastvoltage
+                - sensor.relay_garden_lastvoltage
                 - sensor.shelly_terrace_lastvoltage
                 - sensor.relay_dining1_lastvoltage
                 - sensor.relay_dining2_lastvoltage
@@ -697,6 +709,7 @@ views:
                 - sensor.sonoff_utilityroom_voltage
                 # - sensor.xmastree_dining_voltage
                 - sensor.sonoff_pool_voltage
+                - sensor.relay_garden_voltage
                 - sensor.shelly_terrace_voltage
                 - sensor.relay_dining1_voltage
                 - sensor.relay_dining2_voltage
