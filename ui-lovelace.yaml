@@ -395,10 +395,6 @@ views:
                 entities:
                     - automation.open_garage_door
                     - automation.close_garage_door
-                    - automation.pixel_node_preferences
-                    #- automation.display_show_outdoor_temperature
-                    #- automation.display_show_indoor_temperature
-                    #- automation.display_show_pool_temperature
               - type: entities
                 title: Küche
                 show_header_toggle: true
@@ -441,6 +437,13 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.set_default_values
+                    - automation.pixel_node_preferences
+              - type: entities
+                title: Gartenbewässerung
+                show_header_toggle: true
+                entities:
+                    - automation.irrigation_hedge_on
+                    - automation.irrigation_hedge_off
 
   - title: Enstellungen
     path: options

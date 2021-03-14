@@ -1,0 +1,26 @@
+###
+### 13.03.2021 new
+###
+
+  - alias: irrigation_hedge_on
+    trigger:
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Wasser an'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.relay_garden_valve
+
+  - alias: irrigation_hedge_off
+    trigger:
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Wasser aus'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.relay_garden_valve
+
