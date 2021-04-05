@@ -1,0 +1,91 @@
+###
+### 07.03.2021
+###
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden
+    name: "soil@garden_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden
+    name: "soil@garden_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/voltage
+    name: "soil@garden_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/voltage
+    name: "soil@garden_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/temperature
+    name: "soil@garden_temperature1"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.temperature1 | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/temperature
+    name: "soil@garden_temperature2"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.temperature2 | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/temperature
+    name: "soil@garden_temperature3"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.temperature3 | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/soil
+    name: "soil@garden_moisture1"
+    qos: 0
+    unit_of_measurement: "%"
+    value_template: '{{ 100 - ((( value_json.voltage1 | float | max ( 1400 ) | min ( 2860) | float) - 1400 | float) * (100 / (2860 - 1400))) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/soil
+    name: "soil@garden_moisture2"
+    qos: 0
+    unit_of_measurement: "%"
+    value_template: '{{ 100 - ((( value_json.voltage2 | float | max ( 1320 ) | min ( 2820) | float) - 1320 | float) * (100 / (2820 - 1320))) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/soil
+    name: "soil@garden_moisture3"
+    qos: 0
+    unit_of_measurement: "%"
+    value_template: '{{ 100 - ((( value_json.voltage3 | float | max ( 1390 ) | min ( 2850) | float) - 1390 | float) * (100 / (2850 - 1390))) | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/soil
+    name: "soil@garden_moisture1_raw"
+    qos: 0
+    unit_of_measurement: "mV"
+    value_template: '{{ value_json.voltage1 | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/soil
+    name: "soil@garden_moisture2_raw"
+    qos: 0
+    unit_of_measurement: "mV"
+    value_template: '{{ value_json.voltage2 | round ( 1 ) }}'
+
+  - platform: mqtt
+    state_topic: nodes@home/sensor/soil/garden/value/soil
+    name: "soil@garden_moisture3_raw"
+    qos: 0
+    unit_of_measurement: "mV"
+    value_template: '{{ value_json.voltage3 | round ( 1 ) }}'

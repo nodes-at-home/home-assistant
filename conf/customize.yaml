@@ -11,7 +11,7 @@ sensor.DHT22_terrace_temperature:
 
 sensor.DHT22_terrace_humidity:
     friendly_name: Luftfeuchtigkeit Terasse
-    entity_picture: /local/images/DHT22.jpg
+    icon: mdi:water-percent
 
 sensor.DHT22_terrace_voltage:
     friendly_name: Terrasse
@@ -35,7 +35,7 @@ sensor.DHT22_lounge_temperature:
 
 sensor.DHT22_lounge_humidity:
     friendly_name: Luftfeuchtigkeit Wohnzimmer
-    entity_picture: /local/images/DHT22.jpg
+    icon: mdi:water-percent
 
 sensor.DHT22_lounge_pressure:
     friendly_name: Luftdruck
@@ -63,7 +63,7 @@ sensor.DHT22_roof_temperature:
 
 sensor.DHT22_roof_humidity:
     friendly_name: Luftfeuchtigkeit Dachboden
-    entity_picture: /local/images/DHT22.jpg
+    icon: mdi:water-percent
 
 sensor.DHT22_roof_voltage:
     friendly_name: Dachboden
@@ -87,7 +87,7 @@ sensor.DHT22_office_temperature:
 
 sensor.DHT22_office_humidity:
     friendly_name: Luftfeuchtigkeit Büro
-    entity_picture: /local/images/DHT22.jpg
+    icon: mdi:water-percent
 
 sensor.DHT22_office_voltage:
     friendly_name: Büro
@@ -207,7 +207,7 @@ sensor.relay_garage_temperature:
 
 sensor.relay_garage_humidity:
     friendly_name: Luftfeuchtigkeit Garage
-    entity_picture: /local/images/DHT22.jpg
+    icon: mdi:water-percent
 
 sensor.relay_garage_voltage:
     friendly_name: Garagentor
@@ -919,6 +919,43 @@ sensor.relay_garden_version:
     friendly_name: 'Bewässerung Hecke'
     entity_picture: /local/images/nodemcu.jpg
 
+#------------------------------------------------------------------------------
+sensor.soil_garden_temperature1:
+    friendly_name: Hochbeet
+
+sensor.soil_garden_temperature2:
+    friendly_name: Luft
+
+sensor.soil_garden_temperature3:
+    friendly_name: Boden
+
+sensor.soil_garden_moisture1:
+    friendly_name: Hochbeet
+    icon: mdi:water-percent
+
+sensor.soil_garden_moisture2:
+    friendly_name: Hecke
+    icon: mdi:water-percent
+
+sensor.soil_garden_moisture3:
+    friendly_name: Hecke
+    icon: mdi:water-percent
+
+sensor.soil_garden_voltage:
+    friendly_name: Garten
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.soil_garden_lastvoltage:
+    friendly_name: Garten
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.soil_garden_lastboot:
+    friendly_name: Garten
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.soil_garden_version:
+    friendly_name: Garten
+    entity_picture: /local/images/nodemcu.jpg
 #------------------------------------------------------------------------------
 light.automatic_indoor_lights:
     friendly_name: Innenlichter

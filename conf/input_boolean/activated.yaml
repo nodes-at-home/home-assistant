@@ -5,15 +5,23 @@
 button_indoor_activated:
     name: Drücker Innenlicht aktiv
     # initial: on
+
 button_garage_activated:
     name: Drücker Garage aktiv
     # initial: on
+
 button_pool_activated:
     name: Drücker Pool aktiv
     # initial: on
+
 gesture_kitchen_activated:
     name: Gestensensor Küche aktiv
     # initial: on
+
 touch_bedroom_activated:
     name: Touchsensor Schlafzimmer aktiv
     # initial: on
+
+irrigation_activated:
+    name: Bewässerung aktiv
+    # initial: off

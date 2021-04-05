@@ -103,6 +103,9 @@
       - service: input_boolean.turn_on
         data:
             entity_id: input_boolean.dustbin_notification
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_activated
 
       #--------------------------------------------------------------------------
       - service: input_datetime.set_datetime
@@ -149,6 +152,10 @@
         data:
             entity_id: input_datetime.vacuum_period_start
             time: '08:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.irrigation_start1
+            time: '04:00:00'
 
       #--------------------------------------------------------------------------
       - service: input_number.set_value
@@ -195,3 +202,7 @@
         data:
             entity_id: input_number.light_timeout
             value: 15
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.irrigation_duration
+            value: 30

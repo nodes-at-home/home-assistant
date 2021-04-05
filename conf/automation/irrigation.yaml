@@ -24,3 +24,17 @@
       - service: switch.turn_off
         entity_id: switch.relay_garden_valve
 
+  - alias: irrigation_off_after_timeout
+    trigger:
+      - platform: state
+        entity_id: switch.relay_garden_valve
+        to: "on"
+        for:
+            minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
+    condition:
+      - condition: state
+        entity_id: input_boolean.irrigation_activated
+        state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.relay_garden_valve

@@ -263,6 +263,12 @@ views:
         show_header_toggle: false
         entities:
             - switch.relay_garden_valve
+            - sensor.soil_garden_temperature1
+            - sensor.soil_garden_temperature2
+            - sensor.soil_garden_temperature3
+            - sensor.soil_garden_moisture1
+            - sensor.soil_garden_moisture2
+            - sensor.soil_garden_moisture3
       - type: entities
         title: Türen
         show_header_toggle: false
@@ -348,6 +354,48 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.soil_garden_temperature1
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.soil_garden_temperature2
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.soil_garden_temperature3
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.soil_garden_moisture1
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.soil_garden_moisture2
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.soil_garden_moisture3
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
 
   - title: Automatisierung
     path: automation
@@ -444,6 +492,7 @@ views:
                 entities:
                     - automation.irrigation_hedge_on
                     - automation.irrigation_hedge_off
+                    - automation.irrigation_off_after_timeout
 
   - title: Enstellungen
     path: options
@@ -524,6 +573,13 @@ views:
                     - input_boolean.pixel_node_msg17
                     # - input_boolean.pixel_node_msg18
                     # - input_boolean.pixel_node_msg19
+              - type: entities
+                title: Gartenbewässerung
+                show_header_toggle: false
+                entities:
+                    - input_boolean.irrigation_activated
+                    - input_number.irrigation_duration
+                    - input_datetime.irrigation_start1
           - type: vertical-stack
             cards:
               - type: entities
@@ -587,6 +643,7 @@ views:
                 # - sensor.xmastree_dining_version
                 - sensor.sonoff_pool_version
                 - sensor.relay_garden_version
+                - sensor.soil_garden_version
                 - sensor.shelly_terrace_version
                 - sensor.relay_dining1_version
                 - sensor.relay_dining2_version
@@ -629,6 +686,7 @@ views:
                 # - sensor.xmastree_dining_lastboot
                 - sensor.sonoff_pool_lastboot
                 - sensor.relay_garden_lastboot
+                - sensor.soil_garden_lastboot
                 - sensor.shelly_terrace_lastboot
                 - sensor.relay_dining1_lastboot
                 - sensor.relay_dining2_lastboot
@@ -671,6 +729,7 @@ views:
                 # - sensor.xmastree_dining_lastvoltage
                 - sensor.sonoff_pool_lastvoltage
                 - sensor.relay_garden_lastvoltage
+                - sensor.soil_garden_lastvoltage
                 - sensor.shelly_terrace_lastvoltage
                 - sensor.relay_dining1_lastvoltage
                 - sensor.relay_dining2_lastvoltage
@@ -713,6 +772,7 @@ views:
                 # - sensor.xmastree_dining_voltage
                 - sensor.sonoff_pool_voltage
                 - sensor.relay_garden_voltage
+                - sensor.soil_garden_voltage
                 - sensor.shelly_terrace_voltage
                 - sensor.relay_dining1_voltage
                 - sensor.relay_dining2_voltage
