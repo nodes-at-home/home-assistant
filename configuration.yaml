@@ -61,17 +61,25 @@ influxdb:
   bucket: home_assistant
   include:
     entities:
-        - sensor.DHT22_terrace_temperature
-        - sensor.DHT22_roof_temperature
-        - sensor.DHT22_lounge_temperature
+        - sensor.dht22_terrace_temperature
+        - sensor.dht22_roof_temperature
+        - sensor.dht22_lounge_temperature
         - sensor.relay_garage_temperature
-        - sensor.DHT22_terrace_humidity
-        - sensor.DHT22_roof_humidity
-        - sensor.DHT22_lounge_humidity
+        - sensor.dht22_office_temperature
+        - sensor.dht22_terrace_humidity
+        - sensor.dht22_roof_humidity
+        - sensor.dht22_lounge_humidity
         - sensor.relay_garage_humidity
+        - sensor.dht22_office_humidity
         - sensor.DHT22_lounge_pressure
         - sensor.ds18b20_pool_temperature
         - sensor.ds18b20_pool_voltage
+        - sensor.soil_garden_temperature1
+        - sensor.soil_garden_temperature2
+        - sensor.soil_garden_temperature3
+        - sensor.soil_garden_moisture1
+        - sensor.soil_garden_moisture2
+        - sensor.soil_garden_moisture3
 
 # -------------------------------------------------------------------------------
 # weather platform for lovelace card
