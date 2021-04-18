@@ -80,6 +80,11 @@ influxdb:
         - sensor.soil_garden_moisture1
         - sensor.soil_garden_moisture2
         - sensor.soil_garden_moisture3
+        - sensor.rain_garden_precipitation
+        - utility_meter.daily_rain
+  ignore_attributes:
+    - friendly_name_str
+    - icon_str
 
 # -------------------------------------------------------------------------------
 # weather platform for lovelace card
@@ -196,6 +201,13 @@ logbook:
 input_text:
   hostname:
     initial: !env_var PARENT_HOSTNAME
+
+# -------------------------------------------------------------------------------
+# daily aggregate
+utility_meter:
+  daily_rain:
+    source: sensor.rain_garden_precipitation
+    cycle: daily
 
 # -------------------------------------------------------------------------------
 # roborock s6

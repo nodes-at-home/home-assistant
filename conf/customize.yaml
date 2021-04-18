@@ -4,6 +4,9 @@
 ###
 ### 04.11.2016 split up
 ###
+### https://fonts.google.com/icons
+### https://materialdesignicons.com/
+###
 
 #------------------------------------------------------------------------------
 sensor.DHT22_terrace_temperature:
@@ -956,6 +959,33 @@ sensor.soil_garden_lastboot:
 sensor.soil_garden_version:
     friendly_name: Garten
     entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+sensor.rain_garden_precipitation:
+    friendly_name: Regen aktuell
+    icon: mdi:weather-rainy
+
+sensor.rain_garden_voltage:
+    friendly_name: Regensensor
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.rain_garden_lastvoltage:
+    friendly_name: Regensensor
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.rain_garden_lastboot:
+    friendly_name: Regensensor
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.rain_garden_version:
+    friendly_name: Regensensor
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+sensor.daily_rain:
+    friendly_name: Regen täglich
+    icon: mdi:weather-rainy
+
 #------------------------------------------------------------------------------
 light.automatic_indoor_lights:
     friendly_name: Innenlichter

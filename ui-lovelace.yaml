@@ -48,6 +48,16 @@ views:
                       top: 40%
                       left: 25%
                   - type: state-badge
+                    entity: sensor.daily_rain
+                    style:
+                      top: 40%
+                      left: 55%
+                  - type: state-badge
+                    entity: sensor.rain_garden_precipitation
+                    style:
+                      top: 40%
+                      left: 59%
+                  - type: state-badge
                     entity: alarm_control_panel.intrusiondetectionsystem
                     style:
                       top: 40%
@@ -269,6 +279,8 @@ views:
             - sensor.soil_garden_moisture1
             - sensor.soil_garden_moisture2
             - sensor.soil_garden_moisture3
+            - sensor.daily_rain
+            - sensor.rain_garden_precipitation
       - type: entities
         title: Türen
         show_header_toggle: false
@@ -392,10 +404,16 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 24
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: sensor
+                entity: sensor.daily_rain
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.rain_garden_precipitation
+                graph: line
+                detail: 2
+                hours_to_show: 24
 
   - title: Automatisierung
     path: automation
@@ -644,6 +662,7 @@ views:
                 - sensor.sonoff_pool_version
                 - sensor.relay_garden_version
                 - sensor.soil_garden_version
+                - sensor.rain_garden_version
                 - sensor.shelly_terrace_version
                 - sensor.relay_dining1_version
                 - sensor.relay_dining2_version
@@ -687,6 +706,7 @@ views:
                 - sensor.sonoff_pool_lastboot
                 - sensor.relay_garden_lastboot
                 - sensor.soil_garden_lastboot
+                - sensor.rain_garden_lastboot
                 - sensor.shelly_terrace_lastboot
                 - sensor.relay_dining1_lastboot
                 - sensor.relay_dining2_lastboot
@@ -730,6 +750,7 @@ views:
                 - sensor.sonoff_pool_lastvoltage
                 - sensor.relay_garden_lastvoltage
                 - sensor.soil_garden_lastvoltage
+                - sensor.rain_garden_lastvoltage
                 - sensor.shelly_terrace_lastvoltage
                 - sensor.relay_dining1_lastvoltage
                 - sensor.relay_dining2_lastvoltage
@@ -773,6 +794,7 @@ views:
                 - sensor.sonoff_pool_voltage
                 - sensor.relay_garden_voltage
                 - sensor.soil_garden_voltage
+                - sensor.rain_garden_voltage
                 - sensor.shelly_terrace_voltage
                 - sensor.relay_dining1_voltage
                 - sensor.relay_dining2_voltage
