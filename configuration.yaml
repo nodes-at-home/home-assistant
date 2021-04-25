@@ -81,10 +81,10 @@ influxdb:
         - sensor.soil_garden_moisture2
         - sensor.soil_garden_moisture3
         - sensor.rain_garden_precipitation
-        - utility_meter.daily_rain
+        - sensor.daily_rain
   ignore_attributes:
-    - friendly_name_str
-    - icon_str
+    - friendly_name
+    - icon
 
 # -------------------------------------------------------------------------------
 # weather platform for lovelace card
