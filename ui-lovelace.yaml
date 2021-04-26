@@ -513,6 +513,7 @@ views:
                 title: Gartenbewässerung
                 show_header_toggle: true
                 entities:
+                    - automation.irrigation_hedge
                     - automation.irrigation_hedge_on
                     - automation.irrigation_hedge_off
                     - automation.irrigation_off_after_timeout
@@ -600,9 +601,12 @@ views:
                 title: Gartenbewässerung
                 show_header_toggle: false
                 entities:
-                    - input_boolean.irrigation_activated
                     - input_number.irrigation_duration
+                    - input_boolean.irrigation_activated
                     - input_datetime.irrigation_start1
+                    - input_select.irrigation_day1
+                    - input_select.irrigation_day2
+                    - input_select.irrigation_day3
           - type: vertical-stack
             cards:
               - type: entities

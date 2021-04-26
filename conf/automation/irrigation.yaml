@@ -31,10 +31,23 @@
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
-    # condition:
-      # - condition: state
-        # entity_id: input_boolean.irrigation_activated
-        # state: 'on'
     action:
       - service: switch.turn_off
+        entity_id: switch.relay_garden_valve
+
+  - alias: irrigation_hedge
+    trigger:
+      - platform: time
+        at: input_datetime.irrigation_start1
+    condition:
+      - condition: state
+        entity_id: input_boolean.irrigation_activated
+        state: 'on'
+      - condition: template
+        value_template: >
+            {% set days = {0:'Montag', 1:'Dienstag', 2:'Mittwoch', 3:'Donnerstag', 4:'Freitag', 5:'Sonnabend', 6:'Sonntag'} %}
+            {% set day = now().weekday() %}
+            {{ states ( 'input_select.irrigation_day1') == days [day] or states ( 'input_select.irrigation_day2') == days [day] or states ( 'input_select.irrigation_day3') == days [day]}}
+    action:
+      - service: switch.turn_on
         entity_id: switch.relay_garden_valve

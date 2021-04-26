@@ -1,0 +1,14 @@
+###
+### 25.04.2021 new
+###
+
+name: 1. Tag
+options:
+  - Inaktiv
+  - Montag
+  - Dienstag
+  - Mittwoch
+  - Donnerstag
+  - Freitag
+  - Sonnabend
+  - Sonntag

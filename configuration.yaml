@@ -35,7 +35,7 @@ logger:
   default: warn
   logs:
     homeassistant.components.automation: debug
-    boschshcpy: debug
+    # boschshcpy: debug
 
 # -------------------------------------------------------------------------------
 # mqtt broker
@@ -154,7 +154,6 @@ http:
 # -------------------------------------------------------------------------------
 # Checks for available updates
 updater:
-    include_used_components: true
 
 # -------------------------------------------------------------------------------
 # Discover some devices automatically
@@ -211,15 +210,15 @@ utility_meter:
 
 # -------------------------------------------------------------------------------
 # roborock s6
-vacuum:
-  - platform: xiaomi_miio
-    name: "Roborock S6 ground floor"
-    host: 192.168.2.129
-    token: !secret token_vacuum_ground_floor
-  - platform: xiaomi_miio
-    name: "Roborock S6 first floor"
-    host: 192.168.2.151
-    token: !secret token_vacuum_first_floor
+# vacuum:
+  # - platform: xiaomi_miio
+    # name: "Roborock S6 ground floor"
+    # host: 192.168.2.129
+    # token: !secret token_vacuum_ground_floor
+  # - platform: xiaomi_miio
+    # name: "Roborock S6 first floor"
+    # host: 192.168.2.151
+    # token: !secret token_vacuum_first_floor
 
 # -------------------------------------------------------------------------------
 # Bosch Smart Home

@@ -1,0 +1,14 @@
+###
+### 25.04.2021 new
+###
+
+name: 3. Tag
+options:
+  - Inaktiv
+  - Montag
+  - Dienstag
+  - Mittwoch
+  - Donnerstag
+  - Freitag
+  - Sonnabend
+  - Sonntag
