@@ -291,6 +291,8 @@ views:
         show_header_toggle: false
         entities:
             - binary_sensor.eingangstur
+            - binary_sensor.nebentur
+            - binary_sensor.garagentur
     
   - title: Sensorwerte
     path: values
