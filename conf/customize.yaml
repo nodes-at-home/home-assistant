@@ -9,6 +9,26 @@
 ###
 
 #------------------------------------------------------------------------------
+device_tracker.110_andreas_xperia_wlan:
+    friendly_name: Andreas
+    entity_picture: /local/people/Andreas.jpg
+device_tracker.111_undine_xperia_wlan:
+    friendly_name: Undine
+    entity_picture: /local/people/Undine.jpg
+device_tracker.142_nora_galaxy_wlan:
+    friendly_name: Nora
+    entity_picture: /local/people/Nora.jpg
+device_tracker.121_nina_galaxy_wlan:
+    friendly_name: Nina
+    entity_picture: /local/people/Nina.jpg
+device_tracker.147_niklas_galaxy_wlan:
+    friendly_name: Niklas
+    entity_picture: /local/people/Niklas.jpg
+device_tracker.140_dominik_xperia_wlan:
+    friendly_name: Dominik
+    entity_picture: /local/people/Dominik.jpg
+
+#------------------------------------------------------------------------------
 sensor.DHT22_terrace_temperature:
     friendly_name: Terrasse
 

@@ -18,32 +18,32 @@ views:
                 title: Anwesenheiten
                 elements:
                   - type: state-badge
-                    entity: device_tracker.andreas_xperia
+                    entity: device_tracker.110_andreas_xperia_wlan
                     style:
                       top: 40%
                       left: 5%
                   - type: state-badge
-                    entity: device_tracker.undine_xperia
+                    entity: device_tracker.111_undine_xperia_wlan
                     style:
                       top: 40%
                       left: 9%
                   - type: state-badge
-                    entity: device_tracker.nora_galaxy
+                    entity: device_tracker.142_nora_galaxy_wlan
                     style:
                       top: 40%
                       left: 13%
                   - type: state-badge
-                    entity: device_tracker.nina_galaxy
+                    entity: device_tracker.121_nina_galaxy_wlan
                     style:
                       top: 40%
                       left: 17%
                   - type: state-badge
-                    entity: device_tracker.niklas_galaxy
+                    entity: device_tracker.147_niklas_galaxy_wlan
                     style:
                       top: 40%
                       left: 21%
                   - type: state-badge
-                    entity: device_tracker.dominik_handy
+                    entity: device_tracker.140_dominik_xperia_wlan
                     style:
                       top: 40%
                       left: 25%

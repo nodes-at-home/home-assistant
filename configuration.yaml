@@ -106,10 +106,10 @@ media_player:
 device_tracker:
 
   - platform: fritz
-    host: 192.168.2.1
+    # host: 192.168.2.1
     consider_home: 180
     interval_seconds: 60
-    track_new_devices: false
+    track_new_devices: true
 
   # - platform: owntracks
     # max_gps_accuracy: 1500
