@@ -206,6 +206,11 @@
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
+      - platform: state
+        entity_id: input_boolean.light_delay_shower
+        to: "on"
+        for:
+            minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
     condition:
       - condition: state
         entity_id: sun.sun
