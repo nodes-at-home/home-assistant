@@ -115,16 +115,6 @@ device_tracker:
     # max_gps_accuracy: 1500
     # waypoints: False
 
-#------------------------------------------------------------------------------
-# speedtest
-speedtestdotnet:
-  scan_interval:
-    minutes: 30
-  monitored_conditions:
-    - ping
-    - download
-    - upload
-
 # -------------------------------------------------------------------------------
 # define all zones explicite and manual
 # pictures from https://materialdesignicons.com/
