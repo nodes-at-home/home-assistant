@@ -1,0 +1,10 @@
+###
+### 22.08.2019 split up
+###
+
+name: Regenschwelle
+mode: slider
+min: 0
+max: 10
+step: 1
+# initial: 1

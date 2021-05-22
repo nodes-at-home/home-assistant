@@ -1,0 +1,8 @@
+###
+### 22.04.2021
+###
+
+# hidden flag, daily run done
+irrigation_period_1_active:
+    name: Bewaässerung 1. Periode aktiv
+    # initial: 'off'

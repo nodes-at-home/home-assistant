@@ -40,8 +40,13 @@
       - platform: time
         at: input_datetime.irrigation_start1
     condition:
+        # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
+        state: 'on'
+        # flag from irrigation rules
+      - condition: state
+        entity_id: input_boolean.irrigation_period_1_active
         state: 'on'
       - condition: template
         value_template: >
@@ -51,3 +56,82 @@
     action:
       - service: switch.turn_on
         entity_id: switch.relay_garden_valve
+      - service: input_boolean.turn_off
+        target:
+            entity_id: input_boolean.irrigation_period_1_active
+
+  - alias: irrigation_count_no_rain_days_increment
+    trigger:
+      - platform: time
+        at: '23:55:00'
+    condition:
+        condition: not
+        conditions:
+          - condition: numeric_state
+            entity_id: sensor.daily_rain
+            above: input_number.irrigation_rain_threshold
+    action:
+      - service: counter.increment
+        target:
+            entity_id: counter.no_rain_days
+
+  - alias: irrigation_count_no_rain_days_reset
+    trigger:
+      - platform: time
+        at: '23:55:00'
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.daily_rain
+        above: input_number.irrigation_rain_threshold
+    action:
+      - service: counter.reset
+        target:
+            entity_id: counter.no_rain_days
+
+  - alias: irrigation_count_warm_days_increment
+    trigger:
+      - platform: time
+        at: '23:55:00'
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.dht22_terrace_temperature_max
+        attribute: max_value
+        above: input_number.irrigation_temperature_threshold
+    action:
+      - service: counter.increment
+        target:
+            entity_id: counter.warm_days
+
+  - alias: irrigation_count_warm_days_reset
+    trigger:
+      - platform: time
+        at: '23:55:00'
+    condition:
+        condition: not
+        conditions:
+          - condition: numeric_state
+            entity_id: sensor.dht22_terrace_temperature_max
+            attribute: max_value
+            above: input_number.irrigation_temperature_threshold
+    action:
+      - service: counter.reset
+        target:
+            entity_id: counter.warm_days
+
+  - alias: irrigation_activate_period_1
+    trigger:
+      - platform: state
+        entity_id:
+          - counter.no_rain_days
+          - counter.warm_days
+    condition:
+      - condition: numeric_state
+        entity_id: counter.no_rain_days
+        above: input_number.irrigation_no_rain_days_threshold
+      - condition: numeric_state
+        entity_id: counter.warm_days
+        above: input_number.irrigation_warm_days_thrshold
+    action:
+      - service: input_boolean.turn_on
+        target:
+            entity_id: input_boolean.irrigation_period_1_active

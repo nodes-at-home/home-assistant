@@ -237,5 +237,6 @@ input_select:   !include_dir_named          conf/input_select
 input_datetime: !include_dir_named          conf/input_datetime
 scene:          !include                    conf/scene.yaml
 automation:     !include_dir_merge_list     conf/automation
+counter:        !include_dir_named          conf/counter
 
 # -------------------------------------------------------------------------------

@@ -519,6 +519,11 @@ views:
                     - automation.irrigation_hedge_on
                     - automation.irrigation_hedge_off
                     - automation.irrigation_off_after_timeout
+                    - automation.irrigation_count_no_rain_days_increment
+                    - automation.irrigation_count_no_rain_days_reset
+                    - automation.irrigation_count_warm_days_increment
+                    - automation.irrigation_count_warm_days_reset
+                    - automation.irrigation_activate_period_1
 
   - title: Enstellungen
     path: options
@@ -609,6 +614,10 @@ views:
                     - input_select.irrigation_day1
                     - input_select.irrigation_day2
                     - input_select.irrigation_day3
+                    - input_number.irrigation_rain_threshold
+                    - input_number.irrigation_no_rain_days_threshold
+                    - input_number.irrigation_temperature_threshold
+                    - input_number.irrigation_warm_days_threshold
           - type: vertical-stack
             cards:
               - type: entities
@@ -1637,3 +1646,44 @@ views:
         - type: entities
           entities:
           - entity: sensor.sileno_battery_level
+
+  - title: Garten
+    path: garden
+    panel: false
+    badges:
+      - counter.no_rain_days
+      - counter.warm_days
+      - sensor.dht22_terrace_temperature_max
+    cards:
+      - type: entities
+        title: Regeln
+        show_header_toggle: false
+        entities:
+            - automation.irrigation_hedge
+            - automation.irrigation_hedge_on
+            - automation.irrigation_hedge_off
+            - automation.irrigation_off_after_timeout
+            - automation.irrigation_count_no_rain_days_increment
+            - automation.irrigation_count_no_rain_days_reset
+            - automation.irrigation_count_warm_days_increment
+            - automation.irrigation_count_warm_days_reset
+            - automation.irrigation_activate_period_1
+      - type: entities
+        title: Einstellungen
+        show_header_toggle: false
+        entities:
+            - input_number.irrigation_duration
+            - input_boolean.irrigation_activated
+            - input_datetime.irrigation_start1
+            - input_select.irrigation_day1
+            - input_select.irrigation_day2
+            - input_select.irrigation_day3
+            - input_number.irrigation_rain_threshold
+            - input_number.irrigation_no_rain_days_threshold
+            - input_number.irrigation_temperature_threshold
+            - input_number.irrigation_warm_days_threshold
+      - type: entities
+        title: Werte
+        show_header_toggle: false
+        entities:
+            - input_boolean.irrigation_period_1_active
