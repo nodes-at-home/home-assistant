@@ -85,6 +85,11 @@ influxdb:
   ignore_attributes:
     - friendly_name
     - icon
+    - last_period
+    - last_reset
+    - meter_period
+    - source
+    - status
 
 # -------------------------------------------------------------------------------
 # define all zones explicite and manual
