@@ -3,6 +3,8 @@
 ###
 
 name: Regenlose Tage Schwelle
+unit_of_measurement: "d"
+icon: mdi:calendar-range
 mode: slider
 min: 1
 max: 5

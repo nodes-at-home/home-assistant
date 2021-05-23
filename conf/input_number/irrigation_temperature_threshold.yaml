@@ -3,6 +3,8 @@
 ###
 
 name: Temperaturschwelle
+unit_of_measurement: "°C"
+icon: mdi:thermometer-lines
 mode: slider
 min: 15
 max: 30

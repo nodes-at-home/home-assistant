@@ -175,6 +175,13 @@ utility_meter:
     cycle: daily
 
 # -------------------------------------------------------------------------------
+# last 24h max temperature
+template:
+  - sensor:
+    - name: "DHT22@terrace_temperature_max"
+      state: "{{ state_attr ( 'sensor.dht22_terrace_temperature_statistics', 'max_value' ) }}"
+
+# -------------------------------------------------------------------------------
 # Track the sun
 sun:
 

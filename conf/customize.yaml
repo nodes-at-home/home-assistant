@@ -52,6 +52,14 @@ sensor.DHT22_terrace_version:
     friendly_name: Terrasse
     entity_picture: /local/images/nodemcu.jpg
 
+sensor.DHT22_terrace_temperature_statistics:
+    friendly_name: Temperaturstatistik
+    unit_of_measurement: "°C"
+
+sensor.DHT22_terrace_temperature_max:
+    friendly_name: Höchsttemperatur
+    unit_of_measurement: "°C"
+
 #------------------------------------------------------------------------------
 sensor.DHT22_lounge_temperature:
     friendly_name: Wohnzimmer
@@ -1006,6 +1014,13 @@ sensor.daily_rain:
     icon: mdi:weather-rainy
 
 #------------------------------------------------------------------------------
+counter.no_rain_days:
+    unit_of_measurement: "d"
+
+counter.warm_days:
+    unit_of_measurement: "d"
+
+#------------------------------------------------------------------------------
 light.automatic_indoor_lights:
     friendly_name: Innenlichter
 
@@ -1028,10 +1043,13 @@ sensor.log_db_file_size:
 #------------------------------------------------------------------------------
 binary_sensor.gardena_smart_system_connection:
     friendly_name: Gardena
+
 #------------------------------------------------------------------------------
 alarm_control_panel.intrusiondetectionsystem:
     friendly_name: Alarm
+
 #------------------------------------------------------------------------------
 sensor.cpu_temp:
     friendly_name: CPU
+
 #------------------------------------------------------------------------------

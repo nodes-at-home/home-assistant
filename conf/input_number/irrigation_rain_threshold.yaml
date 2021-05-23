@@ -3,6 +3,8 @@
 ###
 
 name: Regenschwelle
+unit_of_measurement: "mm"
+icon: mdi:weather-rainy
 mode: slider
 min: 0
 max: 10

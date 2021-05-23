@@ -95,7 +95,6 @@
     condition:
       - condition: numeric_state
         entity_id: sensor.dht22_terrace_temperature_max
-        attribute: max_value
         above: input_number.irrigation_temperature_threshold
     action:
       - service: counter.increment
@@ -111,7 +110,6 @@
         conditions:
           - condition: numeric_state
             entity_id: sensor.dht22_terrace_temperature_max
-            attribute: max_value
             above: input_number.irrigation_temperature_threshold
     action:
       - service: counter.reset

@@ -1653,6 +1653,7 @@ views:
     badges:
       - counter.no_rain_days
       - counter.warm_days
+      - sensor.dht22_terrace_temperature_statistics
       - sensor.dht22_terrace_temperature_max
     cards:
       - type: entities

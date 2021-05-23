@@ -44,7 +44,7 @@
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - platform: statistics
-    name: "DHT22@terrace_temperature_max"
+    name: "DHT22@terrace_temperature_statistics"
     entity_id: "sensor.dht22_terrace_temperature"
     sampling_size: 100
     max_age:
