@@ -87,35 +87,6 @@ influxdb:
     - icon
 
 # -------------------------------------------------------------------------------
-# weather platform for lovelace card
-
-# weather:
-  # - platform: openweathermap
-    # api_key: !secret api_key_openweather
-
-# -------------------------------------------------------------------------------
-# media player
-
-media_player:
-  - platform: braviatv
-    host: 192.168.2.116
-
-# -------------------------------------------------------------------------------
-# tracker
-
-device_tracker:
-
-  - platform: fritz
-    # host: 192.168.2.1
-    consider_home: 180
-    interval_seconds: 60
-    track_new_devices: true
-
-  # - platform: owntracks
-    # max_gps_accuracy: 1500
-    # waypoints: False
-
-# -------------------------------------------------------------------------------
 # define all zones explicite and manual
 # pictures from https://materialdesignicons.com/
 
@@ -199,27 +170,6 @@ utility_meter:
     cycle: daily
 
 # -------------------------------------------------------------------------------
-# roborock s6
-# vacuum:
-  # - platform: xiaomi_miio
-    # name: "Roborock S6 ground floor"
-    # host: 192.168.2.129
-    # token: !secret token_vacuum_ground_floor
-  # - platform: xiaomi_miio
-    # name: "Roborock S6 first floor"
-    # host: 192.168.2.151
-    # token: !secret token_vacuum_first_floor
-
-# -------------------------------------------------------------------------------
-# Bosch Smart Home
-# https://github.com/tschamm/boschshc-hass
-bosch_shc:
-   ip_address: '192.168.2.155'
-   ssl_certificate: '/config/custom_components/bsh-client-cert.pem'
-   ssl_key: '/config/custom_components/bsh-client-key.pem'
-   name: 'SHC-Controller'
-
-# -------------------------------------------------------------------------------
 # Track the sun
 sun:
 
@@ -240,3 +190,55 @@ automation:     !include_dir_merge_list     conf/automation
 counter:        !include_dir_named          conf/counter
 
 # -------------------------------------------------------------------------------
+#
+# deprecated integrations
+#
+# -------------------------------------------------------------------------------
+# weather platform for lovelace card
+
+# weather:
+  # - platform: openweathermap
+    # api_key: !secret api_key_openweather
+
+# -------------------------------------------------------------------------------
+# roborock s6
+# vacuum:
+  # - platform: xiaomi_miio
+    # name: "Roborock S6 ground floor"
+    # host: 192.168.2.129
+    # token: !secret token_vacuum_ground_floor
+  # - platform: xiaomi_miio
+    # name: "Roborock S6 first floor"
+    # host: 192.168.2.151
+    # token: !secret token_vacuum_first_floor
+
+# -------------------------------------------------------------------------------
+# tracker
+
+# device_tracker:
+
+  # - platform: fritz
+    # host: 192.168.2.1
+    # consider_home: 180
+    # interval_seconds: 60
+    # track_new_devices: true
+
+  # - platform: owntracks
+    # max_gps_accuracy: 1500
+    # waypoints: False
+
+# -------------------------------------------------------------------------------
+# media player
+
+# media_player:
+  # - platform: braviatv
+    # host: 192.168.2.116
+
+# -------------------------------------------------------------------------------
+# Bosch Smart Home
+# https://github.com/tschamm/boschshc-hass
+# bosch_shc:
+   # ip_address: '192.168.2.155'
+   # ssl_certificate: '/config/custom_components/bsh-client-cert.pem'
+   # ssl_key: '/config/custom_components/bsh-client-key.pem'
+   # name: 'SHC-Controller'
