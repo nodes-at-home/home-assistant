@@ -128,7 +128,7 @@
         above: input_number.irrigation_no_rain_days_threshold
       - condition: numeric_state
         entity_id: counter.warm_days
-        above: input_number.irrigation_warm_days_thrshold
+        above: input_number.irrigation_warm_days_threshold
     action:
       - service: input_boolean.turn_on
         target:
