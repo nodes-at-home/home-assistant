@@ -116,6 +116,10 @@ lovelace:
 http:
   # Uncomment this to add a password (recommended!)
   # api_password: PASSWORD
+  # from https://community.home-assistant.io/t/reverse-proxy-error/312936/18
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.0.0.0/8
 
 # -------------------------------------------------------------------------------
 # Checks for available updates
