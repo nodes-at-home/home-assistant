@@ -91,7 +91,7 @@
   - alias: irrigation_count_warm_days_increment
     trigger:
       - platform: time
-        at: '23:55:00'
+        at: '23:56:00'
     condition:
       - condition: numeric_state
         entity_id: sensor.dht22_terrace_temperature_max
@@ -104,7 +104,7 @@
   - alias: irrigation_count_warm_days_reset
     trigger:
       - platform: time
-        at: '23:55:00'
+        at: '23:56:00'
     condition:
         condition: not
         conditions:
@@ -133,3 +133,26 @@
       - service: input_boolean.turn_on
         target:
             entity_id: input_boolean.irrigation_period_1_active
+
+  - alias: irrigation_set_duration
+    trigger:
+      - platform: time
+        at: '23:57:00'
+    condition:
+        # check manual flag
+      - condition: state
+        entity_id: input_boolean.irrigation_activated
+        state: 'on'
+    action:
+      - service: input_number.set_value
+        target:
+            entity_id: input_number.irrigation_duration
+        data:
+            value: >
+                {% if states ( 'sensor.dht22_terrace_temperature_max' ) | float < 25 %}
+                    {{ 60 }}
+                {% elif states ( 'sensor.dht22_terrace_temperature_max' ) | float < 30 %}
+                    {{ 90 }}
+                {% else %}
+                    {{ 120 }}
+                {% endif %}
