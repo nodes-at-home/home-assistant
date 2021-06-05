@@ -524,6 +524,7 @@ views:
                     - automation.irrigation_count_warm_days_increment
                     - automation.irrigation_count_warm_days_reset
                     - automation.irrigation_activate_period_1
+                    - automation.irrigation_set_duration
 
   - title: Enstellungen
     path: options
@@ -1669,6 +1670,7 @@ views:
             - automation.irrigation_count_warm_days_increment
             - automation.irrigation_count_warm_days_reset
             - automation.irrigation_activate_period_1
+            - automation.irrigation_set_duration
       - type: entities
         title: Einstellungen
         show_header_toggle: false
