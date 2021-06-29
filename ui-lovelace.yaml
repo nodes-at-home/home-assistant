@@ -480,7 +480,8 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.button_pool
-                    - automation.pool_pump_on_off
+                    - automation.pool_pump_activate
+                    - automation.pool_pump_off_after_timeout
                     - automation.set_pool_nonworking
               - type: entities
                 title: Led-Lichter
