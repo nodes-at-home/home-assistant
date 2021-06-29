@@ -108,9 +108,12 @@ frontend:
 lovelace:
     mode: yaml
     resources:
-      # https://github.com/custom-cards/vertical-stack-in-card
-      - url: /local/vertical-stack-in-card.js
-        type: js
+      # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card
+      - url: /local/custom_lovelace/xiaomi_vacuum_map_card/xiaomi-vacuum-map-card.js
+        type: module
+      # # https://github.com/custom-cards/vertical-stack-in-card
+      # - url: /local/vertical-stack-in-card.js
+        # type: js
 
 # -------------------------------------------------------------------------------
 http:
@@ -188,6 +191,38 @@ template:
 # -------------------------------------------------------------------------------
 # Track the sun
 sun:
+
+# -------------------------------------------------------------------------------
+# camera for roborock map
+# https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor
+# https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card
+camera:
+  - platform: xiaomi_cloud_map_extractor
+    name: "Roborock S6 ground floor"
+    host: 192.168.2.129
+    token: !secret token_vacuum_ground_floor
+    username: !secret xiaomi_cloud_username
+    password: !secret xiaomi_cloud_password
+    # country: de
+    draw: ['all']
+    attributes:
+      - calibration_points
+      - country
+      - rooms
+      - zones
+  - platform: xiaomi_cloud_map_extractor
+    name: "Roborock S6 first floor"
+    host: 192.168.2.151
+    token: !secret token_vacuum_first_floor
+    username: !secret xiaomi_cloud_username
+    password: !secret xiaomi_cloud_password
+    # country: de
+    draw: ['all']
+    attributes:
+      - calibration_points
+      - country
+      - rooms
+      - zones
 
 # -------------------------------------------------------------------------------
 #
