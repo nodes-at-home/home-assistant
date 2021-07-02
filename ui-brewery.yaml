@@ -1,0 +1,47 @@
+#
+# lovelace configuration - one big file for all
+#
+
+title: !env_var HA_TITLE
+views:
+
+  - title: Brauerei
+    path: brewery
+    panel: true
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Steuerung
+                show_header_toggle: false
+                entities:
+                  - switch.ssr_brewery_socket1
+                  - switch.ssr_brewery_socket2
+                  - switch.ssr_brewery_valve
+          - type: vertical-stack
+            cards:
+              - type: sensor
+                entity: sensor.ssr_brewery_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 10
+              - type: sensor
+                entity: sensor.ds18b20_brewery_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 1
+          - type: vertical-stack
+            cards:
+              - type: sensor
+                entity: sensor.spindle_fermenter_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 168
+              - type: sensor
+                entity: sensor.spindle_fermenter_tilt
+                graph: line
+                detail: 2
+                hours_to_show: 168
+

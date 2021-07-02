@@ -1,0 +1,135 @@
+#
+# lovelace configuration - one big file for all
+#
+
+title: !env_var HA_TITLE
+views:
+
+  - title: Sensorwerte
+    path: values
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.dht22_lounge_pressure
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.ds18b20_pool_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.dht22_lounge_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_terrace_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_roof_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.relay_garage_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_office_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                icon: mdi:show_chart
+                entity: sensor.dht22_lounge_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_terrace_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_roof_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.relay_garage_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_office_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.soil_garden_temperature1
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.soil_garden_temperature2
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.soil_garden_temperature3
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.soil_garden_moisture1
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.soil_garden_moisture2
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.soil_garden_moisture3
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.daily_rain
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.rain_garden_precipitation
+                graph: line
+                detail: 2
+                hours_to_show: 24
+

@@ -1,0 +1,320 @@
+#
+# lovelace configuration - one big file for all
+#
+
+title: !env_var HA_TITLE
+views:
+
+  - title: System
+    path: system
+    panel: false
+    badges:
+      ###- configurator.sony_bravia_tv
+      - sensor.log_db_file_size
+      - sensor.cpu_temp
+    cards:
+      - type: entities
+        title: Raspberry Pi Server
+        show_header_toggle: false
+        entities:
+            - sensor.processor_use
+            - sensor.memory_use
+            - sensor.memory_use_percent
+            - sensor.disk_use
+            - sensor.disk_use_percent
+            - sensor.last_boot
+      - type: entities
+        title: DSL
+        show_header_toggle: false
+        entities:
+            - sensor.speedtest_ping
+            - sensor.speedtest_download
+            - sensor.speedtest_upload
+
+  - title: Geräte
+    path: nodes
+    panel: true
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: entities
+            title: Version
+            show_header_toggle: false
+            entities:
+                - sensor.dht22_lounge_version
+                - sensor.dht22_roof_version
+                - sensor.dht22_terrace_version
+                - sensor.dht22_office_version
+                - sensor.rfhub_lounge_version
+                - sensor.relay_garage_version
+                - sensor.sonoff_garage_version
+                - sensor.relay_backyard_version
+                - sensor.sonoff_utilityroom_version
+                # - sensor.xmastree_dining_version
+                - sensor.sonoff_pool_version
+                - sensor.relay_garden_version
+                - sensor.soil_garden_version
+                - sensor.rain_garden_version
+                - sensor.shelly_terrace_version
+                - sensor.relay_dining1_version
+                - sensor.relay_dining2_version
+                - sensor.sonoff_yardgate_version
+                - sensor.sonoff_corridor_version
+                - sensor.ds18b20_pool_version
+                - sensor.sonoff_kitchen_version
+                - sensor.led_corridor_version
+                - sensor.gesture_kitchen_version
+                - sensor.ttp223_bedroom_version
+                - sensor.sonoff_bedroom_version
+                - sensor.sonoff_k8200_version
+                - sensor.sonoff_gallery1_version
+                - sensor.shelly_roof_version
+                - sensor.shelly_bath_version
+                - sensor.shelly_shower_version
+                - sensor.ds18b20_brewery_version
+                - sensor.spindle_fermenter_version
+                - sensor.button_indoor_version
+                - sensor.button_garage_version
+                - sensor.button_pool_version
+                - sensor.pixel_kitchen_version
+                - sensor.electricity_utilityroom_version
+                - sensor.ws2812_terrace1_version
+                - sensor.ws2812_terrace2_version
+                - sensor.ws2812_xmasstar_version
+          - type: entities
+            title: Last Boot
+            show_header_toggle: false
+            entities:
+                - sensor.dht22_lounge_lastboot
+                - sensor.dht22_roof_lastboot
+                - sensor.dht22_terrace_lastboot
+                - sensor.dht22_office_lastboot
+                - sensor.rfhub_lounge_lastboot
+                - sensor.relay_garage_lastboot
+                - sensor.sonoff_garage_lastboot
+                - sensor.relay_backyard_lastboot
+                - sensor.sonoff_utilityroom_lastboot
+                # - sensor.xmastree_dining_lastboot
+                - sensor.sonoff_pool_lastboot
+                - sensor.relay_garden_lastboot
+                - sensor.soil_garden_lastboot
+                - sensor.rain_garden_lastboot
+                - sensor.shelly_terrace_lastboot
+                - sensor.relay_dining1_lastboot
+                - sensor.relay_dining2_lastboot
+                - sensor.sonoff_yardgate_lastboot
+                - sensor.sonoff_corridor_lastboot
+                - sensor.ds18b20_pool_lastboot
+                - sensor.sonoff_kitchen_lastboot
+                - sensor.led_corridor_lastboot
+                - sensor.gesture_kitchen_lastboot
+                - sensor.ttp223_bedroom_lastboot
+                - sensor.sonoff_bedroom_lastboot
+                - sensor.sonoff_k8200_lastboot
+                - sensor.sonoff_gallery1_lastboot
+                - sensor.shelly_roof_lastboot
+                - sensor.shelly_bath_lastboot
+                - sensor.shelly_shower_lastboot
+                - sensor.ds18b20_brewery_lastboot
+                - sensor.spindle_fermenter_lastboot
+                - sensor.button_indoor_lastboot
+                - sensor.button_garage_lastboot
+                - sensor.button_pool_lastboot
+                - sensor.pixel_kitchen_lastboot
+                - sensor.electricity_utilityroom_lastboot
+                - sensor.ws2812_terrace1_lastboot
+                - sensor.ws2812_terrace2_lastboot
+                - sensor.ws2812_xmasstar_lastboot
+          - type: entities
+            title: Last Voltage Message
+            show_header_toggle: false
+            entities:
+                - sensor.dht22_lounge_lastvoltage
+                - sensor.dht22_roof_lastvoltage
+                - sensor.dht22_terrace_lastvoltage
+                - sensor.dht22_office_lastvoltage
+                - sensor.rfhub_lounge_lastvoltage
+                - sensor.relay_garage_lastvoltage
+                - sensor.sonoff_garage_lastvoltage
+                - sensor.relay_backyard_lastvoltage
+                - sensor.sonoff_utilityroom_lastvoltage
+                # - sensor.xmastree_dining_lastvoltage
+                - sensor.sonoff_pool_lastvoltage
+                - sensor.relay_garden_lastvoltage
+                - sensor.soil_garden_lastvoltage
+                - sensor.rain_garden_lastvoltage
+                - sensor.shelly_terrace_lastvoltage
+                - sensor.relay_dining1_lastvoltage
+                - sensor.relay_dining2_lastvoltage
+                - sensor.sonoff_yardgate_lastvoltage
+                - sensor.sonoff_corridor_lastvoltage
+                - sensor.ds18b20_pool_lastvoltage
+                - sensor.sonoff_kitchen_lastvoltage
+                - sensor.led_corridor_lastvoltage
+                - sensor.gesture_kitchen_lastvoltage
+                - sensor.ttp223_bedroom_lastvoltage
+                - sensor.sonoff_bedroom_lastvoltage
+                - sensor.sonoff_k8200_lastvoltage
+                - sensor.sonoff_gallery1_lastvoltage
+                - sensor.shelly_roof_lastvoltage
+                - sensor.shelly_bath_lastvoltage
+                - sensor.shelly_shower_lastvoltage
+                - sensor.ds18b20_brewery_lastvoltage
+                - sensor.spindle_fermenter_lastvoltage
+                - sensor.button_indoor_lastvoltage
+                - sensor.button_garage_lastvoltage
+                - sensor.button_pool_lastvoltage
+                - sensor.pixel_kitchen_lastvoltage
+                - sensor.electricity_utilityroom_lastvoltage
+                - sensor.ws2812_terrace1_lastvoltage
+                - sensor.ws2812_terrace2_lastvoltage
+                - sensor.ws2812_xmasstar_lastvoltage
+          - type: entities
+            title: Spannungspegel
+            show_header_toggle: false
+            entities:
+                - sensor.dht22_lounge_voltage
+                - sensor.dht22_roof_voltage
+                - sensor.dht22_terrace_voltage
+                - sensor.dht22_office_voltage
+                - sensor.rfhub_lounge_voltage
+                - sensor.relay_garage_voltage
+                - sensor.sonoff_garage_voltage
+                - sensor.relay_backyard_voltage
+                - sensor.sonoff_utilityroom_voltage
+                # - sensor.xmastree_dining_voltage
+                - sensor.sonoff_pool_voltage
+                - sensor.relay_garden_voltage
+                - sensor.soil_garden_voltage
+                - sensor.rain_garden_voltage
+                - sensor.shelly_terrace_voltage
+                - sensor.relay_dining1_voltage
+                - sensor.relay_dining2_voltage
+                - sensor.sonoff_yardgate_voltage
+                - sensor.sonoff_corridor_voltage
+                - sensor.ds18b20_pool_voltage
+                - sensor.sonoff_kitchen_voltage
+                - sensor.led_corridor_voltage
+                - sensor.gesture_kitchen_voltage
+                - sensor.ttp223_bedroom_voltage
+                - sensor.sonoff_bedroom_voltage
+                - sensor.sonoff_k8200_voltage
+                - sensor.sonoff_gallery1_voltage
+                - sensor.shelly_roof_voltage
+                - sensor.shelly_bath_voltage
+                - sensor.shelly_shower_voltage
+                - sensor.ds18b20_brewery_voltage
+                - sensor.spindle_fermenter_voltage
+                - sensor.button_indoor_voltage
+                - sensor.button_garage_voltage
+                - sensor.button_pool_voltage
+                - sensor.pixel_kitchen_voltage
+                - sensor.electricity_utilityroom_voltage
+                - sensor.ws2812_terrace1_voltage
+                - sensor.ws2812_terrace2_voltage
+                - sensor.ws2812_xmasstar_voltage
+
+  - title: Automatisierung
+    path: automation
+    panel: true
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Zirkulationspumpe
+                show_header_toggle: true
+                entities:
+                    - automation.heater_circulating_pump_on
+                    - automation.heater_circulating_pump_off
+              - type: entities
+                title: Außenlichter
+                show_header_toggle: true
+                entities:
+                    - automation.outdoor_lights_on_at_night
+                    - automation.outdoor_lights_off_at_morning
+              - type: entities
+                title: Innenlichter
+                show_header_toggle: true
+                entities:
+                    - automation.indoor_lights_on_at_coming_home_or_sunset
+                    - automation.indoor_lights_by_night_on_at_coming_home            
+                    - automation.indoor_lights_off_at_getting_out_or_sunrise
+                    - automation.indoor_lights_off_when_tv_switched_off
+                    - automation.indoor_lights_off_after_random_delay
+                    - automation.indoor_roof_light
+                    - automation.indoor_bath_light_trigger_at_sunrise
+                    - automation.indoor_bath_light_off_after_timeout
+                    - automation.indoor_shower_light_trigger_at_sunrise
+                    - automation.indoor_shower_light_off_after_timeout
+                    - automation.indoor_lights_simulation_off_at_coming_home
+                    - automation.indoor_lights_on_by_button
+                    - automation.indoor_lights_off_by_button
+                    - automation.bedroom_lights_toggle
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Garage
+                show_header_toggle: true
+                entities:
+                    - automation.open_garage_door
+                    - automation.close_garage_door
+              - type: entities
+                title: Küche
+                show_header_toggle: true
+                entities:
+                    - automation.kitchen_desk_light_on
+                    - automation.kitchen_desk_light_off
+                    - automation.kitchen_desk_light_off_at_night
+              - type: entities
+                title: Pool
+                show_header_toggle: true
+                entities:
+                    - automation.button_pool
+                    - automation.pool_pump_activate
+                    - automation.pool_pump_off_after_timeout
+                    - automation.set_pool_nonworking
+              - type: entities
+                title: Led-Lichter
+                show_header_toggle: true
+                entities:
+                    - automation.send_effect_delay
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: Pitouch
+                show_header_toggle: true
+                entities:
+                    - automation.pitouch_screen_on
+                    - automation.pitouch_screen_off
+                    - automation.pitouch_screen_off_after_tv_off
+              - type: entities
+                title: Saugroboter
+                show_header_toggle: true
+                entities:
+                    - automation.send_alert_after_daily_vacuum_to_empty_the_dustbin
+                    - automation.reset_daily_vacuum_done_state_at_midnight
+                    - automation.start_cleaning_ground_floor_room
+                    - automation.start_cleaning_first_floor_room
+                    - automation.start_daily_vacuum
+              - type: entities
+                title: Einstellungen
+                show_header_toggle: true
+                entities:
+                    - automation.set_default_values
+                    - automation.pixel_node_preferences
+              - type: entities
+                title: Gartenbewässerung
+                show_header_toggle: true
+                entities:
+                    - automation.irrigation_hedge
+                    - automation.irrigation_hedge_on
+                    - automation.irrigation_hedge_off
+                    - automation.irrigation_off_after_timeout
+                    - automation.irrigation_count_no_rain_days_increment
+                    - automation.irrigation_count_no_rain_days_reset
+                    - automation.irrigation_count_warm_days_increment
+                    - automation.irrigation_count_warm_days_reset
+                    - automation.irrigation_activate_period_1
+                    - automation.irrigation_set_duration

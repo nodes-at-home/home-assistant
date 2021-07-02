@@ -114,6 +114,41 @@ lovelace:
       # # https://github.com/custom-cards/vertical-stack-in-card
       # - url: /local/vertical-stack-in-card.js
         # type: js
+    dashboards:
+        settings-dashboard:
+            mode: yaml
+            filename: ui-settings.yaml
+            title: Einstellungen
+            icon: mdi:cog
+            show_in_sidebar: true
+            require_admin: false
+        system-dashboard:
+            mode: yaml
+            filename: ui-system.yaml
+            title: System
+            icon: mdi:memory
+            show_in_sidebar: true
+            require_admin: false
+        values-dashboard:
+            mode: yaml
+            filename: ui-values.yaml
+            title: Sensorwerte
+            icon: mdi:chart-line
+            show_in_sidebar: true
+            require_admin: false
+        brewery-dashboard:
+            mode: yaml
+            filename: ui-brewery.yaml
+            title: Brauerei
+            icon: mdi:beer
+            show_in_sidebar: true
+            require_admin: false
+        old-dashboard:
+            mode: yaml
+            filename: ui-old.yaml
+            title: Old Dashboard
+            show_in_sidebar: false
+            require_admin: false
 
 # -------------------------------------------------------------------------------
 http:
