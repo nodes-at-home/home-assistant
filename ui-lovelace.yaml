@@ -482,40 +482,44 @@ views:
     panel: false
     visible: true
     cards:
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            name: Pooltemperatur
+            entity: sensor.ds18b20_pool_temperature
+            min: 15
+            max: 30
+            unit: °C
+          - type: history-graph
+            title: Temperaturverlauf
+            hours_to_show: 168 # one week
+            refersh_interval: 1800 # 30 min
+            entities:
+              - sensor.ds18b20_pool_temperature
+              - sensor.dht22_terrace_temperature
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            name: Akkuspannung
+            entity: sensor.ds18b20_pool_voltage
+            min: 2.5
+            max: 4.5
+            unit: V
+            severity:
+                green:  3.9
+                yellow: 3.2
+                red:    0.0
+          - type: history-graph
+            title: Spannungsverlauf
+            hours_to_show: 168 # one week
+            refersh_interval: 1800 # 30 min
+            entities:
+              - sensor.ds18b20_pool_voltage
       - type: entities
         title: Pool
         show_header_toggle: false
         entities:
             - switch.sonoff_pool_socket
-      - type: gauge
-        name: Pooltemperatur
-        entity: sensor.ds18b20_pool_temperature
-        min: 15
-        max: 30
-        unit: °C
-      - type: gauge
-        name: Akkuspannung
-        entity: sensor.ds18b20_pool_voltage
-        min: 2.5
-        max: 4.5
-        unit: V
-        severity:
-            green:  3.9
-            yellow: 3.2
-            red:    0.0
-      - type: history-graph
-        title: Temperaturverlauf
-        hours_to_show: 168 # one week
-        refersh_interval: 1800 # 30 min
-        entities:
-          - sensor.ds18b20_pool_temperature
-          - sensor.dht22_terrace_temperature
-      - type: history-graph
-        title: Spannungsverlauf
-        hours_to_show: 168 # one week
-        refersh_interval: 1800 # 30 min
-        entities:
-          - sensor.ds18b20_pool_voltage
 
   - title: Bosch Smart Home
     path: bsh
