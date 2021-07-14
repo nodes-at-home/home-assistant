@@ -3,6 +3,7 @@
 ###
 
   - alias: indoor_lights_on_at_coming_home_or_sunset
+    id: indoor_lights_on_at_coming_home_or_sunset
     trigger:
       - platform: state
         entity_id: group.family_devices
@@ -36,6 +37,7 @@
             - light.automatic_indoor_lights_delayed_switched_off
 
   - alias: indoor_lights_by_night_on_at_coming_home
+    id: indoor_lights_by_night_on_at_coming_home
     trigger:
       - platform: state
         entity_id: group.family_devices
@@ -61,6 +63,7 @@
             - light.automatic_indoor_lights_by_night
 
   - alias: indoor_lights_off_at_getting_out_or_sunrise
+    id: indoor_lights_off_at_getting_out_or_sunrise
     trigger:
       - platform: state
         entity_id: group.family_devices
@@ -84,9 +87,10 @@
             ###- light.automatic_indoor_lights_switched_off_extra
 
   - alias: indoor_lights_off_when_tv_switched_off
+    id: indoor_lights_off_when_tv_switched_off
     trigger:
         platform: state
-        entity_id: media_player.sony_bravia_tv
+        entity_id: remote.sony_bravia_tv
         from: "on"
         to: "off"
         for:
@@ -111,6 +115,7 @@
             - light.automatic_indoor_lights_delayed_switched_off
 
   - alias: indoor_lights_off_after_random_delay
+    id: indoor_lights_off_after_random_delay
     trigger:
       - platform: time
         at: input_datetime.sleep
@@ -131,6 +136,7 @@
             - light.automatic_indoor_lights_immediatly_switched_off_extra
 
   - alias: indoor_lights_simulation_off_at_coming_home
+    id: indoor_lights_simulation_off_at_coming_home
     trigger:
       - platform: state
         entity_id: group.family_devices
@@ -152,6 +158,7 @@
         entity_id: light.shelly_roof_socket
 
   - alias: indoor_bath_light_trigger_at_sunrise
+    id: indoor_bath_light_trigger_at_sunrise
     trigger:
       - platform: sun
         event: sunrise
@@ -165,6 +172,7 @@
         entity_id: input_boolean.light_delay_bath
 
   - alias: indoor_bath_light_off_after_timeout
+    id: indoor_bath_light_off_after_timeout
     trigger:
       - platform: state
         entity_id: light.shelly_bath_socket
@@ -187,6 +195,7 @@
         entity_id: input_boolean.light_delay_bath
 
   - alias: indoor_shower_light_trigger_at_sunrise
+    id: indoor_shower_light_trigger_at_sunrise
     trigger:
       - platform: sun
         event: sunrise
@@ -200,6 +209,7 @@
         entity_id: input_boolean.light_delay_shower
 
   - alias: indoor_shower_light_off_after_timeout
+    id: indoor_shower_light_off_after_timeout
     trigger:
       - platform: state
         entity_id: light.shelly_shower_socket
