@@ -21,8 +21,7 @@
     name: "DHT22@lounge_pressure"
     qos: 0
     unit_of_measurement: "hPa"
-    # value_template: '{{ value_json.value | round ( 0 ) }}'
-    value_template: '{{ value_json.value }}'
+    value_template: '{{ value_json.value | round ( 0 ) }}'
 
   - platform: mqtt
     state_topic: nodes@home/sensor/DHT22/lounge/value/voltage
