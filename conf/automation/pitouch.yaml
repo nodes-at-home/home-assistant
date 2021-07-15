@@ -3,6 +3,7 @@
 ###
 
   - alias: pitouch_screen_on
+    id: pitouch_screen_on
     trigger:
       - platform: time
         at: input_datetime.standup_workday
@@ -41,6 +42,7 @@
             - light.pitouch_corridor_screen
 
   - alias: pitouch_screen_off
+    id: pitouch_screen_off
     trigger:
       - platform: time
         at: input_datetime.pitouch_off
@@ -53,6 +55,7 @@
             - light.pitouch_corridor_screen
 
   - alias: pitouch_screen_off_after_tv_off
+    id: pitouch_screen_off_after_tv_off
     trigger:
         platform: state
         entity_id: media_player.sony_bravia_tv

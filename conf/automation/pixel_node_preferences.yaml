@@ -3,6 +3,7 @@
 ###
 
   - alias: pixel_node_preferences
+    id: pixel_node_preferences
     trigger:
       - platform: homeassistant
         event: start

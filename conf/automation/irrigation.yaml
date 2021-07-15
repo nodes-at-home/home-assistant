@@ -3,6 +3,7 @@
 ###
 
   - alias: irrigation_hedge_on
+    id: irrigation_hedge_on
     trigger:
       - platform: event
         event_type:  bosch_shc.event
@@ -14,6 +15,7 @@
         entity_id: switch.relay_garden_valve
 
   - alias: irrigation_hedge_off
+    id: irrigation_hedge_off
     trigger:
       - platform: event
         event_type:  bosch_shc.event
@@ -25,6 +27,7 @@
         entity_id: switch.relay_garden_valve
 
   - alias: irrigation_off_after_timeout
+    id: irrigation_off_after_timeout
     trigger:
       - platform: state
         entity_id: switch.relay_garden_valve
@@ -36,6 +39,7 @@
         entity_id: switch.relay_garden_valve
 
   - alias: irrigation_hedge
+    id: irrigation_hedge
     trigger:
       - platform: time
         at: input_datetime.irrigation_start1
@@ -61,6 +65,7 @@
             entity_id: input_boolean.irrigation_period_1_active
 
   - alias: irrigation_count_no_rain_days_increment
+    id: irrigation_count_no_rain_days_increment
     trigger:
       - platform: time
         at: '23:55:00'
@@ -76,6 +81,7 @@
             entity_id: counter.no_rain_days
 
   - alias: irrigation_count_no_rain_days_reset
+    id: irrigation_count_no_rain_days_reset
     trigger:
       - platform: time
         at: '23:55:00'
@@ -89,6 +95,7 @@
             entity_id: counter.no_rain_days
 
   - alias: irrigation_count_warm_days_increment
+    id: irrigation_count_warm_days_increment
     trigger:
       - platform: time
         at: '23:56:00'
@@ -102,6 +109,7 @@
             entity_id: counter.warm_days
 
   - alias: irrigation_count_warm_days_reset
+    id: irrigation_count_warm_days_reset
     trigger:
       - platform: time
         at: '23:56:00'
@@ -117,6 +125,7 @@
             entity_id: counter.warm_days
 
   - alias: irrigation_activate_period_1
+    id: irrigation_activate_period_1
     trigger:
       - platform: state
         entity_id:
@@ -136,6 +145,7 @@
             entity_id: input_boolean.irrigation_period_1_active
 
   - alias: irrigation_set_duration
+    id: irrigation_set_duration
     trigger:
       - platform: time
         at: '23:57:00'

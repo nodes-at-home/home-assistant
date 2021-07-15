@@ -3,6 +3,7 @@
 ###
 
   - alias: display_show_outdoor_temperature
+    id: display_show_outdoor_temperature
     trigger:
       - platform: mqtt
         topic: nodes@home/sensor/DHT22/terrace/value/temperature
@@ -30,6 +31,7 @@
             retain: true
 
   - alias: display_show_indoor_temperature
+    id: display_show_indoor_temperature
     trigger:
       - platform: mqtt
         topic: nodes@home/sensor/DHT22/lounge/value/temperature
@@ -57,6 +59,7 @@
             retain: true
 
   - alias: display_show_pool_temperature
+    id: display_show_pool_temperature
     trigger:
       - platform: mqtt
         topic: nodes@home/sensor/ds18b20/pool/value/temperature

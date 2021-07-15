@@ -3,6 +3,7 @@
 ###
 
   - alias: pool_pump_activate
+    id: pool_pump_activate
     trigger:
       - platform: time
         at: input_datetime.pool_pump_start1
@@ -14,6 +15,7 @@
             - switch.sonoff_pool_socket
 
   - alias: pool_pump_off_after_timeout
+    id: pool_pump_off_after_timeout
     trigger:
       - platform: state
         entity_id: switch.sonoff_pool_socket
@@ -25,6 +27,7 @@
         entity_id: switch.sonoff_pool_socket
 
   - alias: button_pool
+    id: button_pool
     trigger:
       - platform: state
         entity_id: binary_sensor.button_pool
@@ -38,6 +41,7 @@
         entity_id: switch.sonoff_pool_socket
 
   - alias: set_pool_nonworking
+    id: set_pool_nonworking
     trigger:
     action:
       - service: mqtt.publish

@@ -150,6 +150,7 @@
         entity_id: input_boolean.light_simulation
 
   - alias: indoor_roof_light
+    id: indoor_roof_light
     trigger:
       - platform: state
         entity_id: binary_sensor.dachboden

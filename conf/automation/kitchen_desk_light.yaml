@@ -3,6 +3,7 @@
 ###
 
   - alias: kitchen_desk_light_on
+    id: kitchen_desk_light_on
     trigger:
       - platform: state
         entity_id: binary_sensor.gesture_kitchen
@@ -28,6 +29,7 @@
         entity_id: scene.kitchen_full_light
 
   - alias: kitchen_desk_light_off
+    id: kitchen_desk_light_off
     trigger:
       - platform: state
         entity_id: binary_sensor.gesture_kitchen
@@ -50,6 +52,7 @@
         entity_id: light.sonoff_kitchen_led
 
   - alias: kitchen_desk_light_off_at_night
+    id: kitchen_desk_light_off_at_night
     trigger:
       - platform: state
         entity_id: binary_sensor.gesture_kitchen

@@ -3,6 +3,7 @@
 ###
 
   - alias: bedroom_lights_toggle
+    id: bedroom_lights_toggle
     trigger:
       - platform: state
         entity_id: binary_sensor.ttp223_bedroom_touch1

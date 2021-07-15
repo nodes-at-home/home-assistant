@@ -3,6 +3,7 @@
 ###
 
   - alias: heater_circulating_pump_on
+    id: heater_circulating_pump_on
     trigger:                    # any event
       - platform: time
         at: input_datetime.standup_workday
@@ -41,6 +42,7 @@
             - switch.sonoff_utilityroom_pump
 
   - alias: heater_circulating_pump_off
+    id: heater_circulating_pump_off
     trigger:                    # any event, no condition necessary
       - platform: time
         at: input_datetime.sleep

@@ -3,6 +3,7 @@
 ###
 
   - alias: send_alert_after_daily_vacuum_to_empty_the_dustbin
+    id: send_alert_after_daily_vacuum_to_empty_the_dustbin
     trigger:
       - platform: state
         entity_id: device_tracker.galaxy_note_fan_edition
@@ -41,6 +42,7 @@
             cache: false
 
   - alias: reset_daily_vacuum_done_state_at_midnight
+    id: reset_daily_vacuum_done_state_at_midnight
     trigger:
       - platform: time
         at: '0:00:00'
@@ -49,6 +51,7 @@
         entity_id: input_boolean.daily_vacuum_done
 
   - alias: start_cleaning_ground_floor_room
+    id: start_cleaning_ground_floor_room
     initial_state: false
     trigger:
       - platform: state
@@ -70,6 +73,7 @@
             option: 'Auswahl'
 
   - alias: start_cleaning_first_floor_room
+    id: start_cleaning_first_floor_room
     initial_state: false
     trigger:
       - platform: state
@@ -91,6 +95,7 @@
             option: 'Auswahl'
         
   - alias: start_daily_vacuum
+    id: start_daily_vacuum
     trigger:
       - platform: time_pattern
         minutes: "/5"

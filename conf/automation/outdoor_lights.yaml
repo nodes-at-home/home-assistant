@@ -3,6 +3,7 @@
 ###
 
   - alias: outdoor_lights_on_at_night
+    id: outdoor_lights_on_at_night
     trigger:
       - platform: sun
         event: sunset
@@ -13,6 +14,7 @@
             - light.automatic_outdoor_lights
 
   - alias: outdoor_lights_off_at_morning
+    id: outdoor_lights_off_at_morning
     trigger:
       - platform: sun
         event: sunrise
