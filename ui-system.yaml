@@ -30,6 +30,16 @@ views:
             - sensor.speedtest_ping
             - sensor.speedtest_download
             - sensor.speedtest_upload
+      - type: entities
+        title: Fritz!Box
+        show_header_toggle: false
+        entities:
+            - binary_sensor.fritz_box_7590_connectivity
+            - sensor.fritz_box_7590_external_ip
+            - sensor.fritz_box_7590_uptime
+            - switch.fritz_box_7590_wi_fi_mauzigast
+            - switch.fritz_box_7590_wi_fi_pokemonnetwlan
+            - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
 
   - title: Geräte
     path: nodes
