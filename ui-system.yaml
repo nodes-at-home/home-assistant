@@ -36,7 +36,14 @@ views:
         entities:
             - binary_sensor.fritz_box_7590_connectivity
             - sensor.fritz_box_7590_external_ip
-            - sensor.fritz_box_7590_uptime
+            - sensor.fritz_box_7590_device_uptime
+            - sensor.fritz_box_7590_connection_uptime
+            # - sensor.fritz_box_7590_gb_received
+            # - sensor.fritz_box_7590_gb_sent
+            # - sensor.fritz_box_7590_kb_s_received
+            # - sensor.fritz_box_7590_kb_s_sent
+            # - sensor.fritz_box_7590_max_kbit_s_received
+            # - sensor.fritz_box_7590_max_kbit_s_sent
             - switch.fritz_box_7590_wi_fi_mauzigast
             - switch.fritz_box_7590_wi_fi_pokemonnetwlan
             - switch.fritz_box_7590_wi_fi_pokemonnetwlan5

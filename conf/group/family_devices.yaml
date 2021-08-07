@@ -6,7 +6,7 @@ name: 'Unsere Handys'
 entities:
     - device_tracker.110_andreas_xperia_wlan
     - device_tracker.111_undine_xperia_wlan
-    - device_tracker.142_nora_galaxy_wlan
     - device_tracker.121_nina_galaxy_wlan
-    - device_tracker.147_niklas_galaxy_wlan
     - device_tracker.140_dominik_xperia_wlan
+    - device_tracker.142_nora_galaxy_wlan
+    - device_tracker.147_niklas_galaxy_wlan
