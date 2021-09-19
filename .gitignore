@@ -1,4 +1,4 @@
-home-assistant.log
+home-assistant.log*
 home-assistant_v2.*
 secrets.yaml
 .HA_VERSION

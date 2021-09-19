@@ -38,7 +38,7 @@ views:
                       top: 40%
                       left: 17%
                   - type: state-badge
-                    entity: device_tracker.147_niklas_galaxy_wlan
+                    entity: device_tracker.132_niklas_galaxy_a52_wlan
                     style:
                       top: 40%
                       left: 21%

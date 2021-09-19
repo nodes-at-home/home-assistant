@@ -21,7 +21,7 @@ device_tracker.142_nora_galaxy_wlan:
 device_tracker.121_nina_galaxy_wlan:
     friendly_name: Nina
     entity_picture: /local/people/Nina.jpg
-device_tracker.147_niklas_galaxy_wlan:
+device_tracker.132_niklas_galaxy_a52_wlan:
     friendly_name: Niklas
     entity_picture: /local/people/Niklas.jpg
 device_tracker.140_dominik_xperia_wlan:
