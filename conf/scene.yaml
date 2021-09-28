@@ -8,7 +8,7 @@
       entities:
         light.sonoff_kitchen_led:
             state: ON
-            brightness: 70
+            brightness: 128
             color_temp: 300
 
     - name: kitchen_background_light
