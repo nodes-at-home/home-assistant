@@ -81,7 +81,7 @@ influxdb:
         - sensor.soil_garden_moisture2
         - sensor.soil_garden_moisture3
         - sensor.rain_garden_precipitation
-        - sensor.daily_rain
+        - sensor.rain_garden_precipitation_total
   ignore_attributes:
     - friendly_name
     - icon
@@ -210,18 +210,15 @@ input_text:
     initial: !env_var PARENT_HOSTNAME
 
 # -------------------------------------------------------------------------------
-# daily aggregate
-utility_meter:
-  daily_rain:
-    source: sensor.rain_garden_precipitation
-    cycle: daily
-
-# -------------------------------------------------------------------------------
 # last 24h max temperature
 template:
   - sensor:
     - name: "DHT22@terrace_temperature_max"
       state: "{{ state_attr ( 'sensor.dht22_terrace_temperature_statistics', 'max_value' ) }}"
+  - sensor:
+    - name: "rain@garden_precipitation_total"
+      unit_of_measurement: "mm"
+      state: "{{ state_attr ( 'sensor.rain_garden_precipitation_statistics', 'total' ) }}"
 
 # -------------------------------------------------------------------------------
 # Track the sun

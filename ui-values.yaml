@@ -123,7 +123,7 @@ views:
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.daily_rain
+                entity: sensor.rain_garden_precipitation_total
                 graph: line
                 detail: 2
                 hours_to_show: 24

@@ -48,7 +48,7 @@ views:
                       top: 40%
                       left: 25%
                   - type: state-badge
-                    entity: sensor.daily_rain
+                    entity: sensor.rain_garden_precipitation_total
                     style:
                       top: 40%
                       left: 51%
@@ -246,7 +246,8 @@ views:
     path: outdoor
     panel: false
     badges:
-      - sensor.daily_rain
+      - sensor.rain_garden_precipitation_total
+      # - sensor.rain_garden_precipitation_statistics
       - sensor.rain_garden_precipitation
       - counter.no_rain_days
       - counter.warm_days

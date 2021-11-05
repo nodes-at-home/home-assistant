@@ -40,3 +40,10 @@
     qos: 0
     unit_of_measurement: "mm"
     value_template: '{{ value_json.ticks }}'
+
+  - platform: statistics
+    name: "rain@garden_precipitation_statistics"
+    entity_id: "sensor.rain_garden_precipitation"
+    sampling_size: 100
+    max_age:
+        hours: 24
