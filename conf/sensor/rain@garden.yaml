@@ -31,6 +31,7 @@
     state_topic: nodes@home/sensor/rain/garden/value/rain
     name: "rain@garden_precipitation"
     qos: 0
+    force_update: true
     unit_of_measurement: "mm"
     value_template: '{{ value_json.rain }}'
 
