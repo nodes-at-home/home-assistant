@@ -48,7 +48,12 @@ views:
                       top: 40%
                       left: 25%
                   - type: state-badge
-                    entity: sensor.rain_garden_precipitation_total
+                    entity: sensor.rain_garden_precipitation_last7d
+                    style:
+                      top: 40%
+                      left: 47%
+                  - type: state-badge
+                    entity: sensor.rain_garden_precipitation_last24h
                     style:
                       top: 40%
                       left: 51%
@@ -246,12 +251,10 @@ views:
     path: outdoor
     panel: false
     badges:
-      - sensor.rain_garden_precipitation_total
-      # - sensor.rain_garden_precipitation_statistics
-      - sensor.rain_garden_precipitation
+      - sensor.rain_garden_precipitation_last7d
+      - sensor.rain_garden_precipitation_last24h
       - counter.no_rain_days
       - counter.warm_days
-      # - sensor.dht22_terrace_temperature_statistics
       - sensor.dht22_terrace_temperature_max
       - input_boolean.irrigation_period_1_active
     cards:
@@ -296,8 +299,6 @@ views:
             - sensor.soil_garden_moisture1
             - sensor.soil_garden_moisture2
             - sensor.soil_garden_moisture3
-            # - sensor.daily_rain
-            # - sensor.rain_garden_precipitation
       - type: vertical-stack
         cards:
           - type: picture-elements

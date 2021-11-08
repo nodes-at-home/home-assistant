@@ -1008,8 +1008,12 @@ sensor.rain_garden_version:
     friendly_name: Regensensor
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.rain_garden_precipitation_total:
+sensor.rain_garden_precipitation_last24h:
     friendly_name: Regen letzte 24h
+    icon: mdi:weather-rainy
+
+sensor.rain_garden_precipitation_last7d:
+    friendly_name: Regen letzte 7d
     icon: mdi:weather-rainy
 
 #------------------------------------------------------------------------------

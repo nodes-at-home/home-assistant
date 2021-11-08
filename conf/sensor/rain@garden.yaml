@@ -43,8 +43,15 @@
     value_template: '{{ value_json.ticks }}'
 
   - platform: statistics
-    name: "rain@garden_precipitation_statistics"
+    name: "rain@garden_precipitation_statistics_24h"
     entity_id: "sensor.rain_garden_precipitation"
     sampling_size: 100
     max_age:
         hours: 24
+
+  - platform: statistics
+    name: "rain@garden_precipitation_statistics_7d"
+    entity_id: "sensor.rain_garden_precipitation"
+    sampling_size: 700
+    max_age:
+        hours: 168

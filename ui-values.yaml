@@ -122,8 +122,19 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 24
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+          - type: horizontal-stack
+            cards:
               - type: sensor
-                entity: sensor.rain_garden_precipitation_total
+                entity: sensor.rain_garden_precipitation_last7d
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.rain_garden_precipitation_last24h
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -132,4 +143,8 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 24
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
 

@@ -73,7 +73,7 @@
         condition: not
         conditions:
           - condition: numeric_state
-            entity_id: sensor.rain_garden_precipitation_total
+            entity_id: sensor.rain_garden_precipitation_last24h
             above: input_number.irrigation_rain_threshold
     action:
       - service: counter.increment
@@ -87,7 +87,7 @@
         at: '23:55:00'
     condition:
       - condition: numeric_state
-        entity_id: sensor.rain_garden_precipitation_total
+        entity_id: sensor.rain_garden_precipitation_last24h
         above: input_number.irrigation_rain_threshold
     action:
       - service: counter.reset
