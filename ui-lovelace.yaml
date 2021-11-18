@@ -125,7 +125,8 @@ views:
                         detail: 2
                         hours_to_show: 24
                       - type: sensor
-                        entity: sensor.ds18b20_pool_temperature
+                        # entity: sensor.ds18b20_pool_temperature
+                        entity: sensor.tileboard_temperature_template
                         graph: line
                         detail: 2
                         hours_to_show: 24
