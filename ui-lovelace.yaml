@@ -51,29 +51,44 @@ views:
                     entity: sensor.rain_garden_precipitation_last7d
                     style:
                       top: 40%
-                      left: 47%
+                      left: 35%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation_last24h
                     style:
                       top: 40%
-                      left: 51%
+                      left: 39%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation
                     style:
                       top: 40%
-                      left: 55%
+                      left: 43%
                   - type: state-badge
                     entity: binary_sensor.eingangstur
                     style:
                       top: 40%
-                      left: 62%
+                      left: 50%
                   - type: state-badge
                     entity: binary_sensor.nebentur
                     style:
                       top: 40%
-                      left: 66%
+                      left: 54%
                   - type: state-badge
                     entity: binary_sensor.garagentur
+                    style:
+                      top: 40%
+                      left: 58%
+                  - type: state-badge
+                    entity: binary_sensor.garagentor
+                    style:
+                      top: 40%
+                      left: 62%
+                  - type: state-badge
+                    entity: binary_sensor.terassentur_kuche
+                    style:
+                      top: 40%
+                      left: 66%
+                  - type: state-badge
+                    entity: binary_sensor.terassentur_esszimmer
                     style:
                       top: 40%
                       left: 70%
@@ -288,6 +303,10 @@ views:
             - binary_sensor.eingangstur
             - binary_sensor.nebentur
             - binary_sensor.garagentur
+            - binary_sensor.garagentor
+            - binary_sensor.terassentur_kuche
+            - binary_sensor.terassentur_esszimmer
+            - binary_sensor.terassentur_wohnzimmer
       - type: entities
         title: Garten
         show_header_toggle: false
@@ -576,6 +595,18 @@ views:
             - type: divider
             - binary_sensor.garagentur
             - sensor.garagentur_battery
+            - type: divider
+            - binary_sensor.garagentor
+            - sensor.garagentor_battery
+            - type: divider
+            - binary_sensor.terassentur_kuche
+            - sensor.terassentur_kuche_battery
+            - type: divider
+            - binary_sensor.terassentur_esszimmer
+            - sensor.terassentur_esszimmer_battery
+            - type: divider
+            - binary_sensor.terassentur_wohnzimmer
+            - sensor.terassentur_wohnzimmer_battery
 
   # https://sharethelove.io/picture-elements-cards/xiaomi-vacuum-card
   # https://community.home-assistant.io/t/xiaomi-vacuum-cleaner-card/64456/52
