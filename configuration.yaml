@@ -81,8 +81,6 @@ influxdb:
         - sensor.soil_garden_moisture2
         - sensor.soil_garden_moisture3
         - sensor.rain_garden_precipitation
-        - sensor.rain_garden_precipitation_last24h
-        - sensor.rain_garden_precipitation_last7d
   ignore_attributes:
     - friendly_name
     - icon

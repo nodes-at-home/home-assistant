@@ -51,49 +51,29 @@ views:
                     entity: sensor.rain_garden_precipitation_last7d
                     style:
                       top: 40%
-                      left: 35%
+                      left: 50%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation_last24h
                     style:
                       top: 40%
-                      left: 39%
+                      left: 54%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation
                     style:
                       top: 40%
-                      left: 43%
+                      left: 58%
                   - type: state-badge
                     entity: binary_sensor.eingangstur
                     style:
                       top: 40%
-                      left: 50%
+                      left: 66%
                   - type: state-badge
                     entity: binary_sensor.nebentur
                     style:
                       top: 40%
-                      left: 54%
-                  - type: state-badge
-                    entity: binary_sensor.garagentur
-                    style:
-                      top: 40%
-                      left: 58%
-                  - type: state-badge
-                    entity: binary_sensor.garagentor
-                    style:
-                      top: 40%
-                      left: 62%
-                  - type: state-badge
-                    entity: binary_sensor.terassentur_kuche
-                    style:
-                      top: 40%
-                      left: 66%
-                  - type: state-badge
-                    entity: binary_sensor.terassentur_esszimmer
-                    style:
-                      top: 40%
                       left: 70%
                   - type: state-badge
-                    entity: binary_sensor.dachboden
+                    entity: binary_sensor.garagentur
                     style:
                       top: 40%
                       left: 74%
@@ -203,6 +183,8 @@ views:
   - title: Innen
     path: indoor
     panel: false
+    badges:
+      - binary_sensor.bewegungsmelder1
     cards:
       - type: entities
         title: Erdgeschoss
@@ -562,6 +544,9 @@ views:
             - type: divider
             - binary_sensor.rauchwarnmelder_hauswirt
             - sensor.rauchwarnmelder_hauswirt_battery
+            - type: divider
+            - binary_sensor.rauchwarnmelder_garage
+            - sensor.rauchwarnmelder_garage_battery
       - type: entities
         title: Rauchmelder Obergeschoss
         show_header_toggle: false
