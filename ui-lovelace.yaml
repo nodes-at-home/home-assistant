@@ -592,6 +592,11 @@ views:
             - type: divider
             - binary_sensor.terassentur_wohnzimmer
             - sensor.terassentur_wohnzimmer_battery
+      - type: entities
+        title: Bewegungsmelder
+        show_header_toggle: false
+        entities:
+            - binary_sensor.bewegungsmelder1
 
   # https://sharethelove.io/picture-elements-cards/xiaomi-vacuum-card
   # https://community.home-assistant.io/t/xiaomi-vacuum-cleaner-card/64456/52
