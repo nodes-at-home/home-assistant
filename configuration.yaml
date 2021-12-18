@@ -209,21 +209,6 @@ input_text:
     initial: !env_var PARENT_HOSTNAME
 
 # -------------------------------------------------------------------------------
-# last 24h max temperature
-template:
-  - sensor:
-    - name: "DHT22@terrace_temperature_max"
-      state: "{{ state_attr ( 'sensor.dht22_terrace_temperature_statistics', 'max_value' ) }}"
-  - sensor:
-    - name: "rain@garden_precipitation_last24h"
-      unit_of_measurement: "mm"
-      state: "{{ state_attr ( 'sensor.rain_garden_precipitation_statistics_24h', 'total' ) }}"
-  - sensor:
-    - name: "rain@garden_precipitation_last7d"
-      unit_of_measurement: "mm"
-      state: "{{ state_attr ( 'sensor.rain_garden_precipitation_statistics_7d', 'total' ) }}"
-
-# -------------------------------------------------------------------------------
 # Track the sun
 sun:
 

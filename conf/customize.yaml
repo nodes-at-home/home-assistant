@@ -52,10 +52,6 @@ sensor.DHT22_terrace_version:
     friendly_name: Terrasse
     entity_picture: /local/images/nodemcu.jpg
 
-sensor.DHT22_terrace_temperature_statistics:
-    friendly_name: Temperaturstatistik
-    unit_of_measurement: "°C"
-
 sensor.DHT22_terrace_temperature_max:
     friendly_name: Höchsttemperatur
     unit_of_measurement: "°C"
