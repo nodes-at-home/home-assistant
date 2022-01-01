@@ -4,16 +4,18 @@
 ### 29.10.2017 new
 ###
 
+# brightness is based in a range 0 .. 255
+
     - name: kitchen_full_light
       entities:
-        light.sonoff_kitchen_led:
+        light.led_kitchen_led:
             state: ON
-            brightness: 128
+            brightness: 190
             color_temp: 300
 
     - name: kitchen_background_light
       entities:
-        light.sonoff_kitchen_led:
+        light.led_kitchen_led:
             state: ON
-            brightness: 8
+            brightness: 25
             color_temp: 500

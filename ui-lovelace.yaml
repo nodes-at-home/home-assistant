@@ -157,7 +157,7 @@ views:
                   - type: horizontal-stack
                     cards:
                       - type: light
-                        entity: light.sonoff_kitchen_led
+                        entity: light.led_kitchen_led
                       - type: light
                         entity: light.led_corridor_led
                       - type: light
@@ -192,7 +192,7 @@ views:
         entities:
           - light.rfhub_lounge_lampkitchenshortstrip
           - light.rfhub_lounge_lampkitchenlongstrip
-          - light.sonoff_kitchen_led
+          - light.led_kitchen_led
           - type: divider
           - light.relay_dining1_lamp
           - light.relay_dining2_lamp

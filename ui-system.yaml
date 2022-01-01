@@ -73,7 +73,7 @@ views:
                 - sensor.sonoff_yardgate_version
                 - sensor.sonoff_corridor_version
                 - sensor.ds18b20_pool_version
-                - sensor.sonoff_kitchen_version
+                - sensor.led_kitchen_version
                 - sensor.led_corridor_version
                 - sensor.gesture_kitchen_version
                 - sensor.ttp223_bedroom_version
@@ -117,7 +117,7 @@ views:
                 - sensor.sonoff_yardgate_lastboot
                 - sensor.sonoff_corridor_lastboot
                 - sensor.ds18b20_pool_lastboot
-                - sensor.sonoff_kitchen_lastboot
+                - sensor.led_kitchen_lastboot
                 - sensor.led_corridor_lastboot
                 - sensor.gesture_kitchen_lastboot
                 - sensor.ttp223_bedroom_lastboot
@@ -161,7 +161,7 @@ views:
                 - sensor.sonoff_yardgate_lastvoltage
                 - sensor.sonoff_corridor_lastvoltage
                 - sensor.ds18b20_pool_lastvoltage
-                - sensor.sonoff_kitchen_lastvoltage
+                - sensor.led_kitchen_lastvoltage
                 - sensor.led_corridor_lastvoltage
                 - sensor.gesture_kitchen_lastvoltage
                 - sensor.ttp223_bedroom_lastvoltage
@@ -205,7 +205,7 @@ views:
                 - sensor.sonoff_yardgate_voltage
                 - sensor.sonoff_corridor_voltage
                 - sensor.ds18b20_pool_voltage
-                - sensor.sonoff_kitchen_voltage
+                - sensor.led_kitchen_voltage
                 - sensor.led_corridor_voltage
                 - sensor.gesture_kitchen_voltage
                 - sensor.ttp223_bedroom_voltage

@@ -646,23 +646,23 @@ sensor.sonoff_corridor_version:
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
-light.sonoff_kitchen_led:
+light.led_kitchen_led:
     friendly_name: Küchenarbeitslicht
 
-sensor.sonoff_kitchen_voltage:
-    friendly_name: 'Sonoff Led'
+sensor.led_kitchen_voltage:
+    friendly_name: 'Ledlicht'
     entity_picture: /local/images/sonoff_led.jpg
 
-sensor.sonoff_kitchen_lastvoltage:
-    friendly_name: 'Sonoff Led'
+sensor.led_kitchen_lastvoltage:
+    friendly_name: 'Ledlicht'
     entity_picture: /local/images/sonoff_led.jpg
 
-sensor.sonoff_kitchen_lastboot:
-    friendly_name: 'Sonoff Led'
+sensor.led_kitchen_lastboot:
+    friendly_name: 'Ledlicht'
     entity_picture: /local/images/sonoff_led.jpg
 
-sensor.sonoff_kitchen_version:
-    friendly_name: 'Sonoff Led'
+sensor.led_kitchen_version:
+    friendly_name: 'Ledlicht'
     entity_picture: /local/images/sonoff_led.jpg
 
 #------------------------------------------------------------------------------

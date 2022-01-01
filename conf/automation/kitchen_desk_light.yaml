@@ -15,15 +15,15 @@
       - condition: or
         conditions:
           - condition: state
-            entity_id: light.sonoff_kitchen_led
+            entity_id: light.led_kitchen_led
             state: 'off'
           - condition: and
             conditions:
               - condition: state
-                entity_id: light.sonoff_kitchen_led
+                entity_id: light.led_kitchen_led
                 state: 'on'
               - condition: template
-                value_template: '{{ states.light.sonoff_kitchen_led.attributes.color_temp == 500 }}'
+                value_template: '{{ states.light.led_kitchen_led.attributes.color_temp == 500 }}'
     action:
       - service: scene.turn_on
         entity_id: scene.kitchen_full_light
@@ -39,7 +39,7 @@
         entity_id: input_boolean.gesture_kitchen_activated
         state: 'on'
       - condition: state
-        entity_id: light.sonoff_kitchen_led
+        entity_id: light.led_kitchen_led
         state: 'on'
       # indicator for indoor night lights
       - condition: state
@@ -49,7 +49,7 @@
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
       - service: light.turn_off
-        entity_id: light.sonoff_kitchen_led
+        entity_id: light.led_kitchen_led
 
   - alias: kitchen_desk_light_off_at_night
     id: kitchen_desk_light_off_at_night
@@ -68,10 +68,10 @@
       - condition: and
         conditions:
           - condition: state
-            entity_id: light.sonoff_kitchen_led
+            entity_id: light.led_kitchen_led
             state: 'on'
           - condition: template
-            value_template: '{{ states.light.sonoff_kitchen_led.attributes.color_temp != 500 }}'
+            value_template: '{{ states.light.led_kitchen_led.attributes.color_temp != 500 }}'
     action:
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
