@@ -81,6 +81,26 @@ influxdb:
         - sensor.soil_garden_moisture2
         - sensor.soil_garden_moisture3
         - sensor.rain_garden_precipitation
+        - sensor.plant1_flowercare_battery
+        - sensor.plant1_flowercare_moisture
+        - sensor.plant1_flowercare_temperature
+        - sensor.plant1_flowercare_conductivity
+        - sensor.plant1_flowercare_brightness
+        - sensor.plant2_flowercare_battery
+        - sensor.plant2_flowercare_moisture
+        - sensor.plant2_flowercare_temperature
+        - sensor.plant2_flowercare_conductivity
+        - sensor.plant2_flowercare_brightness
+        - sensor.plant3_flowercare_battery
+        - sensor.plant3_flowercare_moisture
+        - sensor.plant3_flowercare_temperature
+        - sensor.plant3_flowercare_conductivity
+        - sensor.plant3_flowercare_brightness
+        - sensor.plant4_flowercare_battery
+        - sensor.plant4_flowercare_moisture
+        - sensor.plant4_flowercare_temperature
+        - sensor.plant4_flowercare_conductivity
+        - sensor.plant4_flowercare_brightness
   ignore_attributes:
     - friendly_name
     - icon

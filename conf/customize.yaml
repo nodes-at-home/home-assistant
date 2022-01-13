@@ -1055,13 +1055,92 @@ sensor.cpu_temp:
 plant.plant1_flowercare:
     friendly_name: Fächerpalme
 
+sensor.plant1_flowercare_battery:
+    friendly_name: Fächerpalme
+    icon: mdi:battery
+
+sensor.plant1_flowercare_moisture:
+    friendly_name: Fächerpalme
+    icon: mdi:water-percent
+
+sensor.plant1_flowercare_temperature:
+    friendly_name: Fächerpalme
+
+sensor.plant1_flowercare_conductivity:
+    friendly_name: Fächerpalme
+    icon: mdi:currency-ils
+
+sensor.plant1_flowercare_brightness:
+    friendly_name: Fächerpalme
+    icon: mdi:brightness-5
+
+#------------------------------------------------------------------------------
 plant.plant2_flowercare:
     friendly_name: Birkenfeige
 
+sensor.plant2_flowercare_battery:
+    friendly_name: Birkenfeige
+    icon: mdi:battery
+
+sensor.plant2_flowercare_moisture:
+    friendly_name: Birkenfeige
+    icon: mdi:water-percent
+
+sensor.plant2_flowercare_temperature:
+    friendly_name: Birkenfeige
+
+sensor.plant2_flowercare_conductivity:
+    friendly_name: Birkenfeige
+    icon: mdi:currency-ils
+
+sensor.plant2_flowercare_brightness:
+    friendly_name: Birkenfeige
+    icon: mdi:brightness-5
+
+#------------------------------------------------------------------------------
 plant.plant3_flowercare:
     friendly_name: Yucca
 
+sensor.plant3_flowercare_battery:
+    friendly_name: Yucca
+    icon: mdi:battery
+
+sensor.plant3_flowercare_moisture:
+    friendly_name: Yucca
+    icon: mdi:water-percent
+
+sensor.plant3_flowercare_temperature:
+    friendly_name: Yucca
+
+sensor.plant3_flowercare_conductivity:
+    friendly_name: Yucca
+    icon: mdi:currency-ils
+
+sensor.plant3_flowercare_brightness:
+    friendly_name: Yucca
+    icon: mdi:brightness-5
+
+#------------------------------------------------------------------------------
 plant.plant4_flowercare:
     friendly_name: Bogenhanf
+
+sensor.plant4_flowercare_battery:
+    friendly_name: Bogenhanf
+    icon: mdi:battery
+
+sensor.plant4_flowercare_moisture:
+    friendly_name: Bogenhanf
+    icon: mdi:water-percent
+
+sensor.plant4_flowercare_temperature:
+    friendly_name: Bogenhanf
+
+sensor.plant4_flowercare_conductivity:
+    friendly_name: Bogenhanf
+    icon: mdi:currency-ils
+
+sensor.plant4_flowercare_brightness:
+    friendly_name: Bogenhanf
+    icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------

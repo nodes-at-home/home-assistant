@@ -148,3 +148,117 @@ views:
               - type: markdown
                 content: <br/><br/><br/><br/><br/><br/><br/><br/>
 
+  - title: Pflanzen
+    path: plants
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.plant1_flowercare_battery
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant1_flowercare_moisture
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant1_flowercare_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant1_flowercare_conductivity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant1_flowercare_brightness
+                graph: line
+                detail: 2
+                hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.plant2_flowercare_battery
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant2_flowercare_moisture
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant2_flowercare_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant2_flowercare_conductivity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant2_flowercare_brightness
+                graph: line
+                detail: 2
+                hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.plant3_flowercare_battery
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant3_flowercare_moisture
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant3_flowercare_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant3_flowercare_conductivity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant3_flowercare_brightness
+                graph: line
+                detail: 2
+                hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.plant4_flowercare_battery
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant4_flowercare_moisture
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant4_flowercare_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant4_flowercare_conductivity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.plant4_flowercare_brightness
+                graph: line
+                detail: 2
+                hours_to_show: 24
