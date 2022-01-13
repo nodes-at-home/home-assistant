@@ -1052,3 +1052,16 @@ sensor.cpu_temp:
     friendly_name: CPU
 
 #------------------------------------------------------------------------------
+plant.plant1_flowercare:
+    friendly_name: Fächerpalme
+
+plant.plant2_flowercare:
+    friendly_name: Birkenfeige
+
+plant.plant3_flowercare:
+    friendly_name: Yucca
+
+plant.plant4_flowercare:
+    friendly_name: Bogenhanf
+
+#------------------------------------------------------------------------------

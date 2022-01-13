@@ -185,6 +185,18 @@ views:
     panel: false
     badges:
       - binary_sensor.bewegungsmelder1
+      # - plant.plant1_flowercare
+      # - plant.plant2_flowercare
+      # - plant.plant3_flowercare
+      # - plant.plant4_flowercare
+      - type: entity-filter
+        entities:
+          - plant.plant1_flowercare
+          - plant.plant2_flowercare
+          - plant.plant3_flowercare
+          - plant.plant4_flowercare
+        state_filter:
+          - "problem"
     cards:
       - type: entities
         title: Erdgeschoss
@@ -244,6 +256,25 @@ views:
           - binary_sensor.dachboden
           - light.shelly_roof_socket
           - binary_sensor.rauchwarnmelder_dachboden
+      - type: vertical-stack
+        cards:
+          - type: plant-status
+            name: Fächerpalme
+            show_header_toggle: false
+            entity: plant.plant1_flowercare
+          - type: plant-status
+            name: Birkenfeige
+            show_header_toggle: false
+            entity: plant.plant2_flowercare
+          - type: plant-status
+            name: Yucca
+            show_header_toggle: false
+            entity: plant.plant3_flowercare
+          - type: plant-status
+            name: Bogenhanf
+            show_header_toggle: false
+            entity: plant.plant4_flowercare
+
     
   - title: Außen
     path: outdoor
