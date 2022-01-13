@@ -8,3 +8,4 @@ known_devices.yaml
 bravia.conf
 __pycache__/
 *.pem
+.shopping_list.json
