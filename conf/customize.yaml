@@ -1144,3 +1144,7 @@ sensor.plant4_flowercare_brightness:
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
+sensor.tileboard_temperature_template:
+    icon: mdi:thermometer
+
+#------------------------------------------------------------------------------
