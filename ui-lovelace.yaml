@@ -205,6 +205,10 @@ views:
           - plant.plant2_flowercare
           - plant.plant3_flowercare
           - plant.plant4_flowercare
+          - plant.plant5_flowercare
+          - plant.plant6_flowercare
+          - plant.plant7_flowercare
+          # - plant.plant8_flowercare
         state_filter:
           - "problem"
     cards:
@@ -269,21 +273,37 @@ views:
       - type: vertical-stack
         cards:
           - type: plant-status
-            name: Fächerpalme
-            show_header_toggle: false
+            name: Goldfruchtpalme - Dypsis lutescens
+            link: https://www.mein-schoener-garten.de/pflanzen/goldfruchtpalme/goldfruchtpalme
             entity: plant.plant1_flowercare
           - type: plant-status
-            name: Birkenfeige
-            show_header_toggle: false
+            name: Birkenfeige - Ficus benjamina
+            link: https://www.mein-schoener-garten.de/pflanzen/feige/birkenfeige
             entity: plant.plant2_flowercare
           - type: plant-status
-            name: Yucca
-            show_header_toggle: false
+            name: Riesen-Palmlilie - Yucca elephantipes
+            link: https://www.mein-schoener-garten.de/pflanzen/palmlilie-yucca/yucca-palme
             entity: plant.plant3_flowercare
           - type: plant-status
-            name: Bogenhanf
-            show_header_toggle: false
+            name: Bogenhanf - Sansevieria trifasciata
+            link: https://www.mein-schoener-garten.de/pflanzen/bogenhanf-sansevieria
             entity: plant.plant4_flowercare
+          - type: plant-status
+            name: Korbmarante - Calathea rufibarba
+            link: https://www.mein-schoener-garten.de/pflanzen/korbmarante/calathea-rufibarba
+            entity: plant.plant5_flowercare
+          - type: plant-status
+            name: Fensterblatt - Monstera deliciosa
+            link: https://www.mein-schoener-garten.de/pflanzen/fensterblatt/monstera-fensterblatt
+            entity: plant.plant6_flowercare
+          - type: plant-status
+            name: Gummibaum - Ficus elastica
+            link: https://www.mein-schoener-garten.de/pflanzen/feige/gummibaum
+            entity: plant.plant7_flowercare
+          - type: plant-status
+            name: Pfanze 8
+            link:
+            entity: plant.plant8_flowercare
 
     
   - title: Außen

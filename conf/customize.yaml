@@ -1053,94 +1053,186 @@ sensor.cpu_temp:
 
 #------------------------------------------------------------------------------
 plant.plant1_flowercare:
-    friendly_name: Fächerpalme
+    friendly_name: Goldfruchtpalme - Dypsis lutescens
 
 sensor.plant1_flowercare_battery:
-    friendly_name: Fächerpalme
+    friendly_name: Goldfruchtpalme - Dypsis lutescens
     icon: mdi:battery
 
 sensor.plant1_flowercare_moisture:
-    friendly_name: Fächerpalme
+    friendly_name: Goldfruchtpalme - Dypsis lutescens
     icon: mdi:water-percent
 
 sensor.plant1_flowercare_temperature:
-    friendly_name: Fächerpalme
+    friendly_name: Goldfruchtpalme - Dypsis lutescens
 
 sensor.plant1_flowercare_conductivity:
-    friendly_name: Fächerpalme
+    friendly_name: Goldfruchtpalme - Dypsis lutescens
     icon: mdi:currency-ils
 
 sensor.plant1_flowercare_brightness:
-    friendly_name: Fächerpalme
+    friendly_name: Goldfruchtpalme - Dypsis lutescens
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
 plant.plant2_flowercare:
-    friendly_name: Birkenfeige
+    friendly_name: Birkenfeige - Ficus benjamina
 
 sensor.plant2_flowercare_battery:
-    friendly_name: Birkenfeige
+    friendly_name: Birkenfeige - Ficus benjamina
     icon: mdi:battery
 
 sensor.plant2_flowercare_moisture:
-    friendly_name: Birkenfeige
+    friendly_name: Birkenfeige - Ficus benjamina
     icon: mdi:water-percent
 
 sensor.plant2_flowercare_temperature:
-    friendly_name: Birkenfeige
+    friendly_name: Birkenfeige - Ficus benjamina
 
 sensor.plant2_flowercare_conductivity:
-    friendly_name: Birkenfeige
+    friendly_name: Birkenfeige - Ficus benjamina
     icon: mdi:currency-ils
 
 sensor.plant2_flowercare_brightness:
-    friendly_name: Birkenfeige
+    friendly_name: Birkenfeige - Ficus benjamina
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
 plant.plant3_flowercare:
-    friendly_name: Yucca
+    friendly_name: Yucca - Yucca elephantipes
 
 sensor.plant3_flowercare_battery:
-    friendly_name: Yucca
+    friendly_name: Yucca - Yucca elephantipes
     icon: mdi:battery
 
 sensor.plant3_flowercare_moisture:
-    friendly_name: Yucca
+    friendly_name: Yucca - Yucca elephantipes
     icon: mdi:water-percent
 
 sensor.plant3_flowercare_temperature:
-    friendly_name: Yucca
+    friendly_name: Yucca - Yucca elephantipes
 
 sensor.plant3_flowercare_conductivity:
-    friendly_name: Yucca
+    friendly_name: Yucca - Yucca elephantipes
     icon: mdi:currency-ils
 
 sensor.plant3_flowercare_brightness:
-    friendly_name: Yucca
+    friendly_name: Yucca - Yucca elephantipes
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
 plant.plant4_flowercare:
-    friendly_name: Bogenhanf
+    friendly_name: Bogenhanf - Sansevieria trifasciata
 
 sensor.plant4_flowercare_battery:
-    friendly_name: Bogenhanf
+    friendly_name: Bogenhanf - Sansevieria trifasciata
     icon: mdi:battery
 
 sensor.plant4_flowercare_moisture:
-    friendly_name: Bogenhanf
+    friendly_name: Bogenhanf - Sansevieria trifasciata
     icon: mdi:water-percent
 
 sensor.plant4_flowercare_temperature:
-    friendly_name: Bogenhanf
+    friendly_name: Bogenhanf - Sansevieria trifasciata
 
 sensor.plant4_flowercare_conductivity:
-    friendly_name: Bogenhanf
+    friendly_name: Bogenhanf - Sansevieria trifasciata
     icon: mdi:currency-ils
 
 sensor.plant4_flowercare_brightness:
-    friendly_name: Bogenhanf
+    friendly_name: Bogenhanf - Sansevieria trifasciata
+    icon: mdi:brightness-5
+
+#------------------------------------------------------------------------------
+plant.plant5_flowercare:
+    friendly_name: Korbmarante - Calathea rufibarba
+
+sensor.plant5_flowercare_battery:
+    friendly_name: Korbmarante - Calathea rufibarba
+    icon: mdi:battery
+
+sensor.plant5_flowercare_moisture:
+    friendly_name: Korbmarante - Calathea rufibarba
+    icon: mdi:water-percent
+
+sensor.plant5_flowercare_temperature:
+    friendly_name: Korbmarante - Calathea rufibarba
+
+sensor.plant5_flowercare_conductivity:
+    friendly_name: Korbmarante - Calathea rufibarba
+    icon: mdi:currency-ils
+
+sensor.plant5_flowercare_brightness:
+    friendly_name: Korbmarante - Calathea rufibarba
+    icon: mdi:brightness-5
+
+#------------------------------------------------------------------------------
+plant.plant6_flowercare:
+    friendly_name: Fensterblatt - Monstera deliciosa
+
+sensor.plant6_flowercare_battery:
+    friendly_name: Fensterblatt - Monstera deliciosa
+    icon: mdi:battery
+
+sensor.plant6_flowercare_moisture:
+    friendly_name: Fensterblatt - Monstera deliciosa
+    icon: mdi:water-percent
+
+sensor.plant6_flowercare_temperature:
+    friendly_name: Fensterblatt - Monstera deliciosa
+
+sensor.plant6_flowercare_conductivity:
+    friendly_name: Fensterblatt - Monstera deliciosa
+    icon: mdi:currency-ils
+
+sensor.plant6_flowercare_brightness:
+    friendly_name: Fensterblatt - Monstera deliciosa
+    icon: mdi:brightness-5
+
+#------------------------------------------------------------------------------
+plant.plant7_flowercare:
+    friendly_name: Gummibaum - Ficus elastica
+
+sensor.plant7_flowercare_battery:
+    friendly_name: Gummibaum - Ficus elastica
+    icon: mdi:battery
+
+sensor.plant7_flowercare_moisture:
+    friendly_name: Gummibaum - Ficus elastica
+    icon: mdi:water-percent
+
+sensor.plant7_flowercare_temperature:
+    friendly_name: Gummibaum - Ficus elastica
+
+sensor.plant7_flowercare_conductivity:
+    friendly_name: Gummibaum - Ficus elastica
+    icon: mdi:currency-ils
+
+sensor.plant7_flowercare_brightness:
+    friendly_name: Gummibaum - Ficus elastica
+    icon: mdi:brightness-5
+
+#------------------------------------------------------------------------------
+plant.plant8_flowercare:
+    friendly_name: Pflanze 8
+
+sensor.plant8_flowercare_battery:
+    friendly_name: Pflanze 8
+    icon: mdi:battery
+
+sensor.plant8_flowercare_moisture:
+    friendly_name: Pflanze 8
+    icon: mdi:water-percent
+
+sensor.plant8_flowercare_temperature:
+    friendly_name: Pflanze 8
+
+sensor.plant8_flowercare_conductivity:
+    friendly_name: Pflanze 8
+    icon: mdi:currency-ils
+
+sensor.plant8_flowercare_brightness:
+    friendly_name: Pflanze 8
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
