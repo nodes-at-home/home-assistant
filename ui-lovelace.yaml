@@ -33,7 +33,7 @@ views:
                       top: 40%
                       left: 13%
                   - type: state-badge
-                    entity: device_tracker.121_nina_galaxy_wlan
+                    entity: device_tracker.147_nina_galaxy_a52s_5g_wlan
                     style:
                       top: 40%
                       left: 17%
