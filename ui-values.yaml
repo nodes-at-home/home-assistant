@@ -157,7 +157,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: sensor
-                entity: sensor.plant1_flowercare_moisture
+                entity: sensor.goldfruchtpalme_flowercare_moisture
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -165,55 +165,22 @@ views:
                   min: 0
                   max: 100
               - type: sensor
-                entity: sensor.plant1_flowercare_conductivity
+                entity: sensor.goldfruchtpalme_flowercare_conductivity
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant1_flowercare_brightness
+                entity: sensor.goldfruchtpalme_flowercare_brightness
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant1_flowercare_temperature
+                entity: sensor.goldfruchtpalme_flowercare_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant1_flowercare_battery
-                graph: line
-                detail: 2
-                hours_to_show: 24
-                limits:
-                  min: 0
-                  max: 100
-          - type: horizontal-stack
-            cards:
-              - type: sensor
-                entity: sensor.plant2_flowercare_moisture
-                graph: line
-                detail: 2
-                hours_to_show: 24
-                limits:
-                  min: 0
-                  max: 100
-              - type: sensor
-                entity: sensor.plant2_flowercare_conductivity
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.plant2_flowercare_brightness
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.plant2_flowercare_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.plant2_flowercare_battery
+                entity: sensor.goldfruchtpalme_flowercare_battery
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -223,7 +190,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: sensor
-                entity: sensor.plant3_flowercare_moisture
+                entity: sensor.birkenfeige_flowercare_moisture
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -231,55 +198,22 @@ views:
                   min: 0
                   max: 100
               - type: sensor
-                entity: sensor.plant3_flowercare_conductivity
+                entity: sensor.birkenfeige_flowercare_conductivity
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant3_flowercare_brightness
+                entity: sensor.birkenfeige_flowercare_brightness
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant3_flowercare_temperature
+                entity: sensor.birkenfeige_flowercare_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant3_flowercare_battery
-                graph: line
-                detail: 2
-                hours_to_show: 24
-                limits:
-                  min: 0
-                  max: 100
-          - type: horizontal-stack
-            cards:
-              - type: sensor
-                entity: sensor.plant4_flowercare_moisture
-                graph: line
-                detail: 2
-                hours_to_show: 24
-                limits:
-                  min: 0
-                  max: 100
-              - type: sensor
-                entity: sensor.plant4_flowercare_conductivity
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.plant4_flowercare_brightness
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.plant4_flowercare_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.plant4_flowercare_battery
+                entity: sensor.birkenfeige_flowercare_battery
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -289,7 +223,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: sensor
-                entity: sensor.plant5_flowercare_moisture
+                entity: sensor.palmlilie_flowercare_moisture
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -297,55 +231,22 @@ views:
                   min: 0
                   max: 100
               - type: sensor
-                entity: sensor.plant5_flowercare_conductivity
+                entity: sensor.palmlilie_flowercare_conductivity
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant5_flowercare_brightness
+                entity: sensor.palmlilie_flowercare_brightness
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant5_flowercare_temperature
+                entity: sensor.palmlilie_flowercare_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant5_flowercare_battery
-                graph: line
-                detail: 2
-                hours_to_show: 24
-                limits:
-                  min: 0
-                  max: 100
-          - type: horizontal-stack
-            cards:
-              - type: sensor
-                entity: sensor.plant6_flowercare_moisture
-                graph: line
-                detail: 2
-                hours_to_show: 24
-                limits:
-                  min: 0
-                  max: 100
-              - type: sensor
-                entity: sensor.plant6_flowercare_conductivity
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.plant6_flowercare_brightness
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.plant6_flowercare_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.plant6_flowercare_battery
+                entity: sensor.palmlilie_flowercare_battery
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -355,7 +256,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: sensor
-                entity: sensor.plant7_flowercare_moisture
+                entity: sensor.bogenhanf_flowercare_moisture
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -363,22 +264,121 @@ views:
                   min: 0
                   max: 100
               - type: sensor
-                entity: sensor.plant7_flowercare_conductivity
+                entity: sensor.bogenhanf_flowercare_conductivity
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant7_flowercare_brightness
+                entity: sensor.bogenhanf_flowercare_brightness
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant7_flowercare_temperature
+                entity: sensor.bogenhanf_flowercare_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant7_flowercare_battery
+                entity: sensor.bogenhanf_flowercare_battery
+                graph: line
+                detail: 2
+                hours_to_show: 24
+                limits:
+                  min: 0
+                  max: 100
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.korbmarante_flowercare_moisture
+                graph: line
+                detail: 2
+                hours_to_show: 24
+                limits:
+                  min: 0
+                  max: 100
+              - type: sensor
+                entity: sensor.korbmarante_flowercare_conductivity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.korbmarante_flowercare_brightness
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.korbmarante_flowercare_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.korbmarante_flowercare_battery
+                graph: line
+                detail: 2
+                hours_to_show: 24
+                limits:
+                  min: 0
+                  max: 100
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.fensterblatt_flowercare_moisture
+                graph: line
+                detail: 2
+                hours_to_show: 24
+                limits:
+                  min: 0
+                  max: 100
+              - type: sensor
+                entity: sensor.fensterblatt_flowercare_conductivity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.fensterblatt_flowercare_brightness
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.fensterblatt_flowercare_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.fensterblatt_flowercare_battery
+                graph: line
+                detail: 2
+                hours_to_show: 24
+                limits:
+                  min: 0
+                  max: 100
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.gummibaum_flowercare_moisture
+                graph: line
+                detail: 2
+                hours_to_show: 24
+                limits:
+                  min: 0
+                  max: 100
+              - type: sensor
+                entity: sensor.gummibaum_flowercare_conductivity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.gummibaum_flowercare_brightness
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.gummibaum_flowercare_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.gummibaum_flowercare_battery
                 graph: line
                 detail: 2
                 hours_to_show: 24

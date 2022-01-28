@@ -195,19 +195,19 @@ views:
         state_filter:
           - "home"
       - binary_sensor.bewegungsmelder1
-      # - plant.plant1_flowercare
-      # - plant.plant2_flowercare
-      # - plant.plant3_flowercare
-      # - plant.plant4_flowercare
+      # - plant.goldfruchtpalme_flowercare
+      # - plant.birkenfeige_flowercare
+      # - plant.palmlilie_flowercare
+      # - plant.bogenhanf_flowercare
       - type: entity-filter
         entities:
-          - plant.plant1_flowercare
-          - plant.plant2_flowercare
-          - plant.plant3_flowercare
-          - plant.plant4_flowercare
-          - plant.plant5_flowercare
-          - plant.plant6_flowercare
-          - plant.plant7_flowercare
+          - plant.goldfruchtpalme_flowercare
+          - plant.birkenfeige_flowercare
+          - plant.palmlilie_flowercare
+          - plant.bogenhanf_flowercare
+          - plant.korbmarante_flowercare
+          - plant.fensterblatt_flowercare
+          - plant.gummibaum_flowercare
           # - plant.plant8_flowercare
         state_filter:
           - "problem"
@@ -275,31 +275,31 @@ views:
           - type: plant-status
             name: Goldfruchtpalme - Dypsis lutescens
             link: https://www.mein-schoener-garten.de/pflanzen/goldfruchtpalme/goldfruchtpalme
-            entity: plant.plant1_flowercare
+            entity: plant.goldfruchtpalme_flowercare
           - type: plant-status
             name: Birkenfeige - Ficus benjamina
             link: https://www.mein-schoener-garten.de/pflanzen/feige/birkenfeige
-            entity: plant.plant2_flowercare
+            entity: plant.birkenfeige_flowercare
           - type: plant-status
             name: Riesen-Palmlilie - Yucca elephantipes
             link: https://www.mein-schoener-garten.de/pflanzen/palmlilie-yucca/yucca-palme
-            entity: plant.plant3_flowercare
+            entity: plant.palmlilie_flowercare
           - type: plant-status
             name: Bogenhanf - Sansevieria trifasciata
             link: https://www.mein-schoener-garten.de/pflanzen/bogenhanf-sansevieria
-            entity: plant.plant4_flowercare
+            entity: plant.bogenhanf_flowercare
           - type: plant-status
             name: Korbmarante - Calathea rufibarba
             link: https://www.mein-schoener-garten.de/pflanzen/korbmarante/calathea-rufibarba
-            entity: plant.plant5_flowercare
+            entity: plant.korbmarante_flowercare
           - type: plant-status
             name: Fensterblatt - Monstera deliciosa
             link: https://www.mein-schoener-garten.de/pflanzen/fensterblatt/monstera-fensterblatt
-            entity: plant.plant6_flowercare
+            entity: plant.fensterblatt_flowercare
           - type: plant-status
             name: Gummibaum - Ficus elastica
             link: https://www.mein-schoener-garten.de/pflanzen/feige/gummibaum
-            entity: plant.plant7_flowercare
+            entity: plant.gummibaum_flowercare
           - type: plant-status
             name: Pfanze 8
             link:

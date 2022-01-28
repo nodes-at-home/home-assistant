@@ -81,41 +81,41 @@ influxdb:
         - sensor.soil_garden_moisture2
         - sensor.soil_garden_moisture3
         - sensor.rain_garden_precipitation
-        - sensor.plant1_flowercare_battery
-        - sensor.plant1_flowercare_moisture
-        - sensor.plant1_flowercare_temperature
-        - sensor.plant1_flowercare_conductivity
-        - sensor.plant1_flowercare_brightness
-        - sensor.plant2_flowercare_battery
-        - sensor.plant2_flowercare_moisture
-        - sensor.plant2_flowercare_temperature
-        - sensor.plant2_flowercare_conductivity
-        - sensor.plant2_flowercare_brightness
-        - sensor.plant3_flowercare_battery
-        - sensor.plant3_flowercare_moisture
-        - sensor.plant3_flowercare_temperature
-        - sensor.plant3_flowercare_conductivity
-        - sensor.plant3_flowercare_brightness
-        - sensor.plant4_flowercare_battery
-        - sensor.plant4_flowercare_moisture
-        - sensor.plant4_flowercare_temperature
-        - sensor.plant4_flowercare_conductivity
-        - sensor.plant4_flowercare_brightness
-        - sensor.plant5_flowercare_battery
-        - sensor.plant5_flowercare_moisture
-        - sensor.plant5_flowercare_temperature
-        - sensor.plant5_flowercare_conductivity
-        - sensor.plant5_flowercare_brightness
-        - sensor.plant6_flowercare_battery
-        - sensor.plant6_flowercare_moisture
-        - sensor.plant6_flowercare_temperature
-        - sensor.plant6_flowercare_conductivity
-        - sensor.plant6_flowercare_brightness
-        - sensor.plant7_flowercare_battery
-        - sensor.plant7_flowercare_moisture
-        - sensor.plant7_flowercare_temperature
-        - sensor.plant7_flowercare_conductivity
-        - sensor.plant7_flowercare_brightness
+        - sensor.goldfruchtpalme_flowercare_battery
+        - sensor.goldfruchtpalme_flowercare_moisture
+        - sensor.goldfruchtpalme_flowercare_temperature
+        - sensor.goldfruchtpalme_flowercare_conductivity
+        - sensor.goldfruchtpalme_flowercare_brightness
+        - sensor.birkenfeige_flowercare_battery
+        - sensor.birkenfeige_flowercare_moisture
+        - sensor.birkenfeige_flowercare_temperature
+        - sensor.birkenfeige_flowercare_conductivity
+        - sensor.birkenfeige_flowercare_brightness
+        - sensor.palmlilie_flowercare_battery
+        - sensor.palmlilie_flowercare_moisture
+        - sensor.palmlilie_flowercare_temperature
+        - sensor.palmlilie_flowercare_conductivity
+        - sensor.palmlilie_flowercare_brightness
+        - sensor.bogenhanf_flowercare_battery
+        - sensor.bogenhanf_flowercare_moisture
+        - sensor.bogenhanf_flowercare_temperature
+        - sensor.bogenhanf_flowercare_conductivity
+        - sensor.bogenhanf_flowercare_brightness
+        - sensor.korbmarante_flowercare_battery
+        - sensor.korbmarante_flowercare_moisture
+        - sensor.korbmarante_flowercare_temperature
+        - sensor.korbmarante_flowercare_conductivity
+        - sensor.korbmarante_flowercare_brightness
+        - sensor.fensterblatt_flowercare_battery
+        - sensor.fensterblatt_flowercare_moisture
+        - sensor.fensterblatt_flowercare_temperature
+        - sensor.fensterblatt_flowercare_conductivity
+        - sensor.fensterblatt_flowercare_brightness
+        - sensor.gummibaum_flowercare_battery
+        - sensor.gummibaum_flowercare_moisture
+        - sensor.gummibaum_flowercare_temperature
+        - sensor.gummibaum_flowercare_conductivity
+        - sensor.gummibaum_flowercare_brightness
         - sensor.plant8_flowercare_battery
         - sensor.plant8_flowercare_moisture
         - sensor.plant8_flowercare_temperature

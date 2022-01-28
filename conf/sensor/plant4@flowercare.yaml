@@ -3,36 +3,36 @@
 ###
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/flowercare/plant4
-    name: "plant4@flowercare_battery"
+    state_topic: nodes@home/sensor/flowercare/bogenhanf
+    name: "bogenhanf@flowercare_battery"
     qos: 0
     value_template: '{{ value_json.battery | int }}'
     unit_of_measurement: "%"
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/flowercare/plant4
-    name: "plant4@flowercare_moisture"
+    state_topic: nodes@home/sensor/flowercare/bogenhanf
+    name: "bogenhanf@flowercare_moisture"
     qos: 0
     value_template: '{{ value_json.moisture | int }}'
     unit_of_measurement: "%"
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/flowercare/plant4
-    name: "plant4@flowercare_temperature"
+    state_topic: nodes@home/sensor/flowercare/bogenhanf
+    name: "bogenhanf@flowercare_temperature"
     qos: 0
     value_template: '{{ value_json.temperature | float }}'
     unit_of_measurement: "°C"
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/flowercare/plant4
-    name: "plant4@flowercare_conductivity"
+    state_topic: nodes@home/sensor/flowercare/bogenhanf
+    name: "bogenhanf@flowercare_conductivity"
     qos: 0
     value_template: '{{ value_json.conductivity | int }}'
     unit_of_measurement: "µS/cm"
 
   - platform: mqtt
-    state_topic: nodes@home/sensor/flowercare/plant4
-    name: "plant4@flowercare_brightness"
+    state_topic: nodes@home/sensor/flowercare/bogenhanf
+    name: "bogenhanf@flowercare_brightness"
     qos: 0
     value_template: '{{ value_json.light | int }}'
     unit_of_measurement: "Lux"

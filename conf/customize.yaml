@@ -1052,163 +1052,163 @@ sensor.cpu_temp:
     friendly_name: CPU
 
 #------------------------------------------------------------------------------
-plant.plant1_flowercare:
+plant.goldfruchtpalme_flowercare:
     friendly_name: Goldfruchtpalme - Dypsis lutescens
 
-sensor.plant1_flowercare_battery:
+sensor.goldfruchtpalme_flowercare_battery:
     friendly_name: Goldfruchtpalme - Dypsis lutescens
     icon: mdi:battery
 
-sensor.plant1_flowercare_moisture:
+sensor.goldfruchtpalme_flowercare_moisture:
     friendly_name: Goldfruchtpalme - Dypsis lutescens
     icon: mdi:water-percent
 
-sensor.plant1_flowercare_temperature:
+sensor.goldfruchtpalme_flowercare_temperature:
     friendly_name: Goldfruchtpalme - Dypsis lutescens
 
-sensor.plant1_flowercare_conductivity:
+sensor.goldfruchtpalme_flowercare_conductivity:
     friendly_name: Goldfruchtpalme - Dypsis lutescens
     icon: mdi:currency-ils
 
-sensor.plant1_flowercare_brightness:
+sensor.goldfruchtpalme_flowercare_brightness:
     friendly_name: Goldfruchtpalme - Dypsis lutescens
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
-plant.plant2_flowercare:
+plant.birkenfeige_flowercare:
     friendly_name: Birkenfeige - Ficus benjamina
 
-sensor.plant2_flowercare_battery:
+sensor.birkenfeige_flowercare_battery:
     friendly_name: Birkenfeige - Ficus benjamina
     icon: mdi:battery
 
-sensor.plant2_flowercare_moisture:
+sensor.birkenfeige_flowercare_moisture:
     friendly_name: Birkenfeige - Ficus benjamina
     icon: mdi:water-percent
 
-sensor.plant2_flowercare_temperature:
+sensor.birkenfeige_flowercare_temperature:
     friendly_name: Birkenfeige - Ficus benjamina
 
-sensor.plant2_flowercare_conductivity:
+sensor.birkenfeige_flowercare_conductivity:
     friendly_name: Birkenfeige - Ficus benjamina
     icon: mdi:currency-ils
 
-sensor.plant2_flowercare_brightness:
+sensor.birkenfeige_flowercare_brightness:
     friendly_name: Birkenfeige - Ficus benjamina
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
-plant.plant3_flowercare:
-    friendly_name: Yucca - Yucca elephantipes
+plant.palmlilie_flowercare:
+    friendly_name: Riesen-Palmliie - Yucca elephantipes
 
-sensor.plant3_flowercare_battery:
-    friendly_name: Yucca - Yucca elephantipes
+sensor.palmlilie_flowercare_battery:
+    friendly_name: Riesen-Palmliie - Yucca elephantipes
     icon: mdi:battery
 
-sensor.plant3_flowercare_moisture:
-    friendly_name: Yucca - Yucca elephantipes
+sensor.palmlilie_flowercare_moisture:
+    friendly_name: Riesen-Palmliie - Yucca elephantipes
     icon: mdi:water-percent
 
-sensor.plant3_flowercare_temperature:
-    friendly_name: Yucca - Yucca elephantipes
+sensor.palmlilie_flowercare_temperature:
+    friendly_name: Riesen-Palmliie - Yucca elephantipes
 
-sensor.plant3_flowercare_conductivity:
-    friendly_name: Yucca - Yucca elephantipes
+sensor.palmlilie_flowercare_conductivity:
+    friendly_name: Riesen-Palmliie - Yucca elephantipes
     icon: mdi:currency-ils
 
-sensor.plant3_flowercare_brightness:
-    friendly_name: Yucca - Yucca elephantipes
+sensor.palmlilie_flowercare_brightness:
+    friendly_name: Riesen-Palmliie - Yucca elephantipes
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
-plant.plant4_flowercare:
+plant.bogenhanf_flowercare:
     friendly_name: Bogenhanf - Sansevieria trifasciata
 
-sensor.plant4_flowercare_battery:
+sensor.bogenhanf_flowercare_battery:
     friendly_name: Bogenhanf - Sansevieria trifasciata
     icon: mdi:battery
 
-sensor.plant4_flowercare_moisture:
+sensor.bogenhanf_flowercare_moisture:
     friendly_name: Bogenhanf - Sansevieria trifasciata
     icon: mdi:water-percent
 
-sensor.plant4_flowercare_temperature:
+sensor.bogenhanf_flowercare_temperature:
     friendly_name: Bogenhanf - Sansevieria trifasciata
 
-sensor.plant4_flowercare_conductivity:
+sensor.bogenhanf_flowercare_conductivity:
     friendly_name: Bogenhanf - Sansevieria trifasciata
     icon: mdi:currency-ils
 
-sensor.plant4_flowercare_brightness:
+sensor.bogenhanf_flowercare_brightness:
     friendly_name: Bogenhanf - Sansevieria trifasciata
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
-plant.plant5_flowercare:
+plant.korbmarante_flowercare:
     friendly_name: Korbmarante - Calathea rufibarba
 
-sensor.plant5_flowercare_battery:
+sensor.korbmarante_flowercare_battery:
     friendly_name: Korbmarante - Calathea rufibarba
     icon: mdi:battery
 
-sensor.plant5_flowercare_moisture:
+sensor.korbmarante_flowercare_moisture:
     friendly_name: Korbmarante - Calathea rufibarba
     icon: mdi:water-percent
 
-sensor.plant5_flowercare_temperature:
+sensor.korbmarante_flowercare_temperature:
     friendly_name: Korbmarante - Calathea rufibarba
 
-sensor.plant5_flowercare_conductivity:
+sensor.korbmarante_flowercare_conductivity:
     friendly_name: Korbmarante - Calathea rufibarba
     icon: mdi:currency-ils
 
-sensor.plant5_flowercare_brightness:
+sensor.korbmarante_flowercare_brightness:
     friendly_name: Korbmarante - Calathea rufibarba
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
-plant.plant6_flowercare:
+plant.fensterblatt_flowercare:
     friendly_name: Fensterblatt - Monstera deliciosa
 
-sensor.plant6_flowercare_battery:
+sensor.fensterblatt_flowercare_battery:
     friendly_name: Fensterblatt - Monstera deliciosa
     icon: mdi:battery
 
-sensor.plant6_flowercare_moisture:
+sensor.fensterblatt_flowercare_moisture:
     friendly_name: Fensterblatt - Monstera deliciosa
     icon: mdi:water-percent
 
-sensor.plant6_flowercare_temperature:
+sensor.fensterblatt_flowercare_temperature:
     friendly_name: Fensterblatt - Monstera deliciosa
 
-sensor.plant6_flowercare_conductivity:
+sensor.fensterblatt_flowercare_conductivity:
     friendly_name: Fensterblatt - Monstera deliciosa
     icon: mdi:currency-ils
 
-sensor.plant6_flowercare_brightness:
+sensor.fensterblatt_flowercare_brightness:
     friendly_name: Fensterblatt - Monstera deliciosa
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
-plant.plant7_flowercare:
+plant.gummibaum_flowercare:
     friendly_name: Gummibaum - Ficus elastica
 
-sensor.plant7_flowercare_battery:
+sensor.gummibaum_flowercare_battery:
     friendly_name: Gummibaum - Ficus elastica
     icon: mdi:battery
 
-sensor.plant7_flowercare_moisture:
+sensor.gummibaum_flowercare_moisture:
     friendly_name: Gummibaum - Ficus elastica
     icon: mdi:water-percent
 
-sensor.plant7_flowercare_temperature:
+sensor.gummibaum_flowercare_temperature:
     friendly_name: Gummibaum - Ficus elastica
 
-sensor.plant7_flowercare_conductivity:
+sensor.gummibaum_flowercare_conductivity:
     friendly_name: Gummibaum - Ficus elastica
     icon: mdi:currency-ils
 
-sensor.plant7_flowercare_brightness:
+sensor.gummibaum_flowercare_brightness:
     friendly_name: Gummibaum - Ficus elastica
     icon: mdi:brightness-5
 

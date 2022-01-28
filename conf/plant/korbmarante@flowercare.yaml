@@ -1,0 +1,14 @@
+###
+### junand 12.01.2022
+###
+
+sensors:
+    moisture: sensor.korbmarante_flowercare_moisture
+    battery: sensor.korbmarante_flowercare_battery
+    temperature: sensor.korbmarante_flowercare_temperature
+    conductivity: sensor.korbmarante_flowercare_conductivity
+    brightness: sensor.korbmarante_flowercare_brightness
+min_moisture: 1
+min_battery: 20
+min_conductivity: 0
+min_temperature: 15

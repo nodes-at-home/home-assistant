@@ -1,0 +1,14 @@
+###
+### junand 12.01.2022
+###
+
+sensors:
+    moisture: sensor.gummibaum_flowercare_moisture
+    battery: sensor.gummibaum_flowercare_battery
+    temperature: sensor.gummibaum_flowercare_temperature
+    conductivity: sensor.gummibaum_flowercare_conductivity
+    brightness: sensor.gummibaum_flowercare_brightness
+min_moisture: 1
+min_battery: 20
+min_conductivity: 0
+min_temperature: 15

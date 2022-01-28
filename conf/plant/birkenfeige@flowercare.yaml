@@ -1,0 +1,14 @@
+###
+### junand 12.01.2022
+###
+
+sensors:
+    moisture: sensor.birkenfeige_flowercare_moisture
+    battery: sensor.birkenfeige_flowercare_battery
+    temperature: sensor.birkenfeige_flowercare_temperature
+    conductivity: sensor.birkenfeige_flowercare_conductivity
+    brightness: sensor.birkenfeige_flowercare_brightness
+min_moisture: 5
+min_battery: 20
+min_conductivity: 0
+min_temperature: 15
