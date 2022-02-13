@@ -233,7 +233,6 @@ views:
           - light.rfhub_lounge_lamploungeblackbowl
           - light.rfhub_lounge_lamploungereading
           - light.rfhub_lounge_lampstudypillar
-          - switch.sonoff_k8200_socket
           - binary_sensor.rauchwarnmelder_wohnz
           - type: divider
           - light.led_corridor_led
@@ -258,6 +257,7 @@ views:
           - binary_sensor.rauchwarnmelder_schlafz
           - type: divider
           - light.sonoff_corridor_lamp
+          - switch.sonoff_k8200_socket
           - binary_sensor.rauchwarnmelder_buro
           - type: divider
           - binary_sensor.rauchwarnmelder_kinderz
@@ -346,11 +346,12 @@ views:
           - light.rfhub_lounge_star
           - light.rfhub_lounge_drops
       - type: entities
-        title: Garagentor
+        title: Garage
         show_header_toggle: true
         entities:
           - cover.relay_garage
           - sensor.relay_garage_state
+          - binary_sensor.rauchwarnmelder_garage
       - type: entities
         title: Türen
         show_header_toggle: false

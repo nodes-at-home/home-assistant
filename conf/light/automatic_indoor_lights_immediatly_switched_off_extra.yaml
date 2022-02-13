@@ -7,6 +7,6 @@
   - platform: group
     name: automatic_indoor_lights_immediatly_switched_off_extra
     entities:
-      - light.rfhub_lounge_lampLoungeWhiteBall
+      # - light.rfhub_lounge_lampLoungeWhiteBall
       - light.sonoff_bedroom_socket
       - light.sonoff_kitchen_led
