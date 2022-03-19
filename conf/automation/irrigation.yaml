@@ -60,9 +60,9 @@
     action:
       - service: switch.turn_on
         entity_id: switch.relay_garden_valve
-      - service: input_boolean.turn_off
-        target:
-            entity_id: input_boolean.irrigation_period_1_active
+      # - service: input_boolean.turn_off
+        # target:
+            # entity_id: input_boolean.irrigation_period_1_active
 
   - alias: irrigation_count_no_rain_days_increment
     id: irrigation_count_no_rain_days_increment
