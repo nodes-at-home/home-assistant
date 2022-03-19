@@ -15,13 +15,15 @@ device_tracker.156_andreas_pixel_6_pro_wlan:
 device_tracker.111_undine_xperia_wlan:
     friendly_name: Undine
     entity_picture: /local/people/Undine.jpg
-device_tracker.112_nora_galaxy_a52_wlan:
+# device_tracker.112_nora_galaxy_a52_wlan:
+device_tracker.galaxy_a52:
     friendly_name: Nora
     entity_picture: /local/people/Nora.jpg
 device_tracker.147_nina_galaxy_a52s_5g_wlan:
     friendly_name: Nina
     entity_picture: /local/people/Nina.jpg
-device_tracker.132_niklas_galaxy_a52_wlan:
+# device_tracker.132_niklas_galaxy_a52_wlan:
+device_tracker.a52_von_niklas:
     friendly_name: Niklas
     entity_picture: /local/people/Niklas.jpg
 device_tracker.140_dominik_xperia_wlan:
