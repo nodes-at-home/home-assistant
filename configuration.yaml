@@ -116,11 +116,11 @@ influxdb:
         - sensor.gummibaum_flowercare_temperature
         - sensor.gummibaum_flowercare_conductivity
         - sensor.gummibaum_flowercare_brightness
-        - sensor.plant8_flowercare_battery
-        - sensor.plant8_flowercare_moisture
-        - sensor.plant8_flowercare_temperature
-        - sensor.plant8_flowercare_conductivity
-        - sensor.plant8_flowercare_brightness
+        - sensor.fiederaralie_flowercare_battery
+        - sensor.fiederaralie_flowercare_moisture
+        - sensor.fiederaralie_flowercare_temperature
+        - sensor.fiederaralie_flowercare_conductivity
+        - sensor.fiederaralie_flowercare_brightness
   ignore_attributes:
     - friendly_name
     - icon

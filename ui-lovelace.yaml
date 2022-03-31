@@ -210,7 +210,7 @@ views:
           - plant.korbmarante_flowercare
           - plant.fensterblatt_flowercare
           - plant.gummibaum_flowercare
-          # - plant.plant8_flowercare
+          - plant.fliederaralie_flowercare
         state_filter:
           - "problem"
     cards:
@@ -303,9 +303,9 @@ views:
             link: https://www.mein-schoener-garten.de/pflanzen/feige/gummibaum
             entity: plant.gummibaum_flowercare
           - type: plant-status
-            name: Pfanze 8
-            link:
-            entity: plant.plant8_flowercare
+            name: Fiederaralie - Polyscias
+            link: https://www.mein-schoener-garten.de/pflanzen/fiederaralie/fiederaralie
+            entity: plant.fiederaralie_flowercare
 
     
   - title: Außen

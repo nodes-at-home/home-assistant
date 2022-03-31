@@ -1215,26 +1215,26 @@ sensor.gummibaum_flowercare_brightness:
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
-plant.plant8_flowercare:
-    friendly_name: Pflanze 8
+plant.fiederaralie_flowercare:
+    friendly_name: Fiederaralie - Polyscias
 
-sensor.plant8_flowercare_battery:
-    friendly_name: Pflanze 8
+sensor.fiederaralie_flowercare_battery:
+    friendly_name: Fiederaralie - Polyscias
     icon: mdi:battery
 
-sensor.plant8_flowercare_moisture:
-    friendly_name: Pflanze 8
+sensor.fiederaralie_flowercare_moisture:
+    friendly_name: Fiederaralie - Polyscias
     icon: mdi:water-percent
 
-sensor.plant8_flowercare_temperature:
-    friendly_name: Pflanze 8
+sensor.fiederaralie_flowercare_temperature:
+    friendly_name: Fiederaralie - Polyscias
 
-sensor.plant8_flowercare_conductivity:
-    friendly_name: Pflanze 8
+sensor.fiederaralie_flowercare_conductivity:
+    friendly_name: Fiederaralie - Polyscias
     icon: mdi:currency-ils
 
-sensor.plant8_flowercare_brightness:
-    friendly_name: Pflanze 8
+sensor.fiederaralie_flowercare_brightness:
+    friendly_name: Fiederaralie - Polyscias
     icon: mdi:brightness-5
 
 #------------------------------------------------------------------------------
