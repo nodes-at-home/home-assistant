@@ -1,15 +1,19 @@
 import base64
-import gzip
 import hashlib
 import hmac
 import json
+import logging
 import os
 import random
-import requests
 import time
+from typing import Optional
+from Crypto.Cipher import ARC4
 
-from .const import *
-from .map_data_parser import MapDataParser
+import requests
+
+from custom_components.xiaomi_cloud_map_extractor.const import *
+
+_LOGGER = logging.getLogger(__name__)
 
 
 # noinspection PyBroadException
@@ -67,16 +71,26 @@ class XiaomiCloudConnector:
             response = self._session.post(url, headers=headers, params=fields, timeout=10)
         except:
             response = None
-        successful = response is not None and response.status_code == 200 and "ssecurity" in self.to_json(
-            response.text) and len(str(self.to_json(response.text)["ssecurity"])) > 4
+        successful = response is not None and response.status_code == 200
         if successful:
             json_resp = self.to_json(response.text)
-            self._ssecurity = json_resp["ssecurity"]
-            self._userId = json_resp["userId"]
-            self._cUserId = json_resp["cUserId"]
-            self._passToken = json_resp["passToken"]
-            self._location = json_resp["location"]
-            self._code = json_resp["code"]
+            successful = "ssecurity" in json_resp and len(str(json_resp["ssecurity"])) > 4
+            if successful:
+                self._ssecurity = json_resp["ssecurity"]
+                self._userId = json_resp["userId"]
+                self._cUserId = json_resp["cUserId"]
+                self._passToken = json_resp["passToken"]
+                self._location = json_resp["location"]
+                self._code = json_resp["code"]
+            else:
+                if "notificationUrl" in json_resp:
+                    _LOGGER.error(
+                        "Additional authentication required. " +
+                        "Open following URL using device that has the same public IP, " +
+                        "as your Home Assistant instance: %s ",
+                        json_resp["notificationUrl"])
+                    successful = None
+
         return successful
 
     def login_step_3(self):
@@ -88,9 +102,10 @@ class XiaomiCloudConnector:
             response = self._session.get(self._location, headers=headers, timeout=10)
         except:
             response = None
-        if response is not None and response.status_code == 200:
+        successful = response is not None and response.status_code == 200 and "serviceToken" in response.cookies
+        if successful:
             self._serviceToken = response.cookies.get("serviceToken")
-        return response.status_code == 200
+        return successful
 
     def login(self):
         self._session.close()
@@ -103,47 +118,7 @@ class XiaomiCloudConnector:
         self._session.cookies.set("deviceId", self._device_id, domain="xiaomi.com")
         return self.login_step_1() and self.login_step_2() and self.login_step_3()
 
-    def get_country_for_device(self, ip_address, token):
-        for country in CONF_AVAILABLE_COUNTRIES:
-            devices = self.get_devices(country)
-            if devices is None:
-                continue
-            found = list(filter(
-                lambda d: d["localip"] == ip_address and d["token"] == token,
-                devices["result"]["list"]))
-            if len(found) > 0:
-                return country
-        return None
-
-    def get_map_url(self, country, map_name):
-        url = self.get_api_url(country) + "/home/getmapfileurl"
-        params = {
-            "data": '{"obj_name":"' + map_name + '"}'
-        }
-        api_response = self.execute_api_call(url, params)
-        if api_response is None or "result" not in api_response or "url" not in api_response["result"]:
-            return None
-        return api_response["result"]["url"]
-
-    def get_map(self, country, map_name, colors, drawables, texts, sizes, image_config, store_response=False):
-        response = self.get_raw_map_data(country, map_name)
-        if response is None:
-            return None, False
-        map_stored = False
-        if store_response:
-            file1 = open("/tmp/map_data.gz", "wb")
-            file1.write(response)
-            file1.close()
-            map_stored = True
-        unzipped = gzip.decompress(response)
-        map_data = MapDataParser.parse(unzipped, colors, drawables, texts, sizes, image_config)
-        map_data.map_name = map_name
-        return map_data, map_stored
-
-    def get_raw_map_data(self, country, map_name):
-        if map_name is None:
-            return None
-        map_url = self.get_map_url(country, map_name)
+    def get_raw_map_data(self, map_url) -> Optional[bytes]:
         if map_url is not None:
             try:
                 response = self._session.get(map_url, timeout=10)
@@ -153,19 +128,37 @@ class XiaomiCloudConnector:
                 return response.content
         return None
 
+    def get_device_details(self, token, country):
+        countries_to_check = CONF_AVAILABLE_COUNTRIES
+        if country is not None:
+            countries_to_check = [country]
+        for country in countries_to_check:
+            devices = self.get_devices(country)
+            if devices is None:
+                continue
+            found = list(filter(lambda d: str(d["token"]).casefold() == str(token).casefold(),
+                                devices["result"]["list"]))
+            if len(found) > 0:
+                user_id = found[0]["uid"]
+                device_id = found[0]["did"]
+                model = found[0]["model"]
+                return country, user_id, device_id, model
+        return None, None, None, None
+
     def get_devices(self, country):
         url = self.get_api_url(country) + "/home/device_list"
         params = {
             "data": '{"getVirtualModel":false,"getHuamiDevices":0}'
         }
-        return self.execute_api_call(url, params)
+        return self.execute_api_call_encrypted(url, params)
 
-    def execute_api_call(self, url, params):
+    def execute_api_call_encrypted(self, url, params):
         headers = {
-            "Accept-Encoding": "gzip",
+            "Accept-Encoding": "identity",
             "User-Agent": self._agent,
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-xiaomi-protocal-flag-cli": "PROTOCAL-HTTP2"
+            "x-xiaomi-protocal-flag-cli": "PROTOCAL-HTTP2",
+            "MIOT-ENCRYPT-ALGORITHM": "ENCRYPT-RC4",
         }
         cookies = {
             "userId": str(self._userId),
@@ -180,18 +173,15 @@ class XiaomiCloudConnector:
         millis = round(time.time() * 1000)
         nonce = self.generate_nonce(millis)
         signed_nonce = self.signed_nonce(nonce)
-        signature = self.generate_signature(url.replace("/app", ""), signed_nonce, nonce, params)
-        fields = {
-            "signature": signature,
-            "_nonce": nonce,
-            "data": params["data"]
-        }
+        fields = self.generate_enc_params(url, "POST", signed_nonce, nonce, params, self._ssecurity)
+
         try:
             response = self._session.post(url, headers=headers, cookies=cookies, params=fields, timeout=10)
         except:
             response = None
         if response is not None and response.status_code == 200:
-            return response.json()
+            decoded = self.decrypt_rc4(self.signed_nonce(fields["_nonce"]), response.text)
+            return json.loads(decoded)
         return None
 
     def get_api_url(self, country):
@@ -225,5 +215,38 @@ class XiaomiCloudConnector:
         return base64.b64encode(signature.digest()).decode()
 
     @staticmethod
+    def generate_enc_signature(url, method, signed_nonce, params):
+        signature_params = [str(method).upper(), url.split("com")[1].replace("/app/", "/")]
+        for k, v in params.items():
+            signature_params.append(f"{k}={v}")
+        signature_params.append(signed_nonce)
+        signature_string = "&".join(signature_params)
+        return base64.b64encode(hashlib.sha1(signature_string.encode('utf-8')).digest()).decode()
+
+    @staticmethod
+    def generate_enc_params(url, method, signed_nonce, nonce, params, ssecurity):
+        params['rc4_hash__'] = XiaomiCloudConnector.generate_enc_signature(url, method, signed_nonce, params)
+        for k, v in params.items():
+            params[k] = XiaomiCloudConnector.encrypt_rc4(signed_nonce, v)
+        params.update({
+            'signature': XiaomiCloudConnector.generate_enc_signature(url, method, signed_nonce, params),
+            'ssecurity': ssecurity,
+            '_nonce': nonce,
+        })
+        return params
+
+    @staticmethod
     def to_json(response_text):
         return json.loads(response_text.replace("&&&START&&&", ""))
+
+    @staticmethod
+    def encrypt_rc4(password, payload):
+        r = ARC4.new(base64.b64decode(password))
+        r.encrypt(bytes(1024))
+        return base64.b64encode(r.encrypt(payload.encode())).decode()
+
+    @staticmethod
+    def decrypt_rc4(password, payload):
+        r = ARC4.new(base64.b64decode(password))
+        r.encrypt(bytes(1024))
+        return r.encrypt(base64.b64decode(payload))
