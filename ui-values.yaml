@@ -388,7 +388,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: sensor
-                entity: sensor.plant8_flowercare_moisture
+                entity: sensor.fiederaralie_flowercare_moisture
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -396,22 +396,22 @@ views:
                   min: 0
                   max: 100
               - type: sensor
-                entity: sensor.plant8_flowercare_conductivity
+                entity: sensor.fiederaralie_flowercare_conductivity
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant8_flowercare_brightness
+                entity: sensor.fiederaralie_flowercare_brightness
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant8_flowercare_temperature
+                entity: sensor.fiederaralie_flowercare_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.plant8_flowercare_battery
+                entity: sensor.fiederaralie_flowercare_battery
                 graph: line
                 detail: 2
                 hours_to_show: 24
