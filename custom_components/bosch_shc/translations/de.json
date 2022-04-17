@@ -1,46 +1,60 @@
 {
-    "title": "Bosch SHC",
     "config": {
         "flow_title": "Bosch SHC: {name}",
         "step": {
             "confirm_discovery": {
-                "description": "Möchten Sie das {model} bei {host} einrichten?"
+                "description": "Drücke den Knopf auf dem Bosch Smart Home Controller bis die LED zu blinken anfängt.\nBist du bereit, {model} @ {host} mit Home Assistant zu registrieren?"
             },
             "credentials": {
                 "data": {
-                    "ssl_certificate": "Öffentlicher Schlüssel des SSL-Zertifikats",
-                    "ssl_key": "Privater Schlüssel des SSL-Zertifikats"
+                    "password": "Passwort des Smart Home Controllers"
                 }
             },
             "user": {
-                "description": "Richten Sie Ihre Bosch SHC-Instanz ein, um die Überwachung und Steuerung zu ermöglichen.",
+                "description": "Richte deinen Bosch Smart Home Controller ein, um die Überwachung und Steuerung mit Home Assistant zu ermöglichen.",
                 "title": "SHC-Authentifizierungsparameter",
                 "data": {
-                    "host": "Host",
-                    "ssl_certificate": "Öffentlicher Schlüssel des SSL-Zertifikats",
-                    "ssl_key": "Privater Schlüssel des SSL-Zertifikats"
+                    "host": "Host"
+                }
+            },
+            "reauth_confirm": {
+                "title": "SHC-Authentifizierungsparameter",
+                "description": "Die bosch_shc Integration muss deinen Zugang neu authentifizieren.",
+                "data": {
+                    "host": "Host"
                 }
             }
         },
         "error": {
             "cannot_connect": "Verbindung fehlgeschlagen",
             "invalid_auth": "Ungültige Authentifizierung",
+            "pairing_failed": "Pairing fehlgeschlagen; Drücke den Knopf auf dem Bosch Smart Home Controller bis die LED zu blinken anfängt und prüfe dein Passwort.",
+            "session_error": "Session-Fehler: API liefert ungültiges Resultat.",
             "unknown": "Unerwarteter Fehler"
         },
         "abort": {
-            "already_configured": "Gerät ist bereits konfiguriert"
+            "already_configured": "Gerät ist bereits konfiguriert",
+            "reauth_successful": "Neue Authentifizierung erfolgreich abgeschlossen"
         }
     },
     "device_automation":{
         "trigger_subtype": {
             "LOWER_BUTTON": "Unterer Knopf",
-            "UPPER_BUTTON": "Oberer Knopf"
+            "UPPER_BUTTON": "Oberer Knopf",
+            "IDLE_OFF": "Alarm Aus",
+            "INTRUSION_ALARM": "Einbrecher Alarm",
+            "SECONDARY_ALARM": "Sekundärer Alarm",
+            "PRIMARY_ALARM": "Primärer Alarm",
+            "ALARM_OFF": "Alarm Aus",
+            "ALARM_ON": "Alarm An",
+            "ALARM_MUTED": "Alarm Lautlos"
         },
         "trigger_type": {
             "PRESS_SHORT": "{subtype} kurz gedrückt",
             "PRESS_LONG": "{subtype} lang gedrückt",
             "MOTION": "Bewegung erkannt",
-            "SCENARIO": "Szenario ausgelöst: {subtype}"
+            "SCENARIO": "Szenario {subtype} ausgelöst",
+            "ALARM": "{subtype} ausgelöst"
         }
     }
 }

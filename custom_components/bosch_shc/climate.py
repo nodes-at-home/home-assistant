@@ -16,7 +16,7 @@ from homeassistant.components.climate.const import (
 )
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
 
-from . import DOMAIN
+from .const import DATA_SESSION, DOMAIN
 from .entity import SHCEntity
 
 _LOGGER = logging.getLogger(__name__)
@@ -24,16 +24,15 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the SHC climate platform."""
-
     entities = []
-    session: SHCSession = hass.data[DOMAIN][config_entry.entry_id]
+    session: SHCSession = hass.data[DOMAIN][config_entry.entry_id][DATA_SESSION]
 
     for climate in session.device_helper.climate_controls:
         room_id = climate.room_id
         entities.append(
             ClimateControl(
                 device=climate,
-                parent_id=session.information.name,
+                parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
                 name=f"Room Climate {session.room(room_id).name}",
             )
@@ -171,6 +170,8 @@ class ClimateControl(SHCEntity, ClimateEntity):
     def set_hvac_mode(self, hvac_mode: str):
         """Set hvac mode."""
         if hvac_mode not in self.hvac_modes:
+            return
+        if self.preset_mode == PRESET_ECO:
             return
 
         if hvac_mode == HVAC_MODE_AUTO:

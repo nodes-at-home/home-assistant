@@ -1,34 +1,37 @@
 """Platform for cover integration."""
-import logging
-
 from boschshcpy import SHCSession, SHCShutterControl
+
 from homeassistant.components.cover import (
     ATTR_POSITION,
-    DEVICE_CLASS_SHUTTER,
     SUPPORT_CLOSE,
     SUPPORT_OPEN,
     SUPPORT_SET_POSITION,
     SUPPORT_STOP,
+    CoverDeviceClass,
     CoverEntity,
 )
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import DATA_SESSION, DOMAIN
 from .entity import SHCEntity
 
-_LOGGER = logging.getLogger(__name__)
 
-
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
     """Set up the SHC cover platform."""
-
     entities = []
-    session: SHCSession = hass.data[DOMAIN][config_entry.entry_id]
+    session: SHCSession = hass.data[DOMAIN][config_entry.entry_id][DATA_SESSION]
 
     for cover in session.device_helper.shutter_controls:
         entities.append(
             ShutterControlCover(
                 device=cover,
-                parent_id=session.information.name,
+                parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
             )
         )
@@ -40,20 +43,15 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 class ShutterControlCover(SHCEntity, CoverEntity):
     """Representation of a SHC shutter control device."""
 
-    @property
-    def supported_features(self):
-        """Flag supported features."""
-        return SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_STOP | SUPPORT_SET_POSITION
-
-    @property
-    def device_class(self):
-        """Return the class of this device, from component DEVICE_CLASSES."""
-        return DEVICE_CLASS_SHUTTER
+    _attr_device_class = CoverDeviceClass.SHUTTER
+    _attr_supported_features = (
+        SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_STOP | SUPPORT_SET_POSITION
+    )
 
     @property
     def current_cover_position(self):
-        """The current cover position."""
-        return self._device.level * 100.0
+        """Return the current cover position."""
+        return round(self._device.level * 100.0)
 
     def stop_cover(self, **kwargs):
         """Stop the cover."""
@@ -62,31 +60,23 @@ class ShutterControlCover(SHCEntity, CoverEntity):
     @property
     def is_closed(self):
         """Return if the cover is closed or not."""
-        if self.current_cover_position is None:
-            return None
-        if self.current_cover_position == 0.0:
-            return True
-        return False
+        return self.current_cover_position == 0
 
     @property
     def is_opening(self):
         """Return if the cover is opening or not."""
-        if (
+        return (
             self._device.operation_state
             == SHCShutterControl.ShutterControlService.State.OPENING
-        ):
-            return True
-        return False
+        )
 
     @property
     def is_closing(self):
         """Return if the cover is closing or not."""
-        if (
+        return (
             self._device.operation_state
             == SHCShutterControl.ShutterControlService.State.CLOSING
-        ):
-            return True
-        return False
+        )
 
     def open_cover(self, **kwargs):
         """Open the cover."""
@@ -98,7 +88,5 @@ class ShutterControlCover(SHCEntity, CoverEntity):
 
     def set_cover_position(self, **kwargs):
         """Move the cover to a specific position."""
-        if ATTR_POSITION in kwargs:
-            position = float(kwargs[ATTR_POSITION])
-            position = min(100, max(0, position))
-            self._device.level = position / 100.0
+        position = kwargs[ATTR_POSITION]
+        self._device.level = position / 100.0

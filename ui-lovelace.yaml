@@ -196,6 +196,7 @@ views:
           - entity: device_tracker.140_dominik_xperia_wlan
         state_filter:
           - "home"
+      - binary_sensor.smokedetectionsystem
       - binary_sensor.bewegungsmelder1
       # - plant.goldfruchtpalme_flowercare
       # - plant.birkenfeige_flowercare
@@ -327,6 +328,10 @@ views:
           - entity: binary_sensor.terassentur_kuche
           - entity: binary_sensor.terassentur_esszimmer
           - entity: binary_sensor.terassentur_wohnzimmer
+          - entity: binary_sensor.dachfenster_arbeitszimmer
+          - entity: binary_sensor.dachfenster_kinderzimmer
+          - entity: binary_sensor.dachfenster_schlafzimmer
+          - entity: binary_sensor.dachfenster_bad
         state_filter:
           # on = open, off = closed
           - "on"
@@ -355,7 +360,7 @@ views:
           - sensor.relay_garage_state
           - binary_sensor.rauchwarnmelder_garage
       - type: entities
-        title: Türen
+        title: Türen und Fenster
         show_header_toggle: false
         entities:
             - binary_sensor.eingangstur
@@ -365,6 +370,11 @@ views:
             - binary_sensor.terassentur_kuche
             - binary_sensor.terassentur_esszimmer
             - binary_sensor.terassentur_wohnzimmer
+            - type: divider
+            - binary_sensor.dachfenster_arbeitszimmer
+            - binary_sensor.dachfenster_kinderzimmer
+            - binary_sensor.dachfenster_schlafzimmer
+            - binary_sensor.dachfenster_bad
       - type: entities
         title: Garten
         show_header_toggle: false
@@ -610,64 +620,79 @@ views:
         show_header_toggle: false
         entities:
             - binary_sensor.rauchwarnmelder_flur
-            - sensor.rauchwarnmelder_flur_battery
+            - binary_sensor.rauchwarnmelder_flur_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_esszimmer
-            - sensor.rauchwarnmelder_esszimmer_battery
+            - binary_sensor.rauchwarnmelder_esszimmer_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_wohnz
-            - sensor.rauchwarnmelder_wohnz_battery
+            - binary_sensor.rauchwarnmelder_wohnz_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_hauswirt
-            - sensor.rauchwarnmelder_hauswirt_battery
+            - binary_sensor.rauchwarnmelder_hauswirt_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_garage
-            - sensor.rauchwarnmelder_garage_battery
+            - binary_sensor.rauchwarnmelder_garage_battery
       - type: entities
         title: Rauchmelder Obergeschoss
         show_header_toggle: false
         entities:
             - binary_sensor.rauchwarnmelder_buro
-            - sensor.rauchwarnmelder_buro_battery
+            - binary_sensor.rauchwarnmelder_buro_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_schlafz
-            - sensor.rauchwarnmelder_schlafz_battery
+            - binary_sensor.rauchwarnmelder_schlafz_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_kinderz
-            - sensor.rauchwarnmelder_kinderz_battery
+            - binary_sensor.rauchwarnmelder_kinderz_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_galerie
-            - sensor.rauchwarnmelder_galerie_battery
+            - binary_sensor.rauchwarnmelder_galerie_battery
             - type: divider
             - binary_sensor.rauchwarnmelder_dachboden
-            - sensor.rauchwarnmelder_dachboden_battery
+            - binary_sensor.rauchwarnmelder_dachboden_battery
       - type: entities
-        title: Tür-/Fensterkontakte
+        title: Türkontakte
         show_header_toggle: false
         entities:
             - binary_sensor.eingangstur
-            - sensor.eingangstur_battery
+            - binary_sensor.eingangstur_battery
             - type: divider
             - binary_sensor.nebentur
-            - sensor.nebentur_battery
+            - binary_sensor.nebentur_battery
             - type: divider
             - binary_sensor.dachboden
-            - sensor.dachboden_battery
+            - binary_sensor.dachboden_battery
             - type: divider
             - binary_sensor.garagentur
-            - sensor.garagentur_battery
+            - binary_sensor.garagentur_battery
             - type: divider
             - binary_sensor.garagentor
-            - sensor.garagentor_battery
+            - binary_sensor.garagentor_battery
             - type: divider
             - binary_sensor.terassentur_kuche
-            - sensor.terassentur_kuche_battery
+            - binary_sensor.terassentur_kuche_battery
             - type: divider
             - binary_sensor.terassentur_esszimmer
-            - sensor.terassentur_esszimmer_battery
+            - binary_sensor.terassentur_esszimmer_battery
             - type: divider
             - binary_sensor.terassentur_wohnzimmer
-            - sensor.terassentur_wohnzimmer_battery
+            - binary_sensor.terassentur_wohnzimmer_battery
+      - type: entities
+        title: Fensterkontakte
+        show_header_toggle: false
+        entities:
+            - binary_sensor.dachfenster_arbeitszimmer
+            - binary_sensor.dachfenster_arbeitszimmer_battery
+            - type: divider
+            - binary_sensor.dachfenster_kinderzimmer
+            - binary_sensor.dachfenster_kinderzimmer_battery
+            - type: divider
+            - binary_sensor.dachfenster_schlafzimmer
+            - binary_sensor.dachfenster_schlafzimmer_battery
+            - type: divider
+            - binary_sensor.dachfenster_bad
+            - binary_sensor.dachfenster_bad_battery
       - type: entities
         title: Bewegungsmelder
         show_header_toggle: false
