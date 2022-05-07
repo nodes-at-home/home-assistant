@@ -14,7 +14,13 @@ views:
       - sensor.cpu_temp
     cards:
       - type: entities
-        title: Raspberry Pi Server
+        title: Stage
+        show_header_toggle: false
+        entities:
+            - binary_sensor.prod_mode
+            - binary_sensor.dev_mode
+      - type: entities
+        title: RPi Server
         show_header_toggle: false
         entities:
             - sensor.processor_use
@@ -23,6 +29,15 @@ views:
             - sensor.disk_use
             - sensor.disk_use_percent
             - sensor.last_boot
+      - type: entities
+        title: Home Assistant
+        show_header_toggle: false
+        entities:
+            - sensor.current_version
+            - sensor.home_assistant_website
+            - binary_sensor.home_assistant_website_update_available
+            - sensor.docker_hub
+            - binary_sensor.docker_hub_update_available
       - type: entities
         title: DSL
         show_header_toggle: false

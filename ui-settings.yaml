@@ -5,27 +5,16 @@
 title: !env_var HA_TITLE
 views:
 
-  - title: Generell
-    path: general
+  - title: Lichter
+    path: lights
     panel: false
     cards:
-      - type: entities
-        title: Status
-        show_header_toggle: false
-        entities:
-            - binary_sensor.prod_mode
-            - binary_sensor.dev_mode
       - type: entities
         title: Abwesenheit
         show_header_toggle: false
         entities:
             - input_boolean.light_simulation
             - input_number.max_random_off_duration
-
-  - title: Lichter
-    path: lights
-    panel: false
-    cards:
       - type: entities
         title: Zeiten
         entities:
