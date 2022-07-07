@@ -38,16 +38,6 @@ logger:
     # boschshcpy: debug
 
 # -------------------------------------------------------------------------------
-# mqtt broker
-
-mqtt:
-  broker: mosquitto
-  port: 1883
-  client_id: home_assistant
-  keepalive: 120
-  protocol: 3.1.1
-
-# -------------------------------------------------------------------------------
 # influxdb
 # https://home-assistant.io/blog/2015/12/07/influxdb-and-grafana/
 
@@ -350,3 +340,13 @@ plant:          !include_dir_named          conf/plant
    # ssl_certificate: '/config/custom_components/bsh-client-cert.pem'
    # ssl_key: '/config/custom_components/bsh-client-key.pem'
    # name: 'SHC-Controller'
+
+# -------------------------------------------------------------------------------
+# mqtt broker
+
+# mqtt:
+  # broker: mosquitto
+  # port: 1883
+  # client_id: home_assistant
+  # keepalive: 120
+  # protocol: 3.1.1
