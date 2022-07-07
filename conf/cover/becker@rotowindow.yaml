@@ -1,0 +1,42 @@
+###
+### 07.07.2022 new
+###
+
+# https://github.com/RainerStaude/hass-becker-component-plus-pybecker
+
+  - platform: becker
+    # Optional device path (useful when running from docker container)
+    # Default device:
+    # "/dev/serial/by-id/usb-BECKER-ANTRIEBE_GmbH_CDC_RS232_v125_Centronic-if00"
+    device: "/dev/beckercentronicusb"
+    # Optional database filename (database is stored in HA config folder)
+    filename: "centronic-stick.db"
+    covers:
+      bedroom:
+        friendly_name: bedroom
+        channel: "1"
+        remote_id: "24A83:0,4A2BF:1"
+        travelling_time_up: 20
+        travelling_time_down: 15
+        intermediate_position_disable: true
+      bath:
+        friendly_name: bath
+        channel: "2"
+        remote_id: "24AA6:0,4A2BF:2"
+        travelling_time_up: 20
+        travelling_time_down: 15
+        intermediate_position_disable: true
+      office:
+        friendly_name: office
+        channel: "3"
+        remote_id: "24AAA:0,4A2BF:3"
+        travelling_time_up: 20
+        travelling_time_down: 15
+        intermediate_position_disable: true
+      nursery:
+        friendly_name: nursery
+        channel: "4"
+        remote_id: "24A90:0,4A2BF:4"
+        travelling_time_up: 20
+        travelling_time_down: 15
+        intermediate_position_disable: true

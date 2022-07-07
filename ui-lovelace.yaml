@@ -353,6 +353,14 @@ views:
           - light.rfhub_lounge_star
           - light.rfhub_lounge_drops
       - type: entities
+        title: Fensterrollos
+        show_header_toggle: false
+        entities:
+          - cover.bedroom
+          - cover.bath
+          - cover.office
+          - cover.nursery
+      - type: entities
         title: Garage
         show_header_toggle: true
         entities:

@@ -33,9 +33,10 @@ logger:
   # default: debug
   # default: info
   default: warn
-  logs:
-    homeassistant.components.automation: debug
+  # logs:
+    # homeassistant.components.automation: debug
     # boschshcpy: debug
+    # custom_components.becker: debug
 
 # -------------------------------------------------------------------------------
 # influxdb

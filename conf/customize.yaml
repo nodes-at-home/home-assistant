@@ -226,6 +226,7 @@ sensor.rfhub_lounge_version:
 #------------------------------------------------------------------------------
 cover.relay_garage:
     friendly_name: Garagentor
+    device_class: garage
 
 sensor.relay_garage_state:
     friendly_name: Garagentor
@@ -1240,5 +1241,22 @@ sensor.fiederaralie_flowercare_brightness:
 #------------------------------------------------------------------------------
 sensor.tileboard_temperature_template:
     icon: mdi:thermometer
+
+#------------------------------------------------------------------------------
+cover.bedroom:
+    friendly_name: Schlafzimmer
+    device_class: shutter
+
+cover.bath:
+    friendly_name: Bad
+    device_class: shutter
+
+cover.office:
+    friendly_name: Büro
+    device_class: shutter
+
+cover.nursery:
+    friendly_name: Kinderzimmer
+    device_class: shutter
 
 #------------------------------------------------------------------------------

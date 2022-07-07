@@ -9,3 +9,4 @@ bravia.conf
 __pycache__/
 *.pem
 .shopping_list.json
+centronic-stick.db
