@@ -77,6 +77,24 @@ views:
             - input_number.pool_pump_duration
             - input_datetime.pool_pump_start1
             - input_datetime.pool_pump_start2
+      - type: markdown
+        title: Hinweise
+        content: >
+            ### Gartenbewässerung
+
+            Die Bewässerung erfolgt an den eingestellten Tagen zur jeweiliegen eingestellten Periode.
+            Es werden die regenlosen und die warmen Tage gezählt.
+            Ein Tag ist regenlos, wenn der Schwellwert nicht überschritten wird.
+            Ein weiterer warmer Tag wird gezählt, wenn der gewählte Schwellwert überschritten wird.
+            Kurz vor Mitternacht wird gezählt und ermittelt, ob am nächsten Tag gegossen werden könnte.
+            Dazu muss die Anzahl der regenlosen Tage UND die Anzahl der warmen Tage den jeweiligen Schwellwert überschreiten.
+            Eine manuelle Steuerung kann erfolgen, wenn die Automatisierungsregel "irrigation_activate_period_1" deaktiviert wird.
+            Die Bewässerungsdauer wird in der Regel "irrigation_set_duration" ermittelt.
+            Die Standarddauer beträgt 60 min, ab 25°C beträgt sie 90 min und ab 30°C wird für 120 min bewässert.
+
+            ### Pumpdauer
+
+            Der Pool sollte täglich zweimal umgewälzt werden. Somit ergibt sich die tägliche Gesamtpumpdauer von 3,2h (3h und 6min<sup></sup>) aus dem Poolvolumen von 16m<sup>3</sup> und einem Pumpdurchsatz von 10m<sup>3</sup>/h.
 
   - title: Schalter
     path: buttons
