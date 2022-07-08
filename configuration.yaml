@@ -273,20 +273,26 @@ camera:
 
 # -------------------------------------------------------------------------------
 #
-sensor:         !include_dir_merge_list     conf/sensor
-binary_sensor:  !include_dir_merge_list     conf/binary_sensor
-light:          !include_dir_merge_list     conf/light
-switch:         !include_dir_merge_list     conf/switch
-cover:          !include_dir_merge_list     conf/cover
-group:          !include_dir_named          conf/group
-input_boolean:  !include_dir_merge_named    conf/input_boolean
-input_number:   !include_dir_named          conf/input_number
-input_select:   !include_dir_named          conf/input_select
-input_datetime: !include_dir_named          conf/input_datetime
-scene:          !include                    conf/scene.yaml
-automation:     !include_dir_merge_list     conf/automation
-counter:        !include_dir_named          conf/counter
-plant:          !include_dir_named          conf/plant
+sensor:             !include_dir_merge_list     conf/sensor
+binary_sensor:      !include_dir_merge_list     conf/binary_sensor
+light:              !include_dir_merge_list     conf/light
+switch:             !include_dir_merge_list     conf/switch
+cover:              !include_dir_merge_list     conf/cover
+group:              !include_dir_named          conf/group
+input_boolean:      !include_dir_merge_named    conf/input_boolean
+input_number:       !include_dir_named          conf/input_number
+input_select:       !include_dir_named          conf/input_select
+input_datetime:     !include_dir_named          conf/input_datetime
+scene:              !include                    conf/scene.yaml
+automation:         !include_dir_merge_list     conf/automation
+counter:            !include_dir_named          conf/counter
+plant:              !include_dir_named          conf/plant
+mqtt:
+    light:          !include_dir_merge_list     conf/mqtt_light
+    binary_sensor:  !include_dir_merge_list     conf/mqtt_binary_sensor
+    sensor:         !include_dir_merge_list     conf/mqtt_sensor
+    switch:         !include_dir_merge_list     conf/mqtt_switch
+    cover:          !include_dir_merge_list     conf/mqtt_cover
 
 # -------------------------------------------------------------------------------
 #

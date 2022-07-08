@@ -1,0 +1,24 @@
+###
+### 26.10.2020
+###
+
+  - state_topic: nodes@home/switch/shelly/shower
+    name: "shelly@shower_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - state_topic: nodes@home/switch/shelly/shower
+    name: "shelly@shower_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/switch/shelly/shower/value/voltage
+    name: "shelly@shower_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - state_topic: nodes@home/switch/shelly/shower/value/voltage
+    name: "shelly@shower_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

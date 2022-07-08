@@ -2,46 +2,6 @@
 ### 17.04.2021
 ###
 
-  - platform: mqtt
-    state_topic: nodes@home/sensor/rain/garden
-    name: "rain@garden_version"
-    qos: 0
-    value_template: '{{ value }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/rain/garden
-    name: "rain@garden_lastboot"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/rain/garden/value/voltage
-    name: "rain@garden_voltage"
-    qos: 0
-    unit_of_measurement: "V"
-    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/rain/garden/value/voltage
-    name: "rain@garden_lastvoltage"
-    qos: 0
-    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/rain/garden/value/rain
-    name: "rain@garden_precipitation"
-    qos: 0
-    force_update: true
-    unit_of_measurement: "mm"
-    value_template: '{{ value_json.rain }}'
-
-  - platform: mqtt
-    state_topic: nodes@home/sensor/rain/garden/value/rain
-    name: "rain@garden_ticks"
-    qos: 0
-    unit_of_measurement: "mm"
-    value_template: '{{ value_json.ticks }}'
-
   - platform: statistics
     name: "rain@garden_precipitation_last24h"
     entity_id: "sensor.rain_garden_precipitation"

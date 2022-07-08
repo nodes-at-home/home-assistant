@@ -1,0 +1,9 @@
+###
+### 25.10.2020
+###
+
+  - name: "shelly@shower_socket"
+    command_topic: nodes@home/switch/shelly/shower/socket
+    state_topic: nodes@home/switch/shelly/shower/socket/state
+    optimistic: false
+    retain: true

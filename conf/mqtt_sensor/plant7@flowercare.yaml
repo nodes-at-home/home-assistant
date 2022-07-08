@@ -1,0 +1,34 @@
+###
+### junand 12.01.2022
+###
+
+  - state_topic: nodes@home/sensor/flowercare/gummibaum
+    name: "gummibaum@flowercare_battery"
+    qos: 0
+    value_template: '{{ value_json.battery | int }}'
+    unit_of_measurement: "%"
+
+  - state_topic: nodes@home/sensor/flowercare/gummibaum
+    name: "gummibaum@flowercare_moisture"
+    qos: 0
+    value_template: '{{ value_json.moisture | int }}'
+    unit_of_measurement: "%"
+
+  - state_topic: nodes@home/sensor/flowercare/gummibaum
+    name: "gummibaum@flowercare_temperature"
+    qos: 0
+    value_template: '{{ value_json.temperature | float }}'
+    unit_of_measurement: "°C"
+
+  - state_topic: nodes@home/sensor/flowercare/gummibaum
+    name: "gummibaum@flowercare_conductivity"
+    qos: 0
+    value_template: '{{ value_json.conductivity | int }}'
+    unit_of_measurement: "µS/cm"
+
+  - state_topic: nodes@home/sensor/flowercare/gummibaum
+    name: "gummibaum@flowercare_brightness"
+    qos: 0
+    value_template: '{{ value_json.light | int }}'
+    unit_of_measurement: "Lux"
+

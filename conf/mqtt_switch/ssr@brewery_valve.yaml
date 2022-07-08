@@ -1,0 +1,9 @@
+###
+### 01.11.2020
+###
+
+  - name: "ssr@brewery_valve"
+    command_topic: nodes@home/control/ssr/brewery/valve
+    state_topic: nodes@home/control/ssr/brewery/valve/state
+    optimistic: false
+    retain: true

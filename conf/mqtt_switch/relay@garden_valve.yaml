@@ -1,0 +1,9 @@
+###
+### 07.03.2021
+###
+
+  - name: "relay@garden_valve"
+    command_topic: nodes@home/switch/relay/garden/valve
+    state_topic: nodes@home/switch/relay/garden/valve/state
+    optimistic: false
+    retain: true

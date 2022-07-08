@@ -1,0 +1,9 @@
+###
+### 22.08.2019 split up
+###
+
+  - name: "shelly@terrace_lamp"
+    command_topic: nodes@home/switch/shelly/terrace/lamp
+    state_topic: nodes@home/switch/shelly/terrace/lamp/state
+    optimistic: false
+    retain: true

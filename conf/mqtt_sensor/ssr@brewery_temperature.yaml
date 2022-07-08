@@ -1,0 +1,30 @@
+###
+### 22.08.2019 split up
+###
+
+  - state_topic: nodes@home/control/ssr/brewery/value/temperature
+    name: "ssr@brewery_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value | round ( 1 ) }}'
+
+  - state_topic: nodes@home/control/ssr/brewery
+    name: "ssr@brewery_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - state_topic: nodes@home/control/ssr/brewery
+    name: "ssr@brewery_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/control/ssr/brewery/value/voltage
+    name: "ssr@brewery_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - state_topic: nodes@home/control/ssr/brewery/value/voltage
+    name: "ssr@brewery_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

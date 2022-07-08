@@ -2,13 +2,6 @@
 ### 19.10.2019 pitouch
 ###
 
-  - platform: mqtt
-    state_topic: nodes@home/display/pitouch/corridor/value/ambient
-    name: "pitouch@corridor_ambientlight"
-    qos: 0
-    unit_of_measurement: " "
-    value_template: '{{ value_json.ambient | round ( 0 ) }}'
-
   - platform: template
     sensors:
         tileboard_temperature_template:

@@ -1,0 +1,36 @@
+###
+### 22.08.2019 split up
+###
+
+  - state_topic: nodes@home/sensor/spindle/fermenter/value/temperature
+    name: "spindle@fermenter_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value | round ( 1 ) }}'
+
+  - state_topic: nodes@home/sensor/spindle/fermenter/value/tilt
+    name: "spindle@fermenter_tilt"
+    qos: 0
+    unit_of_measurement: "°"
+    value_template: '{{ value_json.value }}'
+
+  - state_topic: nodes@home/sensor/spindle/fermenter
+    name: "spindle@fermenter_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - state_topic: nodes@home/sensor/spindle/fermenter
+    name: "spindle@fermenter_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/sensor/spindle/fermenter/value/voltage
+    name: "spindle@fermenter_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - state_topic: nodes@home/sensor/spindle/fermenter/value/voltage
+    name: "spindle@fermenter_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

@@ -1,0 +1,14 @@
+###
+### 22.08.2019 split up
+###
+
+  - name: ws2812@terrace1
+    schema: json
+    command_topic: nodes@home/light/ws2812/terrace1/led
+    state_topic: nodes@home/light/ws2812/terrace1/led/state
+    brightness: true
+    rgb: true
+    effect: true
+    effect_list: [static, blink, random_color, rainbow]
+    optimistic: false
+    retain: true

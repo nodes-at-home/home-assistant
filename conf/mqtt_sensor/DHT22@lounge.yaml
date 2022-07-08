@@ -1,0 +1,42 @@
+###
+### 22.08.2019 split up
+###
+
+  - state_topic: nodes@home/sensor/DHT22/lounge/value/temperature
+    name: "DHT22@lounge_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value }}'
+
+  - state_topic: nodes@home/sensor/DHT22/lounge/value/humidity
+    name: "DHT22@lounge_humidity"
+    qos: 0
+    unit_of_measurement: "%"
+    value_template: '{{ value_json.value }}'
+
+  - state_topic: nodes@home/sensor/DHT22/lounge/value/pressure
+    name: "DHT22@lounge_pressure"
+    qos: 0
+    unit_of_measurement: "hPa"
+    value_template: '{{ value_json.value | round ( 0 ) }}'
+
+  - state_topic: nodes@home/sensor/DHT22/lounge/value/voltage
+    name: "DHT22@lounge_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - state_topic: nodes@home/sensor/DHT22/lounge/value/voltage
+    name: "DHT22@lounge_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/sensor/DHT22/lounge
+    name: "DHT22@lounge_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - state_topic: nodes@home/sensor/DHT22/lounge
+    name: "DHT22@lounge_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
