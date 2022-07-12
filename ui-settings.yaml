@@ -77,6 +77,16 @@ views:
             - input_number.pool_pump_duration
             - input_datetime.pool_pump_start1
             - input_datetime.pool_pump_start2
+      - type: entities
+        title: Bodenfeuchte
+        show_header_toggle: false
+        entities:
+            - input_number.soil_moisture1_min_voltage
+            - input_number.soil_moisture1_max_voltage
+            - input_number.soil_moisture2_min_voltage
+            - input_number.soil_moisture2_max_voltage
+            - input_number.soil_moisture3_min_voltage
+            - input_number.soil_moisture3_max_voltage
       - type: markdown
         title: Hinweise
         content: >

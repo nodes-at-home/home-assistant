@@ -1,0 +1,10 @@
+###
+### 12.07.2022
+###
+
+name: Hochbeet (maximal)
+mode: box
+min: 0
+max: 10000
+step: 1
+unit_of_measurement: mV
