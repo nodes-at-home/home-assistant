@@ -2,9 +2,10 @@
 ### 24.09.2020
 ###
 
-name: max. Zufallsdauer (min)
+name: max. Zufallsdauer
 mode: slider
 min: 60
 max: 120
 step: 10
+unit_of_measurement: min
 # initial: 120

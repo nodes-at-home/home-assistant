@@ -45,19 +45,37 @@
     name: "soil@garden_moisture1"
     qos: 0
     unit_of_measurement: "%"
-    value_template: '{{ ( 100 - ((( [[value_json.voltage1 | float, 1400] | max, 2860] | min | float) - 1400 | float) * (100 / (2860 - 1400))) ) | round ( 1 ) }}'
+    force_update: true
+    value_template: >
+        {% set min_voltage = states ( 'input_number.soil_moisture1_min_voltage' ) | float %}
+        {% set max_voltage = states ( 'input_number.soil_moisture1_max_voltage' ) | float %}
+        {% set raw_voltage = value_json.voltage1 | float %}
+        {% set voltage = [[raw_voltage, min_voltage] | max, max_voltage] | min | float %}
+        {{ ( 100 - (( voltage - min_voltage | float) * (100 / (max_voltage - min_voltage))) ) | round ( 1 ) }}    
 
   - state_topic: nodes@home/sensor/soil/garden/value/soil
     name: "soil@garden_moisture2"
     qos: 0
     unit_of_measurement: "%"
-    value_template: '{{ ( 100 - ((( [[value_json.voltage2 | float, 1320] | max, 2820] | min | float) - 1320 | float) * (100 / (2820 - 1320))) ) | round ( 1 ) }}'
+    force_update: true
+    value_template: >
+        {% set min_voltage = states ( 'input_number.soil_moisture2_min_voltage' ) | float %}
+        {% set max_voltage = states ( 'input_number.soil_moisture2_max_voltage' ) | float %}
+        {% set raw_voltage = value_json.voltage2 | float %}
+        {% set voltage = [[raw_voltage, min_voltage] | max, max_voltage] | min | float %}
+        {{ ( 100 - (( voltage - min_voltage | float) * (100 / (max_voltage - min_voltage))) ) | round ( 1 ) }}    
 
   - state_topic: nodes@home/sensor/soil/garden/value/soil
     name: "soil@garden_moisture3"
     qos: 0
     unit_of_measurement: "%"
-    value_template: '{{ ( 100 - ((( [[value_json.voltage3 | float, 1390] | max, 2850] | min | float) - 1390 | float) * (100 / (2850 - 1390))) ) | round ( 1 ) }}'
+    force_update: true
+    value_template: >
+        {% set min_voltage = states ( 'input_number.soil_moisture3_min_voltage' ) | float %}
+        {% set max_voltage = states ( 'input_number.soil_moisture3_max_voltage' ) | float %}
+        {% set raw_voltage = value_json.voltage3 | float %}
+        {% set voltage = [[raw_voltage, min_voltage] | max, max_voltage] | min | float %}
+        {{ ( 100 - (( voltage - min_voltage | float) * (100 / (max_voltage - min_voltage))) ) | round ( 1 ) }}    
 
   - state_topic: nodes@home/sensor/soil/garden/value/soil
     name: "soil@garden_moisture1_raw"

@@ -2,9 +2,10 @@
 ### 26.10.2020
 ###
 
-name: Licht aus nach (min)
+name: Licht aus nach
 mode: slider
 min: 5
 max: 60
 step: 5
+unit_of_measurement: min
 # initial: 15
