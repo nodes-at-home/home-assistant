@@ -13,9 +13,18 @@ views:
         cards:
           - type: horizontal-stack
             cards:
+              # https://community.home-assistant.io/t/styling-elements-in-picture-elements-card-a-small-tutorial/315252/5
               - type: picture-elements
                 image: /local/images/blank_100x5.png
                 title: Anwesenheiten
+                card_mod:
+                    # https://www.w3.org/wiki/CSS/Properties/color/keywords
+                    # for state-icon use --paper-item-icon-color
+                    # for state badge use --label-badge-text-color or --label-badge-background-color (the whole badge is then colorized)
+                    style: |
+                        ha-card {
+                            --wasserampel-color: {{ state_attr ( 'binary_sensor.wasserampel', 'icon-color' ) }}
+                        }
                 elements:
                   - type: state-badge
                     entity: device_tracker.156_andreas_pixel_6_pro_wlan
@@ -49,6 +58,13 @@ views:
                     style:
                       top: 40%
                       left: 25%
+                  - type: state-badge
+                    entity: binary_sensor.wasserampel
+                    title: Wasserampel
+                    style:
+                      --label-badge-text-color: var(--wasserampel-color)
+                      top: 40%
+                      left: 42%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation_last7d
                     style:

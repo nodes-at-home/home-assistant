@@ -66,7 +66,7 @@ pixel_node_msg17:
     name: Anzeige Textzeile 17 - Spruch des Tages
     # initial: off
 pixel_node_msg18:
-    name: Anzeige Textzeile 18 - ...
+    name: Anzeige Textzeile 18 - Wasserampel
     # initial: on
 pixel_node_msg19:
     name: Anzeige Textzeile 19 - ...

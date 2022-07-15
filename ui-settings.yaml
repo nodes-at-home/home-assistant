@@ -168,7 +168,7 @@ views:
             - input_boolean.pixel_node_msg15
             - input_boolean.pixel_node_msg16
             - input_boolean.pixel_node_msg17
-            # - input_boolean.pixel_node_msg18
+            - input_boolean.pixel_node_msg18
             # - input_boolean.pixel_node_msg19
 
   - title: Staubsager

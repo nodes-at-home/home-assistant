@@ -112,6 +112,7 @@ influxdb:
         - sensor.fiederaralie_flowercare_temperature
         - sensor.fiederaralie_flowercare_conductivity
         - sensor.fiederaralie_flowercare_brightness
+        - sensor.wasserampel_text
   ignore_attributes:
     - friendly_name
     - icon
@@ -134,6 +135,9 @@ zone: !include conf/zone.yaml
 # -------------------------------------------------------------------------------
 # Enables the frontend
 frontend:
+    # extra_module_url:
+        # # https://github.com/thomasloven/lovelace-card-mod
+        # - /local/custom_lovelace/lovelace-card-mod/card-mod.js
 
 lovelace:
     mode: yaml
@@ -141,9 +145,9 @@ lovelace:
       # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card
       - url: /local/custom_lovelace/xiaomi_vacuum_map_card/xiaomi-vacuum-map-card.js
         type: module
-      # # https://github.com/custom-cards/vertical-stack-in-card
-      # - url: /local/vertical-stack-in-card.js
-        # type: js
+      # https://github.com/thomasloven/lovelace-card-mod
+      - url: /local/custom_lovelace/lovelace-card-mod/card-mod.js
+        type: module
     dashboards:
         settings-dashboard:
             mode: yaml
@@ -273,6 +277,7 @@ camera:
 
 # -------------------------------------------------------------------------------
 #
+template:           !include_dir_merge_list     conf/template
 sensor:             !include_dir_merge_list     conf/sensor
 binary_sensor:      !include_dir_merge_list     conf/binary_sensor
 light:              !include_dir_merge_list     conf/light

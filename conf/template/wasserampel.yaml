@@ -1,0 +1,28 @@
+###
+### 14.07.2022 new
+###
+
+  - binary_sensor:
+      - name: wasserampel
+        state: '{{ "off" if is_state ( "sensor.wasserampel_text", "rot" ) else "on" }}'
+        icon: >
+          {% set val =  states.sensor.wasserampel_text.state  %}
+          {% if val == 'grün' %}
+            mdi:checkbox-marked-circle
+          {% elif val == 'gelb' %}
+            mdi:alert-circle
+          {% elif val == 'rot' %}
+            mdi:minus-circle
+          {% endif %}
+        attributes:
+            text: '{{ states.sensor.wasserampel_text.state }}'
+            icon-color: >
+              {% set val =  states.sensor.wasserampel_text.state  %}
+              {% if val == 'grün' %}
+                green
+              {% elif val == 'gelb' %}
+                gold
+              {% elif val == 'rot' %}
+                red
+              {% endif %}
+            

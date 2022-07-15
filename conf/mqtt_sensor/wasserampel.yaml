@@ -1,0 +1,9 @@
+###
+### 30.09.2019 for tileboard
+###
+
+  - state_topic: nodes@home/sensor/wasserampel
+    name: "wasserampel_text"
+    qos: 0
+    value_template: '{{ value }}'
+    
