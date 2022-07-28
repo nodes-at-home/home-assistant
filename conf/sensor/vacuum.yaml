@@ -1,0 +1,10 @@
+###
+### 08.11.2019 new
+###
+
+  - platform: template
+    sensors:
+      vacuum_operation:
+        value_template: 'Betrieb'
+      vacuum_accessories:
+        value_template: 'Wartung'
