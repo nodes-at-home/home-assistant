@@ -16,7 +16,7 @@
           {% endif %}
         attributes:
             text: '{{ states.sensor.wasserampel_text.state }}'
-            icon-color: >
+            icon_color: >
               {% set val =  states.sensor.wasserampel_text.state  %}
               {% if val == 'grün' %}
                 green

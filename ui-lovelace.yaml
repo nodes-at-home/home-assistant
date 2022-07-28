@@ -23,7 +23,7 @@ views:
                     # for state badge use --label-badge-text-color or --label-badge-background-color (the whole badge is then colorized)
                     style: |
                         ha-card {
-                            --wasserampel-color: {{ state_attr ( 'binary_sensor.wasserampel', 'icon-color' ) }}
+                            --wasserampel-color: {{ state_attr ( 'binary_sensor.wasserampel', 'icon_color' ) }}
                         }
                 elements:
                   - type: state-badge
