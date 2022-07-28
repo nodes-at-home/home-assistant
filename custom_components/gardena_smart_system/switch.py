@@ -1,5 +1,5 @@
 """Support for Gardena switch (Power control, water control, smart irrigation control)."""
-
+import asyncio
 import logging
 
 from homeassistant.core import callback
@@ -139,11 +139,15 @@ class GardenaSmartWaterControl(SwitchEntity):
     def turn_on(self, **kwargs):
         """Start watering."""
         duration = self.option_smart_watering_duration * 60
-        self._device.start_seconds_to_override(duration)
+        return asyncio.run_coroutine_threadsafe(
+            self._device.start_seconds_to_override(duration), self.hass.loop
+        ).result()
 
     def turn_off(self, **kwargs):
         """Stop watering."""
-        self._device.stop_until_next_task()
+        return asyncio.run_coroutine_threadsafe(
+            self._device.stop_until_next_task(), self.hass.loop
+        ).result()
 
     @property
     def device_info(self):
@@ -240,11 +244,15 @@ class GardenaPowerSocket(SwitchEntity):
 
     def turn_on(self, **kwargs):
         """Start watering."""
-        self._device.start_override()
+        return asyncio.run_coroutine_threadsafe(
+            self._device.start_override(), self.hass.loop
+        ).result()
 
     def turn_off(self, **kwargs):
         """Stop watering."""
-        self._device.stop_until_next_task()
+        return asyncio.run_coroutine_threadsafe(
+            self._device.stop_until_next_task(), self.hass.loop
+        ).result()
 
     @property
     def device_info(self):
@@ -350,11 +358,15 @@ class GardenaSmartIrrigationControl(SwitchEntity):
     def turn_on(self, **kwargs):
         """Start watering."""
         duration = self.option_smart_irrigation_duration * 60
-        self._device.start_seconds_to_override(duration, self._valve_id)
+        return asyncio.run_coroutine_threadsafe(
+            self._device.start_seconds_to_override(duration, self._valve_id), self.hass.loop
+        ).result()
 
     def turn_off(self, **kwargs):
         """Stop watering."""
-        self._device.stop_until_next_task(self._valve_id)
+        return asyncio.run_coroutine_threadsafe(
+            self._device.stop_until_next_task(self._valve_id), self.hass.loop
+        ).result()
 
     @property
     def device_info(self):
