@@ -25,3 +25,7 @@ touch_bedroom_activated:
 irrigation_activated:
     name: Bewässerung aktiv
     # initial: off
+
+mowing_activated:
+    name: Rasenmäher aktiv
+    # initial: off

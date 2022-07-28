@@ -104,9 +104,12 @@
       - service: input_boolean.turn_on
         data:
             entity_id: input_boolean.dustbin_notification
-      - service: input_boolean.turn_off
+      - service: input_boolean.turn_on
         data:
             entity_id: input_boolean.irrigation_activated
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.mowing_activated
 
       #--------------------------------------------------------------------------
       - service: input_datetime.set_datetime
@@ -157,6 +160,14 @@
         data:
             entity_id: input_datetime.irrigation_start1
             time: '04:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.mowing_start
+            time: '08:30:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.mowing_end
+            time: '16:30:00'
 
       #--------------------------------------------------------------------------
       - service: input_number.set_value
@@ -207,3 +218,5 @@
         data:
             entity_id: input_number.irrigation_duration
             value: 30
+
+      #--------------------------------------------------------------------------
