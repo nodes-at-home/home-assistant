@@ -96,7 +96,8 @@ views:
                       top: 40%
                       left: 74%
                   - type: state-badge
-                    entity: sensor.relay_garage_state
+                    # entity: sensor.relay_garage_state
+                    entity: binary_sensor.garagentor
                     style:
                       top: 40%
                       left: 78%
@@ -168,10 +169,10 @@ views:
                             action: toggle
                         hold_action:
                             action: more-info
-                  - type: horizontal-stack
-                    cards:
-                      - type: markdown
-                        content: "Weitere Aktionen"
+                  # - type: horizontal-stack
+                    # cards:
+                      # - type: markdown
+                        # content: "Weitere Aktionen"
                   - type: horizontal-stack
                     cards:
                       - type: light
@@ -182,8 +183,22 @@ views:
                         entity: light.ws2812_terrace1
                       - type: light
                         entity: light.ws2812_terrace2
+                      - type: light
+                        entity: light.ws2812_xmasstar
                   - type: horizontal-stack
                     cards:
+                      - type: button
+                        entity: cover.rooflights
+                        tap_action:
+                        tap_action:
+                            action: call-service
+                            service: cover.stop_cover
+                            data:
+                                entity_id: cover.rooflights
+                        double_tap_action:
+                            action: toggle
+                        hold_action:
+                            action: more-info
                       - type: entity-button
                         entity: switch.sonoff_k8200_socket
                         icon: mdi:printer-3d
@@ -193,8 +208,6 @@ views:
                       - type: entity-button
                         entity: switch.sonoff_pool_socket
                         icon: mdi:pump
-                      - type: light
-                        entity: light.ws2812_xmasstar
                       # - type: markdown
                         # content: " "
                 

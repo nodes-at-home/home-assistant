@@ -40,3 +40,30 @@
         travelling_time_up: 20
         travelling_time_down: 15
         intermediate_position_disable: true
+
+  - platform: group
+    name: group_rooflights
+    entities:
+      - cover.bedroom
+      - cover.bath
+      - cover.nursery
+      - cover.office
+
+  - platform: template
+    covers:
+      rooflights:
+        friendly_name: Dachfenster
+        device_class: shutter
+        value_template: "{{ states ( 'cover.group_rooflights' ) }}"
+        open_cover:
+          - service: cover.open_cover
+            target:
+              entity_id: cover.group_rooflights
+        close_cover:
+          - service: cover.close_cover
+            target:
+              entity_id: cover.group_rooflights
+        stop_cover:
+          - service: cover.stop_cover
+            target:
+              entity_id: cover.group_rooflights
