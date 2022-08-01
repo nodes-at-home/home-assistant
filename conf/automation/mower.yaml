@@ -18,14 +18,14 @@
             {% set day = now().weekday() %}
             {{ states ( 'input_select.mowing_day1') == days [day] or states ( 'input_select.mowing_day2') == days [day] or states ( 'input_select.mowing_day3') == days [day]}}
     action:
-      - service: vacuum.turn_on
+      - service: vacuum.start
         entity_id: vacuum.sileno
 
   - alias: mower_end
-    id: mower_start
+    id: mower_end
     trigger:
       - platform: time
         at: input_datetime.mowing_end
     action:
-      - service: vacuum.turn_off
+      - service: vacuum.stop
         entity_id: vacuum.sileno
