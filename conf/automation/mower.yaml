@@ -8,6 +8,10 @@
       - platform: time
         at: input_datetime.mowing_start
     condition:
+        # check stage
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
         # check manual flag
       - condition: state
         entity_id: input_boolean.mowing_activated

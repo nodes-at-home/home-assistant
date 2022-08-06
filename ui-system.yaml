@@ -250,6 +250,12 @@ views:
           - type: vertical-stack
             cards:
               - type: entities
+                title: Einstellungen
+                show_header_toggle: true
+                entities:
+                    - automation.set_default_values
+                    - automation.pixel_node_preferences
+              - type: entities
                 title: Zirkulationspumpe
                 show_header_toggle: true
                 entities:
@@ -307,8 +313,6 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.send_effect_delay
-          - type: vertical-stack
-            cards:
               - type: entities
                 title: Pitouch
                 show_header_toggle: true
@@ -316,6 +320,8 @@ views:
                     - automation.pitouch_screen_on
                     - automation.pitouch_screen_off
                     - automation.pitouch_screen_off_after_tv_off
+          - type: vertical-stack
+            cards:
               - type: entities
                 title: Saugroboter
                 show_header_toggle: true
@@ -325,12 +331,6 @@ views:
                     - automation.start_cleaning_ground_floor_room
                     - automation.start_cleaning_first_floor_room
                     - automation.start_daily_vacuum
-              - type: entities
-                title: Einstellungen
-                show_header_toggle: true
-                entities:
-                    - automation.set_default_values
-                    - automation.pixel_node_preferences
               - type: entities
                 title: Gartenbewässerung
                 show_header_toggle: true
@@ -345,3 +345,9 @@ views:
                     - automation.irrigation_count_warm_days_reset
                     - automation.irrigation_activate_period_1
                     - automation.irrigation_set_duration
+              - type: entities
+                title: Rasenmäher
+                show_header_toggle: true
+                entities:
+                    - automation.mower_start
+                    - automation.mower_end
