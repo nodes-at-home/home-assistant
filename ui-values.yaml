@@ -103,8 +103,11 @@ views:
                 hours_to_show: 24
               - type: markdown
                 content: <br/><br/><br/><br/><br/><br/><br/><br/>
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: sensor
+                entity: sensor.dht11_utilityroom_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
           - type: horizontal-stack
             cards:
               - type: sensor
@@ -124,8 +127,11 @@ views:
                 hours_to_show: 24
               - type: markdown
                 content: <br/><br/><br/><br/><br/><br/><br/><br/>
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: sensor
+                entity: sensor.dht11_utilityroom_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
           - type: horizontal-stack
             cards:
               - type: sensor

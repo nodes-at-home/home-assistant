@@ -149,6 +149,11 @@ views:
                         graph: line
                         detail: 2
                         hours_to_show: 24
+                      - type: sensor
+                        entity: sensor.dht11_utilityroom_temperature
+                        graph: line
+                        detail: 2
+                        hours_to_show: 24
                   - type: media-control
                     entity: media_player.sony_bravia_tv
               - type: vertical-stack

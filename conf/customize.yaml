@@ -135,6 +135,30 @@ sensor.DHT22_office_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
+sensor.DHT11_utilityroom_temperature:
+    friendly_name: Kammer
+
+sensor.DHT11_utilityroom_humidity:
+    friendly_name: Luftfeuchtigkeit Kammer
+    icon: mdi:water-percent
+
+sensor.DHT11_utilityroom_voltage:
+    friendly_name: Kammer
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.DHT11_utilityroom_lastvoltage:
+    friendly_name: Kammer
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.DHT11_utilityroom_lastboot:
+    friendly_name: Kammer
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.DHT11_utilityroom_version:
+    friendly_name: Kammer
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
 sensor.owm_condition:
     friendly_name: Aktuell (open weather)
 

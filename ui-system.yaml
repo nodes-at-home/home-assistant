@@ -72,6 +72,7 @@ views:
                 - sensor.dht22_roof_version
                 - sensor.dht22_terrace_version
                 - sensor.dht22_office_version
+                - sensor.dht11_utilityroom_version
                 - sensor.rfhub_lounge_version
                 - sensor.relay_garage_version
                 - sensor.sonoff_garage_version
@@ -116,6 +117,7 @@ views:
                 - sensor.dht22_roof_lastboot
                 - sensor.dht22_terrace_lastboot
                 - sensor.dht22_office_lastboot
+                - sensor.dht11_utilityroom_lastboot
                 - sensor.rfhub_lounge_lastboot
                 - sensor.relay_garage_lastboot
                 - sensor.sonoff_garage_lastboot
@@ -160,6 +162,7 @@ views:
                 - sensor.dht22_roof_lastvoltage
                 - sensor.dht22_terrace_lastvoltage
                 - sensor.dht22_office_lastvoltage
+                - sensor.dht11_utilityroom_lastvoltage
                 - sensor.rfhub_lounge_lastvoltage
                 - sensor.relay_garage_lastvoltage
                 - sensor.sonoff_garage_lastvoltage
@@ -204,6 +207,7 @@ views:
                 - sensor.dht22_roof_voltage
                 - sensor.dht22_terrace_voltage
                 - sensor.dht22_office_voltage
+                - sensor.dht11_utilityroom_voltage
                 - sensor.rfhub_lounge_voltage
                 - sensor.relay_garage_voltage
                 - sensor.sonoff_garage_voltage
