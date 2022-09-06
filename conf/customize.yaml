@@ -38,6 +38,9 @@ sensor.DHT22_terrace_humidity:
     friendly_name: Luftfeuchtigkeit Terasse
     icon: mdi:water-percent
 
+sensor.DHT22_terrace_tau:
+    friendly_name: Taupunkt Terasse
+
 sensor.DHT22_terrace_voltage:
     friendly_name: Terrasse
     entity_picture: /local/images/nodemcu.jpg
@@ -65,6 +68,9 @@ sensor.DHT22_lounge_temperature:
 sensor.DHT22_lounge_humidity:
     friendly_name: Luftfeuchtigkeit Wohnzimmer
     icon: mdi:water-percent
+
+sensor.DHT22_lounge_tau:
+    friendly_name: Taupunkt Wohnzimmer
 
 sensor.DHT22_lounge_pressure:
     friendly_name: Luftdruck
@@ -94,6 +100,9 @@ sensor.DHT22_roof_humidity:
     friendly_name: Luftfeuchtigkeit Dachboden
     icon: mdi:water-percent
 
+sensor.DHT22_roof_tau:
+    friendly_name: Taupunkt Dachboden
+
 sensor.DHT22_roof_voltage:
     friendly_name: Dachboden
     entity_picture: /local/images/nodemcu.jpg
@@ -118,6 +127,9 @@ sensor.DHT22_office_humidity:
     friendly_name: Luftfeuchtigkeit Büro
     icon: mdi:water-percent
 
+sensor.DHT22_office_tau:
+    friendly_name: Taupunkt Büro
+
 sensor.DHT22_office_voltage:
     friendly_name: Büro
     entity_picture: /local/images/nodemcu.jpg
@@ -141,6 +153,9 @@ sensor.DHT11_utilityroom_temperature:
 sensor.DHT11_utilityroom_humidity:
     friendly_name: Luftfeuchtigkeit Kammer
     icon: mdi:water-percent
+
+sensor.DHT11_utilityroom_tau:
+    friendly_name: Taupunkt Kammer
 
 sensor.DHT11_utilityroom_voltage:
     friendly_name: Kammer
@@ -261,6 +276,9 @@ sensor.relay_garage_temperature:
 sensor.relay_garage_humidity:
     friendly_name: Luftfeuchtigkeit Garage
     icon: mdi:water-percent
+
+sensor.relay_garage_tau:
+    friendly_name: Taupunkt Garage
 
 sensor.relay_garage_voltage:
     friendly_name: Garagentor

@@ -25,10 +25,21 @@ views:
                 hours_to_show: 24
               - type: markdown
                 content: <br/><br/><br/><br/><br/><br/><br/><br/>
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: sensor
+                entity: sensor.rain_garden_precipitation_last7d
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.rain_garden_precipitation_last24h
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.rain_garden_precipitation
+                graph: line
+                detail: 2
+                hours_to_show: 24
           - type: horizontal-stack
             cards:
               - type: sensor
@@ -53,6 +64,11 @@ views:
                 hours_to_show: 24
               - type: sensor
                 entity: sensor.dht22_office_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht11_utilityroom_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -84,6 +100,44 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht11_utilityroom_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                icon: mdi:show_chart
+                entity: sensor.dht22_lounge_tau
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_terrace_tau
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_roof_tau
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.relay_garage_tau
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht22_office_tau
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht11_utilityroom_tau
+                graph: line
+                detail: 2
+                hours_to_show: 24
           - type: horizontal-stack
             cards:
               - type: sensor
@@ -103,11 +157,10 @@ views:
                 hours_to_show: 24
               - type: markdown
                 content: <br/><br/><br/><br/><br/><br/><br/><br/>
-              - type: sensor
-                entity: sensor.dht11_utilityroom_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: markdown
+                content: <br/><br/><br/><br/><br/><br/><br/><br/>
           - type: horizontal-stack
             cards:
               - type: sensor
@@ -127,28 +180,6 @@ views:
                 hours_to_show: 24
               - type: markdown
                 content: <br/><br/><br/><br/><br/><br/><br/><br/>
-              - type: sensor
-                entity: sensor.dht11_utilityroom_humidity
-                graph: line
-                detail: 2
-                hours_to_show: 24
-          - type: horizontal-stack
-            cards:
-              - type: sensor
-                entity: sensor.rain_garden_precipitation_last7d
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.rain_garden_precipitation_last24h
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.rain_garden_precipitation
-                graph: line
-                detail: 2
-                hours_to_show: 24
               - type: markdown
                 content: <br/><br/><br/><br/><br/><br/><br/><br/>
               - type: markdown

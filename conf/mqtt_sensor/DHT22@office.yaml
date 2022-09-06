@@ -14,6 +14,12 @@
     unit_of_measurement: "%"
     value_template: '{{ value_json.value }}'
 
+  - state_topic: nodes@home/sensor/DHT22/office/value/tau
+    name: "DHT22@office_tau"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value | round ( 1 ) }}'
+
   - state_topic: nodes@home/sensor/DHT22/office/value/voltage
     name: "DHT22@office_voltage"
     qos: 0
