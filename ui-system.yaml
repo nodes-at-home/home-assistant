@@ -263,6 +263,12 @@ views:
                 title: Zirkulationspumpe
                 show_header_toggle: true
                 entities:
+                    - automation.circulating_pump_set_datetimes
+                    - automation.circulating_pump_switching
+                    - automation.circulating_pump_activating
+                    - automation.circulating_pump_deactivating
+                    - automation.circulating_pump_deactivating_after_standup_workday
+                    - automation.circulating_pump_deactivating_after_standup_weekend
                     - automation.heater_circulating_pump_on
                     - automation.heater_circulating_pump_off
               - type: entities

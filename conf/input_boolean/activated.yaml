@@ -29,3 +29,7 @@ irrigation_activated:
 mowing_activated:
     name: Rasenmäher aktiv
     # initial: off
+
+circulating_pump_activated:
+    name: Zirkulationspumpe aktiv
+    # initial: off

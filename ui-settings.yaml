@@ -5,7 +5,7 @@
 title: !env_var HA_TITLE
 views:
 
-  - title: Lichter
+  - title: Zeiten
     path: lights
     panel: false
     cards:
@@ -36,21 +36,26 @@ views:
         entities:
             - input_number.nightlight_duration
             - input_datetime.nightlight_end
-      - type: vertical-stack
-        cards:
-          - type: entities
-            title: PiTouch
-            entities:
-                - input_number.pitouch_delay
-                - input_datetime.pitouch_off
-                - input_select.pitouch_temp_display
-      - type: vertical-stack
-        cards:
-          - type: entities
-            title: Lichterkette
-            show_header_toggle: false
-            entities:
-                - input_number.effect_delay
+      - type: entities
+        title: PiTouch
+        entities:
+            - input_number.pitouch_delay
+            - input_datetime.pitouch_off
+            - input_select.pitouch_temp_display
+      - type: entities
+        title: Lichterkette
+        show_header_toggle: false
+        entities:
+            - input_number.effect_delay
+      - type: entities
+        title: Zirkulationspumpe Heizung
+        show_header_toggle: false
+        entities:
+            - input_boolean.circulating_pump_activated
+            - input_number.circulating_pump_on_period
+            - input_number.circulating_pump_on_duration
+            - input_number.circulating_pump_activated_after_standup
+            - input_number.circulating_pump_activated_before_sleeping
 
   - title: Garten
     path: garden

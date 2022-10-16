@@ -110,6 +110,9 @@
       - service: input_boolean.turn_on
         data:
             entity_id: input_boolean.mowing_activated
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.circulating_pump_activated
 
       #--------------------------------------------------------------------------
       - service: input_datetime.set_datetime
@@ -218,5 +221,21 @@
         data:
             entity_id: input_number.irrigation_duration
             value: 30
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.circulating_pump_activated_after_standup
+            value: 2
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.circulating_pump_activated_before_sleeping
+            value: 5
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.circulating_pump_on_period
+            value: 15
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.circulating_pump_on_duration
+            value: 1
 
       #--------------------------------------------------------------------------

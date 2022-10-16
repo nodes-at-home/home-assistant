@@ -2,8 +2,166 @@
 ### 22.08.2019 split up
 ###
 
+  - alias: circulating_pump_set_datetimes
+    id: circulating_pump_set_datetimes
+    trigger:
+      - platform: state
+        entity_id: input_datetime.standup_workday
+      - platform: state
+        entity_id: input_datetime.sleep
+      - platform: state
+        entity_id: input_datetime.standup_weekend
+      - platform: state
+        entity_id: input_number.circulating_pump_activated_after_standup
+      - platform: state
+        entity_id: input_number.circulating_pump_activated_before_sleeping
+      - platform: homeassistant
+        event: start
+      - platform: event
+        event_type:
+          - automation_reloaded
+    condition:
+    action:
+      - service: input_datetime.set_datetime
+        target:
+            entity_id: input_datetime.circulating_pump_activated_after_standup_workday
+        data:
+            time: "{{ states ( 'input_datetime.standup_workday' ) | as_timedelta + timedelta ( hours = states ( 'input_number.circulating_pump_activated_after_standup' ) | int ) }}"
+      - service: input_datetime.set_datetime
+        target:
+            entity_id: input_datetime.circulating_pump_activated_after_standup_weekend
+        data:
+            time: "{{ states ( 'input_datetime.standup_weekend' ) | as_timedelta + timedelta ( hours = states ( 'input_number.circulating_pump_activated_after_standup' ) | int ) }}"
+      - service: input_datetime.set_datetime
+        target:
+            entity_id: input_datetime.circulating_pump_activated_before_sleeping
+        data:
+            time: "{{ states ( 'input_datetime.sleep' ) | as_timedelta - timedelta ( hours = states ( 'input_number.circulating_pump_activated_before_sleeping' ) | int ) }}"
+
+  - alias: circulating_pump_activating
+    id: circulating_pump_activating
+    trigger:
+      - platform: time
+        at: input_datetime.standup_workday
+      - platform: time
+        at: input_datetime.standup_weekend
+      - platform: state
+        entity_id: group.family_devices
+        to: 'home'
+      - platform: time
+        at: input_datetime.circulating_pump_activated_before_sleeping
+    condition:
+      - condition: state
+        entity_id: group.family_devices
+        state: 'home'
+      - condition: or
+        conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: 'on'
+              - condition: time
+                after: input_datetime.standup_workday
+                before: input_datetime.circulating_pump_activated_after_standup_workday
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: 'off'
+              - condition: time
+                after: input_datetime.standup_weekend
+                before: input_datetime.circulating_pump_activated_after_standup_weekend
+          - condition: time # every day
+            after: input_datetime.circulating_pump_activated_before_sleeping
+            before: input_datetime.sleep
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.circulating_pump_activated
+
+  - alias: circulating_pump_deactivating
+    id: circulating_pump_deactivating
+    trigger:
+      - platform: time
+        at: input_datetime.sleep
+      - platform: state
+        entity_id: group.family_devices
+        to: 'not_home'
+      - platform: state
+        entity_id: remote.sony_bravia_tv
+        from: "on"
+        to: "off"
+        for:
+            minutes: input_number.tvoff_lightsoff_delay1
+    condition:
+      # no conditions
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.circulating_pump_activated
+
+  - alias: circulating_pump_deactivating_after_standup_workday
+    id: circulating_pump_deactivating_after_standup_workday
+    trigger:
+      - platform: time
+        at: input_datetime.circulating_pump_activated_after_standup_workday
+    condition:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.circulating_pump_activated
+
+  - alias: circulating_pump_deactivating_after_standup_weekend
+    id: circulating_pump_deactivating_after_standup_weekend
+    trigger:
+      - platform: time
+        at: input_datetime.circulating_pump_activated_after_standup_weekend
+    condition:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'off'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.circulating_pump_activated
+
+  - alias: circulating_pump_switching
+    id: circulating_pump_switching
+    mode: single
+    max_exceeded: silent
+    trigger:
+      # check every minute
+      - platform: time_pattern
+        minutes: "/1"
+    condition:
+      # - condition: state
+        # entity_id: binary_sensor.prod_mode
+        # state: 'on'
+      - condition: state
+        entity_id: input_boolean.circulating_pump_activated
+        state: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id:
+            - switch.sonoff_utilityroom_pump
+      # pump switched on for n miniutes
+      - delay:
+            minutes: "{{ states ( 'input_number.circulating_pump_on_duration' ) | int }}"
+      - service: switch.turn_off
+        entity_id:
+            - switch.sonoff_utilityroom_pump
+      # automation throttled, see above at mode and max_exceeded
+      - delay:
+            minutes: "{{ states ( 'input_number.circulating_pump_on_period' ) | int - states ( 'input_number.circulating_pump_on_duration' ) | int - 1 }}"
+
+
+  #
+  # deprecated automations
+  #
+
   - alias: heater_circulating_pump_on
     id: heater_circulating_pump_on
+    initial_state: false
     trigger:                    # any event
       - platform: time
         at: input_datetime.standup_workday
@@ -43,6 +201,7 @@
 
   - alias: heater_circulating_pump_off
     id: heater_circulating_pump_off
+    initial_state: false
     trigger:                    # any event, no condition necessary
       - platform: time
         at: input_datetime.sleep
@@ -53,3 +212,4 @@
       - service: switch.turn_off
         entity_id:
             - switch.sonoff_utilityroom_pump
+
