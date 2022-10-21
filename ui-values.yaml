@@ -455,3 +455,31 @@ views:
                 limits:
                   min: 0
                   max: 100
+
+  - title: Gasspeicher
+    path: gasstorage
+    panel: false
+    cards:
+      - type: entities
+        title: Gasspeicher Deutschland
+        show_header_toggle: false
+        entities:
+          - sensor.gas_storage_germany_day
+          - sensor.gas_storage_germany_full_level
+          - sensor.gas_storage_germany_full_total
+          - sensor.gas_storage_germany_trend
+          - sensor.gas_storage_germany_storage_consumption_level
+          - sensor.gas_storage_germany_consumption_total
+      - type: gauge
+        name: Füllstand Gasspeicher Deutschland
+        entity: sensor.gas_storage_germany_full_level
+        min: 0
+        max: 100
+        needle: true
+        segments:
+          - from: 0
+            color: '#db4437'
+          - from: 40
+            color: '#ffa600'
+          - from: 80
+            color: '#43a047'

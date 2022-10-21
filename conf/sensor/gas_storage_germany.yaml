@@ -1,0 +1,36 @@
+###
+### 21.10.2022
+###
+### https://agsi.gie.eu/
+### https://community.homesmarthome.eu/t/europas-gasspeicher-fuellstand-in-home-assistant-ueber-die-api-von-agsi-gie-eu/78
+
+  - platform: rest
+    # curl https://agsi.gie.eu/api?country=DE --header "x-key: 5db093346fdff3f870dfb06c58367d89"
+    # hourly
+    scan_interval: 3600
+    # daily
+    # scan_interval: 86400
+    name: gas_storage_germany
+    resource: https://agsi.gie.eu/api?country=DE
+    headers:
+      content-type: "application/json"
+      x-key: !secret agsi_gie_eu_api_key
+    json_attributes_path: "$.data[0].['.']"
+    json_attributes:
+      - name
+      - code
+      - url
+      - gasDayStart
+      - gasInStorage
+      - consumption
+      - consumptionFull
+      - injection
+      - withdrawl
+      - workingGasVolume
+      - injectionCapacity
+      - status
+      - trend
+      - full
+      - info
+    value_template: >-
+      {{ value_json.message }}

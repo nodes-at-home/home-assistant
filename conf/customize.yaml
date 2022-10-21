@@ -1306,3 +1306,22 @@ binary_sensor.wasserampel:
     friendly_name: Wasserampel
 
 #------------------------------------------------------------------------------
+sensor.gas_storage_germany_day:
+    friendly_name: Zahlen vom
+
+sensor.gas_storage_germany_storage_consumption_level:
+    friendly_name: Füllumfang zu Jahresverbrauch
+
+sensor.gas_storage_germany_consumption_total:
+    friendly_name: Jahresverbrauch
+
+sensor.gas_storage_germany_full_level:
+    friendly_name: Füllstand
+
+sensor.gas_storage_germany_full_total:
+    friendly_name: Füllumfang
+
+sensor.gas_storage_germany_trend:
+    friendly_name: Verbrauchstrend
+
+#------------------------------------------------------------------------------

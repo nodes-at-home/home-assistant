@@ -64,6 +64,13 @@ views:
                     style:
                       --label-badge-text-color: var(--wasserampel-color)
                       top: 40%
+                      left: 38%
+                  - type: state-badge
+                    entity: sensor.gas_storage_germany_full_level
+                    title: Gasspeicher
+                    style:
+                      --label-badge-text-color: var(--wasserampel-color)
+                      top: 40%
                       left: 42%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation_last7d

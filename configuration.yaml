@@ -121,6 +121,12 @@ influxdb:
         - sensor.fiederaralie_flowercare_conductivity
         - sensor.fiederaralie_flowercare_brightness
         - sensor.wasserampel_text
+        - sensor.gas_storage_germany_day
+        - sensor.gas_storage_germany_full_level
+        - sensor.gas_storage_germany_full_total
+        - sensor.gas_storage_germany_trend
+        - sensor.gas_storage_germany_storage_consumption_level
+        - sensor.gas_storage_germany_consumption_total
   ignore_attributes:
     - friendly_name
     - icon
