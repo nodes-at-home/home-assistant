@@ -1,0 +1,22 @@
+###
+### 22.08.2019 split up
+###
+
+  - state_topic: nodes@home/inverter/solis/carport/value
+    name: "solis@carport_power"
+    qos: 0
+    unit_of_measurement: "W"
+    value_template: "{{ value_json.inverter.power_w }}"
+
+  - state_topic: nodes@home/inverter/solis/carport/value
+    name: "solis@carport_dailyenergy"
+    qos: 0
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json.inverter.today_kwh }}"
+    force_update: true
+
+  - state_topic: nodes@home/inverter/solis/carport/value
+    name: "solis@carport_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: "{{ value_json.inverter.temperature }}"

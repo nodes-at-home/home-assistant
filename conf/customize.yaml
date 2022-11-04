@@ -845,10 +845,10 @@ switch.ssr_brewery_valve:
 
 #------------------------------------------------------------------------------
 sensor.electricity_utilityroom_power:
-    friendly_name: Elektroverbrauch
+    friendly_name: Netzleistung
 
-sensor.electricity_utilityroom_counter:
-    friendly_name: Elektrozähler
+sensor.electricity_utilityroom_dt:
+    friendly_name: Umdrehungsdauer
 
 sensor.electricity_utilityroom_voltage:
     friendly_name: Elektrozähler
@@ -1323,5 +1323,56 @@ sensor.gas_storage_germany_full_total:
 
 sensor.gas_storage_germany_trend:
     friendly_name: Verbrauchstrend
+
+#------------------------------------------------------------------------------
+sensor.electricity_meter_quarterhourly:
+    friendly_name: Verbrauch 15min
+
+sensor.electricity_meter_hourly:
+    friendly_name: Verbrauch stündlich
+
+sensor.electricity_meter_daily:
+    friendly_name: Verbrauch täglich
+
+sensor.electricity_meter_weekly:
+    friendly_name: Verbrauch wöchentlich
+
+sensor.electricity_meter_monthly:
+    friendly_name: Verbrauch monatlich
+
+sensor.electricity_meter_yearly:
+    friendly_name: Verbrauch jährlich
+
+#------------------------------------------------------------------------------
+binary_sensor.solis_carport_alarm:
+    friendly_name: Inverter Alarm
+
+sensor.solis_carport_power:
+    friendly_name: Solarleistung
+
+sensor.solis_carport_dailyenergy:
+    friendly_name: Inverter täglich
+
+sensor.solis_carport_temperature:
+    friendly_name: Inverter Temperatur
+
+#------------------------------------------------------------------------------
+sensor.solar_meter_quarterhourly:
+    friendly_name: Produktion 15min
+
+sensor.solar_meter_hourly:
+    friendly_name: Produktion stündlich
+
+sensor.solar_meter_daily:
+    friendly_name: Produktion täglich
+
+sensor.solar_meter_weekly:
+    friendly_name: Produktion wöchentlich
+
+sensor.solar_meter_monthly:
+    friendly_name: Produktion monatlich
+
+sensor.solar_meter_yearly:
+    friendly_name: Produktion jährlich
 
 #------------------------------------------------------------------------------

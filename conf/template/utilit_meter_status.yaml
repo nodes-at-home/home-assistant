@@ -1,0 +1,7 @@
+###
+### 14.07.2022 new
+###
+
+  - sensor:
+      - name: Meterstatus
+        state: "{{ state_attr ( 'sensor.electricity_meter_quarterhourly', 'status' ) }}"

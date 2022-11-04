@@ -1,0 +1,7 @@
+###
+### 25.10.2022
+###
+
+source: sensor.electricity_utilityroom_meter
+cycle: monthly
+delta_values: true

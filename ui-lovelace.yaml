@@ -261,7 +261,7 @@ views:
         show_header_toggle: false
         entities:
           - sensor.geschirrspuler_operation_state
-          - sensor.geschirrspuler_remaining_program_time
+          # - sensor.geschirrspuler_remaining_program_time
           - binary_sensor.geschirrspuler_door
           - light.rfhub_lounge_lampkitchenshortstrip
           - light.rfhub_lounge_lampkitchenlongstrip

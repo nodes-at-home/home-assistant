@@ -37,6 +37,8 @@ logger:
     # homeassistant.components.automation: debug
     # boschshcpy: debug
     # custom_components.becker: debug
+    # custom_component.solarman: debug
+    # homeassistant.helper.update: debug
 
 # -------------------------------------------------------------------------------
 # influxdb
@@ -127,6 +129,8 @@ influxdb:
         - sensor.gas_storage_germany_trend
         - sensor.gas_storage_germany_storage_consumption_level
         - sensor.gas_storage_germany_consumption_total
+        - sensor.electricity_utilityroom_power
+        # - sensor.electricity_meter_quarterhourly
   ignore_attributes:
     - friendly_name
     - icon
@@ -135,6 +139,10 @@ influxdb:
     - meter_period
     - source
     - status
+    - state_class_str
+    - device_class_str
+    - "cron pattern_str"
+    - "cron pattern"
 
 # -------------------------------------------------------------------------------
 # define all zones explicite and manual
@@ -312,6 +320,7 @@ mqtt:
     sensor:         !include_dir_merge_list     conf/mqtt_sensor
     switch:         !include_dir_merge_list     conf/mqtt_switch
     cover:          !include_dir_merge_list     conf/mqtt_cover
+utility_meter:      !include_dir_named          conf/utility_meter
 
 # -------------------------------------------------------------------------------
 #

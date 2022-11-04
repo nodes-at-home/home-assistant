@@ -1,0 +1,53 @@
+###
+### 22.08.2019 split up
+###
+
+  - alias: electricity_meter_set_preference_threshold_voltage
+    id: electricity_meter_set_preference_threshold_voltage
+    trigger:
+      - platform: state
+        entity_id: sensor.electricity_utilityroom_threshold_voltage
+    action:
+        service: input_number.set_value
+        target:
+            entity_id: input_number.electricity_meter_threshold_voltage
+        data:
+            value: "{{ states ( 'sensor.electricity_utilityroom_threshold_voltage' ) }}"
+
+  - alias: electricity_meter_send_threshold_voltage
+    id: electricity_meter_send_threshold_voltage
+    trigger:
+      - platform: state
+        entity_id: input_number.electricity_meter_threshold_voltage
+    action:
+      - service: mqtt.publish
+        data:
+            topic: nodes@home/meter/electricity/utilityroom/service/threshold
+            payload_template: "{{ states ( 'input_number.electricity_meter_threshold_voltage' ) }}"
+            qos: 0
+            retain: false
+
+  - alias: electricity_meter_set_preference_threshold_latency
+    id: electricity_meter_set_preference_threshold_latency
+    trigger:
+      - platform: state
+        entity_id: sensor.electricity_utilityroom_threshold_latency
+    action:
+      - service: input_number.set_value
+        target:
+            entity_id: input_number.electricity_meter_threshold_latency
+        data:
+            value: "{{ states ( 'sensor.electricity_utilityroom_threshold_latency' ) }}"
+
+  - alias: electricity_meter_send_threshold_latency
+    id: electricity_meter_send_threshold_latency
+    trigger:
+      - platform: state
+        entity_id: input_number.electricity_meter_threshold_latency
+    action:
+      - service: mqtt.publish
+        data:
+            topic: nodes@home/meter/electricity/utilityroom/service/counter
+            payload_template: "{{ states ( 'input_number.electricity_meter_threshold_latency' ) }}"
+            qos: 0
+            retain: false

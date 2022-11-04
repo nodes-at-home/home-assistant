@@ -201,3 +201,15 @@ views:
             - input_boolean.daily_vacuum_done
             - input_boolean.daily_vacuum
             - input_boolean.dustbin_notification
+
+  - title: Energie
+    path: energy
+    panel: false
+    cards:
+      - type: entities
+        title: Elektrozähler
+        show_header_toggle: false
+        entities:
+            - input_number.electricity_meter_threshold_voltage
+            - input_number.electricity_meter_threshold_latency
+            - input_number.electricity_meter_revolutions_per_kwh

@@ -456,20 +456,51 @@ views:
                   min: 0
                   max: 100
 
-  - title: Gasspeicher
-    path: gasstorage
+  - title: Energie
+    path: energy
     panel: false
     cards:
+      - type: gauge
+        name: Solarleistung
+        entity: sensor.solis_carport_power
+        min: 0
+        max: 1000
+        needle: true
+        severity:
+            yellow: 0
       - type: entities
-        title: Gasspeicher Deutschland
+        title: Solarstrom
         show_header_toggle: false
         entities:
-          - sensor.gas_storage_germany_day
-          - sensor.gas_storage_germany_full_level
-          - sensor.gas_storage_germany_full_total
-          - sensor.gas_storage_germany_trend
-          - sensor.gas_storage_germany_storage_consumption_level
-          - sensor.gas_storage_germany_consumption_total
+          - sensor.solar_meter_quarterhourly
+          - sensor.solar_meter_hourly
+          - sensor.solar_meter_daily
+          - sensor.solar_meter_weekly
+          - sensor.solar_meter_monthly
+          - sensor.solar_meter_yearly
+          - binary_sensor.solis_carport_alarm
+          - sensor.solis_carport_dailyenergy
+          - sensor.solis_carport_temperature
+          - sensor.meterstatus
+      - type: gauge
+        name: Netzleistung
+        entity: sensor.electricity_utilityroom_power
+        min: 0
+        max: 3000
+        needle: true
+      - type: entities
+        title: Netzstrom
+        show_header_toggle: false
+        entities:
+          # - sensor.electricity_utilityroom_power
+          # - sensor.electricity_utilityroom_meter
+          - sensor.electricity_meter_quarterhourly
+          - sensor.electricity_meter_hourly
+          - sensor.electricity_meter_daily
+          - sensor.electricity_meter_weekly
+          - sensor.electricity_meter_monthly
+          - sensor.electricity_meter_yearly
+          - sensor.electricity_utilityroom_dt
       - type: gauge
         name: Füllstand Gasspeicher Deutschland
         entity: sensor.gas_storage_germany_full_level
@@ -483,3 +514,13 @@ views:
             color: '#ffa600'
           - from: 80
             color: '#43a047'
+      - type: entities
+        title: Gasspeicher Deutschland
+        show_header_toggle: false
+        entities:
+          - sensor.gas_storage_germany_day
+          # - sensor.gas_storage_germany_full_level
+          - sensor.gas_storage_germany_full_total
+          - sensor.gas_storage_germany_trend
+          - sensor.gas_storage_germany_storage_consumption_level
+          - sensor.gas_storage_germany_consumption_total

@@ -1,0 +1,7 @@
+###
+### 31.10.2022
+###
+
+source: sensor.solis_carport_dailyenergy
+cycle: weekly
+delta_values: false
