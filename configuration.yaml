@@ -19,6 +19,10 @@ homeassistant:
   # metric for Metric, imperial for Imperial
   unit_system: metric
 
+  currency: EUR
+
+  country: DE
+
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: Europe/Berlin
 
@@ -258,12 +262,16 @@ logbook:
 # -------------------------------------------------------------------------------
 # hostname
 input_text:
-  hostname:
-    initial: !env_var PARENT_HOSTNAME
+    hostname:
+        initial: !env_var PARENT_HOSTNAME
 
 # -------------------------------------------------------------------------------
 # Track the sun
 sun:
+
+# -------------------------------------------------------------------------------
+# energy panel
+energy:
 
 # -------------------------------------------------------------------------------
 # camera for roborock map
