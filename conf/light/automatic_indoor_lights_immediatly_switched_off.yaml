@@ -5,7 +5,7 @@
   - platform: group
     name: automatic_indoor_lights_immediatly_switched_off
     entities:
-      - light.rfhub_lounge_lampLoungeWhiteBall
+      # - light.rfhub_lounge_lampLoungeWhiteBall
       - light.rfhub_lounge_lamploungeblackbowl
       - light.rfhub_lounge_lampLoungeReading
       - light.rfhub_lounge_lampStudyPillar
