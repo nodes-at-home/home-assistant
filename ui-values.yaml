@@ -481,7 +481,6 @@ views:
           - binary_sensor.solis_carport_alarm
           - sensor.solis_carport_dailyenergy
           - sensor.solis_carport_temperature
-          - sensor.meterstatus
       - type: gauge
         name: Netzleistung
         entity: sensor.electricity_utilityroom_power
@@ -501,6 +500,7 @@ views:
           - sensor.electricity_meter_monthly
           - sensor.electricity_meter_yearly
           - sensor.electricity_utilityroom_dt
+          - sensor.electricity_quarterhourly
       - type: gauge
         name: Füllstand Gasspeicher Deutschland
         entity: sensor.gas_storage_germany_full_level

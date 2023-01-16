@@ -1341,6 +1341,9 @@ sensor.electricity_meter_monthly:
 sensor.electricity_meter_yearly:
     friendly_name: Verbrauch jährlich
 
+sensor.electricity_quarterhourly:
+    friendly_name: Kumulierter Verbrauch 15min
+
 #------------------------------------------------------------------------------
 binary_sensor.solis_carport_alarm:
     friendly_name: Inverter Alarm
