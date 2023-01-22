@@ -33,3 +33,7 @@ mowing_activated:
 circulating_pump_activated:
     name: Zirkulationspumpe aktiv
     # initial: off
+
+cover_closing_at_cold_activated:
+    name: Schließen bei Kälte aktiv
+    # initial: off

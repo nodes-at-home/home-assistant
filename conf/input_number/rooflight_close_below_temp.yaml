@@ -1,0 +1,11 @@
+###
+### 19.01.2023
+###
+
+name: Schließen unterhalb von
+mode: box
+min: -10
+max: 20
+step: 1
+unit_of_measurement: °C
+# initial: 15

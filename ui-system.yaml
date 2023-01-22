@@ -369,3 +369,16 @@ views:
                 entities:
                     - automation.mower_start
                     - automation.mower_end
+              - type: entities
+                title: Fensterrollos
+                show_header_toggle: true
+                entities:
+                    - automation.close_cover_bedroom
+                    - automation.open_cover_bedroom
+                    - automation.close_cover_bath
+                    - automation.open_cover_bath
+                    - automation.close_cover_office
+                    - automation.open_cover_office
+                    - automation.close_cover_nursery
+                    - automation.open_cover_nursery
+                    - automation.reset_close_at_low_temp_flag

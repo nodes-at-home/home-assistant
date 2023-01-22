@@ -213,3 +213,22 @@ views:
             - input_number.electricity_meter_threshold_voltage
             - input_number.electricity_meter_threshold_latency
             - input_number.electricity_meter_revolutions_per_kwh
+
+  - title: Fensterrollos
+    path: shutter
+    panel: false
+    cards:
+      - type: entities
+        title: Parameter
+        show_header_toggle: false
+        entities:
+            - input_boolean.cover_closing_at_cold_activated
+            - input_number.rooflight_close_below_temp
+      - type: entities
+        title: Auswahl
+        show_header_toggle: false
+        entities:
+            - input_boolean.cover_bedroom
+            - input_boolean.cover_bath
+            - input_boolean.cover_office
+            - input_boolean.cover_nursery

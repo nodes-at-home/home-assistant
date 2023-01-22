@@ -229,7 +229,7 @@ views:
       - type: entity-filter
         entities:
           - entity: device_tracker.156_andreas_pixel_6_pro_wlan
-          - entity: device_tracker.111_undine_xperia_wlan
+          - entity: device_tracker.163_undine_z_flip4_wlan
           - entity: device_tracker.galaxy_a52
           - entity: device_tracker.121_nina_galaxy_wlan
           - entity: device_tracker.a52_von_niklas
@@ -399,6 +399,7 @@ views:
         title: Fensterrollos
         show_header_toggle: false
         entities:
+          - input_boolean.cover_closed_at_low_temp
           - cover.bedroom
           - cover.bath
           - cover.office
