@@ -1,4 +1,5 @@
 """Constants for the Bosch SHC integration."""
+import logging
 
 ATTR_NAME = "name"
 ATTR_EVENT_TYPE = "event_type"
@@ -6,8 +7,8 @@ ATTR_EVENT_SUBTYPE = "event_subtype"
 ATTR_LAST_TIME_TRIGGERED = "lastTimeTriggered"
 
 CONF_HOSTNAME = "hostname"
-CONF_SHC_CERT = "bosch_shc-cert.pem"
-CONF_SHC_KEY = "bosch_shc-key.pem"
+CONF_SHC_CERT = "bosch_shc-cert"
+CONF_SHC_KEY = "bosch_shc-key"
 CONF_SUBTYPE = "subtype"
 CONF_SSL_CERTIFICATE = "ssl_certificate"
 CONF_SSL_KEY = "ssl_key"
@@ -18,6 +19,8 @@ DATA_POLLING_HANDLER = "polling_handler"
 DOMAIN = "bosch_shc"
 
 EVENT_BOSCH_SHC = "bosch_shc.event"
+
+LOGGER = logging.getLogger(__package__)
 
 SERVICE_SMOKEDETECTOR_CHECK = "smokedetector_check"
 SERVICE_SMOKEDETECTOR_ALARMSTATE = "smokedetector_alarmstate"

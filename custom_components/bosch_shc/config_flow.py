@@ -1,7 +1,7 @@
 """Config flow for Bosch Smart Home Controller integration."""
-import logging
 from os import makedirs
 
+import voluptuous as vol
 from boschshcpy import SHCRegisterClient, SHCSession
 from boschshcpy.exceptions import (
     SHCAuthenticationError,
@@ -9,11 +9,9 @@ from boschshcpy.exceptions import (
     SHCRegistrationError,
     SHCSessionError,
 )
-import voluptuous as vol
-
 from homeassistant import config_entries, core
 from homeassistant.components import zeroconf
-from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_TOKEN
+from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PASSWORD, CONF_TOKEN
 from homeassistant.data_entry_flow import FlowResult
 
 from .const import (
@@ -23,9 +21,8 @@ from .const import (
     CONF_SSL_CERTIFICATE,
     CONF_SSL_KEY,
     DOMAIN,
+    LOGGER,
 )
-
-_LOGGER = logging.getLogger(__name__)
 
 HOST_SCHEMA = vol.Schema(
     {
@@ -44,16 +41,17 @@ def write_tls_asset(hass: core.HomeAssistant, filename: str, asset: bytes) -> No
 def create_credentials_and_validate(hass, host, user_input, zeroconf_instance):
     """Create and store credentials and validate session."""
     helper = SHCRegisterClient(host, user_input[CONF_PASSWORD])
-    result = helper.register(host, "HomeAssistant")
+    result = helper.register(user_input[CONF_NAME].lower(), user_input[CONF_NAME])
 
     if result is not None:
-        write_tls_asset(hass, CONF_SHC_CERT, result["cert"])
-        write_tls_asset(hass, CONF_SHC_KEY, result["key"])
+        hostname = result["token"].split(":", 1)[1]
+        write_tls_asset(hass, CONF_SHC_CERT + "_" + hostname + ".pem", result["cert"])
+        write_tls_asset(hass, CONF_SHC_KEY + "_" + hostname + ".pem", result["key"])
 
         session = SHCSession(
             host,
-            hass.config.path(DOMAIN, CONF_SHC_CERT),
-            hass.config.path(DOMAIN, CONF_SHC_KEY),
+            hass.config.path(DOMAIN, CONF_SHC_CERT + "_" + hostname + ".pem"),
+            hass.config.path(DOMAIN, CONF_SHC_KEY + "_" + hostname + ".pem"),
             True,
             zeroconf_instance,
         )
@@ -108,7 +106,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             except SHCConnectionError:
                 errors["base"] = "cannot_connect"
             except Exception:  # pylint: disable=broad-except
-                _LOGGER.exception("Unexpected exception")
+                LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
             else:
                 await self.async_set_unique_id(info["unique_id"])
@@ -138,21 +136,26 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             except SHCConnectionError:
                 errors["base"] = "cannot_connect"
             except SHCSessionError as err:
-                _LOGGER.warning("Session error: %s", err.message)
+                LOGGER.warning("Session error: %s", err.message)
                 errors["base"] = "session_error"
             except SHCRegistrationError as err:
-                _LOGGER.warning("Registration error: %s", err.message)
+                LOGGER.warning("Registration error: %s", err.message)
                 errors["base"] = "pairing_failed"
             except Exception:  # pylint: disable=broad-except
-                _LOGGER.exception("Unexpected exception")
+                LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
             else:
+                hostname = result["token"].split(":", 1)[1]
                 entry_data = {
-                    CONF_SSL_CERTIFICATE: self.hass.config.path(DOMAIN, CONF_SHC_CERT),
-                    CONF_SSL_KEY: self.hass.config.path(DOMAIN, CONF_SHC_KEY),
+                    CONF_SSL_CERTIFICATE: self.hass.config.path(
+                        DOMAIN, CONF_SHC_CERT + "_" + hostname + ".pem"
+                    ),
+                    CONF_SSL_KEY: self.hass.config.path(
+                        DOMAIN, CONF_SHC_KEY + "_" + hostname + ".pem"
+                    ),
                     CONF_HOST: self.host,
                     CONF_TOKEN: result["token"],
-                    CONF_HOSTNAME: result["token"].split(":", 1)[1],
+                    CONF_HOSTNAME: hostname,
                 }
                 existing_entry = await self.async_set_unique_id(self.info["unique_id"])
                 if existing_entry:
@@ -174,6 +177,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             {
                 vol.Required(
                     CONF_PASSWORD, default=user_input.get(CONF_PASSWORD, "")
+                ): str,
+                vol.Optional(
+                    CONF_NAME, default=user_input.get(CONF_NAME, "HomeAssistant")
                 ): str,
             }
         )

@@ -1,6 +1,4 @@
 """Platform for climate integration."""
-import logging
-
 from boschshcpy import SHCClimateControl, SHCSession
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
@@ -16,10 +14,8 @@ from homeassistant.components.climate.const import (
 )
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
 
-from .const import DATA_SESSION, DOMAIN
+from .const import DATA_SESSION, DOMAIN, LOGGER
 from .entity import SHCEntity
-
-_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -55,6 +51,7 @@ class ClimateControl(SHCEntity, ClimateEntity):
         """Initialize the SHC device."""
         super().__init__(device=device, parent_id=parent_id, entry_id=entry_id)
         self._name = name
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}"
 
     @property
     def name(self):
@@ -158,7 +155,7 @@ class ClimateControl(SHCEntity, ClimateEntity):
         )  # set_temperature args may provide HVAC mode as well
 
         if self.hvac_mode == HVAC_MODE_OFF or self.preset_mode == PRESET_ECO:
-            _LOGGER.debug(
+            LOGGER.debug(
                 "Skipping setting temperature as device %s is off or in low_mode.",
                 self.device_name,
             )

@@ -1,6 +1,4 @@
 """The Bosch Smart Home Controller integration."""
-import logging
-
 import voluptuous as vol
 from boschshcpy import SHCSession, SHCUniversalSwitch
 from boschshcpy.exceptions import SHCAuthenticationError, SHCConnectionError
@@ -29,6 +27,7 @@ from .const import (
     DATA_SESSION,
     DOMAIN,
     EVENT_BOSCH_SHC,
+    LOGGER,
     SERVICE_TRIGGER_SCENARIO,
     SUPPORTED_INPUTS_EVENTS_TYPES,
 )
@@ -41,9 +40,8 @@ PLATFORMS = [
     Platform.CLIMATE,
     Platform.ALARM_CONTROL_PANEL,
     Platform.LIGHT,
+    Platform.NUMBER,
 ]
-
-_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -67,7 +65,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     shc_info = session.information
     if shc_info.updateState.name == "UPDATE_AVAILABLE":
-        _LOGGER.warning("Please check for software updates in the Bosch Smart Home App")
+        LOGGER.warning("Please check for software updates in the Bosch Smart Home App")
 
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {
@@ -86,7 +84,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     )
     device_id = device_entry.id
 
-    hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     async def stop_polling(event):
         """Stop polling service."""
@@ -201,7 +199,7 @@ class SwitchDeviceEventListener:
                 },
             )
         else:
-            _LOGGER.warning(
+            LOGGER.warning(
                 "Switch input event %s for device %s is not supported, please open issue",
                 event_type,
                 self._device.name,
@@ -209,7 +207,7 @@ class SwitchDeviceEventListener:
 
     async def async_setup(self):
         """Set up the listener."""
-        device_registry = await dr.async_get_registry(self.hass)
+        device_registry = dr.async_get(self.hass)
         device_entry = device_registry.async_get_or_create(
             config_entry_id=self.entry.entry_id,
             name=self._device.name,
@@ -227,5 +225,5 @@ class SwitchDeviceEventListener:
     @callback
     def _handle_ha_stop(self, _):
         """Handle Home Assistant stopping."""
-        _LOGGER.debug("Stopping Switch event listener for %s", self._device.name)
+        LOGGER.debug("Stopping Switch event listener for %s", self._device.name)
         self.shutdown()

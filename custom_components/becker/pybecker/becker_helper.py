@@ -1,3 +1,4 @@
+"""Helper for Becker centronic USB Stick."""
 import logging
 import re
 import time
@@ -28,26 +29,30 @@ MESSAGE = re.compile(
     + rb'[0-9A-F]{6,6}'
     + rb'(?P<channel>[0-9A-F]{1,1})'
     + rb'00'
-    + rb'(?P<command>[124]{1,1})'            # HALT, UP, DOWN
+    + rb'(?P<command>[0-9A-F]{1,1})'
     + rb'(?P<argument>[0-9A-F]{1,1})'
     + rb'[0-9A-F]{2,2}'
     + ETX, re.I
 )
 
-COMMANDS = {b'1': 'HALT', b'2': 'UP', b'4': 'DOWN'}
+COMMANDS = {b'0': 'RELEASE', b'1': 'HALT', b'2': 'UP', b'4': 'DOWN', b'8': 'TRAIN'}
+COMMUNICATION_TIMEOUT = 0.1
 
 _LOGGER = logging.getLogger(__name__)
 
 
 def hex2(n):
+    """Return word"""
     return '%02X' % (n & 0xFF)
 
 
 def hex4(n):
+    """Return dword"""
     return '%04X' % (n & 0xFFFF)
 
 
 def checksum(code):
+    """Calculate checksum"""
     code_length = len(code)
     if code_length != 40:
         _LOGGER.error("The code must be 40 characters long (without <STX>, <ETX> and checksum)")
@@ -62,6 +67,7 @@ def checksum(code):
 
 
 def generate_code(channel, unit, cmd_code, with_checksum=True):
+    """Generate code"""
     unit_id = unit[0]  # contains the unit code in hex (5 chars)
     unit_inc = unit[1]  # contains the next increment (required to convert into hex4)
 
@@ -75,10 +81,12 @@ def generate_code(channel, unit, cmd_code, with_checksum=True):
     return checksum(code) if with_checksum else code
 
 def finalize_code(code):
+    """Add frame"""
     return b"".join([STX, code.encode(), ETX])
 
 
 class BeckerConnectionError(Exception):
+    """Error class for Becker centronic USB Stick."""
     pass
 
 
@@ -208,6 +216,8 @@ class BeckerCommunicator(threading.Thread):
         # Setup interface
         self._connection = BeckerConnection(device=device)
         self._read_buffer = bytes()
+        # timeout will be used within thread only
+        self._timeout = time.time()
 
     def run(self) -> None:
         '''Run BeckerCommunicator thread.'''
@@ -215,18 +225,24 @@ class BeckerCommunicator(threading.Thread):
         callback_valid = False if self._callback is None else True    # pylint: disable=simplifiable-if-expression
         packet = None
         while True:
-            # Get packet from write queue
-            try:
-                packet = self._write_queue.get(block=False)
-            except queue.Empty:
-                pass
-            else:
-                self._connection.write(packet)
-                self._log(packet, "Sent packet: ")
             # Read bytes from serial port
             if callback_valid:
-                self._read_buffer += self._connection.read()
+                data = self._connection.read()
+                if len(data) > 0:
+                    self._timeout = time.time() + COMMUNICATION_TIMEOUT
+                self._read_buffer += data
                 self._parse()
+            # Get packet from write queue if timeout expired
+            if self._timeout < time.time():
+                try:
+                    packet = self._write_queue.get(block=False)
+                except queue.Empty:
+                    pass
+                else:
+                    self._connection.write(packet)
+                    self._timeout = time.time() + COMMUNICATION_TIMEOUT
+                    self._log(packet, "Sent packet: ")
+
             # Sleep for thread switch and wait time between packets
             time.sleep(0.01)
             # Ensure all packets in queue are send before thread is stopped

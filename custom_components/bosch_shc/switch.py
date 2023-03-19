@@ -10,6 +10,8 @@ from boschshcpy import (
     SHCSession,
     SHCSmartPlug,
     SHCSmartPlugCompact,
+    SHCShutterContact2,
+    SHCThermostat,
 )
 from boschshcpy.device import SHCDevice
 
@@ -19,13 +21,14 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
 
 from .const import DATA_SESSION, DOMAIN
-from .entity import SHCEntity
+from .entity import SHCEntity, async_migrate_to_new_unique_id
 
 
 @dataclass
@@ -53,6 +56,15 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
         on_value=SHCSmartPlug.PowerSwitchService.State.ON,
         should_poll=False,
     ),
+    "smartplug_routing": SHCSwitchEntityDescription(
+        key="smartplug_routing",
+        device_class=SwitchDeviceClass.SWITCH,
+        on_key="routing",
+        on_value=SHCSmartPlug.RoutingService.State.ENABLED,
+        should_poll=False,
+        entity_category=EntityCategory.CONFIG,
+        icon="mdi:wifi",
+    ),
     "smartplugcompact": SHCSwitchEntityDescription(
         key="smartplugcompact",
         device_class=SwitchDeviceClass.OUTLET,
@@ -70,9 +82,28 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
     "cameraeyes": SHCSwitchEntityDescription(
         key="cameraeyes",
         device_class=SwitchDeviceClass.SWITCH,
+        on_key="privacymode",
+        on_value=SHCCameraEyes.PrivacyModeService.State.DISABLED,
+        should_poll=True,
+        icon="mdi:video",
+    ),
+    "cameraeyes_cameralight": SHCSwitchEntityDescription(
+        key="cameraeyes_cameralight",
+        device_class=SwitchDeviceClass.SWITCH,
         on_key="cameralight",
         on_value=SHCCameraEyes.CameraLightService.State.ON,
         should_poll=True,
+        entity_category=EntityCategory.CONFIG,
+        icon="mdi:light-flood-down",
+    ),
+    "cameraeyes_notification": SHCSwitchEntityDescription(
+        key="cameraeyes_notification",
+        device_class=SwitchDeviceClass.SWITCH,
+        on_key="cameranotification",
+        on_value=SHCCameraEyes.CameraNotificationService.State.ENABLED,
+        should_poll=True,
+        entity_category=EntityCategory.CONFIG,
+        icon="mdi:message-badge",
     ),
     "camera360": SHCSwitchEntityDescription(
         key="camera360",
@@ -80,6 +111,40 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
         on_key="privacymode",
         on_value=SHCCamera360.PrivacyModeService.State.DISABLED,
         should_poll=True,
+        icon="mdi:video",
+    ),
+    "camera360_notification": SHCSwitchEntityDescription(
+        key="camera360_notification",
+        device_class=SwitchDeviceClass.SWITCH,
+        on_key="cameranotification",
+        on_value=SHCCamera360.CameraNotificationService.State.ENABLED,
+        should_poll=True,
+        entity_category=EntityCategory.CONFIG,
+        icon="mdi:message-badge",
+    ),
+    "presencesimulation": SHCSwitchEntityDescription(
+        key="presencesimulation",
+        device_class=SwitchDeviceClass.SWITCH,
+        on_key="enabled",
+        on_value=True,
+        should_poll=True,
+    ),
+    "bypass": SHCSwitchEntityDescription(
+        key="bypass",
+        device_class=SwitchDeviceClass.SWITCH,
+        on_key="bypass",
+        on_value=SHCShutterContact2.BypassService.State.BYPASS_ACTIVE,
+        entity_category=EntityCategory.CONFIG,
+        should_poll=False,
+    ),
+    "child_lock": SHCSwitchEntityDescription(
+        key="child_lock",
+        device_class=SwitchDeviceClass.SWITCH,
+        on_key="child_lock",
+        on_value=SHCThermostat.ThermostatService.State.ON,
+        entity_category=EntityCategory.CONFIG,
+        should_poll=False,
+        icon="mdi:lock",
     ),
 }
 
@@ -95,6 +160,9 @@ async def async_setup_entry(
 
     for switch in session.device_helper.smart_plugs:
 
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch
+        )
         entities.append(
             SHCSwitch(
                 device=switch,
@@ -103,16 +171,27 @@ async def async_setup_entry(
                 description=SWITCH_TYPES["smartplug"],
             )
         )
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch, attr_name="Routing"
+        )
         entities.append(
-            SHCRoutingSwitch(
+            SHCSwitch(
                 device=switch,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
+                description=SWITCH_TYPES["smartplug_routing"],
+                attr_name="Routing",
             )
         )
 
-    for switch in session.device_helper.light_switches:
+    for switch in (
+        session.device_helper.light_switches_bsm
+        + session.device_helper.micromodule_light_attached
+    ):
 
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch
+        )
         entities.append(
             SHCSwitch(
                 device=switch,
@@ -124,6 +203,9 @@ async def async_setup_entry(
 
     for switch in session.device_helper.smart_plugs_compact:
 
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch
+        )
         entities.append(
             SHCSwitch(
                 device=switch,
@@ -135,6 +217,11 @@ async def async_setup_entry(
 
     for switch in session.device_helper.camera_eyes:
 
+        await async_migrate_to_new_unique_id(
+            hass=hass,
+            platform=Platform.SWITCH,
+            device=switch,
+        )
         entities.append(
             SHCSwitch(
                 device=switch,
@@ -143,15 +230,98 @@ async def async_setup_entry(
                 description=SWITCH_TYPES["cameraeyes"],
             )
         )
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch, attr_name="Light"
+        )
+        entities.append(
+            SHCSwitch(
+                device=switch,
+                parent_id=session.information.unique_id,
+                entry_id=config_entry.entry_id,
+                description=SWITCH_TYPES["cameraeyes_cameralight"],
+                attr_name="Light",
+            )
+        )
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch, attr_name="Notification"
+        )
+        entities.append(
+            SHCSwitch(
+                device=switch,
+                parent_id=session.information.unique_id,
+                entry_id=config_entry.entry_id,
+                description=SWITCH_TYPES["cameraeyes_notification"],
+                attr_name="Notification",
+            )
+        )
 
     for switch in session.device_helper.camera_360:
-
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch
+        )
         entities.append(
             SHCSwitch(
                 device=switch,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
                 description=SWITCH_TYPES["camera360"],
+            )
+        )
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch, attr_name="Notification"
+        )
+        entities.append(
+            SHCSwitch(
+                device=switch,
+                parent_id=session.information.unique_id,
+                entry_id=config_entry.entry_id,
+                description=SWITCH_TYPES["camera360_notification"],
+                attr_name="Notification",
+            )
+        )
+
+    presence_simulation_system = session.device_helper.presence_simulation_system
+    if presence_simulation_system:
+        await async_migrate_to_new_unique_id(
+            hass=hass,
+            platform=Platform.SWITCH,
+            device=presence_simulation_system,
+        )
+        entities.append(
+            SHCSwitch(
+                device=presence_simulation_system,
+                parent_id=session.information.unique_id,
+                entry_id=config_entry.entry_id,
+                description=SWITCH_TYPES["presencesimulation"],
+            )
+        )
+
+    for switch in session.device_helper.shutter_contacts2:
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch
+        )
+        entities.append(
+            SHCSwitch(
+                device=switch,
+                parent_id=session.information.unique_id,
+                entry_id=config_entry.entry_id,
+                description=SWITCH_TYPES["bypass"],
+            )
+        )
+
+    for switch in (
+        session.device_helper.thermostats
+        + session.device_helper.roomthermostats
+        + session.device_helper.micromodule_shutter_controls
+        + session.device_helper.micromodule_light_attached
+    ):
+        entities.append(
+            SHCSwitch(
+                device=switch,
+                parent_id=session.information.unique_id,
+                entry_id=config_entry.entry_id,
+                description=SWITCH_TYPES["child_lock"],
+                attr_name="ChildLock",
             )
         )
 
@@ -170,10 +340,19 @@ class SHCSwitch(SHCEntity, SwitchEntity):
         parent_id: str,
         entry_id: str,
         description: SHCSwitchEntityDescription,
+        attr_name: str | None = None,
     ) -> None:
         """Initialize a SHC switch."""
         super().__init__(device, parent_id, entry_id)
         self.entity_description = description
+        self._attr_name = (
+            f"{device.name}" if attr_name is None else f"{device.name} {attr_name}"
+        )
+        self._attr_unique_id = (
+            f"{device.root_device_id}_{device.id}"
+            if attr_name is None
+            else f"{device.root_device_id}_{device.id}_{attr_name.lower()}"
+        )
 
     @property
     def is_on(self) -> bool:
@@ -199,29 +378,3 @@ class SHCSwitch(SHCEntity, SwitchEntity):
     def update(self) -> None:
         """Trigger an update of the device."""
         self._device.update()
-
-
-class SHCRoutingSwitch(SHCEntity, SwitchEntity):
-    """Representation of a SHC routing switch."""
-
-    _attr_icon = "mdi:wifi"
-    _attr_entity_category = EntityCategory.CONFIG
-
-    def __init__(self, device: SHCDevice, parent_id: str, entry_id: str) -> None:
-        """Initialize an SHC communication quality reporting sensor."""
-        super().__init__(device, parent_id, entry_id)
-        self._attr_name = f"{device.name} Routing"
-        self._attr_unique_id = f"{device.serial}_routing"
-
-    @property
-    def is_on(self) -> bool:
-        """Return the state of the switch."""
-        return self._device.routing.name == "ENABLED"
-
-    def turn_on(self, **kwargs) -> None:
-        """Turn the switch on."""
-        self._device.routing = True
-
-    def turn_off(self, **kwargs) -> None:
-        """Turn the switch off."""
-        self._device.routing = False

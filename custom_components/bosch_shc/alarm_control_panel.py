@@ -1,6 +1,4 @@
 """Platform for alarm control panel integration."""
-import logging
-
 from boschshcpy import SHCIntrusionSystem, SHCSession
 from homeassistant.components.alarm_control_panel import AlarmControlPanelEntity
 from homeassistant.components.alarm_control_panel.const import (
@@ -14,11 +12,12 @@ from homeassistant.const import (
     STATE_ALARM_ARMED_HOME,
     STATE_ALARM_ARMING,
     STATE_ALARM_DISARMED,
+    STATE_ALARM_TRIGGERED,
+    Platform,
 )
 
 from .const import DATA_SESSION, DOMAIN
-
-_LOGGER = logging.getLogger(__name__)
+from .entity import async_migrate_to_new_unique_id
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -28,6 +27,13 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     session: SHCSession = hass.data[DOMAIN][config_entry.entry_id][DATA_SESSION]
 
     intrusion_system = session.intrusion_system
+    await async_migrate_to_new_unique_id(
+        hass,
+        Platform.ALARM_CONTROL_PANEL,
+        device=intrusion_system,
+        attr_name=None,
+        old_unique_id=f"{config_entry.entry_id}_{intrusion_system.id}",
+    )
     alarm_control_panel = IntrusionSystemAlarmControlPanel(
         device=intrusion_system,
         parent_id=session.information.unique_id,
@@ -46,6 +52,7 @@ class IntrusionSystemAlarmControlPanel(AlarmControlPanelEntity):
         self._device = device
         self._parent_id = parent_id
         self._entry_id = entry_id
+        self._attr_unique_id = f"{self._device.root_device_id}_{self._device.id}"
 
     async def async_added_to_hass(self):
         """Subscribe to SHC events."""
@@ -60,11 +67,6 @@ class IntrusionSystemAlarmControlPanel(AlarmControlPanelEntity):
         """Unsubscribe from SHC events."""
         await super().async_will_remove_from_hass()
         self._device.unsubscribe_callback(self.entity_id)
-
-    @property
-    def unique_id(self):
-        """Return the unique ID of the system."""
-        return self._device.id
 
     @property
     def name(self):
@@ -125,6 +127,8 @@ class IntrusionSystemAlarmControlPanel(AlarmControlPanelEntity):
                 == SHCIntrusionSystem.Profile.CUSTOM_PROTECTION
             ):
                 return STATE_ALARM_ARMED_CUSTOM_BYPASS
+        if self._device.alarm_state == SHCIntrusionSystem.AlarmState.ALARM_ON:
+            return STATE_ALARM_TRIGGERED
         return None
 
     @property

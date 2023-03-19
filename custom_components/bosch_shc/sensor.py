@@ -16,12 +16,14 @@ from homeassistant.const import (
     PERCENTAGE,
     POWER_WATT,
     TEMP_CELSIUS,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DATA_SESSION, DOMAIN
-from .entity import SHCEntity
+from .entity import SHCEntity, async_migrate_to_new_unique_id
 
 
 async def async_setup_entry(
@@ -34,12 +36,18 @@ async def async_setup_entry(
     session: SHCSession = hass.data[DOMAIN][config_entry.entry_id][DATA_SESSION]
 
     for sensor in session.device_helper.thermostats:
+        await async_migrate_to_new_unique_id(
+            hass, Platform.SENSOR, device=sensor, attr_name="Temperature"
+        )
         entities.append(
             TemperatureSensor(
                 device=sensor,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
             )
+        )
+        await async_migrate_to_new_unique_id(
+            hass, Platform.SENSOR, device=sensor, attr_name="Valvetappet"
         )
         entities.append(
             ValveTappetSensor(
@@ -49,13 +57,21 @@ async def async_setup_entry(
             )
         )
 
-    for sensor in session.device_helper.wallthermostats:
+    for sensor in (
+        session.device_helper.wallthermostats + session.device_helper.roomthermostats
+    ):
+        await async_migrate_to_new_unique_id(
+            hass, Platform.SENSOR, device=sensor, attr_name="Temperature"
+        )
         entities.append(
             TemperatureSensor(
                 device=sensor,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
             )
+        )
+        await async_migrate_to_new_unique_id(
+            hass, Platform.SENSOR, device=sensor, attr_name="Humidity"
         )
         entities.append(
             HumiditySensor(
@@ -66,12 +82,18 @@ async def async_setup_entry(
         )
 
     for sensor in session.device_helper.twinguards:
+        await async_migrate_to_new_unique_id(
+            hass, Platform.SENSOR, device=sensor, attr_name="Temperature"
+        )
         entities.append(
             TemperatureSensor(
                 device=sensor,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
             )
+        )
+        await async_migrate_to_new_unique_id(
+            hass, Platform.SENSOR, device=sensor, attr_name="Humidity"
         )
         entities.append(
             HumiditySensor(
@@ -80,12 +102,18 @@ async def async_setup_entry(
                 entry_id=config_entry.entry_id,
             )
         )
+        await async_migrate_to_new_unique_id(
+            hass, Platform.SENSOR, device=sensor, attr_name="Purity"
+        )
         entities.append(
             PuritySensor(
                 device=sensor,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
             )
+        )
+        await async_migrate_to_new_unique_id(
+            hass, Platform.SENSOR, device=sensor, attr_name="AirQuality"
         )
         entities.append(
             AirQualitySensor(
@@ -94,6 +122,13 @@ async def async_setup_entry(
                 entry_id=config_entry.entry_id,
             )
         )
+        await async_migrate_to_new_unique_id(
+            hass,
+            Platform.SENSOR,
+            device=sensor,
+            attr_name="TemperatureRating",
+            old_unique_id=f"{sensor.serial}_temperature_rating",
+        )
         entities.append(
             TemperatureRatingSensor(
                 device=sensor,
@@ -101,12 +136,26 @@ async def async_setup_entry(
                 entry_id=config_entry.entry_id,
             )
         )
+        await async_migrate_to_new_unique_id(
+            hass,
+            Platform.SENSOR,
+            device=sensor,
+            attr_name="HumidityRating",
+            old_unique_id=f"{sensor.serial}_humidity_rating",
+        )
         entities.append(
             HumidityRatingSensor(
                 device=sensor,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
             )
+        )
+        await async_migrate_to_new_unique_id(
+            hass,
+            Platform.SENSOR,
+            device=sensor,
+            attr_name="PurityRating",
+            old_unique_id=f"{sensor.serial}_purity_rating",
         )
         entities.append(
             PurityRatingSensor(
@@ -117,14 +166,31 @@ async def async_setup_entry(
         )
 
     for sensor in (
-        session.device_helper.smart_plugs + session.device_helper.light_switches
+        session.device_helper.smart_plugs
+        + session.device_helper.light_switches_bsm
+        + session.device_helper.micromodule_light_controls
+        + session.device_helper.micromodule_shutter_controls
     ):
+        await async_migrate_to_new_unique_id(
+            hass,
+            Platform.SENSOR,
+            device=sensor,
+            attr_name="Power",
+            old_unique_id=f"{sensor.serial}_power",
+        )
         entities.append(
             PowerSensor(
                 device=sensor,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
             )
+        )
+        await async_migrate_to_new_unique_id(
+            hass,
+            Platform.SENSOR,
+            device=sensor,
+            attr_name="Energy",
+            old_unique_id=f"{sensor.serial}_energy",
         )
         entities.append(
             EnergySensor(
@@ -135,12 +201,26 @@ async def async_setup_entry(
         )
 
     for sensor in session.device_helper.smart_plugs_compact:
+        await async_migrate_to_new_unique_id(
+            hass,
+            Platform.SENSOR,
+            device=sensor,
+            attr_name="Power",
+            old_unique_id=f"{sensor.serial}_power",
+        )
         entities.append(
             PowerSensor(
                 device=sensor,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
             )
+        )
+        await async_migrate_to_new_unique_id(
+            hass,
+            Platform.SENSOR,
+            device=sensor,
+            attr_name="Energy",
+            old_unique_id=f"{sensor.serial}_energy",
         )
         entities.append(
             EnergySensor(
@@ -149,8 +229,24 @@ async def async_setup_entry(
                 entry_id=config_entry.entry_id,
             )
         )
+        await async_migrate_to_new_unique_id(
+            hass,
+            Platform.SENSOR,
+            device=sensor,
+            attr_name="CommunicationQuality",
+            old_unique_id=f"{sensor.serial}_communication_quality",
+        )
         entities.append(
             CommunicationQualitySensor(
+                device=sensor,
+                parent_id=session.information.unique_id,
+                entry_id=config_entry.entry_id,
+            )
+        )
+
+    for sensor in session.device_helper.motion_detectors:
+        entities.append(
+            IlluminanceLevelSensor(
                 device=sensor,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
@@ -172,7 +268,7 @@ class TemperatureSensor(SHCEntity, SensorEntity):
         """Initialize an SHC temperature reporting sensor."""
         super().__init__(device, parent_id, entry_id)
         self._attr_name = f"{device.name} Temperature"
-        self._attr_unique_id = f"{device.serial}_temperature"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_temperature"
 
     @property
     def native_value(self):
@@ -191,7 +287,7 @@ class HumiditySensor(SHCEntity, SensorEntity):
         """Initialize an SHC humidity reporting sensor."""
         super().__init__(device, parent_id, entry_id)
         self._attr_name = f"{device.name} Humidity"
-        self._attr_unique_id = f"{device.serial}_humidity"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_humidity"
 
     @property
     def native_value(self):
@@ -210,7 +306,7 @@ class PuritySensor(SHCEntity, SensorEntity):
         """Initialize an SHC purity reporting sensor."""
         super().__init__(device, parent_id, entry_id)
         self._attr_name = f"{device.name} Purity"
-        self._attr_unique_id = f"{device.serial}_purity"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_purity"
 
     @property
     def native_value(self):
@@ -224,8 +320,8 @@ class AirQualitySensor(SHCEntity, SensorEntity):
     def __init__(self, device: SHCDevice, parent_id: str, entry_id: str) -> None:
         """Initialize an SHC airquality reporting sensor."""
         super().__init__(device, parent_id, entry_id)
-        self._attr_name = f"{device.name} Air Quality"
-        self._attr_unique_id = f"{device.serial}_airquality"
+        self._attr_name = f"{device.name} AirQuality"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_airquality"
 
     @property
     def native_value(self):
@@ -246,8 +342,8 @@ class TemperatureRatingSensor(SHCEntity, SensorEntity):
     def __init__(self, device: SHCDevice, parent_id: str, entry_id: str) -> None:
         """Initialize an SHC temperature rating sensor."""
         super().__init__(device, parent_id, entry_id)
-        self._attr_name = f"{device.name} Temperature Rating"
-        self._attr_unique_id = f"{device.serial}_temperature_rating"
+        self._attr_name = f"{device.name} TemperatureRating"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_temperaturerating"
 
     @property
     def native_value(self):
@@ -264,7 +360,9 @@ class CommunicationQualitySensor(SHCEntity, SensorEntity):
         """Initialize an SHC communication quality reporting sensor."""
         super().__init__(device, parent_id, entry_id)
         self._attr_name = f"{device.name} Communication Quality"
-        self._attr_unique_id = f"{device.serial}_communication_quality"
+        self._attr_unique_id = (
+            f"{device.root_device_id}_{device.id}_communicationquality"
+        )
 
     @property
     def native_value(self):
@@ -279,7 +377,7 @@ class HumidityRatingSensor(SHCEntity, SensorEntity):
         """Initialize an SHC humidity rating sensor."""
         super().__init__(device, parent_id, entry_id)
         self._attr_name = f"{device.name} Humidity Rating"
-        self._attr_unique_id = f"{device.serial}_humidity_rating"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_humidityrating"
 
     @property
     def native_value(self):
@@ -294,7 +392,7 @@ class PurityRatingSensor(SHCEntity, SensorEntity):
         """Initialize an SHC purity rating sensor."""
         super().__init__(device, parent_id, entry_id)
         self._attr_name = f"{device.name} Purity Rating"
-        self._attr_unique_id = f"{device.serial}_purity_rating"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_purityrating"
 
     @property
     def native_value(self):
@@ -313,7 +411,7 @@ class PowerSensor(SHCEntity, SensorEntity):
         """Initialize an SHC power reporting sensor."""
         super().__init__(device, parent_id, entry_id)
         self._attr_name = f"{device.name} Power"
-        self._attr_unique_id = f"{device.serial}_power"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_power"
 
     @property
     def native_value(self):
@@ -332,7 +430,7 @@ class EnergySensor(SHCEntity, SensorEntity):
         """Initialize an SHC energy reporting sensor."""
         super().__init__(device, parent_id, entry_id)
         self._attr_name = f"{self._device.name} Energy"
-        self._attr_unique_id = f"{self._device.serial}_energy"
+        self._attr_unique_id = f"{device.root_device_id}_{self._device.id}_energy"
 
     @property
     def native_value(self):
@@ -345,12 +443,14 @@ class ValveTappetSensor(SHCEntity, SensorEntity):
 
     _attr_icon = "mdi:gauge"
     _attr_native_unit_of_measurement = PERCENTAGE
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, device: SHCDevice, parent_id: str, entry_id: str) -> None:
         """Initialize an SHC valve tappet reporting sensor."""
         super().__init__(device, parent_id, entry_id)
         self._attr_name = f"{device.name} Valvetappet"
-        self._attr_unique_id = f"{device.serial}_valvetappet"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_valvetappet"
 
     @property
     def native_value(self):
@@ -363,3 +463,21 @@ class ValveTappetSensor(SHCEntity, SensorEntity):
         return {
             "valve_tappet_state": self._device.valvestate.name,
         }
+
+
+class IlluminanceLevelSensor(SHCEntity, SensorEntity):
+    """Representation of an SHC illuminance level reporting sensor."""
+
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+
+    def __init__(self, device: SHCDevice, parent_id: str, entry_id: str) -> None:
+        """Initialize an SHC illuminance level reporting sensor."""
+        super().__init__(device, parent_id, entry_id)
+        self._attr_name = f"{device.name} Illuminance"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_illuminance"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        return self._device.illuminance
