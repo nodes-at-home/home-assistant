@@ -92,7 +92,7 @@
         from: "on"
         to: "off"
         for:
-            minutes: input_number.tvoff_lightsoff_delay1
+            minutes: "{{ states ( 'input_number.tvoff_lightsoff_delay1' ) | int }}"
     condition:
       # no conditions
     action:
@@ -134,9 +134,6 @@
       - platform: time_pattern
         minutes: "/1"
     condition:
-      # - condition: state
-        # entity_id: binary_sensor.prod_mode
-        # state: 'on'
       - condition: state
         entity_id: input_boolean.circulating_pump_activated
         state: 'on'
