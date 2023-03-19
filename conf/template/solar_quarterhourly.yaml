@@ -1,0 +1,14 @@
+###
+### 19.03.2023
+###
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.solar_meter_quarterhourly
+        attribute: last_reset
+    sensor:
+      - name: solar_quarterhourly
+        unit_of_measurement: kWh
+        state: "{{ state_attr ( 'sensor.solar_meter_quarterhourly', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.solar_meter_quarterhourly", "last_reset" ) }}'

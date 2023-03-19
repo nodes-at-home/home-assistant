@@ -462,7 +462,7 @@ views:
     cards:
       - type: gauge
         name: Solarleistung
-        entity: sensor.solis_carport_power
+        entity: sensor.solis_mini_s6_ac_output_total_power
         min: 0
         max: 1000
         needle: true
@@ -478,9 +478,15 @@ views:
           - sensor.solar_meter_weekly
           - sensor.solar_meter_monthly
           - sensor.solar_meter_yearly
-          - binary_sensor.solis_carport_alarm
-          - sensor.solis_carport_dailyenergy
-          - sensor.solis_carport_temperature
+          - sensor.solis_mini_s6_ac_current_r
+          - sensor.solis_mini_s6_ac_voltage_r
+          - sensor.solis_mini_s6_ac_frequency
+          - sensor.solis_mini_s6_dc_current_pv1
+          - sensor.solis_mini_s6_dc_voltage_pv1
+          - sensor.solis_mini_s6_dc_power_pv1
+          - sensor.solis_mini_s6_power_state
+          - sensor.solis_mini_s6_state
+          - sensor.solis_mini_s6_temperature
       - type: gauge
         name: Netzleistung
         entity: sensor.electricity_utilityroom_power

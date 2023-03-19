@@ -2,6 +2,6 @@
 ### 31.10.2022
 ###
 
-source: sensor.solis_carport_dailyenergy
+source: sensor.solis_mini_s6_energy_total
 cycle: weekly
 delta_values: false

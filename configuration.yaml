@@ -135,6 +135,7 @@ influxdb:
         - sensor.gas_storage_germany_consumption_total
         - sensor.electricity_utilityroom_power
         - sensor.electricity_quarterhourly
+        - sensor.solar_quarterhourly
   ignore_attributes:
     - friendly_name
     - icon
@@ -175,6 +176,13 @@ lovelace:
       - url: /local/custom_lovelace/lovelace-card-mod/card-mod.js
         type: module
     dashboards:
+        values-dashboard:
+            mode: yaml
+            filename: ui-values.yaml
+            title: Sensorwerte
+            icon: mdi:chart-line
+            show_in_sidebar: true
+            require_admin: false
         settings-dashboard:
             mode: yaml
             filename: ui-settings.yaml
@@ -189,19 +197,12 @@ lovelace:
             icon: mdi:memory
             show_in_sidebar: true
             require_admin: false
-        values-dashboard:
-            mode: yaml
-            filename: ui-values.yaml
-            title: Sensorwerte
-            icon: mdi:chart-line
-            show_in_sidebar: true
-            require_admin: false
         brewery-dashboard:
             mode: yaml
             filename: ui-brewery.yaml
             title: Brauerei
             icon: mdi:beer
-            show_in_sidebar: true
+            show_in_sidebar: false
             require_admin: false
         old-dashboard:
             mode: yaml
