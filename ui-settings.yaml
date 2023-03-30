@@ -56,6 +56,11 @@ views:
             - input_number.circulating_pump_on_duration
             - input_number.circulating_pump_activated_after_standup
             - input_number.circulating_pump_activated_before_sleeping
+      - type: entities
+        title: USV
+        show_header_toggle: false
+        entities:
+            - input_number.ups_shutdown_at_battery_runtime
 
   - title: Garten
     path: garden

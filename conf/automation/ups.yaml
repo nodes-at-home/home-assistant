@@ -1,0 +1,52 @@
+###
+### 17.03.2023 new
+###
+
+# UPS states
+#   ONLINE
+#   ONBATT
+#   LOWBATT
+#   FSD         (forced shutdown)
+#   COMMOK
+#   COMMBAD
+#   SHUTDOWN    (the system is beeing shutdown)
+#   REPLBATT    (replace battery)
+#   NOCONN
+#   NOPARENT
+
+    # https://www.reddit.com/r/homeassistant/comments/mydvfp/network_ups_tool_create_automation/
+  - alias: ups_status_change
+    id: ups_status_change
+    trigger:
+      - platform: state
+        entity_id: sensor.ups_status
+    condition:
+        # check stage
+      # - condition: state
+        # entity_id: binary_sensor.prod_mode
+        # state: 'on'
+      - condition: template
+        value_template: "{{ trigger.from_state is not none and trigger.to_state is not none }}"
+    action:
+      - service: notify.simplepush
+        data:
+          message: "Neuer Status USV: {{ states ( 'sensor.ups_status' ) }}"
+          title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
+
+    # https://stackoverflow.com/questions/42660690/is-it-possible-to-shut-down-the-host-machine-by-executing-a-command-on-one-of-it
+  - alias: ups_shutdown_on_low_battery
+    id: ups_shutdown_on_low_battery
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.ups_battery_runtime
+        below: input_number.ups_shutdown_at_battery_runtime
+    not:
+        condition:
+          - platform: state
+            entity_id: sensor.ups_status
+            state: "Online"
+    action:
+      - service: notify.simplepush
+        data:
+          message: "Runterfahren bei USV-Restlaufzeit von {{ states ( 'sensor.ups_battery_runtime' ) }} sec"
+          title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"

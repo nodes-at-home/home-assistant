@@ -57,6 +57,16 @@ views:
             - switch.fritz_box_7590_wi_fi_mauzigast
             - switch.fritz_box_7590_wi_fi_pokemonnetwlan
             - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
+      - type: entities
+        title: USV
+        show_header_toggle: false
+        entities:
+            - sensor.ups_status
+            - sensor.ups_battery_charge
+            - sensor.ups_load
+            - sensor.ups_output_voltage
+            - sensor.ups_battery_runtime
+            # - sensor.ups_status_data
 
   - title: Geräte
     path: nodes
@@ -338,6 +348,11 @@ views:
                     - automation.electricity_meter_set_preference_threshold_latency
                     - automation.electricity_meter_send_threshold_voltage
                     - automation.electricity_meter_send_threshold_latency
+              - type: entities
+                title: USV
+                show_header_toggle: true
+                entities:
+                    - automation.ups_status_change
           - type: vertical-stack
             cards:
               - type: entities

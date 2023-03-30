@@ -1,0 +1,11 @@
+###
+### 18.03.2023
+###
+
+name: Restlaufzeit für Shutdown
+mode: box
+min: 0
+max: 4000
+step: 300
+unit_of_measurement: sec
+# initial: 15
