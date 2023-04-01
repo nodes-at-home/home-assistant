@@ -215,9 +215,13 @@ views:
         title: Elektrozähler
         show_header_toggle: false
         entities:
-            - input_number.electricity_meter_threshold_voltage
-            - input_number.electricity_meter_threshold_latency
-            - input_number.electricity_meter_revolutions_per_kwh
+            - input_number.electricity_meter_threshold_power
+      - type: entities
+        title: Preise
+        show_header_toggle: false
+        entities:
+            - input_number.electricity_price_in
+            - input_number.electricity_price_out
 
   - title: Fensterrollos
     path: shutter

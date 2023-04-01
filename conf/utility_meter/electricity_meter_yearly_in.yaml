@@ -1,0 +1,7 @@
+###
+### 25.10.2022
+###
+
+source: sensor.electricity_meter_in
+cycle: yearly
+delta_values: false

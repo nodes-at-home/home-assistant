@@ -134,7 +134,8 @@ influxdb:
         - sensor.gas_storage_germany_storage_consumption_level
         - sensor.gas_storage_germany_consumption_total
         - sensor.electricity_utilityroom_power
-        - sensor.electricity_quarterhourly
+        - sensor.electricity_quarterhourly_in
+        - sensor.electricity_quarterhourly_out
         - sensor.solar_quarterhourly
   ignore_attributes:
     - friendly_name

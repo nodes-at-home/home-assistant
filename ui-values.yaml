@@ -478,6 +478,7 @@ views:
           - sensor.solar_meter_weekly
           - sensor.solar_meter_monthly
           - sensor.solar_meter_yearly
+          - type: divider
           - sensor.solis_mini_s6_ac_current_r
           - sensor.solis_mini_s6_ac_voltage_r
           - sensor.solis_mini_s6_ac_frequency
@@ -489,7 +490,7 @@ views:
           - sensor.solis_mini_s6_temperature
       - type: gauge
         name: Netzleistung
-        entity: sensor.electricity_utilityroom_power
+        entity: sensor.electricity_meter_power
         min: 0
         max: 3000
         needle: true
@@ -497,16 +498,27 @@ views:
         title: Netzstrom
         show_header_toggle: false
         entities:
-          # - sensor.electricity_utilityroom_power
-          # - sensor.electricity_utilityroom_meter
-          - sensor.electricity_meter_quarterhourly
-          - sensor.electricity_meter_hourly
-          - sensor.electricity_meter_daily
-          - sensor.electricity_meter_weekly
-          - sensor.electricity_meter_monthly
-          - sensor.electricity_meter_yearly
-          - sensor.electricity_utilityroom_dt
-          - sensor.electricity_quarterhourly
+          # - sensor.tasmota_lk13be_power
+          # - sensor.tasmota_lk13be_energy_total_in
+          # - sensor.tasmota_lk13be_energy_total_out
+          # - type: divider
+          # - sensor.electricity_meter_in
+          - sensor.electricity_meter_quarterhourly_in
+          - sensor.electricity_meter_hourly_in
+          - sensor.electricity_meter_daily_in
+          - sensor.electricity_meter_weekly_in
+          - sensor.electricity_meter_monthly_in
+          - sensor.electricity_meter_yearly_in
+          - sensor.electricity_quarterhourly_in
+          - type: divider
+          # - sensor.electricity_meter_out
+          - sensor.electricity_meter_quarterhourly_out
+          - sensor.electricity_meter_hourly_out
+          - sensor.electricity_meter_daily_out
+          - sensor.electricity_meter_weekly_out
+          - sensor.electricity_meter_monthly_out
+          - sensor.electricity_meter_yearly_out
+          - sensor.electricity_quarterhourly_out
       - type: gauge
         name: Füllstand Gasspeicher Deutschland
         entity: sensor.gas_storage_germany_full_level

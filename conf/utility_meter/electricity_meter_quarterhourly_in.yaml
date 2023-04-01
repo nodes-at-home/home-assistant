@@ -1,0 +1,7 @@
+###
+### 25.10.2022
+###
+
+source: sensor.electricity_meter_in
+cycle: quarter-hourly
+delta_values: false

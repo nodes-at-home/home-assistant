@@ -341,14 +341,6 @@ views:
                     - automation.pitouch_screen_off
                     - automation.pitouch_screen_off_after_tv_off
               - type: entities
-                title: Energie
-                show_header_toggle: true
-                entities:
-                    - automation.electricity_meter_set_preference_threshold_voltage
-                    - automation.electricity_meter_set_preference_threshold_latency
-                    - automation.electricity_meter_send_threshold_voltage
-                    - automation.electricity_meter_send_threshold_latency
-              - type: entities
                 title: USV
                 show_header_toggle: true
                 entities:

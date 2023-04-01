@@ -842,29 +842,6 @@ switch.ssr_brewery_valve:
     friendly_name: 'Ventil Kühlwasser'
 
 #------------------------------------------------------------------------------
-sensor.electricity_utilityroom_power:
-    friendly_name: Netzleistung
-
-sensor.electricity_utilityroom_dt:
-    friendly_name: Umdrehungsdauer
-
-sensor.electricity_utilityroom_voltage:
-    friendly_name: Elektrozähler
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.electricity_utilityroom_lastvoltage:
-    friendly_name: Elektrozähler
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.electricity_utilityroom_lastboot:
-    friendly_name: Elektrozähler
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.electricity_utilityroom_version:
-    friendly_name: Elektrozähler
-    entity_picture: /local/images/wemos_mini.jpg
-
-#------------------------------------------------------------------------------
 light.ws2812_terrace1:
     friendly_name: Lichterball
 
@@ -1323,26 +1300,60 @@ sensor.gas_storage_germany_trend:
     friendly_name: Verbrauchstrend
 
 #------------------------------------------------------------------------------
-sensor.electricity_meter_quarterhourly:
-    friendly_name: Verbrauch 15min
+sensor.electricity_meter_quarterhourly_in:
+    friendly_name: Bezug 15min
+    unit_of_measurement: kWh
 
-sensor.electricity_meter_hourly:
-    friendly_name: Verbrauch stündlich
+sensor.electricity_meter_hourly_in:
+    friendly_name: Bezug stündlich
+    unit_of_measurement: kWh
 
-sensor.electricity_meter_daily:
-    friendly_name: Verbrauch täglich
+sensor.electricity_meter_daily_in:
+    friendly_name: Bezug täglich
+    unit_of_measurement: kWh
 
-sensor.electricity_meter_weekly:
-    friendly_name: Verbrauch wöchentlich
+sensor.electricity_meter_weekly_in:
+    friendly_name: Bezug wöchentlich
+    unit_of_measurement: kWh
 
-sensor.electricity_meter_monthly:
-    friendly_name: Verbrauch monatlich
+sensor.electricity_meter_monthly_in:
+    friendly_name: Bezug monatlich
+    unit_of_measurement: kWh
 
-sensor.electricity_meter_yearly:
-    friendly_name: Verbrauch jährlich
+sensor.electricity_meter_yearly_in:
+    friendly_name: Bezug jährlich
+    unit_of_measurement: kWh
 
-sensor.electricity_quarterhourly:
-    friendly_name: Kumulierter Verbrauch 15min
+sensor.electricity_quarterhourly_in:
+    friendly_name: Kumulierter Bezug 15min
+
+#------------------------------------------------------------------------------
+sensor.electricity_meter_quarterhourly_out:
+    friendly_name: Einspeisung 15min
+    unit_of_measurement: kWh
+
+sensor.electricity_meter_hourly_out:
+    friendly_name: Einspeisung stündlich
+    unit_of_measurement: kWh
+
+sensor.electricity_meter_daily_out:
+    friendly_name: Einspeisung täglich
+    unit_of_measurement: kWh
+
+sensor.electricity_meter_weekly_out:
+    friendly_name: Einspeisung wöchentlich
+    unit_of_measurement: kWh
+
+sensor.electricity_meter_monthly_out:
+    friendly_name: Einspeisung monatlich
+    unit_of_measurement: kWh
+
+sensor.electricity_meter_yearly_out:
+    friendly_name: Einspeisung jährlich
+    unit_of_measurement: kWh
+
+sensor.electricity_quarterhourly_out:
+    friendly_name: Kumulierte Einspeisung 15min
 
 #------------------------------------------------------------------------------
 binary_sensor.solis_carport_alarm:
