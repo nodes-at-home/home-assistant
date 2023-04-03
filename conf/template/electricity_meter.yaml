@@ -13,7 +13,7 @@
             {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) %}
             {% set max = states ( 'input_number.electricity_meter_threshold_power' ) | float %}
             {% if lastval %}
-                {% if val > max %}
+                {% if val == 0 or val > max %}
                     {{ lastval }}
                 {% else %}
                     {{ val }}
@@ -27,7 +27,7 @@
                 {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) %}
                 {% set max = states ( 'input_number.electricity_meter_threshold_power' ) | float %}
                 {% if lastval %}
-                    {% if val > max %}
+                    {% if val == 0 or val > max %}
                         {{ lastval }}
                     {% else %}
                         {{ val }}
