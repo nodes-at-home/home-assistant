@@ -1388,3 +1388,22 @@ sensor.solar_meter_yearly:
     friendly_name: Produktion jährlich
 
 #------------------------------------------------------------------------------
+sensor.office_temperature:
+    friendly_name: Temperatur Büro
+
+sensor.bedroom_temperature:
+    friendly_name: Temperatur Schlafzimmer
+
+sensor.nursery_temperature:
+    friendly_name: Temperatur Kinderzimmer
+
+climate.office:
+    friendly_name: Klimaanlage Büro
+
+climate.bedroom:
+    friendly_name: Klimaanlage Schlafzimmer
+
+climate.nursery:
+    friendly_name: Klimaanlage Kinderzimmer
+
+#------------------------------------------------------------------------------

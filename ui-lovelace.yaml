@@ -293,8 +293,6 @@ views:
           - light.shelly_shower_socket
           - type: divider
           - switch.sonoff_utilityroom_pump
-          # - sensor.electricity_utilityroom_power
-          # - sensor.electricity_utilityroom_counter
           - binary_sensor.rauchwarnmelder_hauswirt
       - type: entities
         title: Obergeschoss
@@ -303,13 +301,16 @@ views:
           - light.sonoff_gallery1_socket
           - binary_sensor.rauchwarnmelder_galerie
           - type: divider
+          - sensor.bedroom_temperature
           - light.sonoff_bedroom_socket
           - binary_sensor.rauchwarnmelder_schlafz
           - type: divider
+          - sensor.office_temperature
           - light.sonoff_corridor_lamp
           - switch.sonoff_k8200_socket
           - binary_sensor.rauchwarnmelder_buro
           - type: divider
+          - sensor.nursery_temperature
           - binary_sensor.rauchwarnmelder_kinderz
           - type: divider
           - light.shelly_bath_socket
@@ -354,8 +355,15 @@ views:
             name: Fiederaralie - Polyscias
             link: https://www.mein-schoener-garten.de/pflanzen/fiederaralie/fiederaralie
             entity: plant.fiederaralie_flowercare
+      - type: vertical-stack
+        cards:
+          - type: thermostat
+            entity: climate.office
+          - type: thermostat
+            entity: climate.bedroom
+          - type: thermostat
+            entity: climate.nursery
 
-    
   - title: Außen
     path: outdoor
     panel: false
