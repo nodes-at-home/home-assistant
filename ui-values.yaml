@@ -542,3 +542,54 @@ views:
           - sensor.gas_storage_germany_trend
           - sensor.gas_storage_germany_storage_consumption_level
           - sensor.gas_storage_germany_consumption_total
+
+  - title: Heizung
+    path: heating
+    panel: false
+    cards:
+      - type: entities
+        title: Einstellungen
+        show_header_toggle: false
+        entities:
+          - number.boiler_selflowtemp
+          - number.boiler_heatingtemp
+          - type: divider
+          - number.boiler_wwseltemp
+          - number.boiler_wwflowtempoffset
+          - number.boiler_wwdisinfectiontemp
+          - type: divider
+          - number.thermostat_hc1_seltemp
+          - number.thermostat_hc1_heattemp
+          - number.thermostat_hc1_ecotemp
+          # - select.thermostat_hc1_mode
+          # - select.thermostat_hc1_roomsensor
+          - type: divider
+          - switch.boiler_wwonetime
+          - switch.boiler_wwdisinfecting
+      - type: entities
+        title: Messwerte
+        show_header_toggle: false
+        entities:
+          - sensor.boiler_outdoortemp
+          - sensor.boiler_curflowtemp
+          - sensor.boiler_rettemp
+          - type: divider
+          - sensor.boiler_syspress
+          - sensor.boiler_curburnpow
+          - type: divider
+          - sensor.boiler_heatingpumpmod
+          - sensor.boiler_wwsettemp
+          - sensor.boiler_wwcurtemp
+          # - sensor.boiler_wwcurflow
+          # - sensor.boiler_wwchargetype
+      - type: entities
+        title: Zustände
+        show_header_toggle: false
+        entities:
+          - binary_sensor.boiler_heatingactive
+          - binary_sensor.boiler_tapwateractive
+          - binary_sensor.boiler_burngas
+          - binary_sensor.boiler_heatingpump
+          - binary_sensor.boiler_wwcharging
+          # - binary_sensor.boiler_wwactive
+          - binary_sensor.boiler_ww3wayvalve
