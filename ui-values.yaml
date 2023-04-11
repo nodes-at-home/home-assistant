@@ -576,8 +576,8 @@ views:
           - type: divider
           - sensor.boiler_syspress
           - sensor.boiler_curburnpow
-          - type: divider
           - sensor.boiler_heatingpumpmod
+          - type: divider
           - sensor.boiler_wwsettemp
           - sensor.boiler_wwcurtemp
           # - sensor.boiler_wwcurflow
@@ -593,3 +593,26 @@ views:
           - binary_sensor.boiler_wwcharging
           # - binary_sensor.boiler_wwactive
           - binary_sensor.boiler_ww3wayvalve
+
+  - title: Diagramme
+    path: heatinggraph
+    type: panel
+    cards:
+      - type: history-graph
+        title: Heizung
+        hours_to_show: 24
+        entities:
+          - sensor.boiler_outdoortemp
+          - number.boiler_selflowtemp
+          - number.boiler_heatingtemp
+          - sensor.boiler_curflowtemp
+          - sensor.boiler_rettemp
+          - number.boiler_wwseltemp
+          - sensor.boiler_wwcurtemp
+          # - sensor.boiler_syspress
+          - binary_sensor.boiler_heatingpump
+          - switch.sonoff_utilityroom_pump
+          # - sensor.boiler_heatingpumpmod
+          - sensor.boiler_curburnpow
+          - sensor.solis_mini_s6_ac_output_total_power
+          - sensor.electricity_meter_power

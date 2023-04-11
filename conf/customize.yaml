@@ -320,7 +320,7 @@ sensor.sonoff_garage_version:
 
 #------------------------------------------------------------------------------
 switch.sonoff_utilityroom_pump:
-    friendly_name: 'Zirkulationspumpe Heizung'
+    friendly_name: 'Zirkulationspumpe Warmwasser'
     entity_picture: /local/images/circulation_pump.jpg
 
 sensor.sonoff_utilityroom_voltage:
