@@ -9,29 +9,21 @@
       - name: electricity_meter_power
         unit_of_measurement: W
         state: >
-            {% set val = states ( 'sensor.tasmota_lk13be_power' ) | float %}
-            {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) %}
-            {% set max = states ( 'input_number.electricity_meter_threshold_power' ) | float %}
-            {% if lastval %}
-                {% if val == 0 or val > max or val < -max %}
-                    {{ lastval }}
-                {% else %}
-                    {{ val }}
-                {% endif %}
+            {% set val = states ( 'sensor.tasmota_lk13be_power' ) | float ( 0 ) %}
+            {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) | float ( 0 ) %}
+            {% set max = states ( 'input_number.electricity_meter_threshold_power' ) | float ( 0 ) %}
+            {% if val == 0 or val > max or val < -max %}
+                {{ lastval }}
             {% else %}
                 {{ val }}
             {% endif %}
         attributes:
             lastvalue: >
-                {% set val = states ( 'sensor.tasmota_lk13be_power' ) | float %}
-                {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) %}
-                {% set max = states ( 'input_number.electricity_meter_threshold_power' ) | float %}
-                {% if lastval %}
+                {% set val = states ( 'sensor.tasmota_lk13be_power' ) | float ( 0 ) %}
+                {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) | float ( 0 ) %}
+                {% set max = states ( 'input_number.electricity_meter_threshold_power' ) | float ( 0 ) %}
                 {% if val == 0 or val > max or val < -max %}
-                        {{ lastval }}
-                    {% else %}
-                        {{ val }}
-                    {% endif %}
+                    {{ lastval }}
                 {% else %}
                     {{ val }}
                 {% endif %}
