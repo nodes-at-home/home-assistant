@@ -195,10 +195,10 @@ views:
                         entity: light.led_kitchen_led
                       - type: light
                         entity: light.led_corridor_led
-                      - type: light
-                        entity: light.ws2812_terrace1
-                      - type: light
-                        entity: light.ws2812_terrace2
+                      # - type: light
+                        # entity: light.ws2812_terrace1
+                      # - type: light
+                        # entity: light.ws2812_terrace2
                       - type: light
                         entity: light.ws2812_xmasstar
                   - type: horizontal-stack
@@ -218,13 +218,21 @@ views:
                         entity: switch.sonoff_k8200_socket
                         icon: mdi:printer-3d
                       - type: entity-button
-                        entity: switch.relay_garden_valve
-                        icon: mdi:watering-can
-                      - type: entity-button
                         entity: switch.sonoff_pool_socket
                         icon: mdi:pump
                       # - type: markdown
                         # content: " "
+                  - type: horizontal-stack
+                    cards:
+                      - type: entity-button
+                        entity: switch.relay_garden_valve1
+                        icon: mdi:watering-can
+                      - type: entity-button
+                        entity: switch.relay_garden_valve2
+                        icon: mdi:watering-can
+                      - type: entity-button
+                        entity: switch.relay_garden_valve3
+                        icon: mdi:watering-can
                 
   - title: Innen
     path: indoor

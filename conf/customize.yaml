@@ -945,24 +945,32 @@ sensor.sonoff_gallery1_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
-switch.relay_garden_valve:
+switch.relay_garden_valve1:
     friendly_name: Hecke
     icon: mdi:watering-can
 
+switch.relay_garden_valve2:
+    friendly_name: Hochbeete
+    icon: mdi:watering-can
+
+switch.relay_garden_valve3:
+    friendly_name: Rosengarten
+    icon: mdi:watering-can
+
 sensor.relay_garden_voltage:
-    friendly_name: 'Bewässerung Hecke'
+    friendly_name: 'Bewässerung Garten'
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relay_garden_lastvoltage:
-    friendly_name: 'Bewässerung Hecke'
+    friendly_name: 'Bewässerung Garten'
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relay_garden_lastboot:
-    friendly_name: 'Bewässerung Hecke'
+    friendly_name: 'Bewässerung Garten'
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.relay_garden_version:
-    friendly_name: 'Bewässerung Hecke'
+    friendly_name: 'Bewässerung Garten'
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------

@@ -115,7 +115,7 @@ views:
                 - sensor.button_garage_version
                 - sensor.button_pool_version
                 - sensor.pixel_kitchen_version
-                - sensor.electricity_utilityroom_version
+                # - sensor.electricity_utilityroom_version
                 - sensor.ws2812_terrace1_version
                 - sensor.ws2812_terrace2_version
                 - sensor.ws2812_xmasstar_version
@@ -160,7 +160,7 @@ views:
                 - sensor.button_garage_lastboot
                 - sensor.button_pool_lastboot
                 - sensor.pixel_kitchen_lastboot
-                - sensor.electricity_utilityroom_lastboot
+                # - sensor.electricity_utilityroom_lastboot
                 - sensor.ws2812_terrace1_lastboot
                 - sensor.ws2812_terrace2_lastboot
                 - sensor.ws2812_xmasstar_lastboot
@@ -205,7 +205,7 @@ views:
                 - sensor.button_garage_lastvoltage
                 - sensor.button_pool_lastvoltage
                 - sensor.pixel_kitchen_lastvoltage
-                - sensor.electricity_utilityroom_lastvoltage
+                # - sensor.electricity_utilityroom_lastvoltage
                 - sensor.ws2812_terrace1_lastvoltage
                 - sensor.ws2812_terrace2_lastvoltage
                 - sensor.ws2812_xmasstar_lastvoltage
@@ -250,7 +250,7 @@ views:
                 - sensor.button_garage_voltage
                 - sensor.button_pool_voltage
                 - sensor.pixel_kitchen_voltage
-                - sensor.electricity_utilityroom_voltage
+                # - sensor.electricity_utilityroom_voltage
                 - sensor.ws2812_terrace1_voltage
                 - sensor.ws2812_terrace2_voltage
                 - sensor.ws2812_xmasstar_voltage

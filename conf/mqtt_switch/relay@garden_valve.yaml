@@ -2,8 +2,20 @@
 ### 07.03.2021
 ###
 
-  - name: "relay@garden_valve"
-    command_topic: nodes@home/switch/relay/garden/valve
-    state_topic: nodes@home/switch/relay/garden/valve/state
+  - name: "relay@garden_valve1"
+    command_topic: nodes@home/switch/relay/garden/valve1
+    state_topic: nodes@home/switch/relay/garden/valve1/state
+    optimistic: false
+    retain: true
+
+  - name: "relay@garden_valve2"
+    command_topic: nodes@home/switch/relay/garden/valve2
+    state_topic: nodes@home/switch/relay/garden/valve2/state
+    optimistic: false
+    retain: true
+
+  - name: "relay@garden_valve3"
+    command_topic: nodes@home/switch/relay/garden/valve3
+    state_topic: nodes@home/switch/relay/garden/valve3/state
     optimistic: false
     retain: true
