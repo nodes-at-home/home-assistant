@@ -2,7 +2,59 @@
 ### 22.04.2021
 ###
 
-# hidden flag, daily run done
-irrigation_period_1_active:
-    name: Bewässerung 1. Periode aktiv
+irrigation_scheduled_valve1:
+    name: Bewässerung Hecke geplant
     # initial: 'off'
+
+irrigation_valve1_at_monday:
+    name: Bewässerung Hecke montags
+irrigation_valve1_at_tuesday:
+    name: Bewässerung Hecke dienstags
+irrigation_valve1_at_wednesday:
+    name: Bewässerung Hecke mittwochs
+irrigation_valve1_at_thursday:
+    name: Bewässerung Hecke donnerstags
+irrigation_valve1_at_friday:
+    name: Bewässerung Hecke freitags
+irrigation_valve1_at_saturday:
+    name: Bewässerung Hecke samstags
+irrigation_valve1_at_sunday:
+    name: Bewässerung Hecke sonntags
+
+irrigation_scheduled_valve2:
+    name: Bewässerung Hochbeete geplant
+    # initial: 'off'
+
+irrigation_valve2_at_monday:
+    name: Bewässerung Hochbeete montags
+irrigation_valve2_at_tuesday:
+    name: Bewässerung Hochbeete dienstags
+irrigation_valve2_at_wednesday:
+    name: Bewässerung Hochbeete mittwochs
+irrigation_valve2_at_thursday:
+    name: Bewässerung Hochbeete donnerstags
+irrigation_valve2_at_friday:
+    name: Bewässerung Hochbeete freitags
+irrigation_valve2_at_saturday:
+    name: Bewässerung Hochbeete samstags
+irrigation_valve2_at_sunday:
+    name: Bewässerung Hochbeete sonntags
+
+irrigation_scheduled_valve3:
+    name: Bewässerung Rosengarten geplant
+    # initial: 'off'
+
+irrigation_valve3_at_monday:
+    name: Bewässerung Rosengarten montags
+irrigation_valve3_at_tuesday:
+    name: Bewässerung Rosengarten dienstags
+irrigation_valve3_at_wednesday:
+    name: Bewässerung Rosengarten mittwochs
+irrigation_valve3_at_thursday:
+    name: Bewässerung Rosengarten donnerstags
+irrigation_valve3_at_friday:
+    name: Bewässerung Rosengarten freitags
+irrigation_valve3_at_saturday:
+    name: Bewässerung Rosengarten samstags
+irrigation_valve3_at_sunday:
+    name: Bewässerung Rosengarten sonntags

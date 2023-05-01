@@ -614,5 +614,5 @@ views:
           - switch.sonoff_utilityroom_pump
           # - sensor.boiler_heatingpumpmod
           - sensor.boiler_curburnpow
-          - sensor.solis_mini_s6_ac_output_total_power
+          - sensor.solis_mini_s6_ac_output_total_power_2
           - sensor.electricity_meter_power

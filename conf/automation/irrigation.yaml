@@ -2,8 +2,8 @@
 ### 13.03.2021 new
 ###
 
-  - alias: irrigation_hedge_on
-    id: irrigation_hedge_on
+  - alias: irrigation_valve1_on
+    id: irrigation_valve1_on
     trigger:
       - platform: event
         event_type:  bosch_shc.event
@@ -12,10 +12,10 @@
             event_subtype: 'Wasser an'
     action:
       - service: switch.turn_on
-        entity_id: switch.relay_garden_valve
+        entity_id: switch.relay_garden_valve1
 
-  - alias: irrigation_hedge_off
-    id: irrigation_hedge_off
+  - alias: irrigation_valve1_off
+    id: irrigation_valve1_off
     trigger:
       - platform: event
         event_type:  bosch_shc.event
@@ -24,25 +24,49 @@
             event_subtype: 'Wasser aus'
     action:
       - service: switch.turn_off
-        entity_id: switch.relay_garden_valve
+        entity_id: switch.relay_garden_valve1
 
-  - alias: irrigation_off_after_timeout
-    id: irrigation_off_after_timeout
+  - alias: irrigation_valve1_off_after_timeout
+    id: irrigation_valve1_off_after_timeout
     trigger:
       - platform: state
-        entity_id: switch.relay_garden_valve
+        entity_id: switch.relay_garden_valve1
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
     action:
       - service: switch.turn_off
-        entity_id: switch.relay_garden_valve
+        entity_id: switch.relay_garden_valve1
 
-  - alias: irrigation_hedge
-    id: irrigation_hedge
+  - alias: irrigation_valve2_off_after_timeout
+    id: irrigation_valve2_off_after_timeout
+    trigger:
+      - platform: state
+        entity_id: switch.relay_garden_valve2
+        to: "on"
+        for:
+            minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
+    action:
+      - service: switch.turn_off
+        entity_id: switch.relay_garden_valve2
+
+  - alias: irrigation_valve3_off_after_timeout
+    id: irrigation_valve3_off_after_timeout
+    trigger:
+      - platform: state
+        entity_id: switch.relay_garden_valve3
+        to: "on"
+        for:
+            minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
+    action:
+      - service: switch.turn_off
+        entity_id: switch.relay_garden_valve3
+
+  - alias: irrigation_valve1
+    id: irrigation_valve1
     trigger:
       - platform: time
-        at: input_datetime.irrigation_start1
+        at: input_datetime.irrigation_start_1
     condition:
         # check manual flag
       - condition: state
@@ -50,19 +74,83 @@
         state: 'on'
         # flag from irrigation rules
       - condition: state
-        entity_id: input_boolean.irrigation_period_1_active
+        entity_id: input_boolean.irrigation_scheduled_valve1
         state: 'on'
       - condition: template
         value_template: >
-            {% set days = {0:'Montag', 1:'Dienstag', 2:'Mittwoch', 3:'Donnerstag', 4:'Freitag', 5:'Sonnabend', 6:'Sonntag'} %}
             {% set day = now().weekday() %}
-            {{ states ( 'input_select.irrigation_day1') == days [day] or states ( 'input_select.irrigation_day2') == days [day] or states ( 'input_select.irrigation_day3') == days [day]}}
+            {{
+               day == 0 and states ( 'input_boolean.irrigation_valve1_at_monday' )    == 'on' or
+               day == 1 and states ( 'input_boolean.irrigation_valve1_at_tuesday' )   == 'on' or
+               day == 2 and states ( 'input_boolean.irrigation_valve1_at_wednesday' ) == 'on' or
+               day == 3 and states ( 'input_boolean.irrigation_valve1_at_thursday' )  == 'on' or
+               day == 4 and states ( 'input_boolean.irrigation_valve1_at_friday' )    == 'on' or
+               day == 5 and states ( 'input_boolean.irrigation_valve1_at_saturday' )  == 'on' or
+               day == 6 and states ( 'input_boolean.irrigation_valve1_at_sunday' )    == 'on'
+            }}
     action:
       - service: switch.turn_on
-        entity_id: switch.relay_garden_valve
-      # - service: input_boolean.turn_off
-        # target:
-            # entity_id: input_boolean.irrigation_period_1_active
+        entity_id: switch.relay_garden_valve1
+
+  - alias: irrigation_valve2
+    id: irrigation_valve2
+    trigger:
+      - platform: time
+        at: input_datetime.irrigation_start_2
+    condition:
+        # check manual flag
+      - condition: state
+        entity_id: input_boolean.irrigation_activated
+        state: 'on'
+        # flag from irrigation rules
+      - condition: state
+        entity_id: input_boolean.irrigation_scheduled_valve2
+        state: 'on'
+      - condition: template
+        value_template: >
+            {% set day = now().weekday() %}
+            {{
+               day == 0 and states ( 'input_boolean.irrigation_valve2_at_monday' )    == 'on' or
+               day == 1 and states ( 'input_boolean.irrigation_valve2_at_tuesday' )   == 'on' or
+               day == 2 and states ( 'input_boolean.irrigation_valve2_at_wednesday' ) == 'on' or
+               day == 3 and states ( 'input_boolean.irrigation_valve2_at_thursday' )  == 'on' or
+               day == 4 and states ( 'input_boolean.irrigation_valve2_at_friday' )    == 'on' or
+               day == 5 and states ( 'input_boolean.irrigation_valve2_at_saturday' )  == 'on' or
+               day == 6 and states ( 'input_boolean.irrigation_valve2_at_sunday' )    == 'on'
+            }}
+    action:
+      - service: switch.turn_on
+        entity_id: switch.relay_garden_valve2
+
+  - alias: irrigation_valve3
+    id: irrigation_valve3
+    trigger:
+      - platform: time
+        at: input_datetime.irrigation_start_3
+    condition:
+        # check manual flag
+      - condition: state
+        entity_id: input_boolean.irrigation_activated
+        state: 'on'
+        # flag from irrigation rules
+      - condition: state
+        entity_id: input_boolean.irrigation_scheduled_valve3
+        state: 'on'
+      - condition: template
+        value_template: >
+            {% set day = now().weekday() %}
+            {{
+               day == 0 and states ( 'input_boolean.irrigation_valve3_at_monday' )    == 'on' or
+               day == 1 and states ( 'input_boolean.irrigation_valve3_at_tuesday' )   == 'on' or
+               day == 2 and states ( 'input_boolean.irrigation_valve3_at_wednesday' ) == 'on' or
+               day == 3 and states ( 'input_boolean.irrigation_valve3_at_thursday' )  == 'on' or
+               day == 4 and states ( 'input_boolean.irrigation_valve3_at_friday' )    == 'on' or
+               day == 5 and states ( 'input_boolean.irrigation_valve3_at_saturday' )  == 'on' or
+               day == 6 and states ( 'input_boolean.irrigation_valve3_at_sunday' )    == 'on'
+            }}
+    action:
+      - service: switch.turn_on
+        entity_id: switch.relay_garden_valve3
 
   - alias: irrigation_count_no_rain_days_increment
     id: irrigation_count_no_rain_days_increment
@@ -124,8 +212,8 @@
         target:
             entity_id: counter.warm_days
 
-  - alias: irrigation_activate_period_1
-    id: irrigation_activate_period_1
+  - alias: irrigation_schedule_valve1
+    id: irrigation_schedule_valve1
     trigger:
       - platform: state
         entity_id:
@@ -142,7 +230,47 @@
                 {{ "input_boolean.turn_off" }}
             {% endif %}
         target:
-            entity_id: input_boolean.irrigation_period_1_active
+            entity_id: input_boolean.irrigation_scheduled_valve1
+
+  - alias: irrigation_schedule_valve2
+    id: irrigation_schedule_valve2
+    trigger:
+      - platform: state
+        entity_id:
+          - counter.no_rain_days
+          - counter.warm_days
+    action:
+      - service: >
+            {% if
+                ( states ( 'counter.no_rain_days' ) | int > states ( 'input_number.irrigation_no_rain_days_threshold' ) | int ) and
+                ( states ( 'counter.warm_days' ) | int > states ( 'input_number.irrigation_warm_days_threshold' ) | int )
+            %}
+                {{ "input_boolean.turn_on" }}
+            {% else %}
+                {{ "input_boolean.turn_off" }}
+            {% endif %}
+        target:
+            entity_id: input_boolean.irrigation_scheduled_valve2
+
+  - alias: irrigation_schedule_valve3
+    id: irrigation_schedule_valve3
+    trigger:
+      - platform: state
+        entity_id:
+          - counter.no_rain_days
+          - counter.warm_days
+    action:
+      - service: >
+            {% if
+                ( states ( 'counter.no_rain_days' ) | int > states ( 'input_number.irrigation_no_rain_days_threshold' ) | int ) and
+                ( states ( 'counter.warm_days' ) | int > states ( 'input_number.irrigation_warm_days_threshold' ) | int )
+            %}
+                {{ "input_boolean.turn_on" }}
+            {% else %}
+                {{ "input_boolean.turn_off" }}
+            {% endif %}
+        target:
+            entity_id: input_boolean.irrigation_scheduled_valve3
 
   - alias: irrigation_set_duration
     id: irrigation_set_duration

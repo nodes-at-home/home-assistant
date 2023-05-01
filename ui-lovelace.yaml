@@ -64,13 +64,6 @@ views:
                       --label-badge-text-color: var(--wasserampel-color)
                       top: 40%
                       left: 38%
-                  # - type: state-badge
-                    # entity: sensor.gas_storage_germany_full_level
-                    # title: Gasspeicher
-                    # style:
-                      # --label-badge-text-color: var(--wasserampel-color)
-                      # top: 40%
-                      # left: 42%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation_last7d
                     style:
@@ -408,9 +401,9 @@ views:
           - light.relay_backyard_lamp
           - light.sonoff_garage_lamp
           - light.sonoff_yardgate_lamp
-          - type: divider
-          - light.ws2812_terrace1
-          - light.ws2812_terrace2
+          # - type: divider
+          # - light.ws2812_terrace1
+          # - light.ws2812_terrace2
           - type: divider
           - light.rfhub_lounge_schwibbogen1
           - light.rfhub_lounge_schwibbogen2
@@ -452,8 +445,13 @@ views:
         title: Garten
         show_header_toggle: false
         entities:
-            - input_boolean.irrigation_period_1_active
-            - switch.relay_garden_valve
+            - input_boolean.irrigation_scheduled_valve1
+            - switch.relay_garden_valve1
+            - input_boolean.irrigation_scheduled_valve2
+            - switch.relay_garden_valve2
+            - input_boolean.irrigation_scheduled_valve3
+            - switch.relay_garden_valve3
+            - type: divider
             - sensor.soil_garden_temperature1
             - sensor.soil_garden_temperature2
             - sensor.soil_garden_temperature3

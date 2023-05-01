@@ -360,15 +360,21 @@ views:
                 title: Gartenbewässerung
                 show_header_toggle: true
                 entities:
-                    - automation.irrigation_hedge
-                    - automation.irrigation_hedge_on
-                    - automation.irrigation_hedge_off
-                    - automation.irrigation_off_after_timeout
+                    - automation.irrigation_schedule_valve1
+                    - automation.irrigation_valve1
+                    - automation.irrigation_valve1_on
+                    - automation.irrigation_valve1_off
+                    - automation.irrigation_valve1_off_after_timeout
+                    - automation.irrigation_schedule_valve2
+                    - automation.irrigation_valve2
+                    - automation.irrigation_valve2_off_after_timeout
+                    - automation.irrigation_schedule_valve3
+                    - automation.irrigation_valve3
+                    - automation.irrigation_valve3_off_after_timeout
                     - automation.irrigation_count_no_rain_days_increment
                     - automation.irrigation_count_no_rain_days_reset
                     - automation.irrigation_count_warm_days_increment
                     - automation.irrigation_count_warm_days_reset
-                    - automation.irrigation_activate_period_1
                     - automation.irrigation_set_duration
               - type: entities
                 title: Rasenmäher
