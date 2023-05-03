@@ -158,30 +158,36 @@ views:
                         graph: line
                         detail: 2
                         hours_to_show: 24
-                  - type: media-control
-                    entity: media_player.sony_bravia_tv
+                  - type: horizontal-stack
+                    cards:
+                      - type: thermostat
+                        entity: climate.office
+                      - type: thermostat
+                        entity: climate.bedroom
+                      - type: thermostat
+                        entity: climate.nursery
+                  - type: horizontal-stack
+                    cards:
+                      - type: media-control
+                        entity: media_player.sony_bravia_tv
+                      - type: markdown
+                        content: " "
               - type: vertical-stack
                 cards:
                   - type: horizontal-stack
                     cards:
                       - type: entity-button
                         entity: light.automatic_indoor_lights
-#                        icon: mdi:lightbulb
                         tap_action:
                             action: toggle
                         hold_action:
                             action: more-info
                       - type: entity-button
                         entity: light.automatic_outdoor_lights
-#                        icon: mdi:lightbulb
                         tap_action:
                             action: toggle
                         hold_action:
                             action: more-info
-                  # - type: horizontal-stack
-                    # cards:
-                      # - type: markdown
-                        # content: "Weitere Aktionen"
                   - type: horizontal-stack
                     cards:
                       - type: light
@@ -241,12 +247,12 @@ views:
           - entity: device_tracker.140_dominik_xperia_wlan
         state_filter:
           - "home"
-      - binary_sensor.smokedetectionsystem
-      - binary_sensor.bewegungsmelder1
-      # - plant.goldfruchtpalme_flowercare
-      # - plant.birkenfeige_flowercare
-      # - plant.palmlilie_flowercare
-      # - plant.bogenhanf_flowercare
+      - entity: sensor.bedroom_temperature
+        name: Schlafzimmer
+      - entity: sensor.office_temperature
+        name: Büro
+      - entity: sensor.nursery_temperature
+        name: Kinderzimmer
       - type: entity-filter
         entities:
           - plant.goldfruchtpalme_flowercare
@@ -259,69 +265,90 @@ views:
           - plant.fliederaralie_flowercare
         state_filter:
           - "problem"
-    cards:
-      - type: entities
-        title: Erdgeschoss
-        show_header_toggle: false
+      - type: entity-filter
         entities:
-          - sensor.geschirrspuler_operation_state
-          # - sensor.geschirrspuler_remaining_program_time
-          - binary_sensor.geschirrspuler_door
+          - binary_sensor.bewegungsmelder1
+          - binary_sensor.smokedetectionsystem
+          - binary_sensor.rauchwarnmelder_esszimmer
+          - binary_sensor.rauchwarnmelder_wohnz
+          - binary_sensor.rauchwarnmelder_flur
+          - binary_sensor.rauchwarnmelder_hauswirt
+          - binary_sensor.rauchwarnmelder_galerie
+          - binary_sensor.rauchwarnmelder_schlafz
+          - binary_sensor.rauchwarnmelder_buro
+          - binary_sensor.rauchwarnmelder_kinderz
+        state_filter:
+          - "on"
+    cards:
+      - type: glance
+        title: Erdgeschoss
+        columns: 3
+        entities:
           - light.rfhub_lounge_lampkitchenshortstrip
           - light.rfhub_lounge_lampkitchenlongstrip
           - light.led_kitchen_led
-          - type: divider
-          - light.relay_dining1_lamp
-          - light.relay_dining2_lamp
+          - entity: light.relay_dining1_lamp
+            name: Linker Schrank
+          - entity: light.relay_dining2_lamp
+            name: Rechter Schrank
           - light.rfhub_lounge_lamptree
           - light.rfhub_lounge_lightweb
           - light.ws2812_xmasstar
           # Xmas
           # - light.xmastreedining_leds
-          - binary_sensor.rauchwarnmelder_esszimmer
-          - type: divider
           - light.rfhub_lounge_lamploungewhiteball
           - light.rfhub_lounge_lamploungeblackbowl
           - light.rfhub_lounge_lamploungereading
           - light.rfhub_lounge_lampstudypillar
-          - binary_sensor.rauchwarnmelder_wohnz
-          - type: divider
           - light.led_corridor_led
           - light.pitouch_corridor_screen
-          - sensor.pitouch_corridor_ambientlight
-          - binary_sensor.rauchwarnmelder_flur
-          - type: divider
+          # - sensor.pitouch_corridor_ambientlight
           - light.shelly_shower_socket
-          - type: divider
           - switch.sonoff_utilityroom_pump
-          - binary_sensor.rauchwarnmelder_hauswirt
-      - type: entities
+          - entity: binary_sensor.rauchwarnmelder_esszimmer
+            name: Esszimmer (Rauchwarnmelder)
+          - entity: binary_sensor.rauchwarnmelder_wohnz
+            name: Wohnzimmer (Rauchwarnmelder)
+          - entity: binary_sensor.rauchwarnmelder_flur
+            name: Flur (Rauchwarnmelder)
+          - entity: binary_sensor.rauchwarnmelder_hauswirt
+            name: Hauswirtschaftsraum (Rauchwarnmelder)
+          - sensor.geschirrspuler_operation_state
+          - binary_sensor.geschirrspuler_door
+      - type: glance
         title: Obergeschoss
-        show_header_toggle: false
+        columns: 3
         entities:
           - light.sonoff_gallery1_socket
-          - binary_sensor.rauchwarnmelder_galerie
-          - type: divider
-          - sensor.bedroom_temperature
           - light.sonoff_bedroom_socket
-          - binary_sensor.rauchwarnmelder_schlafz
-          - type: divider
-          - sensor.office_temperature
           - light.sonoff_corridor_lamp
-          - switch.sonoff_k8200_socket
-          - binary_sensor.rauchwarnmelder_buro
-          - type: divider
-          - sensor.nursery_temperature
-          - binary_sensor.rauchwarnmelder_kinderz
-          - type: divider
           - light.shelly_bath_socket
-      - type: entities
+          - switch.sonoff_k8200_socket
+          # - sensor.bedroom_temperature
+          # - sensor.office_temperature
+          # - sensor.nursery_temperature
+          - type: thermostat
+            entity: climate.office
+          - type: thermostat
+            entity: climate.bedroom
+          - type: thermostat
+            entity: climate.nursery
+          - entity: binary_sensor.rauchwarnmelder_galerie
+            name:  Galerie (Rauchwarnmelder)
+          - entity: binary_sensor.rauchwarnmelder_schlafz
+            name:  Schlafzimmer (Rauchwarnmelder)
+          - entity: binary_sensor.rauchwarnmelder_buro
+            name:  Büro (Rauchwarnmelder)
+          - entity: binary_sensor.rauchwarnmelder_kinderz
+            name:  Kinderzimmer (Rauchwarnmelder)
+      - type: glance
         title: Dachgeschoss
-        show_header_toggle: false
+        columns: 3
         entities:
           - binary_sensor.dachboden
           - light.shelly_roof_socket
-          - binary_sensor.rauchwarnmelder_dachboden
+          - entity: binary_sensor.rauchwarnmelder_dachboden
+            name: Dachgeschoss (Rauchwarnmelder)
       - type: vertical-stack
         cards:
           - type: plant-status
@@ -356,14 +383,14 @@ views:
             name: Fiederaralie - Polyscias
             link: https://www.mein-schoener-garten.de/pflanzen/fiederaralie/fiederaralie
             entity: plant.fiederaralie_flowercare
-      - type: vertical-stack
-        cards:
-          - type: thermostat
-            entity: climate.office
-          - type: thermostat
-            entity: climate.bedroom
-          - type: thermostat
-            entity: climate.nursery
+      # - type: vertical-stack
+        # cards:
+          # - type: thermostat
+            # entity: climate.office
+          # - type: thermostat
+            # entity: climate.bedroom
+          # - type: thermostat
+            # entity: climate.nursery
 
   - title: Außen
     path: outdoor
@@ -375,7 +402,6 @@ views:
       - counter.no_rain_days
       - counter.warm_days
       - sensor.dht22_terrace_temperature_max
-      - input_boolean.irrigation_period_1_active
       - type: entity-filter
         entities:
           - entity: binary_sensor.eingangstur
@@ -393,41 +419,71 @@ views:
           # on = open, off = closed
           - "on"
     cards:
-      - type: entities
+      - type: glance
         title: Außenlichter
-        show_header_toggle: true
+        columns: 3
         entities:
-          - light.shelly_terrace_lamp
-          - light.relay_backyard_lamp
-          - light.sonoff_garage_lamp
-          - light.sonoff_yardgate_lamp
-          # - type: divider
+          - entity: light.shelly_terrace_lamp
+            name: Terasse
+          - entity: light.relay_backyard_lamp
+            name: Hinterhof
+          - entity: light.sonoff_garage_lamp
+            name: Garage
+          - entity: light.sonoff_yardgate_lamp
+            name: Gartentor
           # - light.ws2812_terrace1
           # - light.ws2812_terrace2
-          - type: divider
-          - light.rfhub_lounge_schwibbogen1
-          - light.rfhub_lounge_schwibbogen2
-          - light.rfhub_lounge_star
-          - light.rfhub_lounge_drops
-      - type: entities
-        title: Fensterrollos
-        show_header_toggle: false
+          - entity: light.rfhub_lounge_schwibbogen1
+            name: Schwibbogen 1
+          - entity: light.rfhub_lounge_schwibbogen2
+            name: Schwibbogen 2
+          - entity: light.rfhub_lounge_star
+            name: Stern
+          - entity: light.rfhub_lounge_drops
+            name: Tropfen
+      - type: glance
+        title: Garten
+        columns: 3
         entities:
-          - input_boolean.cover_closed_at_low_temp
-          - cover.bedroom
-          - cover.bath
-          - cover.office
-          - cover.nursery
-      - type: entities
+            - entity: input_boolean.irrigation_scheduled_valve1
+              name: Hecke
+            - entity: input_boolean.irrigation_scheduled_valve2
+              name: Hochbeete
+            - entity: input_boolean.irrigation_scheduled_valve3
+              name: Rosengartebn
+            - switch.relay_garden_valve1
+            - switch.relay_garden_valve2
+            - switch.relay_garden_valve3
+            - sensor.soil_garden_temperature1
+            - sensor.soil_garden_temperature2
+            - sensor.soil_garden_temperature3
+            - sensor.soil_garden_moisture1
+            - sensor.soil_garden_moisture2
+            - sensor.soil_garden_moisture3
+            - switch.sonoff_pool_socket
+      - type: glance
         title: Garage
-        show_header_toggle: true
+        columns: 3
         entities:
           - cover.relay_garage
           - sensor.relay_garage_state
           - binary_sensor.rauchwarnmelder_garage
-      - type: entities
-        title: Türen und Fenster
-        show_header_toggle: false
+      - type: glance
+        title: Fenster
+        columns: 3
+        entities:
+            - input_boolean.cover_closed_at_low_temp
+            - binary_sensor.dachfenster_arbeitszimmer
+            - binary_sensor.dachfenster_schlafzimmer
+            - binary_sensor.dachfenster_bad
+            - binary_sensor.dachfenster_kinderzimmer
+            - cover.office
+            - cover.bedroom
+            - cover.bath
+            - cover.nursery
+      - type: glance
+        title: Türen
+        columns: 3
         entities:
             - binary_sensor.eingangstur
             - binary_sensor.nebentur
@@ -436,251 +492,221 @@ views:
             - binary_sensor.terassentur_kuche
             - binary_sensor.terassentur_esszimmer
             - binary_sensor.terassentur_wohnzimmer
-            - type: divider
-            - binary_sensor.dachfenster_arbeitszimmer
-            - binary_sensor.dachfenster_kinderzimmer
-            - binary_sensor.dachfenster_schlafzimmer
-            - binary_sensor.dachfenster_bad
-      - type: entities
-        title: Garten
-        show_header_toggle: false
-        entities:
-            - input_boolean.irrigation_scheduled_valve1
-            - switch.relay_garden_valve1
-            - input_boolean.irrigation_scheduled_valve2
-            - switch.relay_garden_valve2
-            - input_boolean.irrigation_scheduled_valve3
-            - switch.relay_garden_valve3
-            - type: divider
-            - sensor.soil_garden_temperature1
-            - sensor.soil_garden_temperature2
-            - sensor.soil_garden_temperature3
-            - sensor.soil_garden_moisture1
-            - sensor.soil_garden_moisture2
-            - sensor.soil_garden_moisture3
-      - type: vertical-stack
-        cards:
-          - type: picture-elements
-            title: Rasenmäher
-            image: '/local/images/mower.jpg'
-            elements:
-              # central
-              - type: state-label
-                entity: vacuum.sileno
-                tap_action:
-                  action: more-info
-                style:
-                 top: 14%
-                 right: 38%
-                 color: rgb(255, 255, 255)
-                 transform: translate(0%,-50%)
-                 font-family: Trebuchet MS
-                 font-size: 150%
-                 font-weight: bold
-                 border-color: rgb(34, 154, 210)
-                 border-radius: 6px
-                 background-color: '#cccccc'
-              - type: state-label
-                entity: vacuum.sileno
-                attribute: operating_hours
-                prefix: "Zeit: "
-                suffix: " h"
-                style:
-                  top: 79%
-                  left: 45%
-                  color: '#84a6ba'
-                  transform: translate(0%,-50%)
-                  pointer-events: none
-                  font-family: Trebuchet MS
-                  font-size: 80%
-                  font-weight: bold
-              # left
-              - type: state-label
-                entity: sensor.vacuum_operation
-                style:
-                 top: 10%
-                 left: 1%
-                 color: rgb(255, 255, 255)
-                 transform: translate(0%,-50%)
-                 pointer-events: none
-                 font-family: Trebuchet MS
-                 font-size: 90%
-                 font-weight: bold
-                 border-color: rgb(34, 154, 210)
-                 background-color: '#3090C7'
-                 border-radius: 6px
-              - type: state-label
-                entity: vacuum.sileno
-                attribute: activity
-                prefix: "Status: "
-                style:
-                  top: 40%
-                  left: 1%
-                  color: '#ffffff'
-                  transform: translate(0%,-50%)
-                  pointer-events: none
-                  font-family: Trebuchet MS
-                  font-size: 80%
-                  font-weight: bold
-                  border-left-style: solid
-                  border-color: '#3090C7'
-              - type: state-label
-                entity: sensor.sileno_battery_level
-                prefix: "Batterie: "
-                style:
-                  top: 50%
-                  left: 1%
-                  color: '#ffffff'
-                  transform: translate(0%,-50%)
-                  pointer-events: none
-                  font-family: Trebuchet MS
-                  font-size: 80%
-                  font-weight: bold
-                  border-left-style: solid
-                  border-color: rgb(34, 154, 210)
-              - type: state-label
-                entity: vacuum.sileno
-                attribute: error
-                prefix: "Fehler: "
-                style:
-                  top: 60%
-                  left: 1%
-                  color: '#ffffff'
-                  transform: translate(0%,-50%)
-                  pointer-events: none
-                  font-family: Trebuchet MS
-                  font-size: 80%
-                  font-weight: bold
-                  border-left-style: solid
-                  border-color: rgb(34, 154, 210)
-              - type: state-label
-                entity: vacuum.sileno
-                attribute: last_error
-                prefix: "Meldung: "
-                style:
-                  top: 70%
-                  left: 1%
-                  color: '#ffffff'
-                  transform: translate(0%,-50%)
-                  pointer-events: none
-                  font-family: Trebuchet MS
-                  font-size: 80%
-                  font-weight: bold
-                  border-left-style: solid
-                  border-color: rgb(34, 154, 210)
-              # bottom
-              - type: icon
-                icon: mdi:play
-                tap_action:
-                  action: call-service
-                  service: vacuum.start
-                  service_data:
-                      entity_id: vacuum.sileno
-                style:
-                 top: 90%
-                 left: 35%
-                 color: '#3090C7'
-              - type: icon
-                icon: mdi:stop
-                tap_action:
-                  action: call-service
-                  service: vacuum.stop
-                  service_data:
-                      entity_id: vacuum.sileno
-                style:
-                 top: 90%
-                 left: 50%
-                 color: '#3090C7'
-              - type: icon
-                icon: mdi:home
-                tap_action:
-                  action: call-service
-                  service: vacuum.return_to_base
-                  service_data:
-                      entity_id: vacuum.sileno
-                style:
-                 top: 90%
-                 left: 65%
-                 color: '#3090C7'
-              # right
-              - type: state-label
-                entity: vacuum.sileno
-                attribute: rf_link_state
-                #prefix: "Netzwerk: "
-                style:
-                 top: 10%
-                 right: 1%
-                 color: rgb(255, 255, 255)
-                 transform: translate(0%,-50%)
-                 pointer-events: none
-                 font-family: Trebuchet MS
-                 font-size: 90%
-                 font-weight: bold
-                 border-color: rgb(34, 154, 210)
-                 background-color: '#3090C7'
-                 border-radius: 6px
-              - type: state-label
-                entity: vacuum.sileno
-                attribute: rf_link_level
-                prefix: "Level: "
-                style:
-                  top: 40%
-                  right: 1%
-                  color: '#ffffff'
-                  transform: translate(0%,-50%)
-                  pointer-events: none
-                  font-family: Trebuchet MS
-                  font-size: 76%
-                  font-weight: bold
-                  border-right-style: solid
-                  border-color: rgb(34, 154, 210)
-          - type: entities
-            entities:
-            - entity: sensor.sileno_battery_level
-
-  - title: Pool
-    path: pool
-    panel: false
-    visible: true
-    cards:
-      - type: vertical-stack
-        cards:
-          - type: gauge
-            name: Pooltemperatur
-            entity: sensor.ds18b20_pool_temperature
-            min: 15
-            max: 30
-            unit: °C
-          - type: history-graph
-            title: Temperaturverlauf
-            hours_to_show: 168 # one week
-            refersh_interval: 1800 # 30 min
-            entities:
-              - sensor.ds18b20_pool_temperature
-              - sensor.dht22_terrace_temperature
-      - type: vertical-stack
-        cards:
-          - type: gauge
-            name: Akkuspannung
-            entity: sensor.ds18b20_pool_voltage
-            min: 2.5
-            max: 4.5
-            unit: V
-            severity:
-                green:  3.9
-                yellow: 3.2
-                red:    0.0
-          - type: history-graph
-            title: Spannungsverlauf
-            hours_to_show: 168 # one week
-            refersh_interval: 1800 # 30 min
-            entities:
-              - sensor.ds18b20_pool_voltage
-      - type: entities
-        title: Pool
-        show_header_toggle: false
-        entities:
-            - switch.sonoff_pool_socket
+      - type: conditional
+        conditions:
+          - entity: sensor.ds18b20_pool_temperature
+            state_not: unknown
+        card:
+            type: vertical-stack
+            cards:
+              - type: gauge
+                name: Pooltemperatur
+                entity: sensor.ds18b20_pool_temperature
+                min: 15
+                max: 30
+                unit: °C
+              - type: gauge
+                name: Akkuspannung
+                entity: sensor.ds18b20_pool_voltage
+                min: 2.5
+                max: 4.5
+                unit: V
+                severity:
+                    green:  3.9
+                    yellow: 3.2
+                    red:    0.0
+              - type: history-graph
+                title: Temperaturen und Akkuspannung
+                hours_to_show: 168 # one week
+                refersh_interval: 1800 # 30 min
+                entities:
+                  - sensor.ds18b20_pool_temperature
+                  - sensor.dht22_terrace_temperature
+                  - sensor.ds18b20_pool_voltage
+      - type: conditional
+        conditions:
+          - entity: vacuum.sileno
+            state_not: unavailable
+        card:
+            type: vertical-stack
+            cards:
+              - type: picture-elements
+                title: Rasenmäher
+                image: '/local/images/mower.jpg'
+                elements:
+                  # central
+                  - type: state-label
+                    entity: vacuum.sileno
+                    tap_action:
+                      action: more-info
+                    style:
+                     top: 14%
+                     right: 38%
+                     color: rgb(255, 255, 255)
+                     transform: translate(0%,-50%)
+                     font-family: Trebuchet MS
+                     font-size: 150%
+                     font-weight: bold
+                     border-color: rgb(34, 154, 210)
+                     border-radius: 6px
+                     background-color: '#cccccc'
+                  - type: state-label
+                    entity: vacuum.sileno
+                    attribute: operating_hours
+                    prefix: "Zeit: "
+                    suffix: " h"
+                    style:
+                      top: 79%
+                      left: 45%
+                      color: '#84a6ba'
+                      transform: translate(0%,-50%)
+                      pointer-events: none
+                      font-family: Trebuchet MS
+                      font-size: 80%
+                      font-weight: bold
+                  # left
+                  - type: state-label
+                    entity: sensor.vacuum_operation
+                    style:
+                     top: 10%
+                     left: 1%
+                     color: rgb(255, 255, 255)
+                     transform: translate(0%,-50%)
+                     pointer-events: none
+                     font-family: Trebuchet MS
+                     font-size: 90%
+                     font-weight: bold
+                     border-color: rgb(34, 154, 210)
+                     background-color: '#3090C7'
+                     border-radius: 6px
+                  - type: state-label
+                    entity: vacuum.sileno
+                    attribute: activity
+                    prefix: "Status: "
+                    style:
+                      top: 40%
+                      left: 1%
+                      color: '#ffffff'
+                      transform: translate(0%,-50%)
+                      pointer-events: none
+                      font-family: Trebuchet MS
+                      font-size: 80%
+                      font-weight: bold
+                      border-left-style: solid
+                      border-color: '#3090C7'
+                  - type: state-label
+                    entity: sensor.sileno_battery_level
+                    prefix: "Batterie: "
+                    style:
+                      top: 50%
+                      left: 1%
+                      color: '#ffffff'
+                      transform: translate(0%,-50%)
+                      pointer-events: none
+                      font-family: Trebuchet MS
+                      font-size: 80%
+                      font-weight: bold
+                      border-left-style: solid
+                      border-color: rgb(34, 154, 210)
+                  - type: state-label
+                    entity: vacuum.sileno
+                    attribute: error
+                    prefix: "Fehler: "
+                    style:
+                      top: 60%
+                      left: 1%
+                      color: '#ffffff'
+                      transform: translate(0%,-50%)
+                      pointer-events: none
+                      font-family: Trebuchet MS
+                      font-size: 80%
+                      font-weight: bold
+                      border-left-style: solid
+                      border-color: rgb(34, 154, 210)
+                  - type: state-label
+                    entity: vacuum.sileno
+                    attribute: last_error
+                    prefix: "Meldung: "
+                    style:
+                      top: 70%
+                      left: 1%
+                      color: '#ffffff'
+                      transform: translate(0%,-50%)
+                      pointer-events: none
+                      font-family: Trebuchet MS
+                      font-size: 80%
+                      font-weight: bold
+                      border-left-style: solid
+                      border-color: rgb(34, 154, 210)
+                  # bottom
+                  - type: icon
+                    icon: mdi:play
+                    tap_action:
+                      action: call-service
+                      service: vacuum.start
+                      service_data:
+                          entity_id: vacuum.sileno
+                    style:
+                     top: 90%
+                     left: 35%
+                     color: '#3090C7'
+                  - type: icon
+                    icon: mdi:stop
+                    tap_action:
+                      action: call-service
+                      service: vacuum.stop
+                      service_data:
+                          entity_id: vacuum.sileno
+                    style:
+                     top: 90%
+                     left: 50%
+                     color: '#3090C7'
+                  - type: icon
+                    icon: mdi:home
+                    tap_action:
+                      action: call-service
+                      service: vacuum.return_to_base
+                      service_data:
+                          entity_id: vacuum.sileno
+                    style:
+                     top: 90%
+                     left: 65%
+                     color: '#3090C7'
+                  # right
+                  - type: state-label
+                    entity: vacuum.sileno
+                    attribute: rf_link_state
+                    #prefix: "Netzwerk: "
+                    style:
+                     top: 10%
+                     right: 1%
+                     color: rgb(255, 255, 255)
+                     transform: translate(0%,-50%)
+                     pointer-events: none
+                     font-family: Trebuchet MS
+                     font-size: 90%
+                     font-weight: bold
+                     border-color: rgb(34, 154, 210)
+                     background-color: '#3090C7'
+                     border-radius: 6px
+                  - type: state-label
+                    entity: vacuum.sileno
+                    attribute: rf_link_level
+                    prefix: "Level: "
+                    style:
+                      top: 40%
+                      right: 1%
+                      color: '#ffffff'
+                      transform: translate(0%,-50%)
+                      pointer-events: none
+                      font-family: Trebuchet MS
+                      font-size: 76%
+                      font-weight: bold
+                      border-right-style: solid
+                      border-color: rgb(34, 154, 210)
+              - type: entities
+                entities:
+                - entity: sensor.sileno_battery_level
 
     # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card#tile-list-entry-options
   - title: Staubsauger

@@ -19,4 +19,4 @@ cover_nursery:
     # initial: on
 
 cover_closed_at_low_temp:
-    name: Fensterrollos wurden geschlossen
+    name: Fensterrollos wurden bei Kälte geschlossen
