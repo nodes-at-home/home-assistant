@@ -479,6 +479,7 @@ views:
           - sensor.solar_meter_monthly
           - sensor.solar_meter_yearly
           - type: divider
+          - sensor.solis_mini_s6_energy_today_2
           - sensor.solis_mini_s6_ac_current_r_2
           - sensor.solis_mini_s6_ac_voltage_r_2
           - sensor.solis_mini_s6_ac_frequency_2
