@@ -40,13 +40,14 @@
       - platform: numeric_state
         entity_id: sensor.ups_battery_runtime
         below: input_number.ups_shutdown_at_battery_runtime
-    not:
-        condition:
-          - platform: state
+    condition:
+        not:
+          - condition: state
             entity_id: sensor.ups_status
             state: "Online"
     action:
       - service: notify.simplepush
         data:
-          message: "Runterfahren bei USV-Restlaufzeit von {{ states ( 'sensor.ups_battery_runtime' ) }} sec"
+          message: "Runterfahren bei USV-Restlaufzeit von {{ '{:02d}:{:02d}'.format ( (states ( 'sensor.ups_battery_runtime' ) | int / 60) | int, (states ( 'sensor.ups_battery_runtime' ) | int % 60) | int ) }} min"
           title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
+      - service: shell_command.request_shutdown

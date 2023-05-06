@@ -45,6 +45,12 @@ logger:
     # homeassistant.helper.update: debug
 
 # -------------------------------------------------------------------------------
+# shell commands
+
+shell_command:
+    request_shutdown: cat shutdown > /var/tmp/shutdown_signal
+
+# -------------------------------------------------------------------------------
 # influxdb
 # https://home-assistant.io/blog/2015/12/07/influxdb-and-grafana/
 
