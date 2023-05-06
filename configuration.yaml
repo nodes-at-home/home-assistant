@@ -28,6 +28,8 @@ homeassistant:
 
   customize: !include conf/customize.yaml
 
+  packages: !include_dir_named packages
+
 system_health:
 
 # -------------------------------------------------------------------------------

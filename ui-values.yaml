@@ -459,15 +459,24 @@ views:
   - title: Energie
     path: energy
     panel: false
+    badges:
+      - entity: sun.sun
+      - entity: binary_sensor.pv_generating
+      - entity: binary_sensor.battery_charging
+      - entity: binary_sensor.battery_discharging
+      - entity: binary_sensor.exporting_power
+      - entity: binary_sensor.importing_power
+      - entity: sensor.inverter_temperature
     cards:
       - type: gauge
         name: Solarleistung
-        entity: sensor.solis_mini_s6_ac_output_total_power_2
+        entity: sensor.total_dc_power
         min: 0
-        max: 1000
+        max: 20000
         needle: true
         severity:
             yellow: 0
+            red: 20000
       - type: entities
         title: Solarstrom
         show_header_toggle: false
@@ -479,22 +488,31 @@ views:
           - sensor.solar_meter_monthly
           - sensor.solar_meter_yearly
           - type: divider
-          - sensor.solis_mini_s6_energy_today_2
-          - sensor.solis_mini_s6_ac_current_r_2
-          - sensor.solis_mini_s6_ac_voltage_r_2
-          - sensor.solis_mini_s6_ac_frequency_2
-          - sensor.solis_mini_s6_dc_current_pv1_2
-          - sensor.solis_mini_s6_dc_voltage_pv1_2
-          - sensor.solis_mini_s6_dc_power_pv1_2
-          - sensor.solis_mini_s6_power_state_2
-          - sensor.solis_mini_s6_state_2
-          - sensor.solis_mini_s6_temperature_2
+          # - entity: sensor.total_dc_power
+          - entity: sensor.load_power
+          - entity: sensor.export_power
+          - entity: sensor.import_power
+          - type: divider
+          - entity: sensor.battery_level
+          # - entity: sensor.sg_battery_level_nom #####
+          - entity: sensor.battery_charge
+          # - entity: sensor.sg_battery_charge_nom #####
+          - entity: sensor.daily_pv_generation
+          - entity: sensor.daily_exported_energy_from_pv
+          - entity: sensor.daily_pv_generation_battery_discharge
+          - entity: sensor.daily_exported_energy
+          - entity: sensor.daily_imported_energy
       - type: gauge
         name: Netzleistung
         entity: sensor.electricity_meter_power
-        min: 0
-        max: 3000
+        min: -5000
+        max: +5000
         needle: true
+        segments:
+          - from: -5000
+            color: '#ffa600'
+          - from: 0
+            color: '#3788d8'
       - type: entities
         title: Netzstrom
         show_header_toggle: false
@@ -520,6 +538,25 @@ views:
           - sensor.electricity_meter_monthly_out
           - sensor.electricity_meter_yearly_out
           - sensor.electricity_quarterhourly_out
+      - type: gauge
+        name: Batterieladung
+        entity: sensor.battery_level
+        min: 0
+        max: 100
+        severity:
+          green: 70
+          yellow: 40
+          red: 20
+      - type: entities
+        title: Batterie
+        show_header_toggle: false
+        entities:
+          - entity: sensor.battery_charging_power
+          - entity: sensor.battery_discharging_power
+          - type: divider
+          - entity: sensor.battery_charge
+          - entity: sensor.daily_battery_charge_from_pv
+          - entity: sensor.daily_battery_discharge
       - type: gauge
         name: Füllstand Gasspeicher Deutschland
         entity: sensor.gas_storage_germany_full_level
@@ -547,6 +584,14 @@ views:
   - title: Heizung
     path: heating
     panel: false
+    basges:
+      - binary_sensor.boiler_heatingactive
+      - binary_sensor.boiler_tapwateractive
+      - binary_sensor.boiler_burngas
+      - binary_sensor.boiler_heatingpump
+      - binary_sensor.boiler_wwcharging
+      # - binary_sensor.boiler_wwactive
+      - binary_sensor.boiler_ww3wayvalve
     cards:
       - type: entities
         title: Einstellungen
@@ -583,24 +628,156 @@ views:
           - sensor.boiler_wwcurtemp
           # - sensor.boiler_wwcurflow
           # - sensor.boiler_wwchargetype
+
+  - title: Solar
+    path: details
+    panel: false
+    # icon: mdi:solar-power-variant-outline
+    badges:
+      - entity: binary_sensor.pv_generating
+      - entity: binary_sensor.battery_charging
+      - entity: binary_sensor.battery_discharging
+      - entity: binary_sensor.exporting_power
+      - entity: binary_sensor.importing_power
+      - entity: sensor.inverter_temperature
+    cards:
       - type: entities
-        title: Zustände
-        show_header_toggle: false
         entities:
-          - binary_sensor.boiler_heatingactive
-          - binary_sensor.boiler_tapwateractive
-          - binary_sensor.boiler_burngas
-          - binary_sensor.boiler_heatingpump
-          - binary_sensor.boiler_wwcharging
-          # - binary_sensor.boiler_wwactive
-          - binary_sensor.boiler_ww3wayvalve
+          - entity: sensor.total_dc_power
+          - entity: sensor.meter_active_power
+          - entity: sensor.load_power
+          - entity: sensor.export_power
+          - entity: sensor.import_power
+          - entity: sensor.battery_charging_power
+          - entity: sensor.battery_discharging_power
+        title: Power
+      - type: entities
+        entities:
+          - entity: sensor.load_power
+          - entity: sensor.phase_a_voltage
+          - entity: sensor.phase_a_current
+          - entity: sensor.phase_a_power
+          - entity: sensor.phase_b_voltage
+          - entity: sensor.phase_b_current
+          - entity: sensor.phase_b_power
+          - entity: sensor.phase_c_voltage
+          - entity: sensor.phase_c_current
+          - entity: sensor.phase_c_power
+          - entity: sensor.meter_phase_a_active_power
+          - entity: sensor.meter_phase_b_active_power
+          - entity: sensor.meter_phase_c_active_power
+          - entity: sensor.total_backup_power
+          - entity: sensor.backup_phase_a_power
+          - entity: sensor.backup_phase_b_power
+          - entity: sensor.backup_phase_c_power
+          - entity: sensor.grid_frequency
+        title: Grid / Load
+      - type: gauge
+        entity: sensor.battery_level
+        min: 0
+        max: 100
+        severity:
+          green: 70
+          yellow: 40
+          red: 20
+      - type: entities
+        entities:
+          - entity: sensor.daily_pv_generation
+          - entity: sensor.daily_direct_energy_consumption
+          - entity: sensor.daily_exported_energy_from_pv
+          - entity: sensor.daily_pv_generation_battery_discharge
+          - entity: sensor.daily_battery_charge_from_pv
+          - entity: sensor.daily_battery_discharge
+          - entity: sensor.daily_exported_energy
+          - entity: sensor.daily_battery_charge
+          - entity: sensor.daily_imported_energy
+          - entity: sensor.total_pv_generation
+          - entity: sensor.total_direct_energy_consumption
+          - entity: sensor.total_pv_generation_battery_discharge
+          - entity: sensor.total_exported_energy_from_pv
+          - entity: sensor.total_battery_charge_from_pv
+          - entity: sensor.total_battery_charge
+          - entity: sensor.total_battery_discharge
+          - entity: sensor.total_imported_energy
+          - entity: sensor.total_exported_energy
+        title: Energy
+      - type: entities
+        entities:
+          - entity: sensor.total_dc_power
+          - entity: sensor.mppt1_power
+          - entity: sensor.mppt1_voltage
+          - entity: sensor.mppt1_current
+          - entity: sensor.mppt2_power
+          - entity: sensor.mppt2_voltage
+          - entity: sensor.mppt2_current
+        title: PV Gen
+      - type: entities
+        entities:
+          - entity: sensor.battery_charging_power
+          - entity: sensor.battery_discharging_power
+          - entity: sensor.battery_voltage
+          - entity: sensor.battery_current
+          - entity: sensor.battery_level
+          - entity: sensor.battery_state_of_health
+          - entity: sensor.battery_temperature
+          - entity: sensor.daily_battery_charge_from_pv
+          - entity: sensor.daily_battery_charge
+          - entity: sensor.daily_battery_discharge
+          - entity: sensor.total_battery_charge_from_pv
+          - entity: sensor.total_battery_discharge
+          - entity: sensor.total_battery_charge
+          - entity: sensor.max_soc
+          - entity: sensor.min_soc
+        title: Battery
+      - type: entities
+        entities:
+          - entity: sensor.ems_mode_selection
+          - entity: sensor.battery_forced_charge_discharge_cmd
+          - entity: sensor.min_soc
+          - entity: sensor.max_soc
+          - entity: sensor.battery_forced_charge_discharge_power
+          - entity: sensor.battery_charging_start_power
+          - entity: sensor.battery_discharging_start_power
+        title: EMS
+      - type: entities
+        entities:
+          - entity: sensor.sungrow_device_type
+          - entity: sensor.sungrow_inverter_state
+          - entity: sensor.running_state
+          - entity: sensor.system_state
+          # - entity: sensor.inverter_temperature
+          # - entity: binary_sensor.pv_generating
+          # - entity: binary_sensor.battery_charging
+          # - entity: binary_sensor.battery_discharging
+          # - entity: binary_sensor.exporting_power
+          # - entity: binary_sensor.importing_power
+        title: Inverter State
+      - chart_type: line
+        period: day
+        days_to_show: 60
+        type: statistics-graph
+        entities:
+          - sensor.battery_level
+        stat_types:
+          - min
+          - max
+        title: Battery SoC last 60 days
+      - chart_type: line
+        period: day
+        days_to_show: 180
+        type: statistics-graph
+        entities:
+          - sensor.battery_level
+        stat_types:
+          - min
+          - max
+        title: Battery SoC last 180 days
 
   - title: Diagramme
     path: heatinggraph
     type: panel
     cards:
       - type: history-graph
-        title: Heizung
         hours_to_show: 24
         entities:
           - sensor.boiler_outdoortemp
@@ -615,5 +792,9 @@ views:
           - switch.sonoff_utilityroom_pump
           # - sensor.boiler_heatingpumpmod
           - sensor.boiler_curburnpow
-          - sensor.solis_mini_s6_ac_output_total_power_2
+          - sensor.total_dc_power
+          - sensor.load_power
+          - sensor.export_power
+          - sensor.import_power
+          - sensor.signed_battery_power
           - sensor.electricity_meter_power
