@@ -499,3 +499,11 @@ views:
         show_header_toggle: false
         entities:
             - binary_sensor.bewegungsmelder1
+      - type: entities
+        title: Zwischenstecker
+        show_header_toggle: false
+        entities:
+            - switch.wasserpumpe
+            - sensor.wasserpumpe_communication_quality
+            - sensor.wasserpumpe_energy
+            - sensor.wasserpumpe_power

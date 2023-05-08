@@ -464,6 +464,9 @@ views:
             - sensor.soil_garden_moisture2
             - sensor.soil_garden_moisture3
             - switch.sonoff_pool_socket
+            - entity: switch.wasserpumpe
+              icon: mdi:water-pump
+            - sensor.wasserpumpe_power
       - type: glance
         title: Garage
         columns: 3
