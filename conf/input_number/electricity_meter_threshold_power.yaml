@@ -5,7 +5,7 @@
 name: Unplausible Leistung ab
 mode: box
 min: 0
-max: 10000
+max: 20000
 step: 500
 unit_of_measurement: W
 # initial: 140
