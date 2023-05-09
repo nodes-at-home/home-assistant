@@ -448,12 +448,6 @@ views:
         title: Garten
         columns: 3
         entities:
-            - entity: input_boolean.irrigation_scheduled_valve1
-              name: Hecke
-            - entity: input_boolean.irrigation_scheduled_valve2
-              name: Hochbeete
-            - entity: input_boolean.irrigation_scheduled_valve3
-              name: Rosengartebn
             - switch.relay_garden_valve1
             - switch.relay_garden_valve2
             - switch.relay_garden_valve3
