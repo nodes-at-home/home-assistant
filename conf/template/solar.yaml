@@ -1,0 +1,385 @@
+###
+### junand 09.05.2023
+###
+
+  - binary_sensor:
+      
+      - name: battery_state
+        # unit_of_measurement: '%'
+        state: "on"
+        icon: >
+            {% set val = states ( 'sensor.battery_level' ) | default ( 0 ) | int %}
+            {% if states ( 'binary_sensor.battery_charging' ) %}
+                {% if val == 100 %}
+                    mdi:battery-charging-100
+                {% elif val >= 90 %}
+                    mdi:battery-charging-90
+                {% elif val >= 80 %}
+                    mdi:battery-charging-80
+                {% elif val >= 70 %}
+                    mdi:battery-charging-70
+                {% elif val >= 60 %}
+                    mdi:battery-charging-60
+                {% elif val >= 50 %}
+                    mdi:battery-charging-50
+                {% elif val >= 40 %}
+                    mdi:battery-charging-40
+                {% elif val >= 30 %}
+                    mdi:battery-charging-30
+                {% elif val >= 20 %}
+                    mdi:battery-charging-20
+                {% elif val >= 10 %}
+                    mdi:battery-charging-10
+                {% else %}
+                    mdi:battery-charging-outline
+                {% endif %}
+            {% else %}
+                {% if val == 100 %}
+                    mdi:battery
+                {% elif val >= 90 %}
+                    mdi:battery-90
+                {% elif val >= 80 %}
+                    mdi:battery-80
+                {% elif val >= 70 %}
+                    mdi:battery-70
+                {% elif val >= 60 %}
+                    mdi:battery-60
+                {% elif val >= 50 %}
+                    mdi:battery-50
+                {% elif val >= 40 %}
+                    mdi:battery-40
+                {% elif val >= 30 %}
+                    mdi:battery-30
+                {% elif val >= 20 %}
+                    mdi:battery-20
+                {% elif val >= 10 %}
+                    mdi:battery-10
+                {% else %}
+                    mdi:battery-outline
+                {% endif %}
+            {% endif %}
+        attributes:
+            icon_color: >
+                {% if binary_sensor.battery_charging %}
+                    green
+                {% elif binary_sensor.battery_discharging %}
+                    red
+                {% else %}
+                    gray
+                {% endif %}
+
+      - name: pv_generating
+        availability: >-
+          {{states('sensor.running_state')|is_number or 
+            states('sensor.total_dc_power')|is_number
+          }}
+        state: >-
+          {% if states('sensor.running_state')|is_number %}
+            {# use available sensor running_state #}
+            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x1) > 0 }}
+          {% else %} 
+            {# workaround for SH*RS inverters without working running_state #}
+            {% if states('sensor.total_dc_power')|int > 0 %}
+              1
+            {% else %} 
+              0 
+            {% endif %}
+          {% endif %}
+
+      - name: battery_charging
+        unique_id: sg_battery_charging
+        availability: >-
+          {{states('sensor.running_state')|is_number or 
+            (states('sensor.ems_mode_selection_raw')|is_number and 
+            states('sensor.battery_forced_charge_discharge_cmd_raw')|is_number and
+            states('sensor.battery_power_raw')|is_number and 
+            states('sensor.total_dc_power')|is_number and 
+            states('sensor.load_power')|is_number ) 
+          }}
+        state: >-
+          {% if states('sensor.running_state')|is_number %}
+            {# use available sensor running_state #}
+            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x2) > 0 }}
+          {% else %}
+            {# workaround for SH*RS inverters without working running_state #}
+            {% if (states('sensor.ems_mode_selection') ) == "Forced mode" %}
+              {# EMS forced mode #}
+              {% if (states('sensor.battery_forced_charge_discharge_cmd') == "Forced charge") %}
+                {# in mode Forced charge #}
+                {% if (states('sensor.battery_power_raw')|int > 0 ) %}
+                  {# power flow from/to battery #}
+                  On
+                {% else %} 
+                  {# no power flow from/to battery #}
+                  Off
+                {% endif %}
+              {% else %}
+                {# in EMS mode, but not in mode Forced charge #}
+                Off
+              {% endif %}
+            {% else %} 
+              {# not in EMS forced mode, assuming self consumption mode #}
+              {% if states('sensor.total_dc_power')|int > states('sensor.load_power')|int %}
+                {# more power generated than consumed. assuming battery charging #}
+                On
+              {% else %} 
+                Off
+              {% endif %}
+            {% endif %}
+          {% endif %}
+
+      - name: battery_discharging
+        availability: >-
+          {{states('sensor.running_state')|is_number or 
+            (states('sensor.ems_mode_selection_raw')|is_number and 
+            states('sensor.battery_forced_charge_discharge_cmd_raw')|is_number and
+            states('sensor.battery_power_raw')|is_number and 
+            states('sensor.total_dc_power')|is_number and 
+            states('sensor.load_power')|is_number ) 
+          }}
+        state: >-
+          {% if states('sensor.running_state')|is_number %}
+            {# use available sensor running_state #}
+            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x4) > 0 }}
+          {% else %}
+            {# workaround for SH*RS inverters without working running_state #}
+            {% if (states('sensor.ems_mode_selection') ) == "Forced mode" %}
+              {# EMS forced mode #}
+              {% if (states('sensor.battery_forced_charge_discharge_cmd') == "Forced discharge") %}
+                {# in mode Forced discharge #}
+                {% if (states('sensor.battery_power_raw')|int > 0 ) %}
+                  {# power flow from/to battery #}
+                  On
+                {% else %} 
+                  {# no power flow from/to battery #}
+                  Off
+                {% endif %}
+              {% else %} 
+                {# in EMS mode, but not in mode Forced charge #}
+                Off
+              {% endif %}
+            {% else %} 
+              {# not in EMS forced mode, assuming self consumption mode #}
+              {% if ( ( states('sensor.total_dc_power')|int < states('sensor.load_power')|int ) ) and states('sensor.battery_power_raw')|int > 0 %}
+                {# more power consumed than generated and some battery power -->  assuming battery discharging #}
+                On
+              {% else %} 
+                Off
+              {% endif %}
+            {% endif %}
+          {% endif %}
+
+      - name: exporting_power
+        availability: "{{states('sensor.running_state')|is_number or states('sensor.export_power_raw')|is_number }}"
+        state: >-
+          {% if states('sensor.running_state')|is_number %}
+            {# use available sensor running_state #}
+            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x10) > 0 }}
+          {% else %} 
+            {# workaround for SH*RS inverters without working running_state #}
+            {% if states('sensor.export_power_raw')|int > 0 %}
+                1
+            {% else %} 
+                0 
+            {% endif %}
+          {% endif %}
+
+      - name: importing_power
+        availability: "{{states('sensor.running_state')|is_number or states('sensor.export_power_raw')|is_number }}"
+        state: >-
+          {% if states('sensor.running_state')|is_number %}
+            {# use available sensor running_state #}
+            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x20) > 0 }}
+          {% else %} 
+            {# workaround for SH*RS inverters without working running_state #}
+            {% if states('sensor.export_power_raw')|int < 0 %}
+              1
+            {% else %}
+              0 
+            {% endif %}
+          {% endif %}
+
+  - sensor:
+
+      - name: estimated_energy_production_today
+        unit_of_measurement: kWh
+        device_class: energy
+        availability: >-
+            {{ states ( 'sensor.energy_production_today' ) | is_number and states ( 'sensor.energy_production_today_2' ) | is_number }}
+        state: >-
+            {{ states ( 'sensor.energy_production_today' ) | float + states ( 'sensor.energy_production_today_2' ) | float }}
+  
+      - name: sh10rt_master_inverter_state
+        state: >-
+            {% set val = states ( 'sensor.sh10rt_master_system_state' ) | int (default = 0) %}
+            {% if  val == 0x0002 %}
+                Stop
+            {% elif  val == 0x0008 %}
+                Standby
+            {% elif  val == 0x0010 %}
+                Initial Standby
+            {% elif  val == 0x0020 %}
+                Startup
+            {% elif  val == 0x0040 %}
+                Running
+            {% elif  val == 0x0100 %}
+                Fault
+            {% elif  val == 0x0400 %}
+                Maintain mode
+            {% elif  val == 0x0800 %}
+                Forced mode
+            {% elif  val == 0x1000 %}
+                Off-grid mode
+            {% elif  val == 0x2501 %}
+                Restarting
+            {% elif  val == 0x4000 %}
+                External EMS mode
+            {% else %}
+                Unknown - should not see me!
+            {% endif %}
+
+      - name: sh10rt_slave_inverter_state
+        state: >-
+            {% set val = states ( 'sensor.sh10rt_slave_system_state' ) | int (default = 0) %}
+            {% if  val == 0x0002 %}
+                Stop
+            {% elif  val == 0x0008 %}
+                Standby
+            {% elif  val == 0x0010 %}
+                Initial Standby
+            {% elif  val == 0x0020 %}
+                Startup
+            {% elif  val == 0x0040 %}
+                Running
+            {% elif  val == 0x0100 %}
+                Fault
+            {% elif  val == 0x0400 %}
+                Maintain mode
+            {% elif  val == 0x0800 %}
+                Forced mode
+            {% elif  val == 0x1000 %}
+                Off-grid mode
+            {% elif  val == 0x2501 %}
+                Restarting
+            {% elif  val == 0x4000 %}
+                External EMS mode
+            {% else %}
+                Unknown - should not see me!
+            {% endif %}
+
+      - name: sh10rt_master_device_type
+        state: >-
+            {% set val = states ( 'sensor.sh10rt_master_device_type_code' ) | int (default = 0) %}
+            {% if val  == 0x0D06 %}
+                SH3K6
+            {% elif val  == 0x0D07 %}
+                SH4K6
+            {% elif val  == 0x0D09 %}
+                SH5K-20  
+            {% elif val  == 0x0D03 %}
+                SH5K-V13
+            {% elif val  == 0x0D0C %}
+                SH5K-30
+            {% elif val  == 0x0D0A %}
+                SH3K6-30
+            {% elif val  == 0x0D0B %}
+                SH4K6-30
+            {% elif val  == 0x0D0F %}
+                SH5.0RS
+            {% elif val  == 0x0D0D %}
+                SH3.6RS
+            {% elif val  == 0x0D0E %}
+                SH4.6RS
+            {% elif val  == 0x0D10 %}
+                SH6.0RS
+            {% elif val  == 0x0E01 %}
+                SH6.0RT
+            {% elif val  == 0x0E02 %}
+                SH8.0RT
+            {% elif val  == 0x0E03 %}
+                SH10RT
+            {% elif val  == 0x0E0E %}
+                SH8.0RT-V112
+            {% elif val  == 0x0E0F %}
+                SH10RT-V112
+            {% elif val  == 0x0E00 %}
+                SH5.0RT
+            {% else %}
+                Unknown device code!
+            {% endif %}
+
+      - name: sh10rt_slave_device_type
+        state: >-
+            {% set val = states ( 'sensor.sh10rt_slave_device_type_code' ) | int (default = 0) %}
+            {% if val  == 0x0D06 %}
+                SH3K6
+            {% elif val  == 0x0D07 %}
+                SH4K6
+            {% elif val  == 0x0D09 %}
+                SH5K-20  
+            {% elif val  == 0x0D03 %}
+                SH5K-V13
+            {% elif val  == 0x0D0C %}
+                SH5K-30
+            {% elif val  == 0x0D0A %}
+                SH3K6-30
+            {% elif val  == 0x0D0B %}
+                SH4K6-30
+            {% elif val  == 0x0D0F %}
+                SH5.0RS
+            {% elif val  == 0x0D0D %}
+                SH3.6RS
+            {% elif val  == 0x0D0E %}
+                SH4.6RS
+            {% elif val  == 0x0D10 %}
+                SH6.0RS
+            {% elif val  == 0x0E01 %}
+                SH6.0RT
+            {% elif val  == 0x0E02 %}
+                SH8.0RT
+            {% elif val  == 0x0E03 %}
+                SH10RT
+            {% elif val  == 0x0E0E %}
+                SH8.0RT-V112
+            {% elif val  == 0x0E0F %}
+                SH10RT-V112
+            {% elif val  == 0x0E00 %}
+                SH5.0RT
+            {% else %}
+                Unknown device code!
+            {% endif %}
+
+        # positive if charging and negative if discharging
+      - name: sh10rt_master_battery_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: >-
+            {{ 
+                states ( 'binary_sensor.sh10rt_master_battery_charging' ) and states ( 'binary_sensor.sh10rt_master_battery_discharging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' )|is_number }}
+        state: >-
+            {% if is_state ( 'binary_sensor.sh10rt_master_battery_charging', 'on' ) %}
+                {{ states('sensor.sh10rt_master_battery_power_raw') | float }} 
+            {% elif is_state ( 'binary_sensor.sh10rt_master_battery_discharging', 'on' ) %} 
+                {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) | float * -1 }} 
+            {% else %} 
+                0 
+            {% endif %}
+
+        # positive if charging and negative if discharging
+      - name: sh10rt_slave_battery_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: >-
+            {{ 
+                states ( 'binary_sensor.sh10rt_slave_battery_charging' ) and states ( 'binary_sensor.sh10rt_slave_battery_discharging' ) and states ( 'sensor.sh10rt_slave_battery_power_raw' )|is_number }}
+        state: >-
+            {% if is_state ( 'binary_sensor.sh10rt_slave_battery_charging', 'on' ) %}
+                {{ states('sensor.sh10rt_slave_battery_power_raw') | float }} 
+            {% elif is_state ( 'binary_sensor.sh10rt_slave_battery_discharging', 'on' ) %} 
+                {{ states ( 'sensor.sh10rt_slave_battery_power_raw' ) | float * -1 }} 
+            {% else %} 
+                0 
+            {% endif %}
+            

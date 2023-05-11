@@ -28,8 +28,6 @@ homeassistant:
 
   customize: !include conf/customize.yaml
 
-  packages: !include_dir_named packages
-
 system_health:
 
 # -------------------------------------------------------------------------------
@@ -340,6 +338,7 @@ mqtt:
     switch:         !include_dir_merge_list     conf/mqtt_switch
     cover:          !include_dir_merge_list     conf/mqtt_cover
 utility_meter:      !include_dir_named          conf/utility_meter
+modbus:             !include_dir_merge_list     conf/modbus
 
 # -------------------------------------------------------------------------------
 #

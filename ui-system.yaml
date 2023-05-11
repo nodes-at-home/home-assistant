@@ -346,21 +346,21 @@ views:
                 entities:
                     - automation.ups_status_change
                     - automation.ups_shutdown_on_low_battery
-              - type: entities
-                title: Solar
-                show_header_toggle: true
-                entities:
-                    - automation.sungrow_inverter_start_stop
-                    - automation.sungrow_inverter_update_max_soc
-                    - automation.sungrow_inverter_update_min_soc
-                    - automation.sungrow_inverter_update_reserved_soc_for_backup
-                    - automation.sungrow_inverter_update_battery_forced_charge_discharge_cmd
-                    - automation.sungrow_inverter_update_ems_mode
-                    - automation.sungrow_inverter_update_battery_forced_charge_discharge_power
-                    - automation.sungrow_inverter_update_battery_max_charge_power
-                    - automation.sungrow_inverter_update_battery_max_discharge_power
-                    - automation.sungrow_inverter_update_battery_charging_start_power
-                    - automation.sungrow_inverter_update_battery_discharging_start_power
+              # - type: entities
+                # title: Solar
+                # show_header_toggle: true
+                # entities:
+                    # - automation.sungrow_inverter_start_stop
+                    # - automation.sungrow_inverter_update_max_soc
+                    # - automation.sungrow_inverter_update_min_soc
+                    # - automation.sungrow_inverter_update_reserved_soc_for_backup
+                    # - automation.sungrow_inverter_update_battery_forced_charge_discharge_cmd
+                    # - automation.sungrow_inverter_update_ems_mode
+                    # - automation.sungrow_inverter_update_battery_forced_charge_discharge_power
+                    # - automation.sungrow_inverter_update_battery_max_charge_power
+                    # - automation.sungrow_inverter_update_battery_max_discharge_power
+                    # - automation.sungrow_inverter_update_battery_charging_start_power
+                    # - automation.sungrow_inverter_update_battery_discharging_start_power
           - type: vertical-stack
             cards:
               - type: entities
