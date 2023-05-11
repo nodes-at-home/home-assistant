@@ -459,16 +459,29 @@ views:
   - title: Energie
     path: energy
     panel: false
+    card_mod:
+        # https://www.w3.org/wiki/CSS/Properties/color/keywords
+        # for state-icon use --paper-item-icon-color
+        # for state badge use --label-badge-text-color or --label-badge-background-color (the whole badge is then colorized)
+        style: |
+            ha-card {
+                --battery-state-color: {{ state_attr ( 'binary_sensor.battery_state', 'icon_color' ) }}
+            }
     badges:
-      - entity: sun.sun
       - entity: binary_sensor.pv_generating
+        name: Erzeugung
       - entity: binary_sensor.battery_charging
+        name: Laden
+      - entity: binary_sensor.battery_state
+        name: Batterie
+        style:
+          --label-badge-text-color: var(--battery-state-color)
       - entity: binary_sensor.battery_discharging
-      - entity: binary_sensor.exporting_power
-      - entity: binary_sensor.importing_power
-      - entity: sensor.inverter_temperature
-      # - entity: binary_sensor.battery_state
-        # name: Batterie
+        name: Entladen
+      - entity: binary_sensor.sh10rt_master_exporting_power
+        name: Export
+      - entity: binary_sensor.sh10rt_master_importing_power
+        name: Import
     cards:
       - type: gauge
         name: Netzleistung
@@ -509,10 +522,10 @@ views:
             icon: mdi:transmission-tower-export
       - type: gauge
         name: Solarleistung
-        entity: sensor.sh10rt_master_total_dc_power
+        entity: sensor.total_dc_power
         min: 0
         max: 20000
-        needle: true
+        # needle: true
         severity:
             yellow: 0
             red: 20000
@@ -534,11 +547,27 @@ views:
           - type: section
             label: Produktion
           - entity: sensor.sh10rt_master_total_dc_power
+            name: Gartenseite
+            icon: mdi:solar-power-variant-outline
           - entity: sensor.sh10rt_slave_total_dc_power
+            name: Straßenseite
+            icon: mdi:solar-power-variant-outline
+          - entity: sensor.solar_meter_daily
+            name: täglich
+            icon: mdi:solar-power
+          - entity: sensor.solar_meter_yearly
+            name: jährlich
+            icon: mdi:solar-power
+          - entity: sensor.daily_pv_generation
+            name: tägich (Wechselrichter)
           - entity: sensor.sh10rt_master_daily_pv_generation
+            name: tägich (Wechselrichter 1)
           - entity: sensor.sh10rt_slave_daily_pv_generation
+            name: tägich (Wechselrichter 2)
+          - entity: sensor.sh10rt_master_daily_imported_energy
+            name: Import (Wechselrichter)
           - entity: sensor.sh10rt_master_daily_exported_energy_from_pv
-          - entity: sensor.sh10rt_slave_daily_exported_energy_from_pv
+            name: Export (Wechselrichter)
       - type: gauge
         name: Batterieladung
         entity: sensor.sh10rt_master_battery_level
@@ -547,15 +576,25 @@ views:
         severity:
           green: 70
           yellow: 25
-          red: 0
+          red: 10
       - type: entities
         title: Batterie
         show_header_toggle: false
         entities:
-          - entity: sensor.sh10rt_master_battery_charge
-          - entity: sensor.sh10rt_master_daily_battery_charge_from_pv
+          - entity: sensor.battery_power
+          - type: section
+            label: Entladung
           - entity: sensor.sh10rt_master_daily_battery_discharge
-          - entity: sensor.sh10rt_master_battery_power
+            name: täglich
+            icon: mdi:battery-arrow-down
+          - type: section
+            label: Auftladung
+          - entity: sensor.sh10rt_master_daily_battery_charge
+            name: täglich
+            icon: mdi:battery-arrow-up
+          - entity: sensor.sh10rt_master_daily_battery_charge_from_pv
+            name: täglich per Solar
+            icon: mdi:battery-arrow-up
       - type: gauge
         name: Füllstand Gasspeicher Deutschland
         entity: sensor.gas_storage_germany_full_level
@@ -629,148 +668,139 @@ views:
           # - sensor.boiler_wwchargetype
 
   - title: Solar
-    path: details
+    path: solar
     panel: false
-    # icon: mdi:solar-power-variant-outline
-    badges:
-      - entity: binary_sensor.pv_generating
-      - entity: binary_sensor.battery_charging
-      - entity: binary_sensor.battery_discharging
-      - entity: binary_sensor.exporting_power
-      - entity: binary_sensor.importing_power
-      - entity: sensor.inverter_temperature
     cards:
       - type: entities
+        title: Netz
         entities:
-          - entity: sensor.total_dc_power
-          - entity: sensor.meter_active_power
-          - entity: sensor.load_power
-          - entity: sensor.export_power
+          - entity: sensor.sh10rt_master_export_power_raw
+          - entity: sensor.electricity_meter_power
           - entity: sensor.import_power
+          - entity: sensor.export_power
+          - entity: sensor.sh10rt_master_load_power
+          - type: divider
+          - entity: sensor.sh10rt_master_phase_a_voltage
+          - entity: sensor.sh10rt_master_phase_a_current
+          - entity: sensor.sh10rt_master_phase_b_voltage
+          - entity: sensor.sh10rt_master_phase_b_current
+          - entity: sensor.sh10rt_master_phase_c_voltage
+          - entity: sensor.sh10rt_master_phase_c_current
+          - type: divider
+          - entity: sensor.sh10rt_master_grid_frequency
+      - type: entities
+        title: Master
+        entities:
+          - type: section
+            label: Zustand
+          - entity: sensor.sh10rt_master_device_type
+          - entity: sensor.sh10rt_master_inverter_state
+          - entity: sensor.sh10rt_master_system_state
+          - entity: sensor.sh10rt_master_running_state
+          - entity: sensor.sh10rt_master_inverter_temperature
+          - type: section
+            label: Strings (1+4)
+          - entity: sensor.sh10rt_master_mppt1_voltage
+          - entity: sensor.sh10rt_master_mppt1_current
+          - entity: sensor.sh10rt_master_mppt2_voltage
+          - entity: sensor.sh10rt_master_mppt2_current
+      - type: entities
+        title: Slave
+        entities:
+          - type: section
+            label: Zustand
+          - entity: sensor.sh10rt_slave_device_type
+          - entity: sensor.sh10rt_slave_inverter_state
+          - entity: sensor.sh10rt_slave_system_state
+          - entity: sensor.sh10rt_slave_running_state
+          - entity: sensor.sh10rt_slave_inverter_temperature
+          - type: section
+            label: Strings (2+3)
+          - entity: sensor.sh10rt_slave_mppt1_voltage
+          - entity: sensor.sh10rt_slave_mppt1_current
+          - entity: sensor.sh10rt_slave_mppt2_voltage
+          - entity: sensor.sh10rt_slave_mppt2_current
+      - type: entities
+        title: Batterie
+        entities:
+          - type: section
+            label: Zustand
+          - entity: sensor.sh10rt_master_battery_level
+          - entity: sensor.sh10rt_master_battery_state_of_health
+          - entity: sensor.sh10rt_master_battery_temperature
+          - type: section
+            label: Werte
+          - entity: sensor.sh10rt_master_battery_power_raw
           - entity: sensor.battery_charging_power
           - entity: sensor.battery_discharging_power
-        title: Power
-      - type: entities
-        entities:
-          - entity: sensor.load_power
-          - entity: sensor.phase_a_voltage
-          - entity: sensor.phase_a_current
-          - entity: sensor.phase_a_power
-          - entity: sensor.phase_b_voltage
-          - entity: sensor.phase_b_current
-          - entity: sensor.phase_b_power
-          - entity: sensor.phase_c_voltage
-          - entity: sensor.phase_c_current
-          - entity: sensor.phase_c_power
-          - entity: sensor.meter_phase_a_active_power
-          - entity: sensor.meter_phase_b_active_power
-          - entity: sensor.meter_phase_c_active_power
-          - entity: sensor.total_backup_power
-          - entity: sensor.backup_phase_a_power
-          - entity: sensor.backup_phase_b_power
-          - entity: sensor.backup_phase_c_power
-          - entity: sensor.grid_frequency
-        title: Grid / Load
-      - type: gauge
-        entity: sensor.battery_level
-        min: 0
-        max: 100
-        severity:
-          green: 70
-          yellow: 40
-          red: 20
-      - type: entities
-        entities:
-          - entity: sensor.daily_pv_generation
-          - entity: sensor.daily_direct_energy_consumption
-          - entity: sensor.daily_exported_energy_from_pv
-          - entity: sensor.daily_pv_generation_battery_discharge
-          - entity: sensor.daily_battery_charge_from_pv
-          - entity: sensor.daily_battery_discharge
-          - entity: sensor.daily_exported_energy
-          - entity: sensor.daily_battery_charge
-          - entity: sensor.daily_imported_energy
-          - entity: sensor.total_pv_generation
-          - entity: sensor.total_direct_energy_consumption
-          - entity: sensor.total_pv_generation_battery_discharge
-          - entity: sensor.total_exported_energy_from_pv
-          - entity: sensor.total_battery_charge_from_pv
-          - entity: sensor.total_battery_charge
-          - entity: sensor.total_battery_discharge
-          - entity: sensor.total_imported_energy
-          - entity: sensor.total_exported_energy
-        title: Energy
-      - type: entities
-        entities:
-          - entity: sensor.total_dc_power
-          - entity: sensor.mppt1_power
-          - entity: sensor.mppt1_voltage
-          - entity: sensor.mppt1_current
-          - entity: sensor.mppt2_power
-          - entity: sensor.mppt2_voltage
-          - entity: sensor.mppt2_current
-        title: PV Gen
-      - type: entities
-        entities:
-          - entity: sensor.battery_charging_power
-          - entity: sensor.battery_discharging_power
-          - entity: sensor.battery_voltage
-          - entity: sensor.battery_current
-          - entity: sensor.battery_level
-          - entity: sensor.battery_state_of_health
-          - entity: sensor.battery_temperature
-          - entity: sensor.daily_battery_charge_from_pv
-          - entity: sensor.daily_battery_charge
-          - entity: sensor.daily_battery_discharge
-          - entity: sensor.total_battery_charge_from_pv
-          - entity: sensor.total_battery_discharge
-          - entity: sensor.total_battery_charge
-          - entity: sensor.max_soc
-          - entity: sensor.min_soc
-        title: Battery
-      - type: entities
-        entities:
-          - entity: sensor.ems_mode_selection
-          - entity: sensor.battery_forced_charge_discharge_cmd
-          - entity: sensor.min_soc
-          - entity: sensor.max_soc
-          - entity: sensor.battery_forced_charge_discharge_power
-          - entity: sensor.battery_charging_start_power
-          - entity: sensor.battery_discharging_start_power
-        title: EMS
-      - type: entities
-        entities:
-          - entity: sensor.sungrow_device_type
-          - entity: sensor.sungrow_inverter_state
-          - entity: sensor.running_state
-          - entity: sensor.system_state
-          # - entity: sensor.inverter_temperature
-          # - entity: binary_sensor.pv_generating
-          # - entity: binary_sensor.battery_charging
-          # - entity: binary_sensor.battery_discharging
-          # - entity: binary_sensor.exporting_power
-          # - entity: binary_sensor.importing_power
-        title: Inverter State
-      - chart_type: line
+          - entity: sensor.sh10rt_master_battery_voltage
+          - entity: sensor.sh10rt_master_battery_current
+          # - type: section
+            # label: SoC
+          # - entity: sensor.sh10rt_master_max_soc
+          # - entity: sensor.sh10rt_master_min_soc
+      - type: statistics-graph
+        title: Battery SoC last 60 days
+        chart_type: line
         period: day
         days_to_show: 60
-        type: statistics-graph
         entities:
           - sensor.battery_level
         stat_types:
           - min
           - max
-        title: Battery SoC last 60 days
-      - chart_type: line
-        period: day
-        days_to_show: 180
-        type: statistics-graph
+
+  - title: MPPT
+    path: mpptgraph
+    type: panel
+    cards:
+      - type: history-graph
+        hours_to_show: 24
         entities:
-          - sensor.battery_level
-        stat_types:
-          - min
-          - max
-        title: Battery SoC last 180 days
+          - entity: sensor.sh10rt_master_mppt1_voltage
+          - entity: sensor.sh10rt_master_mppt1_current
+          - entity: sensor.sh10rt_master_mppt2_voltage
+          - entity: sensor.sh10rt_master_mppt2_current
+          - entity: sensor.sh10rt_slave_mppt1_voltage
+          - entity: sensor.sh10rt_slave_mppt1_current
+          - entity: sensor.sh10rt_slave_mppt2_voltage
+          - entity: sensor.sh10rt_slave_mppt2_current
+
+  # - title: Solar2
+    # path: details
+    # panel: false
+    # cards:
+      # - type: entities
+        # title: Energy
+        # entities:
+          # - entity: sensor.daily_pv_generation
+          # - entity: sensor.daily_direct_energy_consumption
+          # - entity: sensor.daily_exported_energy_from_pv
+          # - entity: sensor.daily_pv_generation_battery_discharge
+          # - entity: sensor.daily_battery_charge_from_pv
+          # - entity: sensor.daily_battery_discharge
+          # - entity: sensor.daily_exported_energy
+          # - entity: sensor.daily_battery_charge
+          # - entity: sensor.daily_imported_energy
+          # - entity: sensor.total_pv_generation
+          # - entity: sensor.total_direct_energy_consumption
+          # - entity: sensor.total_pv_generation_battery_discharge
+          # - entity: sensor.total_exported_energy_from_pv
+          # - entity: sensor.total_battery_charge_from_pv
+          # - entity: sensor.total_battery_charge
+          # - entity: sensor.total_battery_discharge
+          # - entity: sensor.total_imported_energy
+          # - entity: sensor.total_exported_energy
+      # - type: entities
+        # title: EMS
+        # entities:
+          # - entity: sensor.ems_mode_selection
+          # - entity: sensor.battery_forced_charge_discharge_cmd
+          # - entity: sensor.min_soc
+          # - entity: sensor.max_soc
+          # - entity: sensor.battery_forced_charge_discharge_power
+          # - entity: sensor.battery_charging_start_power
+          # - entity: sensor.battery_discharging_start_power
 
   - title: Diagramme
     path: heatinggraph
@@ -792,8 +822,8 @@ views:
           # - sensor.boiler_heatingpumpmod
           - sensor.boiler_curburnpow
           - sensor.total_dc_power
-          - sensor.load_power
+          - sensor.sh10rt_master_load_power
           - sensor.export_power
           - sensor.import_power
-          - sensor.signed_battery_power
+          - sensor.battery_power
           - sensor.electricity_meter_power

@@ -3,13 +3,34 @@
 ###
 
   - binary_sensor:
-      
+
+      - name: pv_generating
+        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number or states ( 'sensor.sh10rt_slave_running_state' ) | is_number }}"
+        state: >-
+            {% set result = false %}
+            {% if states ( 'sensor.sh10rt_master_running_state' ) | is_number %}
+                {% set result = result or states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x1 ) > 0 %}
+            {% endif %}
+            {% if states ( 'sensor.sh10rt_slave_running_state' ) | is_number %}
+                {% set result = result or states ( 'sensor.sh10rt_slave_running_state' ) | int (default=0) | bitwise_and ( 0x1 ) > 0 %}
+            {% endif %}
+            {{ result }}
+
+      - name: battery_charging
+        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
+        state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x2 ) > 0 }}"
+
+      - name: battery_discharging
+        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
+        state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x4 ) > 0 }}"
+
       - name: battery_state
         # unit_of_measurement: '%'
         state: "on"
+        # icon: mdi:battery-charging-70
         icon: >
-            {% set val = states ( 'sensor.battery_level' ) | default ( 0 ) | int %}
-            {% if states ( 'binary_sensor.battery_charging' ) %}
+            {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
+            {% if states ( 'binary_sensor.battery_charging' ) == 'on' %}
                 {% if val == 100 %}
                     mdi:battery-charging-100
                 {% elif val >= 90 %}
@@ -60,155 +81,101 @@
             {% endif %}
         attributes:
             icon_color: >
-                {% if binary_sensor.battery_charging %}
+                {% if states ( 'binary_sensor.battery_charging' ) %}
                     green
-                {% elif binary_sensor.battery_discharging %}
+                {% elif states ( 'binary_sensor.battery_discharging' ) %}
                     red
                 {% else %}
                     gray
                 {% endif %}
 
-      - name: pv_generating
-        availability: >-
-          {{states('sensor.running_state')|is_number or 
-            states('sensor.total_dc_power')|is_number
-          }}
+      - name: sh10rt_master_exporting_power
+        availability: "{{ states ( 'sensor.sh10rt_master_running_state') | is_number }}"
         state: >-
-          {% if states('sensor.running_state')|is_number %}
-            {# use available sensor running_state #}
-            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x1) > 0 }}
-          {% else %} 
-            {# workaround for SH*RS inverters without working running_state #}
-            {% if states('sensor.total_dc_power')|int > 0 %}
-              1
+            {% if states ( 'sensor.sh10rt_master_running_state' ) | is_number %}
+                {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x10 ) > 0 }}
             {% else %} 
-              0 
+                0
             {% endif %}
-          {% endif %}
 
-      - name: battery_charging
-        unique_id: sg_battery_charging
-        availability: >-
-          {{states('sensor.running_state')|is_number or 
-            (states('sensor.ems_mode_selection_raw')|is_number and 
-            states('sensor.battery_forced_charge_discharge_cmd_raw')|is_number and
-            states('sensor.battery_power_raw')|is_number and 
-            states('sensor.total_dc_power')|is_number and 
-            states('sensor.load_power')|is_number ) 
-          }}
+      - name: sh10rt_slave_exporting_power
+        availability: "{{states ( 'sensor.sh10rt_slave_running_state') | is_number }}"
         state: >-
-          {% if states('sensor.running_state')|is_number %}
-            {# use available sensor running_state #}
-            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x2) > 0 }}
-          {% else %}
-            {# workaround for SH*RS inverters without working running_state #}
-            {% if (states('sensor.ems_mode_selection') ) == "Forced mode" %}
-              {# EMS forced mode #}
-              {% if (states('sensor.battery_forced_charge_discharge_cmd') == "Forced charge") %}
-                {# in mode Forced charge #}
-                {% if (states('sensor.battery_power_raw')|int > 0 ) %}
-                  {# power flow from/to battery #}
-                  On
-                {% else %} 
-                  {# no power flow from/to battery #}
-                  Off
-                {% endif %}
-              {% else %}
-                {# in EMS mode, but not in mode Forced charge #}
-                Off
-              {% endif %}
+            {% if states ( 'sensor.sh10rt_slave_running_state' ) | is_number %}
+                {{ states ( 'sensor.sh10rt_slave_running_state' ) | int (default=0) | bitwise_and ( 0x10 ) > 0 }}
             {% else %} 
-              {# not in EMS forced mode, assuming self consumption mode #}
-              {% if states('sensor.total_dc_power')|int > states('sensor.load_power')|int %}
-                {# more power generated than consumed. assuming battery charging #}
-                On
-              {% else %} 
-                Off
-              {% endif %}
+                0
             {% endif %}
-          {% endif %}
 
-      - name: battery_discharging
-        availability: >-
-          {{states('sensor.running_state')|is_number or 
-            (states('sensor.ems_mode_selection_raw')|is_number and 
-            states('sensor.battery_forced_charge_discharge_cmd_raw')|is_number and
-            states('sensor.battery_power_raw')|is_number and 
-            states('sensor.total_dc_power')|is_number and 
-            states('sensor.load_power')|is_number ) 
-          }}
+      - name: sh10rt_master_importing_power
+        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
         state: >-
-          {% if states('sensor.running_state')|is_number %}
-            {# use available sensor running_state #}
-            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x4) > 0 }}
-          {% else %}
-            {# workaround for SH*RS inverters without working running_state #}
-            {% if (states('sensor.ems_mode_selection') ) == "Forced mode" %}
-              {# EMS forced mode #}
-              {% if (states('sensor.battery_forced_charge_discharge_cmd') == "Forced discharge") %}
-                {# in mode Forced discharge #}
-                {% if (states('sensor.battery_power_raw')|int > 0 ) %}
-                  {# power flow from/to battery #}
-                  On
-                {% else %} 
-                  {# no power flow from/to battery #}
-                  Off
-                {% endif %}
-              {% else %} 
-                {# in EMS mode, but not in mode Forced charge #}
-                Off
-              {% endif %}
+            {% if states ( 'sensor.sh10rt_master_running_state') | is_number %}
+                {# use available sensor running_state #}
+                {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x20 ) > 0 }}
             {% else %} 
-              {# not in EMS forced mode, assuming self consumption mode #}
-              {% if ( ( states('sensor.total_dc_power')|int < states('sensor.load_power')|int ) ) and states('sensor.battery_power_raw')|int > 0 %}
-                {# more power consumed than generated and some battery power -->  assuming battery discharging #}
-                On
-              {% else %} 
-                Off
-              {% endif %}
+                0
             {% endif %}
-          {% endif %}
 
-      - name: exporting_power
-        availability: "{{states('sensor.running_state')|is_number or states('sensor.export_power_raw')|is_number }}"
+      - name: sh10rt_slave_importing_power
+        availability: "{{ states ( 'sensor.sh10rt_slave_running_state' ) | is_number }}"
         state: >-
-          {% if states('sensor.running_state')|is_number %}
-            {# use available sensor running_state #}
-            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x10) > 0 }}
-          {% else %} 
-            {# workaround for SH*RS inverters without working running_state #}
-            {% if states('sensor.export_power_raw')|int > 0 %}
-                1
+            {% if states ( 'sensor.sh10rt_slave_running_state') | is_number %}
+                {# use available sensor running_state #}
+                {{ states ( 'sensor.sh10rt_slave_running_state' ) | int (default=0) | bitwise_and ( 0x20 ) > 0 }}
             {% else %} 
-                0 
+                0
             {% endif %}
-          {% endif %}
-
-      - name: importing_power
-        availability: "{{states('sensor.running_state')|is_number or states('sensor.export_power_raw')|is_number }}"
-        state: >-
-          {% if states('sensor.running_state')|is_number %}
-            {# use available sensor running_state #}
-            {{ states('sensor.running_state')|int(default=0)|bitwise_and(0x20) > 0 }}
-          {% else %} 
-            {# workaround for SH*RS inverters without working running_state #}
-            {% if states('sensor.export_power_raw')|int < 0 %}
-              1
-            {% else %}
-              0 
-            {% endif %}
-          {% endif %}
 
   - sensor:
+
+      - name: total_dc_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: "{{ states ( 'sensor.sh10rt_master_total_dc_power' ) | is_number or states ( 'sensor.sh10rt_slave_total_dc_power' ) | is_number }}"
+        state: >-
+            {% set result = 0 %}
+            {% if states ( 'sensor.sh10rt_master_total_dc_power' ) | is_number %}
+                {% set result = result + states ( 'sensor.sh10rt_master_total_dc_power' ) | float %}
+            {% endif %}
+            {% if states ( 'sensor.sh10rt_slave_total_dc_power' ) | is_number %}
+                {% set result = result + states ( 'sensor.sh10rt_slave_total_dc_power' ) | float %}
+            {% endif %}
+            {{ result | round ( 0 ) }}
+
+      - name: daily_pv_generation
+        unit_of_measurement: kWh
+        device_class: energy
+        availability: "{{ states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number or states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number }}"
+        state: >-
+            {% set result = 0 %}
+            {% if states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number %}
+                {% set result = result + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float %}
+            {% endif %}
+            {% if states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number %}
+                {% set result = result + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float %}
+            {% endif %}
+            {{ result | round ( 1 ) }}
 
       - name: estimated_energy_production_today
         unit_of_measurement: kWh
         device_class: energy
-        availability: >-
-            {{ states ( 'sensor.energy_production_today' ) | is_number and states ( 'sensor.energy_production_today_2' ) | is_number }}
-        state: >-
-            {{ states ( 'sensor.energy_production_today' ) | float + states ( 'sensor.energy_production_today_2' ) | float }}
+        availability: "{{ states ( 'sensor.energy_production_today' ) | is_number and states ( 'sensor.energy_production_today_2' ) | is_number }}"
+        state: "{{ states ( 'sensor.energy_production_today' ) | float + states ( 'sensor.energy_production_today_2' ) | float }}"
   
+# 0x0002 = 2 = Stop
+# 0x0008 = 8 = Standby
+# 0x0010 = 16 = Initial standby
+# 0x0020 = 41 = Startup
+# 0x0040 = 64 = Running
+# 0x0100 = 256 = Fault
+# 0x0400 = 1024 = Running in maintain mode
+# 0x0800 = 2048 = Running in forced mode
+# 0x1000 = 4096 = Running in off-grid mode
+# 0x2501 = 9473 = Restarting
+# 0x4000 = 16384 = Running in External EMS mode
+
       - name: sh10rt_master_inverter_state
         state: >-
             {% set val = states ( 'sensor.sh10rt_master_system_state' ) | int (default = 0) %}
@@ -222,6 +189,8 @@
                 Startup
             {% elif  val == 0x0040 %}
                 Running
+            {% elif  val == 0x0041 %}
+                Startup
             {% elif  val == 0x0100 %}
                 Fault
             {% elif  val == 0x0400 %}
@@ -251,6 +220,8 @@
                 Startup
             {% elif  val == 0x0040 %}
                 Running
+            {% elif  val == 0x0041 %}
+                Startup
             {% elif  val == 0x0100 %}
                 Fault
             {% elif  val == 0x0400 %}
@@ -350,36 +321,69 @@
             {% endif %}
 
         # positive if charging and negative if discharging
-      - name: sh10rt_master_battery_power
+      - name: battery_power
         unit_of_measurement: W
         device_class: power
         state_class: measurement
-        availability: >-
-            {{ 
-                states ( 'binary_sensor.sh10rt_master_battery_charging' ) and states ( 'binary_sensor.sh10rt_master_battery_discharging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' )|is_number }}
+        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'binary_sensor.battery_discharging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
         state: >-
-            {% if is_state ( 'binary_sensor.sh10rt_master_battery_charging', 'on' ) %}
-                {{ states('sensor.sh10rt_master_battery_power_raw') | float }} 
-            {% elif is_state ( 'binary_sensor.sh10rt_master_battery_discharging', 'on' ) %} 
+            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
+                {{ states('sensor.sh10rt_master_battery_power_raw' ) | float }}
+            {% elif is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
                 {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) | float * -1 }} 
             {% else %} 
-                0 
+                0
             {% endif %}
 
-        # positive if charging and negative if discharging
-      - name: sh10rt_slave_battery_power
+        # positive if charging else zero
+      - name: battery_charging_power
         unit_of_measurement: W
         device_class: power
         state_class: measurement
-        availability: >-
-            {{ 
-                states ( 'binary_sensor.sh10rt_slave_battery_charging' ) and states ( 'binary_sensor.sh10rt_slave_battery_discharging' ) and states ( 'sensor.sh10rt_slave_battery_power_raw' )|is_number }}
+        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
         state: >-
-            {% if is_state ( 'binary_sensor.sh10rt_slave_battery_charging', 'on' ) %}
-                {{ states('sensor.sh10rt_slave_battery_power_raw') | float }} 
-            {% elif is_state ( 'binary_sensor.sh10rt_slave_battery_discharging', 'on' ) %} 
-                {{ states ( 'sensor.sh10rt_slave_battery_power_raw' ) | float * -1 }} 
-            {% else %} 
-                0 
+            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
+                {{ states('sensor.sh10rt_master_battery_power_raw') }}
+            {% else %}
+                0
             {% endif %}
-            
+
+        # positive if discharging else zero
+
+      - name: battery_discharging_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
+        state: >-
+            {% if is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
+                {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) }}
+            {% else %}
+                0
+            {% endif %}
+
+      - name: import_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: "{{ states ( 'sensor.sh10rt_master_export_power_raw' ) | is_number }}"
+        state: >-
+            {% if states ( 'sensor.sh10rt_master_export_power_raw' ) | int < 0 %}
+                {{ states('sensor.sh10rt_master_export_power_raw')|int *-1 }}
+            {% else %}
+                0
+            {% endif %}
+
+        # power to grid: positive if exporting, else zero
+      - name: export_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: "{{ states ( 'sensor.sh10rt_master_export_power_raw' ) | is_number }}"
+        state: >-
+            {% if states ( 'sensor.sh10rt_master_export_power_raw' ) | int > 0 %}
+                {{ states ( 'sensor.sh10rt_master_export_power_raw' ) }}
+            {% else %}
+                0
+            {% endif %}
+

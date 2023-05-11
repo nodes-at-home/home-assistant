@@ -415,7 +415,7 @@
         scale: 0.1
         scan_interval: 600
 
-      - name: sh10rt_master_Battery_voltage
+      - name: sh10rt_master_battery_voltage
         slave: 1
         address: 13019 # reg 13020
         input_type: input
@@ -673,3 +673,48 @@
         state_class: total_increasing
         scale: 0.1
         scan_interval: 600
+
+      #####################
+      # holding registers
+      #####################
+
+      # - name: sh10rt_master_max_soc
+        # slave: 1
+        # address: 13057 # reg 13058
+        # input_type: holding
+        # count: 1
+        # data_type: uint16
+        # swap: word
+        # precision: 1
+        # unit_of_measurement: "%"
+        # device_class: battery
+        # state_class: measurement
+        # scale: 0.1
+        # scan_interval: 10
+
+      # - name: sh10rt_master_min_soc
+        # slave: 1
+        # address: 13058 # reg 13059
+        # input_type: holding
+        # count: 1
+        # data_type: uint16
+        # swap: word
+        # precision: 1
+        # unit_of_measurement: "%"
+        # device_class: battery
+        # state_class: measurement
+        # scale: 0.1
+        # scan_interval: 10
+
+      # - name: sh10rt_master_reserved_soc_for_backup
+        # slave: 1
+        # address: 13099 # reg 13100
+        # input_type: holding
+        # count: 1
+        # data_type: uint16
+        # swap: word
+        # unit_of_measurement: "%"
+        # device_class: battery
+        # state_class: measurement
+        # scale: 1
+        # scan_interval: 10
