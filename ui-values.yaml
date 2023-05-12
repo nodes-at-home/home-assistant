@@ -459,29 +459,26 @@ views:
   - title: Energie
     path: energy
     panel: false
-    card_mod:
-        # https://www.w3.org/wiki/CSS/Properties/color/keywords
-        # for state-icon use --paper-item-icon-color
-        # for state badge use --label-badge-text-color or --label-badge-background-color (the whole badge is then colorized)
-        style: |
-            ha-card {
-                --battery-state-color: {{ state_attr ( 'binary_sensor.battery_state', 'icon_color' ) }}
-            }
     badges:
+      - entity: binary_sensor.grid_state
+        name: Netz
+        style: |
+            :host {
+                --label-badge-text-color: {{ state_attr ( 'binary_sensor.grid_state', 'icon_color' ) }}
+            }
       - entity: binary_sensor.pv_generating
-        name: Erzeugung
-      - entity: binary_sensor.battery_charging
-        name: Laden
+        name: Solar
+        style: |
+            :host {
+                --label-badge-text-color: {{ state_attr ( 'binary_sensor.pv_generating', 'icon_color' ) }}
+            }
       - entity: binary_sensor.battery_state
         name: Batterie
-        style:
-          --label-badge-text-color: var(--battery-state-color)
-      - entity: binary_sensor.battery_discharging
-        name: Entladen
-      - entity: binary_sensor.sh10rt_master_exporting_power
-        name: Export
-      - entity: binary_sensor.sh10rt_master_importing_power
-        name: Import
+        # https://community.home-assistant.io/t/how-to-customize-the-badges-at-the-top-of-the-page/183152/11
+        style: |
+            :host {
+                --label-badge-text-color: {{ state_attr ( 'binary_sensor.battery_state', 'icon_color' ) }}
+            }
     cards:
       - type: gauge
         name: Netzleistung
@@ -505,10 +502,10 @@ views:
             icon: mdi:counter
           - entity: sensor.electricity_meter_daily_in
             name: täglich
-            icon: mdi:transmission-tower-import
+            icon: mdi:transmission-tower-export
           - entity: sensor.electricity_meter_yearly_in
             name: jährlich
-            icon: mdi:transmission-tower-import
+            icon: mdi:transmission-tower-export
           - type: section
             label: Einspeisung
           - entity: sensor.tasmota_lk13be_energy_total_out
@@ -516,10 +513,10 @@ views:
             icon: mdi:counter
           - entity: sensor.electricity_meter_daily_out
             name: täglich
-            icon: mdi:transmission-tower-export
+            icon: mdi:transmission-tower-import
           - entity: sensor.electricity_meter_yearly_out
             name: jährlich
-            icon: mdi:transmission-tower-export
+            icon: mdi:transmission-tower-import
       - type: gauge
         name: Solarleistung
         entity: sensor.total_dc_power
@@ -558,16 +555,18 @@ views:
           - entity: sensor.solar_meter_yearly
             name: jährlich
             icon: mdi:solar-power
+          - type: section
+            label: Wechselrichter täglich
           - entity: sensor.daily_pv_generation
-            name: tägich (Wechselrichter)
+            name: Gesamt
           - entity: sensor.sh10rt_master_daily_pv_generation
-            name: tägich (Wechselrichter 1)
+            name: Master
           - entity: sensor.sh10rt_slave_daily_pv_generation
-            name: tägich (Wechselrichter 2)
+            name: Slave
           - entity: sensor.sh10rt_master_daily_imported_energy
-            name: Import (Wechselrichter)
+            name: Import
           - entity: sensor.sh10rt_master_daily_exported_energy_from_pv
-            name: Export (Wechselrichter)
+            name: Export
       - type: gauge
         name: Batterieladung
         entity: sensor.sh10rt_master_battery_level
@@ -582,6 +581,7 @@ views:
         show_header_toggle: false
         entities:
           - entity: sensor.battery_power
+            name: Leistung
           - type: section
             label: Entladung
           - entity: sensor.sh10rt_master_daily_battery_discharge
@@ -765,6 +765,10 @@ views:
           - entity: sensor.sh10rt_slave_mppt1_current
           - entity: sensor.sh10rt_slave_mppt2_voltage
           - entity: sensor.sh10rt_slave_mppt2_current
+          - entity: sensor.battery_power
+          - entity: sensor.total_dc_power
+          - entity: sensor.sh10rt_master_total_dc_power
+          - entity: sensor.sh10rt_slave_total_dc_power
 
   # - title: Solar2
     # path: details

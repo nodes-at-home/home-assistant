@@ -19,7 +19,7 @@
             icon_color: >
               {% set val =  states.sensor.wasserampel_text.state  %}
               {% if val == 'grün' %}
-                green
+                limegreen
               {% elif val == 'gelb' %}
                 gold
               {% elif val == 'rot' %}

@@ -1,0 +1,11 @@
+###
+### 12.05.2023
+###
+
+name: kritisch ab
+mode: box
+min: 0
+max: 1000
+step: 1
+unit_of_measurement: W
+# initial: 15

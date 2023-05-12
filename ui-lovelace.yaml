@@ -23,7 +23,10 @@ views:
                     # for state badge use --label-badge-text-color or --label-badge-background-color (the whole badge is then colorized)
                     style: |
                         ha-card {
-                            --wasserampel-color: {{ state_attr ( 'binary_sensor.wasserampel', 'icon_color' ) }}
+                            --wasserampel-color: {{ state_attr ( 'binary_sensor.wasserampel', 'icon_color' ) }};
+                            --grid-state-color: {{ state_attr ( 'binary_sensor.grid_state', 'icon_color' ) }};
+                            --pv-generating-color: {{ state_attr ( 'binary_sensor.pv_generating', 'icon_color' ) }};
+                            --battery-state-color: {{ state_attr ( 'binary_sensor.battery_state', 'icon_color' ) }};
                         }
                 elements:
                   - type: state-badge
@@ -47,7 +50,6 @@ views:
                       top: 40%
                       left: 17%
                   - type: state-badge
-                    # entity: device_tracker.132_niklas_galaxy_a52_wlan
                     entity: device_tracker.a52_von_niklas
                     style:
                       top: 40%
@@ -63,43 +65,64 @@ views:
                     style:
                       --label-badge-text-color: var(--wasserampel-color)
                       top: 40%
-                      left: 38%
+                      left: 36%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation_last7d
                     style:
                       top: 40%
-                      left: 42%
+                      left: 40%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation_last24h
                     style:
                       top: 40%
-                      left: 46%
+                      left: 44%
                   - type: state-badge
                     entity: sensor.rain_garden_precipitation
                     style:
                       top: 40%
-                      left: 50%
+                      left: 48%
+                  - type: state-badge
+                    entity: binary_sensor.grid_state
+                    name: Netz
+                    style:
+                      --label-badge-text-color: var(--grid-state-color)
+                      top: 40%
+                      left: 54%
+                  - type: state-badge
+                    entity: binary_sensor.pv_generating
+                    name: Solar
+                    style:
+                      --label-badge-text-color: var(--pv-generating-color)
+                      top: 40%
+                      left: 58%
+                  - type: state-badge
+                    entity: binary_sensor.battery_state
+                    name: Baterie
+                    style:
+                      --label-badge-text-color: var(--battery-state-color)
+                      top: 40%
+                      left: 62%
                   - type: state-badge
                     entity: binary_sensor.eingangstur
                     style:
                       top: 40%
-                      left: 66%
+                      left: 68%
                   - type: state-badge
                     entity: binary_sensor.nebentur
                     style:
                       top: 40%
-                      left: 70%
+                      left: 72%
                   - type: state-badge
                     entity: binary_sensor.garagentur
                     style:
                       top: 40%
-                      left: 74%
+                      left: 76%
                   - type: state-badge
                     # entity: sensor.relay_garage_state
                     entity: binary_sensor.garagentor
                     style:
                       top: 40%
-                      left: 78%
+                      left: 80%
                   - type: state-badge
                     entity: sun.sun
                     style:

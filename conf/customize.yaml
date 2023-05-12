@@ -1415,3 +1415,14 @@ climate.nursery:
     friendly_name: Klimaanlage Kinderzimmer
 
 #------------------------------------------------------------------------------
+
+binary_sensor.grid_state:
+    friendly_name: Netz
+
+binary_sensor.pv_generating:
+    friendly_name: Solar
+
+binary_sensor.battery_state:
+    friendly_name: Batterie
+
+#------------------------------------------------------------------------------

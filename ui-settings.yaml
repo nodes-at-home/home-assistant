@@ -272,6 +272,16 @@ views:
         entities:
             - input_number.electricity_meter_threshold_power
       - type: entities
+        title: Strombezug
+        show_header_toggle: false
+        entities:
+            - input_number.electricity_import_critical_above
+      - type: entities
+        title: Batterie
+        show_header_toggle: false
+        entities:
+            - input_number.battery_state_off_below
+      - type: entities
         title: Preise
         show_header_toggle: false
         entities:
