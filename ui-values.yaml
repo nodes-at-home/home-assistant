@@ -595,6 +595,22 @@ views:
           - entity: sensor.sh10rt_master_daily_battery_charge_from_pv
             name: täglich per Solar
             icon: mdi:battery-arrow-up
+          - type: section
+            label: Ströme
+          - entity: sensor.sh10rt_master_battery_current
+            name: aktueller Entladestrom
+          - entity: sensor.sh10rt_master_bms_max_charging_current
+            name: maximaler Ladestrom
+          - entity: sensor.sh10rt_master_bms_max_discharging_current
+            name: maximaler Entladestrom
+          - type: section
+            label: State of Charge
+          - entity: sensor.sh10rt_master_max_soc
+            name: maximal
+          - entity: sensor.sh10rt_master_min_soc
+            name: minimal
+          - entity: sensor.sh10rt_master_reserved_soc_for_backup
+            name: Reserve für Backup
       - type: gauge
         name: Füllstand Gasspeicher Deutschland
         entity: sensor.gas_storage_germany_full_level
