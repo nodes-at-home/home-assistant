@@ -18,8 +18,7 @@
         icon: mdi:solar-power
         attributes:
             icon_color: >-
-                {% set val = states ( 'binary_sensor.pv_generating' ) %}
-                {% if val == 'on' %}
+                {% if is_state ( 'binary_sensor.pv_generating', 'on' ) %}
                     limegreen
                 {% else %}
                     silver
@@ -45,7 +44,7 @@
             {% endif %}
         icon: >-
             {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
-            {% if states ( 'binary_sensor.battery_charging' ) == 'on' %}
+            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
                 {% if val == 100 %}
                     mdi:battery-charging-100
                 {% elif val >= 90 %}
@@ -96,9 +95,9 @@
             {% endif %}
         attributes:
             icon_color: >-
-                {% if states ( 'binary_sensor.battery_charging' ) == "on" %}
+                {% if is_state ( 'binary_sensor.battery_charging', "on" ) %}
                     limegreen
-                {% elif states ( 'binary_sensor.battery_discharging' ) == "on" %}
+                {% elif is_state ( 'binary_sensor.battery_discharging', "on" ) %}
                     red
                 {% else %}
                     silver
@@ -125,36 +124,28 @@
 
       - name: grid_state
         state: >-
-            {% set import = states ( 'binary_sensor.importing_power' ) %}
-            {% set export = states ( 'binary_sensor.exporting_power' ) %}
-            {% if import or export %}
+            {% if states ( 'binary_sensor.importing_power' ) or states ( 'binary_sensor.exporting_power' ) %}
                 on
             {% else %}
                 off
             {% endif %}
         icon: >-
-            {% set import = states ( 'binary_sensor.importing_power' ) %}
-            {% set export = states ( 'binary_sensor.exporting_power' ) %}
-            {% if import == 'on' %}
+            {% if is_state ( 'binary_sensor.importing_power', 'on' ) %}
                 mdi:transmission-tower-export
-            {% elif export == 'on' %}
+            {% elif is_state ( 'binary_sensor.exporting_power', 'on' ) %}
                 mdi:transmission-tower-import
             {% else %}
-                mdi:transmission-tower-off
+                mdi:transmission-tower
             {% endif %}
         attributes:
             icon_color: >-
-                {% set import = states ( 'binary_sensor.importing_power' ) %}
-                {% set export = states ( 'binary_sensor.exporting_power' ) %}
-                {% set threshold = states ( 'input_number.electricity_import_critical_above' ) %}
-                {% set power = states ( 'sensor.electricity_meter_power' ) %}
-                {% if import == 'on' %}
-                    {% if power > threshold %}
+                {% if is_state ( 'binary_sensor.importing_power', 'on' ) %}
+                    {% if states ( 'sensor.electricity_meter_power' ) | float > states ( 'input_number.electricity_import_critical_above' ) | float %}
                         red
                     {% else %}
                         silver
                     {% endif %}
-                {% elif export == 'on' %}
+                {% elif is_state ( 'binary_sensor.exporting_power', 'on' ) %}
                     limegreen
                 {% else %}
                     red
