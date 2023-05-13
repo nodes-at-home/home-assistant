@@ -107,7 +107,6 @@
         availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
         state: >-
             {% if states ( 'sensor.sh10rt_master_running_state') | is_number %}
-                {# use available sensor running_state #}
                 {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x20 ) > 0 }}
             {% else %} 
                 0
@@ -411,3 +410,26 @@
                 0
             {% endif %}
 
+      - name: electricity_daily_in_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.electricity_meter_daily_in' ) | is_number and states ( 'input_number.electricity_price_in' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_daily_in' ) | float * states ( 'input_number.electricity_price_in' ) | float ) | round ( 2 ) ) }}"
+
+      - name: electricity_yearly_in_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.electricity_meter_yearly_in' ) | is_number and states ( 'input_number.electricity_price_in' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_yearly_in' ) | float * states ( 'input_number.electricity_price_in' ) | float ) | round ( 2 ) ) }}"
+
+      - name: electricity_daily_out_returns
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.electricity_meter_daily_out' ) | is_number and states ( 'input_number.electricity_price_out' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_daily_out' ) | float * states ( 'input_number.electricity_price_out' ) | float ) | round ( 2 ) ) }}"
+
+      - name: electricity_yearly_out_returns
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.electricity_meter_yearly_out' ) | is_number and states ( 'input_number.electricity_price_out' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_yearly_out' ) | float * states ( 'input_number.electricity_price_out' ) | float ) | round ( 2 ) ) }}"

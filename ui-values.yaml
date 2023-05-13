@@ -517,6 +517,18 @@ views:
           - entity: sensor.electricity_meter_yearly_out
             name: jährlich
             icon: mdi:transmission-tower-import
+          - type: section
+            label: Kosten
+          - entity: sensor.electricity_daily_in_costs
+            name: täglich
+          - entity: sensor.electricity_yearly_in_costs
+            name: jährlich
+          - type: section
+            label: Erlöse
+          - entity: sensor.electricity_daily_out_returns
+            name: täglich
+          - entity: sensor.electricity_yearly_out_returns
+            name: jährlich
       - type: gauge
         name: Solarleistung
         entity: sensor.total_dc_power
