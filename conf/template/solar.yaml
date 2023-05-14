@@ -6,7 +6,7 @@
 
       - name: pv_generating
         availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number or states ( 'sensor.sh10rt_slave_running_state' ) | is_number }}"
-        state: >-
+        state: >
             {% set result = false %}
             {% if states ( 'sensor.sh10rt_master_running_state' ) | is_number %}
                 {% set result = result or states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x1 ) > 0 %}
@@ -17,13 +17,12 @@
             {{ result }}
         icon: mdi:solar-power
         attributes:
-            icon_color: >-
+            icon_color: >
                 {% if is_state ( 'binary_sensor.pv_generating', 'on' ) %}
                     limegreen
                 {% else %}
                     silver
                 {% endif %}
-
 
       - name: battery_charging
         availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
@@ -34,7 +33,7 @@
         state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x4 ) > 0 }}"
 
       - name: battery_state
-        state: >-
+        state: >
             {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
             {% set threshold = states ( 'input_number.battery_state_off_below' ) | int %}
             {% if val < threshold %}
@@ -42,7 +41,7 @@
             {% else %}
                 on
             {% endif %}
-        icon: >-
+        icon: >
             {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
             {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
                 {% if val == 100 %}
@@ -94,7 +93,7 @@
                 {% endif %}
             {% endif %}
         attributes:
-            icon_color: >-
+            icon_color: >
                 {% if is_state ( 'binary_sensor.battery_charging', "on" ) %}
                     limegreen
                 {% elif is_state ( 'binary_sensor.battery_discharging', "on" ) %}
@@ -105,7 +104,7 @@
 
       - name: importing_power
         availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
-        state: >-
+        state: >
             {% if states ( 'sensor.sh10rt_master_running_state') | is_number %}
                 {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x20 ) > 0 }}
             {% else %} 
@@ -114,7 +113,7 @@
 
       - name: exporting_power
         availability: "{{ states ( 'sensor.sh10rt_master_running_state') | is_number }}"
-        state: >-
+        state: >
             {% if states ( 'sensor.sh10rt_master_running_state' ) | is_number %}
                 {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x10 ) > 0 }}
             {% else %} 
@@ -122,13 +121,14 @@
             {% endif %}
 
       - name: grid_state
-        state: >-
+        availability: "{{ states ( 'sensor.electricity_meter_power') | is_number and states ( 'input_number.electricity_import_critical_above' ) | is_number }}"
+        state: >
             {% if states ( 'binary_sensor.importing_power' ) or states ( 'binary_sensor.exporting_power' ) %}
                 on
             {% else %}
                 off
             {% endif %}
-        icon: >-
+        icon: >
             {% if is_state ( 'binary_sensor.importing_power', 'on' ) %}
                 mdi:transmission-tower-export
             {% elif is_state ( 'binary_sensor.exporting_power', 'on' ) %}
@@ -137,17 +137,17 @@
                 mdi:transmission-tower
             {% endif %}
         attributes:
-            icon_color: >-
-                {% if is_state ( 'binary_sensor.importing_power', 'on' ) %}
-                    {% if states ( 'sensor.electricity_meter_power' ) | float > states ( 'input_number.electricity_import_critical_above' ) | float %}
-                        red
-                    {% else %}
-                        silver
-                    {% endif %}
-                {% elif is_state ( 'binary_sensor.exporting_power', 'on' ) %}
-                    limegreen
-                {% else %}
-                    red
+            icon_color: >
+                {% if states ( 'sensor.electricity_meter_power' ) | float | abs > states ( 'input_number.electricity_import_critical_above' ) | float %}
+                  {% if is_state ( 'binary_sensor.importing_power', 'on' ) %}
+                      fuchsia
+                  {% elif is_state ( 'binary_sensor.exporting_power', 'on' ) %}
+                      limegreen
+                  {% else %}
+                      silver
+                  {% endif %}
+                {% else  %}
+                    silver
                 {% endif %}
 
   - sensor:
@@ -157,7 +157,7 @@
         device_class: power
         state_class: measurement
         availability: "{{ states ( 'sensor.sh10rt_master_total_dc_power' ) | is_number or states ( 'sensor.sh10rt_slave_total_dc_power' ) | is_number }}"
-        state: >-
+        state: >
             {% set result = 0 %}
             {% if states ( 'sensor.sh10rt_master_total_dc_power' ) | is_number %}
                 {% set result = result + states ( 'sensor.sh10rt_master_total_dc_power' ) | float %}
@@ -171,7 +171,7 @@
         unit_of_measurement: kWh
         device_class: energy
         availability: "{{ states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number or states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number }}"
-        state: >-
+        state: >
             {% set result = 0 %}
             {% if states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number %}
                 {% set result = result + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float %}
@@ -187,20 +187,20 @@
         availability: "{{ states ( 'sensor.energy_production_today' ) | is_number and states ( 'sensor.energy_production_today_2' ) | is_number }}"
         state: "{{ states ( 'sensor.energy_production_today' ) | float + states ( 'sensor.energy_production_today_2' ) | float }}"
   
-# 0x0002 = 2 = Stop
-# 0x0008 = 8 = Standby
-# 0x0010 = 16 = Initial standby
-# 0x0020 = 41 = Startup
-# 0x0040 = 64 = Running
-# 0x0100 = 256 = Fault
-# 0x0400 = 1024 = Running in maintain mode
-# 0x0800 = 2048 = Running in forced mode
-# 0x1000 = 4096 = Running in off-grid mode
-# 0x2501 = 9473 = Restarting
-# 0x4000 = 16384 = Running in External EMS mode
+        # 0x0002 = 2 = Stop
+        # 0x0008 = 8 = Standby
+        # 0x0010 = 16 = Initial standby
+        # 0x0020 = 41 = Startup
+        # 0x0040 = 64 = Running
+        # 0x0100 = 256 = Fault
+        # 0x0400 = 1024 = Running in maintain mode
+        # 0x0800 = 2048 = Running in forced mode
+        # 0x1000 = 4096 = Running in off-grid mode
+        # 0x2501 = 9473 = Restarting
+        # 0x4000 = 16384 = Running in External EMS mode
 
       - name: sh10rt_master_inverter_state
-        state: >-
+        state: >
             {% set val = states ( 'sensor.sh10rt_master_system_state' ) | int (default = 0) %}
             {% if  val == 0x0002 %}
                 Stop
@@ -231,7 +231,7 @@
             {% endif %}
 
       - name: sh10rt_slave_inverter_state
-        state: >-
+        state: >
             {% set val = states ( 'sensor.sh10rt_slave_system_state' ) | int (default = 0) %}
             {% if  val == 0x0002 %}
                 Stop
@@ -262,7 +262,7 @@
             {% endif %}
 
       - name: sh10rt_master_device_type
-        state: >-
+        state: >
             {% set val = states ( 'sensor.sh10rt_master_device_type_code' ) | int (default = 0) %}
             {% if val  == 0x0D06 %}
                 SH3K6
@@ -303,7 +303,7 @@
             {% endif %}
 
       - name: sh10rt_slave_device_type
-        state: >-
+        state: >
             {% set val = states ( 'sensor.sh10rt_slave_device_type_code' ) | int (default = 0) %}
             {% if val  == 0x0D06 %}
                 SH3K6
@@ -349,7 +349,7 @@
         device_class: power
         state_class: measurement
         availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'binary_sensor.battery_discharging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
-        state: >-
+        state: >
             {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
                 {{ states('sensor.sh10rt_master_battery_power_raw' ) | float }}
             {% elif is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
@@ -364,7 +364,7 @@
         device_class: power
         state_class: measurement
         availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
-        state: >-
+        state: >
             {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
                 {{ states('sensor.sh10rt_master_battery_power_raw') }}
             {% else %}
@@ -378,11 +378,22 @@
         device_class: power
         state_class: measurement
         availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
-        state: >-
+        state: >
             {% if is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
                 {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) }}
             {% else %}
                 0
+            {% endif %}
+
+      - name: battery_current
+        unit_of_measurement: A
+        device_class: current
+        availability: "{{ states ( 'sensor.sh10rt_master_battery_current' ) | is_number }}"
+        state: >
+            {% if is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
+                {{ -1 * states ( 'sensor.sh10rt_master_battery_current' ) }}
+            {% else %}
+                {{ states ( 'sensor.sh10rt_master_battery_current' ) }}
             {% endif %}
 
       - name: import_power
@@ -390,7 +401,7 @@
         device_class: power
         state_class: measurement
         availability: "{{ states ( 'sensor.sh10rt_master_export_power_raw' ) | is_number }}"
-        state: >-
+        state: >
             {% if states ( 'sensor.sh10rt_master_export_power_raw' ) | int < 0 %}
                 {{ states('sensor.sh10rt_master_export_power_raw')|int *-1 }}
             {% else %}
@@ -403,7 +414,7 @@
         device_class: power
         state_class: measurement
         availability: "{{ states ( 'sensor.sh10rt_master_export_power_raw' ) | is_number }}"
-        state: >-
+        state: >
             {% if states ( 'sensor.sh10rt_master_export_power_raw' ) | int > 0 %}
                 {{ states ( 'sensor.sh10rt_master_export_power_raw' ) }}
             {% else %}
