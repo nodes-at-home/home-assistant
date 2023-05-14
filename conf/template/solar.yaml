@@ -391,7 +391,7 @@
         availability: "{{ states ( 'sensor.sh10rt_master_battery_current' ) | is_number }}"
         state: >
             {% if is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
-                {{ -1 * states ( 'sensor.sh10rt_master_battery_current' ) }}
+                {{ -1 * states ( 'sensor.sh10rt_master_battery_current' ) | float }}
             {% else %}
                 {{ states ( 'sensor.sh10rt_master_battery_current' ) }}
             {% endif %}
