@@ -500,6 +500,12 @@ views:
         entities:
             - binary_sensor.bewegungsmelder1
       - type: entities
+        title: Allgemein
+        show_header_toggle: false
+        entities:
+            - binary_sensor.smokedetectionsystem
+            - alarm_control_panel.intrusion_detection_system
+      - type: entities
         title: Zwischenstecker
         show_header_toggle: false
         entities:
@@ -507,3 +513,13 @@ views:
             - sensor.wasserpumpe_communication_quality
             - sensor.wasserpumpe_energy
             - sensor.wasserpumpe_power
+            - type: divider
+            - switch.zwischenstecker_1
+            - sensor.zwischenstecker_1_communication_quality
+            - sensor.zwischenstecker_1_energy
+            - sensor.zwischenstecker_1_power
+            - type: divider
+            - switch.zwischenstecker_2
+            - sensor.zwischenstecker_2_communication_quality
+            - sensor.zwischenstecker_2_energy
+            - sensor.zwischenstecker_2_power
