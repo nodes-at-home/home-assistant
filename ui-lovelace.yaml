@@ -770,6 +770,8 @@ views:
         title: Netz
         show_header_toggle: false
         entities:
+          - entity: sensor.load_power
+            name: Hauslast
           - type: section
             label: Bezug
           - entity: sensor.tasmota_lk13be_energy_total_in
@@ -804,6 +806,14 @@ views:
             name: täglich
           - entity: sensor.electricity_yearly_out_returns
             name: jährlich
+          # - type: section
+            # label: Last
+          # - entity: sensor.load_power
+            # name: gesamt
+          # - entity: sensor.sh10rt_master_load_power
+            # name: Master
+          # - entity: sensor.sh10rt_slave_load_power
+            # name: Slave
       - type: gauge
         name: Solarleistung
         entity: sensor.total_dc_power
@@ -842,18 +852,18 @@ views:
           - entity: sensor.solar_meter_yearly
             name: jährlich
             icon: mdi:solar-power
-          - type: section
-            label: Wechselrichter täglich
-          - entity: sensor.daily_pv_generation
-            name: Gesamt
-          - entity: sensor.sh10rt_master_daily_pv_generation
-            name: Master
-          - entity: sensor.sh10rt_slave_daily_pv_generation
-            name: Slave
-          - entity: sensor.sh10rt_master_daily_imported_energy
-            name: Import
-          - entity: sensor.sh10rt_master_daily_exported_energy_from_pv
-            name: Export
+          # - type: section
+            # label: Wechselrichter täglich
+          # - entity: sensor.daily_pv_generation
+            # name: Gesamt
+          # - entity: sensor.sh10rt_master_daily_pv_generation
+            # name: Master
+          # - entity: sensor.sh10rt_slave_daily_pv_generation
+            # name: Slave
+          # - entity: sensor.sh10rt_master_daily_imported_energy
+            # name: Import
+          # - entity: sensor.sh10rt_master_daily_exported_energy_from_pv
+            # name: Export
       - type: gauge
         name: Batterieladung
         entity: sensor.sh10rt_master_battery_level

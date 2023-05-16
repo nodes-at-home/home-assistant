@@ -399,7 +399,6 @@
       - name: import_power
         unit_of_measurement: W
         device_class: power
-        state_class: measurement
         availability: "{{ states ( 'sensor.sh10rt_master_export_power_raw' ) | is_number }}"
         state: >
             {% if states ( 'sensor.sh10rt_master_export_power_raw' ) | int < 0 %}
@@ -420,6 +419,13 @@
             {% else %}
                 0
             {% endif %}
+
+      - name: load_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: "{{ states ( 'sensor.sh10rt_master_load_power' ) | is_number and states ( 'sensor.sh10rt_slave_load_power' ) | is_number }}"
+        state: "{{ ( states ( 'sensor.sh10rt_master_load_power' ) | float + states ( 'sensor.sh10rt_slave_load_power' ) | float ) | round ( 0 ) }}"
 
       - name: electricity_daily_in_costs
         unit_of_measurement: EUR
