@@ -4,8 +4,8 @@
 
   - name: SH10RT_master
     type: tcp
-    host: 192.168.2.184
-    port: 502
+    host: !secret modbus_proxy
+    port: 5021
     retry_on_empty: true
     retries: 10
     close_comm_on_error: true

@@ -4,8 +4,8 @@
 
   - name: SH10RT_slave
     type: tcp
-    host: 192.168.2.186
-    port: 502
+    host: !secret modbus_proxy
+    port: 5022
     retry_on_empty: true
     retries: 10
     close_comm_on_error: true
