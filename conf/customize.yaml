@@ -1312,20 +1312,8 @@ sensor.electricity_meter_quarterhourly_in:
     friendly_name: Bezug 15min
     unit_of_measurement: kWh
 
-sensor.electricity_meter_hourly_in:
-    friendly_name: Bezug stündlich
-    unit_of_measurement: kWh
-
 sensor.electricity_meter_daily_in:
     friendly_name: Bezug täglich
-    unit_of_measurement: kWh
-
-sensor.electricity_meter_weekly_in:
-    friendly_name: Bezug wöchentlich
-    unit_of_measurement: kWh
-
-sensor.electricity_meter_monthly_in:
-    friendly_name: Bezug monatlich
     unit_of_measurement: kWh
 
 sensor.electricity_meter_yearly_in:
@@ -1340,20 +1328,8 @@ sensor.electricity_meter_quarterhourly_out:
     friendly_name: Einspeisung 15min
     unit_of_measurement: kWh
 
-sensor.electricity_meter_hourly_out:
-    friendly_name: Einspeisung stündlich
-    unit_of_measurement: kWh
-
 sensor.electricity_meter_daily_out:
     friendly_name: Einspeisung täglich
-    unit_of_measurement: kWh
-
-sensor.electricity_meter_weekly_out:
-    friendly_name: Einspeisung wöchentlich
-    unit_of_measurement: kWh
-
-sensor.electricity_meter_monthly_out:
-    friendly_name: Einspeisung monatlich
     unit_of_measurement: kWh
 
 sensor.electricity_meter_yearly_out:
@@ -1364,36 +1340,49 @@ sensor.electricity_quarterhourly_out:
     friendly_name: Kumulierte Einspeisung 15min
 
 #------------------------------------------------------------------------------
-binary_sensor.solis_carport_alarm:
-    friendly_name: Inverter Alarm
+sensor.battery_meter_quarterhourly_in:
+    friendly_name: Ladung 15min
+    unit_of_measurement: kWh
 
-sensor.solis_carport_power:
-    friendly_name: Solarleistung
+sensor.battery_meter_daily_in:
+    friendly_name: Ladung täglich
+    unit_of_measurement: kWh
 
-sensor.solis_carport_dailyenergy:
-    friendly_name: Inverter täglich
+sensor.battery_meter_yearly_in:
+    friendly_name: Ladung jährlich
+    unit_of_measurement: kWh
 
-sensor.solis_carport_temperature:
-    friendly_name: Inverter Temperatur
+sensor.battery_quarterhourly_in:
+    friendly_name: Kumulierter Ladung 15min
+
+#------------------------------------------------------------------------------
+sensor.battery_meter_quarterhourly_out:
+    friendly_name: Entladung 15min
+    unit_of_measurement: kWh
+
+sensor.battery_meter_daily_out:
+    friendly_name: Entladung täglich
+    unit_of_measurement: kWh
+
+sensor.battery_meter_yearly_out:
+    friendly_name: Entladung jährlich
+    unit_of_measurement: kWh
+
+sensor.battery_quarterhourly_out:
+    friendly_name: Kumulierte Entladung 15min
 
 #------------------------------------------------------------------------------
 sensor.solar_meter_quarterhourly:
     friendly_name: Produktion 15min
 
-sensor.solar_meter_hourly:
-    friendly_name: Produktion stündlich
-
 sensor.solar_meter_daily:
     friendly_name: Produktion täglich
 
-sensor.solar_meter_weekly:
-    friendly_name: Produktion wöchentlich
-
-sensor.solar_meter_monthly:
-    friendly_name: Produktion monatlich
-
 sensor.solar_meter_yearly:
     friendly_name: Produktion jährlich
+
+sensor.solar_quarterhourly:
+    friendly_name: Kumulierte Produktion 15min
 
 #------------------------------------------------------------------------------
 sensor.office_temperature:

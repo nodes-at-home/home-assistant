@@ -195,7 +195,6 @@ views:
                         entity: media_player.sony_bravia_tv
                       - type: markdown
                         content: " "
-                  - type: energy-distribution
               - type: vertical-stack
                 cards:
                   - type: horizontal-stack
@@ -256,8 +255,6 @@ views:
                       - type: entity-button
                         entity: switch.relay_garden_valve3
                         icon: mdi:watering-can
-                  # - type: energy-usage-graph
-                  - type: energy-solar-graph
 
   - title: Innen
     path: indoor
@@ -772,6 +769,7 @@ views:
         entities:
           - entity: sensor.load_power
             name: Hauslast
+            icon: mdi:home-lightning-bolt-outline
           - type: section
             label: Bezug
           - entity: sensor.tasmota_lk13be_energy_total_in
@@ -806,14 +804,6 @@ views:
             name: täglich
           - entity: sensor.electricity_yearly_out_returns
             name: jährlich
-          # - type: section
-            # label: Last
-          # - entity: sensor.load_power
-            # name: gesamt
-          # - entity: sensor.sh10rt_master_load_power
-            # name: Master
-          # - entity: sensor.sh10rt_slave_load_power
-            # name: Slave
       - type: gauge
         name: Solarleistung
         entity: sensor.total_dc_power
@@ -827,6 +817,12 @@ views:
         title: Solar
         show_header_toggle: false
         entities:
+          - entity: sensor.sh10rt_master_total_dc_power
+            name: Gartenseite
+            icon: mdi:solar-power-variant-outline
+          - entity: sensor.sh10rt_slave_total_dc_power
+            name: Straßenseite
+            icon: mdi:solar-power-variant-outline
           - type: section
             label: Vorhersage
           - entity: sensor.estimated_energy_production_today
@@ -840,30 +836,12 @@ views:
             icon: mdi:summit
           - type: section
             label: Produktion
-          - entity: sensor.sh10rt_master_total_dc_power
-            name: Gartenseite
-            icon: mdi:solar-power-variant-outline
-          - entity: sensor.sh10rt_slave_total_dc_power
-            name: Straßenseite
-            icon: mdi:solar-power-variant-outline
           - entity: sensor.solar_meter_daily
             name: täglich
             icon: mdi:solar-power
           - entity: sensor.solar_meter_yearly
             name: jährlich
             icon: mdi:solar-power
-          # - type: section
-            # label: Wechselrichter täglich
-          # - entity: sensor.daily_pv_generation
-            # name: Gesamt
-          # - entity: sensor.sh10rt_master_daily_pv_generation
-            # name: Master
-          # - entity: sensor.sh10rt_slave_daily_pv_generation
-            # name: Slave
-          # - entity: sensor.sh10rt_master_daily_imported_energy
-            # name: Import
-          # - entity: sensor.sh10rt_master_daily_exported_energy_from_pv
-            # name: Export
       - type: gauge
         name: Batterieladung
         entity: sensor.sh10rt_master_battery_level
@@ -879,19 +857,29 @@ views:
         entities:
           - entity: sensor.battery_power
             name: Leistung
+            icon: mdi:home-battery-outline
           - type: section
             label: Entladung
           - entity: sensor.sh10rt_master_daily_battery_discharge
+            name: täglich (Inverter)
+            icon: mdi:battery-arrow-down
+          - entity: sensor.battery_meter_daily_out
             name: täglich
+            icon: mdi:battery-arrow-down
+          - entity: sensor.battery_meter_yearly_out
+            name: jährlich
             icon: mdi:battery-arrow-down
           - type: section
             label: Auftladung
           - entity: sensor.sh10rt_master_daily_battery_charge
+            name: täglich (Inverter)
+            icon: mdi:battery-arrow-up
+          - entity: sensor.battery_meter_daily_in
             name: täglich
-            icon: mdi:battery-arrow-up
-          - entity: sensor.sh10rt_master_daily_battery_charge_from_pv
-            name: täglich per Solar
-            icon: mdi:battery-arrow-up
+            icon: mdi:battery-arrow-down
+          - entity: sensor.battery_meter_yearly_in
+            name: jährlich
+            icon: mdi:battery-arrow-down
           - type: section
             label: Ströme
           - entity: sensor.battery_current
@@ -931,6 +919,9 @@ views:
           - sensor.gas_storage_germany_trend
           - sensor.gas_storage_germany_storage_consumption_level
           - sensor.gas_storage_germany_consumption_total
+      # - type: energy-usage-graph
+      - type: energy-distribution
+      # - type: energy-solar-graph
 
     # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card#tile-list-entry-options
   - title: Staubsauger

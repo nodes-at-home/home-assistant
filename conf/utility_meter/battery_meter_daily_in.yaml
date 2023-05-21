@@ -1,0 +1,7 @@
+###
+### 21.05.2023
+###
+
+source: sensor.sh10rt_master_daily_battery_charge
+cycle: daily
+delta_values: false

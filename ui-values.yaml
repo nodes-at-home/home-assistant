@@ -515,7 +515,9 @@ views:
           - entity: sensor.electricity_meter_power
           - entity: sensor.import_power
           - entity: sensor.export_power
+          - entity: sensor.load_power
           - entity: sensor.sh10rt_master_load_power
+          - entity: sensor.sh10rt_slave_load_power
           - type: divider
           - entity: sensor.sh10rt_master_phase_a_voltage
           - entity: sensor.sh10rt_master_phase_a_current
@@ -607,42 +609,6 @@ views:
           - entity: sensor.sh10rt_master_total_dc_power
           - entity: sensor.sh10rt_slave_total_dc_power
 
-  # - title: Solar2
-    # path: details
-    # panel: false
-    # cards:
-      # - type: entities
-        # title: Energy
-        # entities:
-          # - entity: sensor.daily_pv_generation
-          # - entity: sensor.daily_direct_energy_consumption
-          # - entity: sensor.daily_exported_energy_from_pv
-          # - entity: sensor.daily_pv_generation_battery_discharge
-          # - entity: sensor.daily_battery_charge_from_pv
-          # - entity: sensor.daily_battery_discharge
-          # - entity: sensor.daily_exported_energy
-          # - entity: sensor.daily_battery_charge
-          # - entity: sensor.daily_imported_energy
-          # - entity: sensor.total_pv_generation
-          # - entity: sensor.total_direct_energy_consumption
-          # - entity: sensor.total_pv_generation_battery_discharge
-          # - entity: sensor.total_exported_energy_from_pv
-          # - entity: sensor.total_battery_charge_from_pv
-          # - entity: sensor.total_battery_charge
-          # - entity: sensor.total_battery_discharge
-          # - entity: sensor.total_imported_energy
-          # - entity: sensor.total_exported_energy
-      # - type: entities
-        # title: EMS
-        # entities:
-          # - entity: sensor.ems_mode_selection
-          # - entity: sensor.battery_forced_charge_discharge_cmd
-          # - entity: sensor.min_soc
-          # - entity: sensor.max_soc
-          # - entity: sensor.battery_forced_charge_discharge_power
-          # - entity: sensor.battery_charging_start_power
-          # - entity: sensor.battery_discharging_start_power
-
   - title: Diagramme
     path: heatinggraph
     type: panel
@@ -663,7 +629,7 @@ views:
           # - sensor.boiler_heatingpumpmod
           - sensor.boiler_curburnpow
           - sensor.total_dc_power
-          - sensor.sh10rt_master_load_power
+          - sensor.load_power
           - sensor.export_power
           - sensor.import_power
           - sensor.battery_power

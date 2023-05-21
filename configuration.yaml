@@ -133,16 +133,10 @@ influxdb:
         - sensor.fiederaralie_flowercare_conductivity
         - sensor.fiederaralie_flowercare_brightness
         - sensor.wasserampel_text
-        - sensor.gas_storage_germany_day
-        - sensor.gas_storage_germany_full_level
-        - sensor.gas_storage_germany_full_total
-        - sensor.gas_storage_germany_trend
-        - sensor.gas_storage_germany_storage_consumption_level
-        - sensor.gas_storage_germany_consumption_total
-        - sensor.electricity_meter_power
         - sensor.electricity_quarterhourly_in
         - sensor.electricity_quarterhourly_out
-        - sensor.solis_mini_s6_ac_output_total_power
+        - sensor.battery_quarterhourly_in
+        - sensor.battery_quarterhourly_out
         - sensor.solar_quarterhourly
   ignore_attributes:
     - friendly_name

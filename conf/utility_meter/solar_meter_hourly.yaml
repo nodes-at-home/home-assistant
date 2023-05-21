@@ -1,7 +1,0 @@
-###
-### 31.10.2022
-###
-
-source: sensor.daily_pv_generation
-cycle: hourly
-delta_values: false

@@ -2,6 +2,82 @@
 ### 31.03.2023
 ###
 
+  - binary_sensor:
+
+      - name: importing_power
+        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
+        state: >
+            {% if states ( 'sensor.sh10rt_master_running_state') | is_number %}
+                {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x20 ) > 0 }}
+            {% else %}
+                0
+            {% endif %}
+
+      - name: exporting_power
+        availability: "{{ states ( 'sensor.sh10rt_master_running_state') | is_number }}"
+        state: >
+            {% if states ( 'sensor.sh10rt_master_running_state' ) | is_number %}
+                {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x10 ) > 0 }}
+            {% else %}
+                0
+            {% endif %}
+
+      - name: grid_state
+        availability: "{{ states ( 'sensor.electricity_meter_power') | is_number and states ( 'input_number.electricity_import_critical_above' ) | is_number }}"
+        state: >
+            {% if states ( 'binary_sensor.importing_power' ) or states ( 'binary_sensor.exporting_power' ) %}
+                on
+            {% else %}
+                off
+            {% endif %}
+        icon: >
+            {% if is_state ( 'binary_sensor.importing_power', 'on' ) %}
+                mdi:transmission-tower-export
+            {% elif is_state ( 'binary_sensor.exporting_power', 'on' ) %}
+                mdi:transmission-tower-import
+            {% else %}
+                mdi:transmission-tower
+            {% endif %}
+        attributes:
+            icon_color: >
+                {% if states ( 'sensor.electricity_meter_power' ) | float | abs > states ( 'input_number.electricity_import_critical_above' ) | float %}
+                  {% if is_state ( 'binary_sensor.importing_power', 'on' ) %}
+                      fuchsia
+                  {% elif is_state ( 'binary_sensor.exporting_power', 'on' ) %}
+                      limegreen
+                  {% else %}
+                      silver
+                  {% endif %}
+                {% else  %}
+                    silver
+                {% endif %}
+
+  - sensor:
+
+      - name: electricity_daily_in_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.electricity_meter_daily_in' ) | is_number and states ( 'input_number.electricity_price_in' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_daily_in' ) | float * states ( 'input_number.electricity_price_in' ) | float ) | round ( 2 ) ) }}"
+
+      - name: electricity_yearly_in_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.electricity_meter_yearly_in' ) | is_number and states ( 'input_number.electricity_price_in' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_yearly_in' ) | float * states ( 'input_number.electricity_price_in' ) | float ) | round ( 2 ) ) }}"
+
+      - name: electricity_daily_out_returns
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.electricity_meter_daily_out' ) | is_number and states ( 'input_number.electricity_price_out' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_daily_out' ) | float * states ( 'input_number.electricity_price_out' ) | float ) | round ( 2 ) ) }}"
+
+      - name: electricity_yearly_out_returns
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.electricity_meter_yearly_out' ) | is_number and states ( 'input_number.electricity_price_out' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_yearly_out' ) | float * states ( 'input_number.electricity_price_out' ) | float ) | round ( 2 ) ) }}"
+
   - trigger:
       - platform: state
         entity_id: sensor.tasmota_lk13be_power

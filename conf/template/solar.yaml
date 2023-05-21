@@ -24,132 +24,6 @@
                     silver
                 {% endif %}
 
-      - name: battery_charging
-        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
-        state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x2 ) > 0 }}"
-
-      - name: battery_discharging
-        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
-        state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x4 ) > 0 }}"
-
-      - name: battery_state
-        state: >
-            {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
-            {% set threshold = states ( 'input_number.battery_state_off_below' ) | int %}
-            {% if val < threshold %}
-                off
-            {% else %}
-                on
-            {% endif %}
-        icon: >
-            {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
-            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
-                {% if val == 100 %}
-                    mdi:battery-charging-100
-                {% elif val >= 90 %}
-                    mdi:battery-charging-90
-                {% elif val >= 80 %}
-                    mdi:battery-charging-80
-                {% elif val >= 70 %}
-                    mdi:battery-charging-70
-                {% elif val >= 60 %}
-                    mdi:battery-charging-60
-                {% elif val >= 50 %}
-                    mdi:battery-charging-50
-                {% elif val >= 40 %}
-                    mdi:battery-charging-40
-                {% elif val >= 30 %}
-                    mdi:battery-charging-30
-                {% elif val >= 20 %}
-                    mdi:battery-charging-20
-                {% elif val >= 10 %}
-                    mdi:battery-charging-10
-                {% else %}
-                    mdi:battery-charging-outline
-                {% endif %}
-            {% else %}
-                {% if val == 100 %}
-                    mdi:battery
-                {% elif val >= 90 %}
-                    mdi:battery-90
-                {% elif val >= 80 %}
-                    mdi:battery-80
-                {% elif val >= 70 %}
-                    mdi:battery-70
-                {% elif val >= 60 %}
-                    mdi:battery-60
-                {% elif val >= 50 %}
-                    mdi:battery-50
-                {% elif val >= 40 %}
-                    mdi:battery-40
-                {% elif val >= 30 %}
-                    mdi:battery-30
-                {% elif val >= 20 %}
-                    mdi:battery-20
-                {% elif val >= 10 %}
-                    mdi:battery-10
-                {% else %}
-                    mdi:battery-outline
-                {% endif %}
-            {% endif %}
-        attributes:
-            icon_color: >
-                {% if is_state ( 'binary_sensor.battery_charging', "on" ) %}
-                    limegreen
-                {% elif is_state ( 'binary_sensor.battery_discharging', "on" ) %}
-                    red
-                {% else %}
-                    silver
-                {% endif %}
-
-      - name: importing_power
-        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
-        state: >
-            {% if states ( 'sensor.sh10rt_master_running_state') | is_number %}
-                {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x20 ) > 0 }}
-            {% else %} 
-                0
-            {% endif %}
-
-      - name: exporting_power
-        availability: "{{ states ( 'sensor.sh10rt_master_running_state') | is_number }}"
-        state: >
-            {% if states ( 'sensor.sh10rt_master_running_state' ) | is_number %}
-                {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x10 ) > 0 }}
-            {% else %} 
-                0
-            {% endif %}
-
-      - name: grid_state
-        availability: "{{ states ( 'sensor.electricity_meter_power') | is_number and states ( 'input_number.electricity_import_critical_above' ) | is_number }}"
-        state: >
-            {% if states ( 'binary_sensor.importing_power' ) or states ( 'binary_sensor.exporting_power' ) %}
-                on
-            {% else %}
-                off
-            {% endif %}
-        icon: >
-            {% if is_state ( 'binary_sensor.importing_power', 'on' ) %}
-                mdi:transmission-tower-export
-            {% elif is_state ( 'binary_sensor.exporting_power', 'on' ) %}
-                mdi:transmission-tower-import
-            {% else %}
-                mdi:transmission-tower
-            {% endif %}
-        attributes:
-            icon_color: >
-                {% if states ( 'sensor.electricity_meter_power' ) | float | abs > states ( 'input_number.electricity_import_critical_above' ) | float %}
-                  {% if is_state ( 'binary_sensor.importing_power', 'on' ) %}
-                      fuchsia
-                  {% elif is_state ( 'binary_sensor.exporting_power', 'on' ) %}
-                      limegreen
-                  {% else %}
-                      silver
-                  {% endif %}
-                {% else  %}
-                    silver
-                {% endif %}
-
   - sensor:
 
       - name: total_dc_power
@@ -212,8 +86,6 @@
                 Startup
             {% elif  val == 0x0040 %}
                 Running
-            {% elif  val == 0x0041 %}
-                Startup
             {% elif  val == 0x0100 %}
                 Fault
             {% elif  val == 0x0400 %}
@@ -243,8 +115,6 @@
                 Startup
             {% elif  val == 0x0040 %}
                 Running
-            {% elif  val == 0x0041 %}
-                Startup
             {% elif  val == 0x0100 %}
                 Fault
             {% elif  val == 0x0400 %}
@@ -343,59 +213,6 @@
                 Unknown device code!
             {% endif %}
 
-        # positive if charging and negative if discharging
-      - name: battery_power
-        unit_of_measurement: W
-        device_class: power
-        state_class: measurement
-        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'binary_sensor.battery_discharging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
-        state: >
-            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
-                {{ states('sensor.sh10rt_master_battery_power_raw' ) | float }}
-            {% elif is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
-                {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) | float * -1 }} 
-            {% else %} 
-                0
-            {% endif %}
-
-        # positive if charging else zero
-      - name: battery_charging_power
-        unit_of_measurement: W
-        device_class: power
-        state_class: measurement
-        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
-        state: >
-            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
-                {{ states('sensor.sh10rt_master_battery_power_raw') }}
-            {% else %}
-                0
-            {% endif %}
-
-        # positive if discharging else zero
-
-      - name: battery_discharging_power
-        unit_of_measurement: W
-        device_class: power
-        state_class: measurement
-        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
-        state: >
-            {% if is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
-                {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) }}
-            {% else %}
-                0
-            {% endif %}
-
-      - name: battery_current
-        unit_of_measurement: A
-        device_class: current
-        availability: "{{ states ( 'sensor.sh10rt_master_battery_current' ) | is_number }}"
-        state: >
-            {% if is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
-                {{ -1 * states ( 'sensor.sh10rt_master_battery_current' ) | float }}
-            {% else %}
-                {{ states ( 'sensor.sh10rt_master_battery_current' ) }}
-            {% endif %}
-
       - name: import_power
         unit_of_measurement: W
         device_class: power
@@ -427,26 +244,13 @@
         availability: "{{ states ( 'sensor.sh10rt_master_load_power' ) | is_number and states ( 'sensor.sh10rt_slave_load_power' ) | is_number }}"
         state: "{{ ( states ( 'sensor.sh10rt_master_load_power' ) | float + states ( 'sensor.sh10rt_slave_load_power' ) | float ) | round ( 0 ) }}"
 
-      - name: electricity_daily_in_costs
-        unit_of_measurement: EUR
-        device_class: monetary
-        availability: "{{ states ( 'sensor.electricity_meter_daily_in' ) | is_number and states ( 'input_number.electricity_price_in' ) | is_number }}"
-        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_daily_in' ) | float * states ( 'input_number.electricity_price_in' ) | float ) | round ( 2 ) ) }}"
-
-      - name: electricity_yearly_in_costs
-        unit_of_measurement: EUR
-        device_class: monetary
-        availability: "{{ states ( 'sensor.electricity_meter_yearly_in' ) | is_number and states ( 'input_number.electricity_price_in' ) | is_number }}"
-        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_yearly_in' ) | float * states ( 'input_number.electricity_price_in' ) | float ) | round ( 2 ) ) }}"
-
-      - name: electricity_daily_out_returns
-        unit_of_measurement: EUR
-        device_class: monetary
-        availability: "{{ states ( 'sensor.electricity_meter_daily_out' ) | is_number and states ( 'input_number.electricity_price_out' ) | is_number }}"
-        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_daily_out' ) | float * states ( 'input_number.electricity_price_out' ) | float ) | round ( 2 ) ) }}"
-
-      - name: electricity_yearly_out_returns
-        unit_of_measurement: EUR
-        device_class: monetary
-        availability: "{{ states ( 'sensor.electricity_meter_yearly_out' ) | is_number and states ( 'input_number.electricity_price_out' ) | is_number }}"
-        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_yearly_out' ) | float * states ( 'input_number.electricity_price_out' ) | float ) | round ( 2 ) ) }}"
+  - trigger:
+      - platform: state
+        entity_id: sensor.solar_meter_quarterhourly
+        attribute: last_reset
+    sensor:
+      - name: solar_quarterhourly
+        unit_of_measurement: kWh
+        state: "{{ state_attr ( 'sensor.solar_meter_quarterhourly', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.solar_meter_quarterhourly", "last_reset" ) }}'

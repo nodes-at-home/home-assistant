@@ -1,0 +1,160 @@
+###
+### 21.05.2023
+###
+
+  - binary_sensor:
+
+      - name: battery_charging
+        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
+        state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x2 ) > 0 }}"
+
+      - name: battery_discharging
+        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
+        state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x4 ) > 0 }}"
+
+      - name: battery_state
+        state: >
+            {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
+            {% set threshold = states ( 'input_number.battery_state_off_below' ) | int %}
+            {% if val < threshold %}
+                off
+            {% else %}
+                on
+            {% endif %}
+        icon: >
+            {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
+            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
+                {% if val == 100 %}
+                    mdi:battery-charging-100
+                {% elif val >= 90 %}
+                    mdi:battery-charging-90
+                {% elif val >= 80 %}
+                    mdi:battery-charging-80
+                {% elif val >= 70 %}
+                    mdi:battery-charging-70
+                {% elif val >= 60 %}
+                    mdi:battery-charging-60
+                {% elif val >= 50 %}
+                    mdi:battery-charging-50
+                {% elif val >= 40 %}
+                    mdi:battery-charging-40
+                {% elif val >= 30 %}
+                    mdi:battery-charging-30
+                {% elif val >= 20 %}
+                    mdi:battery-charging-20
+                {% elif val >= 10 %}
+                    mdi:battery-charging-10
+                {% else %}
+                    mdi:battery-charging-outline
+                {% endif %}
+            {% else %}
+                {% if val == 100 %}
+                    mdi:battery
+                {% elif val >= 90 %}
+                    mdi:battery-90
+                {% elif val >= 80 %}
+                    mdi:battery-80
+                {% elif val >= 70 %}
+                    mdi:battery-70
+                {% elif val >= 60 %}
+                    mdi:battery-60
+                {% elif val >= 50 %}
+                    mdi:battery-50
+                {% elif val >= 40 %}
+                    mdi:battery-40
+                {% elif val >= 30 %}
+                    mdi:battery-30
+                {% elif val >= 20 %}
+                    mdi:battery-20
+                {% elif val >= 10 %}
+                    mdi:battery-10
+                {% else %}
+                    mdi:battery-outline
+                {% endif %}
+            {% endif %}
+        attributes:
+            icon_color: >
+                {% if is_state ( 'binary_sensor.battery_charging', "on" ) %}
+                    limegreen
+                {% elif is_state ( 'binary_sensor.battery_discharging', "on" ) %}
+                    red
+                {% else %}
+                    silver
+                {% endif %}
+
+  - sensor:
+
+        # positive if charging and negative if discharging
+      - name: battery_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'binary_sensor.battery_discharging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
+        state: >
+            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
+                {{ states('sensor.sh10rt_master_battery_power_raw' ) | float }}
+            {% elif is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
+                {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) | float * -1 }} 
+            {% else %} 
+                0
+            {% endif %}
+
+        # positive if charging else zero
+      - name: battery_charging_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
+        state: >
+            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
+                {{ states('sensor.sh10rt_master_battery_power_raw') }}
+            {% else %}
+                0
+            {% endif %}
+
+        # positive if discharging else zero
+
+      - name: battery_discharging_power
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
+        state: >
+            {% if is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
+                {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) }}
+            {% else %}
+                0
+            {% endif %}
+
+      - name: battery_current
+        unit_of_measurement: A
+        device_class: current
+        availability: "{{ states ( 'sensor.sh10rt_master_battery_current' ) | is_number }}"
+        state: >
+            {% if is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
+                {{ -1 * states ( 'sensor.sh10rt_master_battery_current' ) | float }}
+            {% else %}
+                {{ states ( 'sensor.sh10rt_master_battery_current' ) }}
+            {% endif %}
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.battery_meter_quarterhourly_in
+        attribute: last_reset
+    sensor:
+      - name: battery_quarterhourly_in
+        unit_of_measurement: kWh
+        state: "{{ state_attr ( 'sensor.battery_meter_quarterhourly_in', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.battery_meter_quarterhourly_in", "last_reset" ) }}'
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.battery_meter_quarterhourly_out
+        attribute: last_reset
+    sensor:
+      - name: battery_quarterhourly_out
+        unit_of_measurement: kWh
+        state: "{{ state_attr ( 'sensor.battery_meter_quarterhourly_out', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.battery_meter_quarterhourly_out", "last_reset" ) }}'
