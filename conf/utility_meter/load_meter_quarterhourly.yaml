@@ -1,0 +1,7 @@
+###
+### 22.05.2023
+###
+
+source: sensor.daily_load
+cycle: quarter-hourly
+delta_values: false

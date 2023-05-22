@@ -1308,6 +1308,19 @@ sensor.gas_storage_germany_trend:
     friendly_name: Verbrauchstrend
 
 #------------------------------------------------------------------------------
+sensor.load_meter_quarterhourly:
+    friendly_name: Verbrauch 15min
+
+sensor.load_meter_daily:
+    friendly_name: Verbrauch täglich
+
+sensor.load_meter_yearly:
+    friendly_name: Verbrauch jährlich
+
+sensor.load_quarterhourly:
+    friendly_name: Kumulierte Verbrauch 15min
+
+#------------------------------------------------------------------------------
 sensor.electricity_meter_quarterhourly_in:
     friendly_name: Bezug 15min
     unit_of_measurement: kWh

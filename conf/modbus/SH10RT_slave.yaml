@@ -286,7 +286,7 @@
         device_class: energy
         state_class: total_increasing
         scale: 0.1
-        scan_interval: 600
+        scan_interval: 10
 
       - name: sh10rt_slave_total_pv_generation
         slave: 2

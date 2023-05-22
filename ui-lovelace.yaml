@@ -752,176 +752,200 @@ views:
                 --label-badge-text-color: {{ state_attr ( 'binary_sensor.battery_state', 'icon_color' ) }}
             }
     cards:
-      - type: gauge
-        name: Netzleistung
-        entity: sensor.electricity_meter_power
-        min: -5000
-        max: +5000
-        needle: true
-        segments:
-          - from: -5000
-            color: '#ffa600'
-          - from: 0
-            color: '#3788d8'
-      - type: entities
-        title: Netz
-        show_header_toggle: false
-        entities:
-          - entity: sensor.load_power
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            name: Netzleistung
+            entity: sensor.electricity_meter_power
+            min: -5000
+            max: +5000
+            needle: true
+            segments:
+              - from: -5000
+                color: '#ffa600'
+              - from: 0
+                color: '#3788d8'
+          - type: entities
+            title: Netz
+            show_header_toggle: false
+            entities:
+              - type: section
+                label: Bezug
+              - entity: sensor.tasmota_lk13be_energy_total_in
+                name: Zählerstand
+                icon: mdi:counter
+              - entity: sensor.electricity_meter_daily_in
+                name: täglich
+                icon: mdi:transmission-tower-export
+              - entity: sensor.electricity_meter_yearly_in
+                name: jährlich
+                icon: mdi:transmission-tower-export
+              - type: section
+                label: Einspeisung
+              - entity: sensor.tasmota_lk13be_energy_total_out
+                name: Zählerstand
+                icon: mdi:counter
+              - entity: sensor.electricity_meter_daily_out
+                name: täglich
+                icon: mdi:transmission-tower-import
+              - entity: sensor.electricity_meter_yearly_out
+                name: jährlich
+                icon: mdi:transmission-tower-import
+              - type: section
+                label: Kosten
+              - entity: sensor.electricity_daily_in_costs
+                name: täglich
+              - entity: sensor.electricity_yearly_in_costs
+                name: jährlich
+              - type: section
+                label: Erlöse
+              - entity: sensor.electricity_daily_out_returns
+                name: täglich
+              - entity: sensor.electricity_yearly_out_returns
+                name: jährlich
+      - type: vertical-stack
+        cards:
+          - type: gauge
             name: Hauslast
-            icon: mdi:home-lightning-bolt-outline
-          - type: section
-            label: Bezug
-          - entity: sensor.tasmota_lk13be_energy_total_in
-            name: Zählerstand
-            icon: mdi:counter
-          - entity: sensor.electricity_meter_daily_in
-            name: täglich
-            icon: mdi:transmission-tower-export
-          - entity: sensor.electricity_meter_yearly_in
-            name: jährlich
-            icon: mdi:transmission-tower-export
-          - type: section
-            label: Einspeisung
-          - entity: sensor.tasmota_lk13be_energy_total_out
-            name: Zählerstand
-            icon: mdi:counter
-          - entity: sensor.electricity_meter_daily_out
-            name: täglich
-            icon: mdi:transmission-tower-import
-          - entity: sensor.electricity_meter_yearly_out
-            name: jährlich
-            icon: mdi:transmission-tower-import
-          - type: section
-            label: Kosten
-          - entity: sensor.electricity_daily_in_costs
-            name: täglich
-          - entity: sensor.electricity_yearly_in_costs
-            name: jährlich
-          - type: section
-            label: Erlöse
-          - entity: sensor.electricity_daily_out_returns
-            name: täglich
-          - entity: sensor.electricity_yearly_out_returns
-            name: jährlich
-      - type: gauge
-        name: Solarleistung
-        entity: sensor.total_dc_power
-        min: 0
-        max: 20000
-        # needle: true
-        severity:
-            yellow: 0
-            red: 20000
-      - type: entities
-        title: Solar
-        show_header_toggle: false
-        entities:
-          - entity: sensor.sh10rt_master_total_dc_power
-            name: Gartenseite
-            icon: mdi:solar-power-variant-outline
-          - entity: sensor.sh10rt_slave_total_dc_power
-            name: Straßenseite
-            icon: mdi:solar-power-variant-outline
-          - type: section
-            label: Vorhersage
-          - entity: sensor.estimated_energy_production_today
-            name: heute
-            icon: mdi:solar-power
-          - entity: sensor.power_highest_peak_time_today
-            name: Peak Gartenseite
-            icon: mdi:summit
-          - entity: sensor.power_highest_peak_time_today_2
-            name: Peak Straßenseite
-            icon: mdi:summit
-          - type: section
-            label: Produktion
-          - entity: sensor.solar_meter_daily
-            name: täglich
-            icon: mdi:solar-power
-          - entity: sensor.solar_meter_yearly
-            name: jährlich
-            icon: mdi:solar-power
-      - type: gauge
-        name: Batterieladung
-        entity: sensor.sh10rt_master_battery_level
-        min: 0
-        max: 100
-        severity:
-          green: 70
-          yellow: 25
-          red: 10
-      - type: entities
-        title: Batterie
-        show_header_toggle: false
-        entities:
-          - entity: sensor.battery_power
-            name: Leistung
-            icon: mdi:home-battery-outline
-          - type: section
-            label: Entladung
-          - entity: sensor.sh10rt_master_daily_battery_discharge
-            name: täglich (Inverter)
-            icon: mdi:battery-arrow-down
-          - entity: sensor.battery_meter_daily_out
-            name: täglich
-            icon: mdi:battery-arrow-down
-          - entity: sensor.battery_meter_yearly_out
-            name: jährlich
-            icon: mdi:battery-arrow-down
-          - type: section
-            label: Auftladung
-          - entity: sensor.sh10rt_master_daily_battery_charge
-            name: täglich (Inverter)
-            icon: mdi:battery-arrow-up
-          - entity: sensor.battery_meter_daily_in
-            name: täglich
-            icon: mdi:battery-arrow-down
-          - entity: sensor.battery_meter_yearly_in
-            name: jährlich
-            icon: mdi:battery-arrow-down
-          - type: section
-            label: Ströme
-          - entity: sensor.battery_current
-            name: aktuell
-          - entity: sensor.sh10rt_master_bms_max_charging_current
-            name: maximaler Ladestrom
-          - entity: sensor.sh10rt_master_bms_max_discharging_current
-            name: maximaler Entladestrom
-          - type: section
-            label: State of Charge
-          - entity: sensor.sh10rt_master_max_soc
-            name: maximal
-          - entity: sensor.sh10rt_master_min_soc
-            name: minimal
-          - entity: sensor.sh10rt_master_reserved_soc_for_backup
-            name: Reserve für Backup
-      - type: gauge
-        name: Füllstand Gasspeicher Deutschland
-        entity: sensor.gas_storage_germany_full_level
-        min: 0
-        max: 100
-        needle: true
-        segments:
-          - from: 0
-            color: '#db4437'
-          - from: 40
-            color: '#ffa600'
-          - from: 80
-            color: '#43a047'
-      - type: entities
-        title: Gasspeicher Deutschland
-        show_header_toggle: false
-        entities:
-          - sensor.gas_storage_germany_day
-          # - sensor.gas_storage_germany_full_level
-          - sensor.gas_storage_germany_full_total
-          - sensor.gas_storage_germany_trend
-          - sensor.gas_storage_germany_storage_consumption_level
-          - sensor.gas_storage_germany_consumption_total
-      # - type: energy-usage-graph
-      - type: energy-distribution
-      # - type: energy-solar-graph
+            entity: sensor.load_power
+            min: 0
+            max: +5000
+            # needle: true
+            severity:
+              green: 0
+              yellow: 1000
+              red: 4000
+          - type: entities
+            title: Haus
+            show_header_toggle: false
+            entities:
+              - type: section
+                label: Verbrauch
+              - sensor.daily_load
+              - entity: sensor.load_meter_daily
+                name: täglich
+                icon: mdi:home-lightning-bolt-outline
+              - entity: sensor.load_meter_yearly
+                name: jährlich
+                icon: mdi:home-lightning-bolt-outline
+          # - type: energy-usage-graph
+          - type: energy-distribution
+          # - type: energy-solar-graph
+          # - type: entities
+            # title: Debug
+            # show_header_toggle: false
+            # entities:
+              # - sensor.load_quarterhourly
+              # - sensor.electricity_quarterhourly_in
+              # - sensor.electricity_quarterhourly_out
+              # - sensor.solar_quarterhourly
+              # - sensor.battery_quarterhourly_in
+              # - sensor.battery_quarterhourly_out
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            name: Solarleistung
+            entity: sensor.total_dc_power
+            min: 0
+            max: 20000
+            # needle: true
+            severity:
+                yellow: 0
+                red: 20000
+          - type: entities
+            title: Solar
+            show_header_toggle: false
+            entities:
+              - entity: sensor.sh10rt_master_total_dc_power
+                name: Gartenseite
+                icon: mdi:solar-power-variant-outline
+              - entity: sensor.sh10rt_slave_total_dc_power
+                name: Straßenseite
+                icon: mdi:solar-power-variant-outline
+              - type: section
+                label: Vorhersage
+              - entity: sensor.estimated_energy_production_today
+                name: heute
+                icon: mdi:solar-power
+              - entity: sensor.power_highest_peak_time_today
+                name: Peak Gartenseite
+                icon: mdi:summit
+              - entity: sensor.power_highest_peak_time_today_2
+                name: Peak Straßenseite
+                icon: mdi:summit
+              - type: section
+                label: Produktion
+              - entity: sensor.solar_meter_daily
+                name: täglich
+                icon: mdi:solar-power
+              - entity: sensor.solar_meter_yearly
+                name: jährlich
+                icon: mdi:solar-power
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            name: Batterieleistung
+            entity: sensor.battery_power
+            min: 0
+            max: 20000
+            # needle: true
+            severity:
+                yellow: 0
+                red: 20000
+          - type: gauge
+            name: Batteriefüllung
+            entity: sensor.sh10rt_master_battery_level
+            min: 0
+            max: 100
+            severity:
+              green: 70
+              yellow: 25
+              red: 10
+          - type: entities
+            title: Batterie
+            show_header_toggle: false
+            entities:
+              # - entity: sensor.battery_power
+                # name: Leistung
+                # icon: mdi:home-battery-outline
+              - type: section
+                label: Entladung
+              # - entity: sensor.sh10rt_master_daily_battery_discharge
+                # name: täglich (Inverter)
+                # icon: mdi:battery-arrow-down
+              - entity: sensor.battery_meter_daily_out
+                name: täglich
+                icon: mdi:battery-arrow-down
+              - entity: sensor.battery_meter_yearly_out
+                name: jährlich
+                icon: mdi:battery-arrow-down
+              - type: section
+                label: Auftladung
+              # - entity: sensor.sh10rt_master_daily_battery_charge
+                # name: täglich (Inverter)
+                # icon: mdi:battery-arrow-up
+              - entity: sensor.battery_meter_daily_in
+                name: täglich
+                icon: mdi:battery-arrow-down
+              - entity: sensor.battery_meter_yearly_in
+                name: jährlich
+                icon: mdi:battery-arrow-down
+              - type: section
+                label: Ströme
+              - entity: sensor.battery_current
+                name: aktuell
+              - entity: sensor.sh10rt_master_bms_max_charging_current
+                name: maximaler Ladestrom
+              - entity: sensor.sh10rt_master_bms_max_discharging_current
+                name: maximaler Entladestrom
+              - type: section
+                label: State of Charge
+              - entity: sensor.sh10rt_master_max_soc
+                name: maximal
+              - entity: sensor.sh10rt_master_min_soc
+                name: minimal
+              - entity: sensor.sh10rt_master_reserved_soc_for_backup
+                name: Reserve für Backup
 
     # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card#tile-list-entry-options
   - title: Staubsauger

@@ -54,6 +54,28 @@
 
   - sensor:
 
+      - name: daily_load
+        unit_of_measurement: kWh
+        device_class: energy
+        availability: >
+                {{
+                    states ( 'sensor.electricity_meter_daily_in' ) | is_number
+                    and states ( 'sensor.electricity_meter_daily_out' ) | is_number
+                    and states ( 'sensor.daily_pv_generation' ) | is_number
+                    and states ( 'sensor.sh10rt_master_daily_battery_charge' ) | is_number
+                    and states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | is_number
+                }}
+        state: >
+                {{
+                    (
+                        states ( 'sensor.electricity_meter_daily_in' ) | float
+                        - states ( 'sensor.electricity_meter_daily_out' ) | float
+                        + states ( 'sensor.daily_pv_generation' ) | float
+                        + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float
+                        - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float
+                    ) | round ( 1 )
+                }}
+
       - name: electricity_daily_in_costs
         unit_of_measurement: EUR
         device_class: monetary
@@ -197,3 +219,14 @@
         state: "{{ state_attr ( 'sensor.electricity_meter_quarterhourly_out', 'last_period' ) }}"
         attributes:
             last_reset: '{{ state_attr ( "sensor.electricity_meter_quarterhourly_out", "last_reset" ) }}'
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.load_meter_quarterhourly
+        attribute: last_reset
+    sensor:
+      - name: load_quarterhourly
+        unit_of_measurement: kWh
+        state: "{{ state_attr ( 'sensor.load_meter_quarterhourly', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.load_meter_quarterhourly", "last_reset" ) }}'

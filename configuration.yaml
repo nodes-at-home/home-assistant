@@ -138,6 +138,7 @@ influxdb:
         - sensor.battery_quarterhourly_in
         - sensor.battery_quarterhourly_out
         - sensor.solar_quarterhourly
+        - sensor.load_quarterhourly
   ignore_attributes:
     - friendly_name
     - icon
