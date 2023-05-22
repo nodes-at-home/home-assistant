@@ -886,12 +886,14 @@ views:
           - type: gauge
             name: Batterieleistung
             entity: sensor.battery_power
-            min: 0
-            max: 20000
-            # needle: true
-            severity:
-                yellow: 0
-                red: 20000
+            min: -5000
+            max: +5000
+            needle: true
+            segments:
+              - from: -5000
+                color: '#ffa600'
+              - from: 0
+                color: '#3788d8'
           - type: gauge
             name: Batteriefüllung
             entity: sensor.sh10rt_master_battery_level
