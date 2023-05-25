@@ -44,7 +44,7 @@
       - name: daily_pv_generation
         unit_of_measurement: kWh
         device_class: energy
-        availability: "{{ states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number or states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number }}"
+        availability: "{{ states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number and states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number }}"
         state: >
             {% set result = 0 %}
             {% if states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number %}
@@ -99,7 +99,7 @@
             {% elif  val == 0x4000 %}
                 External EMS mode
             {% else %}
-                Unknown - should not see me!
+                {{ val }}
             {% endif %}
 
       - name: sh10rt_slave_inverter_state
@@ -128,7 +128,7 @@
             {% elif  val == 0x4000 %}
                 External EMS mode
             {% else %}
-                Unknown - should not see me!
+                {{ val }}
             {% endif %}
 
       - name: sh10rt_master_device_type
@@ -169,7 +169,7 @@
             {% elif val  == 0x0E00 %}
                 SH5.0RT
             {% else %}
-                Unknown device code!
+                Unknown device code! --> {{ val }}
             {% endif %}
 
       - name: sh10rt_slave_device_type
@@ -210,7 +210,7 @@
             {% elif val  == 0x0E00 %}
                 SH5.0RT
             {% else %}
-                Unknown device code!
+                Unknown device code! --> {{ val }}
             {% endif %}
 
       - name: import_power

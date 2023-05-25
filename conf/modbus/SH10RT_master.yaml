@@ -286,7 +286,7 @@
         device_class: energy
         state_class: total_increasing
         scale: 0.1
-        scan_interval: 10
+        scan_interval: 600
 
       - name: sh10rt_master_total_pv_generation
         slave: 1
@@ -522,7 +522,7 @@
         device_class: energy
         state_class: total_increasing
         scale: 0.1
-        scan_interval: 10
+        scan_interval: 600
 
       # always 65535
       # - name: Grid state raw
