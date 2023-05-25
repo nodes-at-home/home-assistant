@@ -78,10 +78,10 @@
         availability: "{{ states ( 'sensor.electricity_meter_yearly_out' ) | is_number and states ( 'input_number.electricity_price_out' ) | is_number }}"
         state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_yearly_out' ) | float * states ( 'input_number.electricity_price_out' ) | float ) | round ( 2 ) ) }}"
 
-  - trigger:
-      - platform: state
-        entity_id: sensor.sh10rt_master_daily_imported_energy
-        for: 00:01:00
+  # - trigger:
+      # - platform: state
+        # entity_id: sensor.sh10rt_master_daily_imported_energy
+        # for: 00:01:00
       - name: daily_load
         unit_of_measurement: kWh
         device_class: energy
@@ -95,13 +95,16 @@
                 }}
         state: >
                 {{
-                    (
-                        states ( 'sensor.sh10rt_master_daily_imported_energy' ) | float
-                        - states ( 'sensor.sh10rt_master_daily_exported_energy' ) | float
-                        + states ( 'sensor.daily_pv_generation' ) | float
-                        + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float
-                        - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float
-                    ) | max ( 0 ) | round ( 1 )
+                    [
+                        (
+                            states ( 'sensor.sh10rt_master_daily_imported_energy' ) | float
+                            - states ( 'sensor.sh10rt_master_daily_exported_energy' ) | float
+                            + states ( 'sensor.daily_pv_generation' ) | float
+                            + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float
+                            - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float
+                        ),
+                        0
+                    ] | max | round ( 1 )
                 }}
 
   - trigger:
