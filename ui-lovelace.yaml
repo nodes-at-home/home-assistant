@@ -912,9 +912,6 @@ views:
                 # icon: mdi:home-battery-outline
               - type: section
                 label: Entladung
-              # - entity: sensor.sh10rt_master_daily_battery_discharge
-                # name: täglich (Inverter)
-                # icon: mdi:battery-arrow-down
               - entity: sensor.battery_meter_daily_out
                 name: täglich
                 icon: mdi:battery-arrow-down
@@ -923,9 +920,6 @@ views:
                 icon: mdi:battery-arrow-down
               - type: section
                 label: Auftladung
-              # - entity: sensor.sh10rt_master_daily_battery_charge
-                # name: täglich (Inverter)
-                # icon: mdi:battery-arrow-up
               - entity: sensor.battery_meter_daily_in
                 name: täglich
                 icon: mdi:battery-arrow-down
@@ -948,6 +942,17 @@ views:
                 name: minimal
               - entity: sensor.sh10rt_master_reserved_soc_for_backup
                 name: Reserve für Backup
+          - type: statistics-graph
+            title: Battery SoC last 30 days
+            chart_type: line
+            period: day
+            days_to_show: 30
+            entities:
+              - sensor.sh10rt_master_battery_level
+            stat_types:
+              - min
+              - max
+
 
     # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card#tile-list-entry-options
   - title: Staubsauger

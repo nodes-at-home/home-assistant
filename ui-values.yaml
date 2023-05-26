@@ -614,12 +614,12 @@ views:
           # - entity: sensor.sh10rt_master_max_soc
           # - entity: sensor.sh10rt_master_min_soc
       - type: statistics-graph
-        title: Battery SoC last 60 days
+        title: Battery SoC last 30 days
         chart_type: line
         period: day
-        days_to_show: 60
+        days_to_show: 30
         entities:
-          - sensor.battery_level
+          - sensor.sh10rt_master_battery_level
         stat_types:
           - min
           - max
