@@ -12,6 +12,52 @@
     delay: 5
     # timeout: 5
     sensors:
+
+      - name: sh10rt_master_protocol_no
+        slave: 1
+        address: 4949 # reg 4950
+        input_type: input
+        count: 2
+        data_type: uint32
+        swap: word
+        scan_interval: 600
+
+      - name: sh10rt_master_protocol_version
+        slave: 1
+        address: 4951 # reg 4952
+        input_type: input
+        count: 2
+        data_type: uint32
+        swap: word
+        scan_interval: 600
+
+      - name: sh10rt_master_arm_sw_version
+        slave: 1
+        address: 4953 # reg 4954
+        input_type: input
+        count: 15
+        data_type: string
+        swap: none
+        scan_interval: 600
+
+      - name: sh10rt_master_dsp_sw_version
+        slave: 1
+        address: 4968 # reg 4969
+        input_type: input
+        count: 15
+        data_type: string
+        swap: none
+        scan_interval: 600
+
+      - name: sh10rt_master_serial_no
+        slave: 1
+        address: 4989 # reg 4990
+        input_type: input
+        count: 10
+        data_type: string
+        swap: none
+        scan_interval: 600
+
       - name: sh10rt_master_device_type_code
         slave: 1
         address: 4999 # reg 5000

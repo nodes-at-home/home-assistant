@@ -554,8 +554,14 @@ views:
         title: Master
         entities:
           - type: section
-            label: Zustand
+            label: Modell
           - entity: sensor.sh10rt_master_device_type
+          - entity: sensor.sh10rt_master_arm_sw_version
+          - entity: sensor.sh10rt_master_dsp_sw_version
+          - entity: sensor.sh10rt_master_protocol_no
+          - entity: sensor.sh10rt_master_protocol_version
+          - type: section
+            label: Zustand
           - entity: sensor.sh10rt_master_inverter_state
           - entity: sensor.sh10rt_master_system_state
           - entity: sensor.sh10rt_master_running_state
@@ -570,8 +576,14 @@ views:
         title: Slave
         entities:
           - type: section
-            label: Zustand
+            label: Modell
           - entity: sensor.sh10rt_slave_device_type
+          - entity: sensor.sh10rt_slave_arm_sw_version
+          - entity: sensor.sh10rt_slave_dsp_sw_version
+          - entity: sensor.sh10rt_slave_protocol_no
+          - entity: sensor.sh10rt_slave_protocol_version
+          - type: section
+            label: Zustand
           - entity: sensor.sh10rt_slave_inverter_state
           - entity: sensor.sh10rt_slave_system_state
           - entity: sensor.sh10rt_slave_running_state
