@@ -113,6 +113,96 @@
       - service: input_boolean.turn_off
         data:
             entity_id: input_boolean.circulating_pump_activated
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_scheduled_valve1
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.irrigation_valve1_at_monday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve1_at_tuesday
+      - service: input_boolean.turn_nf
+        data:
+            entity_id: input_boolean.irrigation_valve1_at_wednesday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve1_at_thursday
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.irrigation_valve1_at_friday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve1_at_saturday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve1_at_sunday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_scheduled_valve2
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve2_at_monday
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.irrigation_valve2_at_tuesday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve2_at_wednesday
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.irrigation_valve2_at_thursday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve2_at_friday
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.irrigation_valve2_at_saturday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve2_at_sunday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_scheduled_valve3
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.irrigation_valve3_at_monday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve3_at_tuesday
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.irrigation_valve3_at_wednesday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve3_at_thursday
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.irrigation_valve3_at_friday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve3_at_saturday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.irrigation_valve3_at_sunday
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.cover_closing_at_cold_activated
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.cover_bedroom
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.cover_bath
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.cover_office
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.cover_nursery
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.cover_closed_at_low_temp
 
       #--------------------------------------------------------------------------
       - service: input_datetime.set_datetime
@@ -161,8 +251,16 @@
             time: '08:00:00'
       - service: input_datetime.set_datetime
         data:
-            entity_id: input_datetime.irrigation_start1
+            entity_id: input_datetime.irrigation_start_1
             time: '04:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.irrigation_start_2
+            time: '04:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.irrigation_start_3
+            time: '06:00:00'
       - service: input_datetime.set_datetime
         data:
             entity_id: input_datetime.mowing_start
@@ -228,7 +326,7 @@
       - service: input_number.set_value
         data:
             entity_id: input_number.circulating_pump_activated_before_sleeping
-            value: 5
+            value: 4
       - service: input_number.set_value
         data:
             entity_id: input_number.circulating_pump_on_period
@@ -237,5 +335,50 @@
         data:
             entity_id: input_number.circulating_pump_on_duration
             value: 1
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.soil_moisture1_min_voltage
+            value: 1500
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.soil_moisture1_max_voltage
+            value: 3000
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.soil_moisture2_min_voltage
+            value: 1500
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.soil_moisture2_max_voltage
+            value: 3000
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.soil_moisture3_min_voltage
+            value: 1500
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.soil_moisture3_max_voltage
+            value: 3000
+
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.electricity_meter_threshold_power
+            value: 15000
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.electricity_import_critical_above
+            value: 100
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.battery_state_off_below
+            value: 20
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.electricity_price_in
+            value: 0.08
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.electricity_price_out
+            value: 0.40
 
       #--------------------------------------------------------------------------
