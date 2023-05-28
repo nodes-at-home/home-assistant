@@ -392,6 +392,7 @@ views:
                     - automation.irrigation_count_warm_days_increment
                     - automation.irrigation_count_warm_days_reset
                     - automation.irrigation_set_duration
+                    - automation.waterpump_emergency_stop
               - type: entities
                 title: Rasenmäher
                 show_header_toggle: true

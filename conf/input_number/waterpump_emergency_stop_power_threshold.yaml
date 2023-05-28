@@ -1,0 +1,11 @@
+###
+### 28.05.2023
+###
+
+name: Leistungsschwelle
+mode: slider
+min: 0
+max: 2000
+step: 50
+unit_of_measurement: W
+# initial: 900

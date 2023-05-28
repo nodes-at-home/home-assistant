@@ -122,7 +122,7 @@
       - service: input_boolean.turn_off
         data:
             entity_id: input_boolean.irrigation_valve1_at_tuesday
-      - service: input_boolean.turn_nf
+      - service: input_boolean.turn_on
         data:
             entity_id: input_boolean.irrigation_valve1_at_wednesday
       - service: input_boolean.turn_off
@@ -380,5 +380,13 @@
         data:
             entity_id: input_number.electricity_price_out
             value: 0.40
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.waterpump_emergency_stop_duration
+            value: 20
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.waterpump_emergency_stop_power_threshold
+            value: 900
 
       #--------------------------------------------------------------------------

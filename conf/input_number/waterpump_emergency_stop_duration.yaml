@@ -1,0 +1,11 @@
+###
+### 28.05.2023
+###
+
+name: Dauer erhöhte Leistung
+mode: slider
+min: 10
+max: 60
+step: 10
+unit_of_measurement: min
+# initial: 20

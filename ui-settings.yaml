@@ -71,15 +71,23 @@ views:
         show_header_toggle: false
         entities:
             - input_boolean.irrigation_activated
-            - type: divider
+            - type: section
+              label: Notfallstop
+            - input_number.waterpump_emergency_stop_duration
+            - input_number.waterpump_emergency_stop_power_threshold
+            - type: section
+              label: Steuerparameter
             - input_number.irrigation_rain_threshold
             - input_number.irrigation_no_rain_days_threshold
             - input_number.irrigation_temperature_threshold
             - input_number.irrigation_warm_days_threshold
             - input_number.irrigation_duration
-            - type: divider
-            - input_boolean.irrigation_scheduled_valve1
-            - input_datetime.irrigation_start_1
+            - type: section
+              label: Hecke
+            - entity: input_boolean.irrigation_scheduled_valve1
+              name: Bewässerung geplant
+            - entity: input_datetime.irrigation_start_1
+              name: Startzeit
             - type: buttons
               entities:
                 - entity: input_boolean.irrigation_valve1_at_monday
@@ -96,9 +104,12 @@ views:
                   name: Sa
                 - entity: input_boolean.irrigation_valve1_at_sunday
                   name: So
-            - type: divider
-            - input_boolean.irrigation_scheduled_valve2
-            - input_datetime.irrigation_start_2
+            - type: section
+              label: Hochbeete
+            - entity: input_boolean.irrigation_scheduled_valve2
+              name: Bewässerung geplant
+            - entity: input_datetime.irrigation_start_2
+              name: Startzeit
             - type: buttons
               entities:
                 - entity: input_boolean.irrigation_valve2_at_monday
@@ -115,9 +126,12 @@ views:
                   name: Sa
                 - entity: input_boolean.irrigation_valve2_at_sunday
                   name: So
-            - type: divider
-            - input_boolean.irrigation_scheduled_valve3
-            - input_datetime.irrigation_start_3
+            - type: section
+              label: Rosengarten
+            - entity: input_boolean.irrigation_scheduled_valve3
+              name: Bewässerung geplant
+            - entity: input_datetime.irrigation_start_3
+              name: Startzeit
             - type: buttons
               entities:
                 - entity: input_boolean.irrigation_valve3_at_monday
