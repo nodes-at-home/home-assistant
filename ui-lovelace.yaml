@@ -881,6 +881,21 @@ views:
               - entity: sensor.solar_meter_yearly
                 name: jährlich
                 icon: mdi:solar-power
+          - type: statistics-graph
+            title: Solarproduktion letzte 30 Tage
+            chart_type: line
+            period: day
+            days_to_show: 30
+            entities:
+              - entity: sensor.solar_meter_daily
+                name: tägliche Produktion
+              - entity: sensor.sh10rt_master_daily_pv_generation
+                name: Gartenseite
+              - entity: sensor.sh10rt_slave_daily_pv_generation
+                name: Straßenseite
+              # - sensor.load_meter_daily
+            stat_types:
+              - state
       - type: vertical-stack
         cards:
           - type: gauge
@@ -943,7 +958,7 @@ views:
               - entity: sensor.sh10rt_master_reserved_soc_for_backup
                 name: Reserve für Backup
           - type: statistics-graph
-            title: Battery SoC last 30 days
+            title: SoC letzte 30 Tage
             chart_type: line
             period: day
             days_to_show: 30
