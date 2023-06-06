@@ -580,6 +580,34 @@
         scale: 1
         scan_interval: 10
 
+      - name: sh10rt_master_daily_imported_energy
+        slave: 1
+        address: 13035 # reg 13036
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 1
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        scale: 0.1
+        scan_interval: 600
+
+      - name: sh10rt_master_total_imported_energy
+        slave: 1
+        address: 13036 # reg 13037
+        input_type: input
+        count: 2
+        data_type: uint32
+        swap: word
+        precision: 1
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        scale: 0.1
+        scan_interval: 600
+
       - name: sh10rt_master_daily_battery_charge
         slave: 1
         address: 13039 # reg 13040
@@ -597,6 +625,34 @@
       - name: sh10rt_master_total_battery_charge
         slave: 1
         address: 13040 # reg 13041
+        input_type: input
+        count: 2
+        data_type: uint32
+        swap: word
+        precision: 1
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        scale: 0.1
+        scan_interval: 600
+
+      - name: sh10rt_master_daily_exported_energy
+        slave: 1
+        address: 13044 # reg 13045
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 1
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        scale: 0.1
+        scan_interval: 600
+
+      - name: sh10rt_master_total_exported_energy
+        slave: 1
+        address: 13045 # reg 13046
         input_type: input
         count: 2
         data_type: uint32
