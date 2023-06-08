@@ -41,20 +41,6 @@
             {% endif %}
             {{ result | round ( 0 ) }}
 
-      - name: daily_pv_generation
-        unit_of_measurement: kWh
-        device_class: energy
-        availability: "{{ states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number and states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number }}"
-        state: >
-            {% set result = 0 %}
-            {% if states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number %}
-                {% set result = result + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float %}
-            {% endif %}
-            {% if states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number %}
-                {% set result = result + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float %}
-            {% endif %}
-            {{ result | round ( 1 ) }}
-
       - name: estimated_energy_production_today
         unit_of_measurement: kWh
         device_class: energy
@@ -243,6 +229,28 @@
         state_class: measurement
         availability: "{{ states ( 'sensor.sh10rt_master_load_power' ) | is_number and states ( 'sensor.sh10rt_slave_load_power' ) | is_number }}"
         state: "{{ ( states ( 'sensor.sh10rt_master_load_power' ) | float + states ( 'sensor.sh10rt_slave_load_power' ) | float ) | round ( 0 ) }}"
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.sh10rt_master_daily_pv_generation
+        for: 00:00:10
+      - platform: state
+        entity_id: sensor.sh10rt_slave_daily_pv_generation
+        for: 00:00:10
+    sensor:
+      - name: daily_pv_generation
+        unit_of_measurement: kWh
+        device_class: energy
+        availability: "{{ states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number and states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number }}"
+        state: >
+            {% set result = 0 %}
+            {% if states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number %}
+                {% set result = result + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float %}
+            {% endif %}
+            {% if states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number %}
+                {% set result = result + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float %}
+            {% endif %}
+            {{ result | round ( 1 ) }}
 
   - trigger:
       - platform: state
