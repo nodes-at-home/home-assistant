@@ -81,6 +81,7 @@
                 {% else %}
                     silver
                 {% endif %}
+            level: "{{ states ( 'sensor.sh10rt_master_battery_level' ) | int }} %"
 
   - sensor:
 
