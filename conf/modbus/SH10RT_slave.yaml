@@ -20,7 +20,7 @@
         count: 2
         data_type: uint32
         swap: word
-        scan_interval: 600
+        scan_interval: 86400
 
       - name: sh10rt_slave_protocol_version
         slave: 2
@@ -29,7 +29,7 @@
         count: 2
         data_type: uint32
         swap: word
-        scan_interval: 600
+        scan_interval: 86400
 
       - name: sh10rt_slave_arm_sw_version
         slave: 2
@@ -38,7 +38,7 @@
         count: 15
         data_type: string
         swap: none
-        scan_interval: 600
+        scan_interval: 86400
 
       - name: sh10rt_slave_dsp_sw_version
         slave: 2
@@ -47,7 +47,7 @@
         count: 15
         data_type: string
         swap: none
-        scan_interval: 600
+        scan_interval: 86400
 
       - name: sh10rt_slave_serial_no
         slave: 2
@@ -56,7 +56,7 @@
         count: 10
         data_type: string
         swap: none
-        scan_interval: 600
+        scan_interval: 86400
 
       - name: sh10rt_slave_device_type_code
         slave: 2
@@ -65,7 +65,7 @@
         count: 1
         data_type: uint16
         swap: word
-        scan_interval: 600
+        scan_interval: 86400
 
       - name: sh10rt_slave_daily_pv_generation_and_battery_discharge
         slave: 2
@@ -79,7 +79,7 @@
         device_class: energy
         state_class: total_increasing
         scale: 0.1
-        scan_interval: 600
+        scan_interval: 300
 
       - name: sh10rt_slave_total_pv_generation_and_battery_discharge
         slave: 2
@@ -93,7 +93,7 @@
         device_class: energy
         state_class: total_increasing
         scale: 0.1
-        scan_interval: 600
+        scan_interval: 300
 
       - name: sh10rt_slave_inverter_temperature
         slave: 2
@@ -332,7 +332,7 @@
         device_class: energy
         state_class: total_increasing
         scale: 0.1
-        scan_interval: 600
+        scan_interval: 300
 
       - name: sh10rt_slave_total_pv_generation
         slave: 2
@@ -346,7 +346,7 @@
         device_class: energy
         state_class: total
         scale: 0.1
-        scan_interval: 600
+        scan_interval: 300
 
       - name: sh10rt_slave_load_power
         slave: 2
