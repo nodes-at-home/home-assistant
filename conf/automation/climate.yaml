@@ -1,0 +1,122 @@
+###
+### junand 06.06.2023
+###
+
+  - alias: climate_setpoint_temperature
+    id: climate_setpoint_temperature
+    trigger:
+      - platform: state
+        entity_id: input_number.climate_target_temperature
+    action:
+      - service: input_number.set_value
+        target:
+            entity_id: input_number.climate_setpoint_temperature
+        data:
+            value: "{{ states ( 'input_number.climate_target_temperature' ) }}"
+
+  - alias: climate_schedule
+    id: climate_schedule
+    trigger:
+      - platform: time_pattern
+        minutes: '/15'
+      - platform: state
+        entity_id: group.family_devices
+        to: 'home'
+    condition:
+      - condition: state
+        entity_id: input_boolean.climate_activated
+        state: 'on'
+      - condition: time
+        after: input_datetime.climate_startperiode_begin
+        before: input_datetime.climate_startperiode_end 
+      - condition: state
+        entity_id: group.family_devices
+        state: 'home'
+      - condition: numeric_state
+        entity_id: sensor.openweathermap_forecast_temperature
+        above: input_number.climate_forecast_temperature_threshold
+      - condition: numeric_state
+        entity_id: sensor.sh10rt_master_battery_level
+        above: 95
+    action:
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_scheduled
+  
+  - alias: climate_start
+    id: climate_start
+    trigger:
+      - platform: state
+        entity_id: input_boolean.climate_scheduled
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    action:
+      - repeat:
+            for_each:
+              - office
+              - bedroom
+              - nursery
+            sequence:
+              - if:
+                  - condition: template
+                    value_template: "{{ states ( 'input_boolean.climate_' + repeat.item ) == 'on' }}"
+                then:
+                  - service: input_boolean.turn_on
+                    target:
+                        entity_id: "input_boolean.climate_{{ repeat.item }}_started"
+                  - service: climate.set_temperature
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        temperature: "{{ states ( 'input_number.climate_setpoint_temperature' ) | int }}"
+                        hvac_mode: heat_cool
+                  - service: climate.set_hvac_mode
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        hvac_mode: heat_cool
+                  - service: climate.set_fan_mode
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        fan_mode: auto
+                  - service: climate.set_swing_mode
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        swing_mode: on
+                  - service: climate.set_preset_mode
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        preset_mode: none
+                  - service: climate.turn_on
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                  - service: notify.simplepush
+                    data:
+                        message: "climate.{{ repeat.item }} activated"
+                        title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
+
+  - alias: climate_reset_flags
+    id: climate_reset_flags
+    trigger:
+      - platform: time
+        at: '00:01:00'
+    condition:
+        # check manual flag
+      - condition: state
+        entity_id: input_boolean.climate_activated
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        data:
+            entity_id:
+              - input_boolean.climate_scheduled
+              - input_boolean.climate_office_started
+              - input_boolean.climate_bedroom_started
+              - input_boolean.climate_nursery_started
+

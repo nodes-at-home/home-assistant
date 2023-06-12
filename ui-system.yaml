@@ -346,6 +346,14 @@ views:
                 entities:
                     - automation.ups_status_change
                     - automation.ups_shutdown_on_low_battery
+              - type: entities
+                title: Klimatisierung
+                show_header_toggle: true
+                entities:
+                    - automation.climate_setpoint_temperature
+                    - automation.climate_schedule
+                    - automation.climate_start
+                    - automation.climate_reset_flags
               # - type: entities
                 # title: Solar
                 # show_header_toggle: true

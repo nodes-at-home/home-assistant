@@ -320,3 +320,42 @@ views:
             - input_boolean.cover_bath
             - input_boolean.cover_office
             - input_boolean.cover_nursery
+
+  - title: Klimatisierung
+    path: climate
+    panel: false
+    cards:
+      - type: entities
+        title: Parameter
+        show_header_toggle: false
+        entities:
+            - input_boolean.climate_activated
+            - input_boolean.climate_scheduled
+      - type: entities
+        title: Temperaturen
+        show_header_toggle: false
+        entities:
+            - sensor.openweathermap_forecast_temperature
+            - input_number.climate_target_temperature
+            - input_number.climate_setpoint_temperature
+            - input_number.climate_forecast_temperature_threshold
+      - type: entities
+        title: Startperiode
+        show_header_toggle: false
+        entities:
+            - input_datetime.climate_startperiode_begin
+            - input_datetime.climate_startperiode_end
+      - type: entities
+        title: Geräte
+        entities:
+          - type: buttons
+            entities:
+                - entity: input_boolean.climate_office
+                  name: Büro
+                - entity: input_boolean.climate_bedroom
+                  name: Schlafzimmer
+                - entity: input_boolean.climate_nursery
+                  name: Kinderzimmer
+          - input_boolean.climate_office_started
+          - input_boolean.climate_bedroom_started
+          - input_boolean.climate_nursery_started

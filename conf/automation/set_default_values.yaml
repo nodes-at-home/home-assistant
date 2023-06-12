@@ -203,6 +203,30 @@
       - service: input_boolean.turn_off
         data:
             entity_id: input_boolean.cover_closed_at_low_temp
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_activated
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.climate_scheduled
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.climate_office_started
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.climate_bedroom_started
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.climate_nursery_started
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_office
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_bedroom
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_nursery
 
       #--------------------------------------------------------------------------
       - service: input_datetime.set_datetime
@@ -269,6 +293,14 @@
         data:
             entity_id: input_datetime.mowing_end
             time: '16:30:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.climate_startperiode_begin
+            time: '08:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.climate_startperiode_end
+            time: '12:00:00'
 
       #--------------------------------------------------------------------------
       - service: input_number.set_value
@@ -359,7 +391,6 @@
         data:
             entity_id: input_number.soil_moisture3_max_voltage
             value: 3000
-
       - service: input_number.set_value
         data:
             entity_id: input_number.electricity_meter_threshold_power
@@ -388,5 +419,17 @@
         data:
             entity_id: input_number.waterpump_emergency_stop_power_threshold
             value: 900
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.climate_target_temperature
+            value: 24
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.climate_setpoint_temperature
+            value: 24
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.climate_forecast_temperature_threshold
+            value: 27
 
       #--------------------------------------------------------------------------
