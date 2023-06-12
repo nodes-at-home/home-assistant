@@ -13,6 +13,7 @@
         state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x4 ) > 0 }}"
 
       - name: battery_state
+        availability: "{{ states ( 'sensor.sh10rt_master_battery_level' ) | is_number }}"
         state: >
             {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
             {% set threshold = states ( 'input_number.battery_state_off_below' ) | int %}
