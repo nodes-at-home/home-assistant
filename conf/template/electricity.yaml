@@ -79,24 +79,26 @@
         state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_yearly_out' ) | float * states ( 'input_number.electricity_price_out' ) | float ) | round ( 2 ) ) }}"
 
   - trigger:
-      - platform: state
-        entity_id: sensor.sh10rt_master_daily_imported_energy
-        for: 00:00:10
-      - platform: state
-        entity_id: sensor.sh10rt_master_daily_exported_energy
-        for: 00:00:10
-      - platform: state
-        entity_id: sensor.sh10rt_master_daily_pv_generation
-        for: 00:00:10
-      - platform: state
-        entity_id: sensor.sh10rt_slave_daily_pv_generation
-        for: 00:00:10
-      - platform: state
-        entity_id: sensor.sh10rt_master_daily_battery_discharge
-        for: 00:00:10
-      - platform: state
-        entity_id: sensor.sh10rt_master_daily_battery_charge
-        for: 00:00:10
+      - platform: time_pattern
+        minutes: '/5'
+      # - platform: state
+        # entity_id: sensor.sh10rt_master_daily_imported_energy
+        # for: 00:00:10
+      # - platform: state
+        # entity_id: sensor.sh10rt_master_daily_exported_energy
+        # for: 00:00:10
+      # - platform: state
+        # entity_id: sensor.sh10rt_master_daily_pv_generation
+        # for: 00:00:10
+      # - platform: state
+        # entity_id: sensor.sh10rt_slave_daily_pv_generation
+        # for: 00:00:10
+      # - platform: state
+        # entity_id: sensor.sh10rt_master_daily_battery_discharge
+        # for: 00:00:10
+      # - platform: state
+        # entity_id: sensor.sh10rt_master_daily_battery_charge
+        # for: 00:00:10
     sensor:
       - name: daily_load
         unit_of_measurement: kWh
@@ -113,19 +115,42 @@
                     and states ( 'sensor.electricity_meter_daily_in' ) | is_number
                 }}
         state: >
-                {{
-                    [
-                        (
-                            states ( 'sensor.electricity_meter_daily_in' ) | float
-                            - states ( 'sensor.electricity_meter_daily_out' ) | float
-                            + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float
-                            + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float
-                            + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float
-                            - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float
-                        ),
-                        0
-                    ] | max | round ( 1 )
-                }}
+            {% set t = now() %}
+            {# daily_load is zero on the first 10 minutes of a day, for correct calculation when daily sensors resetting #}
+            {% if t >= today_at("00:00") and t < today_at("00:10") %}
+                {{ 0 }}
+            {% else %}
+                {% set lastvalue = state_attr ( 'sensor.daily_load', 'lastvalue' ) %}
+                {# if no lastvalue found, then the calculated positive value wins #}
+                {% set lastvalue = 0 if not is_number ( lastvalue ) else lastvalue %}
+                {% set value = states ( 'sensor.electricity_meter_daily_in' ) | float
+                             - states ( 'sensor.electricity_meter_daily_out' ) | float
+                             + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float
+                             + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float
+                             + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float
+                             - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float
+                %}
+                {{ [ value, lastvalue ] | max | round ( 1 ) }}
+            {% endif %}
+        attributes:
+            lastvalue: >
+                {% set t = now() %}
+                {# daily_load is zero on the first 10 minutes of a day, for correct calculation when daily sensors resetting #}
+                {% if t >= today_at("00:00") and t < today_at("00:10") %}
+                    {{ 0 }}
+                {% else %}
+                    {% set lastvalue = state_attr ( 'sensor.daily_load', 'lastvalue' ) %}
+                    {# if no lastvalue found, then the calculated positive value wins #}
+                    {% set lastvalue = 0 if not is_number ( lastvalue ) else lastvalue %}
+                    {% set value = states ( 'sensor.electricity_meter_daily_in' ) | float
+                                 - states ( 'sensor.electricity_meter_daily_out' ) | float
+                                 + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float
+                                 + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float
+                                 + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float
+                                 - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float
+                    %}
+                    {{ [ value, lastvalue ] | max | round ( 1 ) }}
+                {% endif %}
 
   - trigger:
       - platform: state
