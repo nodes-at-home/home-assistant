@@ -350,10 +350,9 @@ views:
                 title: Klimatisierung
                 show_header_toggle: true
                 entities:
-                    - automation.climate_setpoint_temperature
-                    - automation.climate_schedule
                     - automation.climate_start
-                    - automation.climate_reset_flags
+                    - automation.climate_supervise_temperature
+                    - automation.climate_target_temperature
               # - type: entities
                 # title: Solar
                 # show_header_toggle: true

@@ -2,20 +2,8 @@
 ### junand 06.06.2023
 ###
 
-  - alias: climate_setpoint_temperature
-    id: climate_setpoint_temperature
-    trigger:
-      - platform: state
-        entity_id: input_number.climate_target_temperature
-    action:
-      - service: input_number.set_value
-        target:
-            entity_id: input_number.climate_setpoint_temperature
-        data:
-            value: "{{ states ( 'input_number.climate_target_temperature' ) }}"
-
-  - alias: climate_schedule
-    id: climate_schedule
+  - alias: climate_start
+    id: climate_start
     trigger:
       - platform: time_pattern
         minutes: '/15'
@@ -24,34 +12,129 @@
         to: 'home'
     condition:
       - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
         entity_id: input_boolean.climate_activated
         state: 'on'
       - condition: time
         after: input_datetime.climate_startperiode_begin
-        before: input_datetime.climate_startperiode_end 
+        before: input_datetime.climate_startperiode_end
       - condition: state
         entity_id: group.family_devices
         state: 'home'
-      - condition: numeric_state
-        entity_id: sensor.openweathermap_forecast_temperature
-        above: input_number.climate_forecast_temperature_threshold
+      - or:
+          - and:
+              - not:
+                  - condition: state
+                    entity_id: sensor.openweathermap_forecast_condition
+                    state: sunny
+              - condition: numeric_state
+                entity_id: sensor.openweathermap_forecast_temperature
+                above: input_number.climate_min_forecast_temperature_sunny
+          - and:
+              - condition: state
+                entity_id: sensor.openweathermap_forecast_condition
+                state: sunny
+              - condition: numeric_state
+                entity_id: sensor.openweathermap_forecast_temperature
+                above: input_number.climate_min_forecast_temperature
       - condition: numeric_state
         entity_id: sensor.sh10rt_master_battery_level
-        above: 95
+        above: input_number.climate_min_battery_level
     action:
-      - service: input_boolean.turn_on
-        data:
-            entity_id: input_boolean.climate_scheduled
-  
-  - alias: climate_start
-    id: climate_start
+      - repeat:
+            for_each:
+              - office
+              - bedroom
+              - nursery
+            sequence:
+              - if:
+                  - condition: template
+                    value_template: >
+                        {# start only climates which are permitted and not running #}
+                        {{
+                            states ( 'input_boolean.climate_start_' + repeat.item ) == 'on'
+                            and states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'off'
+                            and states ( 'climate.' + repeat.item ) == 'off'
+                        }}
+                then:
+                  - service: input_boolean.turn_on
+                    data:
+                        entity_id: "{{ 'input_boolean.climate_' + repeat.item + '_started' }}"
+                  # seting hvac mode swuitches on the climate device; torn_on sets heat_cool mode!!!
+                  - service: climate.set_hvac_mode
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        hvac_mode: "{{ states ( 'input_select.climate_hvac_mode' ) }}"
+                    # setting temperature needs a runnung climate device
+                  - service: script.climate_set_temperature
+                    data:
+                      device: "{{ repeat.item }}"
+                  - service: climate.set_fan_mode
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        fan_mode: "{{ states ( 'input_select.climate_fan_mode' ) }}"
+                  - service: climate.set_swing_mode
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        swing_mode: "{{ states ( 'input_select.climate_swing_mode' ) }}"
+                  - service: climate.set_preset_mode
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        preset_mode: "{{ states ( 'input_select.climate_preset_mode' ) }}"
+
+  - alias: climate_supervise_temperature
+    id: climate_supervise_temperature
     trigger:
       - platform: state
-        entity_id: input_boolean.climate_scheduled
-        to: "on"
+        entity_id: climate.office
+        attribute: current_temperature
+        variables:
+            device: office
+      - platform: state
+        entity_id: climate.bedroom
+        attribute: current_temperature
+        variables:
+            device: bedroom
+      - platform: state
+        entity_id: climate.nursery
+        attribute: current_temperature
+        variables:
+            device: nursery
     condition:
       - condition: state
         entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: template
+        value_template: "{{ states ( 'input_boolean.climate_' + device + '_started' ) == 'on' }}"
+      - condition: state
+        entity_id: input_boolean.climate_activated
+        state: 'on'
+    action:
+      - if:
+          - condition: template
+            value_template: "{{ states ( 'climate.' + device ) != 'off' }}"
+        then:
+          - service: script.climate_set_temperature
+            data:
+              device: "{{ device }}"
+
+  - alias: climate_target_temperature
+    id: climate_target_temperature
+    trigger:
+      - platform: state
+        entity_id: input_number.climate_target_temperature
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.climate_activated
         state: 'on'
     action:
       - repeat:
@@ -62,61 +145,84 @@
             sequence:
               - if:
                   - condition: template
-                    value_template: "{{ states ( 'input_boolean.climate_' + repeat.item ) == 'on' }}"
+                    value_template: "{{ states ( 'climate.' + repeat.item ) != 'off' }}"
                 then:
-                  - service: input_boolean.turn_on
-                    target:
-                        entity_id: "input_boolean.climate_{{ repeat.item }}_started"
-                  - service: climate.set_temperature
-                    target:
-                        entity_id: "climate.{{ repeat.item }}"
+                  - service: script.climate_set_temperature
                     data:
-                        temperature: "{{ states ( 'input_number.climate_setpoint_temperature' ) | int }}"
-                        hvac_mode: heat_cool
-                  - service: climate.set_hvac_mode
-                    target:
-                        entity_id: "climate.{{ repeat.item }}"
-                    data:
-                        hvac_mode: heat_cool
-                  - service: climate.set_fan_mode
-                    target:
-                        entity_id: "climate.{{ repeat.item }}"
-                    data:
-                        fan_mode: auto
-                  - service: climate.set_swing_mode
-                    target:
-                        entity_id: "climate.{{ repeat.item }}"
-                    data:
-                        swing_mode: on
-                  - service: climate.set_preset_mode
-                    target:
-                        entity_id: "climate.{{ repeat.item }}"
-                    data:
-                        preset_mode: none
-                  - service: climate.turn_on
-                    target:
-                        entity_id: "climate.{{ repeat.item }}"
-                  - service: notify.simplepush
-                    data:
-                        message: "climate.{{ repeat.item }} activated"
-                        title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
+                      device: "{{ repeat.item }}"
 
-  - alias: climate_reset_flags
-    id: climate_reset_flags
+  - alias: climate_turn_off
+    id: climate_turn_off
     trigger:
-      - platform: time
-        at: '00:01:00'
+      - platform: numeric_state
+        entity_id: sensor.total_dc_power
+        below: input_number.climate_min_pv_generation
+        for: 
+            minutes: "{{ states ( 'input_number.climate_min_pv_generation_duration' ) }}"
     condition:
-        # check manual flag
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
       - condition: state
         entity_id: input_boolean.climate_activated
         state: 'on'
     action:
-      - service: input_boolean.turn_off
-        data:
-            entity_id:
-              - input_boolean.climate_scheduled
-              - input_boolean.climate_office_started
-              - input_boolean.climate_bedroom_started
-              - input_boolean.climate_nursery_started
+      - repeat:
+            for_each:
+              - office
+              - bedroom
+              - nursery
+            sequence:
+              - if:
+                  - condition: template
+                    value_template: >
+                        {{
+                            states ( 'input_boolean.climate_' + device + '_started' ) == 'on'
+                            and states ( 'input_boolean.climate_stop_' + device ) == 'on'
+                            and states ( 'climate.' + repeat.item ) != 'off'
+                        }}
+                then:
+                  - service: input_boolean.turn_off
+                    data:
+                        entity_id: "{{ 'input_boolean.climate_' + repeat.item + '_started' }}"
+                  - service: climate.turn_off
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
 
+  - alias: climate_night_mode
+    id: climate_night_mode
+    trigger:
+        platform: state
+        entity_id: remote.sony_bravia_tv
+        from: "on"
+        to: "off"
+        for:
+            minutes: 1
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.climate_activated
+        state: 'on'
+    action:
+      - repeat:
+            for_each:
+              - office
+              - bedroom
+              - nursery
+            sequence:
+              - if:
+                  - condition: template
+                    value_template: >
+                        {{
+                            states ( 'input_boolean.climate_' + device + '_started' ) == 'on'
+                            and states ( 'input_boolean.climate_stop_' + device ) == 'on'
+                            and states ( 'climate.' + repeat.item ) != 'off'
+                        }}
+                then:
+                  - service: climate.set_preset_mode
+                    target:
+                        entity_id: "climate.{{ repeat.item }}"
+                    data:
+                        preset_mode: sleep

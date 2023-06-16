@@ -1,0 +1,11 @@
+###
+### 15.06.2023
+###
+
+name: HVAC
+options:
+    - heat
+    - cool
+    - dry
+    - fan_only
+    - heat_cool

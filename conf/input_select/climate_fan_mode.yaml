@@ -1,0 +1,10 @@
+###
+### 15.06.2023
+###
+
+name: Fan
+options:
+    - auto
+    - low
+    - medium
+    - high

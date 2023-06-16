@@ -1,0 +1,12 @@
+###
+### 15.06.2023
+###
+
+name: Mindeststand
+icon: mdi:battery-medium
+mode: slider
+min: 0
+max: 100
+step: 5
+unit_of_measurement: "%"
+# initial: 95

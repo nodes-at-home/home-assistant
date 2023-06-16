@@ -43,6 +43,7 @@ logger:
     # custom_components.becker: debug
     # custom_component.solarman: debug
     # homeassistant.helper.update: debug
+    # custom_components.innova: debug
 
 # -------------------------------------------------------------------------------
 # shell commands
@@ -281,33 +282,33 @@ energy:
 # camera for roborock map
 # https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor
 # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card
-camera:
-  - platform: xiaomi_cloud_map_extractor
-    name: "Roborock S6 ground floor"
-    host: 192.168.2.129
-    token: !secret token_vacuum_ground_floor
-    username: !secret xiaomi_cloud_username
-    password: !secret xiaomi_cloud_password
-    # country: de
-    draw: ['all']
-    attributes:
-      - calibration_points
-      - country
-      - rooms
-      - zones
-  - platform: xiaomi_cloud_map_extractor
-    name: "Roborock S6 first floor"
-    host: 192.168.2.151
-    token: !secret token_vacuum_first_floor
-    username: !secret xiaomi_cloud_username
-    password: !secret xiaomi_cloud_password
-    # country: de
-    draw: ['all']
-    attributes:
-      - calibration_points
-      - country
-      - rooms
-      - zones
+# camera:
+  # - platform: xiaomi_cloud_map_extractor
+    # name: "Roborock S6 ground floor"
+    # host: 192.168.2.129
+    # token: !secret token_vacuum_ground_floor
+    # username: !secret xiaomi_cloud_username
+    # password: !secret xiaomi_cloud_password
+    # # country: de
+    # draw: ['all']
+    # attributes:
+      # - calibration_points
+      # - country
+      # - rooms
+      # - zones
+  # - platform: xiaomi_cloud_map_extractor
+    # name: "Roborock S6 first floor"
+    # host: 192.168.2.151
+    # token: !secret token_vacuum_first_floor
+    # username: !secret xiaomi_cloud_username
+    # password: !secret xiaomi_cloud_password
+    # # country: de
+    # draw: ['all']
+    # attributes:
+      # - calibration_points
+      # - country
+      # - rooms
+      # - zones
 
 # -------------------------------------------------------------------------------
 #
@@ -324,6 +325,7 @@ input_select:       !include_dir_named          conf/input_select
 input_datetime:     !include_dir_named          conf/input_datetime
 scene:              !include                    conf/scene.yaml
 automation:         !include_dir_merge_list     conf/automation
+script:             !include_dir_merge_list     conf/script
 counter:            !include_dir_named          conf/counter
 plant:              !include_dir_named          conf/plant
 mqtt:

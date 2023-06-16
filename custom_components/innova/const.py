@@ -4,4 +4,4 @@ from datetime import timedelta
 
 DOMAIN = "innova"
 MANUFACTURER = "Innova"
-SCAN_INTERVAL = timedelta(minutes=10)
+SCAN_INTERVAL = timedelta(minutes=1)

@@ -2,26 +2,32 @@
 ### 11.06.2021
 ###
 
-climate_scheduled:
-    name: Klimatisierung eingeplant
-    # initial: 'off'
-
 climate_office_started:
-    name: Büro gestartet
+    name: Büro
     # initial: 'off'
 climate_bedroom_started:
-    name: Schlafzimmer gestartet
+    name: Schlafzimmer
     # initial: 'off'
 climate_nursery_started:
-    name: Kinderzimmer gestartet
+    name: Kinderzimmer
     # initial: 'off'
-    
-climate_office:
+
+climate_start_office:
     name: Büro
     # initial: 'on'
-climate_bedroom:
+climate_start_bedroom:
     name: Schlafzimmer
     # initial: 'on'
-climate_nursery:
+climate_start_nursery:
+    name: Kinderzimmer
+    # initial: 'on'
+
+climate_stop_office:
+    name: Büro
+    # initial: 'on'
+climate_stop_bedroom:
+    name: Schlafzimmer
+    # initial: 'on'
+climate_stop_nursery:
     name: Kinderzimmer
     # initial: 'on'

@@ -1,0 +1,41 @@
+###
+### junand 15.06.2023
+###
+
+  - climate_set_temperature:
+        fields:
+            device:
+                name: Gerät
+                description: das Klimagerät
+                advanced: false
+                required: true
+                example: office
+                default: office
+        sequence:
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ states ( 'climate.' + device ) == 'cool' }}"
+                sequence:
+                  - service: climate.set_temperature
+                    target:
+                        entity_id: "climate.{{ device }}"
+                    data:
+                        temperature: >
+                            {% set value = state_attr ( 'climate.' + device, 'current_temperature' ) | float %}
+                            {{ [ value - 1, states ( 'input_number.climate_target_temperature' ) | float ] | max | int }}
+                        hvac_mode: "{{ states ( 'input_select.climate_hvac_mode' ) }}"
+              - conditions:
+                  - condition: template
+                    value_template: "{{ states ( 'climate.' + device ) == 'heat' }}"
+                sequence:
+                  - service: climate.set_temperature
+                    target:
+                        entity_id: "climate.{{ device }}"
+                    data:
+                        temperature: >
+                            {% set value = state_attr ( 'climate.' + device, 'current_temperature' ) | float %}
+                            {{ [ value + 1, states ( 'input_number.climate_target_temperature' ) | float ] | min | int }}
+                        hvac_mode: "{{ states ( 'input_select.climate_hvac_mode' ) }}"
+
+    

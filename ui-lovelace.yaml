@@ -777,6 +777,7 @@ views:
               - entity: sensor.electricity_meter_daily_in
                 name: täglich
                 icon: mdi:transmission-tower-export
+              - sensor.sh10rt_master_daily_imported_energy
               - entity: sensor.electricity_meter_yearly_in
                 name: jährlich
                 icon: mdi:transmission-tower-export
@@ -788,6 +789,7 @@ views:
               - entity: sensor.electricity_meter_daily_out
                 name: täglich
                 icon: mdi:transmission-tower-import
+              - sensor.sh10rt_master_daily_exported_energy
               - entity: sensor.electricity_meter_yearly_out
                 name: jährlich
                 icon: mdi:transmission-tower-import

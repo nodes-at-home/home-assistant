@@ -206,9 +206,24 @@
       - service: input_boolean.turn_on
         data:
             entity_id: input_boolean.climate_activated
-      - service: input_boolean.turn_off
+      - service: input_boolean.turn_on
         data:
-            entity_id: input_boolean.climate_scheduled
+            entity_id: input_boolean.climate_start_office
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_start_bedroom
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_start_nursery
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_stop_office
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_stop_bedroom
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_stop_nursery
       - service: input_boolean.turn_off
         data:
             entity_id: input_boolean.climate_office_started
@@ -218,15 +233,6 @@
       - service: input_boolean.turn_off
         data:
             entity_id: input_boolean.climate_nursery_started
-      - service: input_boolean.turn_on
-        data:
-            entity_id: input_boolean.climate_office
-      - service: input_boolean.turn_on
-        data:
-            entity_id: input_boolean.climate_bedroom
-      - service: input_boolean.turn_on
-        data:
-            entity_id: input_boolean.climate_nursery
 
       #--------------------------------------------------------------------------
       - service: input_datetime.set_datetime
@@ -422,14 +428,48 @@
       - service: input_number.set_value
         data:
             entity_id: input_number.climate_target_temperature
-            value: 24
+            value: 25
       - service: input_number.set_value
         data:
-            entity_id: input_number.climate_setpoint_temperature
-            value: 24
-      - service: input_number.set_value
-        data:
-            entity_id: input_number.climate_forecast_temperature_threshold
+            entity_id: input_number.climate_min_forecast_temperature
             value: 27
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.climate_min_forecast_temperature_sunny
+            value: 24
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.climate_min_battery_level
+            value: 95
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.climate_min_pv_generation
+            value: 2000
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.climate_min_pv_generation_duration
+            value: 10
+
+      #--------------------------------------------------------------------------
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.climate_hvac_mode
+        data:
+          option: cool
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.climate_fan_mode
+        data:
+          option: auto
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.climate_swing_mode
+        data:
+          option: on
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.climate_preset_mode
+        data:
+          option: none
 
       #--------------------------------------------------------------------------
