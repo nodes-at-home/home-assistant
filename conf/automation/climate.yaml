@@ -31,14 +31,14 @@
                     state: sunny
               - condition: numeric_state
                 entity_id: sensor.openweathermap_forecast_temperature
-                above: input_number.climate_min_forecast_temperature_sunny
+                above: input_number.climate_min_forecast_temperature
           - and:
               - condition: state
                 entity_id: sensor.openweathermap_forecast_condition
                 state: sunny
               - condition: numeric_state
                 entity_id: sensor.openweathermap_forecast_temperature
-                above: input_number.climate_min_forecast_temperature
+                above: input_number.climate_min_forecast_temperature_sunny
       - condition: numeric_state
         entity_id: sensor.sh10rt_master_battery_level
         above: input_number.climate_min_battery_level
