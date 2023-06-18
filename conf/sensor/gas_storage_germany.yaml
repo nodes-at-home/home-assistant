@@ -5,7 +5,7 @@
 ### https://community.homesmarthome.eu/t/europas-gasspeicher-fuellstand-in-home-assistant-ueber-die-api-von-agsi-gie-eu/78
 
   - platform: rest
-    # curl https://agsi.gie.eu/api?country=DE --header "x-key: 5db093346fdff3f870dfb06c58367d89"
+    # curl https://agsi.gie.eu/api?country=DE --header "x-key: <<<apikey>>>"
     # hourly
     scan_interval: 3600
     # daily
@@ -32,5 +32,4 @@
       - trend
       - full
       - info
-    value_template: >-
-      {{ value_json.message }}
+    value_template: "{{ value_json.message }}"
