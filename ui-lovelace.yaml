@@ -866,15 +866,24 @@ views:
                 icon: mdi:solar-power-variant-outline
               - type: section
                 label: Vorhersage
-              - entity: sensor.estimated_energy_production_today
+                # solcast
+              - entity: sensor.forecast_today
                 name: heute
-                icon: mdi:solar-power
-              - entity: sensor.power_highest_peak_time_today
-                name: Peak Gartenseite
+              - entity: sensor.peak_time_today
+                name: Peak
                 icon: mdi:summit
-              - entity: sensor.power_highest_peak_time_today_2
-                name: Peak Straßenseite
-                icon: mdi:summit
+              - entity: sensor.api_used
+              - entity: sensor.api_last_polled
+                # forecast solar
+              # - entity: sensor.estimated_energy_production_today
+                # name: heute
+                # icon: mdi:solar-power
+              # - entity: sensor.power_highest_peak_time_today
+                # name: Peak Gartenseite
+                # icon: mdi:summit
+              # - entity: sensor.power_highest_peak_time_today_2
+                # name: Peak Straßenseite
+                # icon: mdi:summit
               - type: section
                 label: Produktion
               - entity: sensor.solar_meter_daily
@@ -944,7 +953,9 @@ views:
                 name: jährlich
                 icon: mdi:battery-arrow-down
               - type: section
-                label: Ströme
+                label: Spannungen und Ströme
+              - entity: sensor.sh10rt_master_battery_voltage
+                name: aktuell
               - entity: sensor.battery_current
                 name: aktuell
               - entity: sensor.sh10rt_master_bms_max_charging_current

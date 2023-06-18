@@ -10,3 +10,5 @@ __pycache__/
 *.pem
 .shopping_list.json
 centronic-stick.db
+blueprints/
+solcast.json
