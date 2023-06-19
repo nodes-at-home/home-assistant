@@ -177,8 +177,8 @@
                   - condition: template
                     value_template: >
                         {{
-                            states ( 'input_boolean.climate_' + device + '_started' ) == 'on'
-                            and states ( 'input_boolean.climate_stop_' + device ) == 'on'
+                            states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'on'
+                            and states ( 'input_boolean.climate_stop_' + repeat.item ) == 'on'
                             and states ( 'climate.' + repeat.item ) != 'off'
                         }}
                 then:
@@ -216,8 +216,8 @@
                   - condition: template
                     value_template: >
                         {{
-                            states ( 'input_boolean.climate_' + device + '_started' ) == 'on'
-                            and states ( 'input_boolean.climate_stop_' + device ) == 'on'
+                            states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'on'
+                            and states ( 'input_boolean.climate_stop_' + repeat.item ) == 'on'
                             and states ( 'climate.' + repeat.item ) != 'off'
                         }}
                 then:
