@@ -233,6 +233,9 @@
       - service: input_boolean.turn_off
         data:
             entity_id: input_boolean.climate_nursery_started
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.dishwasher_activated
 
       #--------------------------------------------------------------------------
       - service: input_datetime.set_datetime
@@ -449,6 +452,14 @@
         data:
             entity_id: input_number.climate_min_pv_generation_duration
             value: 10
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.dishwasher_min_pv_generation
+            value: 2000
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.dishwasher_min_battery_level
+            value: 95
 
       #--------------------------------------------------------------------------
       - service: input_select.select_option

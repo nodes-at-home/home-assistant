@@ -356,6 +356,12 @@ views:
                     - automation.climate_turn_off
                     - automation.climate_night_mode
               - type: entities
+                title: Geschirrspüler
+                show_header_toggle: true
+                entities:
+                    - automation.dishwasher_schedule
+                    - automation.dishwasher_start
+              - type: entities
                 title: Solar
                 show_header_toggle: true
                 entities:

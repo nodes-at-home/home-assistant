@@ -405,3 +405,19 @@ views:
               label: Ausschaltkriterien
             - input_number.climate_min_pv_generation
             - input_number.climate_min_pv_generation_duration
+
+  - title: Geschirrspüler
+    path: dishwasher
+    panel: false
+    cards:
+      - type: entities
+        title: Parameter
+        show_header_toggle: false
+        entities:
+            - input_boolean.dishwasher_activated
+            - input_number.dishwasher_min_pv_generation
+            - input_number.dishwasher_min_battery_level
+            - input_datetime.dishwasher_start
+            - binary_sensor.geschirrspuler_remote_start
+            - binary_sensor.geschirrspuler_door
+            - sensor.geschirrspuler_operation_state

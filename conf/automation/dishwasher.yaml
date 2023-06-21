@@ -1,0 +1,79 @@
+###
+### junand 06.06.2023
+###
+
+  - alias: dishwasher_schedule
+    id: dishwasher_schedule
+    trigger:
+      # - platform: time_pattern
+        # minutes: '/5'
+      - platform: state
+        entity_id: binary_sensor.geschirrspuler_door
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: input_boolean.dishwasher_activated
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.geschirrspuler_door
+        state: 'off'
+      - condition: state
+        entity_id: sensor.geschirrspuler_operation_state
+        state: 'Ready'
+      - condition: state
+        entity_id: binary_sensor.geschirrspuler_remote_control
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.geschirrspuler_remote_start
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.sh10rt_master_battery_level
+        above: input_number.dishwasher_min_battery_level
+    action:
+      - service: input_datetime.set_datetime
+        target:
+            entity_id: input_datetime.dishwasher_start
+        data:
+            datetime: >
+                {% set pv_this_hour = states ( 'sensor.forecast_this_hour' ) | float %}
+                {% set pv_next_hour = states ( 'sensor.forecast_next_hour' ) | float %}
+                {% set min_pv = states ( 'input_number.dishwasher_min_pv_generation' ) | float %}
+                {% if pv_this_hour > min_pv %}
+                    {{  today_at ( now ().strftime('%H:%M:00') )  + timedelta ( seconds = 5 ) }}
+                {% elif pv_next_hour > min_pv %}
+                    {{  today_at ( now ().strftime ( '%H:00:00' ) ) + timedelta ( hours = 1 ) }}
+                {% else %}
+                    {% if today_at ( states ( 'sensor.peak_time_today' ) ) > now () %}
+                        {{ today_at ( states ( 'sensor.peak_time_today' ) ) }}
+                    {% else %}
+                        {{ today_at ( states ( 'sensor.peak_time_tomorrow' ) ) + timedelta ( days = 1 ) }}
+                    {% endif %}
+                {% endif %}
+
+  - alias: dishwasher_start
+    id: dishwasher_start
+    trigger:
+      - platform: time
+        at: input_datetime.dishwasher_start
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.dishwasher_activated
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.geschirrspuler_door
+        state: 'off'
+      - condition: state
+        entity_id: sensor.geschirrspuler_operation_state
+        state: 'Ready'
+      - condition: state
+        entity_id: binary_sensor.geschirrspuler_remote_control
+        state: 'on'
+    action:
+      - service: home_connect.start_program
+        data:
+          device_id: "{{ device_id ( 'Geschirrspüler' ) }}"
+          program: Dishcare.Dishwasher.Program.Quick65
+

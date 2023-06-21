@@ -1,0 +1,12 @@
+###
+### 15.06.2023
+###
+
+name: Mindestproduktion pro Stunde
+icon: mdi:solar-power-variant-outline
+mode: slider
+min: 0
+max: 10000
+step: 100
+unit_of_measurement: "Wh"
+# initial: 2000
