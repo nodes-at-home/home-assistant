@@ -3,7 +3,7 @@
 ###
 
 name: Mindestproduktion PV
-icon: mdi:battery-medium
+icon: mdi:solar-power-variant-outline
 mode: slider
 min: 0
 max: 5000

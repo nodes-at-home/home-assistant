@@ -10,6 +10,15 @@
       - platform: state
         entity_id: group.family_devices
         to: 'home'
+      - platform: state
+        entity_id: input_boolean.climate_activated
+        to: 'on'
+      - platform: state
+        entity_id: input_number.climate_target_temperature
+      - platform: state
+        entity_id: input_number.climate_min_forecast_temperature
+      - platform: state
+        entity_id: input_number.climate_min_forecast_temperature_sunny
     condition:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -159,6 +168,13 @@
         below: input_number.climate_min_pv_generation
         for: 
             minutes: "{{ states ( 'input_number.climate_min_pv_generation_duration' ) }}"
+        variables:
+            immediate_turn_off: false
+      - platform: state
+        entity_id: group.family_devices
+        to: 'not_home'
+        variables:
+            immediate_turn_off: true
     condition:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -177,8 +193,11 @@
                   - condition: template
                     value_template: >
                         {{
-                            states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'on'
-                            and states ( 'input_boolean.climate_stop_' + repeat.item ) == 'on'
+                            immediate_turn_off
+                            or (
+                                states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'on'
+                                and states ( 'input_boolean.climate_stop_' + repeat.item ) == 'on'
+                            )
                             and states ( 'climate.' + repeat.item ) != 'off'
                         }}
                 then:

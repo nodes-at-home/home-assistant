@@ -3,10 +3,10 @@
 ###
 
 name: Unterschreitungsdauer
-icon: mdi:battery-medium
+icon: mdi:timelapse
 mode: slider
 min: 0
 max: 60
 step: 5
 unit_of_measurement: "min"
-# initial: 2000
+# initial: 95
