@@ -6,7 +6,7 @@
     id: climate_start
     trigger:
       - platform: time_pattern
-        minutes: '/15'
+        minutes: '/5'
       - platform: state
         entity_id: group.family_devices
         to: 'home'
@@ -236,7 +236,6 @@
                     value_template: >
                         {{
                             states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'on'
-                            and states ( 'input_boolean.climate_stop_' + repeat.item ) == 'on'
                             and states ( 'climate.' + repeat.item ) != 'off'
                         }}
                 then:
