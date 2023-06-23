@@ -36,7 +36,7 @@
       unit_of_measurement: "%"
       state: "{{ state_attr('sensor.gas_storage_germany', 'trend') }}"
       icon: >
-          {% set val =  state_attr('sensor.gas_storage_germany', 'trend') | int %}
+          {% set val =  state_attr('sensor.gas_storage_germany', 'trend') | is_number | int %}
           {% if val > 0 %}
             mdi:trending-up
           {% elif val == 0 %}
