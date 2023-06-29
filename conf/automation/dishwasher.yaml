@@ -39,7 +39,7 @@
                 {% set pv_next_hour = states ( 'sensor.forecast_next_hour' ) | float %}
                 {% set min_pv = states ( 'input_number.dishwasher_min_pv_generation' ) | float %}
                 {% if pv_this_hour > min_pv %}
-                    {{  today_at ( now ().strftime('%H:%M:00') )  + timedelta ( seconds = 5 ) }}
+                    {{  today_at ( now ().strftime('%H:%M:%S') )  + timedelta ( seconds = 5 ) }}
                 {% elif pv_next_hour > min_pv %}
                     {{  today_at ( now ().strftime ( '%H:00:00' ) ) + timedelta ( hours = 1 ) }}
                 {% else %}
