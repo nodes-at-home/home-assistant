@@ -1,0 +1,13 @@
+###
+### 22.08.2019 split up
+###
+### CPU temperature
+### https://community.home-assistant.io/t/displaying-cpu-temperature-within-home-assistant/8641/11
+
+  - sensor:
+
+        name: cpu_temp
+        scan_interval: 60
+        command: "cat /sys/class/thermal/thermal_zone0/temp"
+        unit_of_measurement: "°C"
+        value_template: '{{ (value | multiply(0.001)) | round(1) }}'

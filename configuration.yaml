@@ -237,10 +237,6 @@ http:
 recorder:
     auto_purge: on
     purge_keep_days: 30
-
-# -------------------------------------------------------------------------------
-# Enables support for tracking state changes over time.
-history:
     include:
         domains:
             - sensor
@@ -249,7 +245,12 @@ history:
             - cover
             - media_player
             - device_tracker
+            - climate
         # entities:
+
+# -------------------------------------------------------------------------------
+# Enables support for tracking state changes over time.
+history:
 
 # -------------------------------------------------------------------------------
 # Enables support for logbook component.
@@ -336,6 +337,7 @@ mqtt:
     cover:          !include_dir_merge_list     conf/mqtt_cover
 utility_meter:      !include_dir_named          conf/utility_meter
 modbus:             !include_dir_merge_list     conf/modbus
+command_line:       !include_dir_merge_list     conf/command_line
 
 # -------------------------------------------------------------------------------
 #
