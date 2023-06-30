@@ -669,3 +669,4 @@ views:
           - sensor.import_power
           - sensor.battery_power
           - sensor.electricity_meter_power
+          - binary_sensor.boiler_ww3wayvalve

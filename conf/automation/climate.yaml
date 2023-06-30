@@ -19,6 +19,18 @@
         entity_id: input_number.climate_min_forecast_temperature
       - platform: state
         entity_id: input_number.climate_min_forecast_temperature_sunny
+      - platform: state
+        entity_id: binary_sensor.fenster_schlafzimmer
+        to: 'off'
+        for: "00:01:00"
+      - platform: state
+        entity_id: binary_sensor.fenster_kinderzimmer
+        to: 'off'
+        for: "00:01:00"
+      - platform: state
+        entity_id: binary_sensor.fenster_arbeitszimmer
+        to: 'off'
+        for: "00:01:00"
     condition:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -54,24 +66,28 @@
     action:
       - repeat:
             for_each:
-              - office
-              - bedroom
-              - nursery
+              - climate: office
+                window: arbeitszimmer
+              - climate: bedroom
+                window: schlafzimmer
+              - climate: nursery
+                window: kinderzimmer
             sequence:
               - if:
                   - condition: template
                     value_template: >
-                        {# start only climates which are permitted and not running #}
+                        {# start only climates which are permittedand not running with closed windows #}
                         {{
-                            states ( 'input_boolean.climate_start_' + repeat.item ) == 'on'
-                            and states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'off'
-                            and states ( 'climate.' + repeat.item ) == 'off'
+                            states ( 'input_boolean.climate_start_' + repeat.item.climate ) == 'on'
+                            and states ( 'input_boolean.climate_' + repeat.item.climate + '_started' ) == 'off'
+                            and states ( 'climate.' + repeat.item.climate ) == 'off'
+                            and states ( 'binary_sensor.fenster_' + repeat.item.window ) == 'off'
                         }}
                 then:
                   - service: input_boolean.turn_on
                     data:
                         entity_id: "{{ 'input_boolean.climate_' + repeat.item + '_started' }}"
-                  # seting hvac mode swuitches on the climate device; torn_on sets heat_cool mode!!!
+                  # setting hvac mode swuitches on the climate device; turn_on service sets heat_cool mode!!!
                   - service: climate.set_hvac_mode
                     target:
                         entity_id: "climate.{{ repeat.item }}"
