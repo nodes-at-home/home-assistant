@@ -437,38 +437,38 @@ views:
         title: Rauchmelder Erdgeschoss
         show_header_toggle: false
         entities:
-            - binary_sensor.rauchwarnmelder_flur
-            - binary_sensor.rauchwarnmelder_flur_battery
+            - binary_sensor.rauchmelder_flur
+            - binary_sensor.rauchmelder_flur_battery
             - type: divider
-            - binary_sensor.rauchwarnmelder_esszimmer
-            - binary_sensor.rauchwarnmelder_esszimmer_battery
+            - binary_sensor.rauchmelder_esszimmer
+            - binary_sensor.rauchmelder_esszimmer_battery
             - type: divider
-            - binary_sensor.rauchwarnmelder_wohnz
-            - binary_sensor.rauchwarnmelder_wohnz_battery
+            - binary_sensor.rauchmelder_wohnzimmer
+            - binary_sensor.rauchmelder_wohnzimmer_battery
             - type: divider
-            - binary_sensor.rauchwarnmelder_hauswirt
-            - binary_sensor.rauchwarnmelder_hauswirt_battery
+            - binary_sensor.rauchmelder_hauswirtsch
+            - binary_sensor.rauchmelder_hauswirtsch_battery
             - type: divider
-            - binary_sensor.rauchwarnmelder_garage
-            - binary_sensor.rauchwarnmelder_garage_battery
+            - binary_sensor.rauchmelder_garage
+            - binary_sensor.rauchmelder_garage_battery
       - type: entities
         title: Rauchmelder Obergeschoss
         show_header_toggle: false
         entities:
-            - binary_sensor.rauchwarnmelder_buro
-            - binary_sensor.rauchwarnmelder_buro_battery
+            - binary_sensor.rauchmelder_buro
+            - binary_sensor.rauchmelder_buro_battery
             - type: divider
-            - binary_sensor.rauchwarnmelder_schlafz
-            - binary_sensor.rauchwarnmelder_schlafz_battery
+            - binary_sensor.rauchmelder_schlafzimmer
+            - binary_sensor.rauchmelder_schlafzimmer_battery
             - type: divider
-            - binary_sensor.rauchwarnmelder_kinderz
-            - binary_sensor.rauchwarnmelder_kinderz_battery
+            - binary_sensor.rauchmelder_kinderzimmer
+            - binary_sensor.rauchmelder_kinderzimmer_battery
             - type: divider
-            - binary_sensor.rauchwarnmelder_galerie
-            - binary_sensor.rauchwarnmelder_galerie_battery
+            - binary_sensor.rauchmelder_galerie
+            - binary_sensor.rauchmelder_galerie_battery
             - type: divider
-            - binary_sensor.rauchwarnmelder_dachboden
-            - binary_sensor.rauchwarnmelder_dachboden_battery
+            - binary_sensor.rauchmelder_dachboden
+            - binary_sensor.rauchmelder_dachboden_battery
       - type: entities
         title: Türkontakte
         show_header_toggle: false
@@ -540,3 +540,8 @@ views:
             - sensor.zwischenstecker_2_communication_quality
             - sensor.zwischenstecker_2_energy
             - sensor.zwischenstecker_2_power
+      - type: entities
+        title: Thermostate
+        show_header_toggle: false
+        entities:
+            - climate.room_climate_galerie

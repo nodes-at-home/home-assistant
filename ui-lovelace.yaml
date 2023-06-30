@@ -256,8 +256,8 @@ views:
                         entity: switch.relay_garden_valve3
                         icon: mdi:watering-can
 
-  - title: Innen
-    path: indoor
+  - title: Haus
+    path: house
     panel: false
     badges:
       - type: entity-filter
@@ -292,131 +292,272 @@ views:
         entities:
           - binary_sensor.bewegungsmelder1
           - binary_sensor.smokedetectionsystem
-          - binary_sensor.rauchwarnmelder_esszimmer
-          - binary_sensor.rauchwarnmelder_wohnz
-          - binary_sensor.rauchwarnmelder_flur
-          - binary_sensor.rauchwarnmelder_hauswirt
-          - binary_sensor.rauchwarnmelder_galerie
-          - binary_sensor.rauchwarnmelder_schlafz
-          - binary_sensor.rauchwarnmelder_buro
-          - binary_sensor.rauchwarnmelder_kinderz
+          - binary_sensor.rauchmelder_esszimmer
+          - binary_sensor.rauchmelder_wohnzimmer
+          - binary_sensor.rauchmelder_flur
+          - binary_sensor.rauchmelder_hauswirtsch
+          - binary_sensor.rauchmelder_galerie
+          - binary_sensor.rauchmelder_schlafzimmer
+          - binary_sensor.rauchmelder_buro
+          - binary_sensor.rauchmelder_kinderzimmer
         state_filter:
           - "on"
+      - type: entity-filter
+        entities:
+          - entity: binary_sensor.eingangstur
+          - entity: binary_sensor.nebentur
+          - entity: binary_sensor.garagentur
+          - entity: binary_sensor.garagentor
+          - entity: binary_sensor.terassentur_kuche
+          - entity: binary_sensor.terassentur_esszimmer
+          - entity: binary_sensor.terassentur_wohnzimmer
+          - entity: binary_sensor.fenster_arbeitszimmer
+          - entity: binary_sensor.dachfenster_arbeitszimmer
+          - entity: binary_sensor.fenster_kinderzimmer
+          - entity: binary_sensor.dachfenster_kinderzimmer
+          - entity: binary_sensor.fenster_schlafzimmer
+          - entity: binary_sensor.dachfenster_schlafzimmer
+          - entity: binary_sensor.fenster_bad
+          - entity: binary_sensor.dachfenster_bad
+          - entity: binary_sensor.eingangstur
+          - entity: binary_sensor.nebentur
+          - entity: input_boolean.cover_closed_at_low_temp
+        state_filter:
+          # on = open, off = closed
+          - "on"
     cards:
-      - type: glance
-        title: Erdgeschoss
-        columns: 3
-        entities:
-          - light.rfhub_lounge_lampkitchenshortstrip
-          - light.rfhub_lounge_lampkitchenlongstrip
-          - light.led_kitchen_led
-          - entity: light.relay_dining1_lamp
-            name: Linker Schrank
-          - entity: light.relay_dining2_lamp
-            name: Rechter Schrank
-          - light.rfhub_lounge_lamptree
-          - light.rfhub_lounge_lightweb
-          - light.ws2812_xmasstar
-          # Xmas
-          # - light.xmastreedining_leds
-          - light.rfhub_lounge_lamploungewhiteball
-          - light.rfhub_lounge_lamploungeblackbowl
-          - light.rfhub_lounge_lamploungereading
-          - light.rfhub_lounge_lampstudypillar
-          - light.led_corridor_led
-          - light.pitouch_corridor_screen
-          # - sensor.pitouch_corridor_ambientlight
-          - light.shelly_shower_socket
-          - switch.sonoff_utilityroom_pump
-          - entity: binary_sensor.rauchwarnmelder_esszimmer
-            name: Esszimmer (Rauchwarnmelder)
-          - entity: binary_sensor.rauchwarnmelder_wohnz
-            name: Wohnzimmer (Rauchwarnmelder)
-          - entity: binary_sensor.rauchwarnmelder_flur
-            name: Flur (Rauchwarnmelder)
-          - entity: binary_sensor.rauchwarnmelder_hauswirt
-            name: Hauswirtschaftsraum (Rauchwarnmelder)
-          - sensor.geschirrspuler_operation_state
-          - binary_sensor.geschirrspuler_door
-      - type: glance
-        title: Obergeschoss
-        columns: 3
-        entities:
-          - light.sonoff_gallery1_socket
-          - light.sonoff_bedroom_socket
-          - light.sonoff_corridor_lamp
-          - light.shelly_bath_socket
-          - switch.sonoff_k8200_socket
-          # - sensor.bedroom_temperature
-          # - sensor.office_temperature
-          # - sensor.nursery_temperature
-          - type: thermostat
-            entity: climate.office
-          - type: thermostat
-            entity: climate.bedroom
-          - type: thermostat
-            entity: climate.nursery
-          - entity: binary_sensor.rauchwarnmelder_galerie
-            name:  Galerie (Rauchwarnmelder)
-          - entity: binary_sensor.rauchwarnmelder_schlafz
-            name:  Schlafzimmer (Rauchwarnmelder)
-          - entity: binary_sensor.rauchwarnmelder_buro
-            name:  Büro (Rauchwarnmelder)
-          - entity: binary_sensor.rauchwarnmelder_kinderz
-            name:  Kinderzimmer (Rauchwarnmelder)
-      - type: glance
-        title: Dachgeschoss
-        columns: 3
-        entities:
-          - binary_sensor.dachboden
-          - light.shelly_roof_socket
-          - entity: binary_sensor.rauchwarnmelder_dachboden
-            name: Dachgeschoss (Rauchwarnmelder)
+
       - type: vertical-stack
+        title: Erdgeschoss
+        cards:
+          - type: glance
+            title: Küche
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - light.rfhub_lounge_lampkitchenshortstrip
+              - light.rfhub_lounge_lampkitchenlongstrip
+              - entity: light.led_kitchen_led
+                name: Arbeitslicht
+              - entity: sensor.geschirrspuler_operation_state
+                name: Geschirrspüler
+              - entity: binary_sensor.geschirrspuler_door
+                name: Geschirrspüler
+              - entity: binary_sensor.terassentur_kuche
+                name: Terassentür
+          - type: glance
+            title: Esszimmer
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - entity: light.relay_dining1_lamp
+                name: Linker Schrank
+              - entity: light.relay_dining2_lamp
+                name: Rechter Schrank
+              - light.rfhub_lounge_lamptree
+              - light.rfhub_lounge_lightweb
+              - light.ws2812_xmasstar
+              # Xmas
+              # - light.xmastreedining_leds
+              - entity: binary_sensor.terassentur_esszimmer
+                name: Terassentür
+              - entity: binary_sensor.rauchmelder_esszimmer
+                name: Rauchmelder
+          - type: glance
+            title: Wohnzimmer
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - entity: light.rfhub_lounge_lamploungewhiteball
+                name: Stehlampe Couch
+              - entity: light.rfhub_lounge_lamploungeblackbowl
+              - entity: light.rfhub_lounge_lamploungereading
+              - entity: light.rfhub_lounge_lampstudypillar
+                name: Stehlampe Drucker
+              - entity: binary_sensor.terassentur_wohnzimmer
+                name: Terassentür
+              - entity: binary_sensor.rauchmelder_wohnzimmer
+                name: Rauchmelder
+          - type: glance
+            title: Flur / Korridor / Dusche
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - entity: light.shelly_shower_socket
+                name: Beleuchtung
+              - light.led_corridor_led
+              - light.pitouch_corridor_screen
+              - entity: binary_sensor.eingangstur
+              - entity: binary_sensor.rauchmelder_flur
+                name: Rauchmelder
+          - type: glance
+            title: Hauswirtschaftsraum
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - switch.sonoff_utilityroom_pump
+              - entity: binary_sensor.nebentur
+              - entity: binary_sensor.rauchmelder_hauswirtsch
+                name: Rauchmelder
+
+
+      - type: vertical-stack
+        title: Obergeschoss
+        cards:
+          - type: glance
+            title: Galerie
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - light.sonoff_gallery1_socket
+              - entity: climate.room_climate_galerie
+                name: Thermostat
+              - entity: binary_sensor.rauchmelder_galerie
+                name:  Rauchmelder
+          - type: glance
+            title: Schlafzimmer
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - light.sonoff_bedroom_socket
+              - type: thermostat
+                entity: climate.bedroom
+                name: Klimaanlage
+              - entity: binary_sensor.fenster_schlafzimmer
+                name: Fenster
+              - entity: binary_sensor.dachfenster_schlafzimmer
+                name: Dachfenster
+              - entity: cover.bedroom
+                name: Rolladen
+              - entity: binary_sensor.rauchmelder_schlafzimmer
+                name:  Rauchmelder
+              # - switch.fenster_schlafzimmer
+          - type: glance
+            title: Kinderzimmer
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - type: thermostat
+                entity: climate.nursery
+                name: Klimaanlage
+              - entity: binary_sensor.dachfenster_kinderzimmer
+                name: Dachfenster
+              - entity: cover.nursery
+                name: Rolladen
+              - entity: binary_sensor.rauchmelder_kinderzimmer
+                name:  Rauchmelder
+              # - switch.fenster_kinderzimmer
+          - type: glance
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            title: Arbeitszimmer
+            columns: 3
+            entities:
+              - light.sonoff_corridor_lamp
+              - switch.sonoff_k8200_socket
+              - type: thermostat
+                entity: climate.office
+                name: Klimaanlage
+              - entity: binary_sensor.fenster_arbeitszimmer
+                name: Fenster
+              - entity: binary_sensor.dachfenster_arbeitszimmer
+                name: Dachfenster
+              - entity: cover.office
+                name: Rolladen
+              - entity: binary_sensor.rauchmelder_buro
+                name:  Rauchmelder
+              # - switch.fenster_arbeitszimmer
+          - type: glance
+            title: Bad
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - entity: light.shelly_bath_socket
+                name: Beleuchtung
+              - entity: binary_sensor.dachfenster_bad
+                name: Dachfenster
+              - entity: cover.bath
+                name: Rolladen
+
+      - type: vertical-stack
+        title: Dachgeschoss
+        cards:
+          - type: glance
+            title: Dachgeschoss
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+              - entity: binary_sensor.dachboden
+                name: Bodenluke
+              - entity: light.shelly_roof_socket
+                name: Beleuchtung
+              - entity: binary_sensor.rauchmelder_dachboden
+                name: Rauchmelder
+
+      - type: vertical-stack
+        title: Pflanzen
         cards:
           - type: plant-status
             name: Goldfruchtpalme - Dypsis lutescens
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
             link: https://www.mein-schoener-garten.de/pflanzen/goldfruchtpalme/goldfruchtpalme
             entity: plant.goldfruchtpalme_flowercare
           - type: plant-status
             name: Birkenfeige - Ficus benjamina
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
             link: https://www.mein-schoener-garten.de/pflanzen/feige/birkenfeige
             entity: plant.birkenfeige_flowercare
           - type: plant-status
             name: Riesen-Palmlilie - Yucca elephantipes
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
             link: https://www.mein-schoener-garten.de/pflanzen/palmlilie-yucca/yucca-palme
             entity: plant.palmlilie_flowercare
           - type: plant-status
             name: Bogenhanf - Sansevieria trifasciata
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
             link: https://www.mein-schoener-garten.de/pflanzen/bogenhanf-sansevieria
             entity: plant.bogenhanf_flowercare
           - type: plant-status
             name: Korbmarante - Calathea rufibarba
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
             link: https://www.mein-schoener-garten.de/pflanzen/korbmarante/calathea-rufibarba
             entity: plant.korbmarante_flowercare
           - type: plant-status
             name: Fensterblatt - Monstera deliciosa
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
             link: https://www.mein-schoener-garten.de/pflanzen/fensterblatt/monstera-fensterblatt
             entity: plant.fensterblatt_flowercare
           - type: plant-status
             name: Gummibaum - Ficus elastica
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
             link: https://www.mein-schoener-garten.de/pflanzen/feige/gummibaum
             entity: plant.gummibaum_flowercare
           - type: plant-status
             name: Fiederaralie - Polyscias
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
             link: https://www.mein-schoener-garten.de/pflanzen/fiederaralie/fiederaralie
             entity: plant.fiederaralie_flowercare
-      # - type: vertical-stack
-        # cards:
-          # - type: thermostat
-            # entity: climate.office
-          # - type: thermostat
-            # entity: climate.bedroom
-          # - type: thermostat
-            # entity: climate.nursery
 
-  - title: Außen
-    path: outdoor
+  - title: Garten
+    path: garden
     panel: false
     badges:
       - sensor.rain_garden_precipitation_last7d
@@ -427,306 +568,294 @@ views:
       - sensor.dht22_terrace_temperature_max
       - type: entity-filter
         entities:
-          - entity: binary_sensor.eingangstur
-          - entity: binary_sensor.nebentur
           - entity: binary_sensor.garagentur
           - entity: binary_sensor.garagentor
-          - entity: binary_sensor.terassentur_kuche
-          - entity: binary_sensor.terassentur_esszimmer
-          - entity: binary_sensor.terassentur_wohnzimmer
-          - entity: binary_sensor.dachfenster_arbeitszimmer
-          - entity: binary_sensor.dachfenster_kinderzimmer
-          - entity: binary_sensor.dachfenster_schlafzimmer
-          - entity: binary_sensor.dachfenster_bad
         state_filter:
           # on = open, off = closed
           - "on"
     cards:
-      - type: glance
+
+      - type: vertical-stack
         title: Außenlichter
-        columns: 3
-        entities:
-          - entity: light.shelly_terrace_lamp
-            name: Terasse
-          - entity: light.relay_backyard_lamp
-            name: Hinterhof
-          - entity: light.sonoff_garage_lamp
-            name: Garage
-          - entity: light.sonoff_yardgate_lamp
-            name: Gartentor
-          # - light.ws2812_terrace1
-          # - light.ws2812_terrace2
-          - entity: light.rfhub_lounge_schwibbogen1
-            name: Schwibbogen 1
-          - entity: light.rfhub_lounge_schwibbogen2
-            name: Schwibbogen 2
-          - entity: light.rfhub_lounge_star
-            name: Stern
-          - entity: light.rfhub_lounge_drops
-            name: Tropfen
-      - type: glance
+        cards:
+          - type: glance
+            # title: Außenlichter
+            columns: 3
+            entities:
+              - entity: light.shelly_terrace_lamp
+                name: Terasse
+              - entity: light.relay_backyard_lamp
+                name: Hinterhof
+              - entity: light.sonoff_garage_lamp
+                name: Garage
+              - entity: light.sonoff_yardgate_lamp
+                name: Gartentor
+              # - light.ws2812_terrace1
+              # - light.ws2812_terrace2
+              - entity: light.rfhub_lounge_schwibbogen1
+                name: Schwibbogen 1
+              - entity: light.rfhub_lounge_schwibbogen2
+                name: Schwibbogen 2
+              - entity: light.rfhub_lounge_star
+                name: Stern
+              - entity: light.rfhub_lounge_drops
+                name: Tropfen
+
+      - type: vertical-stack
         title: Garten
-        columns: 3
-        entities:
-            - switch.relay_garden_valve1
-            - switch.relay_garden_valve2
-            - switch.relay_garden_valve3
-            - sensor.soil_garden_temperature1
-            - sensor.soil_garden_temperature2
-            - sensor.soil_garden_temperature3
-            - sensor.soil_garden_moisture1
-            - sensor.soil_garden_moisture2
-            - sensor.soil_garden_moisture3
-            - switch.sonoff_pool_socket
-            - entity: switch.wasserpumpe
-              icon: mdi:water-pump
-            - sensor.wasserpumpe_power
-      - type: glance
+        cards:
+          - type: glance
+            title: Bewässerung
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+                - switch.relay_garden_valve1
+                - switch.relay_garden_valve2
+                - switch.relay_garden_valve3
+                - sensor.soil_garden_temperature1
+                - sensor.soil_garden_temperature2
+                - sensor.soil_garden_temperature3
+                - sensor.soil_garden_moisture1
+                - sensor.soil_garden_moisture2
+                - sensor.soil_garden_moisture3
+                - switch.sonoff_pool_socket
+                - entity: switch.wasserpumpe
+                  icon: mdi:water-pump
+                - sensor.wasserpumpe_power
+          - type: conditional
+            conditions:
+              - entity: vacuum.sileno
+                state_not: unavailable
+            card:
+                type: vertical-stack
+                cards:
+                  - type: picture-elements
+                    title: Rasenmäher
+                    card_mod:
+                        style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+                    image: '/local/images/mower.jpg'
+                    elements:
+                      # central
+                      - type: state-label
+                        entity: vacuum.sileno
+                        tap_action:
+                          action: more-info
+                        style:
+                         top: 14%
+                         right: 38%
+                         color: rgb(255, 255, 255)
+                         transform: translate(0%,-50%)
+                         font-family: Trebuchet MS
+                         font-size: 150%
+                         font-weight: bold
+                         border-color: rgb(34, 154, 210)
+                         border-radius: 6px
+                         background-color: '#cccccc'
+                      - type: state-label
+                        entity: vacuum.sileno
+                        attribute: operating_hours
+                        prefix: "Zeit: "
+                        suffix: " h"
+                        style:
+                          top: 79%
+                          left: 45%
+                          color: '#84a6ba'
+                          transform: translate(0%,-50%)
+                          pointer-events: none
+                          font-family: Trebuchet MS
+                          font-size: 80%
+                          font-weight: bold
+                      # left
+                      - type: state-label
+                        entity: sensor.vacuum_operation
+                        style:
+                         top: 10%
+                         left: 1%
+                         color: rgb(255, 255, 255)
+                         transform: translate(0%,-50%)
+                         pointer-events: none
+                         font-family: Trebuchet MS
+                         font-size: 90%
+                         font-weight: bold
+                         border-color: rgb(34, 154, 210)
+                         background-color: '#3090C7'
+                         border-radius: 6px
+                      - type: state-label
+                        entity: vacuum.sileno
+                        attribute: activity
+                        prefix: "Status: "
+                        style:
+                          top: 40%
+                          left: 1%
+                          color: '#ffffff'
+                          transform: translate(0%,-50%)
+                          pointer-events: none
+                          font-family: Trebuchet MS
+                          font-size: 80%
+                          font-weight: bold
+                          border-left-style: solid
+                          border-color: '#3090C7'
+                      - type: state-label
+                        entity: sensor.sileno_battery_level
+                        prefix: "Batterie: "
+                        style:
+                          top: 50%
+                          left: 1%
+                          color: '#ffffff'
+                          transform: translate(0%,-50%)
+                          pointer-events: none
+                          font-family: Trebuchet MS
+                          font-size: 80%
+                          font-weight: bold
+                          border-left-style: solid
+                          border-color: rgb(34, 154, 210)
+                      - type: state-label
+                        entity: vacuum.sileno
+                        attribute: error
+                        prefix: "Fehler: "
+                        style:
+                          top: 60%
+                          left: 1%
+                          color: '#ffffff'
+                          transform: translate(0%,-50%)
+                          pointer-events: none
+                          font-family: Trebuchet MS
+                          font-size: 80%
+                          font-weight: bold
+                          border-left-style: solid
+                          border-color: rgb(34, 154, 210)
+                      - type: state-label
+                        entity: vacuum.sileno
+                        attribute: last_error
+                        prefix: "Meldung: "
+                        style:
+                          top: 70%
+                          left: 1%
+                          color: '#ffffff'
+                          transform: translate(0%,-50%)
+                          pointer-events: none
+                          font-family: Trebuchet MS
+                          font-size: 80%
+                          font-weight: bold
+                          border-left-style: solid
+                          border-color: rgb(34, 154, 210)
+                      # bottom
+                      - type: icon
+                        icon: mdi:play
+                        tap_action:
+                          action: call-service
+                          service: vacuum.start
+                          service_data:
+                              entity_id: vacuum.sileno
+                        style:
+                         top: 90%
+                         left: 35%
+                         color: '#3090C7'
+                      - type: icon
+                        icon: mdi:stop
+                        tap_action:
+                          action: call-service
+                          service: vacuum.stop
+                          service_data:
+                              entity_id: vacuum.sileno
+                        style:
+                         top: 90%
+                         left: 50%
+                         color: '#3090C7'
+                      - type: icon
+                        icon: mdi:home
+                        tap_action:
+                          action: call-service
+                          service: vacuum.return_to_base
+                          service_data:
+                              entity_id: vacuum.sileno
+                        style:
+                         top: 90%
+                         left: 65%
+                         color: '#3090C7'
+                      # right
+                      - type: state-label
+                        entity: vacuum.sileno
+                        attribute: rf_link_state
+                        #prefix: "Netzwerk: "
+                        style:
+                         top: 10%
+                         right: 1%
+                         color: rgb(255, 255, 255)
+                         transform: translate(0%,-50%)
+                         pointer-events: none
+                         font-family: Trebuchet MS
+                         font-size: 90%
+                         font-weight: bold
+                         border-color: rgb(34, 154, 210)
+                         background-color: '#3090C7'
+                         border-radius: 6px
+                      - type: state-label
+                        entity: vacuum.sileno
+                        attribute: rf_link_level
+                        prefix: "Level: "
+                        style:
+                          top: 40%
+                          right: 1%
+                          color: '#ffffff'
+                          transform: translate(0%,-50%)
+                          pointer-events: none
+                          font-family: Trebuchet MS
+                          font-size: 76%
+                          font-weight: bold
+                          border-right-style: solid
+                          border-color: rgb(34, 154, 210)
+                  - type: entities
+                    entities:
+                    - entity: sensor.sileno_battery_level
+
+      - type: vertical-stack
         title: Garage
-        columns: 3
-        entities:
-          - cover.relay_garage
-          - sensor.relay_garage_state
-          - binary_sensor.rauchwarnmelder_garage
-      - type: glance
-        title: Fenster
-        columns: 3
-        entities:
-            - input_boolean.cover_closed_at_low_temp
-            - binary_sensor.dachfenster_arbeitszimmer
-            - binary_sensor.dachfenster_schlafzimmer
-            - binary_sensor.dachfenster_bad
-            - binary_sensor.dachfenster_kinderzimmer
-            - cover.office
-            - cover.bedroom
-            - cover.bath
-            - cover.nursery
-      - type: glance
-        title: Türen
-        columns: 3
-        entities:
-            - binary_sensor.eingangstur
-            - binary_sensor.nebentur
-            - binary_sensor.garagentur
-            - binary_sensor.garagentor
-            - binary_sensor.terassentur_kuche
-            - binary_sensor.terassentur_esszimmer
-            - binary_sensor.terassentur_wohnzimmer
-      - type: conditional
-        conditions:
-          - entity: sensor.ds18b20_pool_temperature
-            state_not: unknown
-        card:
-            type: vertical-stack
-            cards:
-              - type: gauge
-                name: Pooltemperatur
-                entity: sensor.ds18b20_pool_temperature
-                min: 15
-                max: 30
-                unit: °C
-              - type: gauge
-                name: Akkuspannung
-                entity: sensor.ds18b20_pool_voltage
-                min: 2.5
-                max: 4.5
-                unit: V
-                severity:
-                    green:  3.9
-                    yellow: 3.2
-                    red:    0.0
-              - type: history-graph
-                title: Temperaturen und Akkuspannung
-                hours_to_show: 168 # one week
-                refersh_interval: 1800 # 30 min
-                entities:
-                  - sensor.ds18b20_pool_temperature
-                  - sensor.dht22_terrace_temperature
-                  - sensor.ds18b20_pool_voltage
-      - type: conditional
-        conditions:
-          - entity: vacuum.sileno
-            state_not: unavailable
-        card:
-            type: vertical-stack
-            cards:
-              - type: picture-elements
-                title: Rasenmäher
-                image: '/local/images/mower.jpg'
-                elements:
-                  # central
-                  - type: state-label
-                    entity: vacuum.sileno
-                    tap_action:
-                      action: more-info
-                    style:
-                     top: 14%
-                     right: 38%
-                     color: rgb(255, 255, 255)
-                     transform: translate(0%,-50%)
-                     font-family: Trebuchet MS
-                     font-size: 150%
-                     font-weight: bold
-                     border-color: rgb(34, 154, 210)
-                     border-radius: 6px
-                     background-color: '#cccccc'
-                  - type: state-label
-                    entity: vacuum.sileno
-                    attribute: operating_hours
-                    prefix: "Zeit: "
-                    suffix: " h"
-                    style:
-                      top: 79%
-                      left: 45%
-                      color: '#84a6ba'
-                      transform: translate(0%,-50%)
-                      pointer-events: none
-                      font-family: Trebuchet MS
-                      font-size: 80%
-                      font-weight: bold
-                  # left
-                  - type: state-label
-                    entity: sensor.vacuum_operation
-                    style:
-                     top: 10%
-                     left: 1%
-                     color: rgb(255, 255, 255)
-                     transform: translate(0%,-50%)
-                     pointer-events: none
-                     font-family: Trebuchet MS
-                     font-size: 90%
-                     font-weight: bold
-                     border-color: rgb(34, 154, 210)
-                     background-color: '#3090C7'
-                     border-radius: 6px
-                  - type: state-label
-                    entity: vacuum.sileno
-                    attribute: activity
-                    prefix: "Status: "
-                    style:
-                      top: 40%
-                      left: 1%
-                      color: '#ffffff'
-                      transform: translate(0%,-50%)
-                      pointer-events: none
-                      font-family: Trebuchet MS
-                      font-size: 80%
-                      font-weight: bold
-                      border-left-style: solid
-                      border-color: '#3090C7'
-                  - type: state-label
-                    entity: sensor.sileno_battery_level
-                    prefix: "Batterie: "
-                    style:
-                      top: 50%
-                      left: 1%
-                      color: '#ffffff'
-                      transform: translate(0%,-50%)
-                      pointer-events: none
-                      font-family: Trebuchet MS
-                      font-size: 80%
-                      font-weight: bold
-                      border-left-style: solid
-                      border-color: rgb(34, 154, 210)
-                  - type: state-label
-                    entity: vacuum.sileno
-                    attribute: error
-                    prefix: "Fehler: "
-                    style:
-                      top: 60%
-                      left: 1%
-                      color: '#ffffff'
-                      transform: translate(0%,-50%)
-                      pointer-events: none
-                      font-family: Trebuchet MS
-                      font-size: 80%
-                      font-weight: bold
-                      border-left-style: solid
-                      border-color: rgb(34, 154, 210)
-                  - type: state-label
-                    entity: vacuum.sileno
-                    attribute: last_error
-                    prefix: "Meldung: "
-                    style:
-                      top: 70%
-                      left: 1%
-                      color: '#ffffff'
-                      transform: translate(0%,-50%)
-                      pointer-events: none
-                      font-family: Trebuchet MS
-                      font-size: 80%
-                      font-weight: bold
-                      border-left-style: solid
-                      border-color: rgb(34, 154, 210)
-                  # bottom
-                  - type: icon
-                    icon: mdi:play
-                    tap_action:
-                      action: call-service
-                      service: vacuum.start
-                      service_data:
-                          entity_id: vacuum.sileno
-                    style:
-                     top: 90%
-                     left: 35%
-                     color: '#3090C7'
-                  - type: icon
-                    icon: mdi:stop
-                    tap_action:
-                      action: call-service
-                      service: vacuum.stop
-                      service_data:
-                          entity_id: vacuum.sileno
-                    style:
-                     top: 90%
-                     left: 50%
-                     color: '#3090C7'
-                  - type: icon
-                    icon: mdi:home
-                    tap_action:
-                      action: call-service
-                      service: vacuum.return_to_base
-                      service_data:
-                          entity_id: vacuum.sileno
-                    style:
-                     top: 90%
-                     left: 65%
-                     color: '#3090C7'
-                  # right
-                  - type: state-label
-                    entity: vacuum.sileno
-                    attribute: rf_link_state
-                    #prefix: "Netzwerk: "
-                    style:
-                     top: 10%
-                     right: 1%
-                     color: rgb(255, 255, 255)
-                     transform: translate(0%,-50%)
-                     pointer-events: none
-                     font-family: Trebuchet MS
-                     font-size: 90%
-                     font-weight: bold
-                     border-color: rgb(34, 154, 210)
-                     background-color: '#3090C7'
-                     border-radius: 6px
-                  - type: state-label
-                    entity: vacuum.sileno
-                    attribute: rf_link_level
-                    prefix: "Level: "
-                    style:
-                      top: 40%
-                      right: 1%
-                      color: '#ffffff'
-                      transform: translate(0%,-50%)
-                      pointer-events: none
-                      font-family: Trebuchet MS
-                      font-size: 76%
-                      font-weight: bold
-                      border-right-style: solid
-                      border-color: rgb(34, 154, 210)
-              - type: entities
-                entities:
-                - entity: sensor.sileno_battery_level
+        cards:
+          - type: glance
+            columns: 3
+            entities:
+              - cover.relay_garage
+              - sensor.relay_garage_state
+              - binary_sensor.garagentor
+              - binary_sensor.garagentur
+              - binary_sensor.rauchmelder_garage
+
+      - type: vertical-stack
+        title: Pool
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.ds18b20_pool_temperature
+                state_not: unknown
+            card:
+                type: vertical-stack
+                cards:
+                  - type: gauge
+                    name: Pooltemperatur
+                    entity: sensor.ds18b20_pool_temperature
+                    min: 15
+                    max: 30
+                    unit: °C
+                  - type: gauge
+                    name: Akkuspannung
+                    entity: sensor.ds18b20_pool_voltage
+                    min: 2.5
+                    max: 4.5
+                    unit: V
+                    severity:
+                        green:  3.9
+                        yellow: 3.2
+                        red:    0.0
+                  - type: history-graph
+                    title: Temperaturen und Akkuspannung
+                    hours_to_show: 168 # one week
+                    refersh_interval: 1800 # 30 min
+                    entities:
+                      - sensor.ds18b20_pool_temperature
+                      - sensor.dht22_terrace_temperature
+                      # - sensor.ds18b20_pool_voltage
 
   - title: Energie
     path: energy
@@ -986,6 +1115,7 @@ views:
   - title: Staubsauger
     path: vacuum
     panel: false
+    visible: false
     cards:
       - type: custom:xiaomi-vacuum-map-card
         title: Erdgeschoss
