@@ -270,12 +270,6 @@ views:
           - entity: device_tracker.140_dominik_xperia_wlan
         state_filter:
           - "home"
-      - entity: sensor.bedroom_temperature
-        name: Schlafzimmer
-      - entity: sensor.office_temperature
-        name: Büro
-      - entity: sensor.nursery_temperature
-        name: Kinderzimmer
       - type: entity-filter
         entities:
           - plant.goldfruchtpalme_flowercare
@@ -367,8 +361,6 @@ views:
                 name: Rauchmelder
           - type: glance
             title: Wohnzimmer
-            card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
               - entity: light.rfhub_lounge_lamploungewhiteball
@@ -381,6 +373,21 @@ views:
                 name: Terassentür
               - entity: binary_sensor.rauchmelder_wohnzimmer
                 name: Rauchmelder
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ states ( 'sensor.dht22_lounge_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht22_lounge_humidity' ) | round ( 1 ) | string + '%' }}";
+                }
           - type: glance
             title: Flur / Korridor / Dusche
             card_mod:
@@ -396,23 +403,33 @@ views:
                 name: Rauchmelder
           - type: glance
             title: Hauswirtschaftsraum
-            card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
               - switch.sonoff_utilityroom_pump
               - entity: binary_sensor.nebentur
               - entity: binary_sensor.rauchmelder_hauswirtsch
                 name: Rauchmelder
-
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ states ( 'sensor.dht11_utilityroom_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht11_utilityroom_humidity' ) | round ( 1 ) | string + '%' }}";
+                }
 
       - type: vertical-stack
         title: Obergeschoss
         cards:
           - type: glance
             title: Galerie
-            card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
               - light.sonoff_gallery1_socket
@@ -420,10 +437,23 @@ views:
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_galerie
                 name:  Rauchmelder
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ state_attr ( 'climate.room_climate_galerie', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                }
           - type: glance
             title: Schlafzimmer
-            card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
               - light.sonoff_bedroom_socket
@@ -439,10 +469,23 @@ views:
               - entity: binary_sensor.rauchmelder_schlafzimmer
                 name:  Rauchmelder
               # - switch.fenster_schlafzimmer
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ state_attr ( 'climate.bedroom', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                }
           - type: glance
             title: Kinderzimmer
-            card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
               - type: thermostat
@@ -455,9 +498,22 @@ views:
               - entity: binary_sensor.rauchmelder_kinderzimmer
                 name:  Rauchmelder
               # - switch.fenster_kinderzimmer
-          - type: glance
             card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ state_attr ( 'climate.nursery', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                }
+          - type: glance
             title: Arbeitszimmer
             columns: 3
             entities:
@@ -475,6 +531,21 @@ views:
               - entity: binary_sensor.rauchmelder_buro
                 name:  Rauchmelder
               # - switch.fenster_arbeitszimmer
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ state_attr ( 'climate.office', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                }
           - type: glance
             title: Bad
             card_mod:
@@ -493,8 +564,6 @@ views:
         cards:
           - type: glance
             title: Dachgeschoss
-            card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
               - entity: binary_sensor.dachboden
@@ -503,6 +572,21 @@ views:
                 name: Beleuchtung
               - entity: binary_sensor.rauchmelder_dachboden
                 name: Rauchmelder
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ states ( 'sensor.dht22_roof_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht22_roof_humidity' ) | round ( 1 ) | string + '%' }}";
+                }
 
       - type: vertical-stack
         title: Pflanzen
@@ -579,7 +663,6 @@ views:
         title: Außenlichter
         cards:
           - type: glance
-            # title: Außenlichter
             columns: 3
             entities:
               - entity: light.shelly_terrace_lamp
@@ -613,16 +696,21 @@ views:
                 - switch.relay_garden_valve1
                 - switch.relay_garden_valve2
                 - switch.relay_garden_valve3
+                - entity: switch.wasserpumpe
+                  icon: mdi:water-pump
+                - sensor.wasserpumpe_power
+          - type: glance
+            title: Beete
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
                 - sensor.soil_garden_temperature1
                 - sensor.soil_garden_temperature2
                 - sensor.soil_garden_temperature3
                 - sensor.soil_garden_moisture1
                 - sensor.soil_garden_moisture2
                 - sensor.soil_garden_moisture3
-                - switch.sonoff_pool_socket
-                - entity: switch.wasserpumpe
-                  icon: mdi:water-pump
-                - sensor.wasserpumpe_power
           - type: conditional
             conditions:
               - entity: vacuum.sileno
@@ -822,16 +910,22 @@ views:
               - binary_sensor.garagentur
               - binary_sensor.rauchmelder_garage
 
-      - type: vertical-stack
-        title: Pool
-        cards:
-          - type: conditional
-            conditions:
-              - entity: sensor.ds18b20_pool_temperature
-                state_not: unknown
-            card:
-                type: vertical-stack
+      - type: conditional
+        conditions:
+          - entity:
+                - switch.sonoff_pool_socket
+                - sensor.ds18b20_pool_temperature
+            state_not: unknown
+        card:
+            type: vertical-stack
+            cards:
+              - type: vertical-stack
+                title: Pool
                 cards:
+                  - type: glance
+                    columns: 3
+                    entities:
+                        - switch.sonoff_pool_socket
                   - type: gauge
                     name: Pooltemperatur
                     entity: sensor.ds18b20_pool_temperature
@@ -849,7 +943,7 @@ views:
                         yellow: 3.2
                         red:    0.0
                   - type: history-graph
-                    title: Temperaturen und Akkuspannung
+                    title: Temperaturen
                     hours_to_show: 168 # one week
                     refersh_interval: 1800 # 30 min
                     entities:
