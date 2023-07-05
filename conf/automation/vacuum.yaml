@@ -37,10 +37,10 @@
     action:
       - service: media_player.volume_set
         data_template:
-            entity_id: media_player.sony_bravia_tv
+            entity_id: media_player.sony_kd_55ag9
             volume_level: 0.7
       - service: tts.google_say
-        entity_id: media_player.sony_bravia_tv
+        entity_id: media_player.sony_kd_55ag9
         data_template:
             message: 'Der Saugroboter muss geleert werden!'
             cache: false

@@ -25,12 +25,13 @@ views:
             - input_boolean.light_delay_bath
             - input_boolean.light_delay_shower
       - type: entities
-        title: Fernseher aus
+        title: Fernseher
         entities:
             - input_number.tvoff_lightsoff_delay1
             - input_number.tvoff_lightsoff_delay2
             - input_datetime.tv_off_period_start
             - input_datetime.tv_off_period_end
+            - input_number.notification_tv_on_delay
       - type: entities
         title: Nachtlicht
         entities:

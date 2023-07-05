@@ -88,7 +88,7 @@
         entity_id: group.family_devices
         to: 'not_home'
       - platform: state
-        entity_id: remote.sony_bravia_tv
+        entity_id: remote.sony_kd_55ag9
         from: "on"
         to: "off"
         for:

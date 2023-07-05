@@ -58,7 +58,7 @@
     id: pitouch_screen_off_after_tv_off
     trigger:
         platform: state
-        entity_id: media_player.sony_bravia_tv
+        entity_id: media_player.sony_kd_55ag9
         from: "on"
         to: "off"
         for:

@@ -192,7 +192,7 @@ views:
                   - type: horizontal-stack
                     cards:
                       - type: media-control
-                        entity: media_player.sony_bravia_tv
+                        entity: media_player.sony_kd_55ag9
                       - type: markdown
                         content: " "
               - type: vertical-stack

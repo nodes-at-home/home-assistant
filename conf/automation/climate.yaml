@@ -228,7 +228,7 @@
     id: climate_night_mode
     trigger:
         platform: state
-        entity_id: remote.sony_bravia_tv
+        entity_id: remote.sony_kd_55ag9
         from: "on"
         to: "off"
         for:
