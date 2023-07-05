@@ -9,7 +9,6 @@ views:
     path: system
     panel: false
     badges:
-      ###- configurator.sony_bravia_tv
       - sensor.log_db_file_size
       - sensor.cpu_temp
     cards:
@@ -305,6 +304,11 @@ views:
                     - automation.indoor_lights_on_by_button
                     - automation.indoor_lights_off_by_button
                     - automation.bedroom_lights_toggle
+              - type: entities
+                title: Benachrichtigungen
+                show_header_toggle: true
+                entities:
+                    - automation.notification_open_doors_and_windows
           - type: vertical-stack
             cards:
               - type: entities

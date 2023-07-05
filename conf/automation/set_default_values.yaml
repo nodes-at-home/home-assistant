@@ -460,6 +460,10 @@
         data:
             entity_id: input_number.dishwasher_min_battery_level
             value: 95
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.notification_tv_on_delay
+            value: 5
 
       #--------------------------------------------------------------------------
       - service: input_select.select_option

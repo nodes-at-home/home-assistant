@@ -1,0 +1,11 @@
+###
+### 04.07.2023
+###
+
+name: Meldungen nach
+mode: slider
+min: 1
+max: 60
+step: 1
+unit_of_measurement: min
+# initial: 30
