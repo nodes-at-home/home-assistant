@@ -326,8 +326,6 @@ views:
         cards:
           - type: glance
             title: Küche
-            card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
               - light.rfhub_lounge_lampkitchenshortstrip
@@ -340,10 +338,25 @@ views:
                 name: Geschirrspüler
               - entity: binary_sensor.terassentur_kuche
                 name: Terassentür
+              - entity: climate.room_climate_kuche
+                name: Thermostat
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ state_attr ( 'climate.room_climate_kuche', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                }
           - type: glance
             title: Esszimmer
-            card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
               - entity: light.relay_dining1_lamp
@@ -357,8 +370,25 @@ views:
               # - light.xmastreedining_leds
               - entity: binary_sensor.terassentur_esszimmer
                 name: Terassentür
+              - entity: climate.room_climate_esszimmer
+                name: Thermostat
               - entity: binary_sensor.rauchmelder_esszimmer
                 name: Rauchmelder
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ state_attr ( 'climate.room_climate_esszimmer', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                }
           - type: glance
             title: Wohnzimmer
             columns: 3
@@ -371,6 +401,8 @@ views:
                 name: Stehlampe Drucker
               - entity: binary_sensor.terassentur_wohnzimmer
                 name: Terassentür
+              - entity: climate.room_climate_wohnzimmer
+                name: Thermostat
               - entity: binary_sensor.rauchmelder_wohnzimmer
                 name: Rauchmelder
             card_mod:
@@ -386,27 +418,65 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ states ( 'sensor.dht22_lounge_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht22_lounge_humidity' ) | round ( 1 ) | string + '%' }}";
+                    content: "{{ state_attr ( 'climate.room_climate_wohnzimmer', 'current_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht22_lounge_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
-            title: Flur / Korridor / Dusche
+            title: Flur
+            columns: 3
+            entities:
+              - light.led_corridor_led
+              - light.pitouch_corridor_screen
+              - binary_sensor.eingangstur
+              - entity: climate.room_climate_flur
+                name: Thermostat
+              - entity: binary_sensor.rauchmelder_flur
+                name: Rauchmelder
             card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ state_attr ( 'climate.room_climate_flur', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                }
+          - type: glance
+            title: Dusche
             columns: 3
             entities:
               - entity: light.shelly_shower_socket
                 name: Beleuchtung
-              - light.led_corridor_led
-              - light.pitouch_corridor_screen
-              - entity: binary_sensor.eingangstur
-              - entity: binary_sensor.rauchmelder_flur
-                name: Rauchmelder
+              - entity: climate.room_climate_dusche
+                name: Thermostat
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ state_attr ( 'climate.room_climate_dusche', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                }
           - type: glance
             title: Hauswirtschaftsraum
             columns: 3
             entities:
               - switch.sonoff_utilityroom_pump
-              - entity: binary_sensor.nebentur
+              - binary_sensor.nebentur
+              - entity: climate.room_climate_hauswirtschaftsraum
+                name: Thermostat
               - entity: binary_sensor.rauchmelder_hauswirtsch
                 name: Rauchmelder
             card_mod:
@@ -422,7 +492,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ states ( 'sensor.dht11_utilityroom_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht11_utilityroom_humidity' ) | round ( 1 ) | string + '%' }}";
+                    content: "{{ state_attr ( 'climate.room_climate_hauswirtschaftsraum', 'current_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht11_utilityroom_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
 
       - type: vertical-stack
@@ -466,6 +536,8 @@ views:
                 name: Dachfenster
               - entity: cover.bedroom
                 name: Rolladen
+              - entity: climate.room_climate_schlafzimmer
+                name: Thermostat
               - entity: binary_sensor.rauchmelder_schlafzimmer
                 name:  Rauchmelder
               # - switch.fenster_schlafzimmer
@@ -482,7 +554,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.bedroom', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ state_attr ( 'climate.room_climate_schlafzimmer', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
                 }
           - type: glance
             title: Kinderzimmer
@@ -491,10 +563,14 @@ views:
               - type: thermostat
                 entity: climate.nursery
                 name: Klimaanlage
+              - entity: binary_sensor.fenster_kinderzimmer
+                name: Fenster
               - entity: binary_sensor.dachfenster_kinderzimmer
                 name: Dachfenster
               - entity: cover.nursery
                 name: Rolladen
+              - entity: climate.room_climate_kinderzimmer
+                name: Thermostat
               - entity: binary_sensor.rauchmelder_kinderzimmer
                 name:  Rauchmelder
               # - switch.fenster_kinderzimmer
@@ -511,7 +587,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.nursery', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ state_attr ( 'climate.room_climate_kinderzimmer', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
                 }
           - type: glance
             title: Arbeitszimmer
@@ -528,6 +604,8 @@ views:
                 name: Dachfenster
               - entity: cover.office
                 name: Rolladen
+              - entity: climate.room_climate_arbeitszimmer
+                name: Thermostat
               - entity: binary_sensor.rauchmelder_buro
                 name:  Rauchmelder
               # - switch.fenster_arbeitszimmer
@@ -544,12 +622,10 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.office', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ state_attr ( 'climate.room_climate_arbeitszimmer', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
                 }
           - type: glance
             title: Bad
-            card_mod:
-                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
               - entity: light.shelly_bath_socket
@@ -558,6 +634,23 @@ views:
                 name: Dachfenster
               - entity: cover.bath
                 name: Rolladen
+              - entity: climate.room_climate_bad
+                name: Thermostat
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+                .card-header::after {
+                    flex: 1 1 50%;
+                    color: var(--secondary-text-color);
+                    font-size: 1rem;
+                    text-align: right;
+                    content: "{{ state_attr ( 'climate.room_climate_bad', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                }
 
       - type: vertical-stack
         title: Dachgeschoss
@@ -566,10 +659,10 @@ views:
             title: Dachgeschoss
             columns: 3
             entities:
-              - entity: binary_sensor.dachboden
-                name: Bodenluke
               - entity: light.shelly_roof_socket
                 name: Beleuchtung
+              - entity: binary_sensor.dachboden
+                name: Bodenluke
               - entity: binary_sensor.rauchmelder_dachboden
                 name: Rauchmelder
             card_mod:

@@ -548,4 +548,14 @@ views:
         title: Thermostate
         show_header_toggle: false
         entities:
+            - climate.room_climate_wohnzimmer
+            - climate.room_climate_esszimmer
+            - climate.room_climate_kuche
+            - climate.room_climate_flur
+            - climate.room_climate_dusche
+            - climate.room_climate_hauswirtschaftsraum
             - climate.room_climate_galerie
+            - climate.room_climate_bad
+            - climate.room_climate_arbeitszimmer
+            - climate.room_climate_kinderzimmer
+            - climate.room_climate_schlafzimmer

@@ -660,6 +660,7 @@ views:
           - sensor.boiler_wwcurtemp
           # - sensor.boiler_syspress
           - binary_sensor.boiler_heatingpump
+          - sensor.boiler_heatingpumpmod
           - switch.sonoff_utilityroom_pump
           # - sensor.boiler_heatingpumpmod
           - sensor.boiler_curburnpow
