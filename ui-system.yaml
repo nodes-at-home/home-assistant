@@ -359,6 +359,7 @@ views:
                     - automation.climate_target_temperature
                     - automation.climate_turn_off
                     - automation.climate_night_mode
+                    - automation.climate_turned_off_extern
               - type: entities
                 title: Geschirrspüler
                 show_header_toggle: true

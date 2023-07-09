@@ -224,6 +224,36 @@
                     target:
                         entity_id: "climate.{{ repeat.item }}"
 
+  - alias: climate_turned_off_extern
+    id: climate_turned_off_extern
+    trigger:
+      - platform: state
+        entity_id: climate.office
+        to: 'off'
+        variables:
+            device: office
+      - platform: state
+        entity_id: climate.bedroom
+        to: 'off'
+        variables:
+            device: bedroom
+      - platform: state
+        entity_id: climate.nursery
+        to: 'off'
+        variables:
+            device: nursery
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.climate_activated
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        data:
+            entity_id: "{{ 'input_boolean.climate_' + device + '_started' }}"
+
   - alias: climate_night_mode
     id: climate_night_mode
     trigger:
