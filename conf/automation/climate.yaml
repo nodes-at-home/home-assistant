@@ -209,12 +209,14 @@
                   - condition: template
                     value_template: >
                         {{
-                            immediate_turn_off
-                            or (
-                                states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'on'
-                                and states ( 'input_boolean.climate_stop_' + repeat.item ) == 'on'
+                            states ( 'climate.' + repeat.item ) != 'off'
+                            and (
+                                immediate_turn_off
+                                or (
+                                    states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'on'
+                                    and states ( 'input_boolean.climate_stop_' + repeat.item ) == 'on'
+                                )
                             )
-                            and states ( 'climate.' + repeat.item ) != 'off'
                         }}
                 then:
                   - service: input_boolean.turn_off
