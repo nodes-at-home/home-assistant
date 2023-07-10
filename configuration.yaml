@@ -239,6 +239,7 @@ recorder:
     purge_keep_days: 30
     include:
         domains:
+            - binary_sensor
             - sensor
             - light
             - switch
@@ -257,12 +258,14 @@ history:
 logbook:
     include:
         domains:
+            - binary_sensor
             - sensor
             - light
             - switch
             - cover
             - media_player
             - device_tracker
+            - climate
         # entities:
         
 # -------------------------------------------------------------------------------

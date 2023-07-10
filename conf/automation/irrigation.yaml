@@ -2,20 +2,8 @@
 ### 13.03.2021 new
 ###
 
-  - alias: irrigation_valve1_on
-    id: irrigation_valve1_on
-    trigger:
-      - platform: event
-        event_type:  bosch_shc.event
-        event_data:
-            event_type: SCENARIO
-            event_subtype: 'Wasser an'
-    action:
-      - service: switch.turn_on
-        entity_id: switch.relay_garden_valve1
-
-  - alias: irrigation_valve1_off
-    id: irrigation_valve1_off
+  - alias: irrigation_off
+    id: irrigation_off
     trigger:
       - platform: event
         event_type:  bosch_shc.event
@@ -24,7 +12,46 @@
             event_subtype: 'Wasser aus'
     action:
       - service: switch.turn_off
+        entity_id:
+          - switch.relay_garden_valve1
+          - switch.relay_garden_valve2
+          - switch.relay_garden_valve3
+
+  - alias: irrigation_valve1_on
+    id: irrigation_valve1_on
+    trigger:
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Hecke bewassern'
+    action:
+      - service: switch.turn_on
         entity_id: switch.relay_garden_valve1
+
+  - alias: irrigation_valve2_on
+    id: irrigation_valve2_on
+    trigger:
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Rosengarten bewassern'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.relay_garden_valve2
+
+  - alias: irrigation_valve3_on
+    id: irrigation_valve3_on
+    trigger:
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Hochbeete bewassern'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.relay_garden_valve3
 
   - alias: irrigation_valve1_off_after_timeout
     id: irrigation_valve1_off_after_timeout
