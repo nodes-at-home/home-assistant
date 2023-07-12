@@ -1,0 +1,11 @@
+###
+### 12.07.2022
+###
+
+name: Unplausible Zählerdifferenz
+mode: box
+min: 0
+max: 10000
+step: 100
+unit_of_measurement: Wh
+# initial: 1000

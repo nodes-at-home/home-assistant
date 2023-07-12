@@ -415,11 +415,11 @@
       - service: input_number.set_value
         data:
             entity_id: input_number.electricity_price_in
-            value: 0.08
+            value: 0.40
       - service: input_number.set_value
         data:
             entity_id: input_number.electricity_price_out
-            value: 0.40
+            value: 0.077
       - service: input_number.set_value
         data:
             entity_id: input_number.waterpump_emergency_stop_duration

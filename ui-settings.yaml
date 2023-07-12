@@ -286,6 +286,7 @@ views:
         show_header_toggle: false
         entities:
             - input_number.electricity_meter_threshold_power
+            - input_number.electricity_meter_threshold_energy
       - type: entities
         title: Strombezug
         show_header_toggle: false
