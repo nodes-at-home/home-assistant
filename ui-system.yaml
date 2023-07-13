@@ -507,12 +507,18 @@ views:
         title: Fensterkontakte
         show_header_toggle: false
         entities:
+            - binary_sensor.fenster_arbeitszimmer
+            - binary_sensor.fenster_arbeitszimmer_battery
             - binary_sensor.dachfenster_arbeitszimmer
             - binary_sensor.dachfenster_arbeitszimmer_battery
             - type: divider
+            - binary_sensor.fenster_kinderzimmer
+            - binary_sensor.fenster_kinderzimmer_battery
             - binary_sensor.dachfenster_kinderzimmer
             - binary_sensor.dachfenster_kinderzimmer_battery
             - type: divider
+            - binary_sensor.fenster_schlafzimmer
+            - binary_sensor.fenster_schlafzimmer_battery
             - binary_sensor.dachfenster_schlafzimmer
             - binary_sensor.dachfenster_schlafzimmer_battery
             - type: divider
@@ -548,7 +554,22 @@ views:
             - sensor.zwischenstecker_2_energy
             - sensor.zwischenstecker_2_power
       - type: entities
-        title: Thermostate
+        title: Heizkörperthermostate
+        show_header_toggle: false
+        entities:
+            - binary_sensor.heizkorper_bad_battery
+            - switch.heizkorper_bad_childlock
+            - number.heizkorper_bad_offset
+            - sensor.heizkorper_bad_temperature
+            - sensor.heizkorper_bad_valvetappet
+            - type: divider
+            - binary_sensor.heizkorper_dusche_battery
+            - switch.heizkorper_dusche_childlock
+            - number.heizkorper_dusche_offset
+            - sensor.heizkorper_dusche_temperature
+            - sensor.heizkorper_dusche_valvetappet
+      - type: entities
+        title: Wandthermostate
         show_header_toggle: false
         entities:
             - climate.room_climate_wohnzimmer
