@@ -975,7 +975,7 @@ sensor.relay_garden_version:
 
 #------------------------------------------------------------------------------
 sensor.soil_garden_temperature1:
-    friendly_name: Hochbeet
+    friendly_name: Hinteres Hochbeet
 
 sensor.soil_garden_temperature2:
     friendly_name: Luft
@@ -984,7 +984,7 @@ sensor.soil_garden_temperature3:
     friendly_name: Boden
 
 sensor.soil_garden_moisture1:
-    friendly_name: Hochbeet
+    friendly_name: Hinteres Hochbeet
     icon: mdi:water-percent
 
 sensor.soil_garden_moisture2:
@@ -992,7 +992,7 @@ sensor.soil_garden_moisture2:
     icon: mdi:water-percent
 
 sensor.soil_garden_moisture3:
-    friendly_name: Hecke
+    friendly_name: Vorderes Hochbeet
     icon: mdi:water-percent
 
 sensor.soil_garden_voltage:
