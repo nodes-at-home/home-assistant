@@ -22,15 +22,27 @@
       - platform: state
         entity_id: binary_sensor.fenster_schlafzimmer
         to: 'off'
-        for: "00:01:00"
+        for: "00:00:10"
+      - platform: state
+        entity_id: binary_sensor.dachfenster_schlafzimmer
+        to: 'off'
+        for: "00:00:10"
       - platform: state
         entity_id: binary_sensor.fenster_kinderzimmer
         to: 'off'
-        for: "00:01:00"
+        for: "00:00:10"
+      - platform: state
+        entity_id: binary_sensor.dachfenster_kinderzimmer
+        to: 'off'
+        for: "00:00:10"
       - platform: state
         entity_id: binary_sensor.fenster_arbeitszimmer
         to: 'off'
-        for: "00:01:00"
+        for: "00:00:10"
+      - platform: state
+        entity_id: binary_sensor.dachfenster_arbeitszimmer
+        to: 'off'
+        for: "00:00:10"
     condition:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -44,6 +56,9 @@
       - condition: state
         entity_id: group.family_devices
         state: 'home'
+      - platform: numeric_state
+        entity_id: sensor.total_dc_power
+        above: input_number.climate_min_pv_generation
       - or:
           - and:
               - not:
@@ -76,12 +91,13 @@
               - if:
                   - condition: template
                     value_template: >
-                        {# start only climates which are permittedand not running with closed windows #}
+                        {# start only climates which are permitted, not running and with closed windows #}
                         {{
                             states ( 'input_boolean.climate_start_' + repeat.item.climate ) == 'on'
                             and states ( 'input_boolean.climate_' + repeat.item.climate + '_started' ) == 'off'
                             and states ( 'climate.' + repeat.item.climate ) == 'off'
                             and states ( 'binary_sensor.fenster_' + repeat.item.window ) == 'off'
+                            and states ( 'binary_sensor.dachfenster_' + repeat.item.window ) == 'off'
                         }}
                 then:
                   - service: input_boolean.turn_on
