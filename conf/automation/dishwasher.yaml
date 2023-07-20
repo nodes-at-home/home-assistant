@@ -26,9 +26,6 @@
       - condition: state
         entity_id: binary_sensor.geschirrspuler_remote_start
         state: 'on'
-      - condition: numeric_state
-        entity_id: sensor.sh10rt_master_battery_level
-        above: input_number.dishwasher_min_battery_level
     action:
       - service: input_datetime.set_datetime
         target:
