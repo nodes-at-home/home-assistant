@@ -140,6 +140,9 @@ influxdb:
         - sensor.battery_quarterhourly_out
         - sensor.solar_quarterhourly
         - sensor.load_quarterhourly
+        - sensor.epex_spot_de_lu_price
+        - sensor.epex_spot_de_lu_net_price
+        - sensor.electricity_price
   ignore_attributes:
     - friendly_name
     - icon

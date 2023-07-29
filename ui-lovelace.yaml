@@ -1121,6 +1121,12 @@ views:
                 name: täglich
               - entity: sensor.electricity_yearly_out_returns
                 name: jährlich
+              - type: section
+                label: Strombörse
+              - entity: sensor.epex_spot_de_lu_price
+                name: EPEX
+              - entity: sensor.epex_spot_de_lu_net_price
+                name: ostrom (SimplyDynamic)
       - type: vertical-stack
         cards:
           - type: gauge

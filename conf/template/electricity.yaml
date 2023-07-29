@@ -263,7 +263,7 @@
         unit_of_measurement: kWh
         state: "{{ state_attr ( 'sensor.electricity_meter_quarterhourly_in', 'last_period' ) }}"
         attributes:
-            last_reset: '{{ state_attr ( "sensor.electricity_meter_quarterhourly_in", "last_reset" ) }}'
+            last_reset: "{{ state_attr ( 'sensor.electricity_meter_quarterhourly_in', 'last_reset' ) }}"
 
   - trigger:
       - platform: state
@@ -274,7 +274,25 @@
         unit_of_measurement: kWh
         state: "{{ state_attr ( 'sensor.electricity_meter_quarterhourly_out', 'last_period' ) }}"
         attributes:
-            last_reset: '{{ state_attr ( "sensor.electricity_meter_quarterhourly_out", "last_reset" ) }}'
+            last_reset: "{{ state_attr ( 'sensor.electricity_meter_quarterhourly_out', 'last_reset' ) }}"
+    
+  - trigger:
+      - platform: state
+        entity_id: sensor.electricity_meter_quarterhourly_in
+        attribute: last_reset
+        for: 00:00:10
+      - platform: state
+        entity_id: sensor.electricity_meter_quarterhourly_out
+        attribute: last_reset
+        for: 00:00:10
+    sensor:
+      - name: electricity_price
+        unit_of_measurement: ct/kWh
+        state: "{{ state_attr ( 'sensor.epex_spot_de_lu_price', 'price_ct_per_kwh' ) | float }}"
+        attributes:
+            static_price: "{{ states ( 'input_number.electricity_price_in' ) | float | multiply ( 100 ) }}"
+            dynamic_price: "{{ states ( 'sensor.epex_spot_de_lu_net_price' ) | float }}"
+            eeg_refund: '{{ states ( "input_number.electricity_price_out" ) | float | multiply ( 100 ) }}'
 
   - trigger:
       - platform: state
