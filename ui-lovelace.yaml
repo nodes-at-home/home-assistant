@@ -1067,10 +1067,18 @@ views:
             :host {
                 --label-badge-text-color: {{ state_attr ( 'binary_sensor.battery_state', 'icon_color' ) }}
             }
-      - entity: sensor.sh10rt_master_inverter_state
-        name: WR1
-      - entity: sensor.sh10rt_slave_inverter_state
-        name: WR2
+      - entity: binary_sensor.sh10rt_master_inverter_state_badge
+        name: Master
+        style: |
+            :host {
+                --label-badge-text-color: {{ state_attr ( 'binary_sensor.sh10rt_master_inverter_state_badge', 'icon_color' ) }}
+            }
+      - entity: binary_sensor.sh10rt_slave_inverter_state_badge
+        name: Slave
+        style: |
+            :host {
+                --label-badge-text-color: {{ state_attr ( 'binary_sensor.sh10rt_slave_inverter_state_badge', 'icon_color' ) }}
+            }
     cards:
       - type: vertical-stack
         cards:
