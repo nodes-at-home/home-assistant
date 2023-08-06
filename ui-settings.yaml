@@ -77,6 +77,11 @@ views:
             - input_number.waterpump_emergency_stop_duration
             - input_number.waterpump_emergency_stop_power_threshold
             - type: section
+              label: Steuerparameter Regenvorhersage
+            - entity: sensor.precipitation_7d_plus_forecast
+              name: Erwartungswert Regen zzgl. 7d
+            - input_number.irrigation_precipitation_threshold
+            - type: section
               label: Steuerparameter
             - input_number.irrigation_rain_threshold
             - input_number.irrigation_no_rain_days_threshold

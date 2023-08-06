@@ -398,6 +398,7 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.irrigation_off
+                    - automation.irrigation_schedule
                     - automation.irrigation_schedule_valve1
                     - automation.irrigation_valve1
                     - automation.irrigation_valve1_on

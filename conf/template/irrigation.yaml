@@ -1,0 +1,15 @@
+###
+### 07.08.2023
+###
+
+  - sensor:
+
+      - name: precipitation_7d_plus_forecast
+        unit_of_measurement: mm
+        device_class: precipitation
+        availability: "{{ states ( 'sensor.openweathermap_forecast_precipitation') | is_number and states ( 'sensor.openweathermap_forecast_precipitation_probability' ) | is_number and states ( 'sensor.rain_garden_precipitation_last7d' ) | is_number }}"
+        state: >
+                {% set forecast = states ( 'sensor.openweathermap_forecast_precipitation') | float %}
+                {% set probability = states ( 'sensor.openweathermap_forecast_precipitation_probability' ) | float / 100 %}
+                {% set rain = states ( 'sensor.rain_garden_precipitation_last7d' ) | float %}
+                {{ ( forecast * probability + rain ) | round ( 1 ) }}

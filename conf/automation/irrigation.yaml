@@ -241,6 +241,7 @@
 
   - alias: irrigation_schedule_valve1
     id: irrigation_schedule_valve1
+    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -261,6 +262,7 @@
 
   - alias: irrigation_schedule_valve2
     id: irrigation_schedule_valve2
+    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -281,6 +283,7 @@
 
   - alias: irrigation_schedule_valve3
     id: irrigation_schedule_valve3
+    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -298,6 +301,30 @@
             {% endif %}
         target:
             entity_id: input_boolean.irrigation_scheduled_valve3
+
+  - alias: irrigation_schedule
+    id: irrigation_schedule
+    trigger:
+      - platform: state
+        entity_id: input_number.irrigation_precipitation_threshold
+      - platform: state
+        entity_id: sensor.precipitation_7d_plus_forecast
+    action:
+      - variables:
+            mode: >
+                {% set val = states ( 'sensor.precipitation_7d_plus_forecast' ) | float %}
+                {% set thr = states ( 'input_number.irrigation_precipitation_threshold' ) | float %}
+                {% if val < thr %}
+                    on
+                {% else %}
+                    off
+                {% endif %}
+      - repeat:
+            count: 3
+            sequence:
+              - service: "input_boolean.turn_{{ mode }}"
+                target:
+                    entity_id: "input_boolean.irrigation_scheduled_valve{{ repeat.index }}"
 
   - alias: irrigation_set_duration
     id: irrigation_set_duration

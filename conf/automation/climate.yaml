@@ -56,7 +56,7 @@
       - condition: state
         entity_id: group.family_devices
         state: 'home'
-      - platform: numeric_state
+      - condition: numeric_state
         entity_id: sensor.total_dc_power
         above: input_number.climate_min_pv_generation
       - or:
