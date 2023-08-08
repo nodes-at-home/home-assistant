@@ -315,6 +315,13 @@ views:
           - entity: binary_sensor.dachfenster_bad
           - entity: binary_sensor.eingangstur
           - entity: binary_sensor.nebentur
+          - entity: binary_sensor.fenster_flur
+          - entity: binary_sensor.fenster_wohnzimmer_1
+          - entity: binary_sensor.fenster_wohnzimmer_2
+          - entity: binary_sensor.fenster_wohnzimmer_3
+          - entity: binary_sensor.fenster_wohnzimmer_4
+          - entity: binary_sensor.fenster_wohnzimmer_5
+          - entity: binary_sensor.fenster_wohnzimmer_6
           - entity: input_boolean.cover_closed_at_low_temp
         state_filter:
           # on = open, off = closed
@@ -401,6 +408,18 @@ views:
                 name: Stehlampe Drucker
               - entity: binary_sensor.terassentur_wohnzimmer
                 name: Terassentür
+              - entity: binary_sensor.fenster_wohnzimmer_1
+                name: Fenster 1
+              - entity: binary_sensor.fenster_wohnzimmer_2
+                name: Fenster 2
+              - entity: binary_sensor.fenster_wohnzimmer_3
+                name: Fenster 3
+              - entity: binary_sensor.fenster_wohnzimmer_4
+                name: Fenster 4
+              - entity: binary_sensor.fenster_wohnzimmer_5
+                name: Fenster 5
+              - entity: binary_sensor.fenster_wohnzimmer_6
+                name: Fenster 6
               - entity: climate.room_climate_wohnzimmer
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_wohnzimmer
@@ -427,6 +446,8 @@ views:
               - light.led_corridor_led
               - light.pitouch_corridor_screen
               - binary_sensor.eingangstur
+              - entity: binary_sensor.fenster_flur
+                name: Fenster
               - entity: climate.room_climate_flur
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_flur
@@ -630,6 +651,8 @@ views:
             entities:
               - entity: light.shelly_bath_socket
                 name: Beleuchtung
+              - entity: binary_sensor.fenster_bad
+                name: Fenster
               - entity: binary_sensor.dachfenster_bad
                 name: Dachfenster
               - entity: cover.bath
@@ -661,6 +684,8 @@ views:
             entities:
               - entity: light.shelly_roof_socket
                 name: Beleuchtung
+              - entity: binary_sensor.fenster_dachboden
+                name: Dachfenster
               - entity: binary_sensor.dachboden
                 name: Bodenluke
               - entity: binary_sensor.rauchmelder_dachboden

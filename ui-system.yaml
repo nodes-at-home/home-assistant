@@ -505,7 +505,26 @@ views:
             - binary_sensor.terassentur_wohnzimmer
             - binary_sensor.terassentur_wohnzimmer_battery
       - type: entities
-        title: Fensterkontakte
+        title: Fensterkontakte Erdgeschoss
+        show_header_toggle: false
+        entities:
+            - binary_sensor.fenster_flur
+            - binary_sensor.fenster_flur_battery
+            - type: divider
+            - binary_sensor.fenster_wohnzimmer_1
+            - binary_sensor.fenster_wohnzimmer_1_battery
+            - binary_sensor.fenster_wohnzimmer_2
+            - binary_sensor.fenster_wohnzimmer_2_battery
+            - binary_sensor.fenster_wohnzimmer_3
+            - binary_sensor.fenster_wohnzimmer_3_battery
+            - binary_sensor.fenster_wohnzimmer_4
+            - binary_sensor.fenster_wohnzimmer_4_battery
+            - binary_sensor.fenster_wohnzimmer_5
+            - binary_sensor.fenster_wohnzimmer_5_battery
+            - binary_sensor.fenster_wohnzimmer_6
+            - binary_sensor.fenster_wohnzimmer_6_battery
+      - type: entities
+        title: Fensterkontakte Obergeschoss
         show_header_toggle: false
         entities:
             - binary_sensor.fenster_arbeitszimmer
@@ -523,8 +542,13 @@ views:
             - binary_sensor.dachfenster_schlafzimmer
             - binary_sensor.dachfenster_schlafzimmer_battery
             - type: divider
+            - binary_sensor.fenster_bad
+            - binary_sensor.fenster_bad_battery
             - binary_sensor.dachfenster_bad
             - binary_sensor.dachfenster_bad_battery
+            - type: divider
+            - binary_sensor.fenster_dachboden
+            - binary_sensor.fenster_dachboden_battery
       - type: entities
         title: Bewegungsmelder
         show_header_toggle: false
