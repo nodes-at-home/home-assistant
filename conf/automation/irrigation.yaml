@@ -36,7 +36,7 @@
         event_type:  bosch_shc.event
         event_data:
             event_type: SCENARIO
-            event_subtype: 'Rosengarten bewässern'
+            event_subtype: 'Hochbeete bewässern'
     action:
       - service: switch.turn_on
         entity_id: switch.relay_garden_valve2
@@ -48,7 +48,7 @@
         event_type:  bosch_shc.event
         event_data:
             event_type: SCENARIO
-            event_subtype: 'Hochbeete bew#ssern'
+            event_subtype: 'Rosengarten bewässern'
     action:
       - service: switch.turn_on
         entity_id: switch.relay_garden_valve3
