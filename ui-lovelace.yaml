@@ -322,6 +322,7 @@ views:
           - entity: binary_sensor.fenster_wohnzimmer_4
           - entity: binary_sensor.fenster_wohnzimmer_5
           - entity: binary_sensor.fenster_wohnzimmer_6
+          - entity: binary_sensor.fenster_dusche
           - entity: input_boolean.cover_closed_at_low_temp
         state_filter:
           # on = open, off = closed
@@ -360,7 +361,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_kuche', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ states ( 'sensor.thermostat_kuche_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_kuche_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
             title: Esszimmer
@@ -394,7 +395,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_esszimmer', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ states ( 'sensor.thermostat_esszimmer_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_esszimmer_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
             title: Wohnzimmer
@@ -437,7 +438,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_wohnzimmer', 'current_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht22_lounge_humidity' ) | round ( 1 ) | string + '%' }}";
+                    content: "{{ states ( 'sensor.thermostat_wohnzimmer_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_wohnzimmer_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
             title: Flur
@@ -465,7 +466,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_flur', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ states ( 'sensor.thermostat_flur_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_flur_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
             title: Dusche
@@ -473,6 +474,8 @@ views:
             entities:
               - entity: light.shelly_shower_socket
                 name: Beleuchtung
+              - entity: binary_sensor.fenster_dusche
+                name: Fenster
               - entity: climate.room_climate_dusche
                 name: Thermostat
             card_mod:
@@ -488,7 +491,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_dusche', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ states ( 'sensor.thermostat_dusche_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_dusche_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
             title: Hauswirtschaftsraum
@@ -513,7 +516,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_hauswirtschaftsraum', 'current_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht11_utilityroom_humidity' ) | round ( 1 ) | string + '%' }}";
+                    content: "{{ states ( 'sensor.thermostat_hauswirtschaft_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_hauswirtschaft_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
 
       - type: vertical-stack
@@ -541,7 +544,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_galerie', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ states ( 'sensor.thermostat_galerie_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_galerie_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
             title: Schlafzimmer
@@ -575,7 +578,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_schlafzimmer', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ states ( 'sensor.thermostat_schlafzimmer_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_schlafzimmer_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
             title: Kinderzimmer
@@ -608,7 +611,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_kinderzimmer', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ states ( 'sensor.thermostat_kinderzimmer_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_kinderzimmer_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
             title: Arbeitszimmer
@@ -643,7 +646,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_arbeitszimmer', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ states ( 'sensor.thermostat_arbeitszimmer_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_arbeitszimmer_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
           - type: glance
             title: Bad
@@ -672,7 +675,7 @@ views:
                     color: var(--secondary-text-color);
                     font-size: 1rem;
                     text-align: right;
-                    content: "{{ state_attr ( 'climate.room_climate_bad', 'current_temperature' ) | round ( 1 ) | string + '°C' }}";
+                    content: "{{ states ( 'sensor.thermostat_bad_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_bad_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
 
       - type: vertical-stack

@@ -594,17 +594,80 @@ views:
             - sensor.heizkorper_dusche_temperature
             - sensor.heizkorper_dusche_valvetappet
       - type: entities
-        title: Wandthermostate
+        title: Raumklima
         show_header_toggle: false
         entities:
-            - climate.room_climate_wohnzimmer
-            - climate.room_climate_esszimmer
             - climate.room_climate_kuche
+            - climate.room_climate_esszimmer
+            - climate.room_climate_wohnzimmer
             - climate.room_climate_flur
             - climate.room_climate_dusche
             - climate.room_climate_hauswirtschaftsraum
             - climate.room_climate_galerie
-            - climate.room_climate_bad
-            - climate.room_climate_arbeitszimmer
-            - climate.room_climate_kinderzimmer
             - climate.room_climate_schlafzimmer
+            - climate.room_climate_kinderzimmer
+            - climate.room_climate_arbeitszimmer
+            - climate.room_climate_bad
+      - type: entities
+        title: Wandthermostate Erdgeschoss
+        show_header_toggle: false
+        entities:
+            - switch.thermostat_kuche_childlock
+            - number.thermostat_kuche_offset
+            - sensor.thermostat_kuche_temperature
+            - sensor.thermostat_kuche_humidity
+            - type: divider
+            - switch.thermostat_esszimmer_childlock
+            - number.thermostat_esszimmer_offset
+            - sensor.thermostat_esszimmer_temperature
+            - sensor.thermostat_esszimmer_humidity
+            - type: divider
+            - switch.thermostat_wohnzimmer_childlock
+            - number.thermostat_wohnzimmer_offset
+            - sensor.thermostat_wohnzimmer_temperature
+            - sensor.thermostat_wohnzimmer_humidity
+            - type: divider
+            - switch.thermostat_flur_childlock
+            - number.thermostat_flur_offset
+            - sensor.thermostat_flur_temperature
+            - sensor.thermostat_flur_humidity
+            - type: divider
+            - switch.thermostat_dusche_childlock
+            - number.thermostat_dusche_offset
+            - sensor.thermostat_dusche_temperature
+            - sensor.thermostat_dusche_humidity
+            - type: divider
+            - switch.thermostat_hauswirtschaft_childlock
+            - number.thermostat_hauswirtschaft_offset
+            - sensor.thermostat_hauswirtschaft_temperature
+            - sensor.thermostat_hauswirtschaft_humidity
+            - type: divider
+      - type: entities
+        title: Wandthermostate Obergeschoss
+        show_header_toggle: false
+        entities:
+            - switch.thermostat_galerie_childlock
+            - number.thermostat_galerie_offset
+            - sensor.thermostat_galerie_temperature
+            - sensor.thermostat_galerie_humidity
+            - type: divider
+            - switch.thermostat_schlafzimmer_childlock
+            - number.thermostat_schlafzimmer_offset
+            - sensor.thermostat_schlafzimmer_temperature
+            - sensor.thermostat_schlafzimmer_humidity
+            - type: divider
+            - switch.thermostat_kinderzimmer_childlock
+            - number.thermostat_kinderzimmer_offset
+            - sensor.thermostat_kinderzimmer_temperature
+            - sensor.thermostat_kinderzimmer_humidity
+            - type: divider
+            - switch.thermostat_arbeitszimmer_childlock
+            - number.thermostat_arbeitszimmer_offset
+            - sensor.thermostat_arbeitszimmer_temperature
+            - sensor.thermostat_arbeitszimmer_humidity
+            - type: divider
+            - switch.thermostat_bad_childlock
+            - number.thermostat_bad_offset
+            - sensor.thermostat_bad_temperature
+            - sensor.thermostat_bad_humidity
+            - type: divider

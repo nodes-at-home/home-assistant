@@ -143,6 +143,30 @@ influxdb:
         - sensor.epex_spot_de_lu_price
         - sensor.epex_spot_de_lu_net_price
         - sensor.electricity_price
+        - sensor.thermostat_kuche_temperature
+        - sensor.thermostat_kuche_humidity
+        - sensor.thermostat_esszimmer_temperature
+        - sensor.thermostat_esszimmer_humidity
+        - sensor.thermostat_wohnzimmer_temperature
+        - sensor.thermostat_wohnzimmer_humidity
+        - sensor.thermostat_flur_temperature
+        - sensor.thermostat_flur_humidity
+        - sensor.thermostat_dusche_temperature
+        - sensor.thermostat_dusche_humidity
+        - sensor.thermostat_hauswirtschaft_temperature
+        - sensor.thermostat_hauswirtschaft_humidity
+        - sensor.thermostat_galerie_temperature
+        - sensor.thermostat_galerie_humidity
+        - sensor.thermostat_schlafzimmer_temperature
+        - sensor.thermostat_schlafzimmer_humidity
+        - sensor.thermostat_kinderzimmer_temperature
+        - sensor.thermostat_kinderzimmer_humidity
+        - sensor.thermostat_arbeitszimmer_temperature
+        - sensor.thermostat_arbeitszimmer_humidity
+        - sensor.thermostat_bad_temperature
+        - sensor.thermostat_bad_humidity
+        - sensor.heizkorper_bad_temperature
+        - sensor.heizkorper_dusche_temperature
   ignore_attributes:
     - friendly_name
     - icon

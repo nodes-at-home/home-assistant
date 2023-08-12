@@ -30,7 +30,7 @@
               {% endif %}
             {% endfor %}
             {% if ns.msg1 != '' %}
-              {% set ns.msg1 = 'Offene Fenster: ' + ns.msg1 + '\n' %}
+              {% set ns.msg1 = 'Offene Fenster: ' + ns.msg1 %}
             {% endif %}
             {% for state in states.binary_sensor 
                | selectattr ( 'attributes.device_class', 'defined' ) 
@@ -47,7 +47,8 @@
             {% if ns.msg2 != '' %}
               {% set ns.msg2 = 'Offene Türen: ' + ns.msg2 %}
             {% endif %}
-            {{ ns.msg1 }}{{ ns.msg2 }}
+            {{ ns.msg1 }}
+            {{ ns.msg2 }}
     action:
       # - service: notify.simplepush
         # data:
