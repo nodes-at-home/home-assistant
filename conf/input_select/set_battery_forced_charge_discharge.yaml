@@ -1,0 +1,10 @@
+###
+### 12.08.2023
+###
+
+name: Batterie Zwangsladung/-entladung
+options:
+    - Stop (default)
+    - Forced charge
+    - Forced discharge
+icon: mdi:battery-unknown

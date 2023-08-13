@@ -371,17 +371,28 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.solcast_update_forecast
-                    # - automation.sungrow_inverter_start_stop
-                    # - automation.sungrow_inverter_update_max_soc
-                    # - automation.sungrow_inverter_update_min_soc
-                    # - automation.sungrow_inverter_update_reserved_soc_for_backup
-                    # - automation.sungrow_inverter_update_battery_forced_charge_discharge_cmd
-                    # - automation.sungrow_inverter_update_ems_mode
-                    # - automation.sungrow_inverter_update_battery_forced_charge_discharge_power
-                    # - automation.sungrow_inverter_update_battery_max_charge_power
-                    # - automation.sungrow_inverter_update_battery_max_discharge_power
-                    # - automation.sungrow_inverter_update_battery_charging_start_power
-                    # - automation.sungrow_inverter_update_battery_discharging_start_power
+                    - automation.solar_sh10rt_master_set_inverter_runmode
+                    - automation.solar_sh10rt_master_update_inverter_runmode
+                    - automation.solar_sh10rt_slave_set_inverter_runmode
+                    - automation.solar_sh10rt_slave_update_inverter_runmode
+                    - automation.solar_set_max_soc
+                    - automation.solar_update_max_soc
+                    - automation.solar_set_min_soc
+                    - automation.solar_update_min_soc
+                    - automation.solar_set_backup_soc
+                    - automation.solar_update_backup_soc
+                    - automation.solar_set_battery_charge_start_power
+                    - automation.solar_update_battery_charge_start_power
+                    - automation.solar_set_battery_discharge_start_power
+                    - automation.solar_update_battery_discharge_start_power
+                    - automation.solar_set_battery_max_charge_power
+                    - automation.solar_update_battery_max_charge_power
+                    - automation.solar_set_battery_max_discharge_power
+                    - automation.solar_update_battery_max_discharge_power
+                    - automation.solar_set_battery_forced_charge_discharge
+                    - automation.solar_update_battery_forced_charge_discharge
+                    - automation.solar_set_battery_forced_charge_discharge_power
+                    - automation.solar_update_battery_forced_charge_discharge_power
           - type: vertical-stack
             cards:
               - type: entities

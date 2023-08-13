@@ -1,0 +1,8 @@
+###
+### 12.08.2023
+###
+
+name: Master Runmode
+options:
+    - Enabled
+    - Shutdown

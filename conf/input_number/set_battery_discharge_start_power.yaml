@@ -1,0 +1,11 @@
+###
+### 12.08.2023
+###
+
+name: Entladestartleistung
+mode: box
+min: 0
+max: 1000
+step: 10
+unit_of_measurement: W
+# initial: 0

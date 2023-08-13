@@ -1,0 +1,11 @@
+###
+### 12.08.2023
+###
+
+name: min. State of Charge
+mode: box
+min: 0
+max: 50
+step: 1
+unit_of_measurement: "%"
+# initial: 5

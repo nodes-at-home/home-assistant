@@ -432,3 +432,17 @@
         state_class: measurement
         scale: 1
         scan_interval: 10
+
+      #####################
+      # holding registers
+      #####################
+
+      - name: sh10rt_slave_inverter_start_stop
+        slave: 2
+        address: 12999 # reg 13000
+        input_type: holding
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 0
+        scan_interval: 10

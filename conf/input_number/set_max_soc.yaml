@@ -1,0 +1,11 @@
+###
+### 12.08.2023
+###
+
+name: max. State of Charge
+mode: box
+min: 50
+max: 100
+step: 1
+unit_of_measurement: "%"
+# initial: 100

@@ -1,0 +1,11 @@
+###
+### 12.08.2023
+###
+
+name: Backup State of Charge
+mode: box
+min: 0
+max: 75
+step: 1
+unit_of_measurement: "%"
+# initial: 0

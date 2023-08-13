@@ -1,0 +1,11 @@
+###
+### 12.08.2023
+###
+
+name: max. Entladeleistung
+mode: box
+min: 100
+max: 10600
+step: 100
+unit_of_measurement: W
+# initial: 0

@@ -1315,7 +1315,15 @@ views:
                 name: jährlich
                 icon: mdi:battery-arrow-down
               - type: section
-                label: Spannungen und Ströme
+                label: State of Charge
+              - entity: sensor.sh10rt_master_max_soc
+                name: maximal
+              - entity: sensor.sh10rt_master_min_soc
+                name: minimal
+              - entity: sensor.sh10rt_master_reserved_soc_for_backup
+                name: Reserve für Backup
+              - type: section
+                label: Spannungen, Ströme und Leistungen
               - entity: sensor.sh10rt_master_battery_voltage
                 name: aktuell
               - entity: sensor.battery_current
@@ -1324,14 +1332,16 @@ views:
                 name: maximaler Ladestrom
               - entity: sensor.sh10rt_master_bms_max_discharging_current
                 name: maximaler Entladestrom
-              - type: section
-                label: State of Charge
-              - entity: sensor.sh10rt_master_max_soc
-                name: maximal
-              - entity: sensor.sh10rt_master_min_soc
-                name: minimal
-              - entity: sensor.sh10rt_master_reserved_soc_for_backup
-                name: Reserve für Backup
+              - entity: sensor.sh10rt_master_battery_charge_start_power
+                name: Ladestartleistung
+              - entity: sensor.sh10rt_master_battery_discharge_start_power
+                name: Entladestartleistung
+              - entity: sensor.sh10rt_master_battery_max_charge_power
+                name: maximale Ladeleistung
+              - entity: sensor.sh10rt_master_battery_max_discharge_power
+                name: maximale Entladeleistung
+              - entity: sensor.sh10rt_master_battery_forced_charge_discharge_power
+                name: Zwangslade-/entladeleistung
           - type: statistics-graph
             title: SoC letzte 30 Tage
             chart_type: line

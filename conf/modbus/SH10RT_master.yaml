@@ -668,6 +668,43 @@
       # holding registers
       #####################
 
+      - name: sh10rt_master_inverter_start_stop
+        slave: 1
+        address: 12999 # reg 13000
+        input_type: holding
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 0
+        scan_interval: 10
+
+      - name: sh10rt_master_battery_forced_charge_discharge_raw
+        slave: 1
+        address: 13050 # reg 13051
+        input_type: holding
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 0
+        scan_interval: 10
+
+      - name: sh10rt_master_battery_forced_charge_discharge_power
+        slave: 1
+        address: 13051 # reg 13052
+        input_type: holding
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 0
+        # datasheet says:
+        # 0 to 5000 W for SH*K-*
+        # 0 to 100 % for SH*.0RT
+        # for my SH10RT it is set in Watt, not in %
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scan_interval: 10
+
       - name: sh10rt_master_max_soc
         slave: 1
         address: 13057 # reg 13058
@@ -708,3 +745,72 @@
         state_class: measurement
         scale: 1
         scan_interval: 600
+
+      #undocumented sensors (reverse engineered by some guys of photovoltaikforum.com and forum.iobroker.net )
+      - name: sh10rt_master_battery_max_charge_power
+        slave: 1
+        address: 33046 # reg 33047
+        input_type: holding
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 10
+        scan_interval: 10
+
+      - name: sh10rt_master_battery_max_discharge_power
+        slave: 1
+        address: 33047 # reg 33048
+        input_type: holding
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 10
+        scan_interval: 10
+
+      # - name: sh10rt_master_battery_capacity
+        # slave: 1
+        # address: 33048 # reg 33049
+        # input_type: holding
+        # count: 1
+        # data_type: uint16
+        # swap: word
+        # unit_of_measurement: kWh
+        # device_class: energy
+        # scale: 0.01
+        # scan_interval: 600
+
+      - name: sh10rt_master_battery_charge_start_power
+        slave: 1
+        address: 33148 # reg 33149
+        input_type: holding
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 10
+        scan_interval: 10
+
+      - name: sh10rt_master_battery_discharge_start_power
+        slave: 1
+        address: 33149 # reg 33150
+        input_type: holding
+        count: 1
+        data_type: uint16
+        swap: word
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 10
+        scan_interval: 10
