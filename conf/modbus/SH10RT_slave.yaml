@@ -64,7 +64,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         scan_interval: 86400
 
       - name: sh10rt_slave_daily_pv_generation_and_battery_discharge
@@ -73,7 +73,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: kWh
         device_class: energy
@@ -101,6 +101,7 @@
         input_type: input
         count: 1
         data_type: int16
+        swap: none
         precision: 1
         unit_of_measurement: °C
         device_class: Temperature
@@ -113,7 +114,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -126,7 +127,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 2
         unit_of_measurement: A
         device_class: Current
@@ -139,7 +140,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -152,7 +153,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 2
         unit_of_measurement: A
         device_class: Current
@@ -179,7 +180,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -193,7 +194,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -207,7 +208,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -235,7 +236,7 @@
         input_type: input
         count: 1
         data_type: int16
-        swap: word
+        swap: none
         precision: 3
         unit_of_measurement: "%"
         device_class: power_factor
@@ -249,7 +250,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 2
         unit_of_measurement: "Hz"
         device_class: frequency
@@ -263,7 +264,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         unit_of_measurement: "W"
         device_class: power
         state_class: measurement
@@ -276,7 +277,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 0
         unit_of_measurement: A
         device_class: Current
@@ -289,7 +290,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 0
         unit_of_measurement: A
         device_class: Current
@@ -302,7 +303,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 0
         scale: 1
         scan_interval: 10
@@ -315,7 +316,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 0
         scale: 1
         scan_interval: 10
@@ -326,7 +327,7 @@
         input_type: input
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: kWh
         device_class: energy
@@ -383,7 +384,7 @@
         input_type: input
         count: 1
         data_type: int16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: A
         device_class: current
@@ -397,7 +398,7 @@
         input_type: input
         count: 1
         data_type: int16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: A
         device_class: current
@@ -411,7 +412,7 @@
         input_type: input
         count: 1
         data_type: int16
-        swap: word
+        swap: none
         precision: 1
         unit_of_measurement: A
         device_class: current
@@ -443,6 +444,6 @@
         input_type: holding
         count: 1
         data_type: uint16
-        swap: word
+        swap: none
         precision: 0
         scan_interval: 10
