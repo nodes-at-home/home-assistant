@@ -556,6 +556,11 @@ views:
           - type: section
             label: Modell
           - entity: sensor.sh10rt_master_device_type
+          - entity: sensor.sh10rt_master_serial_no
+          - entity: sensor.sh10rt_master_arm_sw_version2
+          - entity: sensor.sh10rt_master_mdsp_sw_version
+          - entity: sensor.sh10rt_master_sdsp_sw_version
+          # - entity: sensor.sh10rt_master_sbrbcu_sw_version
           - entity: sensor.sh10rt_master_arm_sw_version
           - entity: sensor.sh10rt_master_dsp_sw_version
           - entity: sensor.sh10rt_master_protocol_no
@@ -578,6 +583,11 @@ views:
           - type: section
             label: Modell
           - entity: sensor.sh10rt_slave_device_type
+          - entity: sensor.sh10rt_slave_serial_no
+          - entity: sensor.sh10rt_slave_arm_sw_version2
+          - entity: sensor.sh10rt_slave_mdsp_sw_version
+          - entity: sensor.sh10rt_slave_sdsp_sw_version
+          # - entity: sensor.sh10rt_slave_sbrbcu_sw_version
           - entity: sensor.sh10rt_slave_arm_sw_version
           - entity: sensor.sh10rt_slave_dsp_sw_version
           - entity: sensor.sh10rt_slave_protocol_no
@@ -598,10 +608,15 @@ views:
         title: Batterie
         entities:
           - type: section
+            label: Modell
+          - entity: sensor.sh10rt_battery_serial_no
+          - entity: sensor.sh10rt_battery_sw_version
+          - type: section
             label: Zustand
           - entity: sensor.sh10rt_master_battery_level
           - entity: sensor.sh10rt_master_battery_state_of_health
           - entity: sensor.sh10rt_master_battery_temperature
+          # - entity: sensor.sh10rt_battery_temperature
           - type: section
             label: Werte
           - entity: sensor.sh10rt_master_battery_power_raw

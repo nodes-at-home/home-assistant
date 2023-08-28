@@ -816,3 +816,92 @@
         state_class: measurement
         scale: 10
         scan_interval: 10
+
+      # https://www.photovoltaikforum.com/thread/166134-daten-lesen-vom-sungrow-wechselrichtern-modbus/?postID=2939110#post2939110
+
+      # more inverter register
+
+      - name: sh10rt_master_arm_sw_version2
+        slave: 1
+        address: 2581 # reg 2582
+        input_type: input
+        count: 15
+        data_type: string
+        swap: none
+        scan_interval: 86400
+
+      - name: sh10rt_master_mdsp_sw_version
+        slave: 1
+        address: 2596 # reg 2597
+        input_type: input
+        count: 15
+        data_type: string
+        swap: none
+        scan_interval: 86400
+
+      - name: sh10rt_master_sdsp_sw_version
+        slave: 1
+        address: 2611 # reg 2612
+        input_type: input
+        count: 15
+        data_type: string
+        swap: none
+        scan_interval: 86400
+
+      - name: sh10rt_master_sbrbcu_sw_version
+        slave: 1
+        address: 2625 # reg 2626
+        input_type: input
+        count: 15
+        data_type: string
+        swap: none
+        scan_interval: 86400
+
+      # battery register
+
+      - name: sh10rt_battery_serial_no
+        slave: 200
+        address: 10710 # reg 10711
+        input_type: input
+        count: 10
+        data_type: string
+        swap: none
+        scan_interval: 86400
+
+      - name: sh10rt_battery_sw_version
+        slave: 200
+        address: 10720 # reg 10721
+        input_type: input
+        count: 15
+        data_type: string
+        swap: none
+        scan_interval: 86400
+
+      - name: sh10rt_battery_protocol_no
+        slave: 200
+        address: 10735 # reg 10736
+        input_type: input
+        count: 2
+        data_type: uint32
+        swap: word
+        scan_interval: 86400
+
+      - name: sh10rt_battery_temperature
+        slave: 200
+        address: 10742 # reg 10743
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scale: 0.1
+        scan_interval: 10
+
+      - name: sh10rt_battery_level
+        slave: 200
+        address: 10743 # reg 10744
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scale: 0.1
+        scan_interval: 10
