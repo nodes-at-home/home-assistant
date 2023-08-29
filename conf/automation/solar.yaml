@@ -56,7 +56,14 @@
     trigger:
       - platform: state
         entity_id:
-          - input_select.set_master_runmode
+          - input_button.inverter_master_startup
+        variables:
+            runmode: startup
+      - platform: state
+        entity_id:
+          - input_button.inverter_master_shutdown
+        variables:
+            runmode: shutdown
     condition:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -71,7 +78,7 @@
             slave: 1
             address: 12999 # reg 13000
             value: >
-                {% if is_state ( 'input_select.set_master_runmode', 'Enabled' ) %}
+                {% if runmode == "startup" %}
                     {{inverter_start}}
                 {% else %}
                     {{inverter_stop}}
@@ -84,7 +91,14 @@
     trigger:
       - platform: state
         entity_id:
-          - input_select.set_slave_runmode
+          - input_button.inverter_slave_startup
+        variables:
+            runmode: startup
+      - platform: state
+        entity_id:
+          - input_button.inverter_slave_shutdown
+        variables:
+            runmode: shutdown
     condition:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -99,7 +113,7 @@
             slave: 2
             address: 12999 # reg 13000
             value: >
-                {% if is_state ( 'input_select.set_slave_runmode', 'Enabled' ) %}
+                {% if runmode == "startup" %}
                     {{inverter_start}}
                 {% else %}
                     {{inverter_stop}}

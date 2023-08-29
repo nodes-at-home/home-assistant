@@ -350,8 +350,14 @@ views:
         title: Wechselrichter
         show_header_toggle: false
         entities:
-            - input_select.set_master_runmode
-            - input_select.set_slave_runmode
+            - type: section
+              label: Master
+            - entity: input_button.inverter_master_startup
+            - entity: input_button.inverter_master_shutdown
+            - type: section
+              label: Slave
+            - entity: input_button.inverter_slave_startup
+            - entity: input_button.inverter_slave_shutdown
       - type: entities
         title: Preise
         show_header_toggle: false
