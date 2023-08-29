@@ -352,12 +352,20 @@ views:
         entities:
             - type: section
               label: Master
-            - entity: input_button.inverter_master_startup
-            - entity: input_button.inverter_master_shutdown
+            - type: buttons
+              entities:
+                - entity: input_button.inverter_master_startup
+                  name: Startup
+                - entity: input_button.inverter_master_shutdown
+                  name: Shutdown
             - type: section
               label: Slave
-            - entity: input_button.inverter_slave_startup
-            - entity: input_button.inverter_slave_shutdown
+            - type: buttons
+              entities:
+                - entity: input_button.inverter_slave_startup
+                  name: Startup
+                - entity: input_button.inverter_slave_shutdown
+                  name: Shutdown
       - type: entities
         title: Preise
         show_header_toggle: false
