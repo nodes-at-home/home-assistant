@@ -821,7 +821,7 @@
 
       # more inverter register
 
-      - name: sh10rt_master_arm_sw_version2
+      - name: sh10rt_master_lcd_sw_version
         slave: 1
         address: 2581 # reg 2582
         input_type: input
@@ -893,6 +893,9 @@
         count: 1
         data_type: uint16
         swap: none
+        precision: 1
+        unit_of_measurement: °C
+        device_class: Temperature
         scale: 0.1
         scan_interval: 10
 
@@ -903,5 +906,248 @@
         count: 1
         data_type: uint16
         swap: none
+        precision: 1
+        unit_of_measurement: "%"
+        device_class: battery
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
+
+      # https://www.photovoltaikforum.com/thread/166134-daten-lesen-vom-sungrow-wechselrichtern-modbus/?postID=3270446#post3270446
+
+      - name: sh10rt_battery_max_cell_voltage
+        slave: 200
+        address: 10756 # reg 10757
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_max_cell_voltage_pos
+        slave: 200
+        address: 10757 # reg 10758
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scan_interval: 60
+
+      - name: sh10rt_battery_min_cell_voltage
+        slave: 200
+        address: 10758 # reg 10759
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_min_cell_voltage_pos
+        slave: 200
+        address: 10759 # reg 10760
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scan_interval: 60
+
+      - name: sh10rt_battery_max_cell_temperature
+        slave: 200
+        address: 10760 # reg 10761
+        input_type: input
+        count: 1
+        data_type: int16
+        swap: none
+        precision: 1
+        unit_of_measurement: °C
+        device_class: Temperature
+        scale: 0.1
+        scan_interval: 10
+
+      - name: sh10rt_battery_max_cell_temperature_pos
+        slave: 200
+        address: 10761 # reg 10762
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scan_interval: 60
+
+      - name: sh10rt_battery_min_cell_temperature
+        slave: 200
+        address: 10762 # reg 10763
+        input_type: input
+        count: 1
+        data_type: int16
+        swap: none
+        precision: 1
+        unit_of_measurement: °C
+        device_class: Temperature
+        scale: 0.1
+        scan_interval: 10
+
+      - name: sh10rt_battery_min_cell_temperature_pos
+        slave: 200
+        address: 10763 # reg 10764
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scan_interval: 60
+
+      - name: sh10rt_battery_max_cell_voltage_module1
+        slave: 200
+        address: 10764 # reg 10765
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_max_cell_voltage_module2
+        slave: 200
+        address: 10765 # reg 10766
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_max_cell_voltage_module3
+        slave: 200
+        address: 10766 # reg 10767
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_max_cell_voltage_module4
+        slave: 200
+        address: 10767 # reg 10768
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_min_cell_voltage_module1
+        slave: 200
+        address: 10772 # reg 10773
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_min_cell_voltage_module2
+        slave: 200
+        address: 10773 # reg 10774
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_min_cell_voltage_module3
+        slave: 200
+        address: 10774 # reg 10775
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_min_cell_voltage_module4
+        slave: 200
+        address: 10775 # reg 10776
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        precision: 4
+        unit_of_measurement: V
+        device_class: Voltage
+        scale: 0.0001
+        scan_interval: 60
+
+      - name: sh10rt_battery_cell_type_module1
+        slave: 200
+        address: 10780 # reg 10781
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scan_interval: 60
+
+      - name: sh10rt_battery_cell_type_module2
+        slave: 200
+        address: 10781 # reg 10782
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scan_interval: 60
+
+      - name: sh10rt_battery_cell_type_module3
+        slave: 200
+        address: 10782 # reg 10783
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scan_interval: 60
+
+      - name: sh10rt_battery_cell_type_module4
+        slave: 200
+        address: 10783 # reg 10784
+        input_type: input
+        count: 1
+        data_type: uint16
+        swap: none
+        scan_interval: 60
+
+      # https://www.photovoltaikforum.com/thread/166134-daten-lesen-vom-sungrow-wechselrichtern-modbus/?postID=3311580#post3311580
+      #   30229 - Timing Scanning - xAA enable, x55 disable
+      #   30230 - Manual Scanning - xAA enable, x55 disable
+      #   30231 - Periodic Scanning - xAA enable, x55 disable
+      #   30232 - Scanning Period (Periodic Scanning) - minutes 1-720
+      #   30233 - Hour Timing Scanning
+      #   30234 - Minute Timing Scanning
+      # Wie immer: für iobroker -1.

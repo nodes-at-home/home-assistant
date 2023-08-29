@@ -557,7 +557,7 @@ views:
             label: Modell
           - entity: sensor.sh10rt_master_device_type
           - entity: sensor.sh10rt_master_serial_no
-          - entity: sensor.sh10rt_master_arm_sw_version2
+          - entity: sensor.sh10rt_master_lcd_sw_version
           - entity: sensor.sh10rt_master_mdsp_sw_version
           - entity: sensor.sh10rt_master_sdsp_sw_version
           # - entity: sensor.sh10rt_master_sbrbcu_sw_version
@@ -584,7 +584,7 @@ views:
             label: Modell
           - entity: sensor.sh10rt_slave_device_type
           - entity: sensor.sh10rt_slave_serial_no
-          - entity: sensor.sh10rt_slave_arm_sw_version2
+          - entity: sensor.sh10rt_slave_lcd_sw_version
           - entity: sensor.sh10rt_slave_mdsp_sw_version
           - entity: sensor.sh10rt_slave_sdsp_sw_version
           # - entity: sensor.sh10rt_slave_sbrbcu_sw_version
@@ -611,6 +611,7 @@ views:
             label: Modell
           - entity: sensor.sh10rt_battery_serial_no
           - entity: sensor.sh10rt_battery_sw_version
+          - entity: sensor.sh10rt_battery_protocol_no
           - type: section
             label: Zustand
           - entity: sensor.sh10rt_master_battery_level
@@ -686,3 +687,31 @@ views:
           - sensor.battery_power
           - sensor.electricity_meter_power
           - binary_sensor.boiler_ww3wayvalve
+
+  - title: Batterie
+    path: batterygraph
+    type: panel
+    cards:
+      - type: history-graph
+        hours_to_show: 24
+        entities:
+          - sensor.sh10rt_battery_max_cell_voltage
+          - sensor.sh10rt_battery_max_cell_voltage_pos
+          - sensor.sh10rt_battery_min_cell_voltage
+          - sensor.sh10rt_battery_min_cell_voltage_pos
+          - sensor.sh10rt_battery_max_cell_temperature
+          - sensor.sh10rt_battery_max_cell_temperature_pos
+          - sensor.sh10rt_battery_min_cell_temperature
+          - sensor.sh10rt_battery_min_cell_temperature_pos
+          - sensor.sh10rt_battery_max_cell_voltage_module1
+          - sensor.sh10rt_battery_max_cell_voltage_module2
+          - sensor.sh10rt_battery_max_cell_voltage_module3
+          - sensor.sh10rt_battery_max_cell_voltage_module4
+          - sensor.sh10rt_battery_min_cell_voltage_module1
+          - sensor.sh10rt_battery_min_cell_voltage_module2
+          - sensor.sh10rt_battery_min_cell_voltage_module3
+          - sensor.sh10rt_battery_min_cell_voltage_module4
+          - sensor.sh10rt_battery_cell_type_module1
+          - sensor.sh10rt_battery_cell_type_module2
+          - sensor.sh10rt_battery_cell_type_module3
+          - sensor.sh10rt_battery_cell_type_module4

@@ -452,7 +452,7 @@
 
       # more inverter register
 
-      - name: sh10rt_slave_arm_sw_version2
+      - name: sh10rt_slave_lcd_sw_version
         slave: 2
         address: 2581 # reg 2582
         input_type: input
