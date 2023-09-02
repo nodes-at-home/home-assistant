@@ -10,6 +10,11 @@ views:
     panel: false
     cards:
       - type: entities
+        title: Debug
+        show_header_toggle: false
+        entities:
+            - input_boolean.show_debug_fields
+      - type: entities
         title: Abwesenheit
         show_header_toggle: false
         entities:

@@ -1030,7 +1030,6 @@ views:
               - binary_sensor.garagentor
               - binary_sensor.garagentur
               - binary_sensor.rauchmelder_garage
-
       - type: conditional
         conditions:
           - entity:
@@ -1133,7 +1132,12 @@ views:
               - entity: sensor.electricity_meter_daily_in
                 name: täglich
                 icon: mdi:transmission-tower-export
-              - sensor.sh10rt_master_daily_imported_energy
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.show_debug_fields
+                    state: "on"
+                row:
+                    entity: sensor.sh10rt_master_daily_imported_energy
               - entity: sensor.electricity_meter_yearly_in
                 name: jährlich
                 icon: mdi:transmission-tower-export
@@ -1145,7 +1149,12 @@ views:
               - entity: sensor.electricity_meter_daily_out
                 name: täglich
                 icon: mdi:transmission-tower-import
-              - sensor.sh10rt_master_daily_exported_energy
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.show_debug_fields
+                    state: "on"
+                row:
+                    entity: sensor.sh10rt_master_daily_exported_energy
               - entity: sensor.electricity_meter_yearly_out
                 name: jährlich
                 icon: mdi:transmission-tower-import
@@ -1185,7 +1194,12 @@ views:
             entities:
               - type: section
                 label: Verbrauch
-              - sensor.daily_load
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.show_debug_fields
+                    state: "on"
+                row:
+                    entity: sensor.daily_load
               - entity: sensor.load_meter_daily
                 name: täglich
                 icon: mdi:home-lightning-bolt-outline
@@ -1195,16 +1209,21 @@ views:
           # - type: energy-usage-graph
           - type: energy-distribution
           # - type: energy-solar-graph
-          # - type: entities
-            # title: Debug
-            # show_header_toggle: false
-            # entities:
-              # - sensor.load_quarterhourly
-              # - sensor.electricity_quarterhourly_in
-              # - sensor.electricity_quarterhourly_out
-              # - sensor.solar_quarterhourly
-              # - sensor.battery_quarterhourly_in
-              # - sensor.battery_quarterhourly_out
+          - type: conditional
+            conditions:
+              - entity: input_boolean.show_debug_fields
+                state: "on"
+            card:
+                type: entities
+                title: Debug
+                show_header_toggle: false
+                entities:
+                  - sensor.load_quarterhourly
+                  - sensor.electricity_quarterhourly_in
+                  - sensor.electricity_quarterhourly_out
+                  - sensor.solar_quarterhourly
+                  - sensor.battery_quarterhourly_in
+                  - sensor.battery_quarterhourly_out
       - type: vertical-stack
         cards:
           - type: gauge
