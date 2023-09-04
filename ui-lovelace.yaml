@@ -294,6 +294,8 @@ views:
           - binary_sensor.rauchmelder_schlafzimmer
           - binary_sensor.rauchmelder_buro
           - binary_sensor.rauchmelder_kinderzimmer
+          - binary_sensor.rauchmelder_garage
+          - binary_sensor.rauchmelder_dachboden
         state_filter:
           - "on"
       - type: entity-filter
@@ -313,8 +315,6 @@ views:
           - entity: binary_sensor.dachfenster_schlafzimmer
           - entity: binary_sensor.fenster_bad
           - entity: binary_sensor.dachfenster_bad
-          - entity: binary_sensor.eingangstur
-          - entity: binary_sensor.nebentur
           - entity: binary_sensor.fenster_flur
           - entity: binary_sensor.fenster_wohnzimmer_1
           - entity: binary_sensor.fenster_wohnzimmer_2

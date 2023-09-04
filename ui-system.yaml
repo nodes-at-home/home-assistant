@@ -522,6 +522,9 @@ views:
             - binary_sensor.fenster_flur
             - binary_sensor.fenster_flur_battery
             - type: divider
+            - binary_sensor.fenster_dusche
+            - binary_sensor.fenster_dusche_battery
+            - type: divider
             - binary_sensor.fenster_wohnzimmer_1
             - binary_sensor.fenster_wohnzimmer_1_battery
             - binary_sensor.fenster_wohnzimmer_2
