@@ -82,16 +82,19 @@ views:
             - input_number.waterpump_emergency_stop_duration
             - input_number.waterpump_emergency_stop_power_threshold
             - type: section
-              label: Steuerparameter Regenvorhersage
+              label: Regen
+            - entity: sensor.openweathermap_forecast_precipitation
+              name: Vorhersage
+            - entity: sensor.openweathermap_forecast_precipitation_probability
+              name: Wahrscheinichkeit
+            - entity: sensor.rain_garden_precipitation_last7d
+              name: letzte 7 Tage
+            - type: section
+              label: Steuerparameter
             - entity: sensor.precipitation_7d_plus_forecast
               name: Erwartungswert Regen zzgl. 7d
             - input_number.irrigation_precipitation_threshold
-            - type: section
-              label: Steuerparameter
-            - input_number.irrigation_rain_threshold
-            - input_number.irrigation_no_rain_days_threshold
             - input_number.irrigation_temperature_threshold
-            - input_number.irrigation_warm_days_threshold
             - input_number.irrigation_duration
             - type: section
               label: Hecke
@@ -203,21 +206,17 @@ views:
             content: >
                 ### Gartenbewässerung
 
-                Die Bewässerung erfolgt an den eingestellten Tagen zur jeweiliegen eingestellten Periode.
-                Es werden die regenlosen und die warmen Tage gezählt.
-                Ein Tag ist regenlos, wenn der Schwellwert nicht überschritten wird.
-                Ein weiterer warmer Tag wird gezählt, wenn der gewählte Schwellwert überschritten wird.
-                Kurz vor Mitternacht wird gezählt und ermittelt, ob am nächsten Tag gegossen werden könnte.
-                Dazu muss die Anzahl der regenlosen Tage UND die Anzahl der warmen Tage den jeweiligen Schwellwert überschreiten.
+                Die **Einplanung** einer Bewässerung erfolgt, sobald der Erwartungswert für den vorhergesagten Regen zzgl. der Regenmenge der letzten 7 Tage unterhalb der eingestellten Schwelle ist.
+                Die Bewässerung erfolgt für das jeweilige Ventil an den eingestellten Tagen zum dort eingestellten Zeitpunkt.
 
-                Eine manuelle Steuerung kann erfolgen, wenn die Automatisierungsregel "irrigation_activate_period_1" deaktiviert wird.
+                Eine **manuelle Steuerung** je Ventil kann erfolgen, wenn die Automatisierungsregel "irrigation_schedule" deaktiviert wird.
 
-                Die Bewässerungsdauer wird in der Regel "irrigation_set_duration" ermittelt.
+                Die **Bewässerungsdauer** wird in der Regel "irrigation_set_duration" ermittelt.
                 Die Standarddauer beträgt 60 min, ab 25°C beträgt sie 90 min und ab 30°C wird für 120 min bewässert.
 
                 ### Pumpdauer
 
-                Der Pool sollte täglich zweimal umgewälzt werden. Somit ergibt sich die tägliche Gesamtpumpdauer von 3,2h (3h und 6min<sup></sup>) aus dem Poolvolumen von 16m<sup>3</sup> und einem Pumpdurchsatz von 10m<sup>3</sup>/h.
+                Der Pool sollte **täglich zweimal** umgewälzt werden. Somit ergibt sich die tägliche **Gesamtpumpdauer von 3,2h** (3h und 6min) aus dem Poolvolumen von 16m<sup>3</sup> und einem Pumpdurchsatz von 10m<sup>3</sup>/h.
 
   - title: Schalter
     path: buttons

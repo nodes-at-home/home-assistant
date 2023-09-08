@@ -11,6 +11,14 @@
         hours: 24
 
   - platform: statistics
+    name: "rain@garden_precipitation_last5d"
+    entity_id: "sensor.rain_garden_precipitation"
+    state_characteristic: total
+    sampling_size: 500
+    max_age:
+        hours: 120
+
+  - platform: statistics
     name: "rain@garden_precipitation_last7d"
     entity_id: "sensor.rain_garden_precipitation"
     state_characteristic: total

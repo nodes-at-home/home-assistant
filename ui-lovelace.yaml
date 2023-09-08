@@ -65,84 +65,92 @@ views:
                     style:
                       --label-badge-text-color: var(--wasserampel-color)
                       top: 40%
-                      left: 36%
-                  - type: state-badge
-                    entity: sensor.rain_garden_precipitation_last7d
-                    style:
-                      top: 40%
-                      left: 40%
-                  - type: state-badge
-                    entity: sensor.rain_garden_precipitation_last24h
-                    style:
-                      top: 40%
                       left: 44%
-                  - type: state-badge
-                    entity: sensor.rain_garden_precipitation
-                    style:
-                      top: 40%
-                      left: 48%
                   - type: state-badge
                     entity: binary_sensor.grid_state
                     name: Netz
                     style:
                       --label-badge-text-color: var(--grid-state-color)
                       top: 40%
-                      left: 54%
+                      left: 50%
                   - type: state-badge
                     entity: binary_sensor.pv_generating
                     name: Solar
                     style:
                       --label-badge-text-color: var(--pv-generating-color)
                       top: 40%
-                      left: 58%
+                      left: 54%
                   - type: state-badge
                     entity: binary_sensor.battery_state
                     name: Baterie
                     style:
                       --label-badge-text-color: var(--battery-state-color)
                       top: 40%
-                      left: 62%
+                      left: 58%
                   - type: state-badge
                     entity: binary_sensor.eingangstur
                     style:
                       top: 40%
-                      left: 68%
+                      left: 64%
                   - type: state-badge
                     entity: binary_sensor.nebentur
                     style:
                       top: 40%
-                      left: 72%
+                      left: 68%
                   - type: state-badge
                     entity: binary_sensor.garagentur
                     style:
                       top: 40%
-                      left: 76%
+                      left: 72%
                   - type: state-badge
                     # entity: sensor.relay_garage_state
                     entity: binary_sensor.garagentor
                     style:
                       top: 40%
-                      left: 80%
+                      left: 76%
                   - type: state-badge
                     entity: sun.sun
                     style:
                       top: 40%
-                      left: 86%
+                      left: 82%
                   - type: state-badge
                     entity: sensor.ups_status
                     style:
                       top: 40%
-                      left: 90%
+                      left: 86%
                   - type: state-badge
                     entity: binary_sensor.gardena_smart_system_connection
                     style:
                       top: 40%
-                      left: 94%
+                      left: 90%
                   - type: state-badge
                     entity: sensor.cpu_temp
                     style:
                       top: 40%
+                      left: 94%
+                  - type: state-badge
+                    entity: binary_sensor.docker_hub_update_available
+                    name: Update
+                    style:
+                      top: 40%
                       left: 98%
+                    # https://community.home-assistant.io/t/card-mod-add-css-styles-to-any-lovelace-card/120744/1729
+                    card_mod:
+                      style:
+                        ha-state-label-badge:
+                          $:
+                            ha-label-badge:
+                              $:
+                                .badge-container: |
+                                  .title {
+                                    color: transparent;
+                                    line-height: 0px !important;
+                                  }
+                                  .title::before {
+                                    color: var(--primary-text-color);
+                                    content: "Update\A";
+                                    line-height: normal;
+                                  }
           - type: horizontal-stack
             cards:
               - type: vertical-stack
