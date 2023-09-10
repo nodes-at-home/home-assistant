@@ -123,6 +123,22 @@ views:
                     style:
                       top: 40%
                       left: 90%
+                    card_mod:
+                      style:
+                        ha-state-label-badge:
+                          $:
+                            ha-label-badge:
+                              $:
+                                .badge-container: |
+                                  .title {
+                                    color: transparent;
+                                    line-height: 0px !important;
+                                  }
+                                  .title::before {
+                                    color: var(--primary-text-color);
+                                    content: "Gardena\A";
+                                    line-height: normal;
+                                  }
                   - type: state-badge
                     entity: sensor.cpu_temp
                     style:
@@ -193,10 +209,21 @@ views:
                     cards:
                       - type: thermostat
                         entity: climate.office
+                        name: Büro
                       - type: thermostat
                         entity: climate.bedroom
+                        name: Schlafzimmer
                       - type: thermostat
                         entity: climate.nursery
+                        name: Kinderzimmer
+                      - type: thermostat
+                        entity: climate.thermostat_hc1
+                        name: Heizung
+                        card_mod:
+                            style: |
+                                ha-card {
+                                    line-height: 350%
+                                }
                   - type: horizontal-stack
                     cards:
                       - type: media-control
@@ -509,6 +536,9 @@ views:
               - binary_sensor.nebentur
               - entity: climate.room_climate_hauswirtschaftsraum
                 name: Thermostat
+              - entity: switch.zwischenstecker_1
+                icon: mdi:washing-machine
+              - sensor.zwischenstecker_1_power
               - entity: binary_sensor.rauchmelder_hauswirtsch
                 name: Rauchmelder
             card_mod:
@@ -774,10 +804,9 @@ views:
     panel: false
     badges:
       - sensor.rain_garden_precipitation_last7d
+      - sensor.rain_garden_precipitation_last5d
       - sensor.rain_garden_precipitation_last24h
       - sensor.rain_garden_precipitation
-      - counter.no_rain_days
-      - counter.warm_days
       - sensor.dht22_terrace_temperature_max
       - type: entity-filter
         entities:
