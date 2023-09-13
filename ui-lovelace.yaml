@@ -40,7 +40,7 @@ views:
                       top: 40%
                       left: 9%
                   - type: state-badge
-                    entity: device_tracker.galaxy_a52
+                    entity: device_tracker.110_nora_galaxy_a52
                     style:
                       top: 40%
                       left: 13%
@@ -55,7 +55,7 @@ views:
                       top: 40%
                       left: 21%
                   - type: state-badge
-                    entity: device_tracker.140_dominik_xperia_wlan
+                    entity: device_tracker.101_dominik_xperia_wlan
                     style:
                       top: 40%
                       left: 25%
