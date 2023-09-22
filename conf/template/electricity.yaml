@@ -187,7 +187,7 @@
         state: >
             {% set val = states ( 'sensor.tasmota_lk13be_energy_total_in' ) | float %}
             {% set lastval = state_attr ( 'sensor.electricity_meter_in', 'lastvalue' ) %}
-            {% set tolerance = states ( 'input_number.electricity_meter_threshold_energy' ) | float %}
+            {% set tolerance = states ( 'input_number.electricity_meter_threshold_energy' ) | multiply ( 0.001 ) | float %}
             {% if lastval %}
                 {% if val < lastval %}
                     {{ lastval }}
@@ -203,7 +203,7 @@
             lastvalue: >
                 {% set val = states ( 'sensor.tasmota_lk13be_energy_total_in' ) | float %}
                 {% set lastval = state_attr ( 'sensor.electricity_meter_in', 'lastvalue' ) %}
-                {% set tolerance = states ( 'input_number.electricity_meter_threshold_energy' ) | float %}
+                {% set tolerance = states ( 'input_number.electricity_meter_threshold_energy' ) | multiply ( 0.001 ) | float %}
                 {% if lastval %}
                     {% if val < lastval %}
                         {{ lastval }}
@@ -225,7 +225,7 @@
         state: >
             {% set val = states ( 'sensor.tasmota_lk13be_energy_total_out' ) | float %}
             {% set lastval = state_attr ( 'sensor.electricity_meter_out', 'lastvalue' ) %}
-            {% set tolerance = states ( 'input_number.electricity_meter_threshold_energy' ) | float %}
+            {% set tolerance = states ( 'input_number.electricity_meter_threshold_energy' ) | multiply ( 0.001 ) | float %}
             {% if lastval %}
                 {% if val < lastval %}
                     {{ lastval }}
@@ -241,7 +241,7 @@
             lastvalue: >
                 {% set val = states ( 'sensor.tasmota_lk13be_energy_total_out' ) | float %}
                 {% set lastval = state_attr ( 'sensor.electricity_meter_out', 'lastvalue' ) %}
-                {% set tolerance = states ( 'input_number.electricity_meter_threshold_energy' ) | float %}
+                {% set tolerance = states ( 'input_number.electricity_meter_threshold_energy' ) | multiply ( 0.001 ) | float %}
                 {% if lastval %}
                     {% if val < lastval %}
                         {{ lastval }}

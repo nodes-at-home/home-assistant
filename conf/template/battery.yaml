@@ -69,6 +69,8 @@
                     mdi:battery-20
                 {% elif val >= 10 %}
                     mdi:battery-10
+                {% elif val == 0 %}
+                    mdi:battery-off-outline
                 {% else %}
                     mdi:battery-outline
                 {% endif %}
