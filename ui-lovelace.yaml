@@ -539,6 +539,10 @@ views:
               - entity: switch.zwischenstecker_1
                 icon: mdi:washing-machine
               - sensor.zwischenstecker_1_power
+              - entity: sensor.boiler_wwcurtemp
+                name: Warmwasser
+              - entity: switch.boiler_wwonetime
+                name: Warmwasser
               - entity: binary_sensor.rauchmelder_hauswirtsch
                 name: Rauchmelder
             card_mod:
