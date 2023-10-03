@@ -635,6 +635,8 @@ views:
                 name: Dachfenster
               - entity: cover.nursery
                 name: Rolladen
+              - entity: switch.bugeleisen
+              - entity: sensor.bugeleisen_power
               - entity: climate.room_climate_kinderzimmer
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_kinderzimmer

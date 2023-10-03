@@ -576,15 +576,22 @@ views:
             - sensor.wasserpumpe_energy
             - sensor.wasserpumpe_power
             - type: divider
+            # washing machine
             - switch.zwischenstecker_1
             - sensor.zwischenstecker_1_communication_quality
             - sensor.zwischenstecker_1_energy
             - sensor.zwischenstecker_1_power
             - type: divider
+            # circulation pump
             - switch.zwischenstecker_2
             - sensor.zwischenstecker_2_communication_quality
             - sensor.zwischenstecker_2_energy
             - sensor.zwischenstecker_2_power
+            - type: divider
+            - switch.bugeleisen
+            - sensor.bugeleisen_communication_quality
+            - sensor.bugeleisen_energy
+            - sensor.bugeleisen_power
       - type: entities
         title: Heizkörperthermostate
         show_header_toggle: false
