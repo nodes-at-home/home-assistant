@@ -6,9 +6,7 @@
     type: tcp
     host: !secret modbus_proxy
     port: 5022
-    retry_on_empty: true
     retries: 10
-    close_comm_on_error: true
     delay: 5
     # timeout: 5
     sensors:
@@ -17,7 +15,6 @@
         slave: 2
         address: 4949 # reg 4950
         input_type: input
-        count: 2
         data_type: uint32
         swap: word
         scan_interval: 86400
@@ -26,7 +23,6 @@
         slave: 2
         address: 4951 # reg 4952
         input_type: input
-        count: 2
         data_type: uint32
         swap: word
         scan_interval: 86400
@@ -62,7 +58,6 @@
         slave: 2
         address: 4999 # reg 5000
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         scan_interval: 86400
@@ -71,7 +66,6 @@
         slave: 2
         address: 5002 # reg 5003
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 1
@@ -85,7 +79,6 @@
         slave: 2
         address: 5003 # reg 5004
         input_type: input
-        count: 2
         data_type: uint32
         swap: word
         unit_of_measurement: kWh
@@ -99,7 +92,6 @@
         slave: 2
         address: 5007 # reg 5008
         input_type: input
-        count: 1
         data_type: int16
         swap: none
         precision: 1
@@ -112,7 +104,6 @@
         slave: 2
         address: 5010 # reg 5011
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 1
@@ -125,7 +116,6 @@
         slave: 2
         address: 5011 # reg 5012
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 2
@@ -138,7 +128,6 @@
         slave: 2
         address: 5012 # reg 5013
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 1
@@ -151,7 +140,6 @@
         slave: 2
         address: 5013 # reg 5014
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 2
@@ -164,7 +152,6 @@
         slave: 2
         address: 5016 # reg 5017
         input_type: input
-        count: 2
         data_type: uint32
         swap: word
         precision: 0
@@ -178,7 +165,6 @@
         slave: 2
         address: 5018 # reg: 5019
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 1
@@ -192,7 +178,6 @@
         slave: 2
         address: 5019 # reg: 5020
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 1
@@ -206,7 +191,6 @@
         slave: 2
         address: 5020 # reg: 5021
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 1
@@ -220,7 +204,6 @@
         slave: 2
         address: 5032 # reg 5033
         input_type: input
-        count: 2
         data_type: int32
         swap: word
         precision: 0
@@ -234,7 +217,6 @@
         slave: 2
         address: 5034 # reg 5035
         input_type: input
-        count: 1
         data_type: int16
         swap: none
         precision: 3
@@ -248,7 +230,6 @@
         slave: 2
         address: 5035 # reg 5036
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 2
@@ -262,7 +243,6 @@
         slave: 2
         address: 5627 # reg 5628
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         unit_of_measurement: "W"
@@ -275,7 +255,6 @@
         slave: 2
         address: 5634 # reg 5635
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 0
@@ -288,7 +267,6 @@
         slave: 2
         address: 5635 # reg 5636
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 0
@@ -301,7 +279,6 @@
         slave: 2
         address: 12999 # reg 13000
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 0
@@ -314,7 +291,6 @@
         slave: 2
         address: 13000 # reg 13001
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 0
@@ -325,7 +301,6 @@
         slave: 2
         address: 13001 # reg 13002
         input_type: input
-        count: 1
         data_type: uint16
         swap: none
         precision: 1
@@ -339,7 +314,6 @@
         slave: 2
         address: 13002 # reg 13003
         input_type: input
-        count: 2
         data_type: uint32
         swap: word
         precision: 1
@@ -353,7 +327,6 @@
         slave: 2
         address: 13007 # reg 13008
         input_type: input
-        count: 2
         data_type: int32
         swap: word
         precision: 0
@@ -368,7 +341,6 @@
         slave: 2
         address: 13009 # reg 13010
         input_type: input
-        count: 2
         data_type: int32
         swap: word
         precision: 0
@@ -382,7 +354,6 @@
         slave: 2
         address: 13030 # reg 13031
         input_type: input
-        count: 1
         data_type: int16
         swap: none
         precision: 1
@@ -396,7 +367,6 @@
         slave: 2
         address: 13031 # reg 13032
         input_type: input
-        count: 1
         data_type: int16
         swap: none
         precision: 1
@@ -410,7 +380,6 @@
         slave: 2
         address: 13032 # reg 13033
         input_type: input
-        count: 1
         data_type: int16
         swap: none
         precision: 1
@@ -424,7 +393,6 @@
         slave: 2
         address: 13033 # reg 13034
         input_type: input
-        count: 2
         data_type: int32
         swap: word
         precision: 0
@@ -442,7 +410,6 @@
         slave: 2
         address: 12999 # reg 13000
         input_type: holding
-        count: 1
         data_type: uint16
         swap: none
         precision: 0
