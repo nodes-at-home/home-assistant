@@ -1,0 +1,11 @@
+###
+### 08.10.2023
+###
+
+name: normal
+mode: box
+min: 5
+max: 30
+step: 0.5
+unit_of_measurement: °C
+# initial: 21

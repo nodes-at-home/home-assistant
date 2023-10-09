@@ -309,6 +309,11 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.notification_open_doors_and_windows
+              - type: entities
+                title: Heizung
+                show_header_toggle: true
+                entities:
+                    - automation.heating_mode
           - type: vertical-stack
             cards:
               - type: entities

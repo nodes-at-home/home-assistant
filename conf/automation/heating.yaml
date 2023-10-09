@@ -1,0 +1,67 @@
+###
+### junand 08.10.2023
+###
+
+  - alias: heating_mode
+    id: heating_mode
+    trigger:
+      - platform: state
+        entity_id: select.thermostat_hc1_mode
+        # to: 'nofrost'
+        # for: "00:00:30"
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    action:
+      - repeat:
+            for_each:
+              - arbeitszimmer
+              - bad
+              - dusche
+              - esszimmer
+              - flur
+              - galerie
+              - kinderzimmer
+              - kuche
+              - schlafzimmer
+              - wohnzimmer
+              - hauswirtschaftsraum
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: "{{ is_state ( 'select.thermostat_hc1_mode', 'nofrost' ) }}"
+                    sequence:
+                      - service: climate.turn_off
+                        target:
+                            entity_id: "climate.room_climate_{{ repeat.item }}"
+                  - conditions:
+                      - condition: template
+                        value_template: "{{ is_state ( 'select.thermostat_hc1_mode', 'eco' ) }}"
+                    sequence:
+                      - service: climate.set_hvac_mode
+                        target:
+                            entity_id: "climate.room_climate_{{ repeat.item }}"
+                        data:
+                            hvac_mode: heat
+                      - service: climate.set_preset_mode
+                        target:
+                            entity_id: "climate.room_climate_{{ repeat.item }}"
+                        data:
+                            preset_mode: eco
+                  - conditions:
+                      - condition: template
+                        value_template: "{{ is_state ( 'select.thermostat_hc1_mode', 'heat' ) or is_state ( 'select.thermostat_hc1_mode', 'auto' ) }}"
+                    sequence:
+                      - service: climate.set_hvac_mode
+                        target:
+                            entity_id: "climate.room_climate_{{ repeat.item }}"
+                        data:
+                            hvac_mode: heat
+                      - service: climate.set_temperature
+                        target:
+                            entity_id: "climate.room_climate_{{ repeat.item }}"
+                        data:
+                            temperature: "{{ states ( 'input_number.heating_templevel_' + states ( 'input_select.heating_templevel_' + repeat.item ) ) }}"
+

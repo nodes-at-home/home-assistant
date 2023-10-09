@@ -1,0 +1,10 @@
+###
+### 08.10.2023
+###
+
+name: Galerie
+icon: mdi:thermometer
+options:
+    - low
+    - standard
+    - comfort

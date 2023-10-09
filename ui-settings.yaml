@@ -496,3 +496,30 @@ views:
             - binary_sensor.geschirrspuler_remote_start
             - binary_sensor.geschirrspuler_door
             - sensor.geschirrspuler_operation_state
+
+  - title: Heizung
+    path: heating
+    panel: false
+    cards:
+      - type: entities
+        title: Temperaturniveaus
+        show_header_toggle: false
+        entities:
+            - input_number.heating_templevel_low
+            - input_number.heating_templevel_standard
+            - input_number.heating_templevel_comfort
+      - type: entities
+        title: Raumtemperaturen
+        show_header_toggle: false
+        entities:
+            - input_select.heating_templevel_arbeitszimmer
+            - input_select.heating_templevel_bad
+            - input_select.heating_templevel_dusche
+            - input_select.heating_templevel_esszimmer
+            - input_select.heating_templevel_flur
+            - input_select.heating_templevel_galerie
+            - input_select.heating_templevel_hauswirtschaftsraum
+            - input_select.heating_templevel_kinderzimmer
+            - input_select.heating_templevel_kuche
+            - input_select.heating_templevel_schlafzimmer
+            - input_select.heating_templevel_wohnzimmer
