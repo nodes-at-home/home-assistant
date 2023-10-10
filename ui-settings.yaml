@@ -502,6 +502,22 @@ views:
     panel: false
     cards:
       - type: entities
+        title: Gastherme
+        show_header_toggle: false
+        entities:
+          - select.thermostat_hc1_mode
+          - type: divider
+          - number.boiler_selflowtemp
+          - number.boiler_heatingtemp
+          - type: divider
+          - number.boiler_wwseltemp
+          - number.boiler_wwflowtempoffset
+          - number.boiler_wwdisinfectiontemp
+          - type: divider
+          - number.thermostat_hc1_seltemp
+          - number.thermostat_hc1_heattemp
+          - number.thermostat_hc1_ecotemp
+      - type: entities
         title: Temperaturniveaus
         show_header_toggle: false
         entities:

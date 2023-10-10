@@ -65,3 +65,78 @@
                         data:
                             temperature: "{{ states ( 'input_number.heating_templevel_' + states ( 'input_select.heating_templevel_' + repeat.item ) ) }}"
 
+  - alias: heating_update_room
+    id: heating_update_room
+    trigger:
+      - platform: state
+        entity_id: input_select.heating_templevel_arbeitszimmer
+      - platform: state
+        entity_id: input_select.heating_templevel_bad
+      - platform: state
+        entity_id: input_select.heating_templevel_dusche
+      - platform: state
+        entity_id: input_select.heating_templevel_esszimmer
+      - platform: state
+        entity_id: input_select.heating_templevel_flur
+      - platform: state
+        entity_id: input_select.heating_templevel_galerie
+      - platform: state
+        entity_id: input_select.heating_templevel_kinderzimmer
+      - platform: state
+        entity_id: input_select.heating_templevel_kuche
+      - platform: state
+        entity_id: input_select.heating_templevel_schlafzimmer
+      - platform: state
+        entity_id: input_select.heating_templevel_wohnzimmer
+      - platform: state
+        entity_id: input_select.heating_templevel_hauswirtschaftsraum
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    action:
+      - service: climate.set_temperature
+        target:
+            entity_id: "climate.room_climate_{{ trigger.entity_id.split ( '_' ) [3] }}"
+        data:
+            temperature: "{{ states ( 'input_number.heating_templevel_' + states ( 'input_select.heating_templevel_' + trigger.entity_id.split ( '_' ) [3] ) ) }}"
+
+  - alias: heating_update_templevel
+    id: heating_update_templevel
+    trigger:
+      - platform: state
+        entity_id: input_number.heating_templevel_low
+      - platform: state
+        entity_id: input_number.heating_templevel_standard
+      - platform: state
+        entity_id: input_number.heating_templevel_comfort
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    action:
+      - variables:
+            level: "{{ trigger.entity_id.split ( '_' ) [3] }}"
+      - repeat:
+            for_each:
+              - arbeitszimmer
+              - bad
+              - dusche
+              - esszimmer
+              - flur
+              - galerie
+              - kinderzimmer
+              - kuche
+              - schlafzimmer
+              - wohnzimmer
+              - hauswirtschaftsraum
+            sequence:
+              - if:
+                  - condition: template
+                    value_template: "{{ is_state ( 'input_select.heating_templevel_' + repeat.item, level ) }}"
+                then:
+                  - service: climate.set_temperature
+                    target:
+                        entity_id: "climate.room_climate_{{ repeat.item }}"
+                    data:
+                        temperature: "{{ states ( 'input_number.heating_templevel_' + level ) }}"

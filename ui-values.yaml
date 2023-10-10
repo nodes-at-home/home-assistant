@@ -482,7 +482,7 @@ views:
           - number.thermostat_hc1_seltemp
           - number.thermostat_hc1_heattemp
           - number.thermostat_hc1_ecotemp
-          # - select.thermostat_hc1_mode
+          - select.thermostat_hc1_mode
           # - select.thermostat_hc1_roomsensor
           - type: divider
           - switch.boiler_wwonetime

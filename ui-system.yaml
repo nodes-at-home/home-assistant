@@ -314,6 +314,8 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.heating_mode
+                    - automation.heating_update_room
+                    - automation.heating_update_templevel
           - type: vertical-stack
             cards:
               - type: entities
