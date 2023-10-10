@@ -58,10 +58,16 @@ views:
         show_header_toggle: false
         entities:
             - input_boolean.circulating_pump_activated
+            - type: divider
             - input_number.circulating_pump_on_period
             - input_number.circulating_pump_on_duration
-            - input_number.circulating_pump_activated_after_standup
-            - input_number.circulating_pump_activated_before_sleeping
+            - input_number.circulating_pump_schedule_after_standup
+            - input_number.circulating_pump_schedule_before_sleeping
+            - type: divider
+            - input_boolean.circulating_pump_scheduled
+            - input_datetime.circulating_pump_scheduling_after_standup_workday
+            - input_datetime.circulating_pump_scheduling_after_standup_weekend
+            - input_datetime.circulating_pump_scheduling_before_sleeping
       - type: entities
         title: USV
         show_header_toggle: false

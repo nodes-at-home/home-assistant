@@ -12,9 +12,9 @@
       - platform: state
         entity_id: input_datetime.standup_weekend
       - platform: state
-        entity_id: input_number.circulating_pump_activated_after_standup
+        entity_id: input_number.circulating_pump_schedule_after_standup
       - platform: state
-        entity_id: input_number.circulating_pump_activated_before_sleeping
+        entity_id: input_number.circulating_pump_schedule_before_sleeping
       - platform: homeassistant
         event: start
       - platform: event
@@ -24,22 +24,22 @@
     action:
       - service: input_datetime.set_datetime
         target:
-            entity_id: input_datetime.circulating_pump_activated_after_standup_workday
+            entity_id: input_datetime.circulating_pump_scheduling_after_standup_workday
         data:
-            time: "{{ states ( 'input_datetime.standup_workday' ) | as_timedelta + timedelta ( hours = states ( 'input_number.circulating_pump_activated_after_standup' ) | int ) }}"
+            time: "{{ states ( 'input_datetime.standup_workday' ) | as_timedelta + timedelta ( hours = states ( 'input_number.circulating_pump_schedule_after_standup' ) | int ) }}"
       - service: input_datetime.set_datetime
         target:
-            entity_id: input_datetime.circulating_pump_activated_after_standup_weekend
+            entity_id: input_datetime.circulating_pump_scheduling_after_standup_weekend
         data:
-            time: "{{ states ( 'input_datetime.standup_weekend' ) | as_timedelta + timedelta ( hours = states ( 'input_number.circulating_pump_activated_after_standup' ) | int ) }}"
+            time: "{{ states ( 'input_datetime.standup_weekend' ) | as_timedelta + timedelta ( hours = states ( 'input_number.circulating_pump_schedule_after_standup' ) | int ) }}"
       - service: input_datetime.set_datetime
         target:
-            entity_id: input_datetime.circulating_pump_activated_before_sleeping
+            entity_id: input_datetime.circulating_pump_scheduling_before_sleeping
         data:
-            time: "{{ states ( 'input_datetime.sleep' ) | as_timedelta - timedelta ( hours = states ( 'input_number.circulating_pump_activated_before_sleeping' ) | int ) }}"
+            time: "{{ states ( 'input_datetime.sleep' ) | as_timedelta - timedelta ( hours = states ( 'input_number.circulating_pump_schedule_before_sleeping' ) | int ) }}"
 
-  - alias: circulating_pump_activating
-    id: circulating_pump_activating
+  - alias: circulating_pump_start_scheduling
+    id: circulating_pump_start_scheduling
     trigger:
       - platform: time
         at: input_datetime.standup_workday
@@ -49,7 +49,7 @@
         entity_id: group.family_devices
         to: 'home'
       - platform: time
-        at: input_datetime.circulating_pump_activated_before_sleeping
+        at: input_datetime.circulating_pump_scheduling_before_sleeping
     condition:
       - condition: state
         entity_id: group.family_devices
@@ -63,7 +63,7 @@
                 state: 'on'
               - condition: time
                 after: input_datetime.standup_workday
-                before: input_datetime.circulating_pump_activated_after_standup_workday
+                before: input_datetime.circulating_pump_schedule_after_standup_workday
           - condition: and
             conditions:
               - condition: state
@@ -71,16 +71,16 @@
                 state: 'off'
               - condition: time
                 after: input_datetime.standup_weekend
-                before: input_datetime.circulating_pump_activated_after_standup_weekend
+                before: input_datetime.circulating_pump_schedule_after_standup_weekend
           - condition: time # every day
-            after: input_datetime.circulating_pump_activated_before_sleeping
+            after: input_datetime.circulating_pump_scheduling_before_sleeping
             before: input_datetime.sleep
     action:
       - service: input_boolean.turn_on
-        entity_id: input_boolean.circulating_pump_activated
+        entity_id: input_boolean.circulating_pump_scheduled
 
-  - alias: circulating_pump_deactivating
-    id: circulating_pump_deactivating
+  - alias: circulating_pump_stop_scheduling
+    id: circulating_pump_stop_scheduling
     trigger:
       - platform: time
         at: input_datetime.sleep
@@ -97,33 +97,33 @@
       # no conditions
     action:
       - service: input_boolean.turn_off
-        entity_id: input_boolean.circulating_pump_activated
+        entity_id: input_boolean.circulating_pump_scheduled
 
-  - alias: circulating_pump_deactivating_after_standup_workday
-    id: circulating_pump_deactivating_after_standup_workday
+  - alias: circulating_pump_stop_scheduling_after_standup_workday
+    id: circulating_pump_stop_scheduling_after_standup_workday
     trigger:
       - platform: time
-        at: input_datetime.circulating_pump_activated_after_standup_workday
+        at: input_datetime.circulating_pump_schedule_after_standup_workday
     condition:
       - condition: state
         entity_id: binary_sensor.workday_sensor
         state: 'on'
     action:
       - service: input_boolean.turn_off
-        entity_id: input_boolean.circulating_pump_activated
+        entity_id: input_boolean.circulating_pump_scheduled
 
-  - alias: circulating_pump_deactivating_after_standup_weekend
-    id: circulating_pump_deactivating_after_standup_weekend
+  - alias: circulating_pump_stop_scheduling_after_standup_weekend
+    id: circulating_pump_stop_scheduling_after_standup_weekend
     trigger:
       - platform: time
-        at: input_datetime.circulating_pump_activated_after_standup_weekend
+        at: input_datetime.circulating_pump_schedule_after_standup_weekend
     condition:
       - condition: state
         entity_id: binary_sensor.workday_sensor
         state: 'off'
     action:
       - service: input_boolean.turn_off
-        entity_id: input_boolean.circulating_pump_activated
+        entity_id: input_boolean.circulating_pump_scheduled
 
   - alias: circulating_pump_switching
     id: circulating_pump_switching
@@ -136,6 +136,9 @@
     condition:
       - condition: state
         entity_id: input_boolean.circulating_pump_activated
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.circulating_pump_scheduled
         state: 'on'
     action:
       - service: switch.turn_on
