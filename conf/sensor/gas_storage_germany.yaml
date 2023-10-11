@@ -32,5 +32,4 @@
       - trend
       - full
       - info
-    # value_template: "{{ value_json }}"
-    value_template: "{{ value_json }}"
+    value_template: "{{ value_json.message }}"
