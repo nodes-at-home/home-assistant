@@ -40,7 +40,7 @@ views:
                       top: 40%
                       left: 9%
                   - type: state-badge
-                    entity: device_tracker.110_nora_galaxy_a52
+                    entity: device_tracker.140-nora-z-flip5-wlan
                     style:
                       top: 40%
                       left: 13%
@@ -1219,6 +1219,7 @@ views:
                 name: EPEX
               - entity: sensor.epex_spot_de_lu_net_price
                 name: ostrom (SimplyDynamic)
+
       - type: vertical-stack
         cards:
           - type: gauge
@@ -1252,6 +1253,27 @@ views:
           # - type: energy-usage-graph
           - type: energy-distribution
           # - type: energy-solar-graph
+          - type: entities
+            title: Gas
+            show_header_toggle: false
+            entities:
+              - type: section
+                label: Bezug
+              - entity: sensor.gas_meter_daily
+                name: täglich
+              - entity: sensor.gas_meter_yearly
+                name: jährlich
+              - type: divider
+              - entity: sensor.gas_energy_daily
+                name: täglich
+              - entity: sensor.gas_energy_yearly
+                name: jährlich
+              - type: section
+                label: Kosten
+              - entity: sensor.gas_daily_costs
+                name: täglich
+              - entity: sensor.gas_yearly_costs
+                name: jährlich
           - type: conditional
             conditions:
               - entity: input_boolean.show_debug_fields
@@ -1267,6 +1289,8 @@ views:
                   - sensor.solar_quarterhourly
                   - sensor.battery_quarterhourly_in
                   - sensor.battery_quarterhourly_out
+                  - sensor.gas_quarterhourly
+                  - sensor.gas_volume_quarterhourly
       - type: vertical-stack
         cards:
           - type: gauge

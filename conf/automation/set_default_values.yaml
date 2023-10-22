@@ -464,6 +464,22 @@
         data:
             entity_id: input_number.notification_tv_on_delay
             value: 5
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.gasmeter_threshold_high
+            value: 100000
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.gasmeter_threshold_low
+            value: 1000
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.gasmeter_heating_value
+            value: 11.23
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.gasmeter_zustandszahl
+            value: 0.9655
 
       #--------------------------------------------------------------------------
       - service: input_select.select_option

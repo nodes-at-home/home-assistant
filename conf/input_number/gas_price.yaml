@@ -1,0 +1,10 @@
+###
+### 21.10.2023
+###
+
+name: Gaspreis
+mode: box
+min: 0
+max: 1
+step: 0.01
+unit_of_measurement: EUR/kWh

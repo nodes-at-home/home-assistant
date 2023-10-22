@@ -1,0 +1,42 @@
+###
+### 21.10.2023
+###
+
+  - alias: gas_meter_send_threshold_high
+    id: gas_meter_send_threshold_high
+    trigger:
+      - platform: state
+        entity_id: input_number.gas_meter_threshold_high
+    action:
+      - service: mqtt.publish
+        data:
+            topic: nodes@home/sensor/magnetic/utilityroom/service/threshold_high
+            payload_template: "{{ states ( 'input_number.gas_meter_threshold_high' ) }}"
+            qos: 1
+            retain: true
+
+  - alias: gas_meter_send_threshold_low
+    id: gas_meter_send_threshold_low
+    trigger:
+      - platform: state
+        entity_id: input_number.gas_meter_threshold_low
+    action:
+      - service: mqtt.publish
+        data:
+            topic: nodes@home/sensor/magnetic/utilityroom/service/threshold_low
+            payload_template: "{{ states ( 'input_number.gas_meter_threshold_low' ) }}"
+            qos: 1
+            retain: true
+
+  - alias: gas_meter_send_delay
+    id: gas_meter_send_delay
+    trigger:
+      - platform: state
+        entity_id: input_number.gas_meter_delay
+    action:
+      - service: mqtt.publish
+        data:
+            topic: nodes@home/sensor/magnetic/utilityroom/service/delay
+            payload_template: "{{ states ( 'input_number.gas_meter_delay' ) }}"
+            qos: 1
+            retain: true

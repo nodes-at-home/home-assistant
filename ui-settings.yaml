@@ -315,6 +315,16 @@ views:
             - input_number.electricity_meter_threshold_energy
             - input_number.electricity_import_critical_above
       - type: entities
+        title: Gaszähler
+        show_header_toggle: false
+        entities:
+          - input_number.gas_meter_threshold_high
+          - input_number.gas_meter_threshold_low
+          - input_number.gas_meter_delay
+          - type: divider
+          - input_number.gas_meter_zustandszahl
+          - input_number.gas_meter_heating_value
+      - type: entities
         title: Batterie
         show_header_toggle: false
         entities:
@@ -382,6 +392,8 @@ views:
         entities:
             - input_number.electricity_price_in
             - input_number.electricity_price_out
+            - type: divider
+            - input_number.gas_price
 
   - title: Fensterrollos
     path: shutter

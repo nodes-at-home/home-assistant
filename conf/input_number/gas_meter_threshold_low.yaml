@@ -1,0 +1,9 @@
+###
+### 21.10.2023
+###
+
+name: Untere Schwelle
+mode: box
+min: 0
+max: 150000
+step: 1000

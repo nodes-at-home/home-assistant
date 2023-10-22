@@ -1,0 +1,38 @@
+###
+### 21.10.2023
+###
+
+  - state_topic: nodes@home/sensor/gas/utilityroom
+    name: "gas@utilityroom_version"
+    qos: 0
+    value_template: "{{ value }}"
+
+  - state_topic: nodes@home/sensor/gas/utilityroom
+    name: "gas@utilityroom_lastboot"
+    qos: 0
+    value_template: "{{ as_timestamp ( now () ) | timestamp_custom ( '%d.%m.%Y %H:%M:%S', true ) }}"
+
+  - state_topic: nodes@home/sensor/gas/utilityroom/value/voltage
+    name: "gas@utilityroom_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: "{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}"
+
+  - state_topic: nodes@home/sensor/gas/utilityroom/value/voltage
+    name: "gas@utilityroom_lastvoltage"
+    qos: 0
+    value_template: "{{ as_timestamp ( now () ) | timestamp_custom ( '%d.%m.%Y %H:%M:%S', true ) }}"
+
+  - state_topic: nodes@home/sensor/gas/utilityroom/value/tick
+    name: "gas@utilityroom_meter"
+    qos: 0
+    unit_of_measurement: "m³"
+    value_template: 0.01
+    force_update: true
+
+  - state_topic: nodes@home/sensor/gas/utilityroom/value/tick
+    name: "gas@utilityroom_energy"
+    qos: 0
+    unit_of_measurement: "kWh"
+    value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 6 ) }}"
+    force_update: true

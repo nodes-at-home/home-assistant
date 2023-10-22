@@ -1,0 +1,7 @@
+###
+### 21.10.2023
+###
+
+source: sensor.gas_utilityroom_meter
+cycle: quarter-hourly
+delta_values: true

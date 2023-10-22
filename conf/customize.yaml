@@ -15,7 +15,7 @@ device_tracker.156_andreas_pixel_6_pro_wlan:
 device_tracker.163_undine_z_flip4_wlan:
     friendly_name: Undine
     entity_picture: /local/people/Undine.jpg
-device_tracker.110_nora_galaxy_a52:
+device_tracker.140_nora_z_flip5_wlan:
     friendly_name: Nora
     entity_picture: /local/people/Nora.jpg
 device_tracker.161_nina_a52s_wlan:
@@ -1430,5 +1430,56 @@ binary_sensor.pv_generating:
 
 binary_sensor.battery_state:
     friendly_name: Batterie
+
+#------------------------------------------------------------------------------
+sensor.gas_utilityroom_voltage:
+    friendly_name: Gaszähler
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.gas_utilityroom_lastvoltage:
+    friendly_name: Gaszähler
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.gas_utilityroom_lastboot:
+    friendly_name: Gaszähler
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.gas_utilityroom_version:
+    friendly_name: Gaszähler
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
+sensor.gas_energy_quarterhourly:
+    friendly_name: Gasverbrauch 15 min
+    unit_of_measurement: kWh
+
+sensor.gas_energy_daily:
+    friendly_name: Gasverbrauch täglich
+    unit_of_measurement: kWh
+
+sensor.gas_energy_yearly:
+    friendly_name: Gasverbrauch jährlich
+    unit_of_measurement: kWh
+
+sensor.gas_quarterhourly:
+    friendly_name: Kumulierter Gasverbrauch 15 min
+    unit_of_measurement: kWh
+
+sensor.gas_meter_quarterhourly:
+    friendly_name: Gasverbrauch 15 min
+    unit_of_measurement: m³
+
+sensor.gas_meter_daily:
+    friendly_name: Gasverbrauch täglich
+    unit_of_measurement: m³
+
+sensor.gas_meter_yearly:
+    friendly_name: Gasverbrauch jährlich
+    unit_of_measurement: m³
+
+sensor.gas_volume_quarterhourly:
+    friendly_name: Kumulierter Gasverbrauch 15 min
+    unit_of_measurement: m³
+
 
 #------------------------------------------------------------------------------

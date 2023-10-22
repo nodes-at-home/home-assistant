@@ -37,9 +37,10 @@ logger:
   # default: debug
   # default: info
   default: warn
-  # logs:
+  logs:
     # homeassistant.components.automation: debug
-    # boschshcpy: debug
+    boschshcpy: debug
+    custom_components.bosch_shc: debug
     # custom_components.becker: debug
     # custom_component.solarman: debug
     # homeassistant.helper.update: debug
@@ -167,6 +168,9 @@ influxdb:
         - sensor.thermostat_bad_humidity
         - sensor.heizkorper_bad_temperature
         - sensor.heizkorper_dusche_temperature
+        - sensor.gas_quarterhourly
+        - sensor.gas_volume_quarterhourly
+        - sensor.gas_price
   ignore_attributes:
     - friendly_name
     - icon

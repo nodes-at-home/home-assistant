@@ -1,0 +1,10 @@
+###
+### 21.10.2023
+###
+
+name: Messverzögerung
+mode: slider
+min: 0
+max: 2000
+step: 100
+unit_of_measurement: ms

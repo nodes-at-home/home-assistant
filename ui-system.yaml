@@ -110,11 +110,9 @@ views:
                 - sensor.shelly_shower_version
                 - sensor.ds18b20_brewery_version
                 - sensor.spindle_fermenter_version
-                - sensor.button_indoor_version
-                - sensor.button_garage_version
-                - sensor.button_pool_version
                 - sensor.pixel_kitchen_version
                 # - sensor.electricity_utilityroom_version
+                - sensor.gas_utilityroom_version
                 - sensor.ws2812_terrace1_version
                 - sensor.ws2812_terrace2_version
                 - sensor.ws2812_xmasstar_version
@@ -155,11 +153,9 @@ views:
                 - sensor.shelly_shower_lastboot
                 - sensor.ds18b20_brewery_lastboot
                 - sensor.spindle_fermenter_lastboot
-                - sensor.button_indoor_lastboot
-                - sensor.button_garage_lastboot
-                - sensor.button_pool_lastboot
                 - sensor.pixel_kitchen_lastboot
                 # - sensor.electricity_utilityroom_lastboot
+                - sensor.gas_utilityroom_lastboot
                 - sensor.ws2812_terrace1_lastboot
                 - sensor.ws2812_terrace2_lastboot
                 - sensor.ws2812_xmasstar_lastboot
@@ -200,11 +196,9 @@ views:
                 - sensor.shelly_shower_lastvoltage
                 - sensor.ds18b20_brewery_lastvoltage
                 - sensor.spindle_fermenter_lastvoltage
-                - sensor.button_indoor_lastvoltage
-                - sensor.button_garage_lastvoltage
-                - sensor.button_pool_lastvoltage
                 - sensor.pixel_kitchen_lastvoltage
                 # - sensor.electricity_utilityroom_lastvoltage
+                - sensor.gas_utilityroom_lastvoltage
                 - sensor.ws2812_terrace1_lastvoltage
                 - sensor.ws2812_terrace2_lastvoltage
                 - sensor.ws2812_xmasstar_lastvoltage
@@ -245,11 +239,9 @@ views:
                 - sensor.shelly_shower_voltage
                 - sensor.ds18b20_brewery_voltage
                 - sensor.spindle_fermenter_voltage
-                - sensor.button_indoor_voltage
-                - sensor.button_garage_voltage
-                - sensor.button_pool_voltage
                 - sensor.pixel_kitchen_voltage
                 # - sensor.electricity_utilityroom_voltage
+                - sensor.gas_utilityroom_voltage
                 - sensor.ws2812_terrace1_voltage
                 - sensor.ws2812_terrace2_voltage
                 - sensor.ws2812_xmasstar_voltage
@@ -316,6 +308,9 @@ views:
                     - automation.heating_mode
                     - automation.heating_update_room
                     - automation.heating_update_templevel
+                    - automation.gas_meter_send_threshold_high
+                    - automation.gas_meter_send_threshold_low
+                    - automation.gas_meter_send_delay
           - type: vertical-stack
             cards:
               - type: entities
