@@ -1076,9 +1076,9 @@ views:
       - type: conditional
         conditions:
           - entity:
-                - switch.sonoff_pool_socket
+                # - switch.sonoff_pool_socket
                 - sensor.ds18b20_pool_temperature
-            state_not: unknown
+            state_not: "unknown"
         card:
             type: vertical-stack
             cards:
@@ -1148,6 +1148,12 @@ views:
         style: |
             :host {
                 --label-badge-text-color: {{ state_attr ( 'binary_sensor.sh10rt_slave_inverter_state_badge', 'icon_color' ) }}
+            }
+      - entity: binary_sensor.boiler_burngas_state_badge
+        name: Gastherme
+        style: |
+            :host {
+                --label-badge-text-color: {{ state_attr ( 'binary_sensor.boiler_burngas_state_badge', 'icon_color' ) }}
             }
     cards:
       - type: vertical-stack

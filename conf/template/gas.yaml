@@ -2,6 +2,19 @@
 ### 21.10.2023
 ###
 
+  - binary_sensor:
+
+      - name: boiler_burngas_state_badge
+        state: "{{ states ( 'binary_sensor.boiler_burngas' ) }}"
+        icon: mdi:fire
+        attributes:
+            icon_color: >
+                {% if ( states ( 'binary_sensor.boiler_burngas' ) == "on" ) %}
+                    gold
+                {% else %}
+                    silver
+                {% endif %}
+
   - sensor:
 
       - name: gas_daily_costs
