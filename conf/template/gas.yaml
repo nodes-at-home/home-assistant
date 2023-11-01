@@ -29,6 +29,18 @@
         availability: "{{ states ( 'sensor.gas_energy_yearly' ) | is_number and states ( 'input_number.gas_price' ) | is_number }}"
         state: "{{ '{:.2f}'.format ( ( states ( 'sensor.gas_energy_yearly' ) | float * states ( 'input_number.gas_price' ) | float ) | round ( 2 ) ) }}"
 
+      - name: gas_hotwater_daily_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.gas_energy_hotwater_daily' ) | is_number and states ( 'input_number.gas_price' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.gas_energy_hotwater_daily' ) | float * states ( 'input_number.gas_price' ) | float ) | round ( 2 ) ) }}"
+
+      - name: gas_hotwater_yearly_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.gas_energy_hotwater_yearly' ) | is_number and states ( 'input_number.gas_price' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.gas_energy_hotwater_yearly' ) | float * states ( 'input_number.gas_price' ) | float ) | round ( 2 ) ) }}"
+
   - trigger:
       - platform: state
         entity_id: sensor.gas_meter_quarterhourly
@@ -50,3 +62,14 @@
         state: "{{ state_attr ( 'sensor.gas_energy_quarterhourly', 'last_period' ) }}"
         attributes:
             last_reset: '{{ state_attr ( "sensor.gas_energy_quarterhourly", "last_reset" ) }}'
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.gas_energy_hotwater_quarterhourly
+        attribute: last_reset
+    sensor:
+      - name: gas_hotwater_quarterhourly
+        unit_of_measurement: kWh
+        state: "{{ state_attr ( 'sensor.gas_energy_hotwater_quarterhourly', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.gas_energy_hotwater_quarterhourly", "last_reset" ) }}'

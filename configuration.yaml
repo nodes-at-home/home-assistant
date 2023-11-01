@@ -171,6 +171,7 @@ influxdb:
         - sensor.gas_quarterhourly
         - sensor.gas_volume_quarterhourly
         - sensor.gas_price
+        - sensor.gas_hotwater_quarterhourly
   ignore_attributes:
     - friendly_name
     - icon
@@ -209,6 +210,9 @@ lovelace:
         type: module
       # https://github.com/thomasloven/lovelace-card-mod
       - url: /local/custom_lovelace/lovelace-card-mod/card-mod.js
+        type: module
+      # https://github.com/ExperienceLovelace/ha-floorplan
+      - url: /local/custom_lovelace/ha-floorplan/floorplan.js
         type: module
     dashboards:
         values-dashboard:
@@ -294,7 +298,7 @@ history:
 # Enables support for logbook component.
 # By default, the logbook will use the same filter as the recorder.
 logbook:
-        
+
 # -------------------------------------------------------------------------------
 # hostname
 input_text:

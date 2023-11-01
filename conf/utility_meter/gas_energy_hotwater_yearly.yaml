@@ -1,0 +1,7 @@
+###
+### 01.11.2023
+###
+
+source: sensor.gas_utilityroom_energy_hotwater
+cycle: yearly
+delta_values: true

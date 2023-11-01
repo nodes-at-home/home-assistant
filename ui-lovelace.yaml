@@ -1272,14 +1272,22 @@ views:
               - type: divider
               - entity: sensor.gas_energy_daily
                 name: täglich
+              - entity: sensor.gas_energy_hotwater_daily
+                name: "> davon Warmwasser"
               - entity: sensor.gas_energy_yearly
                 name: jährlich
+              - entity: sensor.gas_energy_hotwater_yearly
+                name: "> davon Warmwasser"
               - type: section
                 label: Kosten
               - entity: sensor.gas_daily_costs
                 name: täglich
+              - entity: sensor.gas_hotwater_daily_costs
+                name: "> davon Warmwasser"
               - entity: sensor.gas_yearly_costs
                 name: jährlich
+              - entity: sensor.gas_hotwater_yearly_costs
+                name: "> davon Warmwasser"
           - type: conditional
             conditions:
               - entity: input_boolean.show_debug_fields
@@ -1296,6 +1304,7 @@ views:
                   - sensor.battery_quarterhourly_in
                   - sensor.battery_quarterhourly_out
                   - sensor.gas_quarterhourly
+                  - sensor.gas_hotwater_quarterhourly
                   - sensor.gas_volume_quarterhourly
       - type: vertical-stack
         cards:
@@ -1479,3 +1488,18 @@ views:
           - template: vacuum_goto
           - template: vacuum_follow_path
 
+  - title: Erdgeschoss
+    path: flooplan
+    panel: true
+    visible: false
+    cards:
+      - type: 'custom:floorplan-card'
+        full_height: true
+        config:
+          image: /local/floorplans/Floorplan-M10.svg
+          #stylesheet: /local/floorplan/examples/home/home.css
+          log_level: info
+          console_log_level: info
+          defaults:
+            hover_action: hover-info
+            tap_action: more-info

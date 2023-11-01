@@ -23,6 +23,7 @@
     qos: 0
     value_template: "{{ as_timestamp ( now () ) | timestamp_custom ( '%d.%m.%Y %H:%M:%S', true ) }}"
 
+    # one tick are 0.01 m³ gas
   - state_topic: nodes@home/sensor/gas/utilityroom/value/tick
     name: "gas@utilityroom_meter"
     qos: 0
@@ -34,5 +35,12 @@
     name: "gas@utilityroom_energy"
     qos: 0
     unit_of_measurement: "kWh"
-    value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 6 ) }}"
+    value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 2 ) }}"
+    force_update: true
+
+  - state_topic: nodes@home/sensor/gas/utilityroom/value/tick
+    name: "gas@utilityroom_energy_hotwater"
+    qos: 0
+    unit_of_measurement: "kWh"
+    value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 2 ) if is_state ( 'binary_sensor.boiler_ww3wayvalve', 'on' ) else 0 }}"
     force_update: true

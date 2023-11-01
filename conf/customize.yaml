@@ -1465,6 +1465,22 @@ sensor.gas_quarterhourly:
     friendly_name: Kumulierter Gasverbrauch 15 min
     unit_of_measurement: kWh
 
+sensor.gas_energy_hotwater_quarterhourly:
+    friendly_name: Gasverbrauch Warmwasser 15 min
+    unit_of_measurement: kWh
+
+sensor.gas_energy_hotwater_daily:
+    friendly_name: Gasverbrauch Warmwasser täglich
+    unit_of_measurement: kWh
+
+sensor.gas_energy_hotwater_yearly:
+    friendly_name: Gasverbrauch Warmwasser jährlich
+    unit_of_measurement: kWh
+
+sensor.gas_whotater_quarterhourly:
+    friendly_name: Kumulierter Gasverbrauch Warmwasser 15 min
+    unit_of_measurement: kWh
+
 sensor.gas_meter_quarterhourly:
     friendly_name: Gasverbrauch 15 min
     unit_of_measurement: m³

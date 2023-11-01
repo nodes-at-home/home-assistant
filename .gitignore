@@ -12,3 +12,4 @@ __pycache__/
 centronic-stick.db
 blueprints/
 solcast.json
+.vscode/
