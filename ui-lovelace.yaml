@@ -40,7 +40,7 @@ views:
                       top: 40%
                       left: 9%
                   - type: state-badge
-                    entity: device_tracker.140-nora-z-flip5-wlan
+                    entity: device_tracker.102_nora_z_flip5_wlan
                     style:
                       top: 40%
                       left: 13%
@@ -1491,7 +1491,7 @@ views:
   - title: Erdgeschoss
     path: flooplan
     panel: true
-    visible: false
+    visible: true
     cards:
       - type: 'custom:floorplan-card'
         full_height: true
