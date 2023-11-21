@@ -437,11 +437,11 @@ views:
             columns: 3
             entities:
               - entity: light.rfhub_lounge_lamploungewhiteball
-                name: Stehlampe Couch
+                name: Stehlampe Drucker
               - entity: light.rfhub_lounge_lamploungeblackbowl
               - entity: light.rfhub_lounge_lamploungereading
-              - entity: light.rfhub_lounge_lampstudypillar
-                name: Stehlampe Drucker
+              #- entity: light.rfhub_lounge_lampstudypillar
+              #  name: Stehlampe Drucker
               - entity: binary_sensor.terassentur_wohnzimmer
                 name: Terassentür
               - entity: binary_sensor.fenster_wohnzimmer_1
@@ -1488,18 +1488,146 @@ views:
           - template: vacuum_goto
           - template: vacuum_follow_path
 
-  - title: Erdgeschoss
-    path: flooplan
+  - title: Grundriss
+    path: floorplan
     panel: true
     visible: true
     cards:
       - type: 'custom:floorplan-card'
         full_height: true
+        #config: /local/floorplans/groundlevel.yaml
         config:
-          image: /local/floorplans/Floorplan-M10.svg
-          #stylesheet: /local/floorplan/examples/home/home.css
-          log_level: info
-          console_log_level: info
+          image: /local/floorplans/floorplan.svg
+          stylesheet: /local/floorplans/assets/floorplan.css
+          log_level: debug
+          console_log_level: debug
           defaults:
             hover_action: hover-info
             tap_action: more-info
+          startup_action:
+            #- service: floorplan.class_set
+            #  service_data:
+            #    element: ground_floor
+            #    class: layer-visible
+            - service: floorplan.class_set
+              service_data:
+                element: first_floor
+                class: layer-hidden
+            #- service: floorplan.class_set
+            #  service_data:
+            #    element: "ground_floor.button"
+            #    class: button-on
+            #- service: floorplan.class_set
+            #  service_data:
+            #    element: "first_floor.button"
+            #    class: button-off
+          rules:
+            - name: Button Erdgeschoss
+              element: ground_floor.button
+              tap_action:
+                - service: floorplan.class_set
+                  service_data:
+                    elements:
+                      - ground_floor
+                      - garage
+                    class: layer-visible
+                - service: floorplan.class_set
+                  service_data:
+                    element: first_floor
+                    class: layer-hidden
+                - service: floorplan.class_set
+                  service_data:
+                    element: ground_floor.button
+                    class: button-on
+                - service: floorplan.class_set
+                  service_data:
+                    element: first_floor.button
+                    class: button-off
+            - element: first_floor.button
+              tap_action:
+                - service: floorplan.class_set
+                  service_data:
+                    element: first_floor
+                    class: layer-visible
+                - service: floorplan.class_set
+                  service_data:
+                    elements:
+                      - ground_floor
+                      - garage
+                    class: layer-hidden
+                - service: floorplan.class_set
+                  service_data:
+                    element: first_floor.button
+                    class: button-on
+                - service: floorplan.class_set
+                  service_data:
+                    element: ground_floor.button
+                    class: button-off
+            - entities:
+              - light.sonoff_garage_lamp
+              - entity: light.shelly_terrace_lamp
+                element: light.shelly_terrace_lamp1
+              - entity: light.shelly_terrace_lamp
+                element: light.shelly_terrace_lamp2
+              - light.relay_backyard_lamp
+              - light.sonoff_yardgate_lamp
+              # - light.ws2812_terrace1
+              # - light.ws2812_terrace2
+              - light.rfhub_lounge_schwibbogen1
+              - light.rfhub_lounge_schwibbogen2
+              - light.rfhub_lounge_star
+              - entity: light.rfhub_lounge_drops
+                element: light.rfhub_lounge_drops1
+              - entity: light.rfhub_lounge_drops
+                element: light.rfhub_lounge_drops2
+              - light.rfhub_lounge_lamploungeblackbowl
+              - light.rfhub_lounge_lamploungereading
+              - light.rfhub_lounge_lamploungewhiteball
+              - light.led_corridor_led
+              - light.led_kitchen_led
+              - light.relay_dining1_lamp
+              - light.relay_dining2_lamp
+              - light.shelly_shower_socket
+              - light.sonoff_corridor_lamp
+              - light.sonoff_gallery1_socket
+              - light.shelly_bath_socket
+              - light.sonoff_bedroom_socket
+              state_action:
+                - action: call-service
+                  service: floorplan.class_set
+                  #service_data: '${ ( entity.state === "on" ) ? "light-on" : "light-off" }'
+                  service_data: light-${ entity.state }
+              #tap_action:
+              #  - service: light.toggle
+            - entities:
+                - sensor.thermostat_arbeitszimmer_temperature
+                - sensor.thermostat_arbeitszimmer_humidity
+                - sensor.thermostat_bad_temperature
+                - sensor.thermostat_bad_humidity
+                - sensor.thermostat_dusche_temperature
+                - sensor.thermostat_dusche_humidity
+                - sensor.thermostat_esszimmer_temperature
+                - sensor.thermostat_esszimmer_humidity
+                - sensor.thermostat_flur_temperature
+                - sensor.thermostat_flur_humidity
+                - sensor.thermostat_galerie_temperature
+                - sensor.thermostat_galerie_humidity
+                - sensor.thermostat_hauswirtschaft_temperature
+                - sensor.thermostat_hauswirtschaft_humidity
+                - sensor.thermostat_kinderzimmer_temperature
+                - sensor.thermostat_kinderzimmer_humidity
+                - sensor.thermostat_kuche_temperature
+                - sensor.thermostat_kuche_humidity
+                - sensor.thermostat_schlafzimmer_temperature
+                - sensor.thermostat_schlafzimmer_humidity
+                - sensor.thermostat_wohnzimmer_temperature
+                - sensor.thermostat_wohnzimmer_humidity
+              state_action:
+                - action: call-service
+                  service: floorplan.text_set
+                  service_data: ${ Math.round ( 10 * entity.state ) / 10 + " " + entity.attributes.unit_of_measurement }
+              #tap_action: false
+              hold_action:
+                - action: call-service
+                  service: floorplan.text_set
+                  service_data: ${ Math.round ( 10 * entity.state ) / 10 + " " + entity.attributes.unit_of_measurement }

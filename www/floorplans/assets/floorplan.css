@@ -1,0 +1,57 @@
+/* junand 03.11.2023 */
+
+/* Makes things visible and invisible */
+.always-invisible {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    stroke-opacity: 0 !important;
+}
+
+.always-visible {
+    visibility: visible !important;
+    opacity: 1 !important;
+    stroke-opacity: 1 !important;
+}
+
+.light-on, .light-on * {
+    fill: #f4ed219f !important;
+    transition: fill 1s ease;
+}
+
+.light-off, .light-off * {
+    fill: #c7c5c6 !important;
+    transition: fill 1s ease;
+}
+
+.thermostat-text {
+    font: 25px sans-serif;
+    fill: rgb(43, 0, 255);
+}
+
+/* Layers */
+
+.layer-visible {
+    display: inline !important;
+  }
+
+.layer-hidden {
+    display: none !important;
+  }
+
+
+/* Buttons */
+
+.button-on rect {
+    fill: #1aba92 !important;
+}
+
+/*
+.button-off rect {
+    fill: #d32f2f !important;
+}
+*/
+
+.button-on tspan,
+.button-off tspan {
+    fill: white !important;
+}
