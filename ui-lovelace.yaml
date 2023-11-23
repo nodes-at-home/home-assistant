@@ -30,7 +30,8 @@ views:
                         }
                 elements:
                   - type: state-badge
-                    entity: device_tracker.156_andreas_pixel_6_pro_wlan
+                    # entity: device_tracker.156_andreas_pixel_6_pro_wlan
+                    entity: device_tracker.165_andreas_z_fold5_wlan
                     style:
                       top: 40%
                       left: 5%
@@ -297,7 +298,8 @@ views:
     badges:
       - type: entity-filter
         entities:
-          - entity: device_tracker.156_andreas_pixel_6_pro_wlan
+          # - entity: device_tracker.156_andreas_pixel_6_pro_wlan
+          - entity: device_tracker.165_andreas_galaxy_z_fold5_wlan
           - entity: device_tracker.163_undine_z_flip4_wlan
           - entity: device_tracker.galaxy_a52
           - entity: device_tracker.161_nina_a52s_wlan

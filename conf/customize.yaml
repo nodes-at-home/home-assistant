@@ -9,7 +9,7 @@
 ###
 
 #------------------------------------------------------------------------------
-device_tracker.156_andreas_pixel_6_pro_wlan:
+device_tracker.165_andreas_z_fold5_wlan:
     friendly_name: Andreas
     entity_picture: /local/people/Andreas.jpg
 device_tracker.163_undine_z_flip4_wlan:
