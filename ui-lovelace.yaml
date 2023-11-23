@@ -1507,22 +1507,22 @@ views:
             hover_action: hover-info
             tap_action: more-info
           startup_action:
-            #- service: floorplan.class_set
-            #  service_data:
-            #    element: ground_floor
-            #    class: layer-visible
+            - service: floorplan.class_set
+              service_data:
+                element: ground_floor
+                class: layer-visible
             - service: floorplan.class_set
               service_data:
                 element: first_floor
                 class: layer-hidden
-            #- service: floorplan.class_set
-            #  service_data:
-            #    element: "ground_floor.button"
-            #    class: button-on
-            #- service: floorplan.class_set
-            #  service_data:
-            #    element: "first_floor.button"
-            #    class: button-off
+            - service: floorplan.class_set
+              service_data:
+                element: "ground_floor.button"
+                class: button-on
+            - service: floorplan.class_set
+              service_data:
+                element: "first_floor.button"
+                class: button-off
           rules:
             - name: Button Erdgeschoss
               element: ground_floor.button
