@@ -32,7 +32,7 @@
             state: 'on'
     action:
       - service: homeassistant.turn_on
-        entity_id: 
+        entity_id:
             - light.automatic_indoor_lights_immediatly_switched_off
             - light.automatic_indoor_lights_delayed_switched_off
 
@@ -54,12 +54,12 @@
         state: 'home'
     action:
       - service: homeassistant.turn_on
-        entity_id: 
+        entity_id:
             - light.automatic_indoor_lights_by_night
       - delay:
             minutes: "{{ states ( 'input_number.nightlight_duration' ) | int }}"
       - service: homeassistant.turn_off
-        entity_id: 
+        entity_id:
             - light.automatic_indoor_lights_by_night
 
   - alias: indoor_lights_off_at_getting_out_or_sunrise
@@ -68,6 +68,8 @@
       - platform: state
         entity_id: group.family_devices
         to: 'not_home'
+        for:
+          minutes: 1
       - platform: sun
         event: sunrise
         offset: "+00:00:00"
@@ -80,7 +82,7 @@
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off
-        entity_id: 
+        entity_id:
             - light.automatic_indoor_lights_immediatly_switched_off
             - light.automatic_indoor_lights_delayed_switched_off
             - light.automatic_indoor_lights_immediatly_switched_off_extra
@@ -105,13 +107,13 @@
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off
-        entity_id: 
+        entity_id:
             - light.automatic_indoor_lights_immediatly_switched_off
             - light.automatic_indoor_lights_immediatly_switched_off_extra
       - delay:
             minutes: "{{ ( states ( 'input_number.tvoff_lightsoff_delay2' ) | int - states ( 'input_number.tvoff_lightsoff_delay1' ) | int ) }}"
       - service: homeassistant.turn_off
-        entity_id: 
+        entity_id:
             - light.automatic_indoor_lights_delayed_switched_off
 
   - alias: indoor_lights_off_after_random_delay
@@ -130,7 +132,7 @@
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off
-        entity_id: 
+        entity_id:
             - light.automatic_indoor_lights_immediatly_switched_off
             - light.automatic_indoor_lights_delayed_switched_off
             - light.automatic_indoor_lights_immediatly_switched_off_extra
