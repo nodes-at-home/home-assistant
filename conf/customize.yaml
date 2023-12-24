@@ -24,7 +24,7 @@ device_tracker.161_nina_a52s_wlan:
 device_tracker.a52_von_niklas:
     friendly_name: Niklas
     entity_picture: /local/people/Niklas.jpg
-device_tracker.101_dominik_xperia_wlan:
+device_tracker.156_dominik_pixel_6_pro_wlan:
     friendly_name: Dominik
     entity_picture: /local/people/Dominik.jpg
 

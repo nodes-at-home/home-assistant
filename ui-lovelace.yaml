@@ -56,7 +56,7 @@ views:
                       top: 40%
                       left: 21%
                   - type: state-badge
-                    entity: device_tracker.101_dominik_xperia_wlan
+                    entity: device_tracker.156_dominik_pixel_6_pro_wlan
                     style:
                       top: 40%
                       left: 25%
