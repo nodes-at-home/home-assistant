@@ -232,12 +232,6 @@ views:
         title: Drücker
         show_header_toggle: true
         entities:
-            - input_boolean.button_indoor_activated
-            - binary_sensor.button_indoor
-            - input_boolean.button_garage_activated
-            - binary_sensor.button_garage
-            - input_boolean.button_pool_activated
-            - binary_sensor.button_pool
             - input_boolean.gesture_kitchen_activated
             - binary_sensor.gesture_kitchen
             - input_boolean.touch_bedroom_activated

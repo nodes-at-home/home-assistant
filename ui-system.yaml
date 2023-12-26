@@ -80,13 +80,13 @@ views:
                 - sensor.dht22_lounge_version
                 - sensor.dht22_roof_version
                 - sensor.dht22_terrace_version
-                - sensor.dht22_office_version
                 - sensor.dht11_utilityroom_version
                 - sensor.rfhub_lounge_version
                 - sensor.relay_garage_version
                 - sensor.sonoff_garage_version
                 - sensor.relay_backyard_version
                 - sensor.sonoff_utilityroom_version
+                - sensor.gas_utilityroom_version
                 # - sensor.xmastree_dining_version
                 - sensor.sonoff_pool_version
                 - sensor.relay_garden_version
@@ -123,13 +123,13 @@ views:
                 - sensor.dht22_lounge_lastboot
                 - sensor.dht22_roof_lastboot
                 - sensor.dht22_terrace_lastboot
-                - sensor.dht22_office_lastboot
                 - sensor.dht11_utilityroom_lastboot
                 - sensor.rfhub_lounge_lastboot
                 - sensor.relay_garage_lastboot
                 - sensor.sonoff_garage_lastboot
                 - sensor.relay_backyard_lastboot
                 - sensor.sonoff_utilityroom_lastboot
+                - sensor.gas_utilityroom_lastboot
                 # - sensor.xmastree_dining_lastboot
                 - sensor.sonoff_pool_lastboot
                 - sensor.relay_garden_lastboot
@@ -166,13 +166,13 @@ views:
                 - sensor.dht22_lounge_lastvoltage
                 - sensor.dht22_roof_lastvoltage
                 - sensor.dht22_terrace_lastvoltage
-                - sensor.dht22_office_lastvoltage
                 - sensor.dht11_utilityroom_lastvoltage
                 - sensor.rfhub_lounge_lastvoltage
                 - sensor.relay_garage_lastvoltage
                 - sensor.sonoff_garage_lastvoltage
                 - sensor.relay_backyard_lastvoltage
                 - sensor.sonoff_utilityroom_lastvoltage
+                - sensor.gas_utilityroom_lastvoltage
                 # - sensor.xmastree_dining_lastvoltage
                 - sensor.sonoff_pool_lastvoltage
                 - sensor.relay_garden_lastvoltage
@@ -209,13 +209,13 @@ views:
                 - sensor.dht22_lounge_voltage
                 - sensor.dht22_roof_voltage
                 - sensor.dht22_terrace_voltage
-                - sensor.dht22_office_voltage
                 - sensor.dht11_utilityroom_voltage
                 - sensor.rfhub_lounge_voltage
                 - sensor.relay_garage_voltage
                 - sensor.sonoff_garage_voltage
                 - sensor.relay_backyard_voltage
                 - sensor.sonoff_utilityroom_voltage
+                - sensor.gas_utilityroom_voltage
                 # - sensor.xmastree_dining_voltage
                 - sensor.sonoff_pool_voltage
                 - sensor.relay_garden_voltage
@@ -283,7 +283,7 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.indoor_lights_on_at_coming_home_or_sunset
-                    - automation.indoor_lights_by_night_on_at_coming_home            
+                    - automation.indoor_lights_by_night_on_at_coming_home
                     - automation.indoor_lights_off_at_getting_out_or_sunrise
                     - automation.indoor_lights_off_when_tv_switched_off
                     - automation.indoor_lights_off_after_random_delay

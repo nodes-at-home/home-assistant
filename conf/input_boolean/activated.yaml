@@ -2,18 +2,6 @@
 ### 22.08.2019 split up
 ###
 
-button_indoor_activated:
-    name: Drücker Innenlicht aktiv
-    # initial: on
-
-button_garage_activated:
-    name: Drücker Garage aktiv
-    # initial: on
-
-button_pool_activated:
-    name: Drücker Pool aktiv
-    # initial: on
-
 gesture_kitchen_activated:
     name: Gestensensor Küche aktiv
     # initial: on
@@ -37,7 +25,7 @@ circulating_pump_activated:
 cover_closing_at_cold_activated:
     name: Schließen bei Kälte aktiv
     # initial: off
-    
+
 climate_activated:
     name: Klimageräte aktiviert
     # initial: on
