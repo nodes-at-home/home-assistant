@@ -1,0 +1,8 @@
+###
+### 29.12.2023
+###
+
+
+circulating_pump_running_disinfection:
+    name: Desinfektionslauf
+    # initial: 'off'

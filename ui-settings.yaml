@@ -54,21 +54,6 @@ views:
         entities:
             - input_number.effect_delay
       - type: entities
-        title: Zirkulationspumpe Heizung
-        show_header_toggle: false
-        entities:
-            - input_boolean.circulating_pump_activated
-            - type: divider
-            - input_number.circulating_pump_on_period
-            - input_number.circulating_pump_on_duration
-            - input_number.circulating_pump_schedule_after_standup
-            - input_number.circulating_pump_schedule_before_sleeping
-            - type: divider
-            - input_boolean.circulating_pump_scheduled
-            - input_datetime.circulating_pump_scheduling_after_standup_workday
-            - input_datetime.circulating_pump_scheduling_after_standup_weekend
-            - input_datetime.circulating_pump_scheduling_before_sleeping
-      - type: entities
         title: USV
         show_header_toggle: false
         entities:
@@ -551,3 +536,21 @@ views:
             - input_select.heating_templevel_kuche
             - input_select.heating_templevel_schlafzimmer
             - input_select.heating_templevel_wohnzimmer
+      - type: entities
+        title: Zirkulationspumpe
+        show_header_toggle: false
+        entities:
+            - input_boolean.circulating_pump_activated
+            - type: divider
+            - input_number.circulating_pump_on_period
+            - input_number.circulating_pump_on_duration
+            - input_number.circulating_pump_schedule_after_standup
+            - input_number.circulating_pump_schedule_before_sleeping
+            - type: divider
+            - input_boolean.circulating_pump_scheduled
+            - input_datetime.circulating_pump_scheduling_after_standup_workday
+            - input_datetime.circulating_pump_scheduling_after_standup_weekend
+            - input_datetime.circulating_pump_scheduling_before_sleeping
+            - type: divider
+            - input_number.circulating_pump_running_above_temp
+            - input_boolean.circulating_pump_running_disinfection

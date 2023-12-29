@@ -1,0 +1,11 @@
+###
+### 28.12.2023
+###
+
+name: aktiv über (Desinfektion)
+mode: slider
+min: 40
+max: 80
+step: 5
+unit_of_measurement: °C
+# initial: 1

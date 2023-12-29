@@ -236,6 +236,9 @@
       - service: input_boolean.turn_on
         data:
             entity_id: input_boolean.dishwasher_activated
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.circulating_pump_running_desinfection
 
       #--------------------------------------------------------------------------
       - service: input_datetime.set_datetime
@@ -480,6 +483,10 @@
         data:
             entity_id: input_number.gasmeter_zustandszahl
             value: 0.9655
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.circulating_pump_running_above_temp
+            value: 65
 
       #--------------------------------------------------------------------------
       - service: input_select.select_option

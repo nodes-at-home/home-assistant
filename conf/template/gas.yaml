@@ -47,7 +47,7 @@
         attribute: last_reset
     sensor:
       - name: gas_volume_quarterhourly
-        unit_of_measurement: kWh
+        unit_of_measurement: m³
         state: "{{ state_attr ( 'sensor.gas_meter_quarterhourly', 'last_period' ) }}"
         attributes:
             last_reset: '{{ state_attr ( "sensor.gas_meter_quarterhourly", "last_reset" ) }}'
