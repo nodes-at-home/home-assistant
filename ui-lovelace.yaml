@@ -50,7 +50,7 @@ views:
                       top: 40%
                       left: 17%
                   - type: state-badge
-                    entity: device_tracker.a52_von_niklas
+                    entity: device_tracker.177_niklas_galaxy_a52
                     style:
                       top: 40%
                       left: 21%
@@ -302,7 +302,7 @@ views:
           - entity: device_tracker.163_undine_z_flip4_wlan
           - entity: device_tracker.102_nora_z_flip5_wlan
           - entity: device_tracker.161_nina_a52s_wlan
-          - entity: device_tracker.a52_von_niklas
+          - entity: device_tracker.177_niklas_galaxy_a52
           - entity: device_tracker.156_dominik_pixel_6_pro_wlan
         state_filter:
           - "home"

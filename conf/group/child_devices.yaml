@@ -6,5 +6,5 @@ name: 'Kinder Handys'
 entities:
     - device_tracker.161_nina_a52s_wlan
     - device_tracker.156_dominik_pixel_6_pro_wlan
-    - device_tracker.galaxy_a52
-    - device_tracker.a52_von_niklas
+    - device_tracker.102_nora_z_flip5_wlan
+    - device_tracker.177_niklas_galaxy_a52
