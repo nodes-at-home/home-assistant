@@ -77,6 +77,8 @@ views:
             title: Version
             show_header_toggle: false
             entities:
+                - sensor.ds18b20_groundfloor_version
+                - sensor.ds18b20_firstfloor_version
                 - sensor.dht22_lounge_version
                 - sensor.dht22_roof_version
                 - sensor.dht22_terrace_version
@@ -120,6 +122,8 @@ views:
             title: Last Boot
             show_header_toggle: false
             entities:
+                - sensor.ds18b20_groundfloor_lastboot
+                - sensor.ds18b20_firstfloor_lastboot
                 - sensor.dht22_lounge_lastboot
                 - sensor.dht22_roof_lastboot
                 - sensor.dht22_terrace_lastboot
@@ -163,6 +167,8 @@ views:
             title: Last Voltage Message
             show_header_toggle: false
             entities:
+                - sensor.ds18b20_groundfloor_lastvoltage
+                - sensor.ds18b20_firstfloor_lastvoltage
                 - sensor.dht22_lounge_lastvoltage
                 - sensor.dht22_roof_lastvoltage
                 - sensor.dht22_terrace_lastvoltage
@@ -206,6 +212,8 @@ views:
             title: Spannungspegel
             show_header_toggle: false
             entities:
+                - sensor.ds18b20_groundfloor_voltage
+                - sensor.ds18b20_firstfloor_voltage
                 - sensor.dht22_lounge_voltage
                 - sensor.dht22_roof_voltage
                 - sensor.dht22_terrace_voltage

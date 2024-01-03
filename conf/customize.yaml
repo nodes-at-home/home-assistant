@@ -1433,19 +1433,19 @@ binary_sensor.battery_state:
 
 #------------------------------------------------------------------------------
 sensor.gas_utilityroom_voltage:
-    friendly_name: Gaszähler
+    friendly_name: Fußboden Erdgeschoss
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.gas_utilityroom_lastvoltage:
-    friendly_name: Gaszähler
+    friendly_name: Fußboden Erdgeschoss
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.gas_utilityroom_lastboot:
-    friendly_name: Gaszähler
+    friendly_name: Fußboden Erdgeschoss
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.gas_utilityroom_version:
-    friendly_name: Gaszähler
+    friendly_name: Fußboden Erdgeschoss
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
@@ -1496,6 +1496,92 @@ sensor.gas_meter_yearly:
 sensor.gas_volume_quarterhourly:
     friendly_name: Kumulierter Gasverbrauch 15 min
     unit_of_measurement: m³
+
+#------------------------------------------------------------------------------
+sensor.ds18b20_groundfloor_voltage:
+    friendly_name: Fußboden Erdgeschoss
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20_groundfloor_lastvoltage:
+    friendly_name: Fußboden Erdgeschoss
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20_groundfloor_lastboot:
+    friendly_name: Fußboden Erdgeschoss
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20_groundfloor_version:
+    friendly_name: Fußboden Erdgeschoss
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20_groundfloor_temperature_lounge1:
+    friendly_name: Rücklauf Wohnzimmer 1
+
+sensor.ds18b20_groundfloor_temperature_lounge2:
+    friendly_name: Rücklauf Wohnzimmer 2
+
+sensor.ds18b20_groundfloor_temperature_dining1:
+    friendly_name: Rücklauf Esszimmer 1
+
+sensor.ds18b20_groundfloor_temperature_dining2:
+    friendly_name: Rücklauf Esszimmer 2
+
+sensor.ds18b20_groundfloor_temperature_dining3:
+    friendly_name: Rücklauf Esszimmer 3
+
+sensor.ds18b20_groundfloor_temperature_kitchen:
+    friendly_name: Rücklauf Küche
+
+sensor.ds18b20_groundfloor_temperature_corridor:
+    friendly_name: Rücklauf Korridor
+
+sensor.ds18b20_groundfloor_temperature_utilityroom:
+    friendly_name: Rücklauf Hauswirtschaftsraum
+
+sensor.ds18b20_groundfloor_temperature_floor:
+    friendly_name: Rücklauf Flur
+
+sensor.ds18b20_groundfloor_temperature_shower:
+    friendly_name: Rücklauf Dusche
+
+sensor.ds18b20_groundfloor_temperature_flow:
+    friendly_name: Vorlauf Erdgeschoss
+
+
+#------------------------------------------------------------------------------
+sensor.ds18b20_firstfloor_voltage:
+    friendly_name: Fußboden Obergeschoss
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20_firstfloor_lastvoltage:
+    friendly_name: Fußboden Obergeschoss
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20_firstfloor_lastboot:
+    friendly_name: Fußboden Obergeschoss
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20_firstfloor_version:
+    friendly_name: Fußboden Obergeschoss
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ds18b20_firstfloor_temperature_bath:
+    friendly_name: Rücklauf Bad
+
+sensor.ds18b20_firstfloor_temperature_office:
+    friendly_name: Rücklauf Arbeitszimmer
+
+sensor.ds18b20_firstfloor_temperature_gallery:
+    friendly_name: Rücklauf Galerie
+
+sensor.ds18b20_firstfloor_temperature_nursery:
+    friendly_name: Rücklauf Kinderzimmer
+
+sensor.ds18b20_firstfloor_temperature_bedroom:
+    friendly_name: Rücklauf Schlafzimmer
+
+sensor.ds18b20_firstfloor_temperature_flow:
+    friendly_name: Vorlauf Obergeschoss
 
 
 #------------------------------------------------------------------------------

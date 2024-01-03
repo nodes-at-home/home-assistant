@@ -469,7 +469,7 @@ views:
       - binary_sensor.boiler_ww3wayvalve
     cards:
       - type: entities
-        title: Einstellungen
+        title: Einstellungen Gastherme
         show_header_toggle: false
         entities:
           - number.boiler_selflowtemp
@@ -488,7 +488,7 @@ views:
           - switch.boiler_wwonetime
           - switch.boiler_wwdisinfecting
       - type: entities
-        title: Messwerte
+        title: Messwerte Gastherme
         show_header_toggle: false
         entities:
           - sensor.boiler_outdoortemp
@@ -503,6 +503,31 @@ views:
           - sensor.boiler_wwcurtemp
           # - sensor.boiler_wwcurflow
           # - sensor.boiler_wwchargetype
+      - type: entities
+        title: Fußboden Erdgeschoss
+        show_header_toggle: false
+        entities:
+          - entity: sensor.ds18b20_groundfloor_temperature_lounge1
+          - entity: sensor.ds18b20_groundfloor_temperature_lounge2
+          - entity: sensor.ds18b20_groundfloor_temperature_dining1
+          - entity: sensor.ds18b20_groundfloor_temperature_dining2
+          - entity: sensor.ds18b20_groundfloor_temperature_dining3
+          - entity: sensor.ds18b20_groundfloor_temperature_kitchen
+          - entity: sensor.ds18b20_groundfloor_temperature_corridor
+          - entity: sensor.ds18b20_groundfloor_temperature_utilityroom
+          - entity: sensor.ds18b20_groundfloor_temperature_floor
+          - entity: sensor.ds18b20_groundfloor_temperature_shower
+          - entity: sensor.ds18b20_groundfloor_temperature_flow
+      - type: entities
+        title: Fußboden Obergeschoss
+        show_header_toggle: false
+        entities:
+          - entity: sensor.ds18b20_firstfloor_temperature_bath
+          - entity: sensor.ds18b20_firstfloor_temperature_office
+          - entity: sensor.ds18b20_firstfloor_temperature_gallery
+          - entity: sensor.ds18b20_firstfloor_temperature_nursery
+          - entity: sensor.ds18b20_firstfloor_temperature_bedroom
+          - entity: sensor.ds18b20_firstfloor_temperature_flow
       - type: gauge
         name: Füllstand Gasspeicher Deutschland
         entity: sensor.gas_storage_germany_full_level
@@ -697,13 +722,16 @@ views:
           - entity: sensor.sh10rt_master_total_dc_power
           - entity: sensor.sh10rt_slave_total_dc_power
 
-  - title: Diagramme
+  - title: Heizungsdiagramme
     path: heatinggraph
     type: panel
     cards:
       - type: history-graph
         hours_to_show: 24
         entities:
+          - binary_sensor.boiler_heatingpump
+          - binary_sensor.boiler_ww3wayvalve
+          - switch.sonoff_utilityroom_pump
           - sensor.boiler_outdoortemp
           - number.boiler_selflowtemp
           - number.boiler_heatingtemp
@@ -711,19 +739,40 @@ views:
           - sensor.boiler_rettemp
           - number.boiler_wwseltemp
           - sensor.boiler_wwcurtemp
-          # - sensor.boiler_syspress
-          - binary_sensor.boiler_heatingpump
+          - sensor.ds18b20_groundfloor_temperature_lounge1
+          - sensor.ds18b20_groundfloor_temperature_lounge2
+          - sensor.ds18b20_groundfloor_temperature_dining1
+          - sensor.ds18b20_groundfloor_temperature_dining2
+          - sensor.ds18b20_groundfloor_temperature_dining3
+          - sensor.ds18b20_groundfloor_temperature_kitchen
+          - sensor.ds18b20_groundfloor_temperature_corridor
+          - sensor.ds18b20_groundfloor_temperature_utilityroom
+          - sensor.ds18b20_groundfloor_temperature_floor
+          - sensor.ds18b20_groundfloor_temperature_shower
+          - sensor.ds18b20_groundfloor_temperature_flow
+          - sensor.ds18b20_firstfloor_temperature_bath
+          - sensor.ds18b20_firstfloor_temperature_office
+          - sensor.ds18b20_firstfloor_temperature_gallery
+          - sensor.ds18b20_firstfloor_temperature_nursery
+          - sensor.ds18b20_firstfloor_temperature_bedroom
+          - sensor.ds18b20_firstfloor_temperature_flow
           - sensor.boiler_heatingpumpmod
-          - switch.sonoff_utilityroom_pump
-          # - sensor.boiler_heatingpumpmod
           - sensor.boiler_curburnpow
+          - sensor.boiler_syspress
+
+  - title: Stromdiagramm
+    path: electricitygraph
+    type: panel
+    cards:
+      - type: history-graph
+        hours_to_show: 24
+        entities:
           - sensor.total_dc_power
           - sensor.load_power
           - sensor.export_power
           - sensor.import_power
           - sensor.battery_power
           - sensor.electricity_meter_power
-          - binary_sensor.boiler_ww3wayvalve
 
   - title: Batterie
     path: batterygraph
