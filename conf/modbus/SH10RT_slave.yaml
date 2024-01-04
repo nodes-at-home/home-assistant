@@ -33,7 +33,6 @@
         input_type: input
         count: 15
         data_type: string
-        swap: none
         scan_interval: 86400
 
       - name: sh10rt_slave_dsp_sw_version
@@ -42,7 +41,6 @@
         input_type: input
         count: 15
         data_type: string
-        swap: none
         scan_interval: 86400
 
       - name: sh10rt_slave_serial_no
@@ -51,7 +49,6 @@
         input_type: input
         count: 10
         data_type: string
-        swap: none
         scan_interval: 86400
 
       - name: sh10rt_slave_device_type_code
@@ -59,7 +56,6 @@
         address: 4999 # reg 5000
         input_type: input
         data_type: uint16
-        swap: none
         scan_interval: 86400
 
       - name: sh10rt_slave_daily_pv_generation_and_battery_discharge
@@ -67,7 +63,6 @@
         address: 5002 # reg 5003
         input_type: input
         data_type: uint16
-        swap: none
         precision: 1
         unit_of_measurement: kWh
         device_class: energy
@@ -93,7 +88,6 @@
         address: 5007 # reg 5008
         input_type: input
         data_type: int16
-        swap: none
         precision: 1
         unit_of_measurement: °C
         device_class: Temperature
@@ -105,7 +99,6 @@
         address: 5010 # reg 5011
         input_type: input
         data_type: uint16
-        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -117,7 +110,6 @@
         address: 5011 # reg 5012
         input_type: input
         data_type: uint16
-        swap: none
         precision: 2
         unit_of_measurement: A
         device_class: Current
@@ -129,7 +121,6 @@
         address: 5012 # reg 5013
         input_type: input
         data_type: uint16
-        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -141,7 +132,6 @@
         address: 5013 # reg 5014
         input_type: input
         data_type: uint16
-        swap: none
         precision: 2
         unit_of_measurement: A
         device_class: Current
@@ -166,7 +156,6 @@
         address: 5018 # reg: 5019
         input_type: input
         data_type: uint16
-        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -179,7 +168,6 @@
         address: 5019 # reg: 5020
         input_type: input
         data_type: uint16
-        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -192,7 +180,6 @@
         address: 5020 # reg: 5021
         input_type: input
         data_type: uint16
-        swap: none
         precision: 1
         unit_of_measurement: V
         device_class: Voltage
@@ -218,7 +205,6 @@
         address: 5034 # reg 5035
         input_type: input
         data_type: int16
-        swap: none
         precision: 3
         unit_of_measurement: "%"
         device_class: power_factor
@@ -231,7 +217,6 @@
         address: 5035 # reg 5036
         input_type: input
         data_type: uint16
-        swap: none
         precision: 2
         unit_of_measurement: "Hz"
         device_class: frequency
@@ -244,7 +229,6 @@
         address: 5627 # reg 5628
         input_type: input
         data_type: uint16
-        swap: none
         unit_of_measurement: "W"
         device_class: power
         state_class: measurement
@@ -256,7 +240,6 @@
         address: 5634 # reg 5635
         input_type: input
         data_type: uint16
-        swap: none
         precision: 0
         unit_of_measurement: A
         device_class: Current
@@ -268,7 +251,6 @@
         address: 5635 # reg 5636
         input_type: input
         data_type: uint16
-        swap: none
         precision: 0
         unit_of_measurement: A
         device_class: Current
@@ -280,7 +262,6 @@
         address: 12999 # reg 13000
         input_type: input
         data_type: uint16
-        swap: none
         precision: 0
         scale: 1
         scan_interval: 10
@@ -292,7 +273,6 @@
         address: 13000 # reg 13001
         input_type: input
         data_type: uint16
-        swap: none
         precision: 0
         scale: 1
         scan_interval: 10
@@ -302,7 +282,6 @@
         address: 13001 # reg 13002
         input_type: input
         data_type: uint16
-        swap: none
         precision: 1
         unit_of_measurement: kWh
         device_class: energy
@@ -355,7 +334,6 @@
         address: 13030 # reg 13031
         input_type: input
         data_type: int16
-        swap: none
         precision: 1
         unit_of_measurement: A
         device_class: current
@@ -368,7 +346,6 @@
         address: 13031 # reg 13032
         input_type: input
         data_type: int16
-        swap: none
         precision: 1
         unit_of_measurement: A
         device_class: current
@@ -381,7 +358,6 @@
         address: 13032 # reg 13033
         input_type: input
         data_type: int16
-        swap: none
         precision: 1
         unit_of_measurement: A
         device_class: current
@@ -411,7 +387,6 @@
         address: 12999 # reg 13000
         input_type: holding
         data_type: uint16
-        swap: none
         precision: 0
         scan_interval: 10
 
@@ -425,7 +400,6 @@
         input_type: input
         count: 15
         data_type: string
-        swap: none
         scan_interval: 86400
 
       - name: sh10rt_slave_mdsp_sw_version
@@ -434,7 +408,6 @@
         input_type: input
         count: 15
         data_type: string
-        swap: none
         scan_interval: 86400
 
       - name: sh10rt_slave_sdsp_sw_version
@@ -443,7 +416,6 @@
         input_type: input
         count: 15
         data_type: string
-        swap: none
         scan_interval: 86400
 
       - name: sh10rt_slave_sbrbcu_sw_version
@@ -452,5 +424,4 @@
         input_type: input
         count: 15
         data_type: string
-        swap: none
         scan_interval: 86400
