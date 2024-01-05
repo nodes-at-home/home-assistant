@@ -134,6 +134,22 @@
         - sensor.ds18b20_firstfloor_temperature_nursery
         - sensor.ds18b20_firstfloor_temperature_bedroom
         - sensor.ds18b20_firstfloor_temperature_flow
+        - sensor.thermostat_arbeitszimmer_temperature
+        - sensor.thermostat_bad_temperature
+        - sensor.thermostat_dusche_temperature
+        - sensor.thermostat_esszimmer_temperature
+        - sensor.thermostat_flur_temperature
+        - sensor.thermostat_galerie_temperature
+        - sensor.thermostat_hauswirtschaft_temperature
+        - sensor.thermostat_kinderzimmer_temperature
+        - sensor.thermostat_kuche_temperature
+        - sensor.thermostat_schlafziummer_temperature
+        - sensor.thermostat_wohnzimmer_temperature
+        - sensor.boiler_curflowtemp
+        - sensor.boiler_rettemp
+        - sensor.boiler_outdoortemp
+        - binary_sensor.boiler_burngas
+        - binary_sensor.boiler_heatingactive
   ignore_attributes:
     - friendly_name
     - icon

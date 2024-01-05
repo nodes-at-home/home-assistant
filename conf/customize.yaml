@@ -1433,19 +1433,19 @@ binary_sensor.battery_state:
 
 #------------------------------------------------------------------------------
 sensor.gas_utilityroom_voltage:
-    friendly_name: Fußboden Erdgeschoss
+    friendly_name: Gaszähler
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.gas_utilityroom_lastvoltage:
-    friendly_name: Fußboden Erdgeschoss
+    friendly_name: Gaszähler
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.gas_utilityroom_lastboot:
-    friendly_name: Fußboden Erdgeschoss
+    friendly_name: Gaszähler
     entity_picture: /local/images/nodemcu.jpg
 
 sensor.gas_utilityroom_version:
-    friendly_name: Fußboden Erdgeschoss
+    friendly_name: Gaszähler
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
