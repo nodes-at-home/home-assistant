@@ -6,7 +6,6 @@
     type: tcp
     host: !secret modbus_proxy
     port: 5021
-    retries: 10
     delay: 5
     # timeout: 5
     sensors:
