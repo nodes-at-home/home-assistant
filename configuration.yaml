@@ -71,9 +71,7 @@ zone: !include conf/zone.yaml
 # -------------------------------------------------------------------------------
 # Enables the frontend
 frontend:
-    # extra_module_url:
-        # # https://github.com/thomasloven/lovelace-card-mod
-        # - /local/custom_lovelace/lovelace-card-mod/card-mod.js
+    themes: !include_dir_merge_named conf/themes
 
 lovelace:
     mode: yaml
@@ -87,6 +85,9 @@ lovelace:
       # https://github.com/ExperienceLovelace/ha-floorplan
       - url: /local/custom_lovelace/ha-floorplan/floorplan.js
         type: module
+      # https://github.com/Madelena/Metrology-for-Hass?tab=readme-ov-file
+      - url: /local/themes/styles.css
+        type: css
     dashboards:
         values-dashboard:
             mode: yaml
@@ -146,22 +147,6 @@ recorder:
     auto_purge: on
     purge_keep_days: 30
     auto_repack: true
-    # include:
-        # domains:
-            # - binary_sensor
-            # - sensor
-            # - light
-            # - switch
-            # - cover
-            # - media_player
-            # - device_tracker
-            # - climate
-            # - input_boolean
-            # - input_number
-            # - input_select
-            # - input_datetime
-            # - group
-        # entities:
 
 # -------------------------------------------------------------------------------
 # Enables support for tracking state changes over time.
