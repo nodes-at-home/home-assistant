@@ -3,7 +3,7 @@ from typing import List, Tuple
 
 import voluptuous as vol
 from boschshcpy import SHCDevice, SHCSession
-from homeassistant.components.automation import AutomationActionType
+from homeassistant.components.automation import TriggerActionType
 from homeassistant.components.device_automation import DEVICE_TRIGGER_BASE_SCHEMA
 from homeassistant.components.device_automation.exceptions import (
     InvalidDeviceAutomationConfig,
@@ -30,7 +30,9 @@ from .const import (
     DATA_SESSION,
     DOMAIN,
     EVENT_BOSCH_SHC,
-    INPUTS_EVENTS_SUBTYPES,
+    INPUTS_EVENTS_SUBTYPES_WRC2,
+    INPUTS_EVENTS_SUBTYPES_SWITCH2,
+    LOGGER,
     SUPPORTED_INPUTS_EVENTS_TYPES,
 )
 
@@ -46,7 +48,6 @@ async def get_device_from_id(hass, device_id) -> Tuple[SHCDevice, str]:
     """Get the device for the given device id."""
     dev_registry = dr.async_get(hass)
     for config_entry in hass.data[DOMAIN]:
-
         session: SHCSession = hass.data[DOMAIN][config_entry][DATA_SESSION]
 
         for shc_device in session.devices:
@@ -82,12 +83,21 @@ async def async_get_triggers(hass: HomeAssistant, device_id: str) -> List[dict]:
     if not device:
         raise InvalidDeviceAutomationConfig(f"Device not found: {device_id}")
 
-    if dev_type == "WRC2":
+    if dev_type == "WRC2" or dev_type == "SWITCH2":
         input_triggers = []
         for trigger in SUPPORTED_INPUTS_EVENTS_TYPES:
-            if trigger in ("PRESS_SHORT", "PRESS_LONG"):
-                for subtype in INPUTS_EVENTS_SUBTYPES:
-                    input_triggers.append((trigger, subtype))
+            if trigger in ("PRESS_SHORT", "PRESS_LONG", "PRESS_LONG_RELEASED"):
+                match dev_type:
+                    case "WRC2":
+                        for subtype in INPUTS_EVENTS_SUBTYPES_WRC2:
+                            input_triggers.append((trigger, subtype))
+                    case "SWITCH2":
+                        for subtype in INPUTS_EVENTS_SUBTYPES_SWITCH2:
+                            input_triggers.append((trigger, subtype))
+                    case _:
+                        LOGGER.debug(
+                            "Device type %s unknown, no triggers added.", dev_type
+                        )
 
         for trigger, subtype in input_triggers:
             triggers.append(
@@ -153,7 +163,7 @@ async def async_get_triggers(hass: HomeAssistant, device_id: str) -> List[dict]:
 async def async_attach_trigger(
     hass: HomeAssistant,
     config: ConfigType,
-    action: AutomationActionType,
+    action: TriggerActionType,
     automation_info: dict,
 ) -> CALLBACK_TYPE:
     """Attach a trigger."""

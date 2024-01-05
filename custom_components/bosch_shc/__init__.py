@@ -1,5 +1,6 @@
 """The Bosch Smart Home Controller integration."""
 import voluptuous as vol
+import functools as ft
 from boschshcpy import SHCSession, SHCUniversalSwitch
 from boschshcpy.exceptions import SHCAuthenticationError, SHCConnectionError
 from homeassistant.components.zeroconf import async_get_instance
@@ -8,11 +9,16 @@ from homeassistant.const import (
     ATTR_DEVICE_ID,
     ATTR_ID,
     ATTR_NAME,
+    ATTR_COMMAND,
     CONF_HOST,
     EVENT_HOMEASSISTANT_STOP,
     Platform,
 )
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import (
+    HomeAssistant,
+    ServiceCall,
+    callback,
+)
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import device_registry as dr
@@ -21,20 +27,26 @@ from .const import (
     ATTR_EVENT_SUBTYPE,
     ATTR_EVENT_TYPE,
     ATTR_LAST_TIME_TRIGGERED,
+    ATTR_SERVICE_ID,
+    ATTR_TITLE,
     CONF_SSL_CERTIFICATE,
     CONF_SSL_KEY,
     DATA_POLLING_HANDLER,
     DATA_SESSION,
+    DATA_SHC,
+    DATA_TITLE,
     DOMAIN,
     EVENT_BOSCH_SHC,
     LOGGER,
     SERVICE_TRIGGER_SCENARIO,
+    SERVICE_TRIGGER_RAWSCAN,
     SUPPORTED_INPUTS_EVENTS_TYPES,
 )
 
 PLATFORMS = [
     Platform.BINARY_SENSOR,
     Platform.COVER,
+    Platform.EVENT,
     Platform.SENSOR,
     Platform.SWITCH,
     Platform.CLIMATE,
@@ -68,9 +80,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         LOGGER.warning("Please check for software updates in the Bosch Smart Home App")
 
     hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = {
-        DATA_SESSION: session,
-    }
 
     device_registry = dr.async_get(hass)
     device_entry = device_registry.async_get_or_create(
@@ -83,6 +92,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         sw_version=shc_info.version,
     )
     device_id = device_entry.id
+    hass.data[DOMAIN][entry.entry_id] = {
+        DATA_SESSION: session,
+        DATA_SHC: device_entry,
+        DATA_TITLE: entry.title,
+    }
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
@@ -96,20 +110,21 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     ] = hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STOP, stop_polling)
 
     @callback
-    def _async_scenario_trigger(scenario_id, name, last_time_triggered):
+    def _async_scenario_trigger(event_data):
         hass.bus.async_fire(
             EVENT_BOSCH_SHC,
             {
                 ATTR_DEVICE_ID: device_id,
-                ATTR_ID: scenario_id,
+                ATTR_ID: event_data["id"],
                 ATTR_NAME: shc_info.name,
-                ATTR_LAST_TIME_TRIGGERED: last_time_triggered,
+                ATTR_LAST_TIME_TRIGGERED: event_data["lastTimeTriggered"],
                 ATTR_EVENT_TYPE: "SCENARIO",
-                ATTR_EVENT_SUBTYPE: name,
+                ATTR_EVENT_SUBTYPE: event_data["name"],
             },
         )
 
-    session.subscribe_scenario_callback(_async_scenario_trigger)
+    for scenario in hass.data[DOMAIN][entry.entry_id][DATA_SESSION].scenarios:
+        session.subscribe_scenario_callback("shc", _async_scenario_trigger)
 
     for switch_device in session.device_helper.universal_switches:
         event_listener = SwitchDeviceEventListener(hass, entry, switch_device)
@@ -122,7 +137,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     session: SHCSession = hass.data[DOMAIN][entry.entry_id][DATA_SESSION]
-    session.unsubscribe_scenario_callback()
+    session.unsubscribe_scenario_callback("shc")
 
     hass.data[DOMAIN][entry.entry_id][DATA_POLLING_HANDLER]()
     hass.data[DOMAIN][entry.entry_id].pop(DATA_POLLING_HANDLER)
@@ -137,27 +152,69 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 def register_services(hass, entry):
     """Register services for the component."""
-    TRIGGER_SCHEMA = vol.Schema(
+    SCENARIO_TRIGGER_SCHEMA = vol.Schema(
         {
-            vol.Required(ATTR_NAME): vol.All(
-                cv.string,
-                vol.In(hass.data[DOMAIN][entry.entry_id][DATA_SESSION].scenario_names),
-            )
+            vol.Optional(ATTR_TITLE, default=""): cv.string,
+            vol.Required(ATTR_NAME): cv.string,
         }
     )
 
-    async def scenario_service_call(call):
+    async def scenario_service_call(call: ServiceCall) -> None:
         """SHC Scenario service call."""
         name = call.data[ATTR_NAME]
-        for scenario in hass.data[DOMAIN][entry.entry_id][DATA_SESSION].scenarios:
-            if scenario.name == name:
-                hass.async_add_executor_job(scenario.trigger)
+        title = call.data[ATTR_TITLE]
+        for controller_data in hass.data[DOMAIN].values():
+            if title in ("", controller_data[DATA_TITLE]):
+                session = controller_data[DATA_SESSION]
+                if isinstance(session, SHCSession):
+                    for scenario in session.scenarios:
+                        if scenario.name == name:
+                            hass.async_add_executor_job(scenario.trigger)
 
     hass.services.async_register(
         DOMAIN,
         SERVICE_TRIGGER_SCENARIO,
         scenario_service_call,
-        TRIGGER_SCHEMA,
+        SCENARIO_TRIGGER_SCHEMA,
+    )
+
+    RAWSCAN_TRIGGER_SCHEMA = vol.Schema(
+        {
+            vol.Optional(ATTR_TITLE, default=""): cv.string,
+            vol.Required(ATTR_COMMAND): vol.All(
+                cv.string,
+                vol.In(
+                    hass.data[DOMAIN][entry.entry_id][DATA_SESSION].rawscan_commands
+                ),
+            ),
+            vol.Optional(ATTR_DEVICE_ID, default=""): cv.string,
+            vol.Optional(ATTR_SERVICE_ID, default=""): cv.string,
+        }
+    )
+
+    async def rawscan_service_call(call):
+        """SHC Scenario service call."""
+        # device_id = call.data[ATTR_DEVICE_ID]
+        title = call.data[ATTR_TITLE]
+        for controller_data in hass.data[DOMAIN].values():
+            if title in ("", controller_data[DATA_TITLE]):
+                session = controller_data[DATA_SESSION]
+                if isinstance(session, SHCSession):
+                    rawscan = await hass.async_add_executor_job(
+                        ft.partial(
+                            session.rawscan,
+                            command=call.data[ATTR_COMMAND],
+                            device_id=call.data[ATTR_DEVICE_ID],
+                            service_id=call.data[ATTR_SERVICE_ID],
+                        )
+                    )
+                    LOGGER.info(rawscan)
+
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_TRIGGER_RAWSCAN,
+        rawscan_service_call,
+        schema=RAWSCAN_TRIGGER_SCHEMA,
     )
 
 

@@ -9,6 +9,8 @@ from boschshcpy import (
     SHCDevice,
     SHCSession,
     SHCShutterContact,
+    SHCShutterContact2,
+    SHCShutterContact2Plus,
     SHCSmokeDetectionSystem,
     SHCSmokeDetector,
     SHCWaterLeakageSensor,
@@ -17,6 +19,7 @@ from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
     BinarySensorEntity,
 )
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     ATTR_COMMAND,
     ATTR_DEVICE_ID,
@@ -28,6 +31,7 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import entity_platform
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
     ATTR_EVENT_SUBTYPE,
@@ -43,10 +47,26 @@ from .const import (
 from .entity import SHCEntity, async_get_device_id, async_migrate_to_new_unique_id
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
     """Set up the SHC binary sensor platform."""
     entities = []
     session: SHCSession = hass.data[DOMAIN][config_entry.entry_id][DATA_SESSION]
+
+    @callback
+    def async_add_shuttercontact(
+        device: SHCShutterContact,
+    ) -> None:
+        """Add Shutter Contact 2 Binary Sensor."""
+        binary_sensor = ShutterContactSensor(
+            device=device,
+            parent_id=session.information.unique_id,
+            entry_id=config_entry.entry_id,
+        )
+        async_add_entities([binary_sensor])
 
     for binary_sensor in (
         session.device_helper.shutter_contacts + session.device_helper.shutter_contacts2
@@ -54,13 +74,12 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         await async_migrate_to_new_unique_id(
             hass, Platform.BINARY_SENSOR, device=binary_sensor
         )
-        entities.append(
-            ShutterContactSensor(
-                device=binary_sensor,
-                parent_id=session.information.unique_id,
-                entry_id=config_entry.entry_id,
-            )
-        )
+        async_add_shuttercontact(device=binary_sensor)
+
+    # register listener for new binary sensors
+    config_entry.async_on_unload(
+        session.subscribe((SHCShutterContact, async_add_shuttercontact))
+    )
 
     for binary_sensor in session.device_helper.motion_detectors:
         await async_migrate_to_new_unique_id(
@@ -110,6 +129,16 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
                 entry_id=config_entry.entry_id,
             )
         )
+
+    for binary_sensor in session.device_helper.shutter_contacts2:
+        if isinstance(binary_sensor, SHCShutterContact2Plus):
+            entities.append(
+                ShutterContactVibrationSensor(
+                    device=binary_sensor,
+                    parent_id=session.information.unique_id,
+                    entry_id=config_entry.entry_id,
+                )
+            )
 
     for binary_sensor in (
         session.device_helper.motion_detectors
@@ -171,6 +200,26 @@ class ShutterContactSensor(SHCEntity, BinarySensorEntity):
             "GENERIC": BinarySensorDeviceClass.WINDOW,
         }
         return switcher.get(self._device.device_class, BinarySensorDeviceClass.WINDOW)
+
+
+class ShutterContactVibrationSensor(SHCEntity, BinarySensorEntity):
+    """Representation of a SHC shutter contact vibration sensor."""
+
+    _attr_device_class = BinarySensorDeviceClass.VIBRATION
+
+    def __init__(self, device: SHCDevice, parent_id: str, entry_id: str) -> None:
+        """Initialize an SHC temperature reporting sensor."""
+        super().__init__(device, parent_id, entry_id)
+        self._attr_name = f"{device.name} Vibration"
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_vibration"
+
+    @property
+    def is_on(self):
+        """Return the state of the sensor."""
+        return (
+            self._device.vibrationsensor
+            == SHCShutterContact2Plus.VibrationSensorService.State.VIBRATION_DETECTED
+        )
 
 
 class MotionDetectionSensor(SHCEntity, BinarySensorEntity):

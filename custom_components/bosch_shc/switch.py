@@ -9,25 +9,30 @@ from boschshcpy import (
     SHCLightSwitch,
     SHCSession,
     SHCSmartPlug,
+    SHCMicromoduleRelay,
     SHCSmartPlugCompact,
     SHCShutterContact2,
+    SHCShutterContact2Plus,
     SHCThermostat,
+    SHCUserDefinedState,
 )
 from boschshcpy.device import SHCDevice
 
 from homeassistant.components.switch import (
+    ENTITY_ID_FORMAT,
     SwitchDeviceClass,
     SwitchEntity,
     SwitchEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
 
-from .const import DATA_SESSION, DOMAIN
+from .const import DATA_SESSION, DOMAIN, DATA_SHC
 from .entity import SHCEntity, async_migrate_to_new_unique_id
 
 
@@ -52,7 +57,7 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
     "smartplug": SHCSwitchEntityDescription(
         key="smartplug",
         device_class=SwitchDeviceClass.OUTLET,
-        on_key="state",
+        on_key="switchstate",
         on_value=SHCSmartPlug.PowerSwitchService.State.ON,
         should_poll=False,
     ),
@@ -68,14 +73,21 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
     "smartplugcompact": SHCSwitchEntityDescription(
         key="smartplugcompact",
         device_class=SwitchDeviceClass.OUTLET,
-        on_key="state",
+        on_key="switchstate",
         on_value=SHCSmartPlugCompact.PowerSwitchService.State.ON,
+        should_poll=False,
+    ),
+    "micromodule_relay": SHCSwitchEntityDescription(
+        key="micromodule_relay",
+        device_class=SwitchDeviceClass.OUTLET,
+        on_key="switchstate",
+        on_value=SHCMicromoduleRelay.PowerSwitchService.State.ON,
         should_poll=False,
     ),
     "lightswitch": SHCSwitchEntityDescription(
         key="lightswitch",
         device_class=SwitchDeviceClass.SWITCH,
-        on_key="state",
+        on_key="switchstate",
         on_value=SHCLightSwitch.PowerSwitchService.State.ON,
         should_poll=False,
     ),
@@ -134,7 +146,6 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
         device_class=SwitchDeviceClass.SWITCH,
         on_key="bypass",
         on_value=SHCShutterContact2.BypassService.State.BYPASS_ACTIVE,
-        entity_category=EntityCategory.CONFIG,
         should_poll=False,
     ),
     "child_lock": SHCSwitchEntityDescription(
@@ -145,6 +156,22 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
         entity_category=EntityCategory.CONFIG,
         should_poll=False,
         icon="mdi:lock",
+    ),
+    "vibration_enabled": SHCSwitchEntityDescription(
+        key="vibration_enabled",
+        device_class=SwitchDeviceClass.SWITCH,
+        on_key="enabled",
+        on_value=True,
+        entity_category=EntityCategory.CONFIG,
+        should_poll=False,
+    ),
+    "user_defined_state": SHCSwitchEntityDescription(
+        key="user_defined_state",
+        device_class=SwitchDeviceClass.SWITCH,
+        on_key="state",
+        on_value=True,
+        entity_category=EntityCategory.CONFIG,
+        should_poll=False,
     ),
 }
 
@@ -159,7 +186,6 @@ async def async_setup_entry(
     session: SHCSession = hass.data[DOMAIN][config_entry.entry_id][DATA_SESSION]
 
     for switch in session.device_helper.smart_plugs:
-
         await async_migrate_to_new_unique_id(
             hass=hass, platform=Platform.SWITCH, device=switch
         )
@@ -188,7 +214,6 @@ async def async_setup_entry(
         session.device_helper.light_switches_bsm
         + session.device_helper.micromodule_light_attached
     ):
-
         await async_migrate_to_new_unique_id(
             hass=hass, platform=Platform.SWITCH, device=switch
         )
@@ -202,7 +227,6 @@ async def async_setup_entry(
         )
 
     for switch in session.device_helper.smart_plugs_compact:
-
         await async_migrate_to_new_unique_id(
             hass=hass, platform=Platform.SWITCH, device=switch
         )
@@ -215,8 +239,20 @@ async def async_setup_entry(
             )
         )
 
-    for switch in session.device_helper.camera_eyes:
+    for switch in session.device_helper.micromodule_relays:
+        await async_migrate_to_new_unique_id(
+            hass=hass, platform=Platform.SWITCH, device=switch
+        )
+        entities.append(
+            SHCSwitch(
+                device=switch,
+                parent_id=session.information.unique_id,
+                entry_id=config_entry.entry_id,
+                description=SWITCH_TYPES["micromodule_relay"],
+            )
+        )
 
+    for switch in session.device_helper.camera_eyes:
         await async_migrate_to_new_unique_id(
             hass=hass,
             platform=Platform.SWITCH,
@@ -308,12 +344,24 @@ async def async_setup_entry(
                 description=SWITCH_TYPES["bypass"],
             )
         )
+        if isinstance(switch, SHCShutterContact2Plus):
+            entities.append(
+                SHCSwitch(
+                    device=switch,
+                    parent_id=session.information.unique_id,
+                    entry_id=config_entry.entry_id,
+                    description=SWITCH_TYPES["vibration_enabled"],
+                )
+            )
 
     for switch in (
         session.device_helper.thermostats
         + session.device_helper.roomthermostats
         + session.device_helper.micromodule_shutter_controls
+        + session.device_helper.micromodule_blinds
         + session.device_helper.micromodule_light_attached
+        + session.device_helper.micromodule_relays
+        + session.device_helper.micromodule_impulse_relays
     ):
         entities.append(
             SHCSwitch(
@@ -327,6 +375,30 @@ async def async_setup_entry(
 
     if entities:
         async_add_entities(entities)
+
+    @callback
+    def async_add_userdefinedstateswitch(
+        switch: SHCUserDefinedStateSwitch,
+    ) -> None:
+        """Add User Defined State Switch."""
+        switch = SHCUserDefinedStateSwitch(
+            device=switch,
+            hass=hass,
+            session=session,
+            parent_id=session.information.unique_id,
+            entry_id=config_entry.entry_id,
+            description=SWITCH_TYPES["user_defined_state"],
+        )
+        async_add_entities([switch])
+
+    # add all current items in session
+    for switch in session.userdefinedstates:
+        async_add_userdefinedstateswitch(switch=switch)
+
+    # register listener for new switches
+    config_entry.async_on_unload(
+        session.subscribe((SHCUserDefinedState, async_add_userdefinedstateswitch))
+    )
 
 
 class SHCSwitch(SHCEntity, SwitchEntity):
@@ -378,3 +450,109 @@ class SHCSwitch(SHCEntity, SwitchEntity):
     def update(self) -> None:
         """Trigger an update of the device."""
         self._device.update()
+
+
+class SHCUserDefinedStateSwitch(SwitchEntity):
+    """Representation of a SHC User Defined State Entity."""
+
+    entity_description: SHCSwitchEntityDescription
+
+    def __init__(
+        self,
+        device: SHCUserDefinedState,
+        hass: HomeAssistant,
+        session: SHCSession,
+        parent_id: str,
+        entry_id: str,
+        description: SHCSwitchEntityDescription,
+        attr_name: str | None = None,
+    ) -> None:
+        """Initialize a SHC switch."""
+        self._device = device
+        self._session = session
+        self._parent_id = parent_id
+        self._entry_id = entry_id
+        self.entity_description = description
+        self._attr_name = (
+            f"{device.name}" if attr_name is None else f"{device.name} {attr_name}"
+        )
+        self.entity_id = ENTITY_ID_FORMAT.format(
+            f"userdefinedstate_{self._device.name}"
+        )
+        self._attr_unique_id = (
+            f"{self._parent_id}_{device.id}"
+            if attr_name is None
+            else f"{self._parent_id}_{device.id}_{attr_name.lower()}"
+        )
+        self._shc: DeviceEntry = hass.data[DOMAIN][entry_id][DATA_SHC]
+
+    async def async_added_to_hass(self):
+        """Subscribe to SHC events."""
+        await super().async_added_to_hass()
+
+        def on_state_changed():
+            self.schedule_update_ha_state()
+
+        def update_entity_information():
+            if self._device.deleted:
+                self._attr_available = False
+                self.hass.add_job(self.async_will_remove_from_hass)
+            self.schedule_update_ha_state()
+
+        self._session.subscribe_userdefinedstate_callback(
+            self._device.id, on_state_changed
+        )
+        self._session.subscribe_userdefinedstate_callback(
+            self._device.id, update_entity_information
+        )
+
+    async def async_will_remove_from_hass(self):
+        """Unsubscribe from SHC events."""
+        await super().async_will_remove_from_hass()
+        self._session.unsubscribe_userdefinedstate_callbacks(self._device.id)
+
+    @property
+    def is_on(self) -> bool:
+        """Return the state of the switch."""
+        return (
+            getattr(self._device, self.entity_description.on_key)
+            == self.entity_description.on_value
+        )
+
+    def turn_on(self, **kwargs) -> None:
+        """Turn the switch on."""
+        setattr(self._device, self.entity_description.on_key, True)
+
+    def turn_off(self, **kwargs) -> None:
+        """Turn the switch off."""
+        setattr(self._device, self.entity_description.on_key, False)
+
+    @property
+    def should_poll(self) -> bool:
+        """Switch needs polling."""
+        return self.entity_description.should_poll
+
+    def update(self) -> None:
+        """Trigger an update of the device."""
+        self._device.update()
+
+    @property
+    def device_name(self):
+        """Name of the device."""
+        return self._shc.name
+
+    @property
+    def device_id(self):
+        """Device id of the entity."""
+        return self._shc.id
+
+    @property
+    def device_info(self):
+        """Return the device info."""
+        return {
+            "identifiers": self._shc.identifiers,
+            "name": self._shc.name,
+            "manufacturer": self._shc.manufacturer,
+            "model": self._shc.model,
+            "via_device": self._shc.via_device_id,
+        }

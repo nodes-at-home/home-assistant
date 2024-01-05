@@ -2,9 +2,7 @@
 from boschshcpy import SHCIntrusionSystem, SHCSession
 from homeassistant.components.alarm_control_panel import AlarmControlPanelEntity
 from homeassistant.components.alarm_control_panel.const import (
-    SUPPORT_ALARM_ARM_AWAY,
-    SUPPORT_ALARM_ARM_CUSTOM_BYPASS,
-    SUPPORT_ALARM_ARM_HOME,
+    AlarmControlPanelEntityFeature,
 )
 from homeassistant.const import (
     STATE_ALARM_ARMED_AWAY,
@@ -105,6 +103,9 @@ class IntrusionSystemAlarmControlPanel(AlarmControlPanelEntity):
     @property
     def state(self):
         """Return the state of the device."""
+        if self._device.alarm_state == SHCIntrusionSystem.AlarmState.ALARM_ON:
+            return STATE_ALARM_TRIGGERED
+
         if self._device.arming_state == SHCIntrusionSystem.ArmingState.SYSTEM_ARMING:
             return STATE_ALARM_ARMING
         if self._device.arming_state == SHCIntrusionSystem.ArmingState.SYSTEM_DISARMED:
@@ -127,17 +128,15 @@ class IntrusionSystemAlarmControlPanel(AlarmControlPanelEntity):
                 == SHCIntrusionSystem.Profile.CUSTOM_PROTECTION
             ):
                 return STATE_ALARM_ARMED_CUSTOM_BYPASS
-        if self._device.alarm_state == SHCIntrusionSystem.AlarmState.ALARM_ON:
-            return STATE_ALARM_TRIGGERED
         return None
 
     @property
     def supported_features(self):
         """Return the list of supported features."""
         return (
-            SUPPORT_ALARM_ARM_AWAY
-            + SUPPORT_ALARM_ARM_HOME
-            + SUPPORT_ALARM_ARM_CUSTOM_BYPASS
+            AlarmControlPanelEntityFeature.ARM_AWAY
+            + AlarmControlPanelEntityFeature.ARM_HOME
+            + AlarmControlPanelEntityFeature.ARM_CUSTOM_BYPASS
         )
 
     @property
