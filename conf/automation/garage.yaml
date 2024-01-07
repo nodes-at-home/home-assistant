@@ -1,0 +1,41 @@
+###
+### 07.01.2024
+###
+
+  - alias: open_garage_door
+    id: open_garage_door
+    trigger:
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Garage auf'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: cover.relay_garage
+        state: 'closed'
+    action:
+      - service: cover.open_cover
+        entity_id: cover.relay_garage
+
+  - alias: close_garage_door
+    id: close_garage_door
+    trigger:
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Garage zu'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: cover.relay_garage
+        state: 'open'
+    action:
+      - service: cover.close_cover
+        entity_id: cover.relay_garage
