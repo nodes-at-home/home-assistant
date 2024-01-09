@@ -363,11 +363,32 @@ views:
         state_filter:
           # on = open, off = closed
           - "on"
+      - type: entity-filter
+        entities:
+          - vacuum.erdgeschoss
+          - vacuum.obergeschoss
+        state_filter:
+          - operator: "!="
+            value: "docked"
     cards:
 
       - type: vertical-stack
         title: Erdgeschoss
         cards:
+          - type: glance
+            title: Staubsauger
+            entities:
+              - vacuum.erdgeschoss
+              - entity: image.erdgeschoss
+                name: Karte
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
           - type: glance
             title: Küche
             columns: 3
@@ -418,6 +439,8 @@ views:
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_esszimmer
                 name: Rauchmelder
+              - entity: vacuum.erdgeschoss
+                name: Staubsauger
             card_mod:
               style: |
                 .card-header {
@@ -566,6 +589,20 @@ views:
         title: Obergeschoss
         cards:
           - type: glance
+            title: Staubsauger
+            entities:
+              - vacuum.obergeschoss
+              - entity: image.obergeschoss
+                name: Karte
+            card_mod:
+              style: |
+                .card-header {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 18px;
+                    line-height: 18px;
+                }
+          - type: glance
             title: Galerie
             columns: 3
             entities:
@@ -574,6 +611,8 @@ views:
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_galerie
                 name:  Rauchmelder
+              - entity: vacuum.obergeschoss
+                name: Staubsauger
             card_mod:
               style: |
                 .card-header {
