@@ -150,6 +150,15 @@
         - sensor.boiler_outdoortemp
         - binary_sensor.boiler_burngas
         - binary_sensor.boiler_heatingactive
+        - number.boiler_heatingtemp
+        - number.boiler_selflowtemp
+        - number.boiler_wwseltemp
+        - number.thermostat_hc1_seltemp
+        - number.thermostat_hc1_heattemp
+        - sensor.boiler_curburnpow
+        - sensor.boiler_setflowtemp
+        - sensor.boiler_syspress
+        - sensor.boiler_wwcurtemp
   ignore_attributes:
     - friendly_name
     - icon

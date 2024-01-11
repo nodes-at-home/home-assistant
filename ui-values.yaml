@@ -491,6 +491,8 @@ views:
         title: Messwerte Gastherme
         show_header_toggle: false
         entities:
+          - sensor.thermostat_datetime
+          - type: divider
           - sensor.boiler_outdoortemp
           - sensor.boiler_curflowtemp
           - sensor.boiler_rettemp

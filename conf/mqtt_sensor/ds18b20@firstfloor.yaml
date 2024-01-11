@@ -7,36 +7,42 @@
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['flow'] ['temp'] | round ( 1 ) }}"
+    force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/firstfloor/value/temperature
     name: "ds18b20@firstfloor_temperature_gallery"
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['gallery'] ['temp'] | round ( 1 ) }}"
+    force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/firstfloor/value/temperature
     name: "ds18b20@firstfloor_temperature_office"
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['office'] ['temp'] | round ( 1 ) }}"
+    force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/firstfloor/value/temperature
     name: "ds18b20@firstfloor_temperature_nursery"
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['nursery'] ['temp'] | round ( 1 ) }}"
+    force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/firstfloor/value/temperature
     name: "ds18b20@firstfloor_temperature_bath"
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['bath'] ['temp'] | round ( 1 ) }}"
+    force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/firstfloor/value/temperature
     name: "ds18b20@firstfloor_temperature_bedroom"
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['bedroom'] ['temp'] | round ( 1 ) }}"
+    force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/firstfloor/value/voltage
     name: "ds18b20@firstfloor_voltage"
