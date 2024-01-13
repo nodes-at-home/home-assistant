@@ -558,11 +558,13 @@ views:
             entities:
               - switch.sonoff_utilityroom_pump
               - binary_sensor.nebentur
+              - entity: binary_sensor.bosch_swd_3014f711a000009d585a78a2
+                name: Katzenklappe
               - entity: climate.room_climate_hauswirtschaftsraum
                 name: Thermostat
-              - entity: switch.zwischenstecker_1
+              - entity: switch.waschmaschine
                 icon: mdi:washing-machine
-              - sensor.zwischenstecker_1_power
+              - sensor.waschmaschine_power
               - entity: sensor.boiler_wwcurtemp
                 name: Warmwasser
               - entity: switch.boiler_wwonetime
@@ -676,6 +678,7 @@ views:
               - entity: cover.nursery
                 name: Rolladen
               - entity: switch.bugeleisen
+                icon: mdi:iron
               - entity: sensor.bugeleisen_power
               - entity: climate.room_climate_kinderzimmer
                 name: Thermostat
@@ -1112,6 +1115,9 @@ views:
               - sensor.relay_garage_state
               - binary_sensor.garagentor
               - binary_sensor.garagentur
+              - entity: switch.bosch_ladestation
+                icon: mdi:battery-charging-medium
+              - entity: sensor.bosch_ladestation_power
               - binary_sensor.rauchmelder_garage
       - type: conditional
         conditions:

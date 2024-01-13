@@ -582,16 +582,16 @@ views:
             - sensor.wasserpumpe_power
             - type: divider
             # washing machine
-            - switch.zwischenstecker_1
-            - sensor.zwischenstecker_1_communication_quality
-            - sensor.zwischenstecker_1_energy
-            - sensor.zwischenstecker_1_power
+            - switch.waschmaschine
+            - sensor.waschmaschine_communication_quality
+            - sensor.waschmaschine_energy
+            - sensor.waschmaschine_power
             - type: divider
             # circulation pump
-            - switch.zwischenstecker_2
-            - sensor.zwischenstecker_2_communication_quality
-            - sensor.zwischenstecker_2_energy
-            - sensor.zwischenstecker_2_power
+            - switch.bosch_ladestation
+            - sensor.bosch_ladestation_communication_quality
+            - sensor.bosch_ladestation_energy
+            - sensor.bosch_ladestation_power
             - type: divider
             - switch.bugeleisen
             - sensor.bugeleisen_communication_quality
