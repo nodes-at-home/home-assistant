@@ -397,10 +397,18 @@ views:
               - light.rfhub_lounge_lampkitchenlongstrip
               - entity: light.led_kitchen_led
                 name: Arbeitslicht
-              - entity: sensor.geschirrspuler_operation_state
+              #- entity: sensor.geschirrspuler_operation_state
+              - entity: sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
                 name: Geschirrspüler
-              - entity: binary_sensor.geschirrspuler_door
+              #- entity: binary_sensor.geschirrspuler_door
+              - entity: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
                 name: Geschirrspüler
+              - entity: number.siemens_ki81fhdd0_68a40ea89517_refrigeration_fridgefreezer_setting_setpointtemperaturerefrigerator
+                name: Kühlschrank
+              - entity: switch.siemens_ki81fhdd0_68a40ea89517_refrigeration_fridgefreezer_setting_supermoderefrigerator
+                name: Supercooling
+              - entity: binary_sensor.siemens_ki81fhdd0_68a40ea89517_bsh_common_status_doorstate
+                name: Kühlschrank
               - entity: binary_sensor.terassentur_kuche
                 name: Terassentür
               - entity: climate.room_climate_kuche

@@ -8,23 +8,23 @@
       # - platform: time_pattern
         # minutes: '/5'
       - platform: state
-        entity_id: binary_sensor.geschirrspuler_door
+        entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
         to: 'off'
     condition:
       - condition: state
         entity_id: input_boolean.dishwasher_activated
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.geschirrspuler_door
+        entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
         state: 'off'
       - condition: state
-        entity_id: sensor.geschirrspuler_operation_state
+        entity_id: sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
         state: 'Ready'
       - condition: state
-        entity_id: binary_sensor.geschirrspuler_remote_control
+        entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolactive
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.geschirrspuler_remote_start
+        entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolstartallowed
         state: 'on'
     action:
       - service: input_datetime.set_datetime
@@ -60,16 +60,16 @@
         entity_id: input_boolean.dishwasher_activated
         state: 'on'
       - condition: state
-        entity_id: binary_sensor.geschirrspuler_door
+        entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
         state: 'off'
       - condition: state
-        entity_id: sensor.geschirrspuler_operation_state
+        entity_id: sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
         state: 'Ready'
       - condition: state
-        entity_id: binary_sensor.geschirrspuler_remote_control
+        entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolactive
         state: 'on'
     action:
-      - service: home_connect.start_program
+      - service: home_connect_alt.start_program
         data:
           device_id: "{{ device_id ( 'Geschirrspüler' ) }}"
           program: Dishcare.Dishwasher.Program.Quick65
