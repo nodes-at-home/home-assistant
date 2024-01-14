@@ -558,8 +558,7 @@ views:
             entities:
               - switch.sonoff_utilityroom_pump
               - binary_sensor.nebentur
-              - entity: binary_sensor.bosch_swd_3014f711a000009d585a78a2
-                name: Katzenklappe
+              - binary_sensor.katzenklappe
               - entity: climate.room_climate_hauswirtschaftsraum
                 name: Thermostat
               - entity: switch.waschmaschine
