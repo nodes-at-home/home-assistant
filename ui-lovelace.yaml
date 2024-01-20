@@ -572,6 +572,12 @@ views:
               - entity: switch.waschmaschine
                 icon: mdi:washing-machine
               - sensor.waschmaschine_power
+              - entity: switch.nodesathome1
+                icon: mdi:server
+              - sensor.nodesathome1_power
+              - entity: switch.nodesathome2
+                icon: mdi:server
+              - sensor.nodesathome2_power
               - entity: sensor.boiler_wwcurtemp
                 name: Warmwasser
               - entity: switch.boiler_wwonetime
@@ -620,8 +626,6 @@ views:
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_galerie
                 name:  Rauchmelder
-              - entity: vacuum.obergeschoss
-                name: Staubsauger
             card_mod:
               style: |
                 .card-header {
@@ -684,9 +688,6 @@ views:
                 name: Dachfenster
               - entity: cover.nursery
                 name: Rolladen
-              - entity: switch.bugeleisen
-                icon: mdi:iron
-              - entity: sensor.bugeleisen_power
               - entity: climate.room_climate_kinderzimmer
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_kinderzimmer
