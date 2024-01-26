@@ -12,7 +12,7 @@
 device_tracker.165_andreas_z_fold5_wlan:
     friendly_name: Andreas
     entity_picture: /local/people/Andreas.jpg
-device_tracker.163_undine_z_flip4_wlan:
+device_tracker.197_undine_z_flip5_wlan:
     friendly_name: Undine
     entity_picture: /local/people/Undine.jpg
 device_tracker.102_nora_z_flip5_wlan:

@@ -5,7 +5,7 @@
 name: 'Unsere Handys'
 entities:
     - device_tracker.165_andreas_z_fold5_wlan
-    - device_tracker.163_undine_z_flip4_wlan
+    - device_tracker.197_undine_z_flip5_wlan
     - device_tracker.102_nora_z_flip5_wlan
     - device_tracker.161_nina_a52s_wlan
     - device_tracker.177_niklas_galaxy_a52

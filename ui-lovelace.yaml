@@ -35,7 +35,7 @@ views:
                       top: 40%
                       left: 5%
                   - type: state-badge
-                    entity: device_tracker.163_undine_z_flip4_wlan
+                    entity: device_tracker.197_undine_z_flip5_wlan
                     style:
                       top: 40%
                       left: 9%
@@ -299,7 +299,7 @@ views:
       - type: entity-filter
         entities:
           - entity: device_tracker.165_andreas_z_fold5_wlan
-          - entity: device_tracker.163_undine_z_flip4_wlan
+          - entity: device_tracker.167_undine_z_flip5_wlan
           - entity: device_tracker.102_nora_z_flip5_wlan
           - entity: device_tracker.161_nina_a52s_wlan
           - entity: device_tracker.177_niklas_galaxy_a52
