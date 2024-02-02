@@ -317,34 +317,43 @@ views:
             - input_number.set_battery_max_discharge_power
             - input_select.set_battery_forced_charge_discharge
             - input_number.set_battery_forced_charge_discharge_power
-            # - type: section
-              # label: State of Charge
-            # - entity: sensor.sh10rt_master_max_soc
-              # name: maximal
-            # - entity: sensor.sh10rt_master_min_soc
-              # name: minimal
-            # - entity: sensor.sh10rt_master_reserved_soc_for_backup
-              # name: Reserve für Backup
-            # - type: section
-              # label: Spannungen, Ströme und Leistungen
-            # - entity: sensor.sh10rt_master_battery_voltage
-              # name: aktuell
-            # - entity: sensor.battery_current
-              # name: aktuell
-            # - entity: sensor.sh10rt_master_bms_max_charging_current
-              # name: maximaler Ladestrom
-            # - entity: sensor.sh10rt_master_bms_max_discharging_current
-              # name: maximaler Entladestrom
-            # - entity: sensor.sh10rt_master_battery_charging_start_power
-              # name: Ladestartleistung
-            # - entity: sensor.sh10rt_master_battery_discharging_start_power
-              # name: Entladestartleistung
-            # - entity: sensor.sh10rt_master_battery_max_charge_power
-              # name: maximale Ladeleistung
-            # - entity: sensor.sh10rt_master_battery_max_discharge_power
-              # name: maximale Entladeleistung
-            # - entity: sensor.sh10rt_master_battery_forced_charge_discharge_power
-              # name: Zwangslade-/entladeleistung
+      - type: conditional
+        conditions:
+          - entity: input_boolean.show_debug_fields
+            state: "on"
+        card:
+            type: entities
+            title: Debug
+            show_header_toggle: false
+            entities:
+              - type: section
+                label: State of Charge
+              - entity: sensor.sh10rt_master_max_soc
+                name: maximal
+              - entity: sensor.sh10rt_master_min_soc
+                name: minimal
+              - entity: sensor.sh10rt_master_reserved_soc_for_backup
+                name: Reserve für Backup
+              - type: section
+                label: Spannungen, Ströme und Leistungen
+              - entity: sensor.sh10rt_master_battery_voltage
+                name: aktuell
+              - entity: sensor.battery_current
+                name: aktuell
+              - entity: sensor.sh10rt_master_bms_max_charging_current
+                name: maximaler Ladestrom
+              - entity: sensor.sh10rt_master_bms_max_discharging_current
+                name: maximaler Entladestrom
+              - entity: sensor.sh10rt_master_battery_charge_start_power
+                name: Ladestartleistung
+              - entity: sensor.sh10rt_master_battery_discharge_start_power
+                name: Entladestartleistung
+              - entity: sensor.sh10rt_master_battery_max_charge_power
+                name: maximale Ladeleistung
+              - entity: sensor.sh10rt_master_battery_max_discharge_power
+                name: maximale Entladeleistung
+              - entity: sensor.sh10rt_master_battery_forced_charge_discharge_power
+                name: Zwangslade-/entladeleistung
       - type: entities
         title: Wechselrichter
         show_header_toggle: false

@@ -159,6 +159,9 @@
         - sensor.boiler_setflowtemp
         - sensor.boiler_syspress
         - sensor.boiler_wwcurtemp
+        - input_number.electricity_price_in
+        - input_number.electricity_price_out
+        - input_number.gas_price
   ignore_attributes:
     - friendly_name
     - icon
