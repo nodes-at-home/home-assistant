@@ -44,18 +44,40 @@ views:
             - sensor.speedtest_ping
             - sensor.speedtest_download
             - sensor.speedtest_upload
-      - type: entities
-        title: Fritz!Box
-        show_header_toggle: false
-        entities:
-            - binary_sensor.fritz_box_7590_connection
-            - binary_sensor.fritz_box_7590_link
-            - sensor.fritz_box_7590_external_ip
-            - sensor.fritz_box_7590_last_restart
-            - sensor.fritz_box_7590_connection_uptime
-            - switch.fritz_box_7590_wi_fi_mauzigast
-            - switch.fritz_box_7590_wi_fi_pokemonnetwlan
-            - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.fritz_box_7590_connection
+            state: ["on", "off"]
+        card:
+            type: entities
+            title: Fritz!Box
+            show_header_toggle: false
+            entities:
+                - binary_sensor.fritz_box_7590_connection
+                - binary_sensor.fritz_box_7590_link
+                - sensor.fritz_box_7590_external_ip
+                - sensor.fritz_box_7590_last_restart
+                - sensor.fritz_box_7590_connection_uptime
+                - switch.fritz_box_7590_wi_fi_mauzigast
+                - switch.fritz_box_7590_wi_fi_pokemonnetwlan
+                - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.fritz_box_7590_verbindung
+            state: ["on", "off"]
+        card:
+            type: entities
+            title: Fritz!Box
+            show_header_toggle: false
+            entities:
+                - binary_sensor.fritz_box_7590_verbindung
+                - binary_sensor.fritz_box_7590_verbinden
+                - sensor.fritz_box_7590_externe_ip
+                - sensor.fritz_box_7590_letzter_neustart
+                - sensor.fritz_box_7590_verbindungsverfugbarkeit
+                - switch.fritz_box_7590_wi_fi_mauzigast
+                - switch.fritz_box_7590_wi_fi_pokemonnetwlan
+                - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
       - type: entities
         title: USV
         show_header_toggle: false
