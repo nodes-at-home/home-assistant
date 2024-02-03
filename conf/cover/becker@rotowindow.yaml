@@ -18,28 +18,28 @@
         remote_id: "24A83:0,4A2BF:1"
         travelling_time_up: 20
         travelling_time_down: 15
-        intermediate_position_disable: true
+        intermediate_position: off
       bath:
         friendly_name: bath
         channel: "2"
         remote_id: "24AA6:0,4A2BF:2"
         travelling_time_up: 20
         travelling_time_down: 15
-        intermediate_position_disable: true
+        intermediate_position: off
       office:
         friendly_name: office
         channel: "3"
         remote_id: "24AAA:0,4A2BF:3"
         travelling_time_up: 20
         travelling_time_down: 15
-        intermediate_position_disable: true
+        intermediate_position: off
       nursery:
         friendly_name: nursery
         channel: "4"
         remote_id: "24A90:0,4A2BF:4"
         travelling_time_up: 20
         travelling_time_down: 15
-        intermediate_position_disable: true
+        intermediate_position: off
 
   - platform: group
     name: group_rooflights
