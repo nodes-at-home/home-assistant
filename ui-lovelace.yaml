@@ -1384,13 +1384,13 @@ views:
               - type: section
                 label: Vorhersage
                 # solcast
-              - entity: sensor.forecast_today
+              - entity: sensor.solcast_pv_forecast_forecast_today
                 name: heute
-              - entity: sensor.peak_time_today
+              - entity: sensor.solcast_pv_forecast_peak_time_today
                 name: Peak
                 icon: mdi:summit
-              - entity: sensor.api_used
-              - entity: sensor.api_last_polled
+              - entity: sensor.solcast_pv_forecast_api_used
+              - entity: sensor.solcast_pv_forecast_api_last_polled
                 # forecast solar
               # - entity: sensor.estimated_energy_production_today
                 # name: heute
