@@ -231,6 +231,101 @@ views:
                         entity: media_player.sony_kd_55ag9
                       - type: markdown
                         content: " "
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:state-switch
+                        entity: >
+                          {% set cam = 'galerie' %}
+                          {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+                        states:
+                          "stream":
+                            type: picture-entity
+                            entity: camera.galerie
+                            double_tap_action:
+                              action: url
+                              url_path: http://esp32-cam-1
+                          "off":
+                            type: button
+                            name: Galerie
+                            icon: mdi:camera-off-outline
+                            tap_action:
+                              action: none
+                            hold_action:
+                              action: none
+                            double_tap_action:
+                              action: none
+                            more_info:
+                              action: none
+                      - type: custom:state-switch
+                        entity: >
+                          {% set cam = 'dining' %}
+                          {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+                        states:
+                          "stream":
+                            type: picture-entity
+                            entity: camera.dining
+                            double_tap_action:
+                              action: url
+                              url_path: http://esp32-cam-2
+                          "off":
+                            type: button
+                            name: Esszimmer
+                            icon: mdi:camera-off-outline
+                            tap_action:
+                              action: none
+                            hold_action:
+                              action: none
+                            double_tap_action:
+                              action: none
+                            more_info:
+                              action: none
+                      - type: custom:state-switch
+                        entity: >
+                          {% set cam = 'utilityroom' %}
+                          {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+                        states:
+                          "stream":
+                            type: picture-entity
+                            entity: camera.utilityroom
+                            double_tap_action:
+                              action: url
+                              url_path: http://esp32-cam-3
+                          "off":
+                            type: button
+                            name: Hauswirtschaftsraum
+                            icon: mdi:camera-off-outline
+                            tap_action:
+                              action: none
+                            hold_action:
+                              action: none
+                            double_tap_action:
+                              action: none
+                            more_info:
+                              action: none
+                      - type: custom:state-switch
+                        entity: >
+                          {% set cam = 'garage' %}
+                          {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+                        states:
+                          "stream":
+                            type: picture-entity
+                            entity: camera.garage
+                            double_tap_action:
+                              action: url
+                              url_path: http://esp32-cam-4
+                          "off":
+                            type: button
+                            name: Garage
+                            icon: mdi:camera-off-outline
+                            tap_action:
+                              action: none
+                            hold_action:
+                              action: none
+                            double_tap_action:
+                              action: none
+                            more_info:
+                              action: none
+
               - type: vertical-stack
                 cards:
                   - type: horizontal-stack
