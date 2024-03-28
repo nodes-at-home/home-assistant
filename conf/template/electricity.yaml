@@ -5,19 +5,19 @@
   - binary_sensor:
 
       - name: importing_power
-        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
+        availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number }}"
         state: >
-            {% if states ( 'sensor.sh10rt_master_running_state') | is_number %}
-                {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x20 ) > 0 }}
+            {% if states ( 'sensor.sh10rt_master_powerflow_state') | is_number %}
+                {{ states ( 'sensor.sh10rt_master_powerflow_state' ) | int (default=0) | bitwise_and ( 0x20 ) > 0 }}
             {% else %}
                 0
             {% endif %}
 
       - name: exporting_power
-        availability: "{{ states ( 'sensor.sh10rt_master_running_state') | is_number }}"
+        availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state') | is_number }}"
         state: >
-            {% if states ( 'sensor.sh10rt_master_running_state' ) | is_number %}
-                {{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x10 ) > 0 }}
+            {% if states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number %}
+                {{ states ( 'sensor.sh10rt_master_powerflow_state' ) | int (default=0) | bitwise_and ( 0x10 ) > 0 }}
             {% else %}
                 0
             {% endif %}
@@ -82,10 +82,10 @@
       - platform: time_pattern
         minutes: '/5'
       # - platform: state
-        # entity_id: sensor.sh10rt_master_daily_imported_energy
+        # entity_id: sensor.electricity_meter_daily_in
         # for: 00:00:10
       # - platform: state
-        # entity_id: sensor.sh10rt_master_daily_exported_energy
+        # entity_id: sensor.electricity_meter_daily_out
         # for: 00:00:10
       # - platform: state
         # entity_id: sensor.sh10rt_master_daily_pv_generation
@@ -105,14 +105,12 @@
         device_class: energy
         availability: >
                 {{
-                    states ( 'sensor.sh10rt_master_daily_imported_energy' ) | is_number
-                    and states ( 'sensor.sh10rt_master_daily_exported_energy' ) | is_number
+                    states ( 'sensor.electricity_meter_daily_in' ) | is_number
+                    and states ( 'sensor.electricity_meter_daily_out' ) | is_number
                     and states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number
                     and states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number
                     and states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | is_number
                     and states ( 'sensor.sh10rt_master_daily_battery_charge' ) | is_number
-                    and states ( 'sensor.electricity_meter_daily_out' ) | is_number
-                    and states ( 'sensor.electricity_meter_daily_in' ) | is_number
                 }}
         state: >
             {% set t = now() %}

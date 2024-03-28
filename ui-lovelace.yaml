@@ -258,12 +258,12 @@ views:
                               action: none
                       - type: custom:state-switch
                         entity: >
-                          {% set cam = 'dining' %}
+                          {% set cam = 'esszimmer' %}
                           {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
                         states:
                           "stream":
                             type: picture-entity
-                            entity: camera.dining
+                            entity: camera.esszimmer
                             double_tap_action:
                               action: url
                               url_path: http://esp32-cam-2
@@ -1484,8 +1484,18 @@ views:
               - entity: sensor.solcast_pv_forecast_peak_time_today
                 name: Peak
                 icon: mdi:summit
-              - entity: sensor.solcast_pv_forecast_api_used
-              - entity: sensor.solcast_pv_forecast_api_last_polled
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.show_debug_fields
+                    state: "on"
+                row:
+                    entity: sensor.solcast_pv_forecast_api_used
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.show_debug_fields
+                    state: "on"
+                row:
+                    entity: sensor.solcast_pv_forecast_api_last_polled
                 # forecast solar
               # - entity: sensor.estimated_energy_production_today
                 # name: heute

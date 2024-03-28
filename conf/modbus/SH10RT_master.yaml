@@ -7,11 +7,10 @@
     host: !secret modbus_proxy
     port: 5021
     delay: 5
-    # timeout: 5
     sensors:
 
       - name: sh10rt_master_protocol_no
-        slave: 1
+        device_address: 1
         address: 4949 # reg 4950
         input_type: input
         data_type: uint32
@@ -19,7 +18,7 @@
         scan_interval: 86400
 
       - name: sh10rt_master_protocol_version
-        slave: 1
+        device_address: 1
         address: 4951 # reg 4952
         input_type: input
         data_type: uint32
@@ -27,7 +26,7 @@
         scan_interval: 86400
 
       - name: sh10rt_master_arm_sw_version
-        slave: 1
+        device_address: 1
         address: 4953 # reg 4954
         input_type: input
         count: 15
@@ -35,7 +34,7 @@
         scan_interval: 86400
 
       - name: sh10rt_master_dsp_sw_version
-        slave: 1
+        device_address: 1
         address: 4968 # reg 4969
         input_type: input
         count: 15
@@ -43,7 +42,7 @@
         scan_interval: 86400
 
       - name: sh10rt_master_serial_no
-        slave: 1
+        device_address: 1
         address: 4989 # reg 4990
         input_type: input
         count: 10
@@ -51,94 +50,92 @@
         scan_interval: 86400
 
       - name: sh10rt_master_device_type_code
-        slave: 1
+        device_address: 1
         address: 4999 # reg 5000
         input_type: input
         data_type: uint16
         scan_interval: 86400
 
-      - name: sh10rt_master_daily_pv_generation_and_battery_discharge
-        slave: 1
-        address: 5002 # reg 5003
+      - name: sh10rt_master_nominal_output_power
+        device_address: 1
+        address: 5000 # reg 5001
         input_type: input
         data_type: uint16
-        precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: total_increasing
+        precision: 0
+        unit_of_measurement: kW
+        device_class: power
         scale: 0.1
-        scan_interval: 300
+        scan_interval: 86400
 
-      - name: sh10rt_master_total_pv_generation_and_battery_discharge
-        slave: 1
-        address: 5003 # reg 5004
+      - name: sh10rt_master_output_type_code
+        device_address: 1
+        address: 5001 # reg 5002
         input_type: input
-        data_type: uint32
-        swap: word
-        unit_of_measurement: kWh
-        precision: 1
-        device_class: energy
-        state_class: total_increasing
-        scale: 0.1
-        scan_interval: 300
+        data_type: uint16
+        scan_interval: 86400
 
       - name: sh10rt_master_inverter_temperature
-        slave: 1
+        device_address: 1
         address: 5007 # reg 5008
         input_type: input
         data_type: int16
         precision: 1
         unit_of_measurement: °C
         device_class: Temperature
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_master_mppt1_voltage
-        slave: 1
+        device_address: 1
         address: 5010 # reg 5011
         input_type: input
         data_type: uint16
         precision: 1
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_master_mppt1_current
-        slave: 1
+        device_address: 1
         address: 5011 # reg 5012
         input_type: input
         data_type: uint16
         precision: 2
         unit_of_measurement: A
-        device_class: Current
+        device_class: current
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_master_mppt2_voltage
-        slave: 1
+        device_address: 1
         address: 5012 # reg 5013
         input_type: input
         data_type: uint16
         precision: 1
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_master_mppt2_current
-        slave: 1
+        device_address: 1
         address: 5013 # reg 5014
         input_type: input
         data_type: uint16
         precision: 2
         unit_of_measurement: A
-        device_class: Current
+        device_class: current
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_master_total_dc_power
-        slave: 1
+        device_address: 1
         address: 5016 # reg 5017
         input_type: input
         data_type: uint32
@@ -151,43 +148,43 @@
         scan_interval: 10
 
       - name: sh10rt_master_phase_a_voltage
-        slave: 1
+        device_address: 1
         address: 5018 # reg: 5019
         input_type: input
         data_type: uint16
         precision: 1
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
         state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_master_phase_b_voltage
-        slave: 1
+        device_address: 1
         address: 5019 # reg: 5020
         input_type: input
         data_type: uint16
         precision: 1
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
         state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_master_phase_c_voltage
-        slave: 1
+        device_address: 1
         address: 5020 # reg: 5021
         input_type: input
         data_type: uint16
         precision: 1
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
         state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_master_reactive_power
-        slave: 1
+        device_address: 1
         address: 5032 # reg 5033
         input_type: input
         data_type: int32
@@ -200,7 +197,7 @@
         scan_interval: 10
 
       - name: sh10rt_master_power_factor
-        slave: 1
+        device_address: 1
         address: 5034 # reg 5035
         input_type: input
         data_type: int16
@@ -212,11 +209,11 @@
         scan_interval: 10
 
       - name: sh10rt_master_grid_frequency
-        slave: 1
+        device_address: 1
         address: 5035 # reg 5036
         input_type: input
         data_type: uint16
-        precision: 2
+        precision: 1
         unit_of_measurement: "Hz"
         device_class: frequency
         state_class: measurement
@@ -224,7 +221,7 @@
         scan_interval: 10
 
       - name: sh10rt_master_bdc_rated_power
-        slave: 1
+        device_address: 1
         address: 5627 # reg 5628
         input_type: input
         data_type: uint16
@@ -235,29 +232,175 @@
         scan_interval: 10
 
       - name: sh10rt_master_bms_max_charging_current
-        slave: 1
+        device_address: 1
         address: 5634 # reg 5635
         input_type: input
         data_type: uint16
         precision: 0
         unit_of_measurement: A
-        device_class: Current
+        device_class: current
+        state_class: measurement
         scale: 1
         scan_interval: 60
 
       - name: sh10rt_master_bms_max_discharging_current
-        slave: 1
+        device_address: 1
         address: 5635 # reg 5636
         input_type: input
         data_type: uint16
         precision: 0
         unit_of_measurement: A
-        device_class: Current
+        device_class: current
+        state_class: measurement
         scale: 1
         scan_interval: 60
 
+      - name: sh10rt_master_battery_capacity
+        device_address: 1
+        address: 5638 # reg 5639
+        input_type: input
+        data_type: uint16
+        precision: 2
+        unit_of_measurement: kWh
+        device_class: energy_storage
+        scale: 0.01
+        scan_interval: 60
+
+      - name: sh10rt_master_backup_phase_a_current
+        device_address: 1
+        address: 5719 # reg: 5720
+        input_type: input
+        data_type: int16
+        precision: 1
+        unit_of_measurement: A
+        device_class: current
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_phase_b_current
+        device_address: 1
+        address: 5720 # reg: 5721
+        input_type: input
+        data_type: int16
+        precision: 1
+        unit_of_measurement: A
+        device_class: current
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_phase_c_current
+        device_address: 1
+        address: 5721 # reg: 5722
+        input_type: input
+        data_type: int16
+        precision: 1
+        unit_of_measurement: A
+        device_class: current
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_phase_a_power
+        device_address: 1
+        address: 5722 # reg: 5723
+        input_type: input
+        data_type: int16
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_phase_b_power
+        device_address: 1
+        address: 5723 # reg: 5724
+        input_type: input
+        data_type: int16
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_phase_c_power
+        device_address: 1
+        address: 5724 # reg: 5725
+        input_type: input
+        data_type: int16
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_total_power
+        device_address: 1
+        address: 5725 # reg: 5726
+        input_type: input
+        data_type: int32
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 1
+        swap: word
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_phase_a_voltage
+        device_address: 1
+        address: 5730 # reg: 5731
+        input_type: input
+        data_type: int16
+        precision: 1
+        unit_of_measurement: V
+        device_class: voltage
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_phase_b_voltage
+        device_address: 1
+        address: 5731 # reg: 5732
+        input_type: input
+        data_type: int16
+        precision: 1
+        unit_of_measurement: V
+        device_class: voltage
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_phase_c_voltage
+        device_address: 1
+        address: 5732 # reg: 5733
+        input_type: input
+        data_type: int16
+        precision: 1
+        unit_of_measurement: V
+        device_class: voltage
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: sh10rt_master_backup_frequency
+        device_address: 1
+        address: 5736 # reg 5734
+        input_type: input
+        data_type: uint16
+        precision: 2
+        unit_of_measurement: "Hz"
+        device_class: frequency
+        state_class: measurement
+        scale: 0.01
+        scan_interval: 10
+
       - name: sh10rt_master_system_state
-        slave: 1
+        device_address: 1
         address: 12999 # reg 13000
         input_type: input
         data_type: uint16
@@ -265,10 +408,8 @@
         scale: 1
         scan_interval: 10
 
-      # register running state is not available for certain SH*RS inverters
-      # template sensors are used to determine the states based on other sensors
-      - name: sh10rt_master_running_state
-        slave: 1
+      - name: sh10rt_master_powerflow_state
+        device_address: 1
         address: 13000 # reg 13001
         input_type: input
         data_type: uint16
@@ -277,7 +418,7 @@
         scan_interval: 10
 
       - name: sh10rt_master_daily_pv_generation
-        slave: 1
+        device_address: 1
         address: 13001 # reg 13002
         input_type: input
         data_type: uint16
@@ -288,21 +429,8 @@
         scale: 0.1
         scan_interval: 300
 
-      - name: sh10rt_master_total_pv_generation
-        slave: 1
-        address: 13002 # reg 13003
-        input_type: input
-        data_type: uint32
-        swap: word
-        precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: total
-        scale: 0.1
-        scan_interval: 300
-
       - name: sh10rt_master_load_power
-        slave: 1
+        device_address: 1
         address: 13007 # reg 13008
         input_type: input
         data_type: int32
@@ -314,71 +442,34 @@
         scale: 1
         scan_interval: 10
 
-      # this value returns a positive value when exporting and a negative value when importing power
-      - name: sh10rt_master_export_power_raw
-        slave: 1
-        address: 13009 # reg 13010
-        input_type: input
-        data_type: int32
-        swap: word
-        precision: 0
-        unit_of_measurement: W
-        device_class: power
-        state_class: measurement
-        scale: 1
-        scan_interval: 10
-
-      - name: sh10rt_master_daily_battery_charge_from_pv
-        slave: 1
-        address: 13011 # reg 13012
-        input_type: input
-        data_type: uint16
-        precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: total_increasing
-        scale: 0.1
-        scan_interval: 300
-
-      - name: sh10rt_master_total_battery_charge_from_pv
-        slave: 1
-        address: 13012 # reg 13013
-        input_type: input
-        data_type: uint32
-        swap: word
-        precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: total_increasing
-        scale: 0.1
-        scan_interval: 300
-
       - name: sh10rt_master_battery_voltage
-        slave: 1
+        device_address: 1
         address: 13019 # reg 13020
         input_type: input
         data_type: uint16
         precision: 0
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_master_battery_current
-        slave: 1
+        device_address: 1
         address: 13020 # reg 13021
         input_type: input
         data_type: uint16
         precision: 1
         unit_of_measurement: A
-        device_class: Current
+        device_class: current
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       # always positive battery power
       # use binary_sensor.battery_charging | discharging to retrieve the direction of the energy flow
       - name: sh10rt_master_battery_power_raw
-        slave: 1
+        device_address: 1
         address: 13021 # reg 13022
         input_type: input
         data_type: uint16
@@ -390,7 +481,7 @@
         scan_interval: 10
 
       - name: sh10rt_master_battery_level
-        slave: 1
+        device_address: 1
         address: 13022 # reg 13023
         input_type: input
         data_type: uint16
@@ -402,7 +493,7 @@
         scan_interval: 60
 
       - name: sh10rt_master_battery_state_of_health
-        slave: 1
+        device_address: 1
         address: 13023 # reg 13024
         input_type: input
         data_type: uint16
@@ -413,18 +504,19 @@
         scan_interval: 10
 
       - name: sh10rt_master_battery_temperature
-        slave: 1
+        device_address: 1
         address: 13024 # reg 13025
         input_type: input
         data_type: int16
         precision: 1
         unit_of_measurement: °C
         device_class: Temperature
+        state_class: measurement
         scale: 0.1
         scan_interval: 60
 
       - name: sh10rt_master_daily_battery_discharge
-        slave: 1
+        device_address: 1
         address: 13025 # reg 13026
         input_type: input
         data_type: uint16
@@ -435,29 +527,19 @@
         scale: 0.1
         scan_interval: 300
 
-      - name: sh10rt_master_total_battery_discharge
-        slave: 1
-        address: 13026 # reg 13027
+      - name: sh10rt_master_self_consumption_today
+        device_address: 1
+        address: 13028 # reg 13029
         input_type: input
-        data_type: uint32
-        swap: word
+        data_type: uint16
         precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
+        unit_of_measurement: "%"
         state_class: total_increasing
         scale: 0.1
-        scan_interval: 300
-
-      # always 65535
-      # - name: Grid state raw
-      #   slave: 1
-      #   address: 13029
-      #   input_type: input
-      #   data_type: uint16
-      #   scan_interval: 10
+        scan_interval: 50
 
       - name: sh10rt_master_phase_a_current
-        slave: 1
+        device_address: 1
         address: 13030 # reg 13031
         input_type: input
         data_type: int16
@@ -469,7 +551,7 @@
         scan_interval: 10
 
       - name: sh10rt_master_phase_b_current
-        slave: 1
+        device_address: 1
         address: 13031 # reg 13032
         input_type: input
         data_type: int16
@@ -481,7 +563,7 @@
         scan_interval: 10
 
       - name: sh10rt_master_Phase_c_current
-        slave: 1
+        device_address: 1
         address: 13032 # reg 13033
         input_type: input
         data_type: int16
@@ -493,7 +575,7 @@
         scan_interval: 10
 
       - name: sh10rt_master_total_active_power
-        slave: 1
+        device_address: 1
         address: 13033 # reg 13034
         input_type: input
         data_type: int32
@@ -505,74 +587,11 @@
         scale: 1
         scan_interval: 10
 
-      - name: sh10rt_master_daily_imported_energy
-        slave: 1
-        address: 13035 # reg 13036
-        input_type: input
-        data_type: uint16
-        precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: total_increasing
-        scale: 0.1
-        scan_interval: 300
-
-      - name: sh10rt_master_total_imported_energy
-        slave: 1
-        address: 13036 # reg 13037
-        input_type: input
-        data_type: uint32
-        swap: word
-        precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: total_increasing
-        scale: 0.1
-        scan_interval: 300
-
       - name: sh10rt_master_daily_battery_charge
-        slave: 1
+        device_address: 1
         address: 13039 # reg 13040
         input_type: input
         data_type: uint16
-        precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: total_increasing
-        scale: 0.1
-        scan_interval: 300
-
-      - name: sh10rt_master_total_battery_charge
-        slave: 1
-        address: 13040 # reg 13041
-        input_type: input
-        data_type: uint32
-        swap: word
-        precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: total_increasing
-        scale: 0.1
-        scan_interval: 300
-
-      - name: sh10rt_master_daily_exported_energy
-        slave: 1
-        address: 13044 # reg 13045
-        input_type: input
-        data_type: uint16
-        precision: 1
-        unit_of_measurement: kWh
-        device_class: energy
-        state_class: total_increasing
-        scale: 0.1
-        scan_interval: 300
-
-      - name: sh10rt_master_total_exported_energy
-        slave: 1
-        address: 13045 # reg 13046
-        input_type: input
-        data_type: uint32
-        swap: word
         precision: 1
         unit_of_measurement: kWh
         device_class: energy
@@ -585,7 +604,7 @@
       #####################
 
       - name: sh10rt_master_inverter_start_stop
-        slave: 1
+        device_address: 1
         address: 12999 # reg 13000
         input_type: holding
         data_type: uint16
@@ -593,7 +612,7 @@
         scan_interval: 10
 
       - name: sh10rt_master_battery_forced_charge_discharge_raw
-        slave: 1
+        device_address: 1
         address: 13050 # reg 13051
         input_type: holding
         data_type: uint16
@@ -601,7 +620,7 @@
         scan_interval: 10
 
       - name: sh10rt_master_battery_forced_charge_discharge_power
-        slave: 1
+        device_address: 1
         address: 13051 # reg 13052
         input_type: holding
         data_type: uint16
@@ -612,109 +631,93 @@
         # for my SH10RT it is set in Watt, not in %
         unit_of_measurement: W
         device_class: power
-        state_class: measurement
         scan_interval: 10
 
       - name: sh10rt_master_max_soc
-        slave: 1
+        device_address: 1
         address: 13057 # reg 13058
         input_type: holding
         data_type: uint16
         precision: 1
         unit_of_measurement: "%"
         device_class: battery
-        state_class: measurement
         scale: 0.1
         scan_interval: 600
 
       - name: sh10rt_master_min_soc
-        slave: 1
+        device_address: 1
         address: 13058 # reg 13059
         input_type: holding
         data_type: uint16
         precision: 1
         unit_of_measurement: "%"
         device_class: battery
-        state_class: measurement
         scale: 0.1
         scan_interval: 600
 
       - name: sh10rt_master_reserved_soc_for_backup
-        slave: 1
+        device_address: 1
         address: 13099 # reg 13100
         input_type: holding
         data_type: uint16
         unit_of_measurement: "%"
         device_class: battery
-        state_class: measurement
         scale: 1
         scan_interval: 600
 
       #undocumented sensors (reverse engineered by some guys of photovoltaikforum.com and forum.iobroker.net )
       - name: sh10rt_master_battery_max_charge_power
-        slave: 1
+        device_address: 1
         address: 33046 # reg 33047
         input_type: holding
         data_type: uint16
         precision: 0
         unit_of_measurement: W
         device_class: power
-        state_class: measurement
         scale: 10
         scan_interval: 10
 
       - name: sh10rt_master_battery_max_discharge_power
-        slave: 1
+        device_address: 1
         address: 33047 # reg 33048
         input_type: holding
         data_type: uint16
         precision: 0
         unit_of_measurement: W
         device_class: power
-        state_class: measurement
         scale: 10
         scan_interval: 10
 
-      # - name: sh10rt_master_battery_capacity
-        # slave: 1
-        # address: 33048 # reg 33049
-        # input_type: holding
-        # data_type: uint16
-        # unit_of_measurement: kWh
-        # device_class: energy
-        # scale: 0.01
-        # scan_interval: 600
-
       - name: sh10rt_master_battery_charge_start_power
-        slave: 1
+        device_address: 1
         address: 33148 # reg 33149
         input_type: holding
         data_type: uint16
         precision: 0
         unit_of_measurement: W
         device_class: power
-        state_class: measurement
         scale: 10
         scan_interval: 10
 
       - name: sh10rt_master_battery_discharge_start_power
-        slave: 1
+        device_address: 1
         address: 33149 # reg 33150
         input_type: holding
         data_type: uint16
         precision: 0
         unit_of_measurement: W
         device_class: power
-        state_class: measurement
         scale: 10
         scan_interval: 10
 
+      #########################################
+      # more (undocumented) inverter register
+      #########################################
+
       # https://www.photovoltaikforum.com/thread/166134-daten-lesen-vom-sungrow-wechselrichtern-modbus/?postID=2939110#post2939110
 
-      # more inverter register
-
       - name: sh10rt_master_lcd_sw_version
-        slave: 1
+        device_address: 1
         address: 2581 # reg 2582
         input_type: input
         count: 15
@@ -722,7 +725,7 @@
         scan_interval: 86400
 
       - name: sh10rt_master_mdsp_sw_version
-        slave: 1
+        device_address: 1
         address: 2596 # reg 2597
         input_type: input
         count: 15
@@ -730,7 +733,7 @@
         scan_interval: 86400
 
       - name: sh10rt_master_sdsp_sw_version
-        slave: 1
+        device_address: 1
         address: 2611 # reg 2612
         input_type: input
         count: 15
@@ -738,7 +741,7 @@
         scan_interval: 86400
 
       - name: sh10rt_master_sbrbcu_sw_version
-        slave: 1
+        device_address: 1
         address: 2625 # reg 2626
         input_type: input
         count: 15
@@ -748,7 +751,7 @@
       # battery register
 
       - name: sh10rt_battery_serial_no
-        slave: 200
+        device_address: 200
         address: 10710 # reg 10711
         input_type: input
         count: 10
@@ -756,7 +759,7 @@
         scan_interval: 86400
 
       - name: sh10rt_battery_sw_version
-        slave: 200
+        device_address: 200
         address: 10720 # reg 10721
         input_type: input
         count: 15
@@ -764,7 +767,7 @@
         scan_interval: 86400
 
       - name: sh10rt_battery_protocol_no
-        slave: 200
+        device_address: 200
         address: 10735 # reg 10736
         input_type: input
         data_type: uint32
@@ -772,18 +775,19 @@
         scan_interval: 86400
 
       - name: sh10rt_battery_temperature
-        slave: 200
+        device_address: 200
         address: 10742 # reg 10743
         input_type: input
         data_type: uint16
         precision: 1
         unit_of_measurement: °C
         device_class: Temperature
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_battery_level
-        slave: 200
+        device_address: 200
         address: 10743 # reg 10744
         input_type: input
         data_type: uint16
@@ -797,188 +801,200 @@
       # https://www.photovoltaikforum.com/thread/166134-daten-lesen-vom-sungrow-wechselrichtern-modbus/?postID=3270446#post3270446
 
       - name: sh10rt_battery_max_cell_voltage
-        slave: 200
+        device_address: 200
         address: 10756 # reg 10757
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_max_cell_voltage_pos
-        slave: 200
+        device_address: 200
         address: 10757 # reg 10758
         input_type: input
         data_type: uint16
         scan_interval: 60
 
       - name: sh10rt_battery_min_cell_voltage
-        slave: 200
+        device_address: 200
         address: 10758 # reg 10759
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_min_cell_voltage_pos
-        slave: 200
+        device_address: 200
         address: 10759 # reg 10760
         input_type: input
         data_type: uint16
         scan_interval: 60
 
       - name: sh10rt_battery_max_cell_temperature
-        slave: 200
+        device_address: 200
         address: 10760 # reg 10761
         input_type: input
         data_type: int16
         precision: 1
         unit_of_measurement: °C
         device_class: Temperature
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_battery_max_cell_temperature_pos
-        slave: 200
+        device_address: 200
         address: 10761 # reg 10762
         input_type: input
         data_type: uint16
         scan_interval: 60
 
       - name: sh10rt_battery_min_cell_temperature
-        slave: 200
+        device_address: 200
         address: 10762 # reg 10763
         input_type: input
         data_type: int16
         precision: 1
         unit_of_measurement: °C
         device_class: Temperature
+        state_class: measurement
         scale: 0.1
         scan_interval: 10
 
       - name: sh10rt_battery_min_cell_temperature_pos
-        slave: 200
+        device_address: 200
         address: 10763 # reg 10764
         input_type: input
         data_type: uint16
         scan_interval: 60
 
       - name: sh10rt_battery_max_cell_voltage_module1
-        slave: 200
+        device_address: 200
         address: 10764 # reg 10765
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_max_cell_voltage_module2
-        slave: 200
+        device_address: 200
         address: 10765 # reg 10766
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_max_cell_voltage_module3
-        slave: 200
+        device_address: 200
         address: 10766 # reg 10767
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_max_cell_voltage_module4
-        slave: 200
+        device_address: 200
         address: 10767 # reg 10768
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_min_cell_voltage_module1
-        slave: 200
+        device_address: 200
         address: 10772 # reg 10773
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_min_cell_voltage_module2
-        slave: 200
+        device_address: 200
         address: 10773 # reg 10774
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        state_class: measurement
+        device_class: voltage
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_min_cell_voltage_module3
-        slave: 200
+        device_address: 200
         address: 10774 # reg 10775
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        state_class: measurement
+        device_class: voltage
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_min_cell_voltage_module4
-        slave: 200
+        device_address: 200
         address: 10775 # reg 10776
         input_type: input
         data_type: uint16
         precision: 4
         unit_of_measurement: V
-        device_class: Voltage
+        device_class: voltage
+        state_class: measurement
         scale: 0.0001
         scan_interval: 60
 
       - name: sh10rt_battery_cell_type_module1
-        slave: 200
+        device_address: 200
         address: 10780 # reg 10781
         input_type: input
         data_type: uint16
         scan_interval: 60
 
       - name: sh10rt_battery_cell_type_module2
-        slave: 200
+        device_address: 200
         address: 10781 # reg 10782
         input_type: input
         data_type: uint16
         scan_interval: 60
 
       - name: sh10rt_battery_cell_type_module3
-        slave: 200
+        device_address: 200
         address: 10782 # reg 10783
         input_type: input
         data_type: uint16
         scan_interval: 60
 
       - name: sh10rt_battery_cell_type_module4
-        slave: 200
+        device_address: 200
         address: 10783 # reg 10784
         input_type: input
         data_type: uint16

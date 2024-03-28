@@ -620,6 +620,7 @@ views:
           - type: section
             label: Modell
           - entity: sensor.sh10rt_master_device_type
+          - entity: sensor.sh10rt_master_nominal_output_power
           - entity: sensor.sh10rt_master_serial_no
           - entity: sensor.sh10rt_master_lcd_sw_version
           - entity: sensor.sh10rt_master_mdsp_sw_version
@@ -633,8 +634,9 @@ views:
             label: Zustand
           - entity: sensor.sh10rt_master_inverter_state
           - entity: sensor.sh10rt_master_system_state
-          - entity: sensor.sh10rt_master_running_state
+          - entity: sensor.sh10rt_master_powerflow_state
           - entity: sensor.sh10rt_master_inverter_temperature
+          - entity: sensor.sh10rt_master_self_consumption_today
           - type: section
             label: Strings (1+4)
           - entity: sensor.sh10rt_master_mppt1_voltage
@@ -647,6 +649,7 @@ views:
           - type: section
             label: Modell
           - entity: sensor.sh10rt_slave_device_type
+          - entity: sensor.sh10rt_slave_nominal_output_power
           - entity: sensor.sh10rt_slave_serial_no
           - entity: sensor.sh10rt_slave_lcd_sw_version
           - entity: sensor.sh10rt_slave_mdsp_sw_version
@@ -660,8 +663,9 @@ views:
             label: Zustand
           - entity: sensor.sh10rt_slave_inverter_state
           - entity: sensor.sh10rt_slave_system_state
-          - entity: sensor.sh10rt_slave_running_state
+          - entity: sensor.sh10rt_slave_powerflow_state
           - entity: sensor.sh10rt_slave_inverter_temperature
+          - entity: sensor.sh10rt_slave_self_consumption_today
           - type: section
             label: Strings (2+3)
           - entity: sensor.sh10rt_slave_mppt1_voltage
@@ -673,12 +677,14 @@ views:
         entities:
           - type: section
             label: Modell
+          - entity: sensor.sh10rt_master_battery_capacity
           - entity: sensor.sh10rt_battery_serial_no
           - entity: sensor.sh10rt_battery_sw_version
           - entity: sensor.sh10rt_battery_protocol_no
           - type: section
             label: Zustand
           - entity: sensor.sh10rt_master_battery_level
+          - entity: sensor.sh10rt_battery_level
           - entity: sensor.sh10rt_master_battery_state_of_health
           - entity: sensor.sh10rt_master_battery_temperature
           # - entity: sensor.sh10rt_battery_temperature

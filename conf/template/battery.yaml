@@ -5,12 +5,12 @@
   - binary_sensor:
 
       - name: battery_charging
-        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
-        state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x2 ) > 0 }}"
+        availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number }}"
+        state: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | int (default=0) | bitwise_and ( 0x2 ) > 0 }}"
 
       - name: battery_discharging
-        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number }}"
-        state: "{{ states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x4 ) > 0 }}"
+        availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number }}"
+        state: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | int (default=0) | bitwise_and ( 0x4 ) > 0 }}"
 
       - name: battery_state
         availability: "{{ states ( 'sensor.sh10rt_master_battery_level' ) | is_number }}"
@@ -122,7 +122,7 @@
         unit_of_measurement: W
         device_class: power
         state_class: measurement
-        availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
+        availability: "{{ states ( 'binary_sensor.battery_discharging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
         state: >
             {% if is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
                 {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) }}

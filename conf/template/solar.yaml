@@ -5,14 +5,14 @@
   - binary_sensor:
 
       - name: pv_generating
-        availability: "{{ states ( 'sensor.sh10rt_master_running_state' ) | is_number or states ( 'sensor.sh10rt_slave_running_state' ) | is_number }}"
+        availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number or states ( 'sensor.sh10rt_slave_powerflow_state' ) | is_number }}"
         state: >
             {% set result = false %}
-            {% if states ( 'sensor.sh10rt_master_running_state' ) | is_number %}
-                {% set result = result or states ( 'sensor.sh10rt_master_running_state' ) | int (default=0) | bitwise_and ( 0x1 ) > 0 %}
+            {% if states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number %}
+                {% set result = result or states ( 'sensor.sh10rt_master_powerflow_state' ) | int (default=0) | bitwise_and ( 0x1 ) > 0 %}
             {% endif %}
-            {% if states ( 'sensor.sh10rt_slave_running_state' ) | is_number %}
-                {% set result = result or states ( 'sensor.sh10rt_slave_running_state' ) | int (default=0) | bitwise_and ( 0x1 ) > 0 %}
+            {% if states ( 'sensor.sh10rt_slave_powerflow_state' ) | is_number %}
+                {% set result = result or states ( 'sensor.sh10rt_slave_powerflow_state' ) | int (default=0) | bitwise_and ( 0x1 ) > 0 %}
             {% endif %}
             {{ result }}
         icon: mdi:solar-power
@@ -108,28 +108,54 @@
       - name: sh10rt_master_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_master_system_state' ) | int (default = 0) %}
-            {% if  val == 0x0002 %}
-                Stop
-            {% elif  val == 0x0008 %}
-                Standby
-            {% elif  val == 0x0010 %}
-                Initial Standby
-            {% elif  val == 0x0020 %}
-                Startup
-            {% elif  val == 0x0040 %}
+            {% if  val == 0x0040 or val == 0x0000 %}
                 Running
-            {% elif  val == 0x0100 %}
-                Fault
+            {% elif  val == 0x0041 %}
+                Off-grid Charge
+            {% elif  val == 0x0200 %}
+                Update Failed
             {% elif  val == 0x0400 %}
                 Maintain mode
             {% elif  val == 0x0800 %}
                 Forced mode
             {% elif  val == 0x1000 %}
                 Off-grid mode
+            {% elif  val == 0x1111 %}
+                Uninitialized
+            {% elif  val == 0x0010 or val == 0x1200 %}
+                Initial Standby
+            {% elif  val == 0x0002 or val == 0x1300 %}
+                Shutdown
+            {% elif  val == 0x0008 or val == 0x1400 %}
+                Standby
+            {% elif  val == 0x0004 or val == 0x1500 %}
+                Emergency Stop
+            {% elif  val == 0x0020 or val == 0x1600 %}
+                Startup
+            {% elif  val == 0x1700 %}
+                AFCI selftest shutdown
+            {% elif  val == 0x1800 %}
+                Intelligent Station Building Status
+            {% elif  val == 0x1900 %}
+                Safe Mode
+            {% elif  val == 0x2000 %}
+                Open loop
             {% elif  val == 0x2501 %}
                 Restarting
             {% elif  val == 0x4000 %}
                 External EMS mode
+            {% elif  val == 0x4001 %}
+                Emergency Charging Operation
+            {% elif  val == 0x0100 or val == 0x5500 %}
+                Fault
+            {% elif  val == 0x0001 or val == 0x8000 %}
+                Stop
+            {% elif  val == 0x8100 %}
+                Derating Runnung
+            {% elif  val == 0x8200 %}
+                Dispatch Running
+            {% elif  val == 0x9100 %}
+                Warn Run
             {% else %}
                 {{ val }}
             {% endif %}
@@ -137,28 +163,54 @@
       - name: sh10rt_slave_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_slave_system_state' ) | int (default = 0) %}
-            {% if  val == 0x0002 %}
-                Stop
-            {% elif  val == 0x0008 %}
-                Standby
-            {% elif  val == 0x0010 %}
-                Initial Standby
-            {% elif  val == 0x0020 %}
-                Startup
-            {% elif  val == 0x0040 %}
+            {% if  val == 0x0040 or val == 0x0000 %}
                 Running
-            {% elif  val == 0x0100 %}
-                Fault
+            {% elif  val == 0x0041 %}
+                Off-grid Charge
+            {% elif  val == 0x0200 %}
+                Update Failed
             {% elif  val == 0x0400 %}
                 Maintain mode
             {% elif  val == 0x0800 %}
                 Forced mode
             {% elif  val == 0x1000 %}
                 Off-grid mode
+            {% elif  val == 0x1111 %}
+                Uninitialized
+            {% elif  val == 0x0010 or val == 0x1200 %}
+                Initial Standby
+            {% elif  val == 0x0002 or val == 0x1300 %}
+                Shutdown
+            {% elif  val == 0x0008 or val == 0x1400 %}
+                Standby
+            {% elif  val == 0x0004 or val == 0x1500 %}
+                Emergency Stop
+            {% elif  val == 0x0020 or val == 0x1600 %}
+                Startup
+            {% elif  val == 0x1700 %}
+                AFCI selftest shutdown
+            {% elif  val == 0x1800 %}
+                Intelligent Station Building Status
+            {% elif  val == 0x1900 %}
+                Safe Mode
+            {% elif  val == 0x2000 %}
+                Open loop
             {% elif  val == 0x2501 %}
                 Restarting
             {% elif  val == 0x4000 %}
                 External EMS mode
+            {% elif  val == 0x4001 %}
+                Emergency Charging Operation
+            {% elif  val == 0x0100 or val == 0x5500 %}
+                Fault
+            {% elif  val == 0x0001 or val == 0x8000 %}
+                Stop
+            {% elif  val == 0x8100 %}
+                Derating Runnung
+            {% elif  val == 0x8200 %}
+                Dispatch Running
+            {% elif  val == 0x9100 %}
+                Warn Run
             {% else %}
                 {{ val }}
             {% endif %}
@@ -245,29 +297,29 @@
                 Unknown device code! --> {{ val }}
             {% endif %}
 
-      - name: import_power
-        unit_of_measurement: W
-        device_class: power
-        availability: "{{ states ( 'sensor.sh10rt_master_export_power_raw' ) | is_number }}"
-        state: >
-            {% if states ( 'sensor.sh10rt_master_export_power_raw' ) | int < 0 %}
-                {{ states('sensor.sh10rt_master_export_power_raw')|int *-1 }}
-            {% else %}
-                0
-            {% endif %}
+      # - name: import_power
+        # unit_of_measurement: W
+        # device_class: power
+        # availability: "{{ states ( 'sensor.sh10rt_master_export_power_raw' ) | is_number }}"
+        # state: >
+            # {% if states ( 'sensor.sh10rt_master_export_power_raw' ) | int < 0 %}
+                # {{ states('sensor.sh10rt_master_export_power_raw')|int *-1 }}
+            # {% else %}
+                # 0
+            # {% endif %}
 
-        # power to grid: positive if exporting, else zero
-      - name: export_power
-        unit_of_measurement: W
-        device_class: power
-        state_class: measurement
-        availability: "{{ states ( 'sensor.sh10rt_master_export_power_raw' ) | is_number }}"
-        state: >
-            {% if states ( 'sensor.sh10rt_master_export_power_raw' ) | int > 0 %}
-                {{ states ( 'sensor.sh10rt_master_export_power_raw' ) }}
-            {% else %}
-                0
-            {% endif %}
+        # # power to grid: positive if exporting, else zero
+      # - name: export_power
+        # unit_of_measurement: W
+        # device_class: power
+        # state_class: measurement
+        # availability: "{{ states ( 'sensor.sh10rt_master_export_power_raw' ) | is_number }}"
+        # state: >
+            # {% if states ( 'sensor.sh10rt_master_export_power_raw' ) | int > 0 %}
+                # {{ states ( 'sensor.sh10rt_master_export_power_raw' ) }}
+            # {% else %}
+                # 0
+            # {% endif %}
 
       - name: load_power
         unit_of_measurement: W
