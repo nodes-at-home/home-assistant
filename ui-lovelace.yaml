@@ -267,6 +267,11 @@ views:
                             double_tap_action:
                               action: url
                               url_path: http://esp32-cam-2
+                            card_mod:
+                              style: |
+                                hui-image{
+                                  transform: rotate(-90deg);
+                                }
                           "off":
                             type: button
                             name: Esszimmer
@@ -281,15 +286,20 @@ views:
                               action: none
                       - type: custom:state-switch
                         entity: >
-                          {% set cam = 'utilityroom' %}
+                          {% set cam = 'hauswirtschaftsraum' %}
                           {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
                         states:
                           "stream":
                             type: picture-entity
-                            entity: camera.utilityroom
+                            entity: camera.hauswirtschaftsraum
                             double_tap_action:
                               action: url
                               url_path: http://esp32-cam-3
+                            card_mod:
+                              style: |
+                                hui-image{
+                                  transform: rotate(-90deg);
+                                }
                           "off":
                             type: button
                             name: Hauswirtschaftsraum
@@ -313,6 +323,11 @@ views:
                             double_tap_action:
                               action: url
                               url_path: http://esp32-cam-4
+                            card_mod:
+                              style: |
+                                hui-image{
+                                  transform: rotate(-90deg);
+                                }
                           "off":
                             type: button
                             name: Garage
