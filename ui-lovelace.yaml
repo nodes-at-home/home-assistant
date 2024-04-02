@@ -369,6 +369,8 @@ views:
                         # entity: light.ws2812_terrace2
                       - type: light
                         entity: light.ws2812_xmasstar
+                      - type: markdown
+                        content: " "
                   - type: horizontal-stack
                     cards:
                       - type: button
@@ -386,10 +388,21 @@ views:
                         entity: switch.sonoff_k8200_socket
                         icon: mdi:printer-3d
                       - type: entity-button
-                        entity: switch.sonoff_pool_socket
-                        icon: mdi:pump
-                      # - type: markdown
-                        # content: " "
+                        entity: switch.bosch_ladestation
+                        icon: mdi:power-plug-battery
+                        tap_action:
+                            action: toggle
+                        hold_action:
+                            action: more-info
+                      - type: entity-button
+                        entity: switch.wasserpumpe
+                        icon: mdi:water-pump
+                        tap_action:
+                            action: toggle
+                        hold_action:
+                            action: more-info
+                      #- type: markdown
+                      #  content: " "
                   - type: horizontal-stack
                     cards:
                       - type: entity-button
@@ -401,6 +414,9 @@ views:
                       - type: entity-button
                         entity: switch.relay_garden_valve3
                         icon: mdi:watering-can
+                      - type: entity-button
+                        entity: switch.sonoff_pool_socket
+                        icon: mdi:pump
 
   - title: Haus
     path: house

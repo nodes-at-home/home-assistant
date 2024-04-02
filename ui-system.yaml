@@ -467,6 +467,11 @@ views:
                     - automation.close_cover_nursery
                     - automation.open_cover_nursery
                     - automation.reset_close_at_low_temp_flag
+              - type: entities
+                title: Garage
+                show_header_toggle: true
+                entities:
+                    - automation.bosch_powerstation_shutdown_after_inactivity
 
   - title: Bosch Smart Home
     path: bsh

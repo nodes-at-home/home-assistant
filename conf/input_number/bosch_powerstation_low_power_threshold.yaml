@@ -1,0 +1,11 @@
+###
+### 02.04.2024
+###
+
+name: Abschaltung unter
+mode: box
+min: 0
+max: 100
+step: 1
+unit_of_measurement: "W"
+# initial: 10

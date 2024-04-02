@@ -154,6 +154,12 @@ views:
                 - entity: input_boolean.irrigation_valve3_at_sunday
                   name: So
       - type: entities
+        title: Bosch Ladestation
+        show_header_toggle: false
+        entities:
+            - input_number.bosch_powerstation_low_power_threshold
+            - input_number.bosch_powerstation_low_power_duration
+      - type: entities
         title: Rasenmäher
         show_header_toggle: false
         entities:

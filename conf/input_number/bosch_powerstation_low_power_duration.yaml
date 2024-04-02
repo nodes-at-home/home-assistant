@@ -1,0 +1,11 @@
+###
+### 02.04.2024
+###
+
+name: Abschaltung nach
+mode: box
+min: 0
+max: 60
+step: 5
+unit_of_measurement: "min"
+# initial: 10
