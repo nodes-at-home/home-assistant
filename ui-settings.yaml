@@ -504,10 +504,17 @@ views:
             - input_boolean.dishwasher_activated
             - input_number.dishwasher_min_pv_generation
             - input_number.dishwasher_min_battery_level
+            - type: divider
             - input_datetime.dishwasher_start
-            - binary_sensor.geschirrspuler_remote_start
-            - binary_sensor.geschirrspuler_door
-            - sensor.geschirrspuler_operation_state
+            - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolactive
+            - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolstartallowed
+            - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
+            - sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
+            - type: divider
+            - sensor.solcast_pv_forecast_forecast_this_hour
+            - sensor.solcast_pv_forecast_forecast_next_hour
+            - sensor.solcast_pv_forecast_peak_time_today
+            - sensor.solcast_pv_forecast_peak_time_tomorrow
 
   - title: Heizung
     path: heating
