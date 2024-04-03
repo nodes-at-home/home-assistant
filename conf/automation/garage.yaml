@@ -45,9 +45,9 @@
     trigger:
       - platform: numeric_state
         entity_id: sensor.bosch_ladestation_power
-        below: input_number.bosch_ladestation_low_power_threshold
+        below: input_number.bosch_powerstation_low_power_threshold
         for:
-          minutes: "{{ states ( 'input_number.bosch_ladestation_low_power_duration' ) | int }}"
+          minutes: "{{ states ( 'input_number.bosch_powerstation_low_power_duration' ) | int }}"
     condition:
       - condition: state
         entity_id: binary_sensor.prod_mode
