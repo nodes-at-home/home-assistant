@@ -386,6 +386,7 @@ views:
                             action: more-info
                       - type: entity-button
                         entity: switch.sonoff_k8200_socket
+                        name: 3D Drucker
                         icon: mdi:printer-3d
                       - type: entity-button
                         entity: switch.bosch_ladestation

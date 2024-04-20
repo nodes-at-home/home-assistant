@@ -1,0 +1,183 @@
+###
+### 19.04.2024
+###
+
+  # https://github.com/greghesp/ha-bambulab/blob/main/blueprints/wled_controller.yamlx
+  - alias: bambulab_light
+    id: bambulab_light
+    mode: restart
+    variables:
+      wled_brightness: 100
+      ok_duration: 2
+    trigger:
+      - platform: state
+        alias: When printer stage,status or chamber light state changes
+        entity_id:
+          - light.x1c_00m09a410500788_druckraumbeleuchtung
+          - sensor.x1c_00m09a410500788_druckstatus
+          - sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+    condition:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    action:
+      - if:
+          - condition: state
+            alias: chamber light is on
+            entity_id: light.x1c_00m09a410500788_druckraumbeleuchtung
+            state: "on"
+          - not:
+            - condition: state
+              entity_id: sensor.x1c_00m09a410500788_druckstatus
+              state: offline
+        then:
+          # alarm: red
+          - choose:
+            - conditions:
+              - or:
+                - condition: state
+                  entity_id: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+                  state:
+                    - paused_filament_runout
+                    - paused_front_cover_falling
+                    - paused_nozzle_temperature_malfunction
+                    - paused_heat_bed_temperature_malfunction
+                    - paused_ams_lost
+                    - paused_chamber_temperature_control_error
+                    - paused_nozzle_filament_covered_detected
+                    - paused_first_layer_error
+                    - paused_low_fan_speed_heat_break
+                    - paused_skipped_step
+                    - paused_cutter_error
+                    - paused_nozzle_clog
+                    - unknown
+                    - offline
+              sequence:
+                - service: light.turn_on
+                  data:
+                    rgb_color: [255, 0, 0]
+                    brightness_pct: "{{ wled_brightness }}"
+                    effect: Blink
+                  target:
+                    entity_id: light.wled_bambu
+            # idle, finsh: green for 5 min, then white
+            - conditions:
+              - or:
+                #- condition: state
+                #  entity_id: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+                #  state:
+                #    - idle
+                - condition: state
+                  entity_id: sensor.x1c_00m09a410500788_druckstatus
+                  state:
+                    - finish
+              sequence:
+                - service: light.turn_on
+                  data:
+                    rgb_color: [0, 255, 0]
+                    brightness_pct: "{{ wled_brightness }}"
+                    effect: Solid
+                  target:
+                    entity_id: light.wled_bambu
+                - delay:
+                    minutes: "{{ ok_duration }}"
+                - service: light.turn_on
+                  data:
+                    rgb_color: [255, 255, 255]
+                    brightness_pct: "{{ wled_brightness }}"
+                    effect: Solid
+                  target:
+                    entity_id: light.wled_bambu
+            # bed leveling: blue
+            - conditions:
+                - or:
+                  - condition: state
+                    entity_id: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+                    state:
+                      - auto_bed_leveling
+                      - scanning_bed_surface
+                      - cleaning_nozzle_tip
+                      - calibrating_extrusion
+                      - calibrating_extrusion_flow
+                      - calibrating_motor_noise
+                      - inspecting_first_layer
+                      - sweeping_xy_mech_mode
+                      - calibrating_micro_lidar
+                      - homing_toolhead
+                      - identifying_build_plate_type
+              sequence:
+                - service: light.turn_on
+                  data:
+                    rgb_color: [0, 0, 255]
+                    brightness_pct: "{{ wled_brightness }}"
+                    effect: Solid
+                  target:
+                    entity_id: light.wled_bambu
+            # heating: yellow
+            - conditions:
+                - or:
+                  - condition: state
+                    entity_id: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+                    state:
+                      - heatbed_preheating
+                      - heating_hotend
+              sequence:
+                - service: light.turn_on
+                  data:
+                    rgb_color: [255, 169, 0]
+                    brightness_pct: "{{ wled_brightness }}"
+                    effect: Solid
+                  target:
+                    entity_id: light.wled_bambu
+            # filament loading: lila
+            - conditions:
+                - or:
+                  - condition: state
+                    entity_id: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+                    state:
+                      - filament_loading
+                      - filament_unloading
+              sequence:
+                - service: light.turn_on
+                  data:
+                    rgb_color: [255, 0, 255]
+                    brightness_pct: "{{ wled_brightness }}"
+                    effect: Blink
+                  target:
+                    entity_id: light.wled_bambu
+            # filament loading: blue
+            - conditions:
+                - or:
+                  - condition: state
+                    entity_id: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+                    state:
+                      - cooling_chamber
+              sequence:
+                - service: light.turn_on
+                  data:
+                    rgb_color: [0, 0, 255]
+                    brightness_pct: "{{ wled_brightness }}"
+                    effect: Solid
+                  target:
+                    entity_id: light.wled_bambu
+            default:
+            # white
+              - service: light.turn_on
+                alias: torn on with white light (default)
+                data:
+                  rgb_color: [255, 255, 255]
+                  brightness_pct: "{{ wled_brightness }}"
+                  effect: Solid
+                target:
+                  entity_id: light.wled_bambu
+        else:
+          - service: light.turn_off
+            alias: turn off
+            target:
+              entity_id: light.wled_bambu
+
+
+
+
+
