@@ -1,0 +1,47 @@
+###
+### 20.04.2024
+###
+
+  - binary_sensor:
+
+      - name: waterflow_state_badge
+        state: "{{ states ( 'sensor.watermeter_rate_per_time_unit' ) | float > 0 }}"
+        icon: mdi:water
+        attributes:
+            icon_color: >
+                {% if ( states ( 'sensor.watermeter_rate_per_time_unit' ) | float > 0 ) %}
+                    dodgerblue
+                {% else %}
+                    silver
+                {% endif %}
+
+  - sensor:
+
+      - name: water_total_price
+        unit_of_measurement: "EUR/m³"
+        device_class: monetary
+        availability: "{{ states ( 'input_number.water_fresh_price' ) | is_number and states ( 'input_number.water_waste_price' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'input_number.water_fresh_price' ) | float + states ( 'input_number.water_waste_price' ) | float ) | round ( 2 ) ) }}"
+
+      - name: water_daily_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.water_meter_daily' ) | is_number and states ( 'sensor.water_total_price' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.water_meter_daily' ) | float * states ( 'sensor.water_total_price' ) | float ) | round ( 2 ) ) }}"
+
+      - name: water_yearly_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        availability: "{{ states ( 'sensor.water_meter_yearly' ) | is_number and states ( 'sensor.water_total_price' ) | is_number }}"
+        state: "{{ '{:.2f}'.format ( ( states ( 'sensor.water_meter_yearly' ) | float * states ( 'sensor.water_total_price' ) | float ) | round ( 2 ) ) }}"
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.water_meter_quarterhourly
+        attribute: last_reset
+    sensor:
+      - name: water_quarterhourly
+        unit_of_measurement: "m³"
+        state: "{{ state_attr ( 'sensor.water_meter_quarterhourly', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.water_meter_quarterhourly", "last_reset" ) }}'

@@ -1,0 +1,7 @@
+###
+### 20.04.2024
+###
+
+source: sensor.watermeter_value
+cycle: quarter-hourly
+delta_values: false

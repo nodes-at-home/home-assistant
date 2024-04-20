@@ -162,6 +162,9 @@
         - input_number.electricity_price_in
         - input_number.electricity_price_out
         - input_number.gas_price
+        - input_number.freshwater_price
+        - input_number.wastewater_price
+        - sensor.water_quarterhourly
   ignore_attributes:
     - friendly_name
     - icon

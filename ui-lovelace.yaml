@@ -1298,8 +1298,8 @@ views:
                       - sensor.dht22_terrace_temperature
                       # - sensor.ds18b20_pool_voltage
 
-  - title: Energie
-    path: energy
+  - title: Ressourcen
+    path: ressources
     panel: false
     badges:
       - entity: binary_sensor.grid_state
@@ -1338,6 +1338,12 @@ views:
         style: |
             :host {
                 --label-badge-text-color: {{ state_attr ( 'binary_sensor.boiler_burngas_state_badge', 'icon_color' ) }}
+            }
+      - entity: binary_sensor.waterflow_state_badge
+        name: Wasser
+        style: |
+            :host {
+                --label-badge-text-color: {{ state_attr ( 'binary_sensor.waterflow_state_badge', 'icon_color' ) }}
             }
     cards:
       - type: vertical-stack
@@ -1564,6 +1570,24 @@ views:
               # - sensor.load_meter_daily
             stat_types:
               - state
+          - type: entities
+            title: Wasser
+            show_header_toggle: false
+            entities:
+              - type: section
+                label: Bezug
+              - entity: sensor.watermeter_value
+                name: Zählerstand
+              - entity: sensor.water_meter_daily
+                name: täglich
+              - entity: sensor.water_meter_yearly
+                name: jährlich
+              - type: section
+                label: Kosten
+              - entity: sensor.water_daily_costs
+                name: täglich
+              - entity: sensor.water_yearly_costs
+                name: jährlich
       - type: vertical-stack
         cards:
           - type: gauge

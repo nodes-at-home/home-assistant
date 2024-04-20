@@ -5,8 +5,8 @@
 title: !env_var HA_TITLE
 views:
 
-  - title: Zeiten
-    path: lights
+  - title: Allgemein
+    path: general
     panel: false
     cards:
       - type: entities
@@ -58,6 +58,62 @@ views:
         show_header_toggle: false
         entities:
             - input_number.ups_shutdown_at_battery_runtime
+      - type: entities
+        title: Schalter
+        show_header_toggle: true
+        entities:
+            - input_boolean.gesture_kitchen_activated
+            - binary_sensor.gesture_kitchen
+            - input_boolean.touch_bedroom_activated
+            - binary_sensor.ttp223_bedroom_touch1
+            - binary_sensor.ttp223_bedroom_touch2
+            - binary_sensor.ttp223_bedroom_touch3
+            - binary_sensor.ttp223_bedroom_touch4
+      - type: entities
+        title: Saugroboter
+        show_header_toggle: false
+        entities:
+            - input_datetime.vacuum_period_start
+            - input_datetime.vacuum_period_end
+            - input_boolean.daily_vacuum_done
+            - input_boolean.daily_vacuum
+            - input_boolean.dustbin_notification
+      - type: entities
+        title: Dachfensterrollos
+        show_header_toggle: false
+        entities:
+            - type: section
+              label: Parameter
+            - input_boolean.cover_closing_at_cold_activated
+            - input_number.rooflight_close_below_temp
+            - type: section
+              label: Räume
+            - input_boolean.cover_bedroom
+            - input_boolean.cover_bath
+            - input_boolean.cover_office
+            - input_boolean.cover_nursery
+      - type: entities
+        title: Geschirrspüler
+        show_header_toggle: false
+        entities:
+            - type: section
+              label: Parameter
+            - input_boolean.dishwasher_activated
+            - input_number.dishwasher_min_pv_generation
+            - input_number.dishwasher_min_battery_level
+            - type: section
+              label: Start
+            - input_datetime.dishwasher_start
+            - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolactive
+            - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolstartallowed
+            - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
+            - sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
+            - type: section
+              label: Vorhersage
+            - sensor.solcast_pv_forecast_forecast_this_hour
+            - sensor.solcast_pv_forecast_forecast_next_hour
+            - sensor.solcast_pv_forecast_peak_time_today
+            - sensor.solcast_pv_forecast_peak_time_tomorrow
 
   - title: Garten
     path: garden
@@ -215,22 +271,6 @@ views:
 
                 Der Pool sollte **täglich zweimal** umgewälzt werden. Somit ergibt sich die tägliche **Gesamtpumpdauer von 3,2h** (3h und 6min) aus dem Poolvolumen von 16m<sup>3</sup> und einem Pumpdurchsatz von 10m<sup>3</sup>/h.
 
-  - title: Schalter
-    path: buttons
-    panel: false
-    cards:
-      - type: entities
-        title: Drücker
-        show_header_toggle: true
-        entities:
-            - input_boolean.gesture_kitchen_activated
-            - binary_sensor.gesture_kitchen
-            - input_boolean.touch_bedroom_activated
-            - binary_sensor.ttp223_bedroom_touch1
-            - binary_sensor.ttp223_bedroom_touch2
-            - binary_sensor.ttp223_bedroom_touch3
-            - binary_sensor.ttp223_bedroom_touch4
-
   - title: Pixel Node
     path: pixelnode
     panel: false
@@ -274,22 +314,8 @@ views:
             - input_boolean.pixel_node_msg18
             # - input_boolean.pixel_node_msg19
 
-  - title: Staubsager
-    path: vacuum
-    panel: false
-    cards:
-      - type: entities
-        title: Saugroboter
-        show_header_toggle: false
-        entities:
-            - input_datetime.vacuum_period_start
-            - input_datetime.vacuum_period_end
-            - input_boolean.daily_vacuum_done
-            - input_boolean.daily_vacuum
-            - input_boolean.dustbin_notification
-
-  - title: Energie
-    path: energy
+  - title: Ressourcen
+    path: ressources
     panel: false
     cards:
       - type: entities
@@ -388,25 +414,9 @@ views:
             - input_number.electricity_price_out
             - type: divider
             - input_number.gas_price
-
-  - title: Fensterrollos
-    path: shutter
-    panel: false
-    cards:
-      - type: entities
-        title: Parameter
-        show_header_toggle: false
-        entities:
-            - input_boolean.cover_closing_at_cold_activated
-            - input_number.rooflight_close_below_temp
-      - type: entities
-        title: Auswahl
-        show_header_toggle: false
-        entities:
-            - input_boolean.cover_bedroom
-            - input_boolean.cover_bath
-            - input_boolean.cover_office
-            - input_boolean.cover_nursery
+            - type: divider
+            - input_number.water_fresh_price
+            - input_number.water_waste_price
 
   - title: Klimatisierung
     path: climate
@@ -492,29 +502,6 @@ views:
               label: Ausschaltkriterien
             - input_number.climate_min_pv_generation
             - input_number.climate_min_pv_generation_duration
-
-  - title: Geschirrspüler
-    path: dishwasher
-    panel: false
-    cards:
-      - type: entities
-        title: Parameter
-        show_header_toggle: false
-        entities:
-            - input_boolean.dishwasher_activated
-            - input_number.dishwasher_min_pv_generation
-            - input_number.dishwasher_min_battery_level
-            - type: divider
-            - input_datetime.dishwasher_start
-            - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolactive
-            - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolstartallowed
-            - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
-            - sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
-            - type: divider
-            - sensor.solcast_pv_forecast_forecast_this_hour
-            - sensor.solcast_pv_forecast_forecast_next_hour
-            - sensor.solcast_pv_forecast_peak_time_today
-            - sensor.solcast_pv_forecast_peak_time_tomorrow
 
   - title: Heizung
     path: heating

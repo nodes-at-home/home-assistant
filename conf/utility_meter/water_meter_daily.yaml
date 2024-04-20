@@ -1,0 +1,7 @@
+###
+### 20.04.2024
+###
+
+source: sensor.watermeter_value
+cycle: daily
+delta_values: false
