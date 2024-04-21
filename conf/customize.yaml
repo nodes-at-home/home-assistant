@@ -1584,6 +1584,10 @@ sensor.ds18b20_firstfloor_temperature_flow:
     friendly_name: Vorlauf Obergeschoss
 
 #------------------------------------------------------------------------------
+sensor.water_total_price:
+    friendly_name: Wassergesamtpreis
+    unit_of_measurement: "EUR/m³"
+
 sensor.water_meter_daily:
     friendly_name: Wasserverbrauch täglich
     unit_of_measurement: m³
