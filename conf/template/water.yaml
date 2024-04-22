@@ -5,14 +5,18 @@
   - binary_sensor:
 
       - name: waterflow_state_badge
-        state: "{{ states ( 'sensor.watermeter_rate_per_time_unit' ) | float > 0 }}"
+        state: "{{ states ( 'binary_sensor.watermeter_problem' ) == 'off' and states ( 'sensor.watermeter_rate_per_time_unit' ) | float > 0 }}"
         icon: mdi:water
         attributes:
             icon_color: >
-                {% if ( states ( 'sensor.watermeter_rate_per_time_unit' ) | float > 0 ) %}
-                    dodgerblue
+                {% if ( states ( 'binary_sensor.watermeter_problem' ) == 'off' ) %}
+                    {% if ( states ( 'sensor.watermeter_rate_per_time_unit' ) | float > 0 ) %}
+                        dodgerblue
+                    {% else %}
+                        silver
+                    {% endif %}
                 {% else %}
-                    silver
+                    red
                 {% endif %}
 
   - sensor:
