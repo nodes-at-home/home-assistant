@@ -566,6 +566,9 @@ views:
         title: Fensterkontakte Obergeschoss
         show_header_toggle: false
         entities:
+            - binary_sensor.dachfenster_galerie
+            - binary_sensor.dachfenster_galerie_battery
+            - type: divider
             - binary_sensor.fenster_arbeitszimmer
             - binary_sensor.fenster_arbeitszimmer_battery
             - binary_sensor.dachfenster_arbeitszimmer

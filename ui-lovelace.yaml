@@ -396,7 +396,7 @@ views:
                         entity: switch.bosch_ladestation
                         icon: mdi:power-plug-battery
                         tap_action:
-                            action: more-info
+                            action: toggle
                         hold_action:
                             action: more-info
                       - type: entity-button
@@ -430,25 +430,25 @@ views:
       - type: entity-filter
         entities:
           - entity: device_tracker.165_andreas_z_fold5_wlan
-          - entity: device_tracker.167_undine_z_flip5_wlan
+          - entity: device_tracker.197_undine_z_flip5_wlan
           - entity: device_tracker.102_nora_z_flip5_wlan
           - entity: device_tracker.161_nina_a52s_wlan
           - entity: device_tracker.177_niklas_galaxy_a52
           - entity: device_tracker.156_dominik_pixel_6_pro_wlan
         state_filter:
           - "home"
-      - type: entity-filter
-        entities:
-          - plant.goldfruchtpalme_flowercare
-          - plant.birkenfeige_flowercare
-          - plant.palmlilie_flowercare
-          - plant.bogenhanf_flowercare
-          - plant.korbmarante_flowercare
-          - plant.fensterblatt_flowercare
-          - plant.gummibaum_flowercare
-          - plant.fliederaralie_flowercare
-        state_filter:
-          - "problem"
+      #- type: entity-filter
+      #  entities:
+      #    - plant.goldfruchtpalme_flowercare
+      #    - plant.birkenfeige_flowercare
+      #    - plant.palmlilie_flowercare
+      #    - plant.bogenhanf_flowercare
+      #    - plant.korbmarante_flowercare
+      #    - plant.fensterblatt_flowercare
+      #    - plant.gummibaum_flowercare
+      #    - plant.fliederaralie_flowercare
+      #  state_filter:
+      #    - "problem"
       - type: entity-filter
         entities:
           - binary_sensor.bewegungsmelder1
@@ -482,6 +482,7 @@ views:
           - entity: binary_sensor.dachfenster_schlafzimmer
           - entity: binary_sensor.fenster_bad
           - entity: binary_sensor.dachfenster_bad
+          - entity: binary_sensor.dachfenster_galerie
           - entity: binary_sensor.fenster_flur
           - entity: binary_sensor.fenster_wohnzimmer_1
           - entity: binary_sensor.fenster_wohnzimmer_2
@@ -753,6 +754,8 @@ views:
             columns: 3
             entities:
               - light.sonoff_gallery1_socket
+              - entity: binary_sensor.dachfenster_galerie
+                name: Dachfenster
               - entity: climate.room_climate_galerie
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_galerie
