@@ -33,3 +33,7 @@ climate_activated:
 dishwasher_activated:
     name: Geschirrspüler aktiviert
     # initial: on
+
+hydrotower_activated:
+    name: Hydrotower aktiviert
+    # initial: on

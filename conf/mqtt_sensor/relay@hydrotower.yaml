@@ -1,0 +1,30 @@
+###
+### 10.05.2024
+###
+
+  - state_topic: nodes@home/switch/relay/hydrotower
+    name: "relay@hydrotower_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - state_topic: nodes@home/switch/relay/hydrotower
+    name: "relay@hydrotower_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/switch/relay/hydrotower/value/voltage
+    name: "relay@hydrotower_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - state_topic: nodes@home/switch/relay/hydrotower/value/voltage
+    name: "relay@hydrotower_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/switch/relay/hydrotower/value/temperature
+    name: "relay@hydrotower_temperature"
+    qos: 0
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.value | round ( 1 ) }}'

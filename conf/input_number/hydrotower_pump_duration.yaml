@@ -1,0 +1,11 @@
+###
+### 10.05.2024
+###
+
+name: Pumpe anschalten für
+mode: slider
+min: 1
+max: 20
+step: 1
+unit_of_measurement: min
+# initial: 1

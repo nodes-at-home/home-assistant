@@ -422,6 +422,17 @@ views:
                       - type: entity-button
                         entity: switch.sonoff_pool_socket
                         icon: mdi:pump
+                  - type: horizontal-stack
+                    cards:
+                      - type: entity-button
+                        entity: switch.relay_hydrotower_pump
+                        icon: mdi:pump
+                      - type: markdown
+                        content: " "
+                      - type: markdown
+                        content: " "
+                      - type: markdown
+                        content: " "
 
   - title: Haus
     path: house
@@ -1051,6 +1062,14 @@ views:
                 - entity: switch.wasserpumpe
                   icon: mdi:water-pump
                 - sensor.wasserpumpe_power
+          - type: glance
+            title: Hydrotower
+            card_mod:
+                style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
+            columns: 3
+            entities:
+                - sensor.relay_hydrotower_temperature
+                - switch.relay_hydrotower_pump
           - type: glance
             title: Beete
             card_mod:

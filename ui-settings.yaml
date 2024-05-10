@@ -216,6 +216,14 @@ views:
             - input_number.bosch_powerstation_low_power_threshold
             - input_number.bosch_powerstation_low_power_duration
       - type: entities
+        title: Hydrotower
+        show_header_toggle: false
+        entities:
+            - input_boolean.hydrotower_activated
+            - type: divider
+            - input_number.hydrotower_pump_duration
+            - input_number.hydrotower_pump_period
+      - type: entities
         title: Rasenmäher
         show_header_toggle: false
         entities:

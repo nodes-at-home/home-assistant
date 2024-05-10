@@ -114,6 +114,7 @@ views:
                 # - sensor.xmastree_dining_version
                 - sensor.sonoff_pool_version
                 - sensor.relay_garden_version
+                - sensor.relay_hydrotower_version
                 - sensor.soil_garden_version
                 - sensor.rain_garden_version
                 - sensor.shelly_terrace_version
@@ -159,6 +160,7 @@ views:
                 # - sensor.xmastree_dining_lastboot
                 - sensor.sonoff_pool_lastboot
                 - sensor.relay_garden_lastboot
+                - sensor.relay_hydrotower_lastboot
                 - sensor.soil_garden_lastboot
                 - sensor.rain_garden_lastboot
                 - sensor.shelly_terrace_lastboot
@@ -204,6 +206,7 @@ views:
                 # - sensor.xmastree_dining_lastvoltage
                 - sensor.sonoff_pool_lastvoltage
                 - sensor.relay_garden_lastvoltage
+                - sensor.relay_hydrotower_lastvoltage
                 - sensor.soil_garden_lastvoltage
                 - sensor.rain_garden_lastvoltage
                 - sensor.shelly_terrace_lastvoltage
@@ -249,6 +252,7 @@ views:
                 # - sensor.xmastree_dining_voltage
                 - sensor.sonoff_pool_voltage
                 - sensor.relay_garden_voltage
+                - sensor.relay_hydrotower_voltage
                 - sensor.soil_garden_voltage
                 - sensor.rain_garden_voltage
                 - sensor.shelly_terrace_voltage
@@ -472,6 +476,11 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.bosch_powerstation_shutdown_after_inactivity
+              - type: entities
+                title: Hydrotower
+                show_header_toggle: true
+                entities:
+                    - automation.hydrotower_pump_switching
 
   - title: Bosch Smart Home
     path: bsh

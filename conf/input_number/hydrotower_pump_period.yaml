@@ -1,0 +1,11 @@
+###
+### 10.095.2024
+###
+
+name: Pumpe anschalten alle
+mode: slider
+min: 5
+max: 90
+step: 5
+unit_of_measurement: min
+# initial: 15

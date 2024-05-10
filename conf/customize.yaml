@@ -420,66 +420,6 @@ sensor.xmastree_dining_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-binary_sensor.button_indoor:
-    friendly_name: Drücker Innenlicht
-
-sensor.button_indoor_voltage:
-    friendly_name: Drücker Innenlicht
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.button_indoor_lastvoltage:
-    friendly_name: Drücker Innenlicht
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.button_indoor_lastboot:
-    friendly_name: Drücker Innenlicht
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.button_indoor_version:
-    friendly_name: Drücker Innenlicht
-    entity_picture: /local/images/esp-01.jpg
-
-#------------------------------------------------------------------------------
-binary_sensor.button_garage:
-    friendly_name: Drücker Garage
-
-sensor.button_garage_voltage:
-    friendly_name: Drücker Garage
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.button_garage_lastvoltage:
-    friendly_name: Drücker Garage
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.button_garage_lastboot:
-    friendly_name: Drücker Garage
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.button_garage_version:
-    friendly_name: Drücker Garage
-    entity_picture: /local/images/esp-01.jpg
-
-#------------------------------------------------------------------------------
-binary_sensor.button_pool:
-    friendly_name: Drücker Pool
-
-sensor.button_pool_voltage:
-    friendly_name: Drücker Pool
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.button_pool_lastvoltage:
-    friendly_name: Drücker Pool
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.button_pool_lastboot:
-    friendly_name: Drücker Pool
-    entity_picture: /local/images/esp-01.jpg
-
-sensor.button_pool_version:
-    friendly_name: Drücker Pool
-    entity_picture: /local/images/esp-01.jpg
-
-#------------------------------------------------------------------------------
 sensor.pixel_kitchen_voltage:
     friendly_name: Pixeldisplay
     entity_picture: /local/images/nodemcu.jpg
@@ -1595,5 +1535,29 @@ sensor.water_meter_daily:
 sensor.water_meter_yearly:
     friendly_name: Wasserverbrauch jährlich
     unit_of_measurement: m³
+
+#------------------------------------------------------------------------------
+sensor.relay_hydrotower_voltage:
+    friendly_name: Hydrotower
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relay_hydrotower_lastvoltage:
+    friendly_name: Hydrotower
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relay_hydrotower_lastboot:
+    friendly_name: Hydrotower
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relay_hydrotower_version:
+    friendly_name: Hydrotower
+    entity_picture: /local/images/nodemcu.jpg
+
+switch.relay_hydrotower_pump:
+    friendly_name: Hydrotower
+    icon: mdi:pump
+
+sensor.relay_hydrotower_temperature:
+    friendly_name: Hydrotower
 
 #------------------------------------------------------------------------------
