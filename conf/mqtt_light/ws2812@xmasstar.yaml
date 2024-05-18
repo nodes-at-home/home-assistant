@@ -7,7 +7,7 @@
     command_topic: nodes@home/light/ws2812/xmasstar/led
     state_topic: nodes@home/light/ws2812/xmasstar/led/state
     brightness: true
-    rgb: true
+    supported_color_modes: ["rgb"]
     effect: true
     effect_list: [static, blink, random_color, rainbow, fire, fire_soft, fire_intense, halloween]
     retain: true

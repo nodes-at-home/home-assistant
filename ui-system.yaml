@@ -129,6 +129,7 @@ views:
                 - sensor.ttp223_bedroom_version
                 - sensor.sonoff_bedroom_version
                 - sensor.sonoff_k8200_version
+                - sensor.ws2812_x1c_version
                 - sensor.sonoff_gallery1_version
                 - sensor.shelly_roof_version
                 - sensor.shelly_bath_version
@@ -175,6 +176,7 @@ views:
                 - sensor.ttp223_bedroom_lastboot
                 - sensor.sonoff_bedroom_lastboot
                 - sensor.sonoff_k8200_lastboot
+                - sensor.ws2812_x1c_lastboot
                 - sensor.sonoff_gallery1_lastboot
                 - sensor.shelly_roof_lastboot
                 - sensor.shelly_bath_lastboot
@@ -221,6 +223,7 @@ views:
                 - sensor.ttp223_bedroom_lastvoltage
                 - sensor.sonoff_bedroom_lastvoltage
                 - sensor.sonoff_k8200_lastvoltage
+                - sensor.ws2812_x1c_lastvoltage
                 - sensor.sonoff_gallery1_lastvoltage
                 - sensor.shelly_roof_lastvoltage
                 - sensor.shelly_bath_lastvoltage
@@ -267,6 +270,7 @@ views:
                 - sensor.ttp223_bedroom_voltage
                 - sensor.sonoff_bedroom_voltage
                 - sensor.sonoff_k8200_voltage
+                - sensor.ws2812_x1c_voltage
                 - sensor.sonoff_gallery1_voltage
                 - sensor.shelly_roof_voltage
                 - sensor.shelly_bath_voltage

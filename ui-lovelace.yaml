@@ -858,7 +858,11 @@ views:
             columns: 3
             entities:
               - light.sonoff_corridor_lamp
-              - switch.sonoff_k8200_socket
+              - entity: switch.sonoff_k8200_socket
+                name: Bambulab X1C
+              - entity: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+                name: Bambulab X1C
+                icon: mdi:printer-3d
               - type: thermostat
                 entity: climate.office
                 name: Klimaanlage
@@ -872,9 +876,6 @@ views:
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_buro
                 name:  Rauchmelder
-              - entity: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
-                name: Bambulab X1C
-                icon: mdi:printer-3d
               # - switch.fenster_arbeitszimmer
             card_mod:
               style: |

@@ -7,6 +7,6 @@
     command_topic: nodes@home/light/led/corridor/led
     state_topic: nodes@home/light/led/corridor/led/state
     brightness: true
-    rgb: true
+    supported_color_modes: ["rgb"]
     optimistic: false
     retain: true

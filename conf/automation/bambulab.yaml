@@ -7,7 +7,7 @@
     id: bambulab_light
     mode: restart
     variables:
-      wled_brightness: 100
+      led_brightness: 255
       ok_duration: 2
     trigger:
       - platform: state
@@ -57,10 +57,10 @@
                 - service: light.turn_on
                   data:
                     rgb_color: [255, 0, 0]
-                    brightness_pct: "{{ wled_brightness }}"
-                    effect: Blink
+                    brightness_pct: "{{ led_brightness }}"
+                    effect: blink
                   target:
-                    entity_id: light.wled_bambu
+                    entity_id: light.ws2812_x1c
             # idle, finsh: green for 5 min, then white
             - conditions:
               - or:
@@ -76,19 +76,19 @@
                 - service: light.turn_on
                   data:
                     rgb_color: [0, 255, 0]
-                    brightness_pct: "{{ wled_brightness }}"
+                    brightness_pct: "{{ led_brightness }}"
                     effect: Solid
                   target:
-                    entity_id: light.wled_bambu
+                    entity_id: light.ws2812_x1c
                 - delay:
                     minutes: "{{ ok_duration }}"
                 - service: light.turn_on
                   data:
                     rgb_color: [255, 255, 255]
-                    brightness_pct: "{{ wled_brightness }}"
+                    brightness_pct: "{{ led_brightness }}"
                     effect: Solid
                   target:
-                    entity_id: light.wled_bambu
+                    entity_id: light.ws2812_x1c
             # bed leveling: blue
             - conditions:
                 - or:
@@ -110,10 +110,10 @@
                 - service: light.turn_on
                   data:
                     rgb_color: [0, 0, 255]
-                    brightness_pct: "{{ wled_brightness }}"
+                    brightness_pct: "{{ led_brightness }}"
                     effect: Solid
                   target:
-                    entity_id: light.wled_bambu
+                    entity_id: light.ws2812_x1c
             # heating: yellow
             - conditions:
                 - or:
@@ -126,10 +126,10 @@
                 - service: light.turn_on
                   data:
                     rgb_color: [255, 169, 0]
-                    brightness_pct: "{{ wled_brightness }}"
+                    brightness_pct: "{{ led_brightness }}"
                     effect: Solid
                   target:
-                    entity_id: light.wled_bambu
+                    entity_id: light.ws2812_x1c
             # filament loading: lila
             - conditions:
                 - or:
@@ -142,10 +142,10 @@
                 - service: light.turn_on
                   data:
                     rgb_color: [255, 0, 255]
-                    brightness_pct: "{{ wled_brightness }}"
-                    effect: Blink
+                    brightness_pct: "{{ led_brightness }}"
+                    effect: blink
                   target:
-                    entity_id: light.wled_bambu
+                    entity_id: light.ws2812_x1c
             # filament loading: blue
             - conditions:
                 - or:
@@ -157,25 +157,25 @@
                 - service: light.turn_on
                   data:
                     rgb_color: [0, 0, 255]
-                    brightness_pct: "{{ wled_brightness }}"
+                    brightness_pct: "{{ led_brightness }}"
                     effect: Solid
                   target:
-                    entity_id: light.wled_bambu
+                    entity_id: light.ws2812_x1c
             default:
             # white
               - service: light.turn_on
                 alias: torn on with white light (default)
                 data:
                   rgb_color: [255, 255, 255]
-                  brightness_pct: "{{ wled_brightness }}"
+                  brightness_pct: "{{ led_brightness }}"
                   effect: Solid
                 target:
-                  entity_id: light.wled_bambu
+                  entity_id: light.ws2812_x1c
         else:
           - service: light.turn_off
             alias: turn off
             target:
-              entity_id: light.wled_bambu
+              entity_id: light.ws2812_x1c
 
 
 

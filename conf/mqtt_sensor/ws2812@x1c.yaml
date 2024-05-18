@@ -1,0 +1,26 @@
+###
+### 17.05.2024
+###
+
+  - state_topic: nodes@home/light/ws2812/x1c/value/voltage
+    name: "ws2812@x1c_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+    # unit_of_measurement: "mV"
+    # value_template: '{{ value_json.value }}'
+
+  - state_topic: nodes@home/light/ws2812/x1c/value/voltage
+    name: "ws2812@x1c_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/light/ws2812/x1c
+    name: "ws2812@x1c_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - state_topic: nodes@home/light/ws2812/x1c
+    name: "ws2812@x1c_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

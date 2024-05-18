@@ -1,11 +1,11 @@
 ###
-### 22.08.2019 split up
+### 18.05.2024
 ###
 
-  - name: ws2812@terrace1
+  - name: ws2812@x1c
     schema: json
-    command_topic: nodes@home/light/ws2812/terrace1/led
-    state_topic: nodes@home/light/ws2812/terrace1/led/state
+    command_topic: nodes@home/light/ws2812/x1c/led
+    state_topic: nodes@home/light/ws2812/x1c/led/state
     brightness: true
     supported_color_modes: ["rgb"]
     effect: true

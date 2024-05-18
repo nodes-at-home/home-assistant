@@ -843,24 +843,23 @@ sensor.ws2812_xmasstar_version:
 
 #-------------------------------------------------------------------------  -----
 switch.sonoff_k8200_socket:
-    friendly_name: 3D Drucker K8200
-    # entity_picture: /local/images/k8200.jpg
+    friendly_name: Bambulab X1C
     icon: mdi:printer-3d
 
 sensor.sonoff_k8200_voltage:
-    friendly_name: 'Steckdose K8200'
+    friendly_name: Steckdose Bambulab X1C
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonoff_k8200_lastvoltage:
-    friendly_name: 'Steckdose K8200'
+    friendly_name: Steckdose Bambulab X1C
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonoff_k8200_lastboot:
-    friendly_name: 'Steckdose K8200'
+    friendly_name: Steckdose Bambulab X1C
     entity_picture: /local/images/sonoff_s20.jpg
 
 sensor.sonoff_k8200_version:
-    friendly_name: 'Steckdose K8200'
+    friendly_name: Steckdose Bambulab X1C
     entity_picture: /local/images/sonoff_s20.jpg
 
 #-------------------------------------------------------------------------  -----
@@ -1559,5 +1558,26 @@ switch.relay_hydrotower_pump:
 
 sensor.relay_hydrotower_temperature:
     friendly_name: Hydrotower
+
+#------------------------------------------------------------------------------
+sensor.ws2812_x1c_voltage:
+    friendly_name: Ledstrip X1C
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ws2812_x1c_lastvoltage:
+    friendly_name: Ledstrip X1C
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ws2812_x1c_lastboot:
+    friendly_name: Ledstrip X1C
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.ws2812_x1c_version:
+    friendly_name: Ledstrip X1C
+    entity_picture: /local/images/nodemcu.jpg
+
+switch.ws2812_x1c:
+    friendly_name: Ledstrip X1C
+    icon: mdi:led-strip
 
 #------------------------------------------------------------------------------
