@@ -7,8 +7,7 @@ from .models import BambuLabEntity
 from .pybambu.const import Features
 
 from homeassistant.components.light import (
-    LightEntity,
-    ColorMode,
+    LightEntity
 )
 from .coordinator import BambuDataUpdateCoordinator
 
@@ -30,8 +29,6 @@ class BambuLabChamberLight(BambuLabEntity, LightEntity):
     """ Defined the Chamber Light """
 
     _attr_icon = "mdi:led-strip-variant"
-    _attr_color_mode = ColorMode.ONOFF
-    _attr_supported_color_modes = {ColorMode.ONOFF}
 
     def __init__(
             self,
