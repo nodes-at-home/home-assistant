@@ -1,4 +1,5 @@
 """Platform for switch integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -77,8 +78,8 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
         on_value=SHCSmartPlugCompact.PowerSwitchService.State.ON,
         should_poll=False,
     ),
-    "micromodule_relay": SHCSwitchEntityDescription(
-        key="micromodule_relay",
+    "micromodule_relay_switch": SHCSwitchEntityDescription(
+        key="micromodule_relay_switch",
         device_class=SwitchDeviceClass.OUTLET,
         on_key="switchstate",
         on_value=SHCMicromoduleRelay.PowerSwitchService.State.ON,
@@ -139,7 +140,7 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
         device_class=SwitchDeviceClass.SWITCH,
         on_key="enabled",
         on_value=True,
-        should_poll=True,
+        should_poll=False,
     ),
     "bypass": SHCSwitchEntityDescription(
         key="bypass",
@@ -156,6 +157,15 @@ SWITCH_TYPES: dict[str, SHCSwitchEntityDescription] = {
         entity_category=EntityCategory.CONFIG,
         should_poll=False,
         icon="mdi:lock",
+    ),
+    "silent_mode": SHCSwitchEntityDescription(
+        key="silent_mode",
+        device_class=SwitchDeviceClass.SWITCH,
+        on_key="silentmode",
+        on_value=SHCThermostat.SilentModeService.State.MODE_SILENT,
+        entity_category=EntityCategory.CONFIG,
+        should_poll=False,
+        icon="mdi:sleep",
     ),
     "vibration_enabled": SHCSwitchEntityDescription(
         key="vibration_enabled",
@@ -248,7 +258,7 @@ async def async_setup_entry(
                 device=switch,
                 parent_id=session.information.unique_id,
                 entry_id=config_entry.entry_id,
-                description=SWITCH_TYPES["micromodule_relay"],
+                description=SWITCH_TYPES["micromodule_relay_switch"],
             )
         )
 
@@ -351,6 +361,19 @@ async def async_setup_entry(
                     parent_id=session.information.unique_id,
                     entry_id=config_entry.entry_id,
                     description=SWITCH_TYPES["vibration_enabled"],
+                    attr_name="VibrationEnabled",
+                )
+            )
+
+    for switch in session.device_helper.thermostats:
+        if switch.supports_silentmode:
+            entities.append(
+                SHCSwitch(
+                    device=switch,
+                    parent_id=session.information.unique_id,
+                    entry_id=config_entry.entry_id,
+                    description=SWITCH_TYPES["silent_mode"],
+                    attr_name="SilentMode",
                 )
             )
 
@@ -397,7 +420,9 @@ async def async_setup_entry(
 
     # register listener for new switches
     config_entry.async_on_unload(
-        session.subscribe((SHCUserDefinedState, async_add_userdefinedstateswitch))
+        config_entry.add_update_listener(  # This likely needs a call_soon_threadsafe as calling into async_add_userdefinedstateswitch must be called from the event loop.
+            session.subscribe((SHCUserDefinedState, async_add_userdefinedstateswitch))
+        )
     )
 
 
@@ -496,6 +521,9 @@ class SHCUserDefinedStateSwitch(SwitchEntity):
         def update_entity_information():
             if self._device.deleted:
                 self._attr_available = False
+                # async_will_remove_from_hass isn't intended to be called
+                # directly and should only be called by the entity platform
+                # it should be split into another function
                 self.hass.add_job(self.async_will_remove_from_hass)
             self.schedule_update_ha_state()
 
