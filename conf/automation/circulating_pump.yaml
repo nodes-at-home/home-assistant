@@ -63,7 +63,7 @@
                 state: 'on'
               - condition: time
                 after: input_datetime.standup_workday
-                before: input_datetime.circulating_pump_schedule_after_standup_workday
+                before: input_datetime.circulating_pump_scheduling_after_standup_workday
           - condition: and
             conditions:
               - condition: state
@@ -71,7 +71,7 @@
                 state: 'off'
               - condition: time
                 after: input_datetime.standup_weekend
-                before: input_datetime.circulating_pump_schedule_after_standup_weekend
+                before: input_datetime.circulating_pump_scheduling_after_standup_weekend
           - condition: time # every day
             after: input_datetime.circulating_pump_scheduling_before_sleeping
             before: input_datetime.sleep
@@ -103,7 +103,7 @@
     id: circulating_pump_stop_scheduling_after_standup_workday
     trigger:
       - platform: time
-        at: input_datetime.circulating_pump_schedule_after_standup_workday
+        at: input_datetime.circulating_pump_scheduling_after_standup_workday
     condition:
       - condition: state
         entity_id: binary_sensor.workday_sensor
@@ -116,7 +116,7 @@
     id: circulating_pump_stop_scheduling_after_standup_weekend
     trigger:
       - platform: time
-        at: input_datetime.circulating_pump_schedule_after_standup_weekend
+        at: input_datetime.circulating_pump_scheduling_after_standup_weekend
     condition:
       - condition: state
         entity_id: binary_sensor.workday_sensor
@@ -144,7 +144,7 @@
       - service: switch.turn_on
         entity_id:
             - switch.sonoff_utilityroom_pump
-      # pump switched on for n miniutes
+      # pump switched on for n minutes
       - delay:
             minutes: "{{ states ( 'input_number.circulating_pump_on_duration' ) | int }}"
       - service: switch.turn_off
@@ -173,7 +173,7 @@
       - choose:
           - conditions:
               - condition: template
-                value_template: "{{ states ( 'switch.sonoff_utilityroom_pump' ) == off and states ( 'sensor.boiler_wwcurtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+                value_template: "{{ states ( 'switch.sonoff_utilityroom_pump' ) == 'off' and states ( 'sensor.boiler_wwcurtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
             sequence:
               - service: switch.turn_on
                 entity_id:
@@ -183,7 +183,7 @@
                     - input_boolean.circulating_pump_running_disinfection
           - conditions:
               - condition: template
-                value_template: "{{ states ( 'input_boolean.circulating_pump_running_disinfection' ) == on and states ( 'sensor.boiler_wwcurtemp' ) | float < states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+                value_template: "{{ states ( 'input_boolean.circulating_pump_running_disinfection' ) == 'on' and states ( 'sensor.boiler_wwcurtemp' ) | float < states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
             sequence:
               - service: switch.turn_off
                 entity_id:

@@ -96,9 +96,9 @@ views:
         title: Geschirrspüler
         show_header_toggle: false
         entities:
+            - input_boolean.dishwasher_activated
             - type: section
               label: Parameter
-            - input_boolean.dishwasher_activated
             - input_number.dishwasher_min_pv_generation
             - input_number.dishwasher_min_battery_level
             - type: section
@@ -137,7 +137,7 @@ views:
             - entity: sensor.rain_garden_precipitation_last7d
               name: letzte 7 Tage
             - type: section
-              label: Steuerparameter
+              label: Parameter
             - entity: sensor.precipitation_7d_plus_forecast
               name: Erwartungswert Regen zzgl. 7d
             - input_number.irrigation_precipitation_threshold
@@ -520,28 +520,31 @@ views:
         show_header_toggle: false
         entities:
           - select.thermostat_hc1_mode
-          - type: divider
+          - type: section
+            label: Vorlauf
           - number.boiler_selflowtemp
           - number.boiler_heatingtemp
-          - type: divider
+          - type: section
+            label: Warmwasser
           - number.boiler_wwseltemp
           - number.boiler_wwflowtempoffset
           - number.boiler_wwdisinfectiontemp
-          - type: divider
+          - type: section
+            label: Thermostat
           - number.thermostat_hc1_seltemp
           - number.thermostat_hc1_heattemp
           - number.thermostat_hc1_ecotemp
       - type: entities
-        title: Temperaturniveaus
-        show_header_toggle: false
-        entities:
-            - input_number.heating_templevel_low
-            - input_number.heating_templevel_standard
-            - input_number.heating_templevel_comfort
-      - type: entities
         title: Raumtemperaturen
         show_header_toggle: false
         entities:
+            - type: section
+              label: Niveaus
+            - input_number.heating_templevel_low
+            - input_number.heating_templevel_standard
+            - input_number.heating_templevel_comfort
+            - type: section
+              label: Räume
             - input_select.heating_templevel_arbeitszimmer
             - input_select.heating_templevel_bad
             - input_select.heating_templevel_dusche
@@ -558,16 +561,19 @@ views:
         show_header_toggle: false
         entities:
             - input_boolean.circulating_pump_activated
-            - type: divider
+            - type: section
+              label: Parameter
             - input_number.circulating_pump_on_period
             - input_number.circulating_pump_on_duration
             - input_number.circulating_pump_schedule_after_standup
             - input_number.circulating_pump_schedule_before_sleeping
-            - type: divider
+            - type: section
+              label: Abgeleitet
             - input_boolean.circulating_pump_scheduled
             - input_datetime.circulating_pump_scheduling_after_standup_workday
             - input_datetime.circulating_pump_scheduling_after_standup_weekend
             - input_datetime.circulating_pump_scheduling_before_sleeping
-            - type: divider
+            - type: section
+              label: Desinfektion
             - input_number.circulating_pump_running_above_temp
             - input_boolean.circulating_pump_running_disinfection

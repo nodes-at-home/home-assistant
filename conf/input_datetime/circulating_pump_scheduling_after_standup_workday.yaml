@@ -2,6 +2,6 @@
 ### 16.09.2022
 ###
 
-name: Ausschalten nach  Auftshen  Wochenende
+name: Ausschalten nach  Aufstehen  Wochentag
 has_date: false
 has_time: true
