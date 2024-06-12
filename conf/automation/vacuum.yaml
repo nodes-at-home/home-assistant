@@ -107,7 +107,7 @@
         entity_id: input_select.vacuum_first_floor_room
         data_template:
             option: 'Auswahl'
-        
+
   - alias: start_daily_vacuum
     id: start_daily_vacuum
     trigger:
@@ -138,11 +138,11 @@
               - mon
               - wed
           - condition: state
-            entity_id: group.family_devices
+            entity_id: group.family
             state: 'not_home'
     action:
       - service: vacuum.start
-        entity_id: 
+        entity_id:
           - vacuum.roborock_s6_ground_floor
           - vacuum.roborock_s6_first_floor
       - service: input_boolean.toggle

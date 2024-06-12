@@ -8,7 +8,7 @@
       - platform: time_pattern
         minutes: '/5'
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'home'
       - platform: state
         entity_id: input_boolean.climate_activated
@@ -54,7 +54,7 @@
         after: input_datetime.climate_startperiode_begin
         before: input_datetime.climate_startperiode_end
       - condition: state
-        entity_id: group.family_devices
+        entity_id: group.family
         state: 'home'
       - condition: numeric_state
         entity_id: sensor.total_dc_power
@@ -198,12 +198,12 @@
       - platform: numeric_state
         entity_id: sensor.total_dc_power
         below: input_number.climate_min_pv_generation
-        for: 
+        for:
             minutes: "{{ states ( 'input_number.climate_min_pv_generation_duration' ) }}"
         variables:
             immediate_turn_off: false
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'not_home'
         variables:
             immediate_turn_off: true

@@ -10,13 +10,13 @@
       - platform: time
         at: input_datetime.standup_weekend
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'home'
     condition:
       - condition: and
         conditions:
           - condition: state
-            entity_id: group.family_devices
+            entity_id: group.family
             state: 'home'
           - condition: or
             conditions:
@@ -47,7 +47,7 @@
       - platform: time
         at: input_datetime.pitouch_off
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'not_home'
     action:
       - service: light.turn_off

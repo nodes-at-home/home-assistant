@@ -31,6 +31,11 @@ homeassistant:
 system_health:
 
 # -------------------------------------------------------------------------------
+# persons
+
+person: !include conf/persons.yaml
+
+# -------------------------------------------------------------------------------
 # logger
 
 logger:
@@ -175,38 +180,6 @@ sun:
 energy:
 
 # -------------------------------------------------------------------------------
-# camera for roborock map
-# https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor
-# https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card
-# camera:
-  # - platform: xiaomi_cloud_map_extractor
-    # name: "Roborock S6 ground floor"
-    # host: 192.168.2.129
-    # token: !secret token_vacuum_ground_floor
-    # username: !secret xiaomi_cloud_username
-    # password: !secret xiaomi_cloud_password
-    # # country: de
-    # draw: ['all']
-    # attributes:
-      # - calibration_points
-      # - country
-      # - rooms
-      # - zones
-  # - platform: xiaomi_cloud_map_extractor
-    # name: "Roborock S6 first floor"
-    # host: 192.168.2.151
-    # token: !secret token_vacuum_first_floor
-    # username: !secret xiaomi_cloud_username
-    # password: !secret xiaomi_cloud_password
-    # # country: de
-    # draw: ['all']
-    # attributes:
-      # - calibration_points
-      # - country
-      # - rooms
-      # - zones
-
-# -------------------------------------------------------------------------------
 #
 template:           !include_dir_merge_list     conf/template
 sensor:             !include_dir_merge_list     conf/sensor
@@ -234,67 +207,3 @@ utility_meter:      !include_dir_named          conf/utility_meter
 modbus:             !include_dir_merge_list     conf/modbus
 command_line:       !include_dir_merge_list     conf/command_line
 input_button:       !include_dir_named          conf/input_button
-
-# -------------------------------------------------------------------------------
-#
-# deprecated integrations
-#
-# -------------------------------------------------------------------------------
-# weather platform for lovelace card
-
-# weather:
-  # - platform: openweathermap
-    # api_key: !secret api_key_openweather
-
-# -------------------------------------------------------------------------------
-# roborock s6
-# vacuum:
-  # - platform: xiaomi_miio
-    # name: "Roborock S6 ground floor"
-    # host: 192.168.2.129
-    # token: !secret token_vacuum_ground_floor
-  # - platform: xiaomi_miio
-    # name: "Roborock S6 first floor"
-    # host: 192.168.2.151
-    # token: !secret token_vacuum_first_floor
-
-# -------------------------------------------------------------------------------
-# tracker
-
-# device_tracker:
-
-  # - platform: fritz
-    # host: 192.168.2.1
-    # consider_home: 180
-    # interval_seconds: 60
-    # track_new_devices: true
-
-  # - platform: owntracks
-    # max_gps_accuracy: 1500
-    # waypoints: False
-
-# -------------------------------------------------------------------------------
-# media player
-
-# media_player:
-  # - platform: braviatv
-    # host: 192.168.2.116
-
-# -------------------------------------------------------------------------------
-# Bosch Smart Home
-# https://github.com/tschamm/boschshc-hass
-# bosch_shc:
-   # ip_address: '192.168.2.155'
-   # ssl_certificate: '/config/custom_components/bsh-client-cert.pem'
-   # ssl_key: '/config/custom_components/bsh-client-key.pem'
-   # name: 'SHC-Controller'
-
-# -------------------------------------------------------------------------------
-# mqtt broker
-
-# mqtt:
-  # broker: mosquitto
-  # port: 1883
-  # client_id: home_assistant
-  # keepalive: 120
-  # protocol: 3.1.1

@@ -46,13 +46,13 @@
       - platform: time
         at: input_datetime.standup_weekend
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'home'
       - platform: time
         at: input_datetime.circulating_pump_scheduling_before_sleeping
     condition:
       - condition: state
-        entity_id: group.family_devices
+        entity_id: group.family
         state: 'home'
       - condition: or
         conditions:
@@ -85,7 +85,7 @@
       - platform: time
         at: input_datetime.sleep
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'not_home'
       - platform: state
         entity_id: remote.sony_kd_55ag9

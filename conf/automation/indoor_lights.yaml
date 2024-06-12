@@ -6,7 +6,7 @@
     id: indoor_lights_on_at_coming_home_or_sunset
     trigger:
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'home'
       - platform: sun
         event: sunset
@@ -25,7 +25,7 @@
       - condition: or
         conditions:
           - condition: state
-            entity_id: group.family_devices
+            entity_id: group.family
             state: 'home'
           - condition: state
             entity_id: input_boolean.light_simulation
@@ -40,7 +40,7 @@
     id: indoor_lights_by_night_on_at_coming_home
     trigger:
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'home'
     condition:
       - condition: sun
@@ -50,7 +50,7 @@
         after: input_datetime.sleep
         before: input_datetime.nightlight_end
       - condition: state
-        entity_id: group.family_devices
+        entity_id: group.family
         state: 'home'
     action:
       - service: homeassistant.turn_on
@@ -66,7 +66,7 @@
     id: indoor_lights_off_at_getting_out_or_sunrise
     trigger:
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'not_home'
         for:
           minutes: 1
@@ -141,7 +141,7 @@
     id: indoor_lights_simulation_off_at_coming_home
     trigger:
       - platform: state
-        entity_id: group.family_devices
+        entity_id: group.family
         to: 'home'
     condition:
       - condition: state

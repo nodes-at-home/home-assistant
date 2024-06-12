@@ -1,0 +1,10 @@
+###
+### 26.12.2023
+###
+
+name: 'Kinder'
+entities:
+    - person.nina
+    - person.dominik
+    - person.nora
+    - person.niklas

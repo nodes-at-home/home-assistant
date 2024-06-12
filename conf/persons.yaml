@@ -1,0 +1,34 @@
+###
+### 12.06.2024
+###
+
+- name: Andreas
+  id: andreas
+  device_trackers:
+    - device_tracker.165_andreas_z_fold5_wlan
+
+- name: Undine
+  id: undine
+  device_trackers:
+    - device_tracker.197_undine_z_flip5_wlan
+
+- name: Nina
+  id: nina
+  device_trackers:
+    - device_tracker.161_nina_a52s_wlan
+
+- name: Nora
+  id: nora
+  device_trackers:
+    - device_tracker.102_nora_z_flip5_wlan
+
+- name: Dominik
+  id: dominik
+  device_trackers:
+    - device_tracker.156_dominik_pixel_6_pro_wlan
+
+- name: Niklas
+  id: niklas
+  device_trackers:
+    - device_tracker.177_niklas_galaxy_a52
+

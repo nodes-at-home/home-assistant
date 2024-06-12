@@ -9,23 +9,22 @@
 ###
 
 #------------------------------------------------------------------------------
-device_tracker.165_andreas_z_fold5_wlan:
-    friendly_name: Andreas
+person.andreas:
     entity_picture: /local/people/Andreas.jpg
-device_tracker.197_undine_z_flip5_wlan:
-    friendly_name: Undine
+
+person.undine:
     entity_picture: /local/people/Undine.jpg
-device_tracker.102_nora_z_flip5_wlan:
-    friendly_name: Nora
+
+person.nora:
     entity_picture: /local/people/Nora.jpg
-device_tracker.161_nina_a52s_wlan:
-    friendly_name: Nina
+
+person.nina:
     entity_picture: /local/people/Nina.jpg
-device_tracker.177_niklas_galaxy_a52:
-    friendly_name: Niklas
+
+person.niklas:
     entity_picture: /local/people/Niklas.jpg
-device_tracker.156_dominik_pixel_6_pro_wlan:
-    friendly_name: Dominik
+
+person.dominik:
     entity_picture: /local/people/Dominik.jpg
 
 #------------------------------------------------------------------------------

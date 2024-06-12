@@ -30,32 +30,32 @@ views:
                         }
                 elements:
                   - type: state-badge
-                    entity: device_tracker.165_andreas_z_fold5_wlan
+                    entity: person.andreas
                     style:
                       top: 40%
                       left: 5%
                   - type: state-badge
-                    entity: device_tracker.197_undine_z_flip5_wlan
+                    entity: person.undine
                     style:
                       top: 40%
                       left: 9%
                   - type: state-badge
-                    entity: device_tracker.102_nora_z_flip5_wlan
+                    entity: person.nora
                     style:
                       top: 40%
                       left: 13%
                   - type: state-badge
-                    entity: device_tracker.161_nina_a52s_wlan
+                    entity: person.nina
                     style:
                       top: 40%
                       left: 17%
                   - type: state-badge
-                    entity: device_tracker.177_niklas_galaxy_a52
+                    entity: person.niklas
                     style:
                       top: 40%
                       left: 21%
                   - type: state-badge
-                    entity: device_tracker.156_dominik_pixel_6_pro_wlan
+                    entity: person.dominik
                     style:
                       top: 40%
                       left: 25%
@@ -176,6 +176,8 @@ views:
                       - type: weather-forecast
                         name: Wettervorhersage
                         entity: weather.openweathermap
+                        show_forecast: true
+                        forecast_type: daily
                   - type: horizontal-stack
                     cards:
                       - type: sensor
@@ -440,12 +442,12 @@ views:
     badges:
       - type: entity-filter
         entities:
-          - entity: device_tracker.165_andreas_z_fold5_wlan
-          - entity: device_tracker.197_undine_z_flip5_wlan
-          - entity: device_tracker.102_nora_z_flip5_wlan
-          - entity: device_tracker.161_nina_a52s_wlan
-          - entity: device_tracker.177_niklas_galaxy_a52
-          - entity: device_tracker.156_dominik_pixel_6_pro_wlan
+          - entity: person.andreas
+          - entity: person.undine
+          - entity: person.nora
+          - entity: person.nina
+          - entity: person.niklas
+          - entity: person.dominik
         state_filter:
           - "home"
       #- type: entity-filter

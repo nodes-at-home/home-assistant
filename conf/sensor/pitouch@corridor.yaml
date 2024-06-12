@@ -6,7 +6,7 @@
     sensors:
         tileboard_temperature_template:
             friendly_name_template: >-
-                {% if ( states ( 'group.child_devices' ) == 'home' ) %}
+                {% if ( states ( 'group.kids' ) == 'home' ) %}
                     Warmwasser
                 {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Pool' ) %}
                     Pool
@@ -14,7 +14,7 @@
                     Garage
                 {% endif %}
             value_template: >-
-                {% if ( states ( 'group.child_devices' ) == 'home' ) %}
+                {% if ( states ( 'group.kids' ) == 'home' ) %}
                     {{ states ( 'sensor.boiler_wwcurtemp' ) }}
                 {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Pool' ) %}
                     {{ states ( 'sensor.ds18b20_pool_temperature' ) }}
