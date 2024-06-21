@@ -259,9 +259,15 @@ views:
             title: Pool
             show_header_toggle: false
             entities:
-                - input_number.pool_pump_duration
-                - input_datetime.pool_pump_start1
-                - input_datetime.pool_pump_start2
+                - input_boolean.pool_pump_activated
+                - type: divider
+                - input_datetime.pool_pump_start
+                - input_datetime.pool_pump_end
+                - type: divider
+                - input_number.pool_pump_duration_period
+                - input_number.pool_pump_duration_total
+                - type: divider
+                - sensor.pool_pump_period_length
           - type: markdown
             title: Hinweise
             content: >

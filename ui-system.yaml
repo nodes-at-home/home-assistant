@@ -363,8 +363,7 @@ views:
                 title: Pool
                 show_header_toggle: true
                 entities:
-                    - automation.button_pool
-                    - automation.pool_pump_activate
+                    - automation.pool_pump_switching
                     - automation.pool_pump_off_after_timeout
                     - automation.set_pool_nonworking
               - type: entities

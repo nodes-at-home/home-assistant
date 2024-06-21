@@ -1,0 +1,12 @@
+###
+### 20.06.2024
+###
+
+  - sensor:
+
+      - name: pool_pump_period_length
+        unit_of_measurement: min
+        device_class: duration
+        state: >
+            {% set d = ( ( as_timestamp ( today_at ( states ( 'input_datetime.pool_pump_end' ) ) ) - as_timestamp ( today_at ( states ( 'input_datetime.pool_pump_start' ) ) ) ) / 60 ) | int %}
+            {{ ( d / ( states ( 'input_number.pool_pump_duration_total' ) | int / states ( 'input_number.pool_pump_duration_period' ) | int ) ) | int }}

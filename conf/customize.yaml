@@ -1580,3 +1580,8 @@ switch.ws2812_x1c:
     icon: mdi:led-strip
 
 #------------------------------------------------------------------------------
+sensor.pool_pump_period_length:
+    friendly_name: Periodenlänge
+    unit_of_measurement: min
+
+#------------------------------------------------------------------------------

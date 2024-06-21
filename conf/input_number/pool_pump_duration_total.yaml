@@ -1,0 +1,11 @@
+###
+### 22.08.2019 split up
+###
+
+name: Gesamtdauer
+mode: slider
+min: 60
+max: 600
+step: 15
+unit_of_measurement: min
+# initial: 180

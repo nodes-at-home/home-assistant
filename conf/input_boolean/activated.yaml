@@ -37,3 +37,7 @@ dishwasher_activated:
 hydrotower_activated:
     name: Hydrotower aktiviert
     # initial: on
+
+pool_pump_activated:
+    name: Poolpumpe aktiviert
+    # initial: on

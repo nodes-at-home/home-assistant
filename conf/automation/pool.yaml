@@ -2,17 +2,37 @@
 ### 22.08.2019 split up
 ###
 
-  - alias: pool_pump_activate
-    id: pool_pump_activate
+  - alias: pool_pump_switching
+    id: pool_pump_switching
+    mode: single
+    max_exceeded: silent
     trigger:
-      - platform: time
-        at: input_datetime.pool_pump_start1
-      - platform: time
-        at: input_datetime.pool_pump_start2
+      # check every minute
+      - platform: time_pattern
+        minutes: "/1"
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.pool_pump_activated
+        state: 'on'
+      - condition: time
+        after: input_datetime.pool_pump_start
+        before: input_datetime.pool_pump_end
     action:
       - service: switch.turn_on
         entity_id:
             - switch.sonoff_pool_socket
+      # pump switched on for n minutes
+      - delay:
+            minutes: "{{ states ( 'input_number.pool_pump_duration_period' ) | int }}"
+      - service: switch.turn_off
+        entity_id:
+            - switch.sonoff_pool_socket
+      # automation throttled, see above at mode and max_exceeded
+      - delay:
+            minutes: "{{ states ( 'sensor.pool_pump_period_length' ) | int - states ( 'input_number.pool_pump_duration_period' ) | int - 1 }}"
 
   - alias: pool_pump_off_after_timeout
     id: pool_pump_off_after_timeout
@@ -21,23 +41,9 @@
         entity_id: switch.sonoff_pool_socket
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.pool_pump_duration' ) | int }}"
+            minutes: "{{ states ( 'input_number.pool_pump_duration_period' ) | int }}"
     action:
       - service: switch.turn_off
-        entity_id: switch.sonoff_pool_socket
-
-  - alias: button_pool
-    id: button_pool
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.button_pool
-        to: 'on'
-    condition:
-      - condition: state
-        entity_id: input_boolean.button_pool_activated
-        state: 'on'
-    action:
-      - service: switch.toggle
         entity_id: switch.sonoff_pool_socket
 
   - alias: set_pool_nonworking
