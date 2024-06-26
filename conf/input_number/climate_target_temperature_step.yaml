@@ -1,0 +1,11 @@
+###
+### 11.06.2023
+###
+
+name: Temperaturschritt
+icon: mdi:thermometer-lines
+mode: slider
+min: 1
+max: 5
+step: 1
+unit_of_measurement: "°C"

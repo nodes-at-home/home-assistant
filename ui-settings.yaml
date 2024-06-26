@@ -461,6 +461,7 @@ views:
             - input_number.climate_target_temperature
             - input_number.climate_min_forecast_temperature
             - input_number.climate_min_forecast_temperature_sunny
+            - input_number.climate_target_temperature_step
             - type: section
               label: Vorhersage
             - sensor.openweathermap_forecast_temperature
