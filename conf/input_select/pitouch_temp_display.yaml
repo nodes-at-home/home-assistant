@@ -6,3 +6,4 @@ name: Temperaturanzeige
 options:
   - Pool
   - Garage
+  - Warmwasser

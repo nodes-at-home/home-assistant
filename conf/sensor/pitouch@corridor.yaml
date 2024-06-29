@@ -5,19 +5,14 @@
   - platform: template
     sensors:
         tileboard_temperature_template:
-            friendly_name_template: >-
-                {% if ( states ( 'group.kids' ) == 'home' ) %}
-                    Warmwasser
-                {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Pool' ) %}
-                    Pool
-                {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Garage' ) %}
-                    Garage
-                {% endif %}
+            friendly_name_template: "{{ states ( 'input_select.pitouch_temp_display' ) }}"
             value_template: >-
-                {% if ( states ( 'group.kids' ) == 'home' ) %}
-                    {{ states ( 'sensor.boiler_wwcurtemp' ) }}
-                {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Pool' ) %}
+                {% if ( states ( 'input_select.pitouch_temp_display' ) == 'Pool' ) %}
                     {{ states ( 'sensor.ds18b20_pool_temperature' ) }}
                 {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Garage' ) %}
                     {{ states ( 'sensor.relay_garage_temperature' ) }}
+                {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Warmwasser' ) %}
+                    {{ states ( 'sensor.boiler_wwcurtemp' ) }}
+                {% else %}
+                    x
                 {% endif %}
