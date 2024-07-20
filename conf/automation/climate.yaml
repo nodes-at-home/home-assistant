@@ -44,9 +44,9 @@
         to: 'off'
         for: "00:00:10"
     condition:
-      - condition: state
-        entity_id: binary_sensor.prod_mode
-        state: 'on'
+      #- condition: state
+      #  entity_id: binary_sensor.prod_mode
+      #  state: 'on'
       - condition: state
         entity_id: input_boolean.climate_activated
         state: 'on'
@@ -103,6 +103,47 @@
                   - service: input_boolean.turn_on
                     data:
                         entity_id: "{{ 'input_boolean.climate_' + repeat.item.climate + '_started' }}"
+
+  - alias: climate_started
+    id: climate_started
+    trigger:
+      - platform: time_pattern
+        minutes: '/1'
+      - platform: state
+        entity_id: input_boolean.climate_office_started
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.climate_bedroom_started
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.climate_nursery_started
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      #- condition: state
+      #  entity_id: input_boolean.climate_activated
+      #  state: 'on'
+    action:
+      - repeat:
+            for_each:
+              - climate: office
+                window: arbeitszimmer
+              - climate: bedroom
+                window: schlafzimmer
+              - climate: nursery
+                window: kinderzimmer
+            sequence:
+              - if:
+                  - condition: template
+                    value_template: >
+                        {# start climates which are not running and started #}
+                        {{
+                            states ( 'input_boolean.climate_' + repeat.item.climate + '_started' ) == 'on'
+                            and states ( 'climate.' + repeat.item.climate ) == 'off'
+                        }}
+                then:
                   # setting hvac mode swuitches on the climate device; turn_on service sets heat_cool mode!!!
                   - service: climate.set_hvac_mode
                     target:
