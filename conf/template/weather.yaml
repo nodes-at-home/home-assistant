@@ -1,0 +1,106 @@
+###
+### 31.07.2024
+###
+
+# https://community.home-assistant.io/t/openweathermap-version-3-0/717870/63
+
+  - trigger:
+
+      - platform: time_pattern
+        minutes: /15
+
+      - platform: homeassistant
+        event: start
+
+      - platform: event
+        event_type: event_template_reloaded
+
+    action:
+
+      - service: weather.get_forecasts
+        target:
+          entity_id: weather.openweathermap
+        data:
+          type: daily
+        response_variable: forecast_result
+
+      - variables:
+          forecast_today: "{{ forecast_result ['weather.openweathermap'].forecast [0] }}"
+
+    sensor:
+
+      - name: Openweathermap Forecast Temperature
+        unique_id: openweathermap_forecast_temperature
+        state: "{{ forecast_today.temperature }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+        icon: mdi:thermometer
+        unit_of_measurement: "°C"
+        device_class: temperature
+
+      - name: Openweathermap Forecast Temperature Low
+        unique_id: openweathermap_forecast_temperature_low
+        state: "{{ forecast_today.templow }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+        icon: mdi:thermometer
+        unit_of_measurement: "°C"
+        device_class: temperature
+
+      - name: Openweathermap Forecast Condition
+        unique_id: openweathermap_forecast_condition
+        state: "{{ forecast_today.condition }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+
+      - name: Openweathermap Forecast Cloud Coverage
+        unique_id: openweathermap_forecast_cloud_coverage
+        state: "{{ forecast_today.cloud_coverage }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+        unit_of_measurement: "%"
+
+      - name: Openweathermap Forecast Wind Speed
+        unique_id: openweathermap_forecast_wind_speed
+        state: "{{ forecast_today.wind_speed }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+        icon: mdi:weather-windy
+        unit_of_measurement: "km/h"
+        device_class: wind_speed
+
+      - name: Openweathermap Forecast Wind Bearing
+        unique_id: openweathermap_forecast_wind_bearing
+        state: "{{ forecast_today.wind_bearing }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+
+      - name: Openweathermap Forecast UV Index
+        unique_id: openweathermap_forecast_uv_index
+        state: "{{ forecast_today.uv_index }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+
+      - name: Openweathermap Forecast Precipitation Probability
+        unique_id: openweathermap_forecast_precipitation_probability
+        state: "{{ forecast_today.precipitation_probability }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+
+      - name: Openweathermap Forecast Precipitation
+        unique_id: openweathermap_forecast_precipitation
+        state: "{{ forecast_today.precipitation }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+        icon: mdi:weather-pouring
+        unit_of_measurement: "mm"
+        device_class: precipitation
+
+      - name: Openweathermap Forecast Humidity
+        unique_id: openweathermap_forecast_humidity
+        state: "{{ forecast_today.humidity }}"
+        attributes:
+          timestamp: "{{ forecast_today.datetime }}"
+        icon: mdi:weather-fog
+        unit_of_measurement: "%"
+        device_class: humidity
