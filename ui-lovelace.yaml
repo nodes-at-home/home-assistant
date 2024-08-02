@@ -450,18 +450,6 @@ views:
           - entity: person.dominik
         state_filter:
           - "home"
-      #- type: entity-filter
-      #  entities:
-      #    - plant.goldfruchtpalme_flowercare
-      #    - plant.birkenfeige_flowercare
-      #    - plant.palmlilie_flowercare
-      #    - plant.bogenhanf_flowercare
-      #    - plant.korbmarante_flowercare
-      #    - plant.fensterblatt_flowercare
-      #    - plant.gummibaum_flowercare
-      #    - plant.fliederaralie_flowercare
-      #  state_filter:
-      #    - "problem"
       - type: entity-filter
         entities:
           - binary_sensor.bewegungsmelder1
@@ -515,8 +503,8 @@ views:
         state_filter:
           - operator: "!="
             value: "docked"
-    cards:
 
+    cards:
       - type: vertical-stack
         title: Erdgeschoss
         cards:
@@ -548,6 +536,9 @@ views:
               #- entity: binary_sensor.geschirrspuler_door
               - entity: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
                 name: Geschirrspüler
+              - entity: switch.geschirrspuler
+                icon: mdi:dishwasher
+              - sensor.geschirrspuler_power
               - entity: number.siemens_ki81fhdd0_68a40ea89517_refrigeration_fridgefreezer_setting_setpointtemperaturerefrigerator
                 name: Kühlschrank
               - entity: switch.siemens_ki81fhdd0_68a40ea89517_refrigeration_fridgefreezer_setting_supermoderefrigerator
@@ -954,58 +945,6 @@ views:
                     text-align: right;
                     content: "{{ states ( 'sensor.dht22_roof_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht22_roof_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
-
-      - type: vertical-stack
-        title: Pflanzen
-        cards:
-          - type: plant-status
-            name: Goldfruchtpalme - Dypsis lutescens
-            card_mod:
-                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
-            link: https://www.mein-schoener-garten.de/pflanzen/goldfruchtpalme/goldfruchtpalme
-            entity: plant.goldfruchtpalme_flowercare
-          - type: plant-status
-            name: Birkenfeige - Ficus benjamina
-            card_mod:
-                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
-            link: https://www.mein-schoener-garten.de/pflanzen/feige/birkenfeige
-            entity: plant.birkenfeige_flowercare
-          - type: plant-status
-            name: Riesen-Palmlilie - Yucca elephantipes
-            card_mod:
-                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
-            link: https://www.mein-schoener-garten.de/pflanzen/palmlilie-yucca/yucca-palme
-            entity: plant.palmlilie_flowercare
-          - type: plant-status
-            name: Bogenhanf - Sansevieria trifasciata
-            card_mod:
-                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
-            link: https://www.mein-schoener-garten.de/pflanzen/bogenhanf-sansevieria
-            entity: plant.bogenhanf_flowercare
-          - type: plant-status
-            name: Korbmarante - Calathea rufibarba
-            card_mod:
-                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
-            link: https://www.mein-schoener-garten.de/pflanzen/korbmarante/calathea-rufibarba
-            entity: plant.korbmarante_flowercare
-          - type: plant-status
-            name: Fensterblatt - Monstera deliciosa
-            card_mod:
-                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
-            link: https://www.mein-schoener-garten.de/pflanzen/fensterblatt/monstera-fensterblatt
-            entity: plant.fensterblatt_flowercare
-          - type: plant-status
-            name: Gummibaum - Ficus elastica
-            card_mod:
-                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
-            link: https://www.mein-schoener-garten.de/pflanzen/feige/gummibaum
-            entity: plant.gummibaum_flowercare
-          - type: plant-status
-            name: Fiederaralie - Polyscias
-            card_mod:
-                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
-            link: https://www.mein-schoener-garten.de/pflanzen/fiederaralie/fiederaralie
-            entity: plant.fiederaralie_flowercare
 
   - title: Garten
     path: garden
@@ -1701,39 +1640,75 @@ views:
               - min
               - max
 
-
-    # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card#tile-list-entry-options
-  - title: Staubsauger
-    path: vacuum
+  - title: Pflanzen
+    path: plants
     panel: false
-    visible: false
+    badges:
+      - type: entity-filter
+        entities:
+          - plant.goldfruchtpalme_flowercare
+          - plant.birkenfeige_flowercare
+          - plant.palmlilie_flowercare
+          - plant.bogenhanf_flowercare
+          - plant.korbmarante_flowercare
+          - plant.fensterblatt_flowercare
+          - plant.gummibaum_flowercare
+          - plant.fliederaralie_flowercare
+        state_filter:
+          - "problem"
+
     cards:
-      - type: custom:xiaomi-vacuum-map-card
-        title: Erdgeschoss
-        preset_name: live map ground floor
-        entity: vacuum.roborock_s6_ground_floor
-        vacuum_platform: default
-        map_source:
-            camera: camera.roborock_s6_ground_floor
-        calibration_source:
-            camera: true
-        map_modes:
-          - template: vacuum_clean_zone
-          - template: vacuum_goto
-          - template: vacuum_follow_path
-      - type: custom:xiaomi-vacuum-map-card
-        title: Obergeschoss
-        preset_name: live map first floor
-        entity: vacuum.roborock_s6_first_floor
-        vacuum_platform: default
-        map_source:
-            camera: camera.roborock_s6_first_floor
-        calibration_source:
-            camera: true
-        map_modes:
-          - template: vacuum_clean_zone
-          - template: vacuum_goto
-          - template: vacuum_follow_path
+      - type: vertical-stack
+        title: Pflanzen
+        cards:
+          - type: plant-status
+            name: Goldfruchtpalme - Dypsis lutescens
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
+            link: https://www.mein-schoener-garten.de/pflanzen/goldfruchtpalme/goldfruchtpalme
+            entity: plant.goldfruchtpalme_flowercare
+          - type: plant-status
+            name: Birkenfeige - Ficus benjamina
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
+            link: https://www.mein-schoener-garten.de/pflanzen/feige/birkenfeige
+            entity: plant.birkenfeige_flowercare
+          - type: plant-status
+            name: Riesen-Palmlilie - Yucca elephantipes
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
+            link: https://www.mein-schoener-garten.de/pflanzen/palmlilie-yucca/yucca-palme
+            entity: plant.palmlilie_flowercare
+          - type: plant-status
+            name: Bogenhanf - Sansevieria trifasciata
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
+            link: https://www.mein-schoener-garten.de/pflanzen/bogenhanf-sansevieria
+            entity: plant.bogenhanf_flowercare
+          - type: plant-status
+            name: Korbmarante - Calathea rufibarba
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
+            link: https://www.mein-schoener-garten.de/pflanzen/korbmarante/calathea-rufibarba
+            entity: plant.korbmarante_flowercare
+          - type: plant-status
+            name: Fensterblatt - Monstera deliciosa
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
+            link: https://www.mein-schoener-garten.de/pflanzen/fensterblatt/monstera-fensterblatt
+            entity: plant.fensterblatt_flowercare
+          - type: plant-status
+            name: Gummibaum - Ficus elastica
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
+            link: https://www.mein-schoener-garten.de/pflanzen/feige/gummibaum
+            entity: plant.gummibaum_flowercare
+          - type: plant-status
+            name: Fiederaralie - Polyscias
+            card_mod:
+                style: "ha-card .header { font-size: 18px; line-height: 18px; }"
+            link: https://www.mein-schoener-garten.de/pflanzen/fiederaralie/fiederaralie
+            entity: plant.fiederaralie_flowercare
 
   - title: Grundriss
     path: floorplan

@@ -613,7 +613,8 @@ views:
         title: Allgemein
         show_header_toggle: false
         entities:
-            - binary_sensor.smokedetectionsystem
+            - entity: binary_sensor.smokedetectionsystem
+              name: Smoke Detection System
             - alarm_control_panel.intrusion_detection_system
       - type: entities
         title: Zwischenstecker
@@ -630,7 +631,13 @@ views:
             - sensor.waschmaschine_energy
             - sensor.waschmaschine_power
             - type: divider
-            # circulation pump
+            # dishwasher
+            - switch.geschirrspuler
+            - sensor.geschirrspuler_communication_quality
+            - sensor.geschirrspuler_energy
+            - sensor.geschirrspuler_power
+            - type: divider
+            # accu loader station
             - switch.bosch_ladestation
             - sensor.bosch_ladestation_communication_quality
             - sensor.bosch_ladestation_energy
