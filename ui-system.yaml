@@ -356,9 +356,9 @@ views:
                 title: Küche
                 show_header_toggle: true
                 entities:
-                    - automation.kitchen_desk_light_on
-                    - automation.kitchen_desk_light_off
-                    - automation.kitchen_desk_light_off_at_night
+                    - automation.kitchen_desk_light_toggle
+                    - automation.kitchen_desk_light_on_by_motion
+                    - automation.kitchen_desk_light_off_by_motion
               - type: entities
                 title: Pool
                 show_header_toggle: true

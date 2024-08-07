@@ -1,0 +1,11 @@
+###
+### 07.08.2024
+###
+
+name: Küchenlicht unter
+mode: box
+min: 0
+max: 1000
+step: 10
+unit_of_measurement: "Lux"
+# initial: 500

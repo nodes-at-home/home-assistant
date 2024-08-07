@@ -54,7 +54,7 @@
         state: 'on'
       - condition: numeric_state
         entity_id: sensor.bewegungsmelder1_illuminance
-        below: 500
+        below: input_number.kitchen_desk_illuminance_threshold
     action:
       - service: scene.turn_on
         entity_id: scene.kitchen_full_light

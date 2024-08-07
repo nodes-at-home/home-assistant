@@ -38,10 +38,11 @@ views:
             - input_datetime.tv_off_period_end
             - input_number.notification_tv_on_delay
       - type: entities
-        title: Nachtlicht
+        title: Lichter
         entities:
             - input_number.nightlight_duration
             - input_datetime.nightlight_end
+            - input_number.kitchen_desk_illuminance_threshold
       - type: entities
         title: PiTouch
         entities:
