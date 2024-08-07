@@ -2,12 +2,49 @@
 ### 22.08.2019 split up
 ###
 
-  - alias: kitchen_desk_light_on
-    id: kitchen_desk_light_on
+  - alias: kitchen_desk_light_toggle
+    id: kitchen_desk_light_toggle
     trigger:
       - platform: state
         entity_id: binary_sensor.gesture_kitchen
         to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.gesture_kitchen_activated
+        state: 'on'
+    action:
+      - if:
+          - condition: or
+            conditions:
+              - condition: state
+                entity_id: light.led_kitchen_led
+                state: 'off'
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: light.led_kitchen_led
+                    state: 'on'
+                  - condition: template
+                    value_template: '{{ states.light.led_kitchen_led.attributes.color_temp == 500 }}'
+        then:
+          - service: scene.turn_on
+            entity_id: scene.kitchen_full_light
+        else:
+          - service: scene.turn_on
+            entity_id: scene.kitchen_background_light
+          - if:
+              - condition: state
+                entity_id: light.relay_dining1_lamp
+                state: 'on'
+                alias: check for night lights switched on
+            then:
+            else:
+              - service: light.turn_off
+                entity_id: light.led_kitchen_led
+
+  - alias: kitchen_desk_light_on_by_motion
+    id: kitchen_desk_light_on_by_motion
+    trigger:
       - platform: state
         entity_id: binary_sensor.bewegungsmelder1
         to: 'on'
@@ -15,28 +52,16 @@
       - condition: state
         entity_id: input_boolean.gesture_kitchen_activated
         state: 'on'
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: light.led_kitchen_led
-            state: 'off'
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: light.led_kitchen_led
-                state: 'on'
-              - condition: template
-                value_template: '{{ states.light.led_kitchen_led.attributes.color_temp == 500 }}'
+      - condition: numeric_state
+        entity_id: sensor.bewegungsmelder1_illuminance
+        below: 500
     action:
       - service: scene.turn_on
         entity_id: scene.kitchen_full_light
 
-  - alias: kitchen_desk_light_off
-    id: kitchen_desk_light_off
+  - alias: kitchen_desk_light_off_by_motion
+    id: kitchen_desk_light_off_by_motion
     trigger:
-      - platform: state
-        entity_id: binary_sensor.gesture_kitchen
-        to: 'on'
       - platform: state
         entity_id: binary_sensor.bewegungsmelder1
         to: 'off'
@@ -44,43 +69,16 @@
       - condition: state
         entity_id: input_boolean.gesture_kitchen_activated
         state: 'on'
-      - condition: state
-        entity_id: light.led_kitchen_led
-        state: 'on'
-      # indicator for indoor night lights
-      - condition: state
-        entity_id: light.relay_dining1_lamp
-        state: 'off'
     action:
       - service: scene.turn_on
         entity_id: scene.kitchen_background_light
-      - service: light.turn_off
-        entity_id: light.led_kitchen_led
-
-  - alias: kitchen_desk_light_off_at_night
-    id: kitchen_desk_light_off_at_night
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.gesture_kitchen
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.bewegungsmelder1
-        to: 'off'
-    condition:
-      - condition: state
-        entity_id: input_boolean.gesture_kitchen_activated
-        state: 'on'
-      # indicator for indoor night lights
-      - condition: state
-        entity_id: light.relay_dining1_lamp
-        state: 'on'
-      - condition: and
-        conditions:
+      - if:
           - condition: state
-            entity_id: light.led_kitchen_led
+            entity_id: light.relay_dining1_lamp
             state: 'on'
-          - condition: template
-            value_template: '{{ states.light.led_kitchen_led.attributes.color_temp != 500 }}'
-    action:
-      - service: scene.turn_on
-        entity_id: scene.kitchen_background_light
+            alias: check for night lights switched on
+        then:
+        else:
+          - service: light.turn_off
+            entity_id: light.led_kitchen_led
+

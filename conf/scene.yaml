@@ -19,3 +19,17 @@
             state: ON
             brightness: 25
             color_temp: 500
+
+    - name: kitchen_full_light_off
+      entities:
+        light.led_kitchen_led:
+            state: OFF
+            brightness: 190
+            color_temp: 300
+
+    - name: kitchen_background_light_off
+      entities:
+        light.led_kitchen_led:
+            state: OFF
+            brightness: 25
+            color_temp: 500
