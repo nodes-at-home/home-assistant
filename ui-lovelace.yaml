@@ -269,11 +269,6 @@ views:
                             double_tap_action:
                               action: url
                               url_path: http://esp32-cam-2
-                            card_mod:
-                              style: |
-                                hui-image{
-                                  transform: rotate(-90deg);
-                                }
                           "off":
                             type: button
                             name: Esszimmer
@@ -325,11 +320,6 @@ views:
                             double_tap_action:
                               action: url
                               url_path: http://esp32-cam-4
-                            card_mod:
-                              style: |
-                                hui-image{
-                                  transform: rotate(-90deg);
-                                }
                           "off":
                             type: button
                             name: Garage
