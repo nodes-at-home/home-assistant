@@ -426,6 +426,332 @@ views:
                       - type: markdown
                         content: " "
 
+  - title: Überblick2
+    path: home2
+    panel: false
+    visible: false
+    badges:
+      - entity: person.andreas
+        display_type: complete
+        show_entity_picture: true
+      - entity: person.undine
+        display_type: complete
+        show_entity_picture: true
+      - entity: person.nora
+        display_type: complete
+        show_entity_picture: true
+      - entity: person.nina
+        display_type: complete
+        show_entity_picture: true
+      - entity: person.niklas
+        display_type: complete
+        show_entity_picture: true
+      - entity: person.dominik
+        display_type: complete
+        show_entity_picture: true
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.wasserampel
+        content: Wasserampel
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.grid_state
+        content: Netz
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.pv_generating
+        content: Solar
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.battery_state
+        content: Batterie
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - entity: sun.sun
+        name: Sonne
+        display_type: complete
+      - type: custom:mushroom-template-badge
+        entity: sensor.ups_status
+        content: Batterie
+        icon: mdi:power-plug-battery
+        color: "{{ iif ( is_state ( entity, 'Online' ), 'green', 'red' ) }}"
+        tap_action:
+            action: more-info
+      - entity: binary_sensor.gardena_smart_system_connection
+        display_type: complete
+      - entity: sensor.cpu_temp
+        icon: mdi:server-outline
+        color: silver
+        display_type: complete
+
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: weather-forecast
+                name: Wettervorhersage
+                entity: weather.openweathermap
+                show_forecast: true
+                forecast_type: daily
+          - type: horizontal-stack
+            cards:
+              - type: sensor
+                entity: sensor.dht22_terrace_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                icon: mdi:show_chart
+                entity: sensor.dht22_lounge_pressure
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                # entity: sensor.ds18b20_pool_temperature
+                entity: sensor.tileboard_temperature_template
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.boiler_wwcurtemp
+                name: Warmwasser
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.dht11_utilityroom_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
+          - type: horizontal-stack
+            cards:
+              - type: thermostat
+                entity: climate.office
+                name: Büro
+              - type: thermostat
+                entity: climate.bedroom
+                name: Schlafzimmer
+              - type: thermostat
+                entity: climate.nursery
+                name: Kinderzimmer
+              - type: thermostat
+                entity: climate.thermostat_hc1
+                name: Heizung
+                card_mod:
+                    style: |
+                        ha-card {
+                            line-height: 350%
+                        }
+          - type: horizontal-stack
+            cards:
+              - type: media-control
+                entity: media_player.sony_kd_55ag9
+              - type: markdown
+                content: " "
+          - type: horizontal-stack
+            cards:
+              - type: custom:state-switch
+                entity: >
+                  {% set cam = 'galerie' %}
+                  {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+                states:
+                  "stream":
+                    type: picture-entity
+                    entity: camera.galerie
+                    double_tap_action:
+                      action: url
+                      url_path: http://esp32-cam-1
+                  "off":
+                    type: button
+                    name: Galerie
+                    icon: mdi:camera-off-outline
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    more_info:
+                      action: none
+              - type: custom:state-switch
+                entity: >
+                  {% set cam = 'esszimmer' %}
+                  {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+                states:
+                  "stream":
+                    type: picture-entity
+                    entity: camera.esszimmer
+                    double_tap_action:
+                      action: url
+                      url_path: http://esp32-cam-2
+                  "off":
+                    type: button
+                    name: Esszimmer
+                    icon: mdi:camera-off-outline
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    more_info:
+                      action: none
+              - type: custom:state-switch
+                entity: >
+                  {% set cam = 'hauswirtschaftsraum' %}
+                  {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+                states:
+                  "stream":
+                    type: picture-entity
+                    entity: camera.hauswirtschaftsraum
+                    double_tap_action:
+                      action: url
+                      url_path: http://esp32-cam-3
+                    card_mod:
+                      style: |
+                        hui-image{
+                          transform: rotate(-90deg);
+                        }
+                  "off":
+                    type: button
+                    name: Hauswirtschaftsraum
+                    icon: mdi:camera-off-outline
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    more_info:
+                      action: none
+              - type: custom:state-switch
+                entity: >
+                  {% set cam = 'garage' %}
+                  {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+                states:
+                  "stream":
+                    type: picture-entity
+                    entity: camera.garage
+                    double_tap_action:
+                      action: url
+                      url_path: http://esp32-cam-4
+                  "off":
+                    type: button
+                    name: Garage
+                    icon: mdi:camera-off-outline
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    more_info:
+                      action: none
+
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: entity-button
+                entity: light.automatic_indoor_lights
+                tap_action:
+                    action: toggle
+                hold_action:
+                    action: more-info
+              - type: entity-button
+                entity: light.automatic_outdoor_lights
+                tap_action:
+                    action: toggle
+                hold_action:
+                    action: more-info
+          - type: horizontal-stack
+            cards:
+              - type: light
+                entity: light.led_kitchen_led
+              - type: light
+                entity: light.led_corridor_led
+              # - type: light
+                # entity: light.ws2812_terrace1
+              # - type: light
+                # entity: light.ws2812_terrace2
+              - type: light
+                entity: light.ws2812_xmasstar
+              - type: markdown
+                content: " "
+          - type: horizontal-stack
+            cards:
+              - type: button
+                entity: cover.rooflights
+                tap_action:
+                    action: call-service
+                    service: cover.stop_cover
+                    data:
+                        entity_id: cover.rooflights
+                double_tap_action:
+                    action: toggle
+                hold_action:
+                    action: more-info
+              - type: entity-button
+                entity: switch.sonoff_k8200_socket
+                name: 3D Drucker
+                icon: mdi:printer-3d
+                tap_action:
+                    action: more-info
+                hold_action:
+                    action: more-info
+              - type: entity-button
+                entity: switch.bosch_ladestation
+                icon: mdi:power-plug-battery
+                tap_action:
+                    action: toggle
+                hold_action:
+                    action: more-info
+              - type: entity-button
+                entity: switch.wasserpumpe
+                icon: mdi:water-pump
+                tap_action:
+                    action: more-info
+                hold_action:
+                    action: more-info
+              #- type: markdown
+              #  content: " "
+          - type: horizontal-stack
+            cards:
+              - type: entity-button
+                entity: switch.relay_garden_valve1
+                icon: mdi:watering-can
+              - type: entity-button
+                entity: switch.relay_garden_valve2
+                icon: mdi:watering-can
+              - type: entity-button
+                entity: switch.relay_garden_valve3
+                icon: mdi:watering-can
+              - type: entity-button
+                entity: switch.sonoff_pool_socket
+                icon: mdi:pump
+          - type: horizontal-stack
+            cards:
+              - type: entity-button
+                entity: switch.relay_hydrotower_pump
+                icon: mdi:pump
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
+
   - title: Haus
     path: house
     panel: false
@@ -433,63 +759,114 @@ views:
       - type: entity-filter
         entities:
           - entity: person.andreas
+            display_type: complete
+            show_entity_picture: true
           - entity: person.undine
+            display_type: complete
+            show_entity_picture: true
           - entity: person.nora
+            display_type: complete
+            show_entity_picture: true
           - entity: person.nina
+            display_type: complete
+            show_entity_picture: true
           - entity: person.niklas
+            display_type: complete
+            show_entity_picture: true
           - entity: person.dominik
+            display_type: complete
+            show_entity_picture: true
         state_filter:
           - "home"
       - type: entity-filter
         entities:
-          - binary_sensor.bewegungsmelder1
-          - binary_sensor.smokedetectionsystem
-          - binary_sensor.rauchmelder_esszimmer
-          - binary_sensor.rauchmelder_wohnzimmer
-          - binary_sensor.rauchmelder_flur
-          - binary_sensor.rauchmelder_hauswirtsch
-          - binary_sensor.rauchmelder_galerie
-          - binary_sensor.rauchmelder_schlafzimmer
-          - binary_sensor.rauchmelder_buro
-          - binary_sensor.rauchmelder_kinderzimmer
-          - binary_sensor.rauchmelder_garage
-          - binary_sensor.rauchmelder_dachboden
+          - entity: binary_sensor.bewegungsmelder1
+            display_type: complete
+          - entity: binary_sensor.smokedetectionsystem
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_esszimmer
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_wohnzimmer
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_flur
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_hauswirtsch
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_galerie
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_schlafzimmer
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_buro
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_kinderzimmer
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_garage
+            display_type: complete
+          - entity: binary_sensor.rauchmelder_dachboden
+            display_type: complete
         state_filter:
           - "on"
       - type: entity-filter
         entities:
           - entity: binary_sensor.eingangstur
+            display_type: complete
           - entity: binary_sensor.nebentur
+            display_type: complete
           - entity: binary_sensor.garagentur
+            display_type: complete
           - entity: binary_sensor.garagentor
+            display_type: complete
           - entity: binary_sensor.terassentur_kuche
+            display_type: complete
           - entity: binary_sensor.terassentur_esszimmer
+            display_type: complete
           - entity: binary_sensor.terassentur_wohnzimmer
+            display_type: complete
           - entity: binary_sensor.fenster_arbeitszimmer
+            display_type: complete
           - entity: binary_sensor.dachfenster_arbeitszimmer
+            display_type: complete
           - entity: binary_sensor.fenster_kinderzimmer
+            display_type: complete
           - entity: binary_sensor.dachfenster_kinderzimmer
+            display_type: complete
           - entity: binary_sensor.fenster_schlafzimmer
+            display_type: complete
           - entity: binary_sensor.dachfenster_schlafzimmer
+            display_type: complete
           - entity: binary_sensor.fenster_bad
+            display_type: complete
           - entity: binary_sensor.dachfenster_bad
+            display_type: complete
           - entity: binary_sensor.dachfenster_galerie
+            display_type: complete
           - entity: binary_sensor.fenster_flur
+            display_type: complete
           - entity: binary_sensor.fenster_wohnzimmer_1
+            display_type: complete
           - entity: binary_sensor.fenster_wohnzimmer_2
+            display_type: complete
           - entity: binary_sensor.fenster_wohnzimmer_3
+            display_type: complete
           - entity: binary_sensor.fenster_wohnzimmer_4
+            display_type: complete
           - entity: binary_sensor.fenster_wohnzimmer_5
+            display_type: complete
           - entity: binary_sensor.fenster_wohnzimmer_6
+            display_type: complete
           - entity: binary_sensor.fenster_dusche
+            display_type: complete
           - entity: input_boolean.cover_closed_at_low_temp
+            display_type: complete
         state_filter:
           # on = open, off = closed
           - "on"
       - type: entity-filter
         entities:
-          - vacuum.erdgeschoss
-          - vacuum.obergeschoss
+          - entity: vacuum.erdgeschoss
+            display_type: complete
+          - entity: vacuum.obergeschoss
+            display_type: complete
         state_filter:
           - operator: "!="
             value: "docked"
@@ -940,15 +1317,26 @@ views:
     path: garden
     panel: false
     badges:
-      - sensor.rain_garden_precipitation_last7d
-      - sensor.rain_garden_precipitation_last5d
-      - sensor.rain_garden_precipitation_last24h
-      - sensor.rain_garden_precipitation
-      - sensor.dht22_terrace_temperature_max
+      - entity: sensor.rain_garden_precipitation_last7d
+        name: 7 Tage
+        display_type: complete
+      - entity: sensor.rain_garden_precipitation_last5d
+        name: 5 Tage
+        display_type: complete
+      - entity: sensor.rain_garden_precipitation_last24h
+        name: 24h
+        display_type: complete
+      - entity: sensor.rain_garden_precipitation
+        name: aktuell
+        display_type: complete
+      - entity: sensor.dht22_terrace_temperature_max
+        display_type: complete
       - type: entity-filter
         entities:
           - entity: binary_sensor.garagentur
+            display_type: complete
           - entity: binary_sensor.garagentor
+            display_type: complete
         state_filter:
           # on = open, off = closed
           - "on"
@@ -1260,49 +1648,55 @@ views:
     path: ressources
     panel: false
     badges:
-      - entity: binary_sensor.grid_state
-        name: Netz
-        style: |
-            :host {
-                --label-badge-text-color: {{ state_attr ( 'binary_sensor.grid_state', 'icon_color' ) }}
-            }
-      - entity: binary_sensor.pv_generating
-        name: Solar
-        style: |
-            :host {
-                --label-badge-text-color: {{ state_attr ( 'binary_sensor.pv_generating', 'icon_color' ) }}
-            }
-      - entity: binary_sensor.battery_state
-        name: Batterie
-        # https://community.home-assistant.io/t/how-to-customize-the-badges-at-the-top-of-the-page/183152/11
-        style: |
-            :host {
-                --label-badge-text-color: {{ state_attr ( 'binary_sensor.battery_state', 'icon_color' ) }}
-            }
-      - entity: binary_sensor.sh10rt_master_inverter_state_badge
-        name: Master
-        style: |
-            :host {
-                --label-badge-text-color: {{ state_attr ( 'binary_sensor.sh10rt_master_inverter_state_badge', 'icon_color' ) }}
-            }
-      - entity: binary_sensor.sh10rt_slave_inverter_state_badge
-        name: Slave
-        style: |
-            :host {
-                --label-badge-text-color: {{ state_attr ( 'binary_sensor.sh10rt_slave_inverter_state_badge', 'icon_color' ) }}
-            }
-      - entity: binary_sensor.boiler_burngas_state_badge
-        name: Gastherme
-        style: |
-            :host {
-                --label-badge-text-color: {{ state_attr ( 'binary_sensor.boiler_burngas_state_badge', 'icon_color' ) }}
-            }
-      - entity: binary_sensor.waterflow_state_badge
-        name: Wasser
-        style: |
-            :host {
-                --label-badge-text-color: {{ state_attr ( 'binary_sensor.waterflow_state_badge', 'icon_color' ) }}
-            }
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.grid_state
+        content: Netz
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.pv_generating
+        content: Solar
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.battery_state
+        content: Batterie
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.sh10rt_master_inverter_state_badge
+        content: Master
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.sh10rt_slave_inverter_state_badge
+        content: Slave
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.boiler_burngas_state_badge
+        content: Gas
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.waterflow_state_badge
+        content: Wasser
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
     cards:
       - type: vertical-stack
         cards:
@@ -1636,14 +2030,22 @@ views:
     badges:
       - type: entity-filter
         entities:
-          - plant.goldfruchtpalme_flowercare
-          - plant.birkenfeige_flowercare
-          - plant.palmlilie_flowercare
-          - plant.bogenhanf_flowercare
-          - plant.korbmarante_flowercare
-          - plant.fensterblatt_flowercare
-          - plant.gummibaum_flowercare
-          - plant.fliederaralie_flowercare
+          - entity: plant.goldfruchtpalme_flowercare
+            display_type: complete
+          - entity: plant.birkenfeige_flowercare
+            display_type: complete
+          - entity: plant.palmlilie_flowercare
+            display_type: complete
+          - entity: plant.bogenhanf_flowercare
+            display_type: complete
+          - entity: plant.korbmarante_flowercare
+            display_type: complete
+          - entity: plant.fensterblatt_flowercare
+            display_type: complete
+          - entity: plant.gummibaum_flowercare
+            display_type: complete
+          - entity: plant.fliederaralie_flowercare
+            display_type: complete
         state_filter:
           - "problem"
 
@@ -1851,7 +2253,7 @@ views:
     visible: true
     cards:
       - type: vertical-stack
-        title: X1C
+        #title: X1C
         cards:
           - type: picture-elements
             elements:
@@ -2202,7 +2604,7 @@ views:
                     --tray_vt_bg: {% if is_state_attr('sensor.x1c_00m09a410500788_externalspool_externe_spule', 'active', true) %} rgba(255, 255, 126, 0.5); {% else %} rgba(0,0,0,0.5); {% endif %}
                   }
       - type: vertical-stack
-        title: Control
+        #title: Control
         cards:
           - type: vertical-stack
             cards:
@@ -2489,144 +2891,74 @@ views:
                         }
           - type: vertical-stack
             cards:
-              - type: conditional
-                conditions:
-                  - condition: state
-                    entity: fan.x1c_00m09a410500788_bauteillufter
-                    state_not: unavailable
-                  - condition: state
-                    entity: sensor.x1c_00m09a410500788_bauteillufter
-                    state_not: unknown
-                card:
-                  type: custom:mushroom-fan-card
-                  entity: fan.x1c_00m09a410500788_bauteillufter
-                  name: Aux Fan
-                  icon_animation: true
-                  show_percentage_control: true
-                  fill_container: false
-                  layout: horizontal
-              - type: conditional
-                conditions:
-                  - condition: state
-                    entity: fan.x1c_00m09a410500788_druckraumlufter
-                    state_not: unavailable
-                  - condition: state
-                    entity: sensor.x1c_00m09a410500788_druckraumlufter
-                    state_not: unknown
-                card:
-                  type: custom:mushroom-fan-card
-                  entity: fan.x1c_00m09a410500788_druckraumlufter
-                  name: Chamber Fan
-                  icon_animation: true
-                  show_percentage_control: true
-                  fill_container: false
-                  layout: horizontal
-              - type: conditional
-                conditions:
-                  - condition: state
-                    entity: fan.x1c_00m09a410500788_druckkopflufter
-                    state_not: unavailable
-                  - condition: state
-                    entity: sensor.x1c_00m09a410500788_druckkopflufter
-                    state_not: unknown
-                card:
-                  type: custom:mushroom-fan-card
-                  entity: fan.x1c_00m09a410500788_druckkopflufter
-                  name: Part Cooling Fan
-                  icon_animation: true
-                  show_percentage_control: true
-                  fill_container: false
-                  layout: horizontal
-              - type: conditional
-                conditions:
-                  - condition: state
-                    #entity: number.x1c_00m09a410500788_set_nozzle_temp
-                    entity: sensor.x1c_00m09a410500788_temperatur_der_duse
-                    state_not: unavailable
-                card:
-                  type: custom:mushroom-number-card
-                  #entity: number.x1c_00m09a410500788_set_nozzle_temp
-                  entity: sensor.x1c_00m09a410500788_temperatur_der_duse
-                  name: Set Nozzle Temp
-                  layout: horizontal
-                  display_mode: buttons
-              - type: conditional
-                conditions:
-                  - condition: state
-                    #entity: number.x1c_00m09a410500788_set_bed_temp
-                    entity: sensor.x1c_00m09a410500788_druckbetttemperatur
-                    state_not: unavailable
-                card:
-                  type: custom:mushroom-number-card
-                  #entity: number.x1c_00m09a410500788_set_bed_temp
-                  entity: sensor.x1c_00m09a410500788_druckbetttemperatur
-                  name: Set Bed Temp
-                  display_mode: buttons
-                  layout: horizontal
-              - type: conditional
-                conditions:
-                  - condition: state
-                    #entity: number.x1c_00m09a410500788_set_chamber_temp
-                    entity: sensor.x1c_00m09a410500788_temperatur_im_druckraum
-                    state_not: unavailable
-                card:
-                  type: custom:mushroom-number-card
-                  #entity: number.x1c_00m09a410500788_set_chamber_temp
-                  entity: sensor.x1c_00m09a410500788_temperatur_im_druckraum
-                  name: Set Chamber Temp
-                  display_mode: buttons
-                  layout: horizontal
-      - type: vertical-stack
-        title: Monitor
-        cards:
-          - type: vertical-stack
-            cards:
-              - type: vertical-stack
+              - type: custom:mushroom-entity-card
+                entity: sensor.x1c_00m09a410500788_name_der_aufgabe
+                name: Task
+                icon: mdi:clipboard-text
+              - type: horizontal-stack
                 cards:
-                  - type: custom:mushroom-title-card
-                    title: ''
-                    subtitle: Print Details
-                    alignment: center
                   - type: custom:mushroom-entity-card
-                    entity: sensor.x1c_00m09a410500788_name_der_aufgabe
-                    name: Task
-                    icon: mdi:clipboard-text
-                  - type: horizontal-stack
-                    cards:
-                      - type: custom:mushroom-entity-card
-                        entity: sensor.x1c_00m09a410500788_druckfortschritt
-                        name: Progress
-                        icon: mdi:progress-helper
-                      - type: custom:mushroom-template-card
-                        primary: Layer
-                        icon_color: var(--rgb-state-entity)
-                        secondary: >-
-                          {{states('sensor.x1c_00m09a410500788_aktuelle_schicht')}} /
-                          {{states('sensor.x1c_00m09a410500788_gesamtzahl_der_schchten')}}
-                        icon: mdi:layers
-              - type: custom:tabbed-card
-                options: {}
-                tabs:
-                  - card:
-                      type: vertical-stack
-                      cards:
-                        - type: entities
-                          entities:
-                            - entity: sensor.x1c_00m09a410500788_druckstatus
-                              # sensor.x1c_00m09a410500788_current_stage --> ..._aktueller_arbeitsschritt oder sensor.x1c_00m09a410500788_druckstatus
-                              name: Stage
-                            - entity: binary_sensor.x1c_00m09a410500788_hms_fehler
-                              name: HMS Notifications
-                            - entity: sensor.x1c_00m09a410500788_startzeit
-                              name: Start Time
-                              secondary_info: last-changed
-                            - entity: sensor.x1c_00m09a410500788_vrs_fertigstellung
-                              name: End Time
-                            - entity: sensor.x1c_00m09a410500788_verbleibende_zeit
-                              name: Remaining Time
-                            - entity: binary_sensor.x1c_00m09a410500788_firmware_status
-                              name: Firmware
-                            - entity: sensor.x1c_00m09a410500788_aktiver_slot
-                              name: Current Filament
-                    attributes:
-                      label: Details
+                    entity: sensor.x1c_00m09a410500788_temperatur_der_duse
+                    name: Nozzle Temp
+                    layout: horizontal
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.x1c_00m09a410500788_druckbetttemperatur
+                    name: Bed Temp
+                    layout: horizontal
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.x1c_00m09a410500788_temperatur_im_druckraum
+                    name: Chamber Temp
+                    layout: horizontal
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.x1c_00m09a410500788_druckfortschritt
+                    name: Progress
+                    icon: mdi:progress-helper
+                  - type: custom:mushroom-template-card
+                    primary: Layer
+                    icon_color: var(--rgb-state-entity)
+                    secondary: >-
+                      {{states('sensor.x1c_00m09a410500788_aktuelle_schicht')}} /
+                      {{states('sensor.x1c_00m09a410500788_gesamtzahl_der_schchten')}}
+                    icon: mdi:layers
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.x1c_00m09a410500788_druckstatus
+                    # sensor.x1c_00m09a410500788_current_stage --> ..._aktueller_arbeitsschritt oder sensor.x1c_00m09a410500788_druckstatus
+                    name: Stage
+                    icon: mdi:state-machine
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.x1c_00m09a410500788_startzeit
+                    name: Start Time
+                    secondary_info: last-changed
+                    icon: mdi:clock-start
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.x1c_00m09a410500788_vrs_fertigstellung
+                    name: End Time
+                    icon: mdi:clock-end
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.x1c_00m09a410500788_verbleibende_zeit
+                    name: Remaining
+              - type: custom:mushroom-fan-card
+                entity: fan.x1c_00m09a410500788_bauteillufter
+                name: Aux Fan
+                icon_animation: true
+                show_percentage_control: true
+                fill_container: false
+                layout: horizontal
+              - type: custom:mushroom-fan-card
+                entity: fan.x1c_00m09a410500788_druckraumlufter
+                name: Chamber Fan
+                icon_animation: true
+                show_percentage_control: true
+                fill_container: false
+                layout: horizontal
+              - type: custom:mushroom-fan-card
+                entity: fan.x1c_00m09a410500788_druckkopflufter
+                name: Part Cooling Fan
+                icon_animation: true
+                show_percentage_control: true
+                fill_container: false
+                layout: horizontal
