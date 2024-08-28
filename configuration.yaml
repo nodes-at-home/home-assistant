@@ -81,15 +81,12 @@ frontend:
 lovelace:
     mode: yaml
     resources:
-      # https://github.com/thomasloven/lovelace-card-mod
-      - url: /local/custom_lovelace/lovelace-card-mod/card-mod.js
+      # https://github.com/thomasloven/lovelace-card-mod (hacs)
+      - url: /hacsfiles/lovelace-card-mod/card-mod.js
         type: module
-      # https://github.com/ExperienceLovelace/ha-floorplan
-      - url: /local/custom_lovelace/ha-floorplan/floorplan.js
+      # https://github.com/ExperienceLovelace/ha-floorplan (hacs)
+      - url: /hacsfiles/ha-floorplan/floorplan.js
         type: module
-      # https://github.com/Madelena/Metrology-for-Hass
-      - url: /local/themes/styles.css
-        type: css
       # https://github.com/thomasloven/lovelace-state-switch
       - url: /local/custom_lovelace/lovelace-state-switch/state-switch.js
         type: module

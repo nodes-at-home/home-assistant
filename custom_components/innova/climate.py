@@ -11,7 +11,7 @@ from homeassistant.components.climate.const import (FAN_AUTO, FAN_HIGH,
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (ATTR_TEMPERATURE, PRECISION_HALVES,
                                  PRECISION_TENTHS, PRECISION_WHOLE,
-                                 TEMP_CELSIUS)
+                                 UnitOfTemperature)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -46,6 +46,7 @@ class InnovaEntity(CoordinatorEntity[InnovaCoordinator], ClimateEntity):
 
     def __init__(self, coordinator: InnovaCoordinator):
         """Initialize the thermostat."""
+        self._enable_turn_on_off_backwards_compatibility = False
         super().__init__(coordinator)
         self._device_info = InnovaDeviceInfo(self.coordinator.innova)
 
@@ -62,6 +63,9 @@ class InnovaEntity(CoordinatorEntity[InnovaCoordinator], ClimateEntity):
             features |= ClimateEntityFeature.FAN_MODE
         if self.coordinator.innova.supports_preset:
             features |= ClimateEntityFeature.PRESET_MODE
+
+        features |= ClimateEntityFeature.TURN_ON
+        features |= ClimateEntityFeature.TURN_OFF
 
         return features
 
@@ -97,7 +101,7 @@ class InnovaEntity(CoordinatorEntity[InnovaCoordinator], ClimateEntity):
     @property
     def temperature_unit(self):
         """Return the unit of measurement."""
-        return TEMP_CELSIUS
+        return UnitOfTemperature.CELSIUS
 
     @property
     def current_temperature(self) -> float:
@@ -174,7 +178,6 @@ class InnovaEntity(CoordinatorEntity[InnovaCoordinator], ClimateEntity):
     def hvac_modes(self):
         """Return available HVAC modes."""
         modes = [HVACMode.OFF]
-        mode: Mode
         for mode in self.coordinator.innova.supported_modes:
             if mode.is_cooling:
                 modes.append(HVACMode.COOL)
@@ -202,10 +205,7 @@ class InnovaEntity(CoordinatorEntity[InnovaCoordinator], ClimateEntity):
 
     @property
     def fan_modes(self) -> list[str] | None:
-        modes = []
-        for fan in self.coordinator.innova.supported_fan_speeds:
-            modes.append(FAN_MAPPINGS[fan])
-        return modes
+        return [FAN_MAPPINGS[fan] for fan in self.coordinator.innova.supported_fan_speeds]
 
     @property
     def fan_mode(self) -> str | None:
@@ -270,4 +270,12 @@ class InnovaEntity(CoordinatorEntity[InnovaCoordinator], ClimateEntity):
         if (temperature := kwargs.get(ATTR_TEMPERATURE)) is None:
             return
         await self.coordinator.innova.set_temperature(temperature)
+        self.coordinator.async_update_listeners()
+
+    async def async_turn_on(self) -> None:
+        await self.coordinator.innova.power_on()
+        self.coordinator.async_update_listeners()
+
+    async def async_turn_off(self) -> None:
+        await self.coordinator.innova.power_off()
         self.coordinator.async_update_listeners()
