@@ -5,9 +5,10 @@
 title: !env_var HA_TITLE
 views:
 
-  - title: Überblick
-    path: home
+  - title: Überblick alt
+    path: home_old
     panel: true
+    visible: false
     cards:
       - type: vertical-stack
         cards:
@@ -426,10 +427,9 @@ views:
                       - type: markdown
                         content: " "
 
-  - title: Überblick2
-    path: home2
+  - title: Überblick
+    path: home
     panel: false
-    visible: false
     badges:
       - entity: person.andreas
         display_type: complete
@@ -458,7 +458,7 @@ views:
             action: more-info
       - type: custom:mushroom-template-badge
         entity: binary_sensor.grid_state
-        content: Netz
+        content: Strom
         icon: "{{ state_attr ( entity, 'icon' )}}"
         color: "{{ state_attr ( entity, 'icon_color' )}}"
         tap_action:
@@ -482,13 +482,13 @@ views:
         display_type: complete
       - type: custom:mushroom-template-badge
         entity: sensor.ups_status
-        content: Batterie
+        content: USV
         icon: mdi:power-plug-battery
         color: "{{ iif ( is_state ( entity, 'Online' ), 'green', 'red' ) }}"
         tap_action:
             action: more-info
-      - entity: binary_sensor.gardena_smart_system_connection
-        display_type: complete
+      #- entity: binary_sensor.gardena_smart_system_connection
+      #  display_type: complete
       - entity: sensor.cpu_temp
         icon: mdi:server-outline
         color: silver
@@ -506,158 +506,201 @@ views:
                 forecast_type: daily
           - type: horizontal-stack
             cards:
-              - type: sensor
+              - type: custom:mushroom-entity-card
                 entity: sensor.dht22_terrace_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                icon: mdi:show_chart
+                layout: vertical
+                icon: mdi:thermometer
+              - type: custom:mushroom-entity-card
                 entity: sensor.dht22_lounge_pressure
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                # entity: sensor.ds18b20_pool_temperature
+                layout: vertical
+                icon: mdi:gauge
+              - type: custom:mushroom-entity-card
                 entity: sensor.tileboard_temperature_template
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
+                layout: vertical
+                icon: mdi:thermometer
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
                 entity: sensor.boiler_wwcurtemp
                 name: Warmwasser
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
+                layout: vertical
+                icon: mdi:thermometer
+              - type: custom:mushroom-entity-card
                 entity: sensor.dht11_utilityroom_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
-          - type: horizontal-stack
-            cards:
-              - type: thermostat
-                entity: climate.office
-                name: Büro
-              - type: thermostat
-                entity: climate.bedroom
-                name: Schlafzimmer
-              - type: thermostat
-                entity: climate.nursery
-                name: Kinderzimmer
-              - type: thermostat
-                entity: climate.thermostat_hc1
-                name: Heizung
-                card_mod:
-                    style: |
-                        ha-card {
-                            line-height: 350%
-                        }
-          - type: horizontal-stack
-            cards:
-              - type: media-control
-                entity: media_player.sony_kd_55ag9
+                layout: vertical
+                icon: mdi:thermometer
               - type: markdown
                 content: " "
+      - type: vertical-stack
+        cards:
           - type: horizontal-stack
             cards:
-              - type: custom:state-switch
-                entity: >
-                  {% set cam = 'galerie' %}
-                  {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
-                states:
-                  "stream":
-                    type: picture-entity
-                    entity: camera.galerie
-                    double_tap_action:
-                      action: url
-                      url_path: http://esp32-cam-1
-                  "off":
-                    type: button
-                    name: Galerie
-                    icon: mdi:camera-off-outline
-                    tap_action:
-                      action: none
-                    hold_action:
-                      action: none
-                    double_tap_action:
-                      action: none
-                    more_info:
-                      action: none
-              - type: custom:state-switch
-                entity: >
-                  {% set cam = 'esszimmer' %}
-                  {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
-                states:
-                  "stream":
-                    type: picture-entity
-                    entity: camera.esszimmer
-                    double_tap_action:
-                      action: url
-                      url_path: http://esp32-cam-2
-                  "off":
-                    type: button
-                    name: Esszimmer
-                    icon: mdi:camera-off-outline
-                    tap_action:
-                      action: none
-                    hold_action:
-                      action: none
-                    double_tap_action:
-                      action: none
-                    more_info:
-                      action: none
-              - type: custom:state-switch
-                entity: >
-                  {% set cam = 'hauswirtschaftsraum' %}
-                  {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
-                states:
-                  "stream":
-                    type: picture-entity
-                    entity: camera.hauswirtschaftsraum
-                    double_tap_action:
-                      action: url
-                      url_path: http://esp32-cam-3
-                    card_mod:
-                      style: |
-                        hui-image{
-                          transform: rotate(-90deg);
-                        }
-                  "off":
-                    type: button
-                    name: Hauswirtschaftsraum
-                    icon: mdi:camera-off-outline
-                    tap_action:
-                      action: none
-                    hold_action:
-                      action: none
-                    double_tap_action:
-                      action: none
-                    more_info:
-                      action: none
-              - type: custom:state-switch
-                entity: >
-                  {% set cam = 'garage' %}
-                  {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
-                states:
-                  "stream":
-                    type: picture-entity
-                    entity: camera.garage
-                    double_tap_action:
-                      action: url
-                      url_path: http://esp32-cam-4
-                  "off":
-                    type: button
-                    name: Garage
-                    icon: mdi:camera-off-outline
-                    tap_action:
-                      action: none
-                    hold_action:
-                      action: none
-                    double_tap_action:
-                      action: none
-                    more_info:
-                      action: none
+              - type: tile
+                entity: climate.office
+                name: Büro
+                vertical: true
+                features:
+                  - type: "target-temperature"
+                  - type: "climate-hvac-modes"
+                    style: icons
+                    hvac_modes:
+                      - cool
+                      - "off"
+              - type: tile
+                entity: climate.bedroom
+                name: Schlafzimmer
+                vertical: true
+                features:
+                  - type: "target-temperature"
+                  - type: "climate-hvac-modes"
+                    style: icons
+                    hvac_modes:
+                      - cool
+                      - "off"
+          - type: horizontal-stack
+            cards:
+              - type: tile
+                entity: climate.nursery
+                name: Kinderzimmer
+                vertical: true
+                features:
+                  - type: "target-temperature"
+                  - type: "climate-hvac-modes"
+                    style: icons
+                    hvac_modes:
+                      - cool
+                      - "off"
+              - type: tile
+                entity: climate.thermostat_hc1
+                name: Heizung
+                vertical: true
+                features:
+                  - type: "target-temperature"
+                  - type: "climate-hvac-modes"
+                    style: icons
+                    hvac_modes:
+                      - auto
+                      - "off"
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-media-player-card
+                entity: media_player.sony_kd_55ag9
+                layout: vertical
+                icon: mdi:television
+                media_controls:
+                  #- repeat
+                  #- next
+                  - play_pause_stop
+                  #- previous
+                  #- shuffle
+                  - on_off
+                volume_controls:
+                  - volume_mute
+                  - volume_set
+                  - volume_buttons
+                show_volume_level: true
+                use_media_info: true
+              - type: markdown
+                content: " "
+          #- type: horizontal-stack
+          #  cards:
+          #    - type: custom:state-switch
+          #      entity: >
+          #        {% set cam = 'galerie' %}
+          #        {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+          #      states:
+          #        "stream":
+          #          type: picture-entity
+          #          entity: camera.galerie
+          #          double_tap_action:
+          #            action: url
+          #            url_path: http://esp32-cam-1
+          #        "off":
+          #          type: button
+          #          name: Galerie
+          #          icon: mdi:camera-off-outline
+          #          tap_action:
+          #            action: none
+          #          hold_action:
+          #            action: none
+          #          double_tap_action:
+          #            action: none
+          #          more_info:
+          #            action: none
+          #    - type: custom:state-switch
+          #      entity: >
+          #        {% set cam = 'esszimmer' %}
+          #        {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+          #      states:
+          #        "stream":
+          #          type: picture-entity
+          #          entity: camera.esszimmer
+          #          double_tap_action:
+          #            action: url
+          #            url_path: http://esp32-cam-2
+          #        "off":
+          #          type: button
+          #          name: Esszimmer
+          #          icon: mdi:camera-off-outline
+          #          tap_action:
+          #            action: none
+          #          hold_action:
+          #            action: none
+          #          double_tap_action:
+          #            action: none
+          #          more_info:
+          #            action: none
+          #    - type: custom:state-switch
+          #      entity: >
+          #        {% set cam = 'hauswirtschaftsraum' %}
+          #        {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+          #      states:
+          #        "stream":
+          #          type: picture-entity
+          #          entity: camera.hauswirtschaftsraum
+          #          double_tap_action:
+          #            action: url
+          #            url_path: http://esp32-cam-3
+          #          card_mod:
+          #            style: |
+          #              hui-image{
+          #                transform: rotate(-90deg);
+          #              }
+          #        "off":
+          #          type: button
+          #          name: Hauswirtschaftsraum
+          #          icon: mdi:camera-off-outline
+          #          tap_action:
+          #            action: none
+          #          hold_action:
+          #            action: none
+          #          double_tap_action:
+          #            action: none
+          #          more_info:
+          #            action: none
+          #    - type: custom:state-switch
+          #      entity: >
+          #        {% set cam = 'garage' %}
+          #        {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
+          #      states:
+          #        "stream":
+          #          type: picture-entity
+          #          entity: camera.garage
+          #          double_tap_action:
+          #            action: url
+          #            url_path: http://esp32-cam-4
+          #        "off":
+          #          type: button
+          #          name: Garage
+          #          icon: mdi:camera-off-outline
+          #          tap_action:
+          #            action: none
+          #          hold_action:
+          #            action: none
+          #          double_tap_action:
+          #            action: none
+          #          more_info:
+          #            action: none
 
       - type: vertical-stack
         cards:
