@@ -2296,7 +2296,6 @@ views:
     visible: true
     cards:
       - type: vertical-stack
-        #title: X1C
         cards:
           - type: picture-elements
             elements:
@@ -2638,8 +2637,8 @@ views:
                   ha-card {
                     margin-left: auto;
                     margin-right: auto;
-                    width: 60%;
-                    height: 60%;
+                    width: 50%;
+                    height: 50%;
                     background: none !important;
                     border: none !important;
                     box-shadow: none !important;
@@ -2647,23 +2646,28 @@ views:
                     --tray_vt_bg: {% if is_state_attr('sensor.x1c_00m09a410500788_externalspool_externe_spule', 'active', true) %} rgba(255, 255, 126, 0.5); {% else %} rgba(0,0,0,0.5); {% endif %}
                   }
       - type: vertical-stack
-        #title: Control
         cards:
-          - type: vertical-stack
+          - type: custom:gap-card
+          - type: custom:button-card
+            entity: sensor.x1c_00m09a410500788_name_der_aufgabe
+            show_icon: false
+            show_name: false
+            show_state: true
+            color_type: label-card
+            layout: name_state
+            styles:
+              name:
+                - font-weight: bold
+          - type: custom:gap-card
+            height: 10
+          - type: horizontal-stack
             cards:
               - type: custom:button-card
                 entity: switch.sonoff_k8200_socket
                 name: X1C
                 icon: mdi:printer-3d
-                show_icon: true
-                show_state: false
-                layout: icon_name
                 tap_action:
-                  action: |
-                    [[[
-                      if (entity) return 'toggle';
-                      else return 'none';
-                    ]]]
+                  action: toggle
                 confirmation:
                   text: Toggle Printer Power?
                 state:
@@ -2673,335 +2677,278 @@ views:
                   - value: 'off'
                     icon: mdi:power
                     color: grey
-                styles:
-                  grid:
-                    - grid-template-columns: |
-                        [[[
-                          if (entity) return '20% 1fr 20%';
-                          else return '20% 1fr 20%';
-                        ]]]
-                  icon:
-                    - width: |
-                        [[[
-                          if (entity) return '65px';
-                          else return '0px';
-                        ]]]
-                    - padding-left: 20px
-                  name:
-                    - text-wrap: balance
-                    - font-size: 1.4em
                 card_mod:
                   style: |
                     ha-card {
-                      background: rgba(0,0,0,0);
-                      border: none;
                       box-shadow: none !important;
+                      background: rgba(0,0,0,0);
+                      #border: none;
                     }
-              - type: custom:gap-card
-                height: 5
-              - type: custom:hui-element
-                card_type: horizontal-stack
-                cards:
-                  - type: custom:hui-element
-                    card_type: button
-                    entity: select.x1c_00m09a410500788_druckgeschwindigkeit
-                    name: Silent
-                    icon: mdi:speedometer-slow
-                    tap_action:
-                      action: call-service
-                      service: select.select_option
-                      data:
-                        option: silent
-                      target:
-                        entity_id: select.x1c_00m09a410500788_druckgeschwindigkeit
-                    card_mod:
-                      style: |
-                        ha-card {
-                          box-shadow: none !important;
-                          background-color: rgba(0,0,0,0);
-                          border: none;
-                          --pbs-button-color: {% if is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'Silent') or is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'silent') %} yellow; {% else %} grey; {% endif %}
-                          --paper-item-icon-color: {% if is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'Silent') or is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'silent') %} yellow; {% else %} grey; {% endif %}
-                        }
-                  - type: custom:hui-element
-                    card_type: button
-                    entity: select.x1c_00m09a410500788_druckgeschwindigkeit
-                    name: Standard
-                    icon: mdi:speedometer-medium
-                    tap_action:
-                      action: call-service
-                      service: select.select_option
-                      data:
-                        option: standard
-                      target:
-                        entity_id: select.x1c_00m09a410500788_druckgeschwindigkeit
-                    card_mod:
-                      style: |
-                        ha-card {
-                          box-shadow: none !important;
-                          background-color: rgba(0,0,0,0);
-                          border: none;
-                          --paper-item-icon-color: {% if is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'Standard') or is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'standard') %} yellow; {% else %} grey; {% endif %}
-                        }
-                  - type: custom:hui-element
-                    card_type: button
-                    entity: select.x1c_00m09a410500788_druckgeschwindigkeit
-                    name: Sport
-                    icon: mdi:speedometer
-                    tap_action:
-                      action: call-service
-                      service: select.select_option
-                      data:
-                        option: sport
-                      target:
-                        entity_id: select.x1c_00m09a410500788_druckgeschwindigkeit
-                    card_mod:
-                      style: |
-                        ha-card {
-                          box-shadow: none !important;
-                          background-color: rgba(0,0,0,0);
-                          border: none;
-                          --paper-item-icon-color: {% if is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'Sport') or is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'sport') %} yellow; {% else %} grey; {% endif %}
-                        }
-                  - type: custom:hui-element
-                    card_type: button
-                    entity: select.x1c_00m09a410500788_druckgeschwindigkeit
-                    name: Ludicrous
-                    icon: mdi:speedometer
-                    tap_action:
-                      action: call-service
-                      service: select.select_option
-                      data:
-                        option: ludicrous
-                      target:
-                        entity_id: select.x1c_00m09a410500788_druckgeschwindigkeit
-                    card_mod:
-                      style: |
-                        ha-card {
-                          box-shadow: none !important;
-                          background-color: rgba(0,0,0,0);
-                          border: none;
-                          --paper-item-icon-color: {% if is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'Ludicrous') or is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'ludicrous') %} yellow; {% else %} grey; {% endif %}
-                        }
-              - type: custom:gap-card
-                height: 5
-              - type: custom:hui-element
-                card_type: horizontal-stack
-                cards:
-                  - type: custom:button-card
+              - type: custom:button-card
+                entity: sensor.x1c_00m09a410500788_druckstatus
+                name: |
+                  [[[
+                      if ( entity.state == 'running' )
+                        return "Pause";
+                      else if ( entity == 'pause' )
+                        return "Start";
+                      else
+                        return '';
+                  ]]]
+                state:
+                  - value: running
+                    icon: mdi:pause
+                    color: orange
+                  - value: pause
+                    icon: mdi:play
+                    color: orange
+                  - value: offline
+                    icon: mdi:void
+                    color: grey
+                  - value: idle
+                    icon: mdi:void
+                    color: grey
+                  - value: failed
+                    icon: mdi:void
+                    color: grey
+                  - value: finish
+                    icon: mdi:void
+                    color: grey
+                  - value: prepare
+                    icon: mdi:void
+                    color: grey
+                tap_action:
+                  action: >
+                    [[[
+                        if ( entity.state == 'running' || entity.state == 'pause' )
+                          return "call-service";
+                        else
+                          return "none";
+                    ]]]
+                  service: button.press
+                  service_data:
                     variables:
                       pause_entity: button.x1c_00m09a410500788_druckvorgang_anhalten
                       start_entity: button.x1c_00m09a410500788_druckvorgang_fortsetzen
-                    entity: sensor.x1c_00m09a410500788_druckstatus
-                    name: |
-                      [[[  if (entity.state.toUpperCase() == 'RUNNING') return "Pause";
-                      else if (entity.state.toUpperCase() == 'PAUSE') return "Resume";
-                      else return '';  ]]]
-                    state:
-                      - value: RUNNING
-                        icon: mdi:pause
-                        color: orange
-                      - value: running
-                        icon: mdi:pause
-                        color: orange
-                      - value: PAUSE
-                        icon: mdi:play
-                        color: orange
-                      - value: pause
-                        icon: mdi:play
-                        color: orange
-                      - value: OFFLINE
-                        icon: mdi:void
-                        color: grey
-                      - value: offline
-                        icon: mdi:void
-                        color: grey
-                      - value: IDLE
-                        icon: mdi:void
-                        color: grey
-                      - value: idle
-                        icon: mdi:void
-                        color: grey
-                      - value: FAILED
-                        icon: mdi:void
-                        color: grey
-                      - value: failed
-                        icon: mdi:void
-                        color: grey
-                      - value: FINISH
-                        icon: mdi:void
-                        color: grey
-                      - value: finish
-                        icon: mdi:void
-                        color: grey
-                      - value: PREPARE
-                        icon: mdi:void
-                        color: grey
-                      - value: prepare
-                        icon: mdi:void
-                        color: grey
-                    tap_action:
-                      action: >
-                        [[[ if (entity.state.toUpperCase() == 'RUNNING' || entity.state.toUpperCase() == 'PAUSE') return
-                        "call-service";
-
-                        else return "none";
-
-                        ]]]
-                      service: button.press
-                      service_data:
-                        entity_id: >
-                          [[[ if (states['sensor.x1c_00m09a410500788_druckstatus'].state.toUpperCase() == 'RUNNING')
-                              return variables.pause_entity;
-                              if (states['sensor.x1c_00m09a410500788_druckstatus'].state.toUpperCase() == 'PAUSE')
-                              return variables.start_entity;
-                            else return "";
-                            ]]]
-                    card_mod:
-                      style: |
-                        ha-card {
-                          box-shadow: none !important;
-                          background-color: rgba(0,0,0,0);
-                          border: none;
-                          --paper-item-icon-color: {% if is_state('sensor.x1c_00m09a410500788_druckstatus', 'RUNNING') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'PAUSE') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'running') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'pause') %} orange; {% else %} grey; {% endif %}
-                        }
-                  - type: custom:gap-card
-                  - type: custom:button-card
-                    entity: sensor.x1c_00m09a410500788_druckstatus
-                    name: |
-                      [[[  if (entity.state.toUpperCase() == 'RUNNING') return "Cancel";
-                      else if (entity.state.toUpperCase() =='PAUSE') return "Cancel";
-                      else return '';  ]]]
-                    confirmation:
-                      text: Cancel Print?
-                    state:
-                      - value: RUNNING
-                        icon: mdi:cancel
-                        color: red
-                      - value: running
-                        icon: mdi:cancel
-                        color: red
-                      - value: PAUSE
-                        icon: mdi:cancel
-                        color: red
-                      - value: pause
-                        icon: mdi:cancel
-                        color: red
-                      - value: OFFLINE
-                        icon: mdi:void
-                        color: grey
-                      - value: offline
-                        icon: mdi:void
-                        color: grey
-                      - value: IDLE
-                        icon: mdi:void
-                        color: grey
-                      - value: idle
-                        icon: mdi:void
-                        color: grey
-                      - value: FAILED
-                        icon: mdi:void
-                        color: grey
-                      - value: failed
-                        icon: mdi:void
-                        color: grey
-                      - value: FINISH
-                        icon: mdi:void
-                        color: grey
-                      - value: finish
-                        icon: mdi:void
-                        color: grey
-                      - value: PREPARE
-                        icon: mdi:void
-                        color: grey
-                      - value: prepare
-                        icon: mdi:void
-                        color: grey
-                    tap_action:
-                      action: >
-                        [[[ if (entity.state.toUpperCase() == 'RUNNING' || entity.state.toUpperCase() == 'PAUSE') return
-                        "call-service";  else return "none"; ]]]
-                      service: button.press
-                      service_data:
-                        entity_id: button.x1c_00m09a410500788_druckvorgang_beenden
-                    card_mod:
-                      style: |
-                        ha-card {
-                          box-shadow: none !important;
-                          background-color: rgba(0,0,0,0);
-                          border: none;
-                          --paper-item-icon-color: {% if is_state('sensor.x1c_00m09a410500788_druckstatus', 'RUNNING') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'PAUSE') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'running') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'pause') %} red; {% else %} grey; {% endif %}
-                        }
-          - type: vertical-stack
+                    entity_id: >
+                      [[[
+                          if ( entity.state == 'running' )
+                            return variables.pause_entity;
+                          if ( entity.state == 'pause' )
+                            return variables.start_entity;
+                          else
+                            return "";
+                      ]]]
+                card_mod:
+                  style: |
+                    ha-card {
+                      box-shadow: none !important;
+                      background-color: rgba(0,0,0,0);
+                      #border: none;
+                      #--paper-item-icon-color: {% if is_state('sensor.x1c_00m09a410500788_druckstatus', 'RUNNING') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'PAUSE') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'running') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'pause') %} orange; {% else %} grey; {% endif %}
+                    }
+              - type: custom:button-card
+                entity: sensor.x1c_00m09a410500788_druckstatus
+                name: |
+                  [[[
+                        if ( entity.state == 'running' || entity.state == 'pause' )
+                        return "Abbruch";
+                      else
+                        return '';
+                  ]]]
+                confirmation:
+                  text: Druck abbrechen?
+                state:
+                  - value: running
+                    icon: mdi:stop
+                    color: red
+                  - value: pause
+                    icon: mdi:stop
+                    color: red
+                  - value: offline
+                    icon: mdi:void
+                    color: grey
+                  - value: idle
+                    icon: mdi:void
+                    color: grey
+                  - value: failed
+                    icon: mdi:void
+                    color: grey
+                  - value: finish
+                    icon: mdi:void
+                    color: grey
+                  - value: prepare
+                    icon: mdi:void
+                    color: grey
+                tap_action:
+                  action: >
+                    [[[
+                        if ( entity.state == 'running' || entity.state == 'pause')
+                          return "call-service";
+                        else
+                          return "none";
+                    ]]]
+                  service: button.press
+                  service_data:
+                    entity_id: button.x1c_00m09a410500788_druckvorgang_beenden
+                card_mod:
+                  style: |
+                    ha-card {
+                      box-shadow: none !important;
+                      background-color: rgba(0,0,0,0);
+                      #border: none;
+                      #--paper-item-icon-color: {% if is_state('sensor.x1c_00m09a410500788_druckstatus', 'RUNNING') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'PAUSE') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'running') or is_state('sensor.x1c_00m09a410500788_druckstatus', 'pause') %} red; {% else %} grey; {% endif %}
+                    }
+          - type: custom:gap-card
+            height: 10
+          - type: horizontal-stack
+            cards:
+              - type: button
+                entity: select.x1c_00m09a410500788_druckgeschwindigkeit
+                name: Silent
+                icon: mdi:speedometer-slow
+                tap_action:
+                  action: call-service
+                  service: select.select_option
+                  data:
+                    option: silent
+                  target:
+                    entity_id: select.x1c_00m09a410500788_druckgeschwindigkeit
+                card_mod:
+                  style: |
+                    ha-card {
+                      box-shadow: none !important;
+                      background-color: rgba(0,0,0,0);
+                      #border: none;
+                      --paper-item-icon-color: {% if is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'Silent') or is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'silent') %} yellow; {% else %} grey; {% endif %}
+                    }
+              - type: button
+                entity: select.x1c_00m09a410500788_druckgeschwindigkeit
+                name: Standard
+                icon: mdi:speedometer-medium
+                tap_action:
+                  action: call-service
+                  service: select.select_option
+                  data:
+                    option: standard
+                  target:
+                    entity_id: select.x1c_00m09a410500788_druckgeschwindigkeit
+                card_mod:
+                  style: |
+                    ha-card {
+                      box-shadow: none !important;
+                      background-color: rgba(0,0,0,0);
+                      #border: none;
+                      --paper-item-icon-color: {% if is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'Standard') or is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'standard') %} yellow; {% else %} grey; {% endif %}
+                    }
+              - type: button
+                entity: select.x1c_00m09a410500788_druckgeschwindigkeit
+                name: Sport
+                icon: mdi:speedometer
+                tap_action:
+                  action: call-service
+                  service: select.select_option
+                  data:
+                    option: sport
+                  target:
+                    entity_id: select.x1c_00m09a410500788_druckgeschwindigkeit
+                card_mod:
+                  style: |
+                    ha-card {
+                      box-shadow: none !important;
+                      background-color: rgba(0,0,0,0);
+                      #border: none;
+                      --paper-item-icon-color: {% if is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'Sport') or is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'sport') %} yellow; {% else %} grey; {% endif %}
+                    }
+              - type: button
+                entity: select.x1c_00m09a410500788_druckgeschwindigkeit
+                name: Ludicrous
+                icon: mdi:speedometer
+                tap_action:
+                  action: call-service
+                  service: select.select_option
+                  data:
+                    option: ludicrous
+                  target:
+                    entity_id: select.x1c_00m09a410500788_druckgeschwindigkeit
+                card_mod:
+                  style: |
+                    ha-card {
+                      box-shadow: none !important;
+                      background-color: rgba(0,0,0,0);
+                      #border: none;
+                      --paper-item-icon-color: {% if is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'Ludicrous') or is_state('select.x1c_00m09a410500788_druckgeschwindigkeit', 'ludicrous') %} yellow; {% else %} grey; {% endif %}
+                    }
+          - type: custom:gap-card
+            height: 10
+          - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
-                entity: sensor.x1c_00m09a410500788_name_der_aufgabe
-                name: Task
-                icon: mdi:clipboard-text
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mushroom-entity-card
-                    entity: sensor.x1c_00m09a410500788_temperatur_der_duse
-                    name: Nozzle Temp
-                    layout: horizontal
-                  - type: custom:mushroom-entity-card
-                    entity: sensor.x1c_00m09a410500788_druckbetttemperatur
-                    name: Bed Temp
-                    layout: horizontal
-                  - type: custom:mushroom-entity-card
-                    entity: sensor.x1c_00m09a410500788_temperatur_im_druckraum
-                    name: Chamber Temp
-                    layout: horizontal
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mushroom-entity-card
-                    entity: sensor.x1c_00m09a410500788_druckfortschritt
-                    name: Progress
-                    icon: mdi:progress-helper
-                  - type: custom:mushroom-template-card
-                    primary: Layer
-                    icon_color: var(--rgb-state-entity)
-                    secondary: >-
-                      {{states('sensor.x1c_00m09a410500788_aktuelle_schicht')}} /
-                      {{states('sensor.x1c_00m09a410500788_gesamtzahl_der_schchten')}}
-                    icon: mdi:layers
-                  - type: custom:mushroom-entity-card
-                    entity: sensor.x1c_00m09a410500788_druckstatus
-                    # sensor.x1c_00m09a410500788_current_stage --> ..._aktueller_arbeitsschritt oder sensor.x1c_00m09a410500788_druckstatus
-                    name: Stage
-                    icon: mdi:state-machine
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mushroom-entity-card
-                    entity: sensor.x1c_00m09a410500788_startzeit
-                    name: Start Time
-                    secondary_info: last-changed
-                    icon: mdi:clock-start
-                  - type: custom:mushroom-entity-card
-                    entity: sensor.x1c_00m09a410500788_vrs_fertigstellung
-                    name: End Time
-                    icon: mdi:clock-end
-                  - type: custom:mushroom-entity-card
-                    entity: sensor.x1c_00m09a410500788_verbleibende_zeit
-                    name: Remaining
-              - type: custom:mushroom-fan-card
-                entity: fan.x1c_00m09a410500788_bauteillufter
-                name: Aux Fan
-                icon_animation: true
-                show_percentage_control: true
-                fill_container: false
+                entity: sensor.x1c_00m09a410500788_temperatur_der_duse
+                name: Nozzle Temp
                 layout: horizontal
-              - type: custom:mushroom-fan-card
-                entity: fan.x1c_00m09a410500788_druckraumlufter
-                name: Chamber Fan
-                icon_animation: true
-                show_percentage_control: true
-                fill_container: false
+              - type: custom:mushroom-entity-card
+                entity: sensor.x1c_00m09a410500788_druckbetttemperatur
+                name: Bed Temp
                 layout: horizontal
+              - type: custom:mushroom-entity-card
+                entity: sensor.x1c_00m09a410500788_temperatur_im_druckraum
+                name: Chamber Temp
+                layout: horizontal
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.x1c_00m09a410500788_druckfortschritt
+                name: Progress
+                icon: mdi:progress-helper
+              - type: custom:mushroom-template-card
+                primary: Layer
+                icon_color: var(--rgb-state-entity)
+                secondary: >-
+                  {{states('sensor.x1c_00m09a410500788_aktuelle_schicht')}} /
+                  {{states('sensor.x1c_00m09a410500788_gesamtzahl_der_schchten')}}
+                icon: mdi:layers
+              - type: custom:mushroom-entity-card
+                entity: sensor.x1c_00m09a410500788_druckstatus
+                # sensor.x1c_00m09a410500788_current_stage --> ..._aktueller_arbeitsschritt oder sensor.x1c_00m09a410500788_druckstatus
+                name: Stage
+                icon: mdi:state-machine
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.x1c_00m09a410500788_startzeit
+                name: Start Time
+                secondary_info: last-changed
+                icon: mdi:clock-start
+              - type: custom:mushroom-entity-card
+                entity: sensor.x1c_00m09a410500788_vrs_fertigstellung
+                name: End Time
+                icon: mdi:clock-end
+              - type: custom:mushroom-entity-card
+                entity: sensor.x1c_00m09a410500788_verbleibende_zeit
+                name: Remaining
+          - type: custom:gap-card
+            height: 10
+          - type: horizontal-stack
+            cards:
               - type: custom:mushroom-fan-card
                 entity: fan.x1c_00m09a410500788_druckkopflufter
-                name: Part Cooling Fan
+                name: Part
                 icon_animation: true
                 show_percentage_control: true
                 fill_container: false
-                layout: horizontal
+                layout: vertical
+              - type: custom:mushroom-fan-card
+                entity: fan.x1c_00m09a410500788_bauteillufter
+                name: Aux
+                icon_animation: true
+                show_percentage_control: true
+                fill_container: false
+                layout: vertical
+              - type: custom:mushroom-fan-card
+                entity: fan.x1c_00m09a410500788_druckraumlufter
+                name: Chamber
+                icon_animation: true
+                show_percentage_control: true
+                fill_container: false
+                layout: vertical
