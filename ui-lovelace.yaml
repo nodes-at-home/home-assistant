@@ -1766,12 +1766,6 @@ views:
               - entity: sensor.electricity_meter_daily_in
                 name: täglich
                 icon: mdi:transmission-tower-export
-              - type: conditional
-                conditions:
-                  - entity: input_boolean.show_debug_fields
-                    state: "on"
-                row:
-                    entity: sensor.sh10rt_master_daily_imported_energy
               - entity: sensor.electricity_meter_yearly_in
                 name: jährlich
                 icon: mdi:transmission-tower-export
@@ -1783,12 +1777,6 @@ views:
               - entity: sensor.electricity_meter_daily_out
                 name: täglich
                 icon: mdi:transmission-tower-import
-              - type: conditional
-                conditions:
-                  - entity: input_boolean.show_debug_fields
-                    state: "on"
-                row:
-                    entity: sensor.sh10rt_master_daily_exported_energy
               - entity: sensor.electricity_meter_yearly_out
                 name: jährlich
                 icon: mdi:transmission-tower-import
@@ -1810,7 +1798,6 @@ views:
                 name: EPEX
               - entity: sensor.epex_spot_de_lu_net_price
                 name: ostrom (SimplyDynamic)
-
       - type: vertical-stack
         cards:
           - type: gauge
@@ -2009,9 +1996,6 @@ views:
             title: Batterie
             show_header_toggle: false
             entities:
-              # - entity: sensor.battery_power
-                # name: Leistung
-                # icon: mdi:home-battery-outline
               - type: section
                 label: Entladung
               - entity: sensor.battery_meter_daily_out
@@ -2032,30 +2016,37 @@ views:
                 label: State of Charge
               - entity: sensor.sh10rt_master_max_soc
                 name: maximal
-              - entity: sensor.sh10rt_master_min_soc
-                name: minimal
               - entity: sensor.sh10rt_master_reserved_soc_for_backup
                 name: Reserve für Backup
-              - type: section
-                label: Spannungen, Ströme und Leistungen
-              - entity: sensor.sh10rt_master_battery_voltage
-                name: aktuell
-              - entity: sensor.battery_current
-                name: aktuell
-              - entity: sensor.sh10rt_master_bms_max_charging_current
-                name: maximaler Ladestrom
-              - entity: sensor.sh10rt_master_bms_max_discharging_current
-                name: maximaler Entladestrom
-              - entity: sensor.sh10rt_master_battery_charge_start_power
-                name: Ladestartleistung
-              - entity: sensor.sh10rt_master_battery_discharge_start_power
-                name: Entladestartleistung
-              - entity: sensor.sh10rt_master_battery_max_charge_power
-                name: maximale Ladeleistung
-              - entity: sensor.sh10rt_master_battery_max_discharge_power
-                name: maximale Entladeleistung
-              - entity: sensor.sh10rt_master_battery_forced_charge_discharge_power
-                name: Zwangslade-/entladeleistung
+              - entity: sensor.sh10rt_master_min_soc
+                name: minimal
+          - type: conditional
+            conditions:
+              - entity: input_boolean.show_debug_fields
+                state: "on"
+            card:
+                type: entities
+                title: Spannungen, Ströme und Leistungen
+                show_header_toggle: false
+                entities:
+                  - entity: sensor.sh10rt_master_battery_voltage
+                    name: aktuell
+                  - entity: sensor.battery_current
+                    name: aktuell
+                  - entity: sensor.sh10rt_master_bms_max_charging_current
+                    name: maximaler Ladestrom
+                  - entity: sensor.sh10rt_master_bms_max_discharging_current
+                    name: maximaler Entladestrom
+                  - entity: sensor.sh10rt_master_battery_charge_start_power
+                    name: Ladestartleistung
+                  - entity: sensor.sh10rt_master_battery_discharge_start_power
+                    name: Entladestartleistung
+                  - entity: sensor.sh10rt_master_battery_max_charge_power
+                    name: maximale Ladeleistung
+                  - entity: sensor.sh10rt_master_battery_max_discharge_power
+                    name: maximale Entladeleistung
+                  - entity: sensor.sh10rt_master_battery_forced_charge_discharge_power
+                    name: Zwangslade-/entladeleistung
           - type: statistics-graph
             title: SoC letzte 30 Tage
             chart_type: line
