@@ -2684,7 +2684,7 @@ views:
                       else if ( entity == 'pause' )
                         return "Start";
                       else
-                        return '';
+                        return "Idle";
                   ]]]
                 state:
                   - value: running
@@ -2745,7 +2745,7 @@ views:
                         if ( entity.state == 'running' || entity.state == 'pause' )
                         return "Abbruch";
                       else
-                        return '';
+                        return "Idle";
                   ]]]
                 confirmation:
                   text: Druck abbrechen?
