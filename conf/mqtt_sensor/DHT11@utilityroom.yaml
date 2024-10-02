@@ -20,12 +20,6 @@
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value | round ( 1 ) }}'
 
-  - state_topic: nodes@home/sensor/DHT11/utilityroom/value/pressure
-    name: "DHT11@utilityroom_pressure"
-    qos: 0
-    unit_of_measurement: "hPa"
-    value_template: '{{ value_json.value | round ( 0 ) }}'
-
   - state_topic: nodes@home/sensor/DHT11/utilityroom/value/voltage
     name: "DHT11@utilityroom_voltage"
     qos: 0
