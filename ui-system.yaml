@@ -9,8 +9,21 @@ views:
     path: system
     panel: false
     badges:
-      - sensor.log_db_file_size
-      - sensor.cpu_temp
+      - type: custom:mushroom-template-badge
+        entity: group.nodestates_core
+        content: Geräte
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'on' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'on' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: entity
+        entity: sensor.log_db_file_size
+        show_name: true
+        icon: mdi:database
+      - type: entity
+        entity: sensor.cpu_temp
+        show_name: true
+        icon: mdi:memory
     cards:
       - type: entities
         title: Stage
@@ -91,7 +104,692 @@ views:
 
   - title: Geräte
     path: nodes
+    panel: false
+    badges:
+      - type: custom:mushroom-template-badge
+        entity: group.nodestates_core
+        content: Geräte
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'on' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'green' if is_state ( entity, 'on' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: group.nodestates_summer
+        content: Sommer
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'on' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'green' if is_state ( entity, 'on' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: group.nodestates_xmas
+        content: Xmas
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'on' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'green' if is_state ( entity, 'on' ) else 'red' }}"
+        tap_action:
+            action: more-info
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_rfhub_lounge
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity ) }#}
+            #icon: "{{ 'mdi:check' if is_state ( entity, 'on' ) else 'mdi:alert-circle-outline' }}"
+            #icon_color: "{{ 'green' if is_state ( entity, 'on' ) else 'red' }}"
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_dht22_lounge
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_dht22_terrace
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_dht22_roof
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_relay_garage
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_sonoff_utilityroom
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_sonoff_garage
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_shelly_terrace
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/shelly.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_relay_backyard
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wifi-relay.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_sonoff_yardgate
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_relay_dining1
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wifi-relay.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_relay_dining2
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wifi-relay.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_sonoff_bedroom
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_s20.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ttp223_bedroom
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_led_kitchen
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_led.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_gesture_kitchen
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_sonoff_k8200
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_s20.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_sonoff_gallery1
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_s20.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_sonoff_corridor
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_s20.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_electricity_utilityroom
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_pixel_kitchen
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ds18b20_groundfloor
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ds18b20_firstfloor
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_shelly_roof
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/shelly.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_shelly_bath
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/shelly.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_shelly_shower
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/shelly.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_gas_utilityroom
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_led_corridor
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_led.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_soil_garden
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_rain_garden
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_dht11_utilityroom
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_sonoff_pool
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ds18b20_pool
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ds18b20_brewery
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_spindle_fermenter
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_xmastree_dining
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_relay_garden
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ws2812_terrace1
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_led.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ws2812_terrace2
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_led.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ws2812_xmasstar
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_led.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_relay_hydrotower
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ws2812_x1c
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_led.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_pitouch_corridor
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: pitouch
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_tasmota
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_ems_esp
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: ems-esp
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_watermeter
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/wemos_mini.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+
+
+  - title: Geräte
+    path: nodes_old
     panel: true
+    visible: false
     cards:
       - type: horizontal-stack
         cards:
@@ -319,8 +1017,6 @@ views:
                     - automation.indoor_shower_light_trigger_at_sunrise
                     - automation.indoor_shower_light_off_after_timeout
                     - automation.indoor_lights_simulation_off_at_coming_home
-                    - automation.indoor_lights_on_by_button
-                    - automation.indoor_lights_off_by_button
                     - automation.bedroom_lights_toggle
               - type: entities
                 title: Benachrichtigungen
@@ -485,6 +1181,11 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.hydrotower_pump_switching
+              - type: entities
+                title: Geräte
+                show_header_toggle: true
+                entities:
+                    - automation.nodestate
 
   - title: Bosch Smart Home
     path: bsh

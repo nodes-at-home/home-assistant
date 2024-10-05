@@ -1,0 +1,9 @@
+###
+### 04.10.2024
+###
+
+name: 'Xmas'
+all: true
+entities:
+    - binary_sensor.nodestate_xmastree_dining
+    - binary_sensor.nodestate_ws2812_xmasstar

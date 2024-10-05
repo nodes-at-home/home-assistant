@@ -1,0 +1,78 @@
+###
+### 05.10.2024
+###
+
+# template  getting all nodestate entities
+# - {{ states.binary_sensor | selectattr ( 'entity_id', 'search', 'nodestate_' ) | map ( attribute = 'entity_id' ) | list | join ( '\n- ' ) }}
+#
+  - alias: nodestate
+    id: nodestate
+    mode: queued
+    variables:
+      hostname: !env_var PARENT_HOSTNAME
+    triggers:
+      - trigger: state
+        alias: When any nodestate changes
+        entity_id:
+          - binary_sensor.nodestate_rfhub_lounge
+          - binary_sensor.nodestate_dht22_lounge
+          - binary_sensor.nodestate_dht22_terrace
+          - binary_sensor.nodestate_dht22_roof
+          - binary_sensor.nodestate_relay_garage
+          - binary_sensor.nodestate_sonoff_utilityroom
+          - binary_sensor.nodestate_sonoff_garage
+          - binary_sensor.nodestate_shelly_terrace
+          - binary_sensor.nodestate_relay_backyard
+          - binary_sensor.nodestate_sonoff_yardgate
+          - binary_sensor.nodestate_relay_dining1
+          - binary_sensor.nodestate_relay_dining2
+          - binary_sensor.nodestate_sonoff_bedroom
+          - binary_sensor.nodestate_ttp223_bedroom
+          - binary_sensor.nodestate_led_kitchen
+          - binary_sensor.nodestate_gesture_kitchen
+          - binary_sensor.nodestate_sonoff_k8200
+          - binary_sensor.nodestate_sonoff_gallery1
+          - binary_sensor.nodestate_sonoff_corridor
+          - binary_sensor.nodestate_electricity_utilityroom
+          - binary_sensor.nodestate_pixel_kitchen
+          - binary_sensor.nodestate_ds18b20_groundfloor
+          - binary_sensor.nodestate_ds18b20_firstfloor
+          - binary_sensor.nodestate_shelly_roof
+          - binary_sensor.nodestate_shelly_bath
+          - binary_sensor.nodestate_shelly_shower
+          - binary_sensor.nodestate_gas_utilityroom
+          - binary_sensor.nodestate_led_corridor
+          - binary_sensor.nodestate_soil_garden
+          - binary_sensor.nodestate_rain_garden
+          - binary_sensor.nodestate_dht11_utilityroom
+          - binary_sensor.nodestate_sonoff_pool
+          - binary_sensor.nodestate_ds18b20_pool
+          - binary_sensor.nodestate_ds18b20_brewery
+          - binary_sensor.nodestate_spindle_fermenter
+          - binary_sensor.nodestate_xmastree_dining
+          - binary_sensor.nodestate_relay_garden
+          - binary_sensor.nodestate_ws2812_terrace1
+          - binary_sensor.nodestate_ws2812_terrace2
+          - binary_sensor.nodestate_ws2812_xmasstar
+          - binary_sensor.nodestate_relay_hydrotower
+          - binary_sensor.nodestate_ws2812_x1c
+          - binary_sensor.nodestate_pitouch_corridor
+          - binary_sensor.nodestate_tasmota
+          - binary_sensor.nodestate_ems_esp
+          - binary_sensor.nodestate_watermeter
+        to: "off"
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    actions:
+      - action: notify.simplepush
+        data:
+          message: "{{ trigger.entity_id [24:] }} is not alive"
+          title: "Home Assistant ({{ hostname }})"
+
+
+
+
+

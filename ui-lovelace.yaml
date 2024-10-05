@@ -450,10 +450,10 @@ views:
         display_type: complete
         show_entity_picture: true
       - type: custom:mushroom-template-badge
-        entity: binary_sensor.wasserampel
-        content: Wasserampel
-        icon: "{{ state_attr ( entity, 'icon' )}}"
-        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        entity: group.nodestates_core
+        content: Geräte
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'on' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'on' ) else 'red' }}"
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
@@ -477,6 +477,13 @@ views:
         color: "{{ state_attr ( entity, 'icon_color' )}}"
         tap_action:
             action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.wasserampel
+        content: Wasserampel
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
       - entity: sun.sun
         name: Sonne
         display_type: complete
@@ -484,15 +491,18 @@ views:
         entity: sensor.ups_status
         content: USV
         icon: mdi:power-plug-battery
-        color: "{{ iif ( is_state ( entity, 'Online' ), 'green', 'red' ) }}"
+        color: "{{ iif ( is_state ( entity, 'Online' ), 'limegreen', 'red' ) }}"
         tap_action:
             action: more-info
       #- entity: binary_sensor.gardena_smart_system_connection
       #  display_type: complete
-      - entity: sensor.cpu_temp
-        icon: mdi:server-outline
-        color: silver
-        display_type: complete
+      - type: custom:mushroom-template-badge
+        entity: sensor.cpu_temp
+        content: "{{ states ( 'sensor.cpu_temp', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float <= 50.0, 'limegreen', 'red' ) }}"
+        tap_action:
+            action: more-info
 
     cards:
       - type: vertical-stack
