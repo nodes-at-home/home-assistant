@@ -4,7 +4,6 @@
 
   - alias: solar_set_battery_forced_charge_discharge
     id: solar_set_battery_forced_charge_discharge
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -52,7 +51,6 @@
 
   - alias: solar_sh10rt_master_set_inverter_runmode
     id: solar_sh10rt_master_inverter_runmode
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -87,7 +85,6 @@
 
   - alias: solar_sh10rt_slave_set_inverter_runmode
     id: solar_sh10rt_slave_set_inverter_runmode
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -160,7 +157,6 @@
 
   - alias: solar_set_max_soc
     id: solar_set_max_soc
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -194,7 +190,6 @@
 
   - alias: solar_set_min_soc
     id: solar_set_min_soc
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -228,7 +223,6 @@
 
   - alias: solar_set_backup_soc
     id: solar_set_backup_soc
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -262,7 +256,6 @@
 
   - alias: solar_set_battery_charge_start_power
     id: solar_set_battery_charge_start_power
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -297,7 +290,6 @@
 
   - alias: solar_set_battery_discharge_start_power
     id: solar_set_battery_dischargestart_power
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -332,7 +324,6 @@
 
   - alias: solar_set_battery_max_charge_power
     id: solar_set_battery_max_charge_power
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -366,7 +357,6 @@
 
   - alias: solar_set_battery_max_discharge_power
     id: solar_set_battery_max_discharge_power
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
@@ -400,7 +390,6 @@
 
   - alias: solar_set_battery_forced_charge_discharge_power
     id: solar_set_battery_forced_charge_discharge_power
-    initial_state: false
     trigger:
       - platform: state
         entity_id:
