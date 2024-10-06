@@ -81,32 +81,35 @@ frontend:
 lovelace:
     mode: yaml
     resources:
-      # https://github.com/thomasloven/lovelace-card-mod (hacs)
+      # https://github.com/thomasloven/lovelace-card-mod
       - url: /hacsfiles/lovelace-card-mod/card-mod.js
         type: module
-      # https://github.com/ExperienceLovelace/ha-floorplan (hacs)
+      # https://github.com/ExperienceLovelace/ha-floorplan
       - url: /hacsfiles/ha-floorplan/floorplan.js
         type: module
       # https://github.com/thomasloven/lovelace-state-switch
       - url: /local/custom_lovelace/lovelace-state-switch/state-switch.js
         type: module
-      # https://github.com/iantrich/config-template-card (hacs)
+      # https://github.com/iantrich/config-template-card
       - url: /hacsfiles/config-template-card/config-template-card.js
         type: module
-      # https://github.com/piitaya/lovelace-mushroom (hacs)
+      # https://github.com/piitaya/lovelace-mushroom
       - url: /hacsfiles/lovelace-mushroom/mushroom.js
         type: module
-      # https://github.com/kinghat/tabbed-card (hacs)
+      # https://github.com/kinghat/tabbed-card
       - url: /hacsfiles/tabbed-card/tabbed-card.js
         type: module
-      # https://github.com/custom-cards/button-card (hacs)
+      # https://github.com/custom-cards/button-card
       - url: /hacsfiles/button-card/button-card.js
         type: module
-      # https://github.com/thomasloven/lovelace-layout-card (hacs)
+      # https://github.com/thomasloven/lovelace-layout-card
       - url: /hacsfiles/lovelace-layout-card/layout-card.js
         type: module
-      # https://github.com/thomasloven/lovelace-hui-element (hacs)
+      # https://github.com/thomasloven/lovelace-hui-element
       - url: /hacsfiles/lovelace-hui-element/hui-element.js
+        type: module
+      # https://github.com/kalkih/mini-graph-card
+      - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
         type: module
     dashboards:
         values-dashboard:
