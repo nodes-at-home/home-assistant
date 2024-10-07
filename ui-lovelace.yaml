@@ -1,5 +1,5 @@
 #
-# lovelace configuration - one big file for all
+# lovelace configuration
 #
 
 title: !env_var HA_TITLE
@@ -62,9 +62,13 @@ views:
         color: "{{ state_attr ( entity, 'icon_color' )}}"
         tap_action:
             action: more-info
-      - entity: sun.sun
-        name: Sonne
-        display_type: complete
+      - type: custom:mushroom-template-badge
+        entity: sun.sun
+        content: "{{ iif ( is_state ( entity, 'above_horizon' ), 'Tag', 'Nacht' ) }}"
+        icon: "{{ iif ( is_state ( entity, 'above_horizon' ), 'mdi:white-balance-sunny', 'mdi:weather-night' ) }}"
+        color: "{{ iif ( is_state ( entity, 'above_horizon' ), 'amber', 'indigo' ) }}"
+        tap_action:
+            action: more-info
       - type: custom:mushroom-template-badge
         entity: sensor.ups_status
         content: USV
