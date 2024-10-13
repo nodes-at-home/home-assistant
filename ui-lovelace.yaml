@@ -343,7 +343,7 @@ views:
                 hold_action:
                     action: more-info
               - type: entity-button
-                entity: switch.sonoff_k8200_socket
+                entity: switch.bambulab_x1c
                 name: 3D Drucker
                 icon: mdi:printer-3d
                 tap_action:
@@ -378,7 +378,7 @@ views:
                 entity: switch.relay_garden_valve3
                 icon: mdi:watering-can
               - type: entity-button
-                entity: switch.sonoff_pool_socket
+                entity: switch.poolpumpe
                 icon: mdi:pump
           - type: horizontal-stack
             cards:
@@ -707,7 +707,6 @@ views:
             title: Hauswirtschaftsraum
             columns: 3
             entities:
-              - switch.sonoff_utilityroom_pump
               - binary_sensor.nebentur
               - binary_sensor.katzenklappe
               - entity: climate.room_climate_hauswirtschaftsraum
@@ -721,6 +720,9 @@ views:
               - entity: switch.nodesathome2
                 icon: mdi:server
               - sensor.nodesathome2_power
+              - entity: switch.zirkulationspumpe
+                icon: mdi:pump
+              - sensor.zirkulationspumpe_power
               - entity: sensor.boiler_wwcurtemp
                 name: Warmwasser
               - entity: switch.boiler_wwonetime
@@ -858,8 +860,9 @@ views:
             columns: 3
             entities:
               - light.sonoff_corridor_lamp
-              - entity: switch.sonoff_k8200_socket
-                name: Bambulab X1C
+              - entity: switch.bambulab_x1c
+                icon: mdi:printer-3d
+              - sensor.bambulab_x1c_power
               - entity: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
                 name: Bambulab X1C
                 icon: mdi:printer-3d
@@ -1258,7 +1261,9 @@ views:
                   - type: glance
                     columns: 3
                     entities:
-                        - switch.sonoff_pool_socket
+                        - entity: switch.poolpumpe
+                          icon: mdi:pump
+                        - sensor.poolpumpe_power
                   - type: gauge
                     name: Pooltemperatur
                     entity: sensor.ds18b20_pool_temperature

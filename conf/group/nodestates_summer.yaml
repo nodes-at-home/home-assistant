@@ -5,7 +5,7 @@
 name: 'Sommer'
 all: true
 entities:
-    - binary_sensor.nodestate_sonoff_pool
+    #- binary_sensor.nodestate_sonoff_pool
     - binary_sensor.nodestate_ds18b20_pool
     #- binary_sensor.nodestate_ds18b20_brewery
     #- binary_sensor.nodestate_spindle_fermenter

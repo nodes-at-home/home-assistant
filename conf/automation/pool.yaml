@@ -6,11 +6,11 @@
     id: pool_pump_switching
     mode: single
     max_exceeded: silent
-    trigger:
+    triggers:
       # check every minute
       - platform: time_pattern
         minutes: "/1"
-    condition:
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
@@ -20,36 +20,36 @@
       - condition: time
         after: input_datetime.pool_pump_start
         before: input_datetime.pool_pump_end
-    action:
+    actions:
       - service: switch.turn_on
         entity_id:
-            - switch.sonoff_pool_socket
+            - switch.poolpumpe
       # pump switched on for n minutes
       - delay:
             minutes: "{{ states ( 'input_number.pool_pump_duration_period' ) | int }}"
       - service: switch.turn_off
         entity_id:
-            - switch.sonoff_pool_socket
+            - switch.poolpumpe
       # automation throttled, see above at mode and max_exceeded
       - delay:
             minutes: "{{ states ( 'sensor.pool_pump_period_length' ) | int - states ( 'input_number.pool_pump_duration_period' ) | int - 1 }}"
 
   - alias: pool_pump_off_after_timeout
     id: pool_pump_off_after_timeout
-    trigger:
+    triggers:
       - platform: state
-        entity_id: switch.sonoff_pool_socket
+        entity_id: switch.poolpumpe
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.pool_pump_duration_period' ) | int }}"
-    action:
+    actions:
       - service: switch.turn_off
-        entity_id: switch.sonoff_pool_socket
+        entity_id: switch.poolpumpe
 
   - alias: set_pool_nonworking
     id: set_pool_nonworking
-    trigger:
-    action:
+    triggers:
+    actions:
       - service: mqtt.publish
         data:
             topic: nodes@home/sensor/ds18b20/pool/value/temperature

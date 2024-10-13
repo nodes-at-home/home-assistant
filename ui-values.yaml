@@ -739,7 +739,7 @@ views:
         entities:
           - binary_sensor.boiler_heatingpump
           - binary_sensor.boiler_ww3wayvalve
-          - switch.sonoff_utilityroom_pump
+          - switch.zirkulationspumpe
           - sensor.boiler_outdoortemp
           - number.boiler_selflowtemp
           - number.boiler_heatingtemp

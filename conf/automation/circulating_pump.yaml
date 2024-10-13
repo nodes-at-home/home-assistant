@@ -143,13 +143,13 @@
     action:
       - service: switch.turn_on
         entity_id:
-            - switch.sonoff_utilityroom_pump
+            - switch.zirkulationspumpe
       # pump switched on for n minutes
       - delay:
             minutes: "{{ states ( 'input_number.circulating_pump_on_duration' ) | int }}"
       - service: switch.turn_off
         entity_id:
-            - switch.sonoff_utilityroom_pump
+            - switch.zirkulationspumpe
       # automation throttled, see above at mode and max_exceeded
       - delay:
             minutes: "{{ states ( 'input_number.circulating_pump_on_period' ) | int - states ( 'input_number.circulating_pump_on_duration' ) | int - 1 }}"
@@ -162,7 +162,7 @@
       - platform: state
         entity_id: sensor.boiler_wwcurtemp
       - platform: state
-        entity_id: switch.sonoff_utilityroom_pump
+        entity_id: switch.zirkulationspumpe
       - platform: state
         entity_id: input_boolean.circulating_pump_running_disinfection
     condition:
@@ -173,11 +173,11 @@
       - choose:
           - conditions:
               - condition: template
-                value_template: "{{ states ( 'switch.sonoff_utilityroom_pump' ) == 'off' and states ( 'sensor.boiler_wwcurtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+                value_template: "{{ states ( 'switch.zirkulationspumpe' ) == 'off' and states ( 'sensor.boiler_wwcurtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
             sequence:
               - service: switch.turn_on
                 entity_id:
-                    - switch.sonoff_utilityroom_pump
+                    - switch.zirkulationspumpe
               - service: input_boolean.turn_on
                 entity_id:
                     - input_boolean.circulating_pump_running_disinfection
@@ -187,7 +187,7 @@
             sequence:
               - service: switch.turn_off
                 entity_id:
-                    - switch.sonoff_utilityroom_pump
+                    - switch.zirkulationspumpe
               - service: input_boolean.turn_off
                 entity_id:
                     - input_boolean.circulating_pump_running_disinfection
