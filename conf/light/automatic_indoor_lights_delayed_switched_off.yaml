@@ -8,3 +8,4 @@
       - light.sonoff_corridor_lamp
       - light.sonoff_gallery1_socket
       - light.led_corridor_led
+      - light.shelly_treppe_switch_0

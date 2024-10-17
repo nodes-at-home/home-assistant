@@ -4,7 +4,7 @@
 
   - alias: indoor_lights_on_at_coming_home_or_sunset
     id: indoor_lights_on_at_coming_home_or_sunset
-    trigger:
+    triggers:
       - platform: state
         entity_id: group.family
         to: 'home'
@@ -16,7 +16,11 @@
         event_data:
             event_type: SCENARIO
             event_subtype: 'Licht an'
-    condition:
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
       - condition: sun
         after: sunset
         after_offset: "00:00:00"
@@ -30,7 +34,7 @@
           - condition: state
             entity_id: input_boolean.light_simulation
             state: 'on'
-    action:
+    actions:
       - service: homeassistant.turn_on
         entity_id:
             - light.automatic_indoor_lights_immediatly_switched_off
@@ -43,6 +47,10 @@
         entity_id: group.family
         to: 'home'
     condition:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
       - condition: sun
         after: sunset
         after_offset: "00:00:00"
@@ -98,6 +106,10 @@
         for:
             minutes: 1
     condition:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
       - condition: time
         after: input_datetime.tv_off_period_start
         before: input_datetime.tv_off_period_end
@@ -122,6 +134,10 @@
       - platform: time
         at: input_datetime.sleep
     condition:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
       - condition: state
         entity_id: input_boolean.light_simulation
         state: 'on'
@@ -233,3 +249,23 @@
         entity_id: light.shelly_shower_socket
       - service: input_boolean.turn_off
         entity_id: input_boolean.light_delay_shower
+
+  - alias: indoor_stairs_light_off_after_timeout
+    id: indoor_stairs_light_off_after_timeout
+    triggers:
+      - platform: state
+        entity_id: light.shelly_treppe_switch_0
+        to: "on"
+        for:
+            minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: sun.sun
+        state: 'above_horizon'
+    actions:
+      - action: light.turn_off
+        entity_id: light.shelly_treppe_switch_0

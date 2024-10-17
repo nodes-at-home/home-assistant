@@ -1018,6 +1018,7 @@ views:
                     - automation.indoor_shower_light_off_after_timeout
                     - automation.indoor_lights_simulation_off_at_coming_home
                     - automation.bedroom_lights_toggle
+                    - automation.indoor_stairs_light_off_after_timeout
               - type: entities
                 title: Benachrichtigungen
                 show_header_toggle: true
@@ -1450,3 +1451,21 @@ views:
             - sensor.thermostat_bad_temperature
             - sensor.thermostat_bad_humidity
             - type: divider
+
+  - title: Shelly
+    path: shelly
+    panel: false
+    cards:
+      #- type: entities
+      #  title: Erdgeschoss
+      #  show_header_toggle: false
+      #  entities:
+      - type: entities
+        title: Obergeschoss
+        show_header_toggle: false
+        entities:
+            - light.shelly_treppe_switch_0
+            - entity: sensor.shelly_treppe_switch_0_energy
+            - entity: sensor.shelly_treppe_switch_0_power
+            - entity: update.shelly_treppe_firmware
+            - entity: button.shelly_treppe_reboot

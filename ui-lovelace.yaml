@@ -558,19 +558,20 @@ views:
                 name: Thermostat
             card_mod:
               style: |
-                .card-header {
-                    display: flex;
-                    flex-direction: row;
-                    font-size: 18px;
-                    line-height: 18px;
-                }
-                .card-header::after {
-                    flex: 1 1 50%;
-                    color: var(--secondary-text-color);
-                    font-size: 1rem;
-                    text-align: right;
-                    content: "{{ states ( 'sensor.thermostat_kuche_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_kuche_humidity' ) | round ( 1 ) | string + '%' }}";
-                }
+                $: |
+                  .card-header {
+                      display: flex;
+                      flex-direction: row;
+                      font-size: 18px;
+                      line-height: 18px;
+                  }
+                  .card-header::after {
+                      flex: 1 1 50%;
+                      color: var(--secondary-text-color);
+                      font-size: 1rem;
+                      text-align: right;
+                      content: "{{ states ( 'sensor.thermostat_kuche_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.thermostat_kuche_humidity' ) | round ( 1 ) | string + '%' }}";
+                  }
           - type: glance
             title: Esszimmer
             columns: 3
@@ -767,6 +768,8 @@ views:
             columns: 3
             entities:
               - light.sonoff_gallery1_socket
+              - entity: light.shelly_treppe_switch_0
+                name: Treppe
               - entity: binary_sensor.dachfenster_galerie
                 name: Dachfenster
               - entity: climate.room_climate_galerie
@@ -1400,6 +1403,22 @@ views:
                 name: EPEX
               - entity: sensor.epex_spot_de_lu_net_price
                 name: ostrom (SimplyDynamic)
+          - type: statistics-graph
+            title: Heutiger Verbrauch
+            chart_type: bar
+            period: hour
+            days_to_show: 1
+            entities:
+              - sensor.electricity_meter_daily_in
+              - sensor.electricity_meter_daily_out
+              - sensor.load_meter_daily
+              - sensor.gas_meter_daily
+              - sensor.solar_meter_daily
+              #- sensor.water_meter_daily
+              - sensor.battery_meter_daily_out
+              - sensor.battery_meter_daily_in
+            stat_types:
+              - change
       - type: vertical-stack
         cards:
           - type: gauge

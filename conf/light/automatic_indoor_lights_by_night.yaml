@@ -11,3 +11,4 @@
       - light.led_kitchen_led
       - light.sonoff_corridor_lamp
       - light.sonoff_gallery1_socket
+      - light.shelly_treppe_switch_0
