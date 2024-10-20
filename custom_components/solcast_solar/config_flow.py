@@ -1,79 +1,151 @@
 """Config flow for Solcast Solar integration."""
+
+# pylint: disable=C0304, E0401, W0702, W0703
+
 from __future__ import annotations
 from typing import Any
 
-import voluptuous as vol
-from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
-from homeassistant.const import CONF_API_KEY
-from homeassistant.core import callback
-from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers.selector import (
+import os
+from os.path import exists as file_exists
+import voluptuous as vol # type: ignore
+from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow # type: ignore
+from homeassistant.const import CONF_API_KEY # type: ignore
+from homeassistant.core import callback # type: ignore
+from homeassistant.data_entry_flow import FlowResult # type: ignore
+from homeassistant import config_entries # type: ignore
+from homeassistant.helpers.selector import ( # type: ignore
     SelectSelector,
+    SelectOptionDict,
     SelectSelectorConfig,
     SelectSelectorMode,
 )
-from homeassistant import config_entries
-from .const import DOMAIN, CONFIG_OPTIONS
+from .const import (
+    API_QUOTA,
+    AUTO_UPDATE,
+    BRK_ESTIMATE,
+    BRK_ESTIMATE10,
+    BRK_ESTIMATE90,
+    BRK_HALFHOURLY,
+    BRK_HOURLY,
+    BRK_SITE,
+    BRK_SITE_DETAILED,
+    CONFIG_DAMP,
+    CUSTOM_HOUR_SENSOR,
+    DOMAIN,
+    HARD_LIMIT,
+    KEY_ESTIMATE,
+    SITE_DAMP,
+    TITLE,
+)
+
 
 @config_entries.HANDLERS.register(DOMAIN)
 class SolcastSolarFlowHandler(ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Solcast Solar."""
+    """Handle the config flow."""
 
-    VERSION = 5 #v5 started in 4.0.8
+    # 5 started 4.0.8
+    # 6 started 4.0.15
+    # 7 started 4.0.16
+    # 8 started 4.0.39
+    # 9 started 4.1.3
+    # 10 unreleased
+    # 11 unreleased
+    # 12 started 4.1.8
+
+    VERSION = 12
 
     @staticmethod
     @callback
     def async_get_options_flow(
-        config_entry: ConfigEntry,
+        entry: ConfigEntry,
     ) -> SolcastSolarOptionFlowHandler:
-        """Get the options flow for this handler."""
-        return SolcastSolarOptionFlowHandler(config_entry)
+        """Get the options flow for this handler.
+
+        Arguments:
+            entry (ConfigEntry): The integration entry instance, contains the configuration.
+
+        Returns:
+            SolcastSolarOptionFlowHandler: The congig flow handler instance.
+        """
+        return SolcastSolarOptionFlowHandler(entry)
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Handle a flow initiated by the user."""
+        """Handle a flow initiated by the user.
+
+        Arguments:
+            user_input (dict[str, Any] | None, optional): The config submitted by a user. Defaults to None.
+
+        Returns:
+            FlowResult: The form to show.
+        """
         if self._async_current_entries():
             return self.async_abort(reason="single_instance_allowed")
-        
+
         if user_input is not None:
             return self.async_create_entry(
-                title= "Solcast Solar", 
+                title= TITLE,
                 data = {},
                 options={
                     CONF_API_KEY: user_input[CONF_API_KEY],
-                    "damp00":1.0,
-                    "damp01":1.0,
-                    "damp02":1.0,
-                    "damp03":1.0,
-                    "damp04":1.0,
-                    "damp05":1.0,
-                    "damp06":1.0,
-                    "damp07":1.0,
-                    "damp08":1.0,
-                    "damp09":1.0,
-                    "damp10":1.0,
-                    "damp11":1.0,
-                    "damp12":1.0,
-                    "damp13":1.0,
-                    "damp14":1.0,
-                    "damp15":1.0,
-                    "damp16":1.0,
-                    "damp17":1.0,
-                    "damp18":1.0,
-                    "damp19":1.0,
-                    "damp20":1.0,
-                    "damp21":1.0,
-                    "damp22":1.0,
-                    "damp23":1.0,
+                    API_QUOTA: user_input[API_QUOTA],
+                    AUTO_UPDATE: int(user_input[AUTO_UPDATE]),
+                    # Remaining options set to default
+                    "damp00": 1.0,
+                    "damp01": 1.0,
+                    "damp02": 1.0,
+                    "damp03": 1.0,
+                    "damp04": 1.0,
+                    "damp05": 1.0,
+                    "damp06": 1.0,
+                    "damp07": 1.0,
+                    "damp08": 1.0,
+                    "damp09": 1.0,
+                    "damp10": 1.0,
+                    "damp11": 1.0,
+                    "damp12": 1.0,
+                    "damp13": 1.0,
+                    "damp14": 1.0,
+                    "damp15": 1.0,
+                    "damp16": 1.0,
+                    "damp17": 1.0,
+                    "damp18": 1.0,
+                    "damp19": 1.0,
+                    "damp20": 1.0,
+                    "damp21": 1.0,
+                    "damp22": 1.0,
+                    "damp23": 1.0,
+                    "customhoursensor": 1,
+                    HARD_LIMIT: 100000,
+                    KEY_ESTIMATE: "estimate",
+                    BRK_ESTIMATE: True,
+                    BRK_ESTIMATE10: True,
+                    BRK_ESTIMATE90: True,
+                    BRK_SITE: True,
+                    BRK_HALFHOURLY: True,
+                    BRK_HOURLY: True,
+                    BRK_SITE_DETAILED: False,
                 },
             )
+
+        solcast_json_exists = file_exists(f"{os.path.abspath(os.path.join(os.path.dirname(__file__) ,'../..'))}/solcast.json")
+
+        update: list[SelectOptionDict] = [
+            SelectOptionDict(label="none", value="0"),
+            SelectOptionDict(label="sunrise_sunset", value="1"),
+            SelectOptionDict(label="all_day", value="2"),
+        ]
 
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(
                 {
                     vol.Required(CONF_API_KEY, default=""): str,
+                    vol.Required(API_QUOTA, default="10"): str,
+                    vol.Required(AUTO_UPDATE, default=str(int(not solcast_json_exists))): SelectSelector(
+                        SelectSelectorConfig(options=update, mode=SelectSelectorMode.DROPDOWN, translation_key="auto_update")
+                    ),
                 }
             ),
         )
@@ -82,68 +154,155 @@ class SolcastSolarFlowHandler(ConfigFlow, domain=DOMAIN):
 class SolcastSolarOptionFlowHandler(OptionsFlow):
     """Handle options."""
 
-    def __init__(self, config_entry: ConfigEntry) -> None:
-        """Initialize options flow."""
-        self.config_entry = config_entry
-        self.options = dict(config_entry.options)
+    def __init__(self, entry: ConfigEntry):
+        """Initialize options flow.
 
-    async def async_step_init(self, user_input=None):
+        Arguments:
+            entry (ConfigEntry): The integration entry instance, contains the configuration.
+        """
+        self.config_entry = entry
+        self.options = dict(self.config_entry.options)
+
+    async def async_step_init(self, user_input: dict=None) -> Any:
+        """Initialise main dialogue step.
+
+        Arguments:
+            user_input (dict, optional): The input provided by the user. Defaults to None.
+
+        Returns:
+            Any: Either an error, or the configuration dialogue results.
+        """
+
         errors = {}
+        api_key = self.config_entry.options.get(CONF_API_KEY)
+        api_quota = self.config_entry.options[API_QUOTA]
+        auto_update = self.config_entry.options[AUTO_UPDATE]
+        customhoursensor = self.config_entry.options[CUSTOM_HOUR_SENSOR]
+        hard_limit = self.config_entry.options.get(HARD_LIMIT, 100000) # Has a get with default because may not feature in an existing user entry config.
+        key_estimate = self.config_entry.options.get(KEY_ESTIMATE, "estimate")
+        estimate_breakdown = self.config_entry.options[BRK_ESTIMATE]
+        estimate_breakdown10 = self.config_entry.options[BRK_ESTIMATE10]
+        estimate_breakdown90 = self.config_entry.options[BRK_ESTIMATE90]
+        site_breakdown = self.config_entry.options[BRK_SITE]
+        half_hourly = self.config_entry.options[BRK_HALFHOURLY]
+        hourly = self.config_entry.options[BRK_HOURLY]
+        site_detailed = self.config_entry.options[BRK_SITE_DETAILED]
+        granular_dampening = self.config_entry.options[SITE_DAMP]
+
         if user_input is not None:
-            if "solcast_config_action" in user_input:
-                nextAction = user_input["solcast_config_action"]
-                if nextAction == "configure_dampening":
+            try:
+                all_config_data = {**self.config_entry.options}
+
+                api_key = user_input["api_key"].replace(" ","")
+                api_key = [s for s in api_key.split(',') if s]
+                api_count = len(api_key)
+                api_key = ','.join(api_key)
+                all_config_data["api_key"] = api_key
+
+                api_quota = user_input[API_QUOTA].replace(" ","")
+                api_quota = [s for s in api_quota.split(',') if s]
+                for q in api_quota:
+                    if not q.isnumeric():
+                        return self.async_abort(reason="API limit not numeric!")
+                    if int(q) < 1:
+                        return self.async_abort(reason="API limit must be one  or greater!")
+                if len(api_quota) > api_count:
+                    return self.async_abort(reason="There are more API limit counts entered than keys!")
+                api_quota = ','.join(api_quota)
+                all_config_data[API_QUOTA] = api_quota
+
+                all_config_data[AUTO_UPDATE] = int(user_input[AUTO_UPDATE])
+
+                customhoursensor = user_input[CUSTOM_HOUR_SENSOR]
+                if customhoursensor < 1 or customhoursensor > 144:
+                    return self.async_abort(reason="Custom sensor not between 1 and 144")
+                all_config_data[CUSTOM_HOUR_SENSOR] = customhoursensor
+
+                hard_limit = user_input[HARD_LIMIT]
+                if hard_limit < 1:
+                    return self.async_abort(reason="Hard limit must be a positive number")
+                all_config_data[HARD_LIMIT] = hard_limit
+
+                all_config_data[KEY_ESTIMATE] = user_input[KEY_ESTIMATE]
+
+                all_config_data[BRK_ESTIMATE] = user_input[BRK_ESTIMATE]
+                all_config_data[BRK_ESTIMATE10] = user_input[BRK_ESTIMATE10]
+                all_config_data[BRK_ESTIMATE90] = user_input[BRK_ESTIMATE90]
+                all_config_data[BRK_HALFHOURLY] = user_input[BRK_HALFHOURLY]
+                all_config_data[BRK_HOURLY] = user_input[BRK_HOURLY]
+                site_breakdown = user_input[BRK_SITE]
+                all_config_data[BRK_SITE] = site_breakdown
+                site_detailed = user_input[BRK_SITE_DETAILED]
+                all_config_data[BRK_SITE_DETAILED] = site_detailed
+
+                if user_input.get(SITE_DAMP) is not None:
+                    all_config_data[SITE_DAMP] = user_input[SITE_DAMP]
+
+                self.hass.config_entries.async_update_entry(
+                    self.config_entry,
+                    title=TITLE,
+                    options=all_config_data,
+                )
+
+                if user_input.get(CONFIG_DAMP):
                     return await self.async_step_dampen()
-                elif nextAction == "configure_api":
-                    return await self.async_step_api()
-                else:
-                    errors["base"] = "incorrect_options_action"
+
+                return self.async_create_entry(title=TITLE, data=None)
+            except Exception as e:
+                errors["base"] = str(e)
+
+        update: list[SelectOptionDict] = [
+            SelectOptionDict(label="none", value="0"),
+            SelectOptionDict(label="sunrise_sunset", value="1"),
+            SelectOptionDict(label="all_day", value="2"),
+        ]
+
+        forecasts: list[SelectOptionDict] = [
+            SelectOptionDict(label="estimate", value="estimate"),
+            SelectOptionDict(label="estimate10", value="estimate10"),
+            SelectOptionDict(label="estimate90", value="estimate90"),
+        ]
 
         return self.async_show_form(
             step_id="init",
             data_schema=vol.Schema(
                 {
-                    vol.Required("solcast_config_action"): SelectSelector(
-                        SelectSelectorConfig(
-                            options=CONFIG_OPTIONS,
-                            mode=SelectSelectorMode.LIST,
-                            translation_key="solcast_config_action",
-                        )
-                    )
+                    vol.Required(CONF_API_KEY, default=api_key): str,
+                    vol.Required(API_QUOTA, default=api_quota): str,
+                    vol.Required(AUTO_UPDATE, default=str(int(auto_update))): SelectSelector(
+                        SelectSelectorConfig(options=update, mode=SelectSelectorMode.DROPDOWN, translation_key="auto_update")
+                    ),
+                    vol.Required(KEY_ESTIMATE, default=key_estimate): SelectSelector(
+                        SelectSelectorConfig(options=forecasts, mode=SelectSelectorMode.DROPDOWN, translation_key="key_estimate")
+                    ),
+                    vol.Required(CUSTOM_HOUR_SENSOR, default=customhoursensor): int,
+                    vol.Required(HARD_LIMIT, default=hard_limit): int,
+                    vol.Optional(BRK_ESTIMATE10, default=estimate_breakdown10): bool,
+                    vol.Optional(BRK_ESTIMATE, default=estimate_breakdown): bool,
+                    vol.Optional(BRK_ESTIMATE90, default=estimate_breakdown90): bool,
+                    vol.Optional(BRK_SITE, default=site_breakdown): bool,
+                    vol.Optional(BRK_HALFHOURLY, default=half_hourly): bool,
+                    vol.Optional(BRK_HOURLY, default=hourly): bool,
+                    vol.Optional(BRK_SITE_DETAILED, default=site_detailed): bool,
+                    (vol.Optional(CONFIG_DAMP, default=False) if not granular_dampening else vol.Optional(SITE_DAMP, default=granular_dampening)): bool,
                 }
             ),
             errors=errors
         )
 
-    async def async_step_api(self, user_input: dict[str, Any] | None = None) -> FlowResult:
-        """Manage the options."""
-        if user_input is not None:
-            allConfigData = {**self.config_entry.options}
-            k = user_input["api_key"].replace(" ","").strip()
-            k = ','.join([s for s in k.split(',') if s])
-            allConfigData["api_key"] = k
-
-            self.hass.config_entries.async_update_entry(
-                self.config_entry,
-                title="Solcast Solar",
-                options=allConfigData,
-            )
-            return self.async_create_entry(title="Solcast Solar", data=None)
-
-        return self.async_show_form(
-            step_id="api",
-            data_schema=vol.Schema(
-                {
-                    vol.Required(
-                        CONF_API_KEY,
-                        default=self.config_entry.options.get(CONF_API_KEY),
-                    ): str,
-                }
-            ),
-        )
-
     async def async_step_dampen(self, user_input: dict[str, Any] | None = None) -> FlowResult: #user_input=None):
-        """Manage the hourly factor options."""
+        """Manage the hourly dampening factors sub-option.
+
+        Note that the config option "site_damp" is not exposed in any way to the user. This is a
+        hidden option in this options flow used to trigger reset of per-site dampening should the
+        overall dampening be set.
+
+        Arguments:
+            user_input (dict[str, Any] | None): The input provided by the user. Defaults to None.
+
+        Returns:
+            FlowResult: The configuration dialogue results.
+        """
 
         errors = {}
 
@@ -171,7 +330,7 @@ class SolcastSolarOptionFlowHandler(OptionsFlow):
         damp21 = self.config_entry.options["damp21"]
         damp22 = self.config_entry.options["damp22"]
         damp23 = self.config_entry.options["damp23"]
-        
+
         if user_input is not None:
             try:
                 damp00 = user_input["damp00"]
@@ -199,40 +358,41 @@ class SolcastSolarOptionFlowHandler(OptionsFlow):
                 damp22 = user_input["damp22"]
                 damp23 = user_input["damp23"]
 
-                allConfigData = {**self.config_entry.options}
-                allConfigData["damp00"] = damp00
-                allConfigData["damp01"] = damp01
-                allConfigData["damp02"] = damp02
-                allConfigData["damp03"] = damp03
-                allConfigData["damp04"] = damp04
-                allConfigData["damp05"] = damp05
-                allConfigData["damp06"] = damp06
-                allConfigData["damp07"] = damp07
-                allConfigData["damp08"] = damp08
-                allConfigData["damp09"] = damp09
-                allConfigData["damp10"] = damp10
-                allConfigData["damp11"] = damp11
-                allConfigData["damp12"] = damp12
-                allConfigData["damp13"] = damp13
-                allConfigData["damp14"] = damp14
-                allConfigData["damp15"] = damp15
-                allConfigData["damp16"] = damp16
-                allConfigData["damp17"] = damp17
-                allConfigData["damp18"] = damp18
-                allConfigData["damp19"] = damp19
-                allConfigData["damp20"] = damp20
-                allConfigData["damp21"] = damp21
-                allConfigData["damp22"] = damp22
-                allConfigData["damp23"] = damp23
+                all_config_data = {**self.config_entry.options}
+                all_config_data["damp00"] = damp00
+                all_config_data["damp01"] = damp01
+                all_config_data["damp02"] = damp02
+                all_config_data["damp03"] = damp03
+                all_config_data["damp04"] = damp04
+                all_config_data["damp05"] = damp05
+                all_config_data["damp06"] = damp06
+                all_config_data["damp07"] = damp07
+                all_config_data["damp08"] = damp08
+                all_config_data["damp09"] = damp09
+                all_config_data["damp10"] = damp10
+                all_config_data["damp11"] = damp11
+                all_config_data["damp12"] = damp12
+                all_config_data["damp13"] = damp13
+                all_config_data["damp14"] = damp14
+                all_config_data["damp15"] = damp15
+                all_config_data["damp16"] = damp16
+                all_config_data["damp17"] = damp17
+                all_config_data["damp18"] = damp18
+                all_config_data["damp19"] = damp19
+                all_config_data["damp20"] = damp20
+                all_config_data["damp21"] = damp21
+                all_config_data["damp22"] = damp22
+                all_config_data["damp23"] = damp23
+                all_config_data[SITE_DAMP] = False
 
                 self.hass.config_entries.async_update_entry(
                     self.config_entry,
-                    title="Solcast Solar",
-                    options=allConfigData,
+                    title=TITLE,
+                    options=all_config_data,
                 )
-                
-                return self.async_create_entry(title="Solcast Solar", data=None)
-            except Exception as e:
+
+                return self.async_create_entry(title=TITLE, data=None)
+            except:
                 errors["base"] = "unknown"
 
         return self.async_show_form(

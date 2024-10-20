@@ -1,10 +1,13 @@
 """Provide info to system health."""
+
+# pylint: disable=C0304, E0401, W0212, W0613
+
 from __future__ import annotations
 
 from typing import Any
 
-from homeassistant.components import system_health
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.components import system_health # type: ignore
+from homeassistant.core import HomeAssistant, callback # type: ignore
 
 from .const import DOMAIN, SOLCAST_URL
 from .coordinator import SolcastUpdateCoordinator
@@ -26,5 +29,5 @@ async def system_health_info(hass: HomeAssistant) -> dict[str, Any]:
     return {
         "can_reach_server": system_health.async_check_can_reach_url(hass, SOLCAST_URL),
         "used_requests": used_requests,
-        "rooftop_site_count": len(coordinator.solcast._sites),
+        "rooftop_site_count": len(coordinator.solcast.sites),
     }
