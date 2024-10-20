@@ -1012,13 +1012,10 @@ views:
                     - automation.indoor_lights_off_when_tv_switched_off
                     - automation.indoor_lights_off_after_random_delay
                     - automation.indoor_roof_light
-                    - automation.indoor_bath_light_trigger_at_sunrise
-                    - automation.indoor_bath_light_off_after_timeout
-                    - automation.indoor_shower_light_trigger_at_sunrise
-                    - automation.indoor_shower_light_off_after_timeout
                     - automation.indoor_lights_simulation_off_at_coming_home
                     - automation.bedroom_lights_toggle
-                    - automation.indoor_stairs_light_off_after_timeout
+                    - automation.indoor_lights_shelly_off_after_timeout
+                    - automation.indoor_lights_hall_on_at_opening_door
               - type: entities
                 title: Benachrichtigungen
                 show_header_toggle: true
@@ -1456,10 +1453,21 @@ views:
     path: shelly
     panel: false
     cards:
-      #- type: entities
-      #  title: Erdgeschoss
-      #  show_header_toggle: false
-      #  entities:
+      - type: entities
+        title: Erdgeschoss
+        show_header_toggle: false
+        entities:
+            - light.shelly_flur_switch_0
+            - entity: sensor.shelly_flur_switch_0_energy
+            - entity: sensor.shelly_flur_switch_0_power
+            - entity: update.shelly_flur_firmware
+            - entity: button.shelly_flur_reboot
+            - type: divider
+            - light.shelly_korridor_switch_0
+            - entity: sensor.shelly_korridor_switch_0_energy
+            - entity: sensor.shelly_korridor_switch_0_power
+            - entity: update.shelly_korridor_firmware
+            - entity: button.shelly_korridor_reboot
       - type: entities
         title: Obergeschoss
         show_header_toggle: false

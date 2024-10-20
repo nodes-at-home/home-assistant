@@ -19,7 +19,7 @@
           - binary_sensor.nodestate_dht22_terrace
           - binary_sensor.nodestate_dht22_roof
           - binary_sensor.nodestate_relay_garage
-          - binary_sensor.nodestate_sonoff_utilityroom
+          #- binary_sensor.nodestate_sonoff_utilityroom
           - binary_sensor.nodestate_sonoff_garage
           - binary_sensor.nodestate_shelly_terrace
           - binary_sensor.nodestate_relay_backyard
@@ -30,7 +30,7 @@
           - binary_sensor.nodestate_ttp223_bedroom
           - binary_sensor.nodestate_led_kitchen
           - binary_sensor.nodestate_gesture_kitchen
-          - binary_sensor.nodestate_sonoff_k8200
+          #- binary_sensor.nodestate_sonoff_k8200
           - binary_sensor.nodestate_sonoff_gallery1
           - binary_sensor.nodestate_sonoff_corridor
           - binary_sensor.nodestate_electricity_utilityroom
@@ -45,7 +45,7 @@
           - binary_sensor.nodestate_soil_garden
           - binary_sensor.nodestate_rain_garden
           - binary_sensor.nodestate_dht11_utilityroom
-          - binary_sensor.nodestate_sonoff_pool
+          #- binary_sensor.nodestate_sonoff_pool
           - binary_sensor.nodestate_ds18b20_pool
           - binary_sensor.nodestate_ds18b20_brewery
           - binary_sensor.nodestate_spindle_fermenter

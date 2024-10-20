@@ -27,8 +27,6 @@ views:
             - input_datetime.standup_weekend
             - input_datetime.sleep
             - input_number.light_timeout
-            - input_boolean.light_delay_bath
-            - input_boolean.light_delay_shower
       - type: entities
         title: Fernseher
         entities:
