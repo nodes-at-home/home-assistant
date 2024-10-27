@@ -1191,8 +1191,9 @@ class PrintErrorList:
     _count: int
 
     def __init__(self, client):
-        self._client = client
         self._error = None
+        self._client = client
+        self._error = {}
         
     def print_update(self, data) -> bool:
         # Example payload:
@@ -1264,24 +1265,12 @@ class ChamberImage:
     def __init__(self, client):
         self._client = client
         self._bytes = bytearray()
-        self._image_last_updated = datetime.now()
 
     def set_jpeg(self, bytes):
-        #LOGGER.debug("JPEG RECEIVED")
         self._bytes = bytes
-        self._image_last_updated = datetime.now()
-        if self._client.callback is not None:
-            self._client.callback("event_printer_chamber_image_update")
-        #LOGGER.debug("JPEG RECIEVED DONE")
     
     def get_jpeg(self) -> bytearray:
-        #LOGGER.debug("JPEG RETRIEVED")
-        value = self._bytes.copy()
-        #LOGGER.debug("JPEG RETRIEVED DONE")
-        return value
-    
-    def get_last_update_time(self) -> datetime:
-        return self._image_last_updated
+        return self._bytes.copy()
     
 @dataclass
 class CoverImage:
@@ -1415,9 +1404,9 @@ class SlicerSettings:
 
     def __init__(self, client):
         self._client = client
+        self.custom_filaments = {}
 
     def _load_custom_filaments(self, slicer_settings: dict):
-        self.custom_filaments = {}
         if 'private' in slicer_settings["filament"]:
             for filament in slicer_settings['filament']['private']:
                 name = filament["name"]
@@ -1428,6 +1417,9 @@ class SlicerSettings:
             LOGGER.debug("Got custom filaments: %s", self.custom_filaments)
 
     def update(self):
-        LOGGER.debug("Loading slicer settings")
-        slicer_settings = self._client.bambu_cloud.get_slicer_settings()
-        self._load_custom_filaments(slicer_settings)
+        self.custom_filaments = {}
+        if self._client.bambu_cloud.auth_token != "":
+            LOGGER.debug("Loading slicer settings")
+            slicer_settings = self._client.bambu_cloud.get_slicer_settings()
+            if slicer_settings is not None:
+                self._load_custom_filaments(slicer_settings)

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import queue
 import json
 import math
@@ -319,7 +320,11 @@ class BambuClient:
             # Reconnect normally
             self.connect(self.callback)
 
-    def connect(self, callback):
+    def setup_tls(self):
+        self.client.tls_set(tls_version=ssl.PROTOCOL_TLS, cert_reqs=ssl.CERT_NONE)
+        self.client.tls_insecure_set(True)
+
+    async def connect(self, callback):
         """Connect to the MQTT Broker"""
         self.client = mqtt.Client()
         self.callback = callback
@@ -329,8 +334,10 @@ class BambuClient:
         # Set aggressive reconnect polling.
         self.client.reconnect_delay_set(min_delay=1, max_delay=1)
 
-        self.client.tls_set(tls_version=ssl.PROTOCOL_TLS, cert_reqs=ssl.CERT_NONE)
-        self.client.tls_insecure_set(True)
+        # Run the blocking tls_set method in a separate thread
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(None, self.setup_tls)
+
         self._port = 8883
         if self._local_mqtt:
             self.client.username_pw_set("bblp", password=self._access_code)
@@ -358,7 +365,7 @@ class BambuClient:
                    result_code: int,
                    properties: mqtt.Properties | None = None, ):
         """Handle connection"""
-        LOGGER.info("On Connect: Connected to Broker")
+        LOGGER.info("On Connect: Connected to printer")
         self._on_connect()
 
     def _on_connect(self):
@@ -381,7 +388,7 @@ class BambuClient:
                        result_code: int,
                        properties: mqtt.Properties | None = None, ):
         """Handle connection"""
-        LOGGER.info("On Connect: Connected to Broker")
+        LOGGER.info("On Connect: Connected to printer")
         self._connected = True
         LOGGER.debug("Now test subscribing...")
         self.subscribe()
@@ -394,19 +401,19 @@ class BambuClient:
                       userdata: None,
                       result_code: int):
         """Called when MQTT Disconnects"""
-        LOGGER.warn(f"On Disconnect: Disconnected from Broker: {result_code}")
+        LOGGER.warn(f"On Disconnect: Printer disconnected with error code: {result_code}")
         self._on_disconnect()
     
     def _on_disconnect(self):
-        LOGGER.warn("_on_disconnect")
+        LOGGER.debug("_on_disconnect: Lost connection to the printer")
         self._connected = False
         self._device.info.set_online(False)
         if self._watchdog is not None:
-            LOGGER.warn("Stopping watchdog thread")
+            LOGGER.debug("Stopping watchdog thread")
             self._watchdog.stop()
             self._watchdog.join()
         if self._camera is not None:
-            LOGGER.warn("Stopping camera thread")
+            LOGGER.debug("Stopping camera thread")
             self._camera.stop()
             self._camera.join()
 
@@ -516,8 +523,10 @@ class BambuClient:
         self.client.on_disconnect = self.on_disconnect
         self.client.on_message = on_message
 
-        self.client.tls_set(tls_version=ssl.PROTOCOL_TLS, cert_reqs=ssl.CERT_NONE)
-        self.client.tls_insecure_set(True)
+        # Run the blocking tls_set method in a separate thread
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(None, self.setup_tls)
+        
         if self._local_mqtt:
             self.client.username_pw_set("bblp", password=self._access_code)
         else:
