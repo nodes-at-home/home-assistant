@@ -11,5 +11,5 @@ __pycache__/
 .shopping_list.json
 centronic-stick.db
 blueprints/
-solcast.json
+solcast*.json
 .vscode/
