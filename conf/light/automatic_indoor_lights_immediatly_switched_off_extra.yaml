@@ -9,3 +9,6 @@
     entities:
       - light.rfhub_lounge_lampLoungeWhiteBall
       - light.sonoff_bedroom_socket
+      - light.shelly_esszimmer1_switch_0
+      - light.shelly_esszimmer2_switch_0
+      - light.shelly_esszimmer2_switch_1

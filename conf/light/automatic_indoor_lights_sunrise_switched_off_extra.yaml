@@ -10,3 +10,6 @@
       - light.shelly_shower_socket
       - light.shelly_flur_switch_0
       - light.shelly_korridor_switch_0
+      - light.shelly_esszimmer1_switch_0
+      - light.shelly_esszimmer2_switch_0
+      - light.shelly_esszimmer2_switch_1

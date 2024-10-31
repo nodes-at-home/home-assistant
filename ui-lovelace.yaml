@@ -576,6 +576,12 @@ views:
             title: Esszimmer
             columns: 3
             entities:
+              - entity: light.shelly_esszimmer1_switch_0
+                name: Beleuchtung
+              - entity: light.shelly_esszimmer2_switch_0
+                name: Wandlicht links
+              - entity: light.shelly_esszimmer2_switch_1
+                name: Wandlicht rechts
               - entity: light.relay_dining1_lamp
                 name: Linker Schrank
               - entity: light.relay_dining2_lamp
@@ -1782,9 +1788,11 @@ views:
         full_height: true
         #config: /local/floorplans/groundlevel.yaml
         config:
-          image: /local/floorplans/floorplan.svg
+          image:
+            location: /local/floorplans/floorplan.svg
+            cache: false
           stylesheet: /local/floorplans/assets/floorplan.css
-          log_level: debug
+          #log_level: debug
           console_log_level: debug
           defaults:
             hover_action: hover-info
@@ -1800,11 +1808,19 @@ views:
                 class: layer-hidden
             - service: floorplan.class_set
               service_data:
+                element: attic_floor
+                class: layer-hidden
+            - service: floorplan.class_set
+              service_data:
                 element: "ground_floor.button"
                 class: button-on
             - service: floorplan.class_set
               service_data:
                 element: "first_floor.button"
+                class: button-off
+            - service: floorplan.class_set
+              service_data:
+                element: "attic_floor.button"
                 class: button-off
           rules:
             - name: Button Erdgeschoss
@@ -1822,18 +1838,22 @@ views:
                     class: layer-hidden
                 - service: floorplan.class_set
                   service_data:
+                    element: attic_floor
+                    class: layer-hidden
+                - service: floorplan.class_set
+                  service_data:
                     element: ground_floor.button
                     class: button-on
                 - service: floorplan.class_set
                   service_data:
                     element: first_floor.button
                     class: button-off
-            - element: first_floor.button
-              tap_action:
                 - service: floorplan.class_set
                   service_data:
-                    element: first_floor
-                    class: layer-visible
+                    element: attic_floor.button
+                    class: button-off
+            - element: first_floor.button
+              tap_action:
                 - service: floorplan.class_set
                   service_data:
                     elements:
@@ -1842,12 +1862,52 @@ views:
                     class: layer-hidden
                 - service: floorplan.class_set
                   service_data:
-                    element: first_floor.button
-                    class: button-on
+                    element: first_floor
+                    class: layer-visible
+                - service: floorplan.class_set
+                  service_data:
+                    element: attic_floor
+                    class: layer-hidden
                 - service: floorplan.class_set
                   service_data:
                     element: ground_floor.button
                     class: button-off
+                - service: floorplan.class_set
+                  service_data:
+                    element: first_floor.button
+                    class: button-on
+                - service: floorplan.class_set
+                  service_data:
+                    element: attic_floor.button
+                    class: button-off
+            - element: attic_floor.button
+              tap_action:
+                - service: floorplan.class_set
+                  service_data:
+                    elements:
+                      - ground_floor
+                      - garage
+                    class: layer-hidden
+                - service: floorplan.class_set
+                  service_data:
+                    element: first_floor
+                    class: layer-hidden
+                - service: floorplan.class_set
+                  service_data:
+                    element: attic_floor
+                    class: layer-visible
+                - service: floorplan.class_set
+                  service_data:
+                    element: ground_floor.button
+                    class: button-off
+                - service: floorplan.class_set
+                  service_data:
+                    element: first_floor.button
+                    class: button-off
+                - service: floorplan.class_set
+                  service_data:
+                    element: attic_floor.button
+                    class: button-on
             - entities:
               - light.sonoff_garage_lamp
               - entity: light.shelly_terrace_lamp
@@ -1877,6 +1937,13 @@ views:
               - light.sonoff_gallery1_socket
               - light.shelly_bath_socket
               - light.sonoff_bedroom_socket
+              - entity: light.shelly_treppe_switch_0
+                element: light.shelly_treppe_switch_0_groundfloor
+              - entity: light.shelly_treppe_switch_0
+                element: light.shelly_treppe_switch_0_firstfloor
+              - light.shelly_flur_switch_0
+              - light.shelly_korridor_switch_0
+              - light.shelly_roof_socket
               state_action:
                 - action: call-service
                   service: floorplan.class_set
@@ -1907,6 +1974,8 @@ views:
                 - sensor.thermostat_schlafzimmer_humidity
                 - sensor.thermostat_wohnzimmer_temperature
                 - sensor.thermostat_wohnzimmer_humidity
+                - sensor.dht22_roof_temperature
+                - sensor.dht22_roof_humidity
               state_action:
                 - action: call-service
                   service: floorplan.text_set

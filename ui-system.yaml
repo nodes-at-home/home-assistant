@@ -1468,6 +1468,21 @@ views:
             - entity: sensor.shelly_korridor_switch_0_power
             - entity: update.shelly_korridor_firmware
             - entity: button.shelly_korridor_reboot
+            - type: divider
+            - light.shelly_esszimmer1_switch_0
+            - entity: sensor.shelly_esszimmer1_switch_0_energy
+            - entity: sensor.shelly_esszimmer1_switch_0_power
+            - entity: update.shelly_esszimmer1_firmware
+            - entity: button.shelly_esszimmer1_reboot
+            - type: divider
+            - light.shelly_esszimmer2_switch_0
+            - entity: sensor.shelly_esszimmer2_switch_0_energy
+            - entity: sensor.shelly_esszimmer2_switch_0_power
+            - light.shelly_esszimmer2_switch_1
+            - entity: sensor.shelly_esszimmer2_switch_1_energy
+            - entity: sensor.shelly_esszimmer2_switch_1_power
+            - entity: update.shelly_esszimmer2_firmware
+            - entity: button.shelly_esszimmer2_reboot
       - type: entities
         title: Obergeschoss
         show_header_toggle: false
