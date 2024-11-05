@@ -1944,6 +1944,9 @@ views:
               - light.shelly_flur_switch_0
               - light.shelly_korridor_switch_0
               - light.shelly_roof_socket
+              - light.shelly_esszimmer1_switch_0
+              - light.shelly_esszimmer2_switch_0
+              - light.shelly_esszimmer2_switch_1
               state_action:
                 - action: call-service
                   service: floorplan.class_set

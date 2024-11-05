@@ -5,7 +5,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
         x="0px" y="0px" width="1500" height="1434"
-        viewBox="0 0 1550 1434"
+        viewBox="0 0 1800 1835"
 	    xml:space="preserve">
 
     <defs>
@@ -39,21 +39,7 @@
             <rect x="202" y="10.5" width="4" height="4" fill="grey" />
         </g>
 
-        <g id="roofpart_west" >
-            <use x="0" y="0" href="#rooftile" />
-            <use x="83" y="0" href="#rooftile" />
-            <use x="166" y="0" href="#rooftile" />
-            <use x="249" y="0" href="#rooftile" />
-            <use x="332" y="0" href="#rooftile" />
-            <use x="415" y="0" href="#rooftile" />
-            <use x="0" y="75" href="#rooftile" />
-            <use x="83" y="75" href="#rooftile" />
-            <use x="166" y="75" href="#rooftile" />
-            <use x="249" y="75" href="#rooftile" />
-            <use x="332" y="75" href="#rooftile" />
-            <use x="415" y="75" href="#rooftile" />
-        </g>
-        <g id="roofpart_east" >
+        <g id="roofpart_first_floor_east" >
             <use x="0" y="0" href="#rooftile" />
             <use x="83" y="0" href="#rooftile" />
             <use x="166" y="0" href="#rooftile" />
@@ -67,27 +53,128 @@
             <use x="332" y="75" href="#rooftile" />
             <use x="387.2" y="75" href="#rooftile" />
         </g>
+        <g id="roofpart_first_floor_west" >
+            <use x="0" y="0" href="#rooftile" />
+            <use x="83" y="0" href="#rooftile" />
+            <use x="166" y="0" href="#rooftile" />
+            <use x="249" y="0" href="#rooftile" />
+            <use x="332" y="0" href="#rooftile" />
+            <use x="415" y="0" href="#rooftile" />
+            <use x="0" y="75" href="#rooftile" />
+            <use x="83" y="75" href="#rooftile" />
+            <use x="166" y="75" href="#rooftile" />
+            <use x="249" y="75" href="#rooftile" />
+            <use x="332" y="75" href="#rooftile" />
+            <use x="415" y="75" href="#rooftile" />
+        </g>
+        <g id="roofpart_attic_floor_east" >
+            <use x="0" y="0" href="#rooftile" />
+            <use x="83" y="0" href="#rooftile" />
+            <use x="166" y="0" href="#rooftile" />
+            <use x="249" y="0" href="#rooftile" />
+            <use x="332" y="0" href="#rooftile" />
+            <use x="387.2" y="0" href="#rooftile" />
+            <use x="0" y="75" href="#rooftile" />
+            <use x="83" y="75" href="#rooftile" />
+            <use x="166" y="75" href="#rooftile" />
+            <use x="249" y="75" href="#rooftile" />
+            <use x="332" y="75" href="#rooftile" />
+            <use x="387.2" y="75" href="#rooftile" />
+            <use x="0" y="150" href="#rooftile" />
+            <use x="83" y="150" href="#rooftile" />
+            <use x="166" y="150" href="#rooftile" />
+            <use x="249" y="150" href="#rooftile" />
+            <use x="332" y="150" href="#rooftile" />
+            <use x="387.2" y="150" href="#rooftile" />
+            <use x="0" y="225" href="#rooftile" />
+            <use x="83" y="225" href="#rooftile" />
+            <use x="166" y="225" href="#rooftile" />
+            <use x="249" y="225" href="#rooftile" />
+            <use x="332" y="225" href="#rooftile" />
+            <use x="387.2" y="225" href="#rooftile" />
+            <use x="0" y="300" href="#rooftile" />
+            <use x="83" y="300" href="#rooftile" />
+            <use x="166" y="300" href="#rooftile" />
+            <use x="249" y="300" href="#rooftile" />
+            <use x="332" y="300" href="#rooftile" />
+            <use x="387.2" y="300" href="#rooftile" />
+        </g>
+        <g id="roofpart_attic_floor_west" >
+            <use x="0" y="0" href="#rooftile" />
+            <use x="83" y="0" href="#rooftile" />
+            <use x="166" y="0" href="#rooftile" />
+            <use x="249" y="0" href="#rooftile" />
+            <use x="332" y="0" href="#rooftile" />
+            <use x="415" y="0" href="#rooftile" />
+            <use x="0" y="75" href="#rooftile" />
+            <use x="83" y="75" href="#rooftile" />
+            <use x="166" y="75" href="#rooftile" />
+            <use x="249" y="75" href="#rooftile" />
+            <use x="332" y="75" href="#rooftile" />
+            <use x="415" y="75" href="#rooftile" />
+            <use x="0" y="150" href="#rooftile" />
+            <use x="83" y="150" href="#rooftile" />
+            <use x="166" y="150" href="#rooftile" />
+            <use x="249" y="150" href="#rooftile" />
+            <use x="332" y="150" href="#rooftile" />
+            <use x="415" y="150" href="#rooftile" />
+            <use x="0" y="225" href="#rooftile" />
+            <use x="83" y="225" href="#rooftile" />
+            <use x="166" y="225" href="#rooftile" />
+            <use x="249" y="225" href="#rooftile" />
+            <use x="332" y="225" href="#rooftile" />
+            <use x="415" y="225" href="#rooftile" />
+            <use x="0" y="300" href="#rooftile" />
+            <use x="83" y="300" href="#rooftile" />
+            <use x="166" y="300" href="#rooftile" />
+            <use x="249" y="300" href="#rooftile" />
+            <use x="332" y="300" href="#rooftile" />
+            <use x="415" y="300" href="#rooftile" />
+        </g>
+        <g id="roofpart_attic_floor_east_mid" >
+            <use x="0" y="0" href="#rooftile" />
+            <use x="83" y="0" href="#rooftile" />
+            <use x="166" y="0" href="#rooftile" />
+            <use x="221.3" y="0" href="#rooftile" />
+        </g>
+        <g id="roofpart_attic_floor_west_mid" >
+            <use x="0" y="0" href="#rooftile" />
+            <use x="83" y="0" href="#rooftile" />
+            <use x="166" y="0" href="#rooftile" />
+            <use x="0" y="75" href="#rooftile" />
+            <use x="83" y="75" href="#rooftile" />
+            <use x="166" y="75" href="#rooftile" />
+            <use x="0" y="150" href="#rooftile" />
+            <use x="83" y="150" href="#rooftile" />
+            <use x="166" y="150" href="#rooftile" />
+        </g>
 
     </defs>
 
     <g id="frame">
-		<rect x="0" y="0" width="1494" height="1434" stroke="blue" stroke-width="1" fill="none"/>
+		<rect x="0" y="0" width="1800" height="1834" stroke="blue" stroke-width="1" fill="none"/>
     </g>
 
-    <g id="first_floor.button" transform="translate ( 20, 70 )" >
+    <g id="attic_floor.button" transform="translate ( 20, 270 )" >
+        <rect id="attic_floor.button.background" width="220" height="50" style="fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <text id="attic_floor.button.text" x="12" y="35" style="font-style:normal;font-weight:normal;font-size:30px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1" >
+            <tspan >Dachgeschoss</tspan>
+        </text>
+    </g>
+    <g id="first_floor.button" transform="translate ( 20, 340 )" >
         <rect id="first_floor.button.background" width="220" height="50" style="fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         <text id="first_floor.button.text" x="12" y="35" style="font-style:normal;font-weight:normal;font-size:30px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1" >
             <tspan >Obergeschoss</tspan>
         </text>
     </g>
-    <g id="ground_floor.button" transform="translate ( 20, 140 )" >
+    <g id="ground_floor.button" transform="translate ( 20, 410 )" >
         <rect id="ground_floor.button.background" width="220" height="50" style="fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         <text id="ground_floor.button.text" x="12" y="35" style="font-style:normal;font-weight:normal;font-size:30px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1" >
             <tspan >Erdgeschoss</tspan>
         </text>
     </g>
 
-    <g id="garage" transform="translate ( 0, 704 )" opacity="1" >
+    <g id="garage" transform="translate ( 0, 904 )" opacity="1" >
         <g id="walls" stroke="black" fill="black" stroke-width="1" >
             <!-- north -->
             <rect x="0" y="0" width="15" height="730" />
@@ -111,7 +198,7 @@
         <g id="light.sonoff_garage_lamp" > <use x="295" y="680" href="#lightbulb" /> </g>
     </g>
 
-    <g id="ground_floor" transform="translate ( 300, 0 )" opacity="1" >
+    <g id="ground_floor" transform="translate ( 300, 200 )" opacity="1" >
 
         <g id="outer_walls" stroke="black" fill="black" stroke-width="1" >
             <!-- north -->
@@ -215,6 +302,13 @@
         <use id="light.relay_dining1_lamp" x="700" y="440" href="#lightbulb" />
         <use id="light.relay_dining2_lamp" x="700" y="685" href="#lightbulb" />
         <use id="light.shelly_shower_socket" x="80" y="800" href="#lightbulb" />
+        <use id="light.shelly_treppe_switch_0_groundfloor" x="450" y="750" href="#lightbulb" />
+        <use id="light.shelly_flur_switch_0" x="300" y="830" href="#lightbulb" />
+        <use id="light.shelly_korridor_switch_0" x="330" y="570" href="#lightbulb" />
+
+        <use id="light.shelly_esszimmer1_switch_0" x="575" y="560" href="#lightbulb" />
+        <use id="light.shelly_esszimmer2_switch_0" x="450" y="120" href="#lightbulb" />
+        <use id="light.shelly_esszimmer2_switch_1" x="700" y="120" href="#lightbulb" />
 
         <text id="sensor.thermostat_dusche_temperature" x="130" y="900" class="thermostat-text" ><tspan>°C</tspan></text>
         <text id="sensor.thermostat_dusche_humidity" x="130" y="925" class="thermostat-text" ><tspan>%</tspan></text>
@@ -231,9 +325,9 @@
 
     </g>
 
-    <g id="first_floor" transform="translate ( 300, 0 )" opacity="1" >
+    <g id="first_floor" transform="translate ( 300, 200 )" opacity="1" >
 
-        <g id="walls_under roof"  stroke="lightgrey" fill="lightgrey" stroke-width="1" >
+        <g id="walls_under_roof"  stroke="lightgrey" fill="lightgrey" stroke-width="1" >
             <!-- east -->
             <rect x="0" y="60" width="442" height="27" />
             <rect x="415" y="0" width="27" height="60" />
@@ -318,6 +412,7 @@
         <use id="light.sonoff_gallery1_socket" x="440" y="540" href="#lightbulb" />
         <use id="light.sonoff_corridor_lamp" x="40" y="460" href="#lightbulb" />
         <use id="light.sonoff_bedroom_socket" x="940" y="550" href="#lightbulb" />
+        <use id="light.shelly_treppe_switch_0_firstfloor" x="450" y="750" href="#lightbulb" />
 
         <text id="sensor.thermostat_arbeitszimmer_temperature" x="340" y="335" class="thermostat-text" ><tspan>°C</tspan></text>
         <text id="sensor.thermostat_arbeitszimmer_humidity" x="340" y="360" class="thermostat-text" ><tspan>%</tspan></text>
@@ -331,10 +426,63 @@
         <text id="sensor.thermostat_schlafzimmer_humidity" x="780" y="750" class="thermostat-text" ><tspan>%</tspan></text>
 
         <g id="roof" stroke="none" fill="lightgrey" stroke-width="0.5" >
-            <use transform="translate ( -38, 13)" href="#roofpart_east" />
-            <use transform="translate ( 744, 13)" href="#roofpart_east" />
-            <use transform="translate ( -38, 906 )" href="#roofpart_west" />
-            <use transform="translate ( 725, 906 )" href="#roofpart_west" />
+            <use transform="translate ( -38, 13)" href="#roofpart_first_floor_east" />
+            <use transform="translate ( 744, 13)" href="#roofpart_first_floor_east" />
+            <use transform="translate ( -38, 906 )" href="#roofpart_first_floor_west" />
+            <use transform="translate ( 715, 906 )" href="#roofpart_first_floor_west" />
+        </g>
+
+    </g>
+
+    <g id="attic_floor" transform="translate ( 300, 200 )" opacity="1" >
+
+        <g id="walls_under_roof"  stroke="lightgrey" fill="lightgrey" stroke-width="1" >
+            <!-- east -->
+            <rect x="0" y="60" width="442" height="27" />
+            <rect x="415" y="0" width="27" height="60" />
+            <rect x="752" y="0" width="27" height="60" />
+            <rect x="752" y="60" width="442" height="27" />
+            <rect x="427" y="87" width="15" height="91" />
+            <rect x="752" y="87" width="15" height="91" />
+            <!-- north -->
+            <rect x="0" y="60" width="27" height="345" />
+            <rect x="0" y="689" width="27" height="345" />
+            <!-- south -->
+            <rect x="1167" y="60" width="27" height="345" />
+            <rect x="1167" y="689" width="27" height="345" />
+            <!-- west -->
+            <rect x="0" y="1007" width="454" height="27" />
+            <rect x="427" y="867" width="27" height="167" />
+            <rect x="427" y="867" width="340" height="27" />
+            <rect x="740" y="867" width="27" height="167" />
+            <rect x="740" y="1007" width="454" height="27" />
+        </g>
+
+        <g id="outer_walls"  stroke="black" fill="black" stroke-width="1" >
+            <!-- north -->
+            <rect x="0" y="405" width="27" height="284" />
+            <!-- south -->
+            <rect x="1167" y="405" width="27" height="284" />
+            <!-- west -->
+        </g>
+
+        <g id="attic" stroke="black" fill="black" stroke-width="1" >
+            <rect x="0" y="403" width="1194" height="3" />
+            <rect x="0" y="687" width="1194" height="3" />
+        </g>
+
+        <use id="light.shelly_roof_socket" x="440" y="540" href="#lightbulb" />
+
+        <text id="sensor.dht22_roof_temperature" x="640" y="550" class="thermostat-text" ><tspan>°C</tspan></text>
+        <text id="sensor.dht22_roof_humidity" x="640" y="580" class="thermostat-text" ><tspan>%</tspan></text>
+
+        <g id="roof" stroke="none" fill="lightgrey" stroke-width="0.5" >
+            <use transform="translate ( -38, 13)" href="#roofpart_attic_floor_east" />
+            <use transform="translate ( 744, 13)" href="#roofpart_attic_floor_east" />
+            <use transform="translate ( 436, 313 )" href="#roofpart_attic_floor_east_mid" />
+            <use transform="translate ( 463, 681 )" href="#roofpart_attic_floor_west_mid" />
+            <use transform="translate ( -38, 681 )" href="#roofpart_attic_floor_west" />
+            <use transform="translate ( 715, 681 )" href="#roofpart_attic_floor_west" />
         </g>
 
     </g>
