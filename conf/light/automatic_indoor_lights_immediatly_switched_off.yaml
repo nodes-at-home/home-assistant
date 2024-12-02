@@ -11,7 +11,7 @@
       - light.rfhub_lounge_lampStudyPillar
       - light.rfhub_lounge_lampkitchenshortstrip
       - light.rfhub_lounge_lampkitchenlongstrip
-      - light.rfhub_lounge_lamptree
+      # - light.rfhub_lounge_lamptree
       - light.rfhub_lounge_lightweb
       - light.relay_dining1_lamp
       - light.relay_dining2_lamp

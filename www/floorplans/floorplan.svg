@@ -13,6 +13,33 @@
         <path id="lightbulb" transform="scale ( 2 )" d="M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14A1,1 0 0,0 15,21V20H9V21Z" />
         <path id="lightbulb-outline" transform="scale ( 2 )" d="M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z" />
         <path id="rooftile" d="M91.4,10.35h-8.61c-0.61,0-1.1,0.49-1.1,1.1v0.91H64.9v-0.91c0-0.61-0.49-1.1-1.1-1.1h-8.61c-0.61,0-1.1,0.49-1.1,1.1v0.91  H37.31v-0.91c0-0.61-0.49-1.1-1.1-1.1h-8.61c-0.61,0-1.1,0.49-1.1,1.1v0.91H8.6c-0.61,0-1.1,0.49-1.1,1.1V38.5v25.02c0,0,0,0,0,0  v25.02c0,0.61,0.49,1.1,1.1,1.1h18.99c0.61,0,1.1-0.49,1.1-1.1v-0.91h6.4v0.91c0,0.61,0.49,1.1,1.1,1.1h18.99  c0.61,0,1.1-0.49,1.1-1.1v-0.91h6.4v0.91c0,0.61,0.49,1.1,1.1,1.1h18.99c0.61,0,1.1-0.49,1.1-1.1v-0.91h6.4v0.91  c0,0.61,0.49,1.1,1.1,1.1c0.5,0,0.91-0.33,1.05-0.78c0.03-0.1,0.05-0.21,0.05-0.33v-2.02V63.52V61.5V38.5v-2.02V11.46  C92.5,10.85,92.01,10.35,91.4,10.35z M26.49,86.53v0.91H9.71V64.62h16.78V86.53z M26.49,61.5v0.91H9.71V39.6h16.78V61.5z   M26.49,36.48v0.91H9.71V14.57h16.78V36.48z M35.1,63.52L35.1,63.52v21.91h-6.4V63.52v0v-0.91h6.4V63.52z M35.1,38.5V60.4h-6.4V38.5  v-0.91h6.4V38.5z M35.1,13.47v21.91h-6.4V13.47v-0.91h6.4V13.47z M54.08,86.53v0.91H37.31v-0.91V64.62h16.78V86.53z M54.08,61.5  v0.91H37.31V61.5V39.6h16.78V61.5z M54.08,36.48v0.91H37.31v-0.91V14.57h16.78V36.48z M62.69,63.52L62.69,63.52v21.91h-6.4V63.52v0  v-0.91h6.4V63.52z M62.69,38.5V60.4h-6.4V38.5v-0.91h6.4V38.5z M62.69,13.47v21.91h-6.4V13.47v-0.91h6.4V13.47z M81.68,86.53v0.91  H64.9v-0.91V64.62h16.78V86.53z M81.68,61.5v0.91H64.9V61.5V39.6h16.78V61.5z M81.68,36.48v0.91H64.9v-0.91V14.57h16.78V36.48z   M90.29,63.52v21.91h-6.4V63.52v0v-0.91h6.4V63.52z M90.29,38.5V60.4h-6.4V38.5v-0.91h6.4V38.5z M90.29,35.38h-6.4V13.47v-0.91h6.4  V35.38z"/>
+        <path id="lightchain_part" transform="scale ( 0.2 ) translate ( -70, -200 )"  d="M 267.5 220.218 C 261.04044 225.91768 256.35496 233.5221 249.30647 238.70275 C 224.26374 260.12848 186.68354 265.23975 156.96925 250.88637 C 145.51922 245.57693 135.79713 237.34532 126.924 228.5 C 121.89567 228.73665 116.47593 228.02814 111.69138 228.85349 C 109.64562 231.4558 105.52568 233.17994 106.45728 237.0407 C 106.26886 250.26978 106.08043 263.49891 105.892 276.728 C 94.462421 281.46366 86.476768 293.78339 88.040861 306.28504 C 88.510606 320.05456 101.32372 331.30398 114.96833 330.8498 C 118.53129 331.03957 122.20515 331.8411 125.33111 329.61991 C 138.43979 324.65654 146.46714 309.68674 142.69771 296.04688 C 140.3897 287.34361 133.47115 279.81511 125 276.757 C 125.32772 269.05272 124.16773 261.00503 125.91693 253.57514 C 138.83319 263.1834 153.20916 271.43344 169.1455 274.88725 C 172.99449 278.10275 183.18573 274.38298 184 279 L 184 326.757 C 165.56115 332.56248 159.93019 359.38835 173.92182 372.52838 C 186.12068 385.82991 210.56513 382.35993 218.49996 366.1482 C 221.74845 359.68221 221.756 352.03726 221.23002 345.05707 C 217.42372 337.27331 211.92455 328.81461 202.966 326.775 L 203.5 277.633 C 224.36398 274.97676 244.56756 267.02102 260.98177 253.75472 C 263.20716 252.43749 261.43098 259.04213 262 261.004 L 262 292.05 C 249.4866 296.40992 241.8942 310.54186 244.39549 323.47237 C 245.94286 333.39428 253.55155 341.10701 262.65917 344.67094 C 266.76549 347.2162 271.97402 345.58465 276.5268 345.66261 C 294.20106 343.41679 305.24241 321.85639 297.11561 306.07623 C 294.13129 299.04341 287.64568 294.66802 281 291.503 C 281.15179 278.6711 280.57701 265.7951 281.582 253 C 297.36987 265.56346 316.39045 274.19475 336.44687 276.96775 C 340.62768 276.44346 341.04586 279.14912 340.55549 282.63469 C 340.71589 297.06644 340.87551 311.49824 341.035 325.93 C 330.14076 330.61731 321.05324 341.38663 322.18166 353.8155 C 321.70057 373.02698 345.0402 387.40653 361.9622 378.16965 C 375.71465 371.82102 382.56491 353.49483 374.61371 340.13336 C 371.87221 333.0393 364.38658 329.21026 358.97053 325.44103 C 359.14649 309.50103 359.323 293.56099 359.5 277.621 C 379.61928 275.0908 399.29507 267.8639 415.24819 255.14355 C 421.66637 249.81852 417.76964 264.44068 418.98998 268.38456 C 419.01003 276.09067 418.99566 283.79686 419 291.503 C 409.81541 295.46119 401.88725 303.23052 400.57325 313.54725 C 397.14659 330.39743 412.41622 347.61091 429.59 345.99228 C 432.86297 346.32026 435.96919 345.93901 438.70645 343.9886 C 452.64383 338.64508 459.92499 321.43138 454.0393 307.71341 C 451.04701 300.55772 445.09437 294.9565 438 291.959 L 438 253.004 C 454.35471 266.22545 474.28104 274.74914 495.15162 277.40583 C 498.03516 278.09175 495.85269 283.109 496.58693 285.63253 L 497.034 326.775 C 487.89846 328.95634 481.86776 337.7815 478.54987 346 C 478.35478 354.60142 478.21105 364.0649 484.61754 370.73971 C 494.7205 383.36449 516.24276 384.42059 526.75615 371.65637 C 537.16407 360.88089 536.23161 342.26229 525.093 332.37284 C 523.08168 328.10408 514.78139 329.1417 516 323.757 L 516 277 C 528.71177 276.84119 541.13755 272.38265 552.56592 267.09884 C 560.41218 263.89498 567.36272 257.43887 574.3558 253.83508 C 575.55324 261.38839 574.78634 269.12228 575 276.757 C 559.58701 281.95025 551.53109 301.66905 559.50021 316.03154 C 564.62901 326.68018 576.83181 332.82432 588.44987 330.59893 C 603.29199 329.62202 614.39098 314.45178 611.82656 300.01027 C 611.05662 289.70466 603.36683 280.73387 594.108 276.728 C 593.90533 262.49901 593.70266 248.26999 593.5 234.041 C 590.75082 231.95314 588.97775 227.51055 584.955 228.5 C 580.99636 228.73145 576.6757 228.03903 572.9401 228.83969 C 559.3786 242.37904 542.86848 253.80579 523.69303 257.28926 C 498.20303 262.60899 470.50828 255.84306 450.84644 238.61584 C 443.75359 233.31727 438.78422 225.7072 432.08059 220.1264 C 421.11656 215.81258 416.39339 231.01765 408.68526 235.88902 C 386.30427 257.11768 352.28175 264.7554 323.05644 254.72188 C 303.34127 249.01937 288.33451 234.24166 275.412 219 C 272.73493 219.01806 269.93881 218.90659 267.5 220.218 z " />
+
+        <g id="ceilinglight" transform="translate ( 20, 20 )" >
+            <circle r="20" cx="0" cy="0" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 0 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 45 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 90 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 135 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 180 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 225 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 270 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 315 )" />
+        </g>
+
+        <g id="walllight_right" >
+            <path d="M 0 0 v-20 a 20 20 0 0 1 0 40 v-20" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 0 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 45 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 315 )" />
+        </g>
+
+        <g id="walllight_left" >
+            <path d="M 0 0 v-20 a 20 20 0 0 0 0 40 v-20" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 135 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 180 )" />
+            <rect x="30" y ="0" width="15" height="2" transform="rotate ( 225 )" />
+        </g>
 
         <g id="window101" stroke="0.5" fill="none" >
             <rect x="0" y="0" width="101" height="27" stroke="grey" />
@@ -149,7 +176,16 @@
             <use x="166" y="150" href="#rooftile" />
         </g>
 
+        <g id="lightchain" >
+            <use x="0" y="0" href="#lightchain_part" />
+            <use x="93" y="0" href="#lightchain_part" />
+            <use x="186" y="0" href="#lightchain_part" />
+            <use x="279" y="0" href="#lightchain_part" />
+        </g>
+
     </defs>
+
+    <use id="xyz" x="0" y="30" href="#lightchain" stroke="black" transform="scale ( 100 )" />
 
     <g id="frame">
 		<rect x="0" y="0" width="1800" height="1834" stroke="blue" stroke-width="1" fill="none"/>
@@ -175,6 +211,7 @@
     </g>
 
     <g id="garage" transform="translate ( 0, 904 )" opacity="1" >
+
         <g id="walls" stroke="black" fill="black" stroke-width="1" >
             <!-- north -->
             <rect x="0" y="0" width="15" height="730" />
@@ -188,14 +225,21 @@
             <rect x="0" y="715" width="31" height="15" />
             <rect x="268.5" y="715" width="31.5" height="15" />
         </g>
+
         <g id="doors" stroke="black" fill="none" stroke-width="1" >
             <path d="M 24 0 v 101 a 101 101 90 0 0 101 -101 v 0 v 15 h -101 v -10 h 101" />
             <rect x="26" y="710" width="247.5" height="4" />
         </g>
+
         <g id="windows" stroke="black" fill="none" stroke-width="0.2" >
             <path d="M 175 6 h 101 m 0 3 h -101" />
         </g>
+
         <g id="light.sonoff_garage_lamp" > <use x="295" y="680" href="#lightbulb" /> </g>
+
+        <text id="sensor.relay_garage_temperature" x="120" y="400" class="thermostat-text" ><tspan>°C</tspan></text>
+        <text id="sensor.relay_garage_humidity" x="120" y="425" class="thermostat-text" ><tspan>%</tspan></text>
+
     </g>
 
     <g id="ground_floor" transform="translate ( 300, 200 )" opacity="1" >
@@ -250,15 +294,6 @@
             <rect x="237" y="967" width="8" height="40" />
         </g>
 
-        <g id="doors" stroke="black" fill="none" stroke-width="1" >
-            <path d="M 107 465 v -78 a 78 78 90 0 1 78 78" />
-            <path d="M 277 548 h -78 a 78 78 90 0 0 78 78" />
-            <path d="M 402 699 v 90 a 90 90 90 0 1 -90 -90" />
-            <path d="M 245 967 h -78 a 78 78 90 0 1 78 -78" />
-            <path d="M 428 1005 h -110 a 110 110 90 0 1 110 -110 v 0 h 26 v 111 h -26 v -111" />
-            <path d="M 27 497.5 h 99 a 99 99 90 0 1 -99 99 h -26 v -99 h 26 v 99" />
-        </g>
-
         <g id="windows" stroke="black" fill="none" stroke-width="0.2" >
             <!-- west -->
             <use transform="translate ( 114, 1007 )" href="#window101" />
@@ -275,11 +310,36 @@
             <use transform="translate(442,0)" href="#window310" />
         </g>
 
+        <g id="room.stairs_groundfloor" > <rect x="442" y="708" width="310" height="159" /> </g>
+        <g id="room.dining1" > <rect x="442" y="397" width="310" height="311" /> </g>
+        <g id="room.dining2" > <rect x="442" y="27" width="155" height="370" /> </g>
+        <g id="room.dining3" > <rect x="597" y="27" width="155" height="370" /> </g>
+        <g id="room.corridor" > <rect x="277" y="465" width="150" height="234" /> </g>
+        <g id="room.shower" >
+            <rect x="27" y="707" width="160" height="300" />
+            <rect x="187" y="875" width="50" height="132" />
+        </g>
+        <g id="room.hall" >
+            <rect x="195" y="707" width="50" height="160" />
+            <rect x="245" y="707" width="182" height="300" />
+        </g>
+        <g id="room.lounge_couch" > <rect x="767" y="87" width="400" height="495" /> </g>
+        <g id="room.lounge_table" > <rect x="767" y="582" width="400" height="425" /> </g>
+
         <g id="windowdoors" stroke="black" fill="none" stroke-width="0.2" stroke-dasharray="10,5" >
             <!-- west -->
             <path d="M 128 73 v 0 88 a 88 88 90 0 0 88 -88 a 88 88 90 0 0 88 88 v -88" />
             <path d="M 890 73 v 0 88 a 88 88 90 0 0 88 -88 a 88 88 90 0 0 88 88 v -88" />
             <path d="M 444 13 v 0 100 a 100 100 90 0 0 100 -100" />
+        </g>
+
+        <g id="doors" stroke="black" fill="none" stroke-width="1" >
+            <path d="M 107 465 v -78 a 78 78 90 0 1 78 78" />
+            <path d="M 277 548 h -78 a 78 78 90 0 0 78 78" />
+            <path d="M 402 699 v 90 a 90 90 90 0 1 -90 -90" />
+            <path d="M 245 967 h -78 a 78 78 90 0 1 78 -78" />
+            <path d="M 428 1005 h -110 a 110 110 90 0 1 110 -110 v 0 h 26 v 111 h -26 v -111" />
+            <path d="M 27 497.5 h 99 a 99 99 90 0 1 -99 99 h -26 v -99 h 26 v 99" />
         </g>
 
         <g id="stairs" >
@@ -292,8 +352,6 @@
         <use id="light.rfhub_lounge_schwibbogen1" x="1010" y="960" href="#lightbulb" />
         <use id="light.rfhub_lounge_schwibbogen2" x="860" y="960" href="#lightbulb" />
         <use id="light.rfhub_lounge_star" x="580" y="930" href="#lightbulb" />
-        <use id="light.rfhub_lounge_drops1" x="215" y="1040" href="#lightbulb" />
-        <use id="light.rfhub_lounge_drops2" x="935" y="1040" href="#lightbulb" />
         <use id="light.rfhub_lounge_lamploungeblackbowl" x="1100" y="470" href="#lightbulb" />
         <use id="light.rfhub_lounge_lamploungereading" x="1070" y="500" href="#lightbulb" />
         <use id="light.rfhub_lounge_lamploungewhiteball" x="1100" y="940" href="#lightbulb" />
@@ -301,14 +359,19 @@
         <use id="light.led_kitchen_led" x="30" y="330" href="#lightbulb" />
         <use id="light.relay_dining1_lamp" x="700" y="440" href="#lightbulb" />
         <use id="light.relay_dining2_lamp" x="700" y="685" href="#lightbulb" />
-        <use id="light.shelly_shower_socket" x="80" y="800" href="#lightbulb" />
-        <use id="light.shelly_treppe_switch_0_groundfloor" x="450" y="750" href="#lightbulb" />
-        <use id="light.shelly_flur_switch_0" x="300" y="830" href="#lightbulb" />
-        <use id="light.shelly_korridor_switch_0" x="330" y="570" href="#lightbulb" />
 
-        <use id="light.shelly_esszimmer1_switch_0" x="575" y="560" href="#lightbulb" />
-        <use id="light.shelly_esszimmer2_switch_0" x="450" y="120" href="#lightbulb" />
-        <use id="light.shelly_esszimmer2_switch_1" x="700" y="120" href="#lightbulb" />
+        <use id="light.rfhub_lounge_drops1" x="30" y="1035" href="#lightchain" />
+        <use id="light.rfhub_lounge_drops2" x="770" y="1035" href="#lightchain" />
+
+        <use id="light.shelly_treppe_switch_0_groundfloor" x="445" y="790" href="#walllight_right" />
+        <use id="light.shelly_esszimmer2_switch_0" x="445" y="120" href="#walllight_right" />
+        <use id="light.shelly_esszimmer2_switch_1" x="749" y="120" href="#walllight_left" />
+        <use id="light.shelly_shower_socket" x="80" y="800" href="#ceilinglight" />
+        <use id="light.shelly_flur_switch_0" x="300" y="830" href="#ceilinglight" />
+        <use id="light.shelly_korridor_switch_0" x="330" y="570" href="#ceilinglight" />
+        <use id="light.shelly_esszimmer1_switch_0" x="575" y="560" href="#ceilinglight" />
+        <use id="light.shelly_wohnzimmer_switch_0" x="970" y="330" href="#ceilinglight" />
+        <use id="light.shelly_wohnzimmer_switch_1" x="970" y="800" href="#ceilinglight" />
 
         <text id="sensor.thermostat_dusche_temperature" x="130" y="900" class="thermostat-text" ><tspan>°C</tspan></text>
         <text id="sensor.thermostat_dusche_humidity" x="130" y="925" class="thermostat-text" ><tspan>%</tspan></text>
@@ -365,7 +428,7 @@
 
         <g id="inner_plaster_walls" stroke="black" fill="black" stroke-width="1" >
             <rect x="0" y="593" width="442" height="8" />
-            <rect x="752" y="532" width="442" height="8" />
+            <rect x="752" y="543" width="442" height="8" />
         </g>
 
         <g id="inner_main_walls" stroke="black" fill="black" stroke-width="1" >
@@ -379,7 +442,7 @@
         </g>
 
         <g id="jamb_wall" stroke="black" fill="black" stroke-width="1" >
-            <rect x="0" y="178" width="442" height="3" />
+            <rect x="0" y="178" width="442" height="3"/>
             <rect x="752" y="178" width="442" height="3" />
             <rect x="0" y="913" width="442" height="3" />
             <rect x="752" y="913" width="442" height="3" />
@@ -405,14 +468,27 @@
             <use transform="translate(442,0)" href="#window310" />
         </g>
 
-        <g id ="stairs">
+        <g id ="stairs" >
         </g>
 
-        <use id="light.shelly_bath_socket" x="190" y="760" href="#lightbulb" />
+        <g id="room.office" > <rect x="27" y="181" width="400" height="412" /> </g>
+        <g id="room.bath" > <rect x="27" y="601" width="400" height="312" /> </g>
+        <g id="room.nursery" > <rect x="767" y="181" width="400" height="362" /> </g>
+        <g id="room.bedroom" > <rect x="767" y="551" width="400" height="362" /> </g>
+        <g id="room.gallery" > <rect x="442" y="350" width="310" height="355" /> </g>
+        <g id="room.stairs_firstfloor" > <rect x="442" y="708" width="310" height="159" /> </g>
+
         <use id="light.sonoff_gallery1_socket" x="440" y="540" href="#lightbulb" />
         <use id="light.sonoff_corridor_lamp" x="40" y="460" href="#lightbulb" />
         <use id="light.sonoff_bedroom_socket" x="940" y="550" href="#lightbulb" />
-        <use id="light.shelly_treppe_switch_0_firstfloor" x="450" y="750" href="#lightbulb" />
+
+        <use id="light.shelly_treppe_switch_0_firstfloor" x="445" y="790" href="#walllight_right" />
+
+        <use id="light.shelly_bath_socket" x="190" y="760" href="#ceilinglight" />
+        <use id="light.shelly_arbeitszimmer_switch_0" x="190" y="380" href="#ceilinglight" />
+        <use id="light.shelly_kinderzimmer_switch_0" x="960" y="350" href="#ceilinglight" />
+        <use id="light.shelly_schlafzimmer_switch_0" x="960" y="700" href="#ceilinglight" />
+        <use id="light.shelly_galerie_switch_0" x="575" y="500" href="#ceilinglight" />
 
         <text id="sensor.thermostat_arbeitszimmer_temperature" x="340" y="335" class="thermostat-text" ><tspan>°C</tspan></text>
         <text id="sensor.thermostat_arbeitszimmer_humidity" x="340" y="360" class="thermostat-text" ><tspan>%</tspan></text>
@@ -442,8 +518,6 @@
             <rect x="415" y="0" width="27" height="60" />
             <rect x="752" y="0" width="27" height="60" />
             <rect x="752" y="60" width="442" height="27" />
-            <rect x="427" y="87" width="15" height="91" />
-            <rect x="752" y="87" width="15" height="91" />
             <!-- north -->
             <rect x="0" y="60" width="27" height="345" />
             <rect x="0" y="689" width="27" height="345" />
@@ -471,7 +545,9 @@
             <rect x="0" y="687" width="1194" height="3" />
         </g>
 
-        <use id="light.shelly_roof_socket" x="440" y="540" href="#lightbulb" />
+        <g id="room.attic" > <rect x="27" y="406" width="1140" height="281" /> </g>
+
+        <use id="light.shelly_roof_socket" x="440" y="540" href="#ceilinglight" />
 
         <text id="sensor.dht22_roof_temperature" x="640" y="550" class="thermostat-text" ><tspan>°C</tspan></text>
         <text id="sensor.dht22_roof_humidity" x="640" y="580" class="thermostat-text" ><tspan>%</tspan></text>

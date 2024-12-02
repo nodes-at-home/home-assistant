@@ -55,3 +55,11 @@
 .button-off tspan {
     fill: white !important;
 }
+
+.roomlight-on {
+    fill: #FFFFCC;
+}
+
+.roomlight-off {
+    fill: white;
+}

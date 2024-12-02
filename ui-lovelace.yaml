@@ -577,7 +577,7 @@ views:
             columns: 3
             entities:
               - entity: light.shelly_esszimmer1_switch_0
-                name: Beleuchtung
+                name: Deckenlampe
               - entity: light.shelly_esszimmer2_switch_0
                 name: Wandlicht links
               - entity: light.shelly_esszimmer2_switch_1
@@ -586,8 +586,6 @@ views:
                 name: Linker Schrank
               - entity: light.relay_dining2_lamp
                 name: Rechter Schrank
-              - light.rfhub_lounge_lamptree
-              - light.rfhub_lounge_lightweb
               - light.ws2812_xmasstar
               # Xmas
               # - light.xmastreedining_leds
@@ -597,8 +595,6 @@ views:
                 name: Thermostat
               - entity: binary_sensor.rauchmelder_esszimmer
                 name: Rauchmelder
-              - entity: vacuum.erdgeschoss
-                name: Staubsauger
             card_mod:
               style: |
                 .card-header {
@@ -618,6 +614,10 @@ views:
             title: Wohnzimmer
             columns: 3
             entities:
+              - entity: light.shelly_wohnzimmer_switch_0
+                name: Deckenlampe Couch
+              - entity: light.shelly_wohnzimmer_switch_0
+                name: Deckenlampe Tisch
               - entity: light.rfhub_lounge_lamploungewhiteball
                 name: Stehlampe Drucker
               - entity: light.rfhub_lounge_lamploungeblackbowl
@@ -662,7 +662,7 @@ views:
             columns: 3
             entities:
               - entity: light.shelly_flur_switch_0
-                name: Beleuchtung
+                name: Deckenlampe
               - binary_sensor.eingangstur
               - entity: binary_sensor.fenster_flur
                 name: Fenster
@@ -690,7 +690,7 @@ views:
             columns: 3
             entities:
               - entity: light.shelly_korridor_switch_0
-                name: Beleuchtung
+                name: Deckenlampe
               - light.led_corridor_led
               - light.pitouch_corridor_screen
             card_mod:
@@ -706,7 +706,7 @@ views:
             columns: 3
             entities:
               - entity: light.shelly_shower_socket
-                name: Beleuchtung
+                name: Deckenlampe
               - entity: binary_sensor.fenster_dusche
                 name: Fenster
               - entity: climate.room_climate_dusche
@@ -789,6 +789,8 @@ views:
             title: Galerie
             columns: 3
             entities:
+              - entity: light.shelly_galerie_switch_0
+                name: Deckenlampe
               - light.sonoff_gallery1_socket
               - entity: light.shelly_treppe_switch_0
                 name: Treppe
@@ -817,6 +819,8 @@ views:
             title: Schlafzimmer
             columns: 3
             entities:
+              - entity: light.shelly_schlafzimmer_switch_0
+                name: Deckenlampe
               - light.sonoff_bedroom_socket
               - type: thermostat
                 entity: climate.bedroom
@@ -851,6 +855,8 @@ views:
             title: Kinderzimmer
             columns: 3
             entities:
+              - entity: light.shelly_kinderzimmer_switch_0
+                name: Deckenlampe
               - type: thermostat
                 entity: climate.nursery
                 name: Klimaanlage
@@ -884,6 +890,8 @@ views:
             title: Arbeitszimmer
             columns: 3
             entities:
+              - entity: light.shelly_arbeitszimmer_switch_0
+                name: Deckenlampe
               - light.sonoff_corridor_lamp
               - entity: switch.bambulab_x1c
                 icon: mdi:printer-3d
@@ -925,7 +933,7 @@ views:
             columns: 3
             entities:
               - entity: light.shelly_bath_socket
-                name: Beleuchtung
+                name: Deckenlampe
               - entity: binary_sensor.fenster_bad
                 name: Fenster
               - entity: binary_sensor.dachfenster_bad
@@ -1034,6 +1042,8 @@ views:
                 name: Stern
               - entity: light.rfhub_lounge_drops
                 name: Tropfen
+              - light.rfhub_lounge_lamptree
+              - light.rfhub_lounge_lightweb
 
       - type: vertical-stack
         title: Garten
@@ -1947,6 +1957,13 @@ views:
               - light.shelly_esszimmer1_switch_0
               - light.shelly_esszimmer2_switch_0
               - light.shelly_esszimmer2_switch_1
+              - light.shelly_arbeitszimmer_switch_0
+              - light.shelly_kinderzimmer_switch_0
+              - light.shelly_schlafzimmer_switch_0
+              - light.shelly_galerie_switch_0
+              - light.shelly_wohnzimmer_switch_0
+              - light.shelly_wohnzimmer_switch_1
+              # - light.shelly_galerie_switch_0
               state_action:
                 - action: call-service
                   service: floorplan.class_set
@@ -1954,6 +1971,43 @@ views:
                   service_data: light-${ entity.state }
               #tap_action:
               #  - service: light.toggle
+            - entities:
+              - entity: light.shelly_shower_socket
+                element: room.shower
+              - entity: light.shelly_bath_socket
+                element: room.bath
+              - entity: light.shelly_treppe_switch_0
+                element: room.stairs_groundfloor
+              - entity: light.shelly_treppe_switch_0
+                element: room.stairs_firstfloor
+              - entity: light.shelly_flur_switch_0
+                element: room.hall
+              - entity: light.shelly_korridor_switch_0
+                element: room.corridor
+              - entity: light.shelly_roof_socket
+                element: room.attic
+              - entity: light.shelly_arbeitszimmer_switch_0
+                element: room.office
+              - entity: light.shelly_kinderzimmer_switch_0
+                element: room.nursery
+              - entity: light.shelly_schlafzimmer_switch_0
+                element: room.bedroom
+              - entity: light.shelly_galerie_switch_0
+                element: room.gallery
+              - entity: light.shelly_wohnzimmer_switch_0
+                element: room.lounge_couch
+              - entity: light.shelly_wohnzimmer_switch_1
+                element: room.lounge_table
+              - entity: light.shelly_esszimmer1_switch_0
+                element: room.dining1
+              - entity: light.shelly_esszimmer2_switch_0
+                element: room.dining2
+              - entity: light.shelly_esszimmer2_switch_1
+                element: room.dining3
+              state_action:
+                - action: call-service
+                  service: floorplan.class_set
+                  service_data: roomlight-${ entity.state }
             - entities:
                 - sensor.thermostat_arbeitszimmer_temperature
                 - sensor.thermostat_arbeitszimmer_humidity
@@ -1979,6 +2033,8 @@ views:
                 - sensor.thermostat_wohnzimmer_humidity
                 - sensor.dht22_roof_temperature
                 - sensor.dht22_roof_humidity
+                - sensor.relay_garage_temperature
+                - sensor.relay_garage_humidity
               state_action:
                 - action: call-service
                   service: floorplan.text_set

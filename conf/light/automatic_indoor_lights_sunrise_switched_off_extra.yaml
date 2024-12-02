@@ -13,3 +13,9 @@
       - light.shelly_esszimmer1_switch_0
       - light.shelly_esszimmer2_switch_0
       - light.shelly_esszimmer2_switch_1
+      - light.shelly_arbeitszimmer_switch_0
+      - light.shelly_kinderzimmer_switch_0
+      - light.shelly_schlafzimmer_switch_0
+      - light.shelly_galerie_switch_0
+      - light.shelly_wohnzimmer_switch_0
+      - light.shelly_wohnzimmer_switch_1
