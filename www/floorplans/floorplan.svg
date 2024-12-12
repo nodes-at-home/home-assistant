@@ -383,7 +383,7 @@
         <use id="light.sonoff_yardgate_lamp" x="1170" y="1040" href="#ledspotlight" />
         <use id="light.rfhub_lounge_schwibbogen1" x="1010" y="960" href="#lightbulb" />
         <use id="light.rfhub_lounge_schwibbogen2" x="860" y="960" href="#lightbulb" />
-        <use id="light.rfhub_lounge_star" x="550" y="910" href="#star" />
+        <use id="light.shelly_entrance_star_switch_0" x="550" y="910" href="#star" />
         <use id="light.rfhub_lounge_lamploungeblackbowl" x="1100" y="470" href="#lightbulb" />
         <use id="light.rfhub_lounge_lamploungereading" x="1070" y="500" href="#lightbulb" />
         <use id="light.rfhub_lounge_lamploungewhiteball" x="1100" y="940" href="#lightbulb" />
@@ -392,8 +392,8 @@
         <use id="light.relay_dining1_lamp" x="700" y="440" href="#lightbulb" />
         <use id="light.relay_dining2_lamp" x="700" y="685" href="#lightbulb" />
 
-        <use id="light.rfhub_lounge_drops1" x="30" y="1035" href="#lightchain" />
-        <use id="light.rfhub_lounge_drops2" x="770" y="1035" href="#lightchain" />
+        <use id="light.shelly_entrance_drops_switch_0a" x="30" y="1035" href="#lightchain" />
+        <use id="light.shelly_entrance_drops_switch_0b" x="770" y="1035" href="#lightchain" />
 
         <use id="light.shelly_treppe_switch_0_groundfloor" x="445" y="790" href="#walllight_right" />
         <use id="light.shelly_esszimmer2_switch_0" x="445" y="210" href="#walllight_right" />

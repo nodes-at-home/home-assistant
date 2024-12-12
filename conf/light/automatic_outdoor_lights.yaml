@@ -11,7 +11,6 @@
       - light.sonoff_yardgate_lamp
       - light.rfhub_lounge_schwibbogen1
       - light.rfhub_lounge_schwibbogen2
-      - light.rfhub_lounge_star
-      - light.rfhub_lounge_drops 
-      - light.rfhub_lounge_lamptree
-      - light.rfhub_lounge_lightweb
+      - light.shelly_entrance_star_switch_0
+      - light.shelly_entrance_drops_switch_0
+      - light.shelly_entrance_lightbirch_switch_0

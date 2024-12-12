@@ -7,7 +7,7 @@
       # - light.rfhub_lounge_lampLoungeWhiteBall
       - light.rfhub_lounge_lamploungeblackbowl
       - light.rfhub_lounge_lampLoungeReading
-      - light.rfhub_lounge_lampStudyPillar
+      - light.shelly_corridor_studypillar_switch_0
       - light.rfhub_lounge_lampkitchenshortstrip
       - light.rfhub_lounge_lampkitchenlongstrip
       - light.relay_dining1_lamp

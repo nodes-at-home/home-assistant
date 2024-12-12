@@ -229,6 +229,49 @@ light.rfhub_lounge_drops:
     friendly_name: Tropfen
 
 #------------------------------------------------------------------------------
+light.shelly_kitchen_longstrip_switch_0:
+    friendly_name: Lange Ledleiste
+
+light.shelly_litchen_shortstrip_switch_0:
+    friendly_name: Kurze Ledleiste
+
+light.shelly_lounge_blackbowl_switch_0:
+    friendly_name: Bodenlampe
+
+light.shelly_lounge_readinglamp_switch_0:
+    friendly_name: Leselampe
+
+light.shelly_lounge_whiteball_switch_0:
+    friendly_name: Stehlampe
+    icon: mdi:floor-lamp
+
+light.shelly_corridor_studypillar_switch_0:
+    friendly_name: Lampe
+    icon: mdi:lamp
+
+light.shelly_entrance_lightbirch_switch_0:
+    friendly_name: Lichterbirke
+    icon: mdi:tree
+
+light.shelly_dining_xmastree_switch_0:
+    friendly_name: Weihnachtsbaum
+    icon: mdi:pine-tree
+
+light.shelly_lounge_schwibbogen1_switch_0:
+    friendly_name: Schwibbogen links
+
+light.shelly_lounge_schwibbogen2_switch_0:
+    friendly_name: Schwibbogen rechts
+
+light.shelly_entrance_star_switch_0:
+    friendly_name: Stern
+    icon: mdi:star
+
+light.shelly_entrance_drops_switch_0:
+    friendly_name: Tropfen
+    icon: mdi:string-lights
+
+#------------------------------------------------------------------------------
 switch.kitchen_short_led_strip:
     friendly_name: Kurze Ledleiste
     icon: mdi:lightbulb

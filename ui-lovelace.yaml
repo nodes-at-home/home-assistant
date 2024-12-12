@@ -587,6 +587,7 @@ views:
               - entity: light.relay_dining2_lamp
                 name: Rechter Schrank
               - light.ws2812_xmasstar
+              - light.shelly_dining_xmastree_switch_0
               # Xmas
               # - light.xmastreedining_leds
               - entity: binary_sensor.terassentur_esszimmer
@@ -691,6 +692,7 @@ views:
             entities:
               - entity: light.shelly_korridor_switch_0
                 name: Deckenlampe
+              - entity: light.shelly_corridor_studypillar_switch_0
               - light.led_corridor_led
               - light.pitouch_corridor_screen
             card_mod:
@@ -1038,11 +1040,9 @@ views:
                 name: Schwibbogen 1
               - entity: light.rfhub_lounge_schwibbogen2
                 name: Schwibbogen 2
-              - entity: light.rfhub_lounge_star
-                name: Stern
-              - entity: light.rfhub_lounge_drops
-                name: Tropfen
-              - light.rfhub_lounge_lamptree
+              - entity: light.shelly_entrance_star_switch_0
+              - entity: light.shelly_entrance_drops_switch_0
+              - light.shelly_entrance_lightbirch_switch_0
               - light.rfhub_lounge_lightweb
 
       - type: vertical-stack
@@ -1930,11 +1930,11 @@ views:
               # - light.ws2812_terrace2
               - light.rfhub_lounge_schwibbogen1
               - light.rfhub_lounge_schwibbogen2
-              - light.rfhub_lounge_star
-              - entity: light.rfhub_lounge_drops
-                element: light.rfhub_lounge_drops1
-              - entity: light.rfhub_lounge_drops
-                element: light.rfhub_lounge_drops2
+              - light.shelly_entrance_star_switch_0
+              - entity: light.shelly_entrance_drops_switch_0
+                element: light.shelly_entrance_drops_switch_0a
+              - entity: light.shelly_entrance_drops_switch_0
+                element: light.shelly_entrance_drops_switch_0b
               - light.rfhub_lounge_lamploungeblackbowl
               - light.rfhub_lounge_lamploungereading
               - light.rfhub_lounge_lamploungewhiteball

@@ -8,11 +8,10 @@
       # - light.rfhub_lounge_lampLoungeWhiteBall
       - light.rfhub_lounge_lamploungeblackbowl
       - light.rfhub_lounge_lampLoungeReading
-      - light.rfhub_lounge_lampStudyPillar
       - light.rfhub_lounge_lampkitchenshortstrip
       - light.rfhub_lounge_lampkitchenlongstrip
-      # - light.rfhub_lounge_lamptree
-      - light.rfhub_lounge_lightweb
+      - light.shelly_dining_xmsatree_switch_0
       - light.relay_dining1_lamp
       - light.relay_dining2_lamp
       - light.led_kitchen_led
+      - light.shelly_dining_xmastree_switch_0
