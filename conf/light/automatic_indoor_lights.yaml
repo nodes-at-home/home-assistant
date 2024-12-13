@@ -5,8 +5,8 @@
     name: automatic_indoor_lights
     entities:
       # - light.rfhub_lounge_lampLoungeWhiteBall
-      - light.rfhub_lounge_lamploungeblackbowl
-      - light.rfhub_lounge_lampLoungeReading
+      - light.shelly_lounge_lackbowl_switch_0
+      - light.shelly_lounge_readinglamp_switch_0
       - light.shelly_corridor_studypillar_switch_0
       - light.rfhub_lounge_lampkitchenshortstrip
       - light.rfhub_lounge_lampkitchenlongstrip

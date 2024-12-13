@@ -9,8 +9,8 @@
       - light.relay_backyard_lamp
       - light.sonoff_garage_lamp
       - light.sonoff_yardgate_lamp
-      - light.rfhub_lounge_schwibbogen1
-      - light.rfhub_lounge_schwibbogen2
+      - light.shelly_lounge_schwibbogen1_switch_0
+      - light.shelly_lounge_schwibbogen2_switch_0
       - light.shelly_entrance_star_switch_0
       - light.shelly_entrance_drops_switch_0
       - light.shelly_entrance_lightbirch_switch_0

@@ -381,12 +381,12 @@
         <use id="light.shelly_terrace_lamp2" x="840" y="57" href="#walllight_up" />
         <use id="light.relay_backyard_lamp" x="-5" y="440" href="#walllight_left" />
         <use id="light.sonoff_yardgate_lamp" x="1170" y="1040" href="#ledspotlight" />
-        <use id="light.rfhub_lounge_schwibbogen1" x="1010" y="960" href="#lightbulb" />
-        <use id="light.rfhub_lounge_schwibbogen2" x="860" y="960" href="#lightbulb" />
+        <use id="light.shelly_lounge_schwibbogen1_switch_0" x="1010" y="960" href="#lightbulb" />
+        <use id="light.shelly_lounge_schwibbogen2_switch_0" x="860" y="960" href="#lightbulb" />
         <use id="light.shelly_entrance_star_switch_0" x="550" y="910" href="#star" />
-        <use id="light.rfhub_lounge_lamploungeblackbowl" x="1100" y="470" href="#lightbulb" />
-        <use id="light.rfhub_lounge_lamploungereading" x="1070" y="500" href="#lightbulb" />
-        <use id="light.rfhub_lounge_lamploungewhiteball" x="1100" y="940" href="#lightbulb" />
+        <use id="light.shelly_lounge_blackbowl_switch_0" x="1100" y="470" href="#lightbulb" />
+        <use id="light.shelly_lounge_readinglamp_switch_0" x="1070" y="500" href="#lightbulb" />
+        <use id="light.shelly_lounge_whiteball_switch_0" x="1100" y="940" href="#lightbulb" />
         <use id="light.led_corridor_led" x="330" y="470" href="#lightbulb" />
         <use id="light.led_kitchen_led" x="30" y="330" href="#lightbulb" />
         <use id="light.relay_dining1_lamp" x="700" y="440" href="#lightbulb" />

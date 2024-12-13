@@ -617,14 +617,11 @@ views:
             entities:
               - entity: light.shelly_wohnzimmer_switch_0
                 name: Deckenlampe Couch
-              - entity: light.shelly_wohnzimmer_switch_0
+              - entity: light.shelly_wohnzimmer_switch_1
                 name: Deckenlampe Tisch
-              - entity: light.rfhub_lounge_lamploungewhiteball
-                name: Stehlampe Drucker
-              - entity: light.rfhub_lounge_lamploungeblackbowl
-              - entity: light.rfhub_lounge_lamploungereading
-              #- entity: light.rfhub_lounge_lampstudypillar
-              #  name: Stehlampe Drucker
+              - light.shelly_lounge_whiteball_switch_0
+              - light.shelly_lounge_blackbowl_switch_0
+              - light.shelly_lounge_readinglamp_switch_0
               - entity: binary_sensor.terassentur_wohnzimmer
                 name: Terassentür
               - entity: binary_sensor.fenster_wohnzimmer_1
@@ -1034,16 +1031,11 @@ views:
                 name: Garage
               - entity: light.sonoff_yardgate_lamp
                 name: Gartentor
-              # - light.ws2812_terrace1
-              # - light.ws2812_terrace2
-              - entity: light.rfhub_lounge_schwibbogen1
-                name: Schwibbogen 1
-              - entity: light.rfhub_lounge_schwibbogen2
-                name: Schwibbogen 2
-              - entity: light.shelly_entrance_star_switch_0
-              - entity: light.shelly_entrance_drops_switch_0
+              - light.shelly_lounge_schwibbogen1_switch_0
+              - light.shelly_lounge_schwibbogen2_switch_0
+              - light.shelly_entrance_star_switch_0
+              - light.shelly_entrance_drops_switch_0
               - light.shelly_entrance_lightbirch_switch_0
-              - light.rfhub_lounge_lightweb
 
       - type: vertical-stack
         title: Garten
@@ -1928,16 +1920,16 @@ views:
               - light.sonoff_yardgate_lamp
               # - light.ws2812_terrace1
               # - light.ws2812_terrace2
-              - light.rfhub_lounge_schwibbogen1
-              - light.rfhub_lounge_schwibbogen2
+              - light.shelly_lounge_schwibbogen1_switch_0
+              - light.shelly_lounge_schwibbogen2_switch_0
               - light.shelly_entrance_star_switch_0
               - entity: light.shelly_entrance_drops_switch_0
                 element: light.shelly_entrance_drops_switch_0a
               - entity: light.shelly_entrance_drops_switch_0
                 element: light.shelly_entrance_drops_switch_0b
-              - light.rfhub_lounge_lamploungeblackbowl
-              - light.rfhub_lounge_lamploungereading
-              - light.rfhub_lounge_lamploungewhiteball
+              - light.shelly_lounge_blackbowl_switch_0
+              - light.shelly_lounge_readinglamp_switch_0
+              - light.shelly_lounge_whiteball_switch_0
               - light.led_corridor_led
               - light.led_kitchen_led
               - light.relay_dining1_lamp

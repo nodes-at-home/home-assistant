@@ -13,5 +13,5 @@
       - light.sonoff_gallery1_socket
       - light.shelly_treppe_switch_0
       - light.shelly_flur_switch_0
-      - light.shelly_korridor_switch_0
+      - light.shelly_corridor_studypillar_switch_0
       - light.shelly_esszimmer1_switch_0

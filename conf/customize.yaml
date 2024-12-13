@@ -240,6 +240,7 @@ light.shelly_lounge_blackbowl_switch_0:
 
 light.shelly_lounge_readinglamp_switch_0:
     friendly_name: Leselampe
+    icon: mdi:desk-lamp
 
 light.shelly_lounge_whiteball_switch_0:
     friendly_name: Stehlampe
