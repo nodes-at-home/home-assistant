@@ -89,21 +89,21 @@
   - sensor:
 
         # positive if charging and negative if discharging
+        # 13.12.2024 battery_power_raw is since v95.03 signed and with oposite sign
       - name: battery_power
         unit_of_measurement: W
         device_class: power
         state_class: measurement
         availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'binary_sensor.battery_discharging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
         state: >
-            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
-                {{ states('sensor.sh10rt_master_battery_power_raw' ) | float }}
-            {% elif is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
-                {{ states ( 'sensor.sh10rt_master_battery_power_raw' ) | float * -1 }} 
+            {% if is_state ( 'binary_sensor.battery_charging', 'on' ) or is_state ( 'binary_sensor.battery_discharging', 'on' ) %}
+                {{ states('sensor.sh10rt_master_battery_power_raw' ) | float * - 1 }}
             {% else %} 
                 0
             {% endif %}
 
         # positive if charging else zero
+        # 13.12.2024 battery_power_raw is since v95.03 signed and with oposite sign
       - name: battery_charging_power
         unit_of_measurement: W
         device_class: power
@@ -111,13 +111,12 @@
         availability: "{{ states ( 'binary_sensor.battery_charging' ) and states ( 'sensor.sh10rt_master_battery_power_raw' ) | is_number }}"
         state: >
             {% if is_state ( 'binary_sensor.battery_charging', 'on' ) %}
-                {{ states('sensor.sh10rt_master_battery_power_raw') }}
+                {{ states('sensor.sh10rt_master_battery_power_raw') | float * - 1 }}
             {% else %}
                 0
             {% endif %}
 
         # positive if discharging else zero
-
       - name: battery_discharging_power
         unit_of_measurement: W
         device_class: power
