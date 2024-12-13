@@ -93,33 +93,53 @@
         availability: "{{ states ( 'sensor.energy_production_today' ) | is_number and states ( 'sensor.energy_production_today_2' ) | is_number }}"
         state: "{{ states ( 'sensor.energy_production_today' ) | float + states ( 'sensor.energy_production_today_2' ) | float }}"
   
-        # 0x0002 = 2 = Stop
-        # 0x0008 = 8 = Standby
-        # 0x0010 = 16 = Initial standby
-        # 0x0020 = 41 = Startup
-        # 0x0040 = 64 = Running
-        # 0x0100 = 256 = Fault
-        # 0x0400 = 1024 = Running in maintain mode
-        # 0x0800 = 2048 = Running in forced mode
-        # 0x1000 = 4096 = Running in off-grid mode
-        # 0x2501 = 9473 = Restarting
-        # 0x4000 = 16384 = Running in External EMS mode
+        # 0x0001 = 1        Stop
+        # 0x0002 = 2        Shutdown
+        # 0x0004 = 4        Emergency Stop
+        # 0x0008 = 8        Standby
+        # 0x0010 = 16       Initial standby
+        # 0x0020 = 41       Startup
+        # 0x0040 = 64       Running
+        # 0x0080 = 128      ??? maybe Running
+        # 0x0100 = 256      Fault
+        # 0x0200 = 512      Update failed
+        # 0x0400 = 1024     Maintain Mode
+        # 0x0800 = 2048     Forced Mode
+        # 0x1000 = 4096     Off-grid mode
+        # 0x1111 = 4369     Uninitialized
+        # 0x1200 = 4608     Initial Standby
+        # 0x1300 = 4864     Shutdown
+        # 0x1400 = 5120     Standby
+        # 0x1500 = 5376     Emergency Stop
+        # 0x1600 = 5632     Startup
+        # 0x1700 = 5888     ACFI Self-test Shutdown
+        # 0x1800 = 6144     Intelligent Station Building Status
+        # 0x1900 = 6400     Safe Mode
+        # 0x2000 = 8192     Open Loop
+        # 0x2501 = 9473     Restarting
+        # 0x4000 = 16384    External EMS Mode
+        # 0x4001 = 16385    Emergeny Charging Operation
+        # 0x5500 = 21760    Fault
+        # 0x8100 = 33024    Derating Running
+        # 0x8200 = 33280    Dispatch Running
+        # 0x9100 = 37120    Warn Run
 
+        # 13.12.2024: new system state 0.80 only for master inverter inerpreted as running
       - name: sh10rt_master_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_master_system_state' ) | int (default = 0) %}
-            {% if  val == 0x0040 or val == 0x0000 %}
+            {% if  val == 0x0080 or val == 0x0040 or val == 0x0000 %}
                 Running
             {% elif  val == 0x0041 %}
                 Off-grid Charge
             {% elif  val == 0x0200 %}
                 Update Failed
             {% elif  val == 0x0400 %}
-                Maintain mode
+                Maintain Mode
             {% elif  val == 0x0800 %}
-                Forced mode
+                Forced Mode
             {% elif  val == 0x1000 %}
-                Off-grid mode
+                Off-grid Mode
             {% elif  val == 0x1111 %}
                 Uninitialized
             {% elif  val == 0x0010 or val == 0x1200 %}
@@ -133,17 +153,17 @@
             {% elif  val == 0x0020 or val == 0x1600 %}
                 Startup
             {% elif  val == 0x1700 %}
-                AFCI selftest shutdown
+                AFCI Selftest Shutdown
             {% elif  val == 0x1800 %}
                 Intelligent Station Building Status
             {% elif  val == 0x1900 %}
                 Safe Mode
             {% elif  val == 0x2000 %}
-                Open loop
+                Open Loop
             {% elif  val == 0x2501 %}
                 Restarting
             {% elif  val == 0x4000 %}
-                External EMS mode
+                External EMS Mode
             {% elif  val == 0x4001 %}
                 Emergency Charging Operation
             {% elif  val == 0x0100 or val == 0x5500 %}
@@ -170,11 +190,11 @@
             {% elif  val == 0x0200 %}
                 Update Failed
             {% elif  val == 0x0400 %}
-                Maintain mode
+                Maintain Mode
             {% elif  val == 0x0800 %}
-                Forced mode
+                Forced Mode
             {% elif  val == 0x1000 %}
-                Off-grid mode
+                Off-grid Mode
             {% elif  val == 0x1111 %}
                 Uninitialized
             {% elif  val == 0x0010 or val == 0x1200 %}
@@ -188,17 +208,17 @@
             {% elif  val == 0x0020 or val == 0x1600 %}
                 Startup
             {% elif  val == 0x1700 %}
-                AFCI selftest shutdown
+                AFCI Selftest Shutdown
             {% elif  val == 0x1800 %}
                 Intelligent Station Building Status
             {% elif  val == 0x1900 %}
                 Safe Mode
             {% elif  val == 0x2000 %}
-                Open loop
+                Open Loop
             {% elif  val == 0x2501 %}
                 Restarting
             {% elif  val == 0x4000 %}
-                External EMS mode
+                External EMS Mode
             {% elif  val == 0x4001 %}
                 Emergency Charging Operation
             {% elif  val == 0x0100 or val == 0x5500 %}
