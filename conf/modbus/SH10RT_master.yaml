@@ -442,6 +442,19 @@
         scale: 1
         scan_interval: 10
 
+      - name: sh10rt_master_export_power
+        device_address: 1
+        address: 13009 # reg 13010
+        input_type: input
+        data_type: int32
+        swap: word
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
       - name: sh10rt_master_battery_voltage
         device_address: 1
         address: 13019 # reg 13020

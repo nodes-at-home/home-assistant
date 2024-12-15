@@ -296,6 +296,19 @@
         scale: 1
         scan_interval: 10
 
+      - name: sh10rt_slave_export_power
+        device_address: 2
+        address: 13009 # reg 13010
+        input_type: input
+        data_type: int32
+        swap: word
+        precision: 0
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
       - name: sh10rt_slave_self_consumption_today
         device_address: 2
         address: 13028 # reg 13029
