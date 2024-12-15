@@ -15,7 +15,7 @@
         input_type: input
         data_type: uint32
         swap: word
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_protocol_version
         device_address: 2
@@ -23,7 +23,7 @@
         input_type: input
         data_type: uint32
         swap: word
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_arm_sw_version
         device_address: 2
@@ -31,7 +31,7 @@
         input_type: input
         count: 15
         data_type: string
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_dsp_sw_version
         device_address: 2
@@ -39,7 +39,7 @@
         input_type: input
         count: 15
         data_type: string
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_serial_no
         device_address: 2
@@ -47,14 +47,14 @@
         input_type: input
         count: 10
         data_type: string
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_device_type_code
         device_address: 2
         address: 4999 # reg 5000
         input_type: input
         data_type: uint16
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_nominal_output_power
         device_address: 2
@@ -65,14 +65,14 @@
         unit_of_measurement: kW
         device_class: power
         scale: 0.1
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_output_type_code
         device_address: 2
         address: 5001 # reg 5002
         input_type: input
         data_type: uint16
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_inverter_temperature
         device_address: 2
@@ -305,7 +305,7 @@
         unit_of_measurement: "%"
         state_class: total_increasing
         scale: 0.1
-        scan_interval: 50
+        scan_interval: 60
 
       - name: sh10rt_slave_phase_a_current
         device_address: 2
@@ -380,7 +380,7 @@
         input_type: input
         count: 15
         data_type: string
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_mdsp_sw_version
         device_address: 2
@@ -388,7 +388,7 @@
         input_type: input
         count: 15
         data_type: string
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_sdsp_sw_version
         device_address: 2
@@ -396,7 +396,7 @@
         input_type: input
         count: 15
         data_type: string
-        scan_interval: 86400
+        scan_interval: 3600
 
       - name: sh10rt_slave_sbrbcu_sw_version
         device_address: 2
@@ -404,4 +404,4 @@
         input_type: input
         count: 15
         data_type: string
-        scan_interval: 86400
+        scan_interval: 3600
