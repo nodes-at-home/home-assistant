@@ -10,10 +10,9 @@
       - light.shelly_lounge_readinglamp_switch_0
       - light.rfhub_lounge_lampkitchenshortstrip
       - light.rfhub_lounge_lampkitchenlongstrip
-      - light.shelly_dining_xmsatree_switch_0
       - light.relay_dining1_lamp
       - light.relay_dining2_lamp
       - light.led_kitchen_led
-      - light.shelly_dining_xmastree_switch_0
       - light.shelly_corridor_studypillar_switch_0
+      - light.shelly_dining_xmsatree_switch_0
 
