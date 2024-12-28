@@ -14,5 +14,5 @@
       - light.relay_dining2_lamp
       - light.led_kitchen_led
       - light.shelly_corridor_studypillar_switch_0
-      - light.shelly_dining_xmsatree_switch_0
+      - light.shelly_dining_xmastree_switch_0
 
