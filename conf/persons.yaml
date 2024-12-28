@@ -30,5 +30,5 @@
 - name: Niklas
   id: niklas
   device_trackers:
-    - device_tracker.177_niklas_galaxy_a52
+    - device_tracker.173_niklas_pixel_8a_wlan
 
