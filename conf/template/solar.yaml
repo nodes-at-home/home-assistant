@@ -345,10 +345,8 @@
         unit_of_measurement: W
         device_class: power
         state_class: measurement
-        # availability: "{{ states ( 'sensor.sh10rt_master_load_power' ) | is_number and states ( 'sensor.sh10rt_slave_load_power' ) | is_number }}"
-        # state: "{{ ( states ( 'sensor.sh10rt_master_load_power' ) | float + states ( 'sensor.sh10rt_slave_load_power' ) | float ) | round ( 0 ) }}"
-        availability: "{{ states ( 'sensor.sh10rt_master_load_power' ) | is_number }}"
-        state: "{{ states ( 'sensor.sh10rt_master_load_power' ) | float | round ( 0 ) }}"
+        availability: "{{ states ( 'sensor.electricity_meter_power' ) | is_number and states ( 'sensor.total_dc_power' ) | is_number and states ( 'sensor.battery_power' ) | is_number }}"
+        state: "{{ ( states ( 'sensor.electricity_meter_power' ) | float + states ( 'sensor.total_dc_power' ) | float - states ( 'sensor.battery_power' ) | float ) | round ( 0 ) }}"
 
       # Inverter States from modbus reference manual
       # 0xAA forced charge
