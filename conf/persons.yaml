@@ -15,7 +15,7 @@
 - name: Nina
   id: nina
   device_trackers:
-    - device_tracker.161_nina_a52s_wlan
+    - device_tracker.163_nina_z_flip4_wlan
 
 - name: Nora
   id: nora
