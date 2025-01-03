@@ -115,7 +115,6 @@
         - sensor.heizkorper_dusche_temperature
         - sensor.gas_quarterhourly
         - sensor.gas_volume_quarterhourly
-        - sensor.gas_price
         - sensor.gas_hotwater_quarterhourly
         - sensor.ds18b20_groundfloor_temperature_lounge1
         - sensor.ds18b20_groundfloor_temperature_lounge2

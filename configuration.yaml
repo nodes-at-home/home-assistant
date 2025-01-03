@@ -111,6 +111,9 @@ lovelace:
       # https://github.com/kalkih/mini-graph-card
       - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
         type: module
+      # https://github.com/RomRider/apexcharts-card
+      - url: /hacsfiles/apexcharts-card/apexcharts-card.js
+        type: module
     dashboards:
         values-dashboard:
             mode: yaml
@@ -132,19 +135,6 @@ lovelace:
             title: System
             icon: mdi:memory
             show_in_sidebar: true
-            require_admin: false
-        brewery-dashboard:
-            mode: yaml
-            filename: ui-brewery.yaml
-            title: Brauerei
-            icon: mdi:beer
-            show_in_sidebar: false
-            require_admin: false
-        old-dashboard:
-            mode: yaml
-            filename: ui-old.yaml
-            title: Old Dashboard
-            show_in_sidebar: false
             require_admin: false
 
 # -------------------------------------------------------------------------------
@@ -168,7 +158,7 @@ http:
 # Enables the recorder component.
 recorder:
     auto_purge: on
-    purge_keep_days: 30
+    purge_keep_days: 90
     auto_repack: true
 
 # -------------------------------------------------------------------------------

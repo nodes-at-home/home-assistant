@@ -2700,3 +2700,101 @@ views:
                 show_percentage_control: true
                 fill_container: false
                 layout: vertical
+
+  # https://www.wolfwithsword.com/bambulab-home-assistant-dashboard/
+  - title: Strompreis
+    path: epex
+    panel: false
+    visible: true
+    cards:
+      - type: custom:apexcharts-card
+        # experimental:
+        #   hidden_by_default: true
+        graph_span: 45h
+        all_series_config:
+          stroke_width: 2
+        span:
+          start: hour
+          offset: '-25h'
+        now:
+          show: true
+        update_interval: 5min
+        header:
+          show: true
+          title: Spotmarktpreis (ct/kWh)
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.epex_spot_de_lu_price
+            yaxis_id: left
+            type: line
+            float_precision: 5
+            name: Spot Markt
+            curve: stepline
+            unit: €/MWh
+            show:
+              in_header: false
+              extremas: true
+              legend_value: false
+            data_generator: |
+              return entity.attributes.data.map((entry) => {
+                      return [new Date(entry.start_time).getTime (), entry.price_eur_per_mwh / 10];
+                    });
+          # - entity: sensor.awattar_current
+          #   name: Preis
+          #   yaxis_id: left
+          #   type: line
+          #   float_precision: 5
+          #   unit: €/kWh
+          #   curve: stepline
+          #   extend_to: now
+          #   fill_raw: last
+          #   show:
+          #     hidden_by_default: false
+          #     legend_value: false
+          # - entity: sensor.awattar_median
+          #   yaxis_id: left
+          #   type: line
+          #   curve: stepline
+          #   fill_raw: last
+          #   float_precision: 5
+          #   name: Median
+          #   unit: €/kWh
+          #   show:
+          #     hidden_by_default: true
+          #     legend_value: false
+          # - entity: sensor.awattar_terzil2
+          #   yaxis_id: left
+          #   type: line
+          #   curve: stepline
+          #   fill_raw: last
+          #   float_precision: 5
+          #   name: oberstes Terzil
+          #   unit: €/kWh
+          #   show:
+          #     hidden_by_default: false
+          #     legend_value: false
+          # - entity: sensor.wirkenergie
+          #   curve: stepline
+          #   type: area
+          #   opacity: 0.3
+          #   name: Bezug
+          #   extend_to: now
+          #   show:
+          #     in_header: false
+          #     legend_value: false
+          #   yaxis_id: right
+          #   group_by:
+          #     func: delta
+          #     duration: 1h
+          #     fill: zero
+        yaxis:
+          - id: left
+            decimals: 2
+            min: 0
+          - id: right
+            opposite: true
+            decimals: 2
+            min: 0
+            max: 10
+            show: false
