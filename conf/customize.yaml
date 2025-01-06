@@ -867,6 +867,7 @@ sensor.ws2812_terrace2_version:
 #------------------------------------------------------------------------------
 light.ws2812_xmasstar:
     friendly_name: Weihnachtsstern
+    icon: mdi:star
 
 sensor.ws2812_xmasstar_voltage:
     friendly_name: Weihnachtsstern
@@ -882,6 +883,27 @@ sensor.ws2812_xmasstar_lastboot:
 
 sensor.ws2812_xmasstar_version:
     friendly_name: Weihnachtsstern
+    entity_picture: /local/images/wemos_mini.jpg
+
+#------------------------------------------------------------------------------
+light.ws2812_office:
+    friendly_name: Tischlampe
+    icon: mdi:lamp
+
+sensor.ws2812_office_voltage:
+    friendly_name: Tischlampe
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812_office_lastvoltage:
+    friendly_name: Tischlampe
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812_office_lastboot:
+    friendly_name: Tischlampe
+    entity_picture: /local/images/wemos_mini.jpg
+
+sensor.ws2812_office_version:
+    friendly_name: Tischlampe
     entity_picture: /local/images/wemos_mini.jpg
 
 #-------------------------------------------------------------------------  -----

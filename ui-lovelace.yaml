@@ -35,6 +35,20 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
+        entity: group.windows
+        content: Fenster
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: group.doors
+        content: Türen
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
         entity: binary_sensor.grid_state
         content: Strom
         icon: "{{ state_attr ( entity, 'icon' )}}"
@@ -892,6 +906,7 @@ views:
               - entity: light.shelly_arbeitszimmer_switch_0
                 name: Deckenlampe
               - light.sonoff_corridor_lamp
+              - light.ws2812_office
               - entity: switch.bambulab_x1c
                 icon: mdi:printer-3d
               - sensor.bambulab_x1c_power

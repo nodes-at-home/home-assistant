@@ -1,0 +1,14 @@
+###
+### 03.01.2025
+###
+
+  - name: ws2812@office
+    schema: json
+    command_topic: nodes@home/light/ws2812/office/led
+    state_topic: nodes@home/light/ws2812/office/led/state
+    brightness: true
+    supported_color_modes: ["rgb"]
+    effect: true
+    effect_list: [static, blink, random_color, rainbow, flicker, fire, fire_soft, fire_intense, halloween, circus_combustus, larson_scanner, color_wipe, random_dot, cycle]
+    optimistic: false
+    retain: true

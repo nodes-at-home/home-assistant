@@ -1,0 +1,26 @@
+###
+### 06.01.2025
+###
+
+name: 'Fenster'
+entities:
+    - binary_sensor.fenster_dusche
+    # - binary_sensor.katzenklappe
+    - binary_sensor.fenster_flur
+    - binary_sensor.fenster_wohnzimmer_1
+    - binary_sensor.fenster_wohnzimmer_2
+    - binary_sensor.fenster_wohnzimmer_3
+    - binary_sensor.fenster_wohnzimmer_4
+    - binary_sensor.fenster_wohnzimmer_5
+    - binary_sensor.fenster_wohnzimmer_6
+    - binary_sensor.dachfenster_bad
+    - binary_sensor.fenster_bad
+    - binary_sensor.dachfenster_arbeitszimmer
+    - binary_sensor.fenster_arbeitszimmer
+    - binary_sensor.dachfenster_schlafzimmer
+    - binary_sensor.fenster_kinderzimmer
+    - binary_sensor.fenster_schlafzimmer
+    - binary_sensor.dachfenster_kinderzimmer
+    - binary_sensor.dachboden
+    - binary_sensor.dachfenster_galerie
+    - binary_sensor.fenster_dachboden

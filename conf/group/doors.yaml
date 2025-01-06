@@ -1,0 +1,17 @@
+###
+### 06.01.2025
+###
+
+name: 'Türen'
+entities:
+    # - binary_sensor.x1c_00m09a410500788_enclosure_door
+    # - binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
+    # - binary_sensor.siemens_ki81fhdd0_68a40ea89517_bsh_common_status_doorstate
+    # - binary_sensor.siemens_ki81fhdd0_68a40ea89517_refrigeration_common_status_door_refrigerator
+    - binary_sensor.eingangstur
+    - binary_sensor.nebentur
+    - binary_sensor.terassentur_wohnzimmer
+    - binary_sensor.terassentur_esszimmer
+    - binary_sensor.terassentur_kuche
+    - binary_sensor.garagentur
+    - binary_sensor.garagentor
