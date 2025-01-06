@@ -13,3 +13,4 @@ centronic-stick.db
 blueprints/
 solcast*.json
 .vscode/
+backups/
