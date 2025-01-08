@@ -32,11 +32,11 @@
             entity_id: input_datetime.dishwasher_start
         data:
             datetime: >
-                {% set pv_this_hour = states ( 'sensor.solcast_pv_forecast_forecast_this_hour' ) | float %}
-                {% set pv_next_hour = states ( 'sensor.solcast_pv_forecast_forecast_next_hour' ) | float %}
+                {% set pv_this_hour = states ( 'sensor.solcast_pv_forecast_prognose_aktuelle_stunde' ) | float %}
+                {% set pv_next_hour = states ( 'sensor.solcast_pv_forecast_prognose_nachste_stunde' ) | float %}
                 {% set min_pv = states ( 'input_number.dishwasher_min_pv_generation' ) | float %}
-                {% set peaktime_today = as_datetime ( states ( 'sensor.solcast_pv_forecast_peak_time_today' ) ) | as_local %}
-                {% set peaktime_tomorrow = as_datetime ( states ( 'sensor.solcast_pv_forecast_peak_time_tomorrow' ) ) | as_local %}
+                {% set peaktime_today = as_datetime ( states ( 'sensor.solcast_pv_forecast_zeitpunkt_spitzenlesitung_heute' ) ) | as_local %}
+                {% set peaktime_tomorrow = as_datetime ( states ( 'sensor.solcast_pv_forecast_zeitpunkt_spitzenlesitung_morgen' ) ) | as_local %}
                 {% if pv_this_hour > min_pv %}
                     {{  today_at ( now ().strftime('%H:%M:%S') )  + timedelta ( seconds = 5 ) }}
                 {% elif pv_next_hour > min_pv %}

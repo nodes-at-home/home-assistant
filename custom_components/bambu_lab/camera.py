@@ -6,12 +6,18 @@ from urllib.parse import urlparse
 from .const import DOMAIN, LOGGER
 from .models import BambuLabEntity
 from .pybambu.const import Features
-from .definitions import CHAMBER_IMAGE_SENSOR
+from .definitions import BambuLabSensorEntityDescription
 
 from homeassistant.components.camera import Camera, CameraEntityFeature
 
 from .coordinator import BambuDataUpdateCoordinator
 
+CHAMBER_CAMERA_SENSOR = BambuLabSensorEntityDescription(
+        key="p1p_camera",
+        translation_key="p1p_camera",
+        value_fn=lambda self: self.coordinator.get_model().get_camera_image(),
+        exists_fn=lambda coordinator: coordinator.get_model().supports_feature(Features.CAMERA_IMAGE) and not coordinator.camera_as_image_sensor,
+    )
 
 async def async_setup_entry(
         hass: HomeAssistant,
@@ -25,7 +31,7 @@ async def async_setup_entry(
         entities_to_add: list = [BambuLabRtspCamera(coordinator, entry)]
         async_add_entities(entities_to_add)
 
-    elif CHAMBER_IMAGE_SENSOR.exists_fn(coordinator):
+    if CHAMBER_CAMERA_SENSOR.exists_fn(coordinator):
         entities_to_add: list = [BambuLabImageCamera(coordinator, entry)]
         async_add_entities(entities_to_add)
 
@@ -58,14 +64,12 @@ class BambuLabRtspCamera(BambuLabEntity, Camera):
 
     @property
     def is_recording(self) -> bool:
-        if self.coordinator.get_model().camera.recording == "enable":
-            return True
         return False
 
     @property
     def use_stream_for_stills(self) -> bool:
         return True
-    
+
     @property
     def available(self) -> bool:
         url = self.coordinator.get_model().camera.rtsp_url
@@ -112,3 +116,15 @@ class BambuLabImageCamera(BambuLabEntity, Camera):
 
     def camera_image(self, width: int | None = None, height: int | None = None) -> bytes | None:
         return self.coordinator.get_model().chamber_image.get_jpeg()
+
+    @property
+    def is_streaming(self) -> bool:
+        return self.available
+    
+    @property
+    def is_recording(self) -> bool:
+        return False
+    
+    @property
+    def available(self) -> bool:
+        return self.coordinator.get_model().chamber_image.available and self.coordinator.camera_enabled

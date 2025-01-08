@@ -1438,9 +1438,9 @@ views:
                 name: jährlich
               - type: section
                 label: Strombörse
-              - entity: sensor.epex_spot_de_lu_price
+              - entity: sensor.epex_spot_data_price
                 name: EPEX
-              - entity: sensor.epex_spot_de_lu_net_price
+              - entity: sensor.epex_spot_data_net_price
                 name: ostrom (SimplyDynamic)
           - type: statistics-graph
             title: Heutiger Verbrauch
@@ -1562,9 +1562,9 @@ views:
               - type: section
                 label: Vorhersage
                 # solcast
-              - entity: sensor.solcast_pv_forecast_forecast_today
+              - entity: sensor.solcast_pv_forecast_prognose_heute
                 name: heute
-              - entity: sensor.solcast_pv_forecast_peak_time_today
+              - entity: sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_heute
                 name: Peak
                 icon: mdi:summit
               - type: conditional
@@ -1572,23 +1572,13 @@ views:
                   - entity: input_boolean.show_debug_fields
                     state: "on"
                 row:
-                    entity: sensor.solcast_pv_forecast_api_used
+                    entity: sensor.solcast_pv_forecast_verwendete_api_abrufe
               - type: conditional
                 conditions:
                   - entity: input_boolean.show_debug_fields
                     state: "on"
                 row:
-                    entity: sensor.solcast_pv_forecast_api_last_polled
-                # forecast solar
-              # - entity: sensor.estimated_energy_production_today
-                # name: heute
-                # icon: mdi:solar-power
-              # - entity: sensor.power_highest_peak_time_today
-                # name: Peak Gartenseite
-                # icon: mdi:summit
-              # - entity: sensor.power_highest_peak_time_today_2
-                # name: Peak Straßenseite
-                # icon: mdi:summit
+                    entity: sensor.solcast_pv_forecast_zeitpunkt_letzter_api_abruf
               - type: section
                 label: Produktion
               - entity: sensor.solar_meter_daily
@@ -2740,7 +2730,7 @@ views:
           show_states: true
           colorize_states: true
         series:
-          - entity: sensor.epex_spot_de_lu_price
+          - entity: sensor.epex_spot_data_price
             yaxis_id: left
             type: line
             float_precision: 5

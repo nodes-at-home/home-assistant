@@ -109,10 +109,10 @@ views:
             - sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
             - type: section
               label: Vorhersage
-            - sensor.solcast_pv_forecast_forecast_this_hour
-            - sensor.solcast_pv_forecast_forecast_next_hour
-            - sensor.solcast_pv_forecast_peak_time_today
-            - sensor.solcast_pv_forecast_peak_time_tomorrow
+            - sensor.solcast_pv_forecast_prognose_aktuelle_stunde
+            - sensor.solcast_pv_forecast_prognose_nachste_stunde
+            - sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_heute
+            - sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_morgen
 
   - title: Garten
     path: garden

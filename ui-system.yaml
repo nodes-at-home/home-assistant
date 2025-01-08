@@ -35,12 +35,12 @@ views:
         title: RPi Server
         show_header_toggle: false
         entities:
-            - sensor.processor_use
-            - sensor.memory_use
-            - sensor.memory_use_percent
-            - sensor.disk_use
-            - sensor.disk_use_percent
-            - sensor.last_boot
+            - sensor.system_monitor_prozessornutzung
+            - sensor.system_monitor_belegter_arbeitsspeicher
+            - sensor.system_monitor_arbeitsspeicher_auslastung
+            - sensor.system_monitor_belegter_massenspeicher
+            - sensor.system_monitor_massenspeicher_auslastung
+            - sensor.system_monitor_letzter_systemstart
       - type: entities
         title: Home Assistant
         show_header_toggle: false
@@ -50,57 +50,35 @@ views:
             - binary_sensor.home_assistant_website_update_available
             - sensor.docker_hub
             - binary_sensor.docker_hub_update_available
+      # - type: entities
+      #   title: DSL
+      #   show_header_toggle: false
+      #   entities:
+      #       - sensor.speedtest_ping
+      #       - sensor.speedtest_download
+      #       - sensor.speedtest_upload
       - type: entities
-        title: DSL
+        title: Fritz!Box
         show_header_toggle: false
         entities:
-            - sensor.speedtest_ping
-            - sensor.speedtest_download
-            - sensor.speedtest_upload
-      - type: conditional
-        conditions:
-          - entity: binary_sensor.fritz_box_7590_connection
-            state: ["on", "off"]
-        card:
-            type: entities
-            title: Fritz!Box
-            show_header_toggle: false
-            entities:
-                - binary_sensor.fritz_box_7590_connection
-                - binary_sensor.fritz_box_7590_link
-                - sensor.fritz_box_7590_external_ip
-                - sensor.fritz_box_7590_last_restart
-                - sensor.fritz_box_7590_connection_uptime
-                - switch.fritz_box_7590_wi_fi_mauzigast
-                - switch.fritz_box_7590_wi_fi_pokemonnetwlan
-                - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
-      - type: conditional
-        conditions:
-          - entity: binary_sensor.fritz_box_7590_verbindung
-            state: ["on", "off"]
-        card:
-            type: entities
-            title: Fritz!Box
-            show_header_toggle: false
-            entities:
-                - binary_sensor.fritz_box_7590_verbindung
-                - binary_sensor.fritz_box_7590_verbinden
-                - sensor.fritz_box_7590_externe_ip
-                - sensor.fritz_box_7590_letzter_neustart
-                - sensor.fritz_box_7590_verbindungsverfugbarkeit
-                - switch.fritz_box_7590_wi_fi_mauzigast
-                - switch.fritz_box_7590_wi_fi_pokemonnetwlan
-                - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
+            - binary_sensor.fritz_box_7590_verbindung
+            - binary_sensor.fritz_box_7590_verbinden
+            - sensor.fritz_box_7590_externe_ip
+            - sensor.fritz_box_7590_letzter_neustart
+            - sensor.fritz_box_7590_verbindungsverfugbarkeit
+            - switch.fritz_box_7590_wi_fi_mauzigast
+            - switch.fritz_box_7590_wi_fi_pokemonnetwlan
+            - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
       - type: entities
         title: USV
         show_header_toggle: false
         entities:
             - sensor.ups_status
-            - sensor.ups_battery_charge
-            - sensor.ups_load
-            - sensor.ups_output_voltage
-            - sensor.ups_battery_runtime
-            # - sensor.ups_status_data
+            - sensor.ups_batterie_ladung
+            - sensor.ups_last
+            - sensor.ups_ausgangsspannung
+            - sensor.ups_batterielaufzeit
+            # - sensor.ups_statusdaten
 
   - title: Geräte
     path: nodes
@@ -1312,7 +1290,7 @@ views:
         title: Allgemein
         show_header_toggle: false
         entities:
-            - entity: binary_sensor.smokedetectionsystem
+            - entity: binary_sensor.64_da_a0_03_b3_1e_smokedetectionsystem
               name: Smoke Detection System
             - alarm_control_panel.intrusion_detection_system
       - type: entities

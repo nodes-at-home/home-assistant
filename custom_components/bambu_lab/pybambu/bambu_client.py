@@ -37,6 +37,7 @@ class WatchdogThread(threading.Thread):
         self._stop_event = threading.Event()
         self._last_received_data = time.time()
         super().__init__()
+        self.daemon = True
         self.setName(f"{self._client._device.info.device_type}-Watchdog-{threading.get_native_id()}")
 
     def stop(self):
@@ -71,6 +72,7 @@ class ChamberImageThread(threading.Thread):
         self._client = client
         self._stop_event = threading.Event()
         super().__init__()
+        self.daemon = True
         self.setName(f"{self._client._device.info.device_type}-Chamber-{threading.get_native_id()}")
 
     def stop(self):
@@ -224,6 +226,7 @@ class MqttThread(threading.Thread):
         self._client = client
         self._stop_event = threading.Event()
         super().__init__()
+        self.daemon = True
         self.setName(f"{self._client._device.info.device_type}-Mqtt-{threading.get_native_id()}")
 
     def stop(self):
@@ -282,25 +285,43 @@ class BambuClient:
     _camera = None
     _usage_hours: float
 
-    def __init__(self, device_type: str, serial: str, host: str, local_mqtt: bool, region: str, email: str,
-                 username: str, auth_token: str, access_code: str, usage_hours: float = 0, manual_refresh_mode: bool = False):
-        self.callback = None
-        self.host = host
-        self._local_mqtt = local_mqtt
-        self._serial = serial
-        self._auth_token = auth_token
-        self._access_code = access_code
-        self._username = username
+    def __init__(self, config):
+        self.host = config['host']
+        self._callback = None
+
+        self._access_code = config.get('access_code', '')
+        self._auth_token = config.get('auth_token', '')
+        self._device_type = config.get('device_type', 'unknown')
+        self._local_mqtt = config.get('local_mqtt', False)
+        self._manual_refresh_mode = config.get('manual_refresh_mode', False)
+        self._serial = config.get('serial', '')
+        self._usage_hours = config.get('usage_hours', 0)
+        self._username = config.get('username', '')
+        self._enable_camera = config.get('enable_camera', True)
+
         self._connected = False
-        self._device_type = device_type
-        self._usage_hours = usage_hours
         self._port = 1883
         self._refreshed = False
-        self._manual_refresh_mode = manual_refresh_mode
-        self._device = Device(self)
-        self.bambu_cloud = BambuCloud(region, email, username, auth_token)
-        self.slicer_settings = SlicerSettings(self)
 
+        self._device = Device(self)
+        self.bambu_cloud = BambuCloud(
+            region = config.get('region', ''),
+            email = config.get('email', ''),
+            username = config.get('username', ''),
+            auth_token = config.get('auth_token', '')
+        )
+        self.slicer_settings = SlicerSettings(self)
+        language = config.get('user_language', 'pt')
+        if 'zh' in language:
+            language = 'zh-CN'
+        else:
+            language = language[:2]
+        self._user_language = language
+
+    @property
+    def user_language(self):
+        return self._user_language
+    
     @property
     def connected(self):
         """Return if connected to server"""
@@ -318,7 +339,22 @@ class BambuClient:
             self.disconnect()
         else:
             # Reconnect normally
-            self.connect(self.callback)
+            self.connect(self._callback)
+
+    @property
+    def camera_enabled(self):
+        return self._enable_camera
+    
+    def callback(self, event: str):
+        if self._callback is not None:
+            self._callback(event)
+
+    def set_camera_enabled(self, enable):
+        self._enable_camera = enable
+        if self._enable_camera:
+            self._start_camera()
+        else:
+            self._stop_camera()
 
     def setup_tls(self):
         self.client.tls_set(tls_version=ssl.PROTOCOL_TLS, cert_reqs=ssl.CERT_NONE)
@@ -327,7 +363,7 @@ class BambuClient:
     async def connect(self, callback):
         """Connect to the MQTT Broker"""
         self.client = mqtt.Client()
-        self.callback = callback
+        self._callback = callback
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
         self.client.on_message = self.on_message
@@ -349,8 +385,6 @@ class BambuClient:
         self._mqtt.start()
 
     def subscribe_and_request_info(self):
-        LOGGER.debug("Loading slicer settings...")
-        self.slicer_settings.update()
         LOGGER.debug("Now subscribing...")
         self.subscribe()
         LOGGER.debug("On Connect: Getting version info")
@@ -368,6 +402,22 @@ class BambuClient:
         LOGGER.info("On Connect: Connected to printer")
         self._on_connect()
 
+    def _start_camera(self):
+        if not self._device.supports_feature(Features.CAMERA_RTSP):
+            if self._device.supports_feature(Features.CAMERA_IMAGE):
+                if self._enable_camera:
+                    LOGGER.debug("Starting Chamber Image thread")
+                    self._camera = ChamberImageThread(self)
+                    self._camera.start()
+            elif (self.host == "") or (self._access_code == ""):
+                LOGGER.debug("Skipping camera setup as local access details not provided.")
+
+    def _stop_camera(self):
+        if self._camera is not None:
+            LOGGER.debug("Stopping camera thread")
+            self._camera.stop()
+            self._camera.join()
+
     def _on_connect(self):
         self._connected = True
         self.subscribe_and_request_info()
@@ -376,10 +426,7 @@ class BambuClient:
         self._watchdog = WatchdogThread(self)
         self._watchdog.start()
 
-        if self._device.supports_feature(Features.CAMERA_IMAGE):
-            LOGGER.debug("Starting Chamber Image thread")
-            self._camera = ChamberImageThread(self)
-            self._camera.start()
+        self._start_camera()
 
     def try_on_connect(self,
                        client_: mqtt.Client,
@@ -412,10 +459,7 @@ class BambuClient:
             LOGGER.debug("Stopping watchdog thread")
             self._watchdog.stop()
             self._watchdog.join()
-        if self._camera is not None:
-            LOGGER.debug("Stopping camera thread")
-            self._camera.stop()
-            self._camera.join()
+        self._stop_camera()
 
     def _on_watchdog_fired(self):
         LOGGER.info("Watch dog fired")
@@ -457,10 +501,11 @@ class BambuClient:
                 elif json_data.get("info") and json_data.get("info").get("command") == "get_version":
                     LOGGER.debug("Got Version Data")
                     self._device.info_update(data=json_data.get("info"))
+                    # Only update slicer settings on a successful connection to the printer.
+                    self.slicer_settings.update()
+
         except Exception as e:
-            LOGGER.error("An exception occurred processing a message:")
-            LOGGER.error(f"Exception type: {type(e)}")
-            LOGGER.error(f"Exception data: {e}")
+            LOGGER.error("An exception occurred processing a message:", exc_info=e)
 
     def subscribe(self):
         """Subscribe to report topic"""
@@ -482,7 +527,7 @@ class BambuClient:
         """Force refresh data"""
 
         if self._manual_refresh_mode:
-            self.connect(self.callback)
+            self.connect(self._callback)
         else:
             LOGGER.debug("Force Refresh: Getting Version Info")
             self._refreshed = True
@@ -490,8 +535,6 @@ class BambuClient:
             LOGGER.debug("Force Refresh: Request Push All")
             self._refreshed = True
             self.publish(PUSH_ALL)
-
-        self.slicer_settings.update()
 
     def get_device(self):
         """Return device"""

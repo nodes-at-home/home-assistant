@@ -30,7 +30,7 @@
     - name: gas_storage_germany_consumption_total
       icon: mdi:gas-burner
       unit_of_measurement: "TWh"
-      state: "{{ state_attr('sensor.gas_storage_germany', 'consumption') }}"
+      state: "{{ state_attr('sensor.gas_storage_germany', 'consumption') | int ( 0 ) }}"
 
     - name: gas_storage_germany_trend
       unit_of_measurement: "%"

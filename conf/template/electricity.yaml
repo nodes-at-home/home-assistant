@@ -158,7 +158,7 @@
         unit_of_measurement: W
         state: >
             {% set val = states ( 'sensor.tasmota_lk13be_power' ) | float | round ( 0 ) %}
-            {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) | float | round ( 0 ) %}
+            {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) | float ( 0 ) | round ( 0 ) %}
             {% set max = states ( 'input_number.electricity_meter_threshold_power' ) | float | round ( 0 ) %}
             {% if val == 0 or val > max or val < -max %}
                 {{ lastval }}
@@ -168,7 +168,7 @@
         attributes:
             lastvalue: >
                 {% set val = states ( 'sensor.tasmota_lk13be_power' ) | float | round ( 0 ) %}
-                {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) | float | round ( 0 ) %}
+                {% set lastval = state_attr ( 'sensor.electricity_meter_power', 'lastvalue' ) | float ( 0 ) | round ( 0 ) %}
                 {% set max = states ( 'input_number.electricity_meter_threshold_power' ) | float | round ( 0 ) %}
                 {% if val == 0 or val > max or val < -max %}
                     {{ lastval }}

@@ -22,7 +22,7 @@
                     "api_quota": "API limit (optionally comma separate multiple values for each key)",
                     "auto_update": "Auto-update (if no auto-update then an automation must be used instead)",
                     "customhoursensor": "Custom next X hours sensor (min=1, max=144)",
-                    "hard_limit": "Inverter hard limit in Watts (see integration documentation)",
+                    "hard_limit_api": "Inverter hard limit in kW (see integration documentation)",
                     "key_estimate": "Preferred forecast likelihood to use for sensors",
                     "attr_brk_estimate10": "Enable estimate 10 sensor attributes",
                     "attr_brk_estimate": "Enable estimate 50 sensor attributes",
@@ -73,9 +73,7 @@
     },
     "system_health": {
         "info": {
-            "can_reach_server": "Solcast server connection",
-            "used_requests": "API requests remaining",
-            "rooftop_site_count": "Rooftop site count"
+            "can_reach_server": "Solcast server connection"
         }
     },
     "selector": {
@@ -121,7 +119,7 @@
                 },
                 "undampened": {
                     "name": "Undampened",
-                    "description": "Optional boolean to retrieve undampened forecast"
+                    "description": "Optional boolean to retrieve un-dampened forecast"
                 },
                 "site": {
                     "name": "Site ID",
@@ -155,7 +153,7 @@
         },
         "set_hard_limit": {
             "name": "Set inverter forecast hard limit",
-            "description": "Prevent forcast values being higher than the inverter can produce.",
+            "description": "Prevent forecast values being higher than the inverter can produce.",
             "fields": {
                 "hard_limit": {
                     "name": "Limit value in Watts",
@@ -192,7 +190,8 @@
             "total_kwh_forecast_d7": {"name": "Forecast Day 7"},
             "power_now": {"name": "Power Now"},
             "weather_description": {"name": "Weather"},
-            "hard_limit": {"name": "Hard Limit Set"}
+            "hard_limit": {"name": "Hard Limit Set"},
+            "hard_limit_api": {"name": "Hard Limit Set {api_key}"}
         },
         "select": {
             "estimate_mode" : {"name": "Use Forecast Field"}
@@ -226,7 +225,7 @@
         "damp_error_parsing": {
             "message": "Error parsing dampening factor comma separated numbers."
         },
-        "damp_ouside_range": {
+        "damp_outside_range": {
             "message": "Dampening factor value present that is not between 0.0 and 1.0."
         },
         "hard_empty": {
@@ -234,6 +233,9 @@
         },
         "hard_not_positive_number": {
             "message": "Hard limit value is not a positive number."
+        },
+        "remove_cache_failed": {
+            "message": "Clear all Solcast data failed."
         }
     }
 }

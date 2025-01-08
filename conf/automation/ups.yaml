@@ -38,7 +38,7 @@
     id: ups_shutdown_on_low_battery
     trigger:
       - platform: numeric_state
-        entity_id: sensor.ups_battery_runtime
+        entity_id: sensor.ups_batterielaufzeit
         below: input_number.ups_shutdown_at_battery_runtime
     condition:
         not:
@@ -48,6 +48,6 @@
     action:
       - service: notify.simplepush
         data:
-          message: "Runterfahren bei USV-Restlaufzeit von {{ '{:02d}:{:02d}'.format ( (states ( 'sensor.ups_battery_runtime' ) | int / 60) | int, (states ( 'sensor.ups_battery_runtime' ) | int % 60) | int ) }} min"
+          message: "Runterfahren bei USV-Restlaufzeit von {{ '{:02d}:{:02d}'.format ( (states ( 'sensor.ups_batterielaufzeit' ) | int / 60) | int, (states ( 'sensor.ups_batterielaufzeit' ) | int % 60) | int ) }} min"
           title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
       - service: shell_command.request_shutdown
