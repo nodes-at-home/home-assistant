@@ -6,9 +6,9 @@
     schema: json
     command_topic: nodes@home/light/ws2812/office/led
     state_topic: nodes@home/light/ws2812/office/led/state
-    brightness: true
+    # brightness: true
     supported_color_modes: ["rgb"]
     effect: true
-    effect_list: [static, blink, random_color, rainbow, flicker, fire, fire_soft, fire_intense, halloween, circus_combustus, larson_scanner, color_wipe, random_dot, cycle]
+    effect_list: [static, blink, random_color, rainbow, ring, ring_up, ring_down, turn_left, turn_right, sunrise, random_dot]
     optimistic: false
     retain: true
