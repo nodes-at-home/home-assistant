@@ -231,9 +231,11 @@ light.rfhub_lounge_drops:
 #------------------------------------------------------------------------------
 light.shelly_kitchen_longstrip_switch_0:
     friendly_name: Lange Ledleiste
+    icon: mdi:led-strip
 
-light.shelly_litchen_shortstrip_switch_0:
+light.shelly_kitchen_shortstrip_switch_0:
     friendly_name: Kurze Ledleiste
+    icon: mdi:led-strip
 
 light.shelly_lounge_blackbowl_switch_0:
     friendly_name: Bodenlampe
@@ -271,20 +273,6 @@ light.shelly_entrance_star_switch_0:
 light.shelly_entrance_drops_switch_0:
     friendly_name: Tropfen
     icon: mdi:string-lights
-
-#------------------------------------------------------------------------------
-switch.kitchen_short_led_strip:
-    friendly_name: Kurze Ledleiste
-    icon: mdi:lightbulb
-
-switch.kitchen_long_led_strip:
-    friendly_name: Lange Ledleiste
-    icon: mdi:lightbulb
-
-switch.heater_circulating_pump:
-    friendly_name: Zirkulationspumpe
-    # entity_picture: /local/images/circulation_pump.jpg
-    icon: mdi:pump
 
 #------------------------------------------------------------------------------
 sensor.rfhub_lounge_voltage:
@@ -359,27 +347,6 @@ sensor.sonoff_garage_lastboot:
 
 sensor.sonoff_garage_version:
     friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/sonoff.jpg
-
-#------------------------------------------------------------------------------
-switch.sonoff_utilityroom_pump:
-    friendly_name: 'Zirkulationspumpe Warmwasser'
-    entity_picture: /local/images/circulation_pump.jpg
-
-sensor.sonoff_utilityroom_voltage:
-    friendly_name: 'Zirkulationspumpe'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_utilityroom_lastvoltage:
-    friendly_name: 'Zirkulationspumpe'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_utilityroom_lastboot:
-    friendly_name: 'Zirkulationspumpe'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_utilityroom_version:
-    friendly_name: 'Zirkulationspumpe'
     entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
@@ -674,6 +641,7 @@ sensor.sonoff_corridor_version:
 #------------------------------------------------------------------------------
 light.led_kitchen_led:
     friendly_name: Küchenarbeitslicht
+    icon: mdi:led-strip
 
 sensor.led_kitchen_voltage:
     friendly_name: 'Ledlicht'
@@ -752,23 +720,6 @@ sensor.ds18b20_brewery_version:
     entity_picture: /local/images/wemos_mini.jpg
 
 #------------------------------------------------------------------------------
-sensor.oled_kitchen_voltage:
-    friendly_name: OLED Display
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.oled_kitchen_lastvoltage:
-    friendly_name: OLED Display
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.oled_kitchen_lastboot:
-    friendly_name: OLED Display
-    entity_picture: /local/images/wemos_mini.jpg
-
-sensor.oled_kitchen_version:
-    friendly_name: OLED Display
-    entity_picture: /local/images/wemos_mini.jpg
-
-#------------------------------------------------------------------------------
 binary_sensor.gesture_kitchen:
     friendly_name: Gestensensor Küche
 
@@ -810,19 +761,6 @@ sensor.spindle_fermenter_lastboot:
 sensor.spindle_fermenter_version:
     friendly_name: Spindel Gärfass
     entity_picture: /local/images/wemos_mini.jpg
-
-#------------------------------------------------------------------------------
-sensor.ssr_brewery_temperature:
-    friendly_name: Temperatur Sudkessel
-
-switch.ssr_brewery_socket1:
-    friendly_name: 'Heizung Sudkessel'
-
-switch.ssr_brewery_socket2:
-    friendly_name: 'Rührwerk Sudkessel'
-
-switch.ssr_brewery_valve:
-    friendly_name: 'Ventil Kühlwasser'
 
 #------------------------------------------------------------------------------
 light.ws2812_terrace1:
@@ -888,7 +826,7 @@ sensor.ws2812_xmasstar_version:
 #------------------------------------------------------------------------------
 light.ws2812_office:
     friendly_name: Tischlampe
-    icon: mdi:lamp
+    icon: mdi:lava-lamp
 
 sensor.ws2812_office_voltage:
     friendly_name: Tischlampe

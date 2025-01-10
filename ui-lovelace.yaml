@@ -341,8 +341,10 @@ views:
                 # entity: light.ws2812_terrace2
               - type: light
                 entity: light.ws2812_xmasstar
-              - type: markdown
-                content: " "
+              - type: light
+                entity: light.ws2812_office
+              # - type: markdown
+              #   content: " "
           - type: horizontal-stack
             cards:
               - type: button
@@ -547,8 +549,8 @@ views:
             title: Küche
             columns: 3
             entities:
-              - light.rfhub_lounge_lampkitchenshortstrip
-              - light.rfhub_lounge_lampkitchenlongstrip
+              - light.shelly_kitchen_shortstrip_switch_0
+              - light.shelly_kitchen_longstrip_switch_0
               - entity: light.led_kitchen_led
                 name: Arbeitslicht
               #- entity: sensor.geschirrspuler_operation_state

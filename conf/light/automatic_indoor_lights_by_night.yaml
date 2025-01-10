@@ -15,3 +15,5 @@
       - light.shelly_flur_switch_0
       - light.shelly_corridor_studypillar_switch_0
       - light.shelly_esszimmer1_switch_0
+      - light.shelly_kitchen_ledshort_switch_0
+      - light.shelly_kitchen_ledlong_switch_0
