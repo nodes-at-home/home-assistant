@@ -14,7 +14,6 @@
       - trigger: state
         alias: When any nodestate changes
         entity_id:
-          - binary_sensor.nodestate_rfhub_lounge
           - binary_sensor.nodestate_dht22_lounge
           - binary_sensor.nodestate_dht22_terrace
           - binary_sensor.nodestate_dht22_roof

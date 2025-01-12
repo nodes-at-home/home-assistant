@@ -5,7 +5,6 @@
 name: 'Geräte'
 all: true
 entities:
-    - binary_sensor.nodestate_rfhub_lounge
     - binary_sensor.nodestate_dht22_lounge
     - binary_sensor.nodestate_dht22_terrace
     - binary_sensor.nodestate_dht22_roof

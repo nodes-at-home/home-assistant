@@ -2,13 +2,6 @@
 ### 02.10.2024
 ###
 
-  - name: "nodestate_rfhub@lounge"
-    state_topic: nodes@home/switch/rfhub/lounge/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
   - name: "nodestate_DHT22@lounge"
     state_topic: nodes@home/sensor/DHT22/lounge/value/voltage
     qos: 0

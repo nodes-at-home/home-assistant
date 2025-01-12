@@ -191,44 +191,6 @@ sensor.speedtest_upload:
     entity_picture: /local/images/o2dsl2.jpg
 
 #------------------------------------------------------------------------------
-light.rfhub_lounge_lampkitchenlongstrip:
-    friendly_name: Lange Ledleiste
-
-light.rfhub_lounge_lampkitchenshortstrip:
-    friendly_name: Kurze Ledleiste
-
-light.rfhub_lounge_lamploungeblackbowl:
-    friendly_name: Bodenlampe
-
-light.rfhub_lounge_lamploungereading:
-    friendly_name: Leselampe
-
-light.rfhub_lounge_lamploungewhiteball:
-    friendly_name: Stehlampe an der Couch
-
-light.rfhub_lounge_lampstudypillar:
-    friendly_name: Stehlampe am Drucker
-
-light.rfhub_lounge_lamptree:
-    friendly_name: Lichterbirke
-    icon: mdi:tree
-
-light.rfhub_lounge_lightweb:
-    friendly_name: Lichternetz
-
-light.rfhub_lounge_schwibbogen1:
-    friendly_name: Schwibbogen links
-
-light.rfhub_lounge_schwibbogen2:
-    friendly_name: Schwibbogen rechts
-
-light.rfhub_lounge_star:
-    friendly_name: Stern
-
-light.rfhub_lounge_drops:
-    friendly_name: Tropfen
-
-#------------------------------------------------------------------------------
 light.shelly_kitchen_longstrip_switch_0:
     friendly_name: Lange Ledleiste
     icon: mdi:led-strip
@@ -273,23 +235,6 @@ light.shelly_entrance_star_switch_0:
 light.shelly_entrance_drops_switch_0:
     friendly_name: Tropfen
     icon: mdi:string-lights
-
-#------------------------------------------------------------------------------
-sensor.rfhub_lounge_voltage:
-    friendly_name: RF Hub
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.rfhub_lounge_lastvoltage:
-    friendly_name: RF Hub
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.rfhub_lounge_lastboot:
-    friendly_name: RF Hub
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.rfhub_lounge_version:
-    friendly_name: RF Hub
-    entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
 cover.relay_garage:
