@@ -1100,12 +1100,10 @@ views:
             - switch.bambulab_x1c
             - sensor.bambulab_x1c_energy
             - sensor.bambulab_x1c_power
+            - type: divider
             - switch.poolpumpe
             - sensor.poolpumpe_energy
             - sensor.poolpumpe_power
-            - switch.zirkulationspumpe
-            - sensor.zirkulationspumpe_energy
-            - sensor.zirkulationspumpe_power
       - type: entities
         title: Heizkörperthermostate
         show_header_toggle: false

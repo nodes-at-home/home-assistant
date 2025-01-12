@@ -749,18 +749,10 @@ views:
               - binary_sensor.katzenklappe
               - entity: climate.room_climate_hauswirtschaftsraum
                 name: Thermostat
-              - entity: switch.waschmaschine
-                icon: mdi:washing-machine
-              - sensor.waschmaschine_power
-              - entity: switch.nodesathome1
-                icon: mdi:server
-              - sensor.nodesathome1_power
-              - entity: switch.nodesathome2
-                icon: mdi:server
-              - sensor.nodesathome2_power
-              - entity: switch.zirkulationspumpe
-                icon: mdi:pump
-              - sensor.zirkulationspumpe_power
+              - switch.waschmaschine
+              - switch.nodesathome1
+              - switch.nodesathome2
+              - entity: switch.shelly_utilityroom_circulatingpump_switch_0
               - entity: sensor.boiler_wwcurtemp
                 name: Warmwasser
               - entity: switch.boiler_wwonetime

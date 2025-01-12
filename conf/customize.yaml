@@ -1534,3 +1534,21 @@ sensor.pool_pump_period_length:
     unit_of_measurement: min
 
 #------------------------------------------------------------------------------
+switch.waschmaschine:
+    friendly_name: Waschmaschine
+    icon: mdi:washing-machine
+
+switch.nodesathome1:
+    friendly_name: nodesathome1
+    icon: mdi:server
+
+switch.nodesathome2:
+    friendly_name: nodesathome2
+    icon: mdi:server
+
+#------------------------------------------------------------------------------
+switch.shelly_utilityroom_circulatingpump_switch_0:
+    friendly_name: Zirkulationspumpe
+    icon: mdi:pump
+
+#------------------------------------------------------------------------------
