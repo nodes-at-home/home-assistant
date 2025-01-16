@@ -359,7 +359,7 @@ views:
                 hold_action:
                     action: more-info
               - type: entity-button
-                entity: switch.bambulab_x1c
+                entity: switch.shelly_office_bambulab_switch_0
                 name: 3D Drucker
                 icon: mdi:printer-3d
                 tap_action:
@@ -901,10 +901,7 @@ views:
                 name: Deckenlampe
               - light.sonoff_corridor_lamp
               - light.ws2812_office
-              - entity: switch.bambulab_x1c
-                icon: mdi:printer-3d
-              - sensor.bambulab_x1c_power
-              - entity: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+              - entity: switch.shelly_office_bambulab_switch_0
                 name: Bambulab X1C
                 icon: mdi:printer-3d
               - type: thermostat
@@ -2410,7 +2407,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:button-card
-                entity: switch.sonoff_k8200_socket
+                entity: switch.shelly_office_bambulab_switch_0
                 name: X1C
                 icon: mdi:printer-3d
                 tap_action:
@@ -2700,7 +2697,6 @@ views:
                 fill_container: false
                 layout: vertical
 
-  # https://www.wolfwithsword.com/bambulab-home-assistant-dashboard/
   - title: Strompreis
     path: epex
     panel: false
