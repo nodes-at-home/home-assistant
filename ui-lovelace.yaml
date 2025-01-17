@@ -553,21 +553,20 @@ views:
               - light.shelly_kitchen_longstrip_switch_0
               - entity: light.led_kitchen_led
                 name: Arbeitslicht
-              #- entity: sensor.geschirrspuler_operation_state
               - entity: sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
                 name: Geschirrspüler
-              #- entity: binary_sensor.geschirrspuler_door
               - entity: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
                 name: Geschirrspüler
               - entity: switch.geschirrspuler
                 icon: mdi:dishwasher
-              - sensor.geschirrspuler_power
               - entity: number.siemens_ki81fhdd0_68a40ea89517_refrigeration_fridgefreezer_setting_setpointtemperaturerefrigerator
                 name: Kühlschrank
               - entity: switch.siemens_ki81fhdd0_68a40ea89517_refrigeration_fridgefreezer_setting_supermoderefrigerator
                 name: Supercooling
               - entity: binary_sensor.siemens_ki81fhdd0_68a40ea89517_bsh_common_status_doorstate
                 name: Kühlschrank
+              - entity: switch.kuhlschrank
+                icon: mdi:fridge-industrial-outline
               - entity: binary_sensor.terassentur_kuche
                 name: Terassentür
               - entity: climate.room_climate_kuche
@@ -1057,7 +1056,6 @@ views:
                 - switch.relay_garden_valve3
                 - entity: switch.wasserpumpe
                   icon: mdi:water-pump
-                - sensor.wasserpumpe_power
           - type: glance
             title: Hydrotower
             card_mod:
@@ -1275,9 +1273,12 @@ views:
               - sensor.relay_garage_state
               - binary_sensor.garagentor
               - binary_sensor.garagentur
+              - entity: switch.aussenkuhlschrank
+                icon: mdi:fridge-outline
+              - entity: switch.getrankekuhlschrank
+                icon: mdi:fridge-variant-outline
               - entity: switch.bosch_ladestation
                 icon: mdi:battery-charging-medium
-              - entity: sensor.bosch_ladestation_power
               - binary_sensor.rauchmelder_garage
       - type: conditional
         conditions:
@@ -1296,7 +1297,6 @@ views:
                     entities:
                         - entity: switch.poolpumpe
                           icon: mdi:pump
-                        - sensor.poolpumpe_power
                   - type: gauge
                     name: Pooltemperatur
                     entity: sensor.ds18b20_pool_temperature
