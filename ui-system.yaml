@@ -816,6 +816,9 @@ views:
                 show_header_toggle: true
                 entities:
                     - automation.send_effect_delay
+                    - automation.indoor_lights_desk_rgblamp_on
+                    - automation.indoor_lights_desk_rgblamp_off
+                    - automation.indoor_lights_desk_rgblamp_brightness
               - type: entities
                 title: Pitouch
                 show_header_toggle: true

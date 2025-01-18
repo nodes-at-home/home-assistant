@@ -1,0 +1,10 @@
+###
+### 18.01.2025
+###
+
+name: Helligkeit
+mode: slider
+min: 1
+max: 255
+step: 1
+# initial: 15

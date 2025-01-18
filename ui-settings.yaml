@@ -48,10 +48,12 @@ views:
             - input_datetime.pitouch_off
             - input_select.pitouch_temp_display
       - type: entities
-        title: Lichterkette
+        title: Led Lichter
         show_header_toggle: false
         entities:
             - input_number.effect_delay
+            - input_number.default_brightness
+            - input_number.brightness_delta
       - type: entities
         title: USV
         show_header_toggle: false

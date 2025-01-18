@@ -487,6 +487,14 @@
         data:
             entity_id: input_number.circulating_pump_running_above_temp
             value: 65
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.default_brightness
+            value: 15
+      - service: input_number.set_value
+        data:
+            entity_id: input_number.brightness_delta
+            value: 5
 
       #--------------------------------------------------------------------------
       - service: input_select.select_option
