@@ -432,6 +432,12 @@ views:
             - type: divider
             - input_number.water_fresh_price
             - input_number.water_waste_price
+      - type: entities
+        title: ostrom
+        show_header_toggle: false
+        entities:
+            - input_datetime.ostrom_data_fetch
+            - input_select.ostrom_api
 
   - title: Klimatisierung
     path: climate

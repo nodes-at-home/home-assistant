@@ -212,3 +212,4 @@ utility_meter:      !include_dir_named          conf/utility_meter
 modbus:             !include_dir_merge_list     conf/modbus
 command_line:       !include_dir_merge_list     conf/command_line
 input_button:       !include_dir_named          conf/input_button
+rest:               !include_dir_merge_list     conf/rest

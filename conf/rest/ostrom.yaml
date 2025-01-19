@@ -1,0 +1,55 @@
+###
+### 18.01.2025
+###
+
+  - resource_template: "{{ states ( 'sensor.ostrom_auth_url' ) }}"
+    # 7 days, update is forced by automation every 24h
+    scan_interval: 604800
+    verify_ssl: false
+    headers:
+        Accept: "application/json"
+        Content-type: "application/json"
+        Authorization: "Basic {{ states ( 'sensor.ostrom_credential' ) }}"
+        User-Agent: "Home Assistant"
+    method: POST
+    payload: '{"grant_type":"client_credentials"}'
+    sensor:
+        - name: ostrom_token
+          value_template: "{{ value_json ['access_token'] }}"
+
+  - resource_template: "{{ states ( 'sensor.ostrom_dynamic_prices_24h_url')}}"
+    # 7 days, update is forced by automation every 24h
+    scan_interval: 604800
+    verify_ssl: false
+    headers:
+        Accept: "application/json"
+        Authorization: "Bearer {{ states ( 'sensor.ostrom_token' ) }}"
+        User-Agent: "Home Assistant"
+    method: GET
+    sensor:
+        - name: ostrom_dynamic_price_24h_0
+          json_attributes_path: "$.data[0]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - netMonthlyOstromBaseFee
+              - grossMonthlyOstromBaseFee
+              - netMonthlyGridFees
+              - grossMonthlyGridFees
+          value_template: "{{ value_json.data [0].date }}"
+        - name: ostrom_dynamic_price_24h_1
+          json_attributes_path: "$.data[1]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - netMonthlyOstromBaseFee
+              - grossMonthlyOstromBaseFee
+              - netMonthlyGridFees
+              - grossMonthlyGridFees
+          value_template: "{{ value_json.data [1].date }}"
