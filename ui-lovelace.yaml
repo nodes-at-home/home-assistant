@@ -367,15 +367,17 @@ views:
                 hold_action:
                     action: more-info
               - type: entity-button
-                entity: switch.bosch_ladestation
-                icon: mdi:power-plug-battery
+                entity: switch.shelly_xtool_m1ultra_switch_0
+                name: xTool M1 Ultra
+                icon: mdi:box-cutter
                 tap_action:
-                    action: toggle
+                    action: more-info
                 hold_action:
                     action: more-info
               - type: entity-button
-                entity: switch.wasserpumpe
-                icon: mdi:water-pump
+                entity: switch.shelly_xtool_safetypro_switch_0
+                name: xTool SafetyPro
+                icon: mdi:air-filter
                 tap_action:
                     action: more-info
                 hold_action:
@@ -385,6 +387,13 @@ views:
           - type: horizontal-stack
             cards:
               - type: entity-button
+                entity: switch.wasserpumpe
+                icon: mdi:water-pump
+                tap_action:
+                    action: more-info
+                hold_action:
+                    action: more-info
+              - type: entity-button
                 entity: switch.relay_garden_valve1
                 icon: mdi:watering-can
               - type: entity-button
@@ -393,18 +402,21 @@ views:
               - type: entity-button
                 entity: switch.relay_garden_valve3
                 icon: mdi:watering-can
-              - type: entity-button
-                entity: switch.poolpumpe
-                icon: mdi:pump
           - type: horizontal-stack
             cards:
               - type: entity-button
+                entity: switch.poolpumpe
+                icon: mdi:pump
+              - type: entity-button
                 entity: switch.relay_hydrotower_pump
                 icon: mdi:pump
-              - type: markdown
-                content: " "
-              - type: markdown
-                content: " "
+              - type: entity-button
+                entity: switch.bosch_ladestation
+                icon: mdi:power-plug-battery
+                tap_action:
+                    action: toggle
+                hold_action:
+                    action: more-info
               - type: markdown
                 content: " "
 
@@ -752,6 +764,12 @@ views:
               - switch.nodesathome1
               - switch.nodesathome2
               - entity: switch.shelly_utilityroom_circulatingpump_switch_0
+              - entity: switch.shelly_utilityroom_boiler_switch_0
+                name: Heiztherme
+                icon: mdi:water-boiler
+              - entity: switch.shelly_utilityroom_biocat_switch_0
+                name: Entkalker
+                icon: mdi:water-sync
               - entity: sensor.boiler_wwcurtemp
                 name: Warmwasser
               - entity: switch.boiler_wwonetime
@@ -903,6 +921,12 @@ views:
               - entity: switch.shelly_office_bambulab_switch_0
                 name: Bambulab X1C
                 icon: mdi:printer-3d
+              - entity: switch.shelly_xtool_m1ultra_switch_0
+                name: xTool M1 Ultra
+                icon: mdi:box-cutter
+              - entity: switch.shelly_xtool_safetypro_switch_0
+                name: xTool SafetyPro
+                icon: mdi:air-filter
               - type: thermostat
                 entity: climate.office
                 name: Klimaanlage
