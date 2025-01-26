@@ -5,30 +5,30 @@
 - name: Andreas
   id: andreas
   device_trackers:
-    - device_tracker.165_andreas_z_fold5_wlan
+    - device_tracker.andreas_z_fold5_wlan
 
 - name: Undine
   id: undine
   device_trackers:
-    - device_tracker.197_undine_z_flip5_wlan
+    - device_tracker.undine_z_flip5_wlan
 
 - name: Nina
   id: nina
   device_trackers:
-    - device_tracker.163_nina_z_flip4_wlan
+    - device_tracker.nina_z_flip4_wlan
 
 - name: Nora
   id: nora
   device_trackers:
-    - device_tracker.102_nora_z_flip5_wlan
+    - device_tracker.nora_z_flip5_wlan
 
 - name: Dominik
   id: dominik
   device_trackers:
-    - device_tracker.156_dominik_pixel_6_pro_wlan
+    - device_tracker.dominik_pixel_6_pro_wlan
 
 - name: Niklas
   id: niklas
   device_trackers:
-    - device_tracker.173_niklas_pixel_8a_wlan
+    - device_tracker.niklas_pixel_8a_wlan
 
