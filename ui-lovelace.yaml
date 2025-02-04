@@ -1582,6 +1582,8 @@ views:
               - entity: sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_heute
                 name: Peak
                 icon: mdi:summit
+              - entity: sensor.solcast_pv_forecast_prognose_morgen
+                name: morgen
               - type: conditional
                 conditions:
                   - entity: input_boolean.show_debug_fields
