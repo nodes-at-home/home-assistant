@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- created manually  -->
+<!-- https://www.grundriss-butler.de/wie-zeichne-ich -->
+<!-- https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Patterns -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px" y="0px" width="200" height="200"
+        viewBox="0 0 300 100"
+	    xml:space="preserve">
+
+    <path d="M40,0 h10 a25,20 0 1,0 -50,0 h10 a15,10 0 0,1 30,0 z" fill="red" />
+    <path d="M5,0 h40 v-7 h-40z" fill="red" />
+
+</svg>

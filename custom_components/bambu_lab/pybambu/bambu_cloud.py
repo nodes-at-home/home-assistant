@@ -114,13 +114,14 @@ class BambuCloud:
         if response.status_code == 403 and 'cloudflare' in response.text:
             LOGGER.error("BLOCKED BY CLOUDFLARE")
             raise CloudflareError()
-
-        if response.status_code == 400 and not return400:
+        elif response.status_code == 429 and 'cloudflare' in response.text:
+            LOGGER.error("TEMPORARY 429 BLOCK BY CLOUDFLARE")
+            raise CloudflareError(response.status_code, response.text)
+        elif response.status_code == 400 and not return400:
             LOGGER.error(f"Connection failed with error code: {response.status_code}")
             LOGGER.debug(f"Response: '{response.text}'")
             raise PermissionError(response.status_code, response.text)
-
-        if response.status_code > 400:
+        elif response.status_code > 400:
             LOGGER.error(f"Connection failed with error code: {response.status_code}")
             LOGGER.debug(f"Response: '{response.text}'")
             raise PermissionError(response.status_code, response.text)
@@ -251,7 +252,6 @@ class BambuCloud:
 
         if status_code == 200:
             LOGGER.debug("Authentication successful.")
-            LOGGER.debug(f"Response = '{response.json()}'")
         elif status_code == 400:
             LOGGER.debug(f"Received response: {response.json()}")           
             if response.json()['code'] == 1:
@@ -309,7 +309,7 @@ class BambuCloud:
                             LOGGER.debug("No user_id entry")
                         else:
                             username = f"u_{project['user_id']}"
-                            LOGGER.debug(f"Found user_id of {username}")
+                            LOGGER.debug(f"Found user_id of {username[:7]}xxxxx")
         else:
             LOGGER.debug("Authentication token looks to be a JWT")
             try:
@@ -323,7 +323,7 @@ class BambuCloud:
                 LOGGER.debug("Unable to decode authToken to json to retrieve username.")
 
         if username is None:
-            LOGGER.debug(f"Unable to decode authToken to retrieve username. AuthToken = {self._auth_token}")
+            LOGGER.debug(f"Unable to decode authToken to retrieve username. AuthToken = {self._auth_token[:10]}xxxxx")
 
         return username
     
@@ -371,11 +371,8 @@ class BambuCloud:
         self._email = email
         self._username = username
         self._auth_token = auth_token
-        try:
-            self.get_device_list()
-        except:
-            return False
-        return True
+        result = self.get_device_list()
+        return False if result is None else True
 
     def login(self, region: str, email: str, password: str) -> str:
         self._region = region
@@ -480,7 +477,6 @@ class BambuCloud:
             response = self._get(BambuUrl.SLICER_SETTINGS)
         except:
             return None
-        LOGGER.debug("Succeeded")
         return response.json()
     
     # The task list is of the following form with a 'hits' array with typical 20 entries.
@@ -542,7 +538,7 @@ class BambuCloud:
     # "projects": [
     #     {
     #     "project_id": "164995388",
-    #     "user_id": "1688388450",
+    #     "user_id": "16xxxxx50",
     #     "model_id": "US48e2103d939bf8",
     #     "status": "ACTIVE",
     #     "name": "Alcohol_Marker_Storage_for_Copic,_Ohuhu_and_the_like",
@@ -583,7 +579,7 @@ class BambuCloud:
     def get_device_type_from_device_product_name(self, device_product_name: str):
         if device_product_name == "X1 Carbon":
             return "X1C"
-        return device_product_name.replace(" ", "")
+        return device_product_name.replace(" ", "").upper()
 
     def download(self, url: str) -> bytearray:
         LOGGER.debug(f"Downloading cover image: {url}")

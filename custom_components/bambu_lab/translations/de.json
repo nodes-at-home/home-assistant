@@ -32,14 +32,14 @@
     },
     "step": {
       "user": {
-        "description": "Am einfachsten ist die Konfiguration über Bambu Cloud. Sie können den Zugriff optional manuell nur für den lokalen Zugriff konfigurieren, dabei gehen jedoch einige Funktionen verloren – dies ist für Drucker erforderlich, die auf den Nur-LAN-Modus eingestellt sind.\n\rWenn sie vorhanden sind und funktionieren, können Sie auch vorhandene Authentifizierungsdaten von anderen konfigurierten Druckern wiederverwenden.\n \rBeachten Sie, dass Social-Media-Konten ohne Passwort die Cloud-Konfiguration nicht unterstützen.",
+        "description": "Die Konfiguration über die Bambu Lab Cloud ist am einfachsten und schnellsten. Social-Media-Konten ohne Passwort werden nicht unterstützt.\n\rSie können auch funktionierende Authentifizierungsdaten von anderen Druckern wiederverwenden. Wenn diese gefunden werden, werden sie nach der E-Mail-Adresse aufgelistet.\n\rAlternativ können Sie eine Verbindung herstellen, indem Sie die lokalen Verbindungsdetails des Druckers manuell angeben. Dies ist für einen Drucker im Lan-Modus erforderlich.",
         "data": {
           "printer_mode": "Drucker-Konfigurationsmodus:"
         }
       },
       "Bambu": {
-        "title": "Bambu Cloud-Verbindung",
-        "description": "Bitte geben Sie Ihre Bambu Lab-Zugangsdaten an:",
+        "title": "Bambu Lab Cloud-Verbindung",
+        "description": "Bitte geben Sie Ihre BambuLab-Zugangsdaten an:",
         "data": {
           "region": "Konto-Region:",
           "email": "E-Mail-Adresse oder Telefonnummer",
@@ -51,14 +51,13 @@
       },
       "Bambu_Choose_Device": {
         "title": "Drucker-Auswahl",
-        "description": "Wählen Sie den Drucker aus, den Sie hinzufügen möchten.",
         "data": {
           "serial": "Wählen Sie den hinzuzufügenden Drucker aus:"
         }
       },
       "Bambu_Lan": {
         "title": "Lokale Verbindung einrichten",
-        "description": "Sie können optional die IP-Adresse und den Zugriffscode des lokalen Druckers angeben. Dies ist für den Kamerazugriff auf die P1/A1 erforderlich. Oder um sich direkt mit dem Drucker verbinden zu können, anstatt über die Bambu Cloud.",
+        "description": "Sie können für Statusaktualisierungen auch eine direkte Verbindung zum Drucker statt über die Bambu Lab-Cloud herstellen. Dadurch sind Sie widerstandsfähiger gegen Ausfälle der Bambu Lab-Cloud. Allerdings hat Bambu Lab in diesem Hybridmodus nur eine eingeschränkte Kontrolle über den Drucker, sodass einige Steuerungen nicht verfügbar sind.",
         "data": {
           "local_mqtt": "Verbinden Sie sich direkt mit dem Drucker statt über die Bambu Cloud:",
           "host": "IP-Adresse des lokalen Druckers:",
@@ -74,6 +73,15 @@
           "host": "IP-Adresse des lokalen Druckers:",
           "access_code": "Zugangscode",
           "usage_hours": "Aktuelle Nutzungsstunden (optional):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Erweiterte Optionen",
+            "description": "Diese Optionen sind nur erforderlich, wenn Sie ein nicht standardmäßiges Setup haben.",
+            "data": {
+              "disable_ssl_verify": "Deaktivieren Sie die SSL -Überprüfung"
+            }
+          }
         }
       }
     }
@@ -98,13 +106,13 @@
     "step": {
       "init": {
         "title": "Verbindungseinstellungen anpassen",
-        "description": "Am einfachsten ist die Konfiguration über Bambu Cloud. Sie können den Zugriff optional manuell nur für den lokalen Zugriff konfigurieren, dabei gehen jedoch einige Funktionen verloren – dies ist für Drucker erforderlich, die auf den Nur-LAN-Modus eingestellt sind.\n\rWenn sie vorhanden sind und funktionieren, können Sie auch vorhandene Authentifizierungsdaten von anderen konfigurierten Druckern wiederverwenden.\n \rBeachten Sie, dass Social-Media-Konten ohne Passwort die Cloud-Konfiguration nicht unterstützen.",
+        "description": "Die Konfiguration über die Bambu Lab Cloud ist am einfachsten und schnellsten. Social-Media-Konten ohne Passwort werden nicht unterstützt.\n\rSie können auch funktionierende Authentifizierungsdaten von anderen Druckern wiederverwenden. Wenn diese gefunden werden, werden sie nach der E-Mail-Adresse aufgelistet.\n\rAlternativ können Sie eine Verbindung herstellen, indem Sie die lokalen Verbindungsdetails des Druckers manuell angeben. Dies ist für einen Drucker im Lan-Modus erforderlich.",
         "data": {
           "printer_mode": "Drucker-Konfigurationsmodus:"
         }
       },
       "Bambu": {
-        "title": "Bambu Cloud-Verbindung",
+        "title": "Bambu Lab Cloud-Verbindung",
         "description": "Bitte geben Sie Ihre Bambu Lab-Zugangsdaten an:",
         "data": {
           "region": "Konto-Region:",
@@ -117,12 +125,12 @@
       },
       "Bambu_Lan": {
         "title": "Anpassen der Druckerkonfiguration",
-        "description": "Sie können optional die IP-Adresse und den Zugriffscode des lokalen Druckers angeben. Dies ist für den Kamerazugriff auf die P1/A1 erforderlich. Oder um sich direkt mit dem Drucker verbinden zu können, anstatt über die Bambu Cloud.",
+        "description": "Sie können für Statusaktualisierungen auch eine direkte Verbindung zum Drucker statt über die Bambu Lab-Cloud herstellen. Dadurch sind Sie widerstandsfähiger gegen Ausfälle der Bambu Lab-Cloud. Allerdings hat Bambu Lab in diesem Hybridmodus nur eine eingeschränkte Kontrolle über den Drucker, sodass einige Steuerungen nicht verfügbar sind.",
         "data": {
-          "serial": "Wählen Sie den hinzuzufügenden Drucker aus:",
+          "serial": "Passen Sie die Einstellungen an für:",
           "host": "IP-Adresse des lokalen Druckers:",
           "access_code": "Zugangscode",
-          "local_mqtt": "Verbinden Sie sich direkt mit dem Drucker statt über die Bambu Cloud:",
+          "local_mqtt": "Stellen Sie eine direkte Verbindung zum Drucker statt über die Bambu Lab-Cloud her:",
           "usage_hours": "Aktuelle Nutzungsstunden (optional):"
         }
       },
@@ -133,6 +141,15 @@
           "host": "IP-Adresse des lokalen Druckers:",
           "access_code": "Zugangscode",
           "usage_hours": "Aktuelle Nutzungsstunden (optional):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Erweiterte Optionen",
+            "description": "Diese Optionen sind nur erforderlich, wenn Sie ein nicht standardmäßiges Setup haben.",
+            "data": {
+              "disable_ssl_verify": "Deaktivieren Sie die SSL -Überprüfung"
+            }
+          }
         }
       }
     }
@@ -169,7 +186,10 @@
         "name": "Druckvorgang beenden"
       },
       "refresh": {
-        "name": "Aktualisierung erzwingen"
+        "name": "Aktualisierung der Daten erzwingen"
+      },
+      "dev": {
+        "name": "Debuggen"
       }
     },
     "fan": {
@@ -189,6 +209,9 @@
       },
       "cover_image": {
         "name": "Titelbild"
+      },
+      "pick_image": {
+        "name": "Bild wählen"
       }
     },
     "light": {
@@ -211,7 +234,7 @@
       "printing_speed": {
         "name": "Druckgeschwindigkeit",
         "state": {
-          "silent": "Stumm",
+          "silent": "Leise",
           "standard": "Standard",
           "sport": "Sport",
           "ludicrous": "Verrückt"
@@ -252,7 +275,7 @@
       "speed_profile": {
         "name": "Geschwindigkeitsprofil",
         "state": {
-          "silent": "Stumm",
+          "silent": "Leise",
           "standard": "Standard",
           "sport": "Sport",
           "ludicrous": "Verrückt"
@@ -329,7 +352,7 @@
         "name": "MQTT-Verbindungsmodus",
         "state": {
           "local": "Lokal",
-          "bambu_cloud": "Bambu-Cloud"
+          "bambu_cloud": "Bambu Lab-Cloud"
         }
       },
       "gcode_file": {
@@ -357,7 +380,7 @@
         "name": "Drucktyp",
         "state": {
           "local": "Lokal",
-          "cloud": "Wolke",
+          "cloud": "Cloud",
           "idle": "Leerlauf"
         }
       },
@@ -569,6 +592,15 @@
             "name": "Typ"
           }
         }
+      },
+      "ip_address": {
+        "name": "IP-Adresse"
+      },
+      "printable_objects": {
+        "name": "Druckbare Objekte"
+      },
+      "skipped_objects": {
+        "name": "Übersprungene Objekte"
       }
     },
     "camera": {
@@ -585,14 +617,23 @@
       },
       "imagecamera": {
         "name": "Verwenden Sie eine Bildsensorkamera"
+      },
+      "prompt_sound": {
+        "name": "Aufforderungston zulassen"
+      },
+      "ftp": {
+        "name": "Laden Sie Modelldaten aus dem Drucker laden"
+      },
+      "timelapse": {
+        "name": "Laden Sie den neuesten Zeitplan aus dem Drucker"
       }
     }
   },
   "selector": {
     "configuration_type": {
       "options": {
-        "bambu": "Bambuswolke",
-        "lan": "Lokale Verbindung"
+        "bambu": "Bambu Lab-Cloud",
+        "lan": "LAN-Modus"
       }
     }
   }
