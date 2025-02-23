@@ -1,0 +1,369 @@
+###
+### junand 22.02.2025
+###
+
+  - name: go_echarger
+    type: tcp
+    host: !secret modbus_proxy
+    port: 5023
+    delay: 5
+    sensors:
+
+      - name: go_echarger_car_state
+        device_address: 1
+        address: 100
+        input_type: input
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_pp_cable
+        device_address: 1
+        address: 101
+        input_type: input
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_fw_version
+        device_address: 1
+        address: 105
+        input_type: input
+        data_type: string
+        count: 4
+        scan_interval: 3600
+
+      - name: go_echarger_error
+        device_address: 1
+        address: 107
+        input_type: input
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_phase_a_voltage
+        device_address: 1
+        address: 108
+        input_type: input
+        data_type: uint32
+        precision: 0
+        unit_of_measurement: V
+        device_class: Voltage
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: go_echarger_phase_b_voltage
+        device_address: 1
+        address: 110
+        input_type: input
+        data_type: uint32
+        precision: 0
+        unit_of_measurement: V
+        device_class: Voltage
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: go_echarger_phase_c_voltage
+        device_address: 1
+        address: 112
+        input_type: input
+        data_type: uint32
+        precision: 0
+        unit_of_measurement: V
+        device_class: Voltage
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: go_echarger_phase_a_current
+        device_address: 1
+        address: 114
+        input_type: input
+        data_type: uint32
+        precision: 1
+        unit_of_measurement: A
+        device_class: current
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: go_echarger_phase_b_current
+        device_address: 1
+        address: 116
+        input_type: input
+        data_type: uint32
+        precision: 1
+        unit_of_measurement: A
+        device_class: current
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: go_echarger_phase_c_current
+        device_address: 1
+        address: 118
+        input_type: input
+        data_type: uint32
+        precision: 1
+        unit_of_measurement: A
+        device_class: current
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: go_echarger_power_total
+        device_address: 1
+        address: 120
+        input_type: input
+        data_type: uint32
+        precision: 2
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        scale: 0.01
+        scan_interval: 10
+
+      - name: go_echarger_energy_total
+        device_address: 1
+        address: 128
+        input_type: input
+        data_type: uint32
+        precision: 1
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        scale: 0.1
+        scan_interval: 300
+
+      - name: go_echarger_energy_charge
+        device_address: 1
+        address: 132
+        input_type: input
+        data_type: uint32
+        unit_of_measurement: Ws
+        device_class: energy
+        state_class: total_increasing
+        scale: 10
+        scan_interval: 300
+
+      - name: go_echarger_null_voltage
+        device_address: 1
+        address: 144
+        input_type: input
+        data_type: uint32
+        precision: 0
+        unit_of_measurement: V
+        device_class: Voltage
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: go_echarger_phase_a_power
+        device_address: 1
+        address: 146
+        input_type: input
+        data_type: uint32
+        precision: 1
+        unit_of_measurement: kW
+        device_class: power
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: go_echarger_phase_b_power
+        device_address: 1
+        address: 148
+        input_type: input
+        data_type: uint32
+        precision: 1
+        unit_of_measurement: kW
+        device_class: power
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: go_echarger_phase_c_power
+        device_address: 1
+        address: 150
+        input_type: input
+        data_type: uint32
+        precision: 1
+        unit_of_measurement: kW
+        device_class: power
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
+      - name: go_echarger_phase_a_power_factor
+        device_address: 1
+        address: 152
+        input_type: input
+        data_type: uint32
+        precision: 0
+        unit_of_measurement: "%"
+        device_class: power_factor
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: go_echarger_phase_b_power_factor
+        device_address: 1
+        address: 154
+        input_type: input
+        data_type: uint32
+        precision: 0
+        unit_of_measurement: "%"
+        device_class: power_factor
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: go_echarger_phase_c_power_factor
+        device_address: 1
+        address: 156
+        input_type: input
+        data_type: uint32
+        precision: 0
+        unit_of_measurement: "%"
+        device_class: power_factor
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: go_echarger_null_power_factor
+        device_address: 1
+        address: 158
+        input_type: input
+        data_type: uint32
+        precision: 0
+        unit_of_measurement: "%"
+        device_class: power_factor
+        state_class: measurement
+        scale: 1
+        scan_interval: 10
+
+      - name: go_echarger_unlocked_by_rfid_card
+        device_address: 1
+        address: 203
+        input_type: input
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_phases
+        device_address: 1
+        address: 205
+        input_type: input
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_serial_no
+        device_address: 1
+        address: 304
+        input_type: input
+        data_type: string
+        count: 6
+        scan_interval: 3600
+
+      - name: go_echarger_hostname
+        device_address: 1
+        address: 310
+        input_type: input
+        data_type: string
+        count: 5
+        scan_interval: 3600
+
+      #####################
+      # holding registers
+      #####################
+
+      - name: go_echarger_allow_charging
+        device_address: 1
+        address: 200
+        input_type: holding
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_access_state
+        device_address: 1
+        address: 201
+        input_type: holding
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_cable_lock_mode
+        device_address: 1
+        address: 204
+        input_type: holding
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_led_brightness
+        device_address: 1
+        address: 206
+        input_type: holding
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_led_save_energy
+        device_address: 1
+        address: 207
+        input_type: holding
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_max_current
+        device_address: 1
+        address: 211
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: A
+        device_class: current
+        scan_interval: 10
+
+      - name: go_echarger_cloud_disabled
+        device_address: 1
+        address: 217
+        input_type: holding
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_current_volatile
+        device_address: 1
+        address: 299
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: A
+        device_class: current
+        scan_interval: 10
+
+      - name: go_echarger_current_eeprom
+        device_address: 1
+        address: 300
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: A
+        device_class: current
+        scan_interval: 10
+
+      - name: go_echarger_phase_switch_mode
+        device_address: 1
+        address: 332
+        input_type: holding
+        data_type: uint16
+        scan_interval: 10
+
+      - name: go_echarger_energy_limit
+        device_address: 1
+        address: 333
+        input_type: holding
+        data_type: float64
+        unit_of_measurement: Wh
+        device_class: energy
+        scan_interval: 10
+
+      - name: go_echarger_force_state
+        device_address: 1
+        address: 337
+        input_type: holding
+        data_type: uint16
+        scan_interval: 10
+

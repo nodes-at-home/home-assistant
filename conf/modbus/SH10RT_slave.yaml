@@ -378,7 +378,6 @@
         address: 12999 # reg 13000
         input_type: holding
         data_type: uint16
-        precision: 0
         scan_interval: 10
 
       #########################################
