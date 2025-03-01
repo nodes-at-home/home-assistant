@@ -107,13 +107,9 @@
                 {{
                     states ( 'sensor.electricity_meter_daily_in' ) | is_number
                     and states ( 'sensor.electricity_meter_daily_out' ) | is_number
-                    and states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number
-                    and states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number
-                    and states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | is_number
-                    and states ( 'sensor.sh10rt_master_daily_battery_charge' ) | is_number
                 }}
         state: >
-            {% set t = now() %}
+            {% set t = now () %}
             {# daily_load is zero on the first 10 minutes of a day, for correct calculation when daily sensors resetting #}
             {% if t >= today_at("00:00") and t < today_at("00:10") %}
                 {{ 0 }}
@@ -121,12 +117,13 @@
                 {% set lastvalue = state_attr ( 'sensor.daily_load', 'lastvalue' ) %}
                 {# if no lastvalue found, then the calculated positive value wins #}
                 {% set lastvalue = 0 if not is_number ( lastvalue ) else lastvalue %}
-                {% set value = states ( 'sensor.electricity_meter_daily_in' ) | float
-                             - states ( 'sensor.electricity_meter_daily_out' ) | float
-                             + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float
-                             + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float
-                             + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float
-                             - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float
+                {% set value = states ( 'sensor.electricity_meter_daily_in' ) | float ( 0 )
+                             - states ( 'sensor.electricity_meter_daily_out' ) | float ( 0 )
+                             + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float ( 0 )
+                             + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float ( 0 )
+                             + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float ( 0 )
+                             - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float ( 0 )
+                             - states ( 'sensor.wallbox_meter_daily' ) | float ( 0 )
                 %}
                 {{ [ value, lastvalue ] | max | round ( 1 ) }}
             {% endif %}
@@ -140,12 +137,13 @@
                     {% set lastvalue = state_attr ( 'sensor.daily_load', 'lastvalue' ) %}
                     {# if no lastvalue found, then the calculated positive value wins #}
                     {% set lastvalue = 0 if not is_number ( lastvalue ) else lastvalue %}
-                    {% set value = states ( 'sensor.electricity_meter_daily_in' ) | float
-                                 - states ( 'sensor.electricity_meter_daily_out' ) | float
-                                 + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float
-                                 + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float
-                                 + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float
-                                 - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float
+                    {% set value = states ( 'sensor.electricity_meter_daily_in' ) | float ( 0 )
+                                 - states ( 'sensor.electricity_meter_daily_out' ) | float ( 0 )
+                                 + states ( 'sensor.sh10rt_master_daily_pv_generation' ) | float ( 0 )
+                                 + states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | float ( 0 )
+                                 + states ( 'sensor.sh10rt_master_daily_battery_discharge' ) | float ( 0 )
+                                 - states ( 'sensor.sh10rt_master_daily_battery_charge' ) | float ( 0 )
+                                 - states ( 'sensor.wallbox_meter_daily' ) | float ( 0 )
                     %}
                     {{ [ value, lastvalue ] | max | round ( 1 ) }}
                 {% endif %}

@@ -432,6 +432,20 @@ views:
             - type: divider
             - input_number.water_fresh_price
             - input_number.water_waste_price
+      - type: entities
+        title: Wallbox
+        show_header_toggle: false
+        entities:
+            - input_boolean.wallbox_allow_charging
+            - input_select.wallbox_access_state
+            - input_select.wallbox_cable_lock_mode
+            - input_number.wallbox_led_brightness
+            - input_boolean.wallbox_led_save_energy
+            - input_number.wallbox_max_current
+            - input_number.wallbox_current_volatile
+            - input_number.wallbox_current_eeprom
+            - input_select.wallbox_phase_switch_mode
+            - input_boolean.wallbox_cloud_disabled
 
   - title: Klimatisierung
     path: climate

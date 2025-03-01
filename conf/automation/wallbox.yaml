@@ -1,0 +1,284 @@
+###
+### 23.02.2025
+### https://community.home-assistant.io/t/input-select-select-option-by-index-number/361249/2
+###
+
+            # - input_boolean.wallbox_allow_charging
+            # - input_select.wallbox_access_state
+            # - input_select.wallbox_cable_lock_mode
+            # - input_number.wallbox_led_brightness
+            # - input_boolean.wallbox_led_save_energy
+            # - input_number.wallbox_max_current
+            # - input_select.wallbox_phase_switch_mode
+###
+### go-echarger accepts write operations only per modbus function 16 (sending array values)
+
+  - alias: wallbox_update_allow_charging
+    id: wallbox_update_allow_charging
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_allow_charging
+    actions:
+      - variables:
+            mode: "{{ 'on' if trigger.to_state.state == '1' else 'off' }}"
+      - action: "input_boolean.turn_{{ mode }}"
+        target:
+            entity_id: "input_boolean.wallbox_allow_charging"
+
+  - alias: wallbox_set_allow_charging
+    id: wallbox_set_allow_charging
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.wallbox_allow_charging
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 200
+          value: "{{ [1 if is_state ( trigger.entity_id, 'on' ) else 0, 0] }}"
+
+  - alias: wallbox_update_access_state
+    id: wallbox_update_access_state
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_access_state
+    actions:
+      - action: input_select.select_option
+        target:
+          entity_id: input_select.wallbox_access_state
+        data:
+          option: "{{ state_attr ( 'input_select.wallbox_access_state', 'options' ) [trigger.to_state.state | int] }}"
+
+  - alias: wallbox_set_access_state
+    id: wallbox_set_access_state
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_select.wallbox_access_state
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 201
+          value: "{{ [state_attr ( trigger.entity_id, 'options' ).index ( trigger.to_state.state ), 0] }}"
+
+  - alias: wallbox_update_cable_lock_mode
+    id: wallbox_update_cable_lock_mode
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_cable_lock_mode
+    actions:
+      - action: input_select.select_option
+        target:
+          entity_id: input_select.wallbox_cable_lock_mode
+        data:
+          option: "{{ state_attr ( 'input_select.wallbox_cable_lock_mode', 'options' ) [trigger.to_state.state | int] }}"
+
+  - alias: wallbox_set_cable_lock_mode
+    id: wallbox_set_cable_lock_mode
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_select.wallbox_cable_lock_mode
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 204
+          value: "{{ [state_attr ( trigger.entity_id, 'options' ).index ( trigger.to_state.state ), 0] }}"
+
+  - alias: wallbox_update_led_brightness
+    id: wallbox_update_led_brightness
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_led_brightness
+    actions:
+      - action: input_number.set_value
+        target:
+            entity_id: "input_number.wallbox_led_brightness"
+        data:
+          value: "{{ trigger.to_state.state | int }}"
+
+  - alias: wallbox_set_led_brightness
+    id: wallbox_set_led_brightness
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_number.wallbox_led_brightness
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 206
+          value: "{{ [states ( trigger.entity_id ) | int, 0] }}"
+
+  - alias: wallbox_update_led_save_energy
+    id: wallbox_update_led_save_energy
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_led_save_energy
+    actions:
+      - variables:
+            mode: "{{ 'on' if trigger.to_state.state == '1' else 'off' }}"
+      - action: "input_boolean.turn_{{ mode }}"
+        target:
+            entity_id: "input_boolean.wallbox_led_save_energy"
+
+  - alias: wallbox_set_led_save_energy
+    id: wallbox_set_led_save_energy
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.wallbox_led_save_energy
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 207
+          value: "{{ [1 if is_state ( 'input_boolean.wallbox_led_save_energy', 'on' ) else 0, 0] }}"
+
+  - alias: wallbox_update_max_current
+    id: wallbox_update_max_current
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_max_current
+    actions:
+      - action: input_number.set_value
+        target:
+            entity_id: "input_number.wallbox_max_current"
+        data:
+          value: "{{ trigger.to_state.state | int }}"
+
+  - alias: wallbox_set_max_current
+    id: wallbox_set_max_current
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_number.wallbox_max_current
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 211
+          value: "{{ [states ( trigger.entity_id ) | int, 0] }}"
+
+  - alias: wallbox_update_current_volatile
+    id: wallbox_update_current_volatile
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_current_volatile
+    actions:
+      - action: input_number.set_value
+        target:
+            entity_id: "input_number.wallbox_current_volatile"
+        data:
+          value: "{{ trigger.to_state.state | int }}"
+
+  - alias: wallbox_set_current_volatile
+    id: wallbox_set_current_volatile
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_number.wallbox_current_volatile
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 299
+          value: "{{ [states ( trigger.entity_id ) | int, 0] }}"
+
+  - alias: wallbox_update_current_eeprom
+    id: wallbox_update_current_eeprom
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_current_eeprom
+    actions:
+      - action: input_number.set_value
+        target:
+            entity_id: "input_number.wallbox_current_eeprom"
+        data:
+          value: "{{ trigger.to_state.state | int }}"
+
+  - alias: wallbox_set_current_eeprom
+    id: wallbox_set_current_eeprom
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_number.wallbox_current_eeprom
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 300
+          value: "{{ [states ( trigger.entity_id ) | int, 0] }}"
+
+  - alias: wallbox_update_phase_switch_mode
+    id: wallbox_update_phase_switch_mode
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_phase_switch_mode
+    actions:
+      - action: input_select.select_option
+        target:
+          entity_id: input_select.wallbox_phase_switch_mode
+        data:
+          option: "{{ state_attr ( 'input_select.wallbox_phase_switch_mode', 'options' ) [states ( trigger.entity_id ) | int] }}"
+
+  - alias: wallbox_set_phase_switch_mode
+    id: wallbox_set_phase_switch_mode
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_select.wallbox_phase_switch_mode
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 332
+          value: "{{ [state_attr ( trigger.entity_id, 'options' ).index ( states ( trigger.entity_id ) ), 0] }}"
+
+  - alias: wallbox_update_cloud_disabled
+    id: wallbox_update_cloud_disabled
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_cloud_disabled
+    actions:
+      - variables:
+            mode: "{{ 'on' if trigger.to_state.state == '1' else 'off' }}"
+      - action: "input_boolean.turn_{{ mode }}"
+        target:
+            entity_id: "input_boolean.wallbox_cloud_disabled"
+
+  - alias: wallbox_set_cloud_disabled
+    id: wallbox_set_cloud_disabled
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.wallbox_cloud_disabled
+    actions:
+      - action: modbus.write_register
+        data_template:
+          hub: go_echarger
+          slave: 1
+          address: 217
+          value: "{{ [state_attr ( trigger.entity_id, 'options' ).index ( states ( trigger.entity_id ) ), 0] }}"

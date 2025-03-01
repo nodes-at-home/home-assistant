@@ -1,12 +1,12 @@
 ###
 ### junand 22.02.2025
+### https://github.com/goecharger/go-eCharger-API-v2/blob/main/modbus-de.md
 ###
 
   - name: go_echarger
     type: tcp
     host: !secret modbus_proxy
     port: 5023
-    delay: 5
     sensors:
 
       - name: go_echarger_car_state
@@ -351,14 +351,15 @@
         data_type: uint16
         scan_interval: 10
 
-      - name: go_echarger_energy_limit
-        device_address: 1
-        address: 333
-        input_type: holding
-        data_type: float64
-        unit_of_measurement: Wh
-        device_class: energy
-        scan_interval: 10
+      # the spec by go-e is strange, unlimited results in unavailable
+      # - name: go_echarger_energy_limit
+      #   device_address: 1
+      #   address: 333
+      #   input_type: holding
+      #   data_type: float64
+      #   unit_of_measurement: Wh
+      #   device_class: energy
+      #   scan_interval: 10
 
       - name: go_echarger_force_state
         device_address: 1

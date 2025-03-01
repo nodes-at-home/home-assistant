@@ -1,0 +1,101 @@
+###
+### 23.02.2025
+###
+
+  - binary_sensor:
+
+      - name: wallbox_state
+        availability: "{{ states ( 'sensor.go_echarger_car_state' ) | is_number }}"
+        state: >
+            {% set val = states ( 'sensor.go_echarger_car_state' ) | int ( 0 ) %}
+            {% if val == 2 %}
+                on
+            {% else %}
+                off
+            {% endif %}
+        icon: >
+            {% set val = states ( 'sensor.go_echarger_car_state' ) | int ( 0 ) %}
+            {% if val == 1 %}
+                mdi:ev-station
+            {% elif val == 2 %}
+                mdi:ev-plug-type2
+            {% elif val == 3 %}
+                mdi:ev-plug-type2
+            {% elif val == 4 %}
+                mdi:ev-plug-type2
+            {% else %}
+                mdi:ev-station
+            {% endif %}
+        attributes:
+            icon_color: >
+                {% set val = states ( 'sensor.go_echarger_car_state' ) | int ( 0 ) %}
+                {% if val == 1 %}
+                    silver
+                {% elif val == 2 %}
+                    limegreen
+                {% elif val == 3 %}
+                    doggerblue
+                {% elif val == 4 %}
+                    silver
+                {% else %}
+                    red
+                {% endif %}
+            text: >
+                {% set val = states ( 'sensor.go_echarger_car_state' ) | int ( 0 ) %}
+                {% if val == 1 %}
+                    Ladestation bereit, kein Fahrzeug
+                {% elif val == 2 %}
+                    Fahrzeug lädt
+                {% elif val == 3 %}
+                    Warte auf Fahrzeug
+                {% elif val == 4 %}
+                    Ladung beendet, Fahrzeug noch verbunden
+                {% else %}
+                    unbekannt ({{val}}), Ladestation defekt
+                {% endif %}
+
+  - sensor:
+
+      - name: wallbox_car_state
+        state: >
+            {% set val = states ( 'sensor.go_echarger_car_state' ) | int ( 0 ) %}
+            {% if val == 1 %}
+                Ladestation bereit, kein Fahrzeug
+            {% elif val == 2 %}
+                Fahrzeug lädt
+            {% elif val == 3 %}
+                Warte auf Fahrzeug
+            {% elif val == 4 %}
+                Ladung beendet, Fahrzeug noch verbunden
+            {% else %}
+                unbekannt ({{val}}), Ladestation defekt
+            {% endif %}
+
+      - name: wallbox_error
+        state: >
+            {% set val = states ( 'sensor.go_echarger_error' ) | int ( 0 ) %}
+            {% if val == 0 %}
+                ohne
+            {% elif val == 1 %}
+                RCCB (Fehlerstromschutzschalter)
+            {% elif val == 3 %}
+                PHASE (Phasenstörung)
+            {% elif val == 8 %}
+                NO_GROUND (Erdungserkennung)
+            {% elif val == 10 %}
+                default: INTERNAL (sonstiges)
+            {% else %}
+                unbekannt ({{val}})
+            {% endif %}
+
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.wallbox_meter_quarterhourly
+        attribute: last_reset
+    sensor:
+      - name: wallbox_quarterhourly
+        unit_of_measurement: kWh
+        state: "{{ state_attr ( 'sensor.wallbox_meter_quarterhourly', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.wallbox_meter_quarterhourly", "last_reset" ) }}'

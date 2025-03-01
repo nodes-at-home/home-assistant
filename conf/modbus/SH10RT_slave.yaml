@@ -6,7 +6,6 @@
     type: tcp
     host: !secret modbus_proxy
     port: 5022
-    delay: 5
     sensors:
 
       - name: sh10rt_slave_protocol_no

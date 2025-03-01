@@ -70,6 +70,13 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
+        entity: binary_sensor.wallbox_state
+        content: Wallbox
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
         entity: binary_sensor.wasserampel
         content: Wasserampel
         icon: "{{ state_attr ( entity, 'icon' )}}"
@@ -1386,6 +1393,13 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
+        entity: binary_sensor.wallbox_state
+        content: Wallbox
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
         entity: binary_sensor.boiler_burngas_state_badge
         content: Gas
         icon: "{{ state_attr ( entity, 'icon' )}}"
@@ -1503,6 +1517,44 @@ views:
               - entity: sensor.load_meter_yearly
                 name: jährlich
                 icon: mdi:home-lightning-bolt-outline
+          - type: conditional
+            conditions:
+              - entity: sensor.go_echarger_power_total
+                state_not: unavailable
+            card:
+                type: gauge
+                name: Ladeleistung
+                entity: sensor.go_echarger_power_total
+                min: 0
+                max: +16000
+                # needle: true
+                severity:
+                  green: 0
+                  blue: 6000
+                  red: 10000
+          - type: conditional
+            conditions:
+              - entity: sensor.go_echarger_power_total
+                state_not: unavailable
+            card:
+                type: entities
+                title: Wallbox
+                show_header_toggle: false
+                entities:
+                  - type: section
+                    label: Ladung
+                  - type: conditional
+                    conditions:
+                      - entity: input_boolean.show_debug_fields
+                        state: "on"
+                    row:
+                        entity: sensor.go_echarger_energy_charge
+                  - entity: sensor.wallbox_meter_daily
+                    name: täglich
+                    icon: mdi:ev-station
+                  - entity: sensor.wallbox_meter_yearly
+                    name: jährlich
+                    icon: mdi:ev-station
           # - type: energy-usage-graph
           - type: energy-distribution
           # - type: energy-solar-graph

@@ -1,0 +1,12 @@
+###
+### 23.02.2025
+###
+
+wallbox_allow_charging:
+    name: Laden erlaubt
+    
+wallbox_led_save_energy:
+    name: Leds nach 10 sec ausschalten
+
+wallbox_cloud_disabled:
+    name: Cloud deaktiviert

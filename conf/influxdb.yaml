@@ -164,6 +164,7 @@
         - input_number.freshwater_price
         - input_number.wastewater_price
         - sensor.water_quarterhourly
+        - sensor.wallbox_quarterhourly
   ignore_attributes:
     - friendly_name
     - icon

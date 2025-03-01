@@ -42,7 +42,7 @@ logger:
   # default: debug
   # default: info
   default: warn
-  #logs:
+  # logs:
     # homeassistant.components.automation: debug
     #boschshcpy: debug
     #custom_components.bosch_shc: debug
@@ -50,6 +50,7 @@ logger:
     # custom_component.solarman: debug
     # homeassistant.helper.update: debug
     # custom_components.innova: debug
+    # homeassistant.components.modbus: debug
 
 # -------------------------------------------------------------------------------
 # shell commands

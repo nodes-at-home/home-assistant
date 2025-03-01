@@ -117,44 +117,6 @@
                 {% endif %}
     mode: single
 
-  - alias: solar_sh10rt_master_update_inverter_runmode
-    id: solar_sh10rt_master_update_inverter_runmode
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.sh10rt_master_inverter_state
-    condition: []
-    action:
-      - service: input_select.select_option
-        target:
-            entity_id: input_select.set_master_runmode
-        data:
-            option: >
-                {% if is_state ( 'sensor.sh10rt_master_inverter_state', 'Stop' ) %}
-                    Shutdown
-                {% else %}
-                    Enabled
-                {% endif %}
-
-  - alias: solar_sh10rt_slave_update_inverter_runmode
-    id: solar_sh10rt_slave_update_inverter_runmode
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.sh10rt_slave_inverter_state
-    condition: []
-    action:
-      - service: input_select.select_option
-        target:
-            entity_id: input_select.set_slave_runmode
-        data:
-            option: >
-                {% if is_state ( 'sensor.sh10rt_slave_inverter_state', 'Stop' ) %}
-                    Shutdown
-                {% else %}
-                    Enabled
-                {% endif %}
-
   - alias: solar_set_max_soc
     id: solar_set_max_soc
     trigger:

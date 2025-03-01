@@ -6,7 +6,6 @@
     type: tcp
     host: !secret modbus_proxy
     port: 5021
-    delay: 5
     sensors:
 
       - name: sh10rt_master_protocol_no

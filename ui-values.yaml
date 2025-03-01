@@ -603,6 +603,47 @@ views:
             label: Frequenz
           - entity: sensor.sh10rt_master_grid_frequency
       - type: entities
+        title: Wallbox
+        entities:
+          - type: section
+            label: Modell
+          - sensor.go_echarger_serial_no
+          - sensor.go_echarger_fw_version
+          - type: section
+            label: Zustand
+          - sensor.go_echarger_unlocked_by_rfid_card
+          - sensor.wallbox_error
+          - type: conditional
+            conditions:
+              - entity: input_boolean.show_debug_fields
+                state: "on"
+            row:
+                entity: sensor.go_echarger_error
+          - sensor.wallbox_car_state
+          - type: conditional
+            conditions:
+              - entity: input_boolean.show_debug_fields
+                state: "on"
+            row:
+                entity: sensor.go_echarger_car_state
+          - sensor.go_echarger_pp_cable
+          - sensor.go_echarger_phases
+          - type: section
+            label: Werte
+          - sensor.go_echarger_energy_total
+          - sensor.go_echarger_energy_charge
+          - sensor.go_echarger_power_total
+          - sensor.go_echarger_phase_a_power
+          - sensor.go_echarger_phase_b_power
+          - sensor.go_echarger_phase_c_power
+          - sensor.go_echarger_phase_a_voltage
+          - sensor.go_echarger_phase_b_voltage
+          - sensor.go_echarger_phase_c_voltage
+          - sensor.go_echarger_null_voltage
+          - sensor.go_echarger_phase_a_current
+          - sensor.go_echarger_phase_b_current
+          - sensor.go_echarger_phase_c_current
+      - type: entities
         title: Master
         entities:
           - type: section

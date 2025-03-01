@@ -124,7 +124,7 @@
         # 0x8200 = 33280    Dispatch Running
         # 0x9100 = 37120    Warn Run
 
-        # 13.12.2024: new system state 0.80 only for master inverter inerpreted as running
+        # 13.12.2024: new system state 0x80 only for master inverter inerpreted as running
       - name: sh10rt_master_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_master_system_state' ) | int (default = 0) %}
@@ -180,10 +180,11 @@
                 {{ val }}
             {% endif %}
 
+        # 23.02.2025: new system state 0x80 for slave too, seen on startup after controlled blackout
       - name: sh10rt_slave_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_slave_system_state' ) | int (default = 0) %}
-            {% if  val == 0x0040 or val == 0x0000 %}
+            {% if  val == 0x0080 or val == 0x0040 or val == 0x0000 %}
                 Running
             {% elif  val == 0x0041 %}
                 Off-grid Charge
@@ -345,8 +346,19 @@
         unit_of_measurement: W
         device_class: power
         state_class: measurement
-        availability: "{{ states ( 'sensor.electricity_meter_power' ) | is_number and states ( 'sensor.total_dc_power' ) | is_number and states ( 'sensor.battery_power' ) | is_number }}"
-        state: "{{ ( states ( 'sensor.electricity_meter_power' ) | float + states ( 'sensor.total_dc_power' ) | float - states ( 'sensor.battery_power' ) | float ) | round ( 0 ) }}"
+        availability: >
+                {{
+                    states ( 'sensor.electricity_meter_power' ) | is_number
+                }}
+        state: >
+                {{
+                    (
+                        states ( 'sensor.electricity_meter_power' ) | float  ( 0 )
+                        + states ( 'sensor.total_dc_power' ) | float ( 0 )
+                        - states ( 'sensor.battery_power' ) | float ( 0 )
+                        - states ( 'sensor.go_echarger_power_total' ) | float ( 0 )
+                    ) | round ( 0 )
+                }}
 
       # Inverter States from modbus reference manual
       # 0xAA forced charge

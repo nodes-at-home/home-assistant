@@ -1,0 +1,7 @@
+###
+### 23.02.2025
+###
+
+source: sensor.go_echarger_energy_total
+cycle: quarter-hourly
+delta_values: false
