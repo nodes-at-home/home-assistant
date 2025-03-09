@@ -1,0 +1,108 @@
+###
+### 09.03.2025
+### https://github.com/JurajNyiri/HomeAssistant-Tapo-Control
+###
+
+  - alias: tapocam_set_privacy_mode
+    id: tapocam_set_privacy_mode
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: group.family
+        to: 'home'
+      - platform: sun
+        event: sunrise
+        offset: "+00:00:00"
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: group.family
+        state: 'home'
+      - condition: state
+        entity_id: sun.sun
+        state: 'above_horizon'
+    actions:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.tapo_c520ws_5d82_privacy
+
+  - alias: tapocam_set_day_mode
+    id: tapocam_set_day_mode
+    mode: single
+    triggers:
+      - trigger: sun
+        event: sunrise
+        offset: "+00:00:00"
+      - trigger: state
+        entity_id: group.family
+        to: 'not_home'
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: group.family
+        state: 'not_home'
+    actions:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.tapo_c520ws_5d82_privacy
+      - delay:
+            seconds: 15
+      - action: select.select_option
+        target:
+          entity_id: select.tapo_c520ws_5d82_move_to_preset
+        data:
+          option: "{{ state_attr ( 'select.tapo_c520ws_5d82_move_to_preset', 'options' ) [1] }}"
+
+  - alias: tapocam_set_night_mode
+    id: tapocam_set_night_mode
+    mode: single
+    triggers:
+      - trigger: sun
+        event: sunset
+        offset: "+00:00:00"
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    actions:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.tapo_c520ws_5d82_privacy
+      - delay:
+            seconds: 15
+      - action: select.select_option
+        target:
+          entity_id: select.tapo_c520ws_5d82_move_to_preset
+        data:
+          option: "{{ state_attr ( 'select.tapo_c520ws_5d82_move_to_preset', 'options' ) [0] }}"
+
+  - alias: tapocam_set_notification
+    id: tapocam_set_notification
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: group.family
+        to: 'home'
+        variables:
+            mode: "off"
+      - trigger: state
+        entity_id: group.family
+        to: 'not_home'
+        variables:
+            mode: "on"
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    actions:
+      - action: switch.turn_{{ mode }}
+        target:
+          entity_id: switch.tapo_c520ws_5d82_rich_notifications
