@@ -149,6 +149,65 @@ views:
                 icon: mdi:thermometer
               #- type: markdown
               #  content: " "
+          - type: horizontal-stack
+            cards:
+              - type: custom:state-switch
+                entity: >-
+                    {%
+                        if
+                            (
+                                is_state ( 'binary_sensor.prod_mode', 'on' )
+                                or is_state ( 'input_boolean.show_debug_fields', 'on' )
+                            )
+                    %}
+                    {%
+                            if
+                                states ( 'camera.tapo_c520ws_5d82_hd_stream' ) in ( 'unavailable', 'unknown' )
+                                or is_state ( 'switch.tapo_c520ws_5d82_privacy', 'on' )
+                    %}
+                        nostream
+                    {%      else %}
+                        stream
+                    {%      endif %}
+                    {% else %}
+                        off
+                    {% endif %}
+                default: "off"
+                states:
+                  "stream":
+                      type: picture-entity
+                      entity: camera.tapo_c520ws_5d82_hd_stream
+                      double_tap_action:
+                          action: url
+                          url_path: http://c520ws.fritz.box/api/camera_proxy/camera.tapo_c520ws_5d82_hd_stream?token=13565e4c1c8028fd86e5ddf1045144bf4ff295e36aba2dbfa9c6fca92b7475b1
+                  "nostream":
+                      type: button
+                      name: Garten
+                      icon: mdi:cctv-off
+                      tap_action:
+                          action: none
+                      hold_action:
+                          action: none
+                      double_tap_action:
+                          action: none
+                      more_info:
+                          action: none
+                  "off":
+                      type: button
+                      name: Garten
+                      icon: mdi:camera-off
+                      tap_action:
+                          action: none
+                      hold_action:
+                          action: none
+                      double_tap_action:
+                          action: none
+                      more_info:
+                          action: none
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
       - type: vertical-stack
         cards:
           - type: horizontal-stack
@@ -220,8 +279,8 @@ views:
                 use_media_info: true
               - type: markdown
                 content: " "
-          #- type: horizontal-stack
-          #  cards:
+          # - type: horizontal-stack
+          #   cards:
           #    - type: custom:state-switch
           #      entity: >
           #        {% set cam = 'galerie' %}

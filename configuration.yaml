@@ -89,7 +89,7 @@ lovelace:
       - url: /hacsfiles/ha-floorplan/floorplan.js
         type: module
       # https://github.com/thomasloven/lovelace-state-switch
-      - url: /local/custom_lovelace/lovelace-state-switch/state-switch.js
+      - url: /hacsfiles/lovelace-state-switch/state-switch.js
         type: module
       # https://github.com/iantrich/config-template-card
       - url: /hacsfiles/config-template-card/config-template-card.js
