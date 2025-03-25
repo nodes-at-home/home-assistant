@@ -105,4 +105,9 @@
     actions:
       - action: switch.turn_{{ mode }}
         target:
+          entity_id: switch.tapo_c520ws_5d82_notifications
+      - delay:
+            seconds: 15
+      - action: switch.turn_{{ mode }}
+        target:
           entity_id: switch.tapo_c520ws_5d82_rich_notifications
