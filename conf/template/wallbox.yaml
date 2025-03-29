@@ -34,9 +34,9 @@
                 {% elif val == 2 %}
                     limegreen
                 {% elif val == 3 %}
-                    doggerblue
+                    dodgerblue
                 {% elif val == 4 %}
-                    silver
+                    violet
                 {% else %}
                     red
                 {% endif %}

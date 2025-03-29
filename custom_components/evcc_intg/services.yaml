@@ -1,0 +1,69 @@
+set_vehicle_plan:
+  name: Set a departure plan for a vehicle connected to a loadpoint [SOC (%)]
+  description: Charging plan only works in solar mode. The configured CO₂ limit of NaN g will be ignored during this period.
+  fields:
+    # Key of the field
+    startdate:
+      name: Departure
+      description: Please select a date in the future (seconds will be ignored)
+      required: true
+      selector:
+        datetime:
+      # Selector (https://www.home-assistant.io/docs/blueprint/selectors/) to control the input UI for this field
+    loadpoint:
+      name: Loadpoint ID
+      description: A number starting from 1...n (where 1'st your first configured loadpoint)
+      required: true
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 10
+          mode: box
+    soc:
+      name: Charging goal
+      description: Target state of charge
+      required: true
+      default: 100
+      selector:
+        number:
+          min: 5
+          max: 100
+          step: 5
+          unit_of_measurement: "%"
+          mode: slider
+
+set_loadpoint_plan:
+  name: Set a departure plan for a loadpoint [Energy (kWh)]
+  description: Charging plan only works in solar mode. The configured CO₂ limit of NaN g will be ignored during this period.
+  fields:
+    # Key of the field
+    startdate:
+      name: Departure
+      description: Please select a date in the future (seconds will be ignored)
+      required: true
+      selector:
+        datetime:
+      # Selector (https://www.home-assistant.io/docs/blueprint/selectors/) to control the input UI for this field
+    loadpoint:
+      name: Loadpoint ID
+      description: A number starting from 1...n (where 1'st your first configured loadpoint)
+      required: true
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 10
+          mode: box
+    energy:
+      name: Charging goal
+      description: Target energy
+      required: true
+      default: 25
+      selector:
+        number:
+          min: 1
+          max: 200
+          step: 1
+          unit_of_measurement: "kWh"
+          mode: box

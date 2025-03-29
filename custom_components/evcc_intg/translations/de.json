@@ -1,0 +1,300 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Wenn Du Hilfe bei der Einrichtung benötigst, findest du sie hier: https://github.com/marq24/ha-evcc.\n-- --\n### Du musst die Addresse Deines EVCC-Servers angeben und nicht die von Deinem Home-Assistent Server!\n-- --\nJeder der seine Home-Assistent Addresse einträgt (weil er das vielleicht so auf YouTube gesehen hat) und sich dann bei mir wegen dem *Fehler* meldet, möge bitte wahlweise in die USA oder nach Russland auswandern (Nordkorea wäre auch noch 'ne Option)!\n-- --\nAn alle anderen: bitte entschuldigt diesen Rant \uD83E\uDD2E - Seit **Monaten** bekomme ich immer wieder die gleiche Support-Anfrage von der Generation TikTok.",
+        "data": {
+          "host": "Deine lokale EVCC-Server Addresse (einschließlich des Ports)",
+          "use_websocket": "Websocket verwenden - Aktualisierungsintervall wird ignoriert",
+          "scan_interval": "Aktualisierungsintervall in Sekunden [min: 5sek]",
+          "include_evcc": "Allen Namen der Sensoren den Präfix '[evcc]' voranstellen"
+        }
+      }
+    },
+    "error": {
+      "auth": "Unter dieser URL konnte keine EVCC-Server erreicht werden. **Bitte ließ doch noch einmal die Anleitung oben** Das Schwarze ist die Schrift!"
+    }
+  },
+  "options": {
+    "step": {
+      "user": {
+        "description": "Wenn Du Hilfe bei der Einrichtung benötigst, findest du sie hier: https://github.com/marq24/ha-evcc.",
+        "data": {
+          "host": "Deine lokale EVCC-Server Addresse (einschließlich des Ports)",
+          "use_websocket": "Websocket verwenden - Aktualisierungsintervall wird ignoriert",
+          "scan_interval": "Aktualisierungsintervall in Sekunden [min: 5sek]",
+          "include_evcc": "Allen Namen der Sensoren den Präfix '[evcc]' voranstellen"
+        }
+      }
+    },
+    "error": {
+      "auth": "Unter dieser URL konnte keine EVCC-Server erreicht werden."
+    }
+  },
+  "services": {
+    "set_loadpoint_plan": {
+      "name": "Abfahrt Ladeplanung für einen Ladepunkt erstellen [Energie (kWh)]",
+      "description": "Ladeplanung ist nur im PV-Modus aktiv. Die eingestellte CO₂-Grenze von NaN g wird in diesem Zeitraum ignoriert.",
+      "fields": {
+        "startdate":  {"name": "Abfahrt", "description": "Bitte gib das Datum und die Uhrzeit Deiner geplanten Abreise an (die Sekunden werden ignoriert)"},
+        "loadpoint":    {"name": "Ladepunkt ID", "description": "Eine Zahl beginnend mit 1...n (wobei 1 Dein erster konfigurierter Ladepunkt ist)"},
+        "energy":  {"name": "Ladeziel", "description": "Ziel Energiemenge"}
+      }
+    },
+    "set_vehicle_plan": {
+      "name": "Abfahrt Ladeplanung für einen am Ladepunkt verbundens Fahrzeug erstellen [SOC (%)]",
+      "description": "Ladeplanung ist nur im PV-Modus aktiv. Die eingestellte CO₂-Grenze von NaN g wird in diesem Zeitraum ignoriert.",
+      "fields": {
+        "startdate":  {"name": "Abfahrt", "description": "Bitte gib das Datum und die Uhrzeit Deiner geplanten Abreise an (die Sekunden werden ignoriert)"},
+        "loadpoint":    {"name": "Ladepunkt ID", "description": "Eine Zahl beginnend mit 1...n (wobei 1 Dein erster konfigurierter Ladepunkt ist)"},
+        "soc":  {"name": "Ladeziel", "description": "Ziel Ladezustand (SOC)"}
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "charging": {"name": "Lädt"},
+      "connected": {"name": "Verbunden"},
+      "enabled": {"name": "Aktiviert"},
+      "smartcostactive": {"name": "Smartes Netzladen"},
+      "vehicledetectionactive": {"name": "Fahrzeugerkennung"},
+      "batterygridchargeactive": {"name": "Hausbatterie: Netzladen"},
+      "vehicleclimateractive": {"name": "Fahrzeug Klimatisierung"},
+      "vehiclewelcomeactive": {"name": "Fahrzeug Willkommensfunktion"},
+      "planactive": {"name": "Plan aktiviert"},
+      "planactivealt": {"name": "Plan aktiviert (alt)"}
+    },
+    "button": {
+      "vehicleplansdelete": {"name": "Ladeplanung: Abfahrt löschen (Fahrzeug/SOC)"},
+      "plandelete": {"name": "Ladeplanung: Abfahrt löschen (Ladepunkt/Energie)"},
+      "detectvehicle": {"name": "Fahrzeugerkennung starten"},
+      "smartcostlimit": {"name": "@@@ Limit entfernen"}
+    },
+    "number": {
+      "limitsoc": {"name": "Standard Ladelimit (SOC)"},
+      "limitenergy": {"name": "Standard Ladelimit (Energie)"},
+      "enablethreshold": {"name": "Schwellwert Aktivierung"},
+      "disablethreshold": {"name": "Schwellwert Deaktivierung"},
+      "residualpower": {"name": "Restleistung"},
+      "smartcostlimit_co2": {"name": "CO₂ Limit ≤"},
+      "smartcostlimit": {"name": "@@@ Limit ≤"},
+      "batterygridchargelimit": {"name": "Hausbatterie: Netzladen @@@ Limit ≤"},
+      "enabledelay": {"name":  "Verzögerung Aktivierung"},
+      "disabledelay": {"name":  "Verzögerung Deaktivierung"}
+    },
+    "select": {
+      "prioritysoc": {
+        "name": "Hausbatterie: Haus hat Priorität",
+        "state": {
+          "0": "---",
+          "5": "wenn unter 5 %",
+          "10": "wenn unter 10 %",
+          "15": "wenn unter 15 %",
+          "20": "wenn unter 20 %",
+          "25": "wenn unter 25 %",
+          "30": "wenn unter 30 %",
+          "35": "wenn unter 35 %",
+          "40": "wenn unter 40 %",
+          "45": "wenn unter 45 %",
+          "50": "wenn unter 50 %",
+          "55": "wenn unter 55 %",
+          "60": "wenn unter 60 %",
+          "65": "wenn unter 65 %",
+          "70": "wenn unter 70 %",
+          "75": "wenn unter 75 %",
+          "80": "wenn unter 80 %",
+          "85": "wenn unter 85 %",
+          "90": "wenn unter 90 %",
+          "95": "wenn unter 95 %",
+          "100": "wenn unter 100 %"
+        }
+      },
+      "buffersoc": {
+        "name": "Hausbatterie: Fahrzeug zuerst",
+        "state": {
+          "5": "wenn über 5 %",
+          "10": "wenn über 10 %",
+          "15": "wenn über 15 %",
+          "20": "wenn über 20 %",
+          "25": "wenn über 25 %",
+          "30": "wenn über 30 %",
+          "35": "wenn über 35 %",
+          "40": "wenn über 40 %",
+          "45": "wenn über 45 %",
+          "50": "wenn über 50 %",
+          "55": "wenn über 55 %",
+          "60": "wenn über 60 %",
+          "65": "wenn über 65 %",
+          "70": "wenn über 70 %",
+          "75": "wenn über 75 %",
+          "80": "wenn über 80 %",
+          "85": "wenn über 85 %",
+          "90": "wenn über 90 %",
+          "95": "wenn über 95 %",
+          "100": "wenn auf 100 %"
+        }
+      },
+      "bufferstartsoc": {
+        "name": "Hausbatterie: Fahrzeug Laden unterstützen",
+        "state": {
+          "5": "wenn über 5 %",
+          "10": "wenn über 10 %",
+          "15": "wenn über 15 %",
+          "20": "wenn über 20 %",
+          "25": "wenn über 25 %",
+          "30": "wenn über 30 %",
+          "35": "wenn über 35 %",
+          "40": "wenn über 40 %",
+          "45": "wenn über 45 %",
+          "50": "wenn über 50 %",
+          "55": "wenn über 55 %",
+          "60": "wenn über 60 %",
+          "65": "wenn über 65 %",
+          "70": "wenn über 70 %",
+          "75": "wenn über 75 %",
+          "80": "wenn über 80 %",
+          "85": "wenn über 85 %",
+          "90": "wenn über 90 %",
+          "95": "wenn über 95 %",
+          "100": "wenn auf 100 %",
+          "0": "nur mit genug PV-Überschuss laden"
+        }
+      },
+      "vehiclename": {
+        "name": "Fahrzeug",
+        "state": {
+          "null": "-keins-"
+        }
+      },
+      "limitsoc": {
+        "name": "Ladeplanung: Ankunft Standard Ladelimit"
+      },
+      "minsoc": {
+        "name": "Ladeplanung: Ankunft Min. Ladung %"
+      },
+      "mode": {
+        "name": "Modus",
+        "state": {
+          "off": "Aus",
+          "pv": "PV",
+          "minpv": "Min+PV",
+          "now": "Schnell"
+        }
+      },
+      "phasesconfigured": {
+        "name": "Ladestrom Phasen",
+        "state": {
+          "0": "automatischer Wechsel",
+          "1": "1-phasig",
+          "3": "3-phasig"
+        }
+      },
+      "phasesconfigured_fixed": {
+        "name": "Ladestrom Phasen (Wie ist deine Wallbox angeschlossen?)",
+        "state": {
+          "1": "1-phasig",
+          "3": "3-phasig"
+        }
+      },
+      "mincurrent": {"name": "Min. Ladestrom"},
+      "maxcurrent": {"name": "Max. Ladestrom"}
+    },
+    "sensor": {
+      "chargecurrent": {"name": "Ladestrom"},
+      "chargecurrents_0": {"name": "Ladestrom P1"},
+      "chargecurrents_1": {"name": "Ladestrom P2"},
+      "chargecurrents_2": {"name": "Ladestrom P3"},
+      "chargeduration": {"name": "Ladedauer"},
+      "chargeremainingduration": {"name": "Laderestzeit"},
+      "chargepower": {"name": "Ladeleistung"},
+      "chargetotalimport": {"name": "Netzbezug"},
+      "chargedenergy": {"name": "Ladeenergie"},
+      "chargeremainingenergy": {"name": "Ladeenergie verbleibend"},
+
+      "connectedduration": {"name": "Angeschlossen seit"},
+
+      "effectivelimitsoc": {"name": "Effektives Ladelimit (SOC)"},
+
+      "phaseaction": {"name": "Phasen Aktivität [CODE]"},
+      "phaseaction_value": {"name": "Phasen Aktivität"},
+      "phaseremaining": {"name": "Phasen verbleibend"},
+      "phasesactive": {"name": "Phasen in Verwendung"},
+      "phasesenabled": {"name": "Phasen aktiviert"},
+
+      "sessionco2perkwh": {"name": "Ladevorgang CO₂/kWh"},
+      "sessionenergy": {"name": "Ladevorgang Energie"},
+      "sessionprice": {"name": "Ladevorgang Preis"},
+      "sessionpriceperkwh": {"name": "Ladevorgang @@@/kWh"},
+      "sessionsolarpercentage": {"name": "Ladevorgang PV Verwendung"},
+
+      "vehicleodometer": {"name": "Fahrzeug Kilometerstand"},
+      "vehiclerange": {"name": "Fahrzeug Reichweite"},
+      "vehiclesoc": {"name": "Fahrzeug Ladestand"},
+
+      "vehicleplanssoc": {"name": "Ladeplanung: Abfahrt Ladeziel (SOC)"},
+      "vehicleplanstime": {"name": "Ladeplanung: Abfahrt Zeitpunkt (SOC)"},
+      "planenergy": {"name": "Ladeplanung: Abfahrt Ladeziel (Energie)"},
+      "plantime": {"name": "Ladeplanung: Abfahrt Zeitpunkt (Energie)"},
+
+      "effectiveplansoc": {"name": "Effektiver Plan: Abfahrt Ladeziel (SOC)"},
+      "effectiveplantime": {"name": "Effektiver Plan: Abfahrt Zeitpunkt (SOC)"},
+      "planprojectedstart": {"name": "Plan: Start (erwartet)"},
+      "planprojectedend": {"name": "Plan: Ende (erwartet)"},
+
+      "auxpower": {"name": "Leistung AUX"},
+      "batterycapacity": {"name": "Batterie Kapazität"},
+      "batterymode": {"name": "Batterie Modus [CODE]"},
+      "batterymode_value": {"name": "Batterie Modus"},
+      "batterypower": {"name": "Leistung Batterie"},
+      "batterysoc": {"name": "Batterie Ladezustand"},
+      "gridcurrents_0": {"name": "Netz Phase 1"},
+      "gridcurrents_1": {"name": "Netz Phase 2"},
+      "gridcurrents_2": {"name": "Netz Phase 3"},
+      "gridpower": {"name": "Leistung Netz"},
+      "homepower": {"name": "Leistung Heim"},
+      "pvpower": {"name": "Leistung PV"},
+      "pv_0_power": {"name": "Leistung PV 1"},
+      "pv_1_power": {"name": "Leistung PV 2"},
+      "pv_2_power": {"name": "Leistung PV 3"},
+      "pv_3_power": {"name": "Leistung PV 4"},
+      "pvenergy": {"name": "Energie PV"},
+      "pv_0_energy": {"name": "Energie PV 1"},
+      "pv_1_energy": {"name": "Energie PV 2"},
+      "pv_2_energy": {"name": "Energie PV 3"},
+      "pv_3_energy": {"name": "Energie PV 4"},
+
+      "tariffgrid": {"name": "Kosten Netz"},
+      "tariffpricehome": {"name": "Kosten Verbrauch"},
+
+      "stattotalsolarpercentage": {"name": "Statistik: gesamt Sonnenenergie"},
+      "stattotalchargedkwh": {"name": "Statistik: gesamt Ladeenergie"},
+      "stattotalavgprice": {"name": "Statistik: gesamt Ø Preis"},
+      "stattotalavgco2": {"name": "Statistik: gesamt Ø CO₂"},
+      "statthisyearsolarpercentage": {"name": "Statistik: dieses Jahr Sonnenenergie"},
+      "statthisyearchargedkwh": {"name": "Statistik: dieses Jahr Ladeenergie"},
+      "statthisyearavgprice": {"name": "Statistik: dieses Jahr Ø Preis"},
+      "statthisyearavgco2": {"name": "Statistik: dieses Jahr Ø CO₂"},
+      "stat365solarpercentage": {"name": "Statistik: letzten 365 Tage Sonnenenergie"},
+      "stat365chargedkwh": {"name": "Statistik: letzten 365 Tage Ladeenergie"},
+      "stat365avgprice": {"name": "Statistik: letzten 365 Tage Ø Preis"},
+      "stat365avgco2": {"name": "Statistik: letzten 365 Tage Ø CO₂"},
+      "stat30solarpercentage": {"name": "Statistik: letzten 30 Tage Sonnenenergie"},
+      "stat30chargedkwh": {"name": "Statistik: letzten 30 Tage Ladeenergie"},
+      "stat30avgprice": {"name": "Statistik: letzten 30 Tage Ø Preis"},
+      "stat30avgco2": {"name": "Statistik: letzten 30 Tage Ø CO₂"},
+
+      "tariff_api_solar": {"name": "Solar Prognose [Tariff-API]"},
+      "tariff_api_grid": {"name": "Strom Tarife [Tariff-API]"},
+      "forecast_solar": {"name": "Solar Prognose"},
+      "forecast_grid": {"name": "Strom Tarife"},
+
+      "pvaction": {"name": "PV Aktivität [CODE]"},
+      "pvaction_value": {"name": "PV Aktivität"},
+      "pvremaining": {"name":  "PV verbleibend"}
+    },
+    "switch": {
+      "batterydischargecontrol": {"name": "Hausbatterie: Entladesperre"},
+      "batteryboost": {"name": "Schnell aus Hausbatterie laden."}
+    }
+  }
+}

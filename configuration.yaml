@@ -51,7 +51,7 @@ logger:
     # homeassistant.helper.update: debug
     # custom_components.innova: debug
     # homeassistant.components.modbus: debug
-
+    # custom_components.evcc_intg: debug
 # -------------------------------------------------------------------------------
 # shell commands
 

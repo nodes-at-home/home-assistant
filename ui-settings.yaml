@@ -446,7 +446,21 @@ views:
             - input_number.wallbox_current_eeprom
             - input_select.wallbox_phase_switch_mode
             - input_boolean.wallbox_cloud_disabled
-
+      - type: entities
+        title: evcc
+        show_header_toggle: false
+        entities:
+            - select.evcc_wallbox_vehicle_name
+            - select.evcc_wallbox_mode
+            - type: divider
+            - number.evcc_wallbox_limit_soc
+            - select.evcc_wallbox_min_soc
+            - select.evcc_wallbox_mode
+            - number.evcc_residual_power
+            - number.evcc_wallbox_enable_threshold
+            - number.evcc_wallbox_enable_delay
+            - number.evcc_wallbox_disable_threshold
+            - number.evcc_wallbox_disable_delay
   - title: Klimatisierung
     path: climate
     panel: false

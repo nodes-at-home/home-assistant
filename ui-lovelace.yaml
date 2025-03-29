@@ -76,6 +76,9 @@ views:
         color: "{{ state_attr ( entity, 'icon_color' )}}"
         tap_action:
             action: more-info
+        hold_action:
+            action: url
+            url_path: https://nodesathome1:7070
       - type: custom:mushroom-template-badge
         entity: binary_sensor.wasserampel
         content: Wasserampel
@@ -1458,6 +1461,9 @@ views:
         color: "{{ state_attr ( entity, 'icon_color' )}}"
         tap_action:
             action: more-info
+        hold_action:
+            action: url
+            url_path: https://nodesathome1:7070
       - type: custom:mushroom-template-badge
         entity: binary_sensor.boiler_burngas_state_badge
         content: Gas
@@ -1530,6 +1536,7 @@ views:
                 name: EPEX
               - entity: sensor.epex_spot_data_net_price
                 name: ostrom (SimplyDynamic)
+          - type: energy-distribution
           - type: statistics-graph
             title: Heutiger Verbrauch
             chart_type: bar
@@ -1614,9 +1621,15 @@ views:
                   - entity: sensor.wallbox_meter_yearly
                     name: jährlich
                     icon: mdi:ev-station
-          # - type: energy-usage-graph
-          - type: energy-distribution
-          # - type: energy-solar-graph
+                  - type: section
+                    label: evcc
+                  - sensor.evcc_wallbox_charge_remaining_duration
+                  - sensor.evcc_wallbox_charge_remaining_energy
+                  - type: section
+                    label: Kia EV 6
+                  - sensor.evcc_wallbox_vehicle_odometer
+                  - sensor.evcc_wallbox_vehicle_range
+                  - sensor.evcc_wallbox_vehicle_soc
           - type: entities
             title: Gas
             show_header_toggle: false
