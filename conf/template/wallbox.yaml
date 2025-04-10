@@ -88,6 +88,9 @@
                 unbekannt ({{val}})
             {% endif %}
 
+      - name: wallbox_power
+        unit_of_measurement: W
+        state: "{{ states ( 'sensor.go_echarger_power_total' ) | float ( 0 ) | round ( 0 ) }}"
 
   - trigger:
       - platform: state

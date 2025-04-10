@@ -1590,7 +1590,7 @@ views:
             card:
                 type: gauge
                 name: Ladeleistung
-                entity: sensor.go_echarger_power_total
+                entity: sensor.wallbox_power
                 min: 0
                 max: +16000
                 # needle: true
