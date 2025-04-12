@@ -1,0 +1,10 @@
+###
+### 12.04.2025
+###
+
+name: Unplausible Leistung ab
+mode: box
+min: 0
+max: 20000
+step: 100
+unit_of_measurement: W

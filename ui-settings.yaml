@@ -341,6 +341,11 @@ views:
             - input_number.electricity_meter_threshold_energy
             - input_number.electricity_import_critical_above
       - type: entities
+        title: Wallbox
+        show_header_toggle: false
+        entities:
+            - input_number.wallbox_threshold_power
+      - type: entities
         title: Gaszähler
         show_header_toggle: false
         entities:

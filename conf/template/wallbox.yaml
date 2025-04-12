@@ -88,9 +88,35 @@
                 unbekannt ({{val}})
             {% endif %}
 
+
+      - name: wallbox_charge_remaining_duration
+        state: "{{ timedelta ( seconds = states ( 'sensor.evcc_wallbox_charge_remaining_duration' ) | int ( 0 ) ) }} h"
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.go_echarger_power_total
+    sensor:
       - name: wallbox_power
         unit_of_measurement: W
-        state: "{{ states ( 'sensor.go_echarger_power_total' ) | float ( 0 ) | round ( 0 ) }}"
+        state: >
+            {% set val = states ( 'sensor.go_echarger_power_total' ) | float | round ( 0 ) %}
+            {% set lastval = state_attr ( 'sensor.wallbox_power', 'lastvalue' ) | float ( 0 ) | round ( 0 ) %}
+            {% set max = states ( 'input_number.wallbox_threshold_power' ) | float | round ( 0 ) %}
+            {% if val < 0 or val > max %}
+                {{ lastval }}
+            {% else %}
+                {{ val }}
+            {% endif %}
+        attributes:
+            lastvalue: >
+                {% set val = states ( 'sensor.go_echarger_power_total' ) | float | round ( 0 ) %}
+                {% set lastval = state_attr ( 'sensor.wallbox_power', 'lastvalue' ) | float ( 0 ) | round ( 0 ) %}
+                {% set max = states ( 'input_number.wallbox_threshold_power' ) | float | round ( 0 ) %}
+                {% if val < 0 or val > max %}
+                    {{ lastval }}
+                {% else %}
+                    {{ val }}
+                {% endif %}
 
   - trigger:
       - platform: state

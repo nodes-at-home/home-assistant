@@ -1623,7 +1623,9 @@ views:
                     icon: mdi:ev-station
                   - type: section
                     label: evcc
-                  - sensor.evcc_wallbox_charge_remaining_duration
+                  - entity: sensor.wallbox_charge_remaining_duration
+                    name: Laderestzeit
+                    icon: mdi:av-timer
                   - sensor.evcc_wallbox_charge_remaining_energy
                   - type: section
                     label: Kia EV 6
