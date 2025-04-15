@@ -80,6 +80,13 @@ views:
             action: url
             url_path: https://nodesathome1:7070
       - type: custom:mushroom-template-badge
+        entity: group.ev6
+        content: EV6
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
         entity: binary_sensor.wasserampel
         content: Wasserampel
         icon: "{{ state_attr ( entity, 'icon' )}}"
@@ -1086,8 +1093,8 @@ views:
                     content: "{{ states ( 'sensor.dht22_roof_temperature' ) | round ( 1 ) | string + '°C / ' + states ( 'sensor.dht22_roof_humidity' ) | round ( 1 ) | string + '%' }}";
                 }
 
-  - title: Garten
-    path: garden
+  - title: Außenbereich
+    path: otdoor
     panel: false
     badges:
       - entity: sensor.rain_garden_precipitation_last7d
@@ -1104,6 +1111,23 @@ views:
         display_type: complete
       - entity: sensor.dht22_terrace_temperature_max
         display_type: complete
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.wallbox_state
+        content: Wallbox
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+        hold_action:
+            action: url
+            url_path: https://nodesathome1:7070
+      - type: custom:mushroom-template-badge
+        entity: group.ev6
+        content: EV6
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
+        tap_action:
+            action: more-info
       - type: entity-filter
         entities:
           - entity: binary_sensor.garagentur
@@ -1373,6 +1397,287 @@ views:
               - entity: switch.bosch_ladestation
                 icon: mdi:battery-charging-medium
               - binary_sensor.rauchmelder_garage
+      
+      - type: vertical-stack
+        title: Auto
+        cards:
+            # https://community.home-assistant.io/t/kia-uvo-integration/297927
+          - type: picture-elements
+            title: Kia EV6
+            image: /local/images/kia_ev6.jpg
+            elements:
+                # top left
+              - type: state-icon
+                entity: lock.ev6_door_lock
+                style:
+                  top: 0px
+                  left: 0px
+                  margin-top: 0px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: lock.ev6_door_lock
+                title: lock.ev6_door_lock
+                style:
+                  top: 0px
+                  left: 30px
+                  margin-top: 0px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+              - type: state-icon
+                entity: binary_sensor.ev6_ev_charge_port
+                style:
+                  top: 0px
+                  left: 0px
+                  margin-top: 24px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: binary_sensor.ev6_ev_charge_port
+                title: binary_sensor.ev6_ev_charge_port
+                style:
+                  top: 0px
+                  left: 30px
+                  margin-top: 24px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+              - type: state-icon
+                entity: binary_sensor.ev6_ev_battery_plug
+                style:
+                  top: 0px
+                  left: 0px
+                  margin-top: 48px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: binary_sensor.ev6_ev_battery_plug
+                style:
+                  top: 0px
+                  left: 30px
+                  margin-top: 48px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+                # top right
+              - type: state-icon
+                entity: binary_sensor.ev6_hood
+                style:
+                  top: 0px
+                  right: 0px
+                  margin-top: 0px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: binary_sensor.ev6_hood
+                style:
+                  top: 0px
+                  right: 30px
+                  margin-top: 0px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+              - type: state-icon
+                entity: binary_sensor.ev6_trunk
+                style:
+                  top: 0px
+                  right: 0px
+                  margin-top: 24px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: binary_sensor.ev6_trunk
+                style:
+                  top: 0px
+                  right: 30px
+                  margin-top: 24px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+              - type: state-icon
+                entity: group.ev6_doors
+                style:
+                  top: 0px
+                  right: 0px
+                  margin-top: 48px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: group.ev6_doors
+                style:
+                  top: 0px
+                  right: 30px
+                  margin-top: 48px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+                # bottom left
+              - type: state-icon
+                entity: sensor.ev6_ev_range
+                style:
+                  bottom: 0px
+                  left: 0px
+                  margin-bottom: 24px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: sensor.ev6_ev_range
+                title: sensor.ev6_ev_range
+                prefix: 'Range: '
+                style:
+                  bottom: 0px
+                  left: 30px
+                  margin-bottom: 24px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+              - type: state-icon
+                entity: sensor.ev6_ev_battery_level
+                style:
+                  bottom: 0px
+                  left: 0px
+                  margin-bottom: 0px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: sensor.ev6_ev_battery_level
+                title: sensor.ev6_ev_battery_level
+                prefix: 'Battery: '
+                style:
+                  bottom: 0px
+                  left: 30px
+                  margin-bottom: 0px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+                # bottom right
+              - type: state-icon
+                entity: device_tracker.ev6_location
+                style:
+                  bottom: 0px
+                  right: 0px
+                  margin-bottom: 48px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: device_tracker.ev6_location
+                style:
+                  bottom: 0px
+                  right: 30px
+                  margin-bottom: 48px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+              - type: state-icon
+                entity: sensor.ev6_odometer
+                style:
+                  bottom: 0px
+                  right: 0px
+                  margin-bottom: 24px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: sensor.ev6_odometer
+                style:
+                  bottom: 0px
+                  right: 30px
+                  margin-bottom: 24px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+              - type: state-icon
+                entity: sensor.ev6_last_updated_at
+                style:
+                  bottom: 0px
+                  right: 0px
+                  margin-bottom: 0px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  '--paper-item-icon-color': black
+              - type: state-label
+                entity: sensor.ev6_last_updated_at
+                style:
+                  bottom: 0px
+                  right: 30px
+                  margin-bottom: 0px
+                  transform: initial
+                  font-size: 0.8em
+                  line-height: 2em
+                  color: black
+
+              # - type: state-icon
+              #   entity: binary_sensor.ev6_ev_battery_charge
+              #   style:
+              #     right: 0
+              #     top: 0px
+              #     margin-top: 0px
+              #     transform: initial
+              #     font-size: 0.8em
+              #     line-height: 2em
+              #     '--paper-item-icon-color': black
+              # - type: state-label
+              #   entity: binary_sensor.ev6_ev_battery_charge
+              #   style:
+              #     transform: initial
+              #     font-size: 0.8em
+              #     line-height: 2em
+              #     top: 0px
+              #     right: 30px
+              #     margin-top: 0px
+              #     color: black
+          - type: conditional
+            conditions:
+              - entity: sensor.go_echarger_power_total
+                state_not: unavailable
+            card:
+                type: entities
+                title: Wallbox
+                show_header_toggle: false
+                entities:
+                  - type: section
+                    label: evcc
+                  - entity: sensor.wallbox_charge_remaining_duration
+                    name: Laderestzeit
+                    icon: mdi:av-timer
+                  - sensor.evcc_wallbox_charge_remaining_energy
+                  - type: section
+                    label: Kia EV 6
+                  - sensor.evcc_wallbox_vehicle_odometer
+                  - sensor.evcc_wallbox_vehicle_range
+                  - sensor.evcc_wallbox_vehicle_soc
+
       - type: conditional
         conditions:
           - entity:
@@ -1621,17 +1926,6 @@ views:
                   - entity: sensor.wallbox_meter_yearly
                     name: jährlich
                     icon: mdi:ev-station
-                  - type: section
-                    label: evcc
-                  - entity: sensor.wallbox_charge_remaining_duration
-                    name: Laderestzeit
-                    icon: mdi:av-timer
-                  - sensor.evcc_wallbox_charge_remaining_energy
-                  - type: section
-                    label: Kia EV 6
-                  - sensor.evcc_wallbox_vehicle_odometer
-                  - sensor.evcc_wallbox_vehicle_range
-                  - sensor.evcc_wallbox_vehicle_soc
           - type: entities
             title: Gas
             show_header_toggle: false

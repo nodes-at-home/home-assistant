@@ -1,0 +1,10 @@
+###
+### 15.04.2025
+###
+
+name: Autotüren EV6
+entities:
+    - binary_sensor.ev6_front_left_door
+    - binary_sensor.ev6_front_right_door
+    - binary_sensor.ev6_back_left_door
+    - binary_sensor.ev6_back_right_door

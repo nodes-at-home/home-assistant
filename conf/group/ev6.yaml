@@ -1,0 +1,24 @@
+###
+### 15.04.2025
+###
+
+name: Kia EV6
+entities:
+    - lock.ev6_door_lock
+    - binary_sensor.ev6_hood
+    - binary_sensor.ev6_trunk
+    - binary_sensor.ev6_front_left_door
+    - binary_sensor.ev6_front_right_door
+    - binary_sensor.ev6_back_left_door
+    - binary_sensor.ev6_back_right_door
+    - binary_sensor.ev6_back_left_window
+    - binary_sensor.ev6_back_right_window
+    - binary_sensor.ev6_front_left_window
+    - binary_sensor.ev6_front_right_window
+    - binary_sensor.ev6_tire_pressure_front_left
+    - binary_sensor.ev6_tire_pressure_front_right
+    - binary_sensor.ev6_tire_pressure_rear_left
+    - binary_sensor.ev6_tire_pressure_rear_right
+    - binary_sensor.ev6_smart_key_battery_warning
+    - binary_sensor.ev6_brake_fluid_warning
+    - binary_sensor.ev6_washer_fluid_warning
