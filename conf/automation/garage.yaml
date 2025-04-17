@@ -55,3 +55,38 @@
     action:
       - service: switch.turn_off
         entity_id: switch.bosch_ladestation
+
+  - alias: unlock_ev6
+    id: unlock_ev6
+    triggers:
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Auto auf'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    actions:
+      - action: kia_uvo.unlock
+        data:
+            device_id: "{{ device_id ( 'EV6' ) }}"
+
+  - alias: lock_ev6
+    id: lock_ev6
+    triggers:
+      - platform: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Auto auf'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    actions:
+      - action: kia_uvo.lock
+        data:
+            device_id: "{{ device_id ( 'EV6' ) }}"
+
