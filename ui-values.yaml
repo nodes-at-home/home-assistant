@@ -820,6 +820,7 @@ views:
           - sensor.import_power
           - sensor.battery_power
           - sensor.electricity_meter_power
+          - sensor.wallbox_power
 
   - title: Batterie
     path: batterygraph

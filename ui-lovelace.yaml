@@ -1856,6 +1856,7 @@ views:
               #- sensor.water_meter_daily
               - sensor.battery_meter_daily_out
               - sensor.battery_meter_daily_in
+              - sensor.wallbox_meter_daily
             stat_types:
               - change
       - type: vertical-stack

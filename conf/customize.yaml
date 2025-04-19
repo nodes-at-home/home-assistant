@@ -1289,6 +1289,20 @@ sensor.solar_quarterhourly:
     friendly_name: Kumulierte Produktion 15min
 
 #------------------------------------------------------------------------------
+
+sensor.wallbox_meter_quarterhourly:
+    friendly_name: Autoladung 15min
+
+sensor.wallbox_meter_daily:
+    friendly_name: Autoladung täglich
+
+sensor.wallbox_meter_yearly:
+    friendly_name: Autoladung jährlich
+
+sensor.wallbox_quarterhourly:
+    friendly_name: Kumulierte Autoladung 15min
+
+#------------------------------------------------------------------------------
 sensor.office_temperature:
     friendly_name: Temperatur Büro
 
