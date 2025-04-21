@@ -356,7 +356,7 @@
                         states ( 'sensor.electricity_meter_power' ) | float  ( 0 )
                         + states ( 'sensor.total_dc_power' ) | float ( 0 )
                         - states ( 'sensor.battery_power' ) | float ( 0 )
-                        - states ( 'sensor.go_echarger_power_total' ) | float ( 0 )
+                        - states ( 'sensor.wallbox_power' ) | float ( 0 )
                     ) | round ( 0 )
                 }}
 
