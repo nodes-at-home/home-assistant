@@ -68,6 +68,12 @@
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
+      - condition: state
+        entity_id: group.family
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.ev6_location
+        state: 'Zuhause'
     actions:
       - action: kia_uvo.unlock
         data:
@@ -80,11 +86,17 @@
         event_type:  bosch_shc.event
         event_data:
             event_type: SCENARIO
-            event_subtype: 'Auto auf'
+            event_subtype: 'Auto zu'
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
+      - condition: state
+        entity_id: group.family
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.ev6_location
+        state: 'Zuhause'
     actions:
       - action: kia_uvo.lock
         data:
