@@ -27,17 +27,17 @@ cover_closing_at_cold_activated:
     # initial: off
 
 climate_activated:
-    name: Klimageräte aktiviert
+    name: Klimageräte aktiv
     # initial: on
 
 dishwasher_activated:
-    name: Geschirrspüler aktiviert
+    name: Geschirrspüler aktiv
     # initial: on
 
 hydrotower_activated:
-    name: Hydrotower aktiviert
+    name: Hydrotower aktiv
     # initial: on
 
 pool_pump_activated:
-    name: Poolpumpe aktiviert
+    name: Poolpumpe aktiv
     # initial: on

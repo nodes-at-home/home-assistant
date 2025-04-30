@@ -18,9 +18,16 @@
         state: 'on'
       - condition: template
         value_template: >
-            {% set days = {0:'Montag', 1:'Dienstag', 2:'Mittwoch', 3:'Donnerstag', 4:'Freitag', 5:'Sonnabend', 6:'Sonntag'} %}
             {% set day = now().weekday() %}
-            {{ states ( 'input_select.mowing_day1') == days [day] or states ( 'input_select.mowing_day2') == days [day] or states ( 'input_select.mowing_day3') == days [day]}}
+            {{
+               day == 0 and states ( 'input_boolean.mowing_at_monday' )    == 'on' or
+               day == 1 and states ( 'input_boolean.mowing_at_tuesday' )   == 'on' or
+               day == 2 and states ( 'input_boolean.mowing_at_wednesday' ) == 'on' or
+               day == 3 and states ( 'input_boolean.mowing_at_thursday' )  == 'on' or
+               day == 4 and states ( 'input_boolean.mowing_at_friday' )    == 'on' or
+               day == 5 and states ( 'input_boolean.mowing_at_saturday' )  == 'on' or
+               day == 6 and states ( 'input_boolean.mowing_at_sunday' )    == 'on'
+            }}
     action:
       - service: vacuum.start
         entity_id: vacuum.sileno

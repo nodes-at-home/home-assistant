@@ -1,0 +1,18 @@
+###
+### 30.04.2025
+###
+
+mowing_at_monday:
+    name: Rasenmähen montags
+mowing_at_tuesday:
+    name: Rasenmähen dienstags
+mowing_at_wednesday:
+    name: Rasenmähen mittwochs
+mowing_at_thursday:
+    name: Rasenmähen donnerstags
+mowing_at_friday:
+    name: Rasenmähen freitags
+mowing_at_saturday:
+    name: Rasenmähen samstags
+mowing_at_sunday:
+    name: Rasenmähen sonntags

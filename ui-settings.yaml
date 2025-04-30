@@ -232,9 +232,22 @@ views:
             - type: divider
             - input_datetime.mowing_start
             - input_datetime.mowing_end
-            - input_select.mowing_day1
-            - input_select.mowing_day2
-            - input_select.mowing_day3
+            - type: buttons
+              entities:
+                - entity: input_boolean.mowing_at_monday
+                  name: Mo
+                - entity: input_boolean.mowing_at_tuesday
+                  name: Di
+                - entity: input_boolean.mowing_at_wednesday
+                  name: Mi
+                - entity: input_boolean.mowing_at_thursday
+                  name: Do
+                - entity: input_boolean.mowing_at_friday
+                  name: Fr
+                - entity: input_boolean.mowing_at_saturday
+                  name: Sa
+                - entity: input_boolean.mowing_at_sunday
+                  name: So
       - type: vertical-stack
         cards:
           - type: entities
