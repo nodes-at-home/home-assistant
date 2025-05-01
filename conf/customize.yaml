@@ -861,44 +861,6 @@ sensor.relay_garden_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-sensor.soil_garden_temperature1:
-    friendly_name: Hinteres Hochbeet
-
-sensor.soil_garden_temperature2:
-    friendly_name: Luft
-
-sensor.soil_garden_temperature3:
-    friendly_name: Boden
-
-sensor.soil_garden_moisture1:
-    friendly_name: Hinteres Hochbeet
-    icon: mdi:water-percent
-
-sensor.soil_garden_moisture2:
-    friendly_name: Hecke
-    icon: mdi:water-percent
-
-sensor.soil_garden_moisture3:
-    friendly_name: Vorderes Hochbeet
-    icon: mdi:water-percent
-
-sensor.soil_garden_voltage:
-    friendly_name: Garten
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.soil_garden_lastvoltage:
-    friendly_name: Garten
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.soil_garden_lastboot:
-    friendly_name: Garten
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.soil_garden_version:
-    friendly_name: Garten
-    entity_picture: /local/images/nodemcu.jpg
-
-#------------------------------------------------------------------------------
 sensor.rain_garden_precipitation:
     friendly_name: Regen aktuell
     icon: mdi:weather-rainy
@@ -1520,6 +1482,7 @@ switch.relay_hydrotower_pump:
 
 sensor.relay_hydrotower_temperature:
     friendly_name: Hydrotower
+    icon: mdi:thermometer
 
 #------------------------------------------------------------------------------
 sensor.ws2812_x1c_voltage:
@@ -1570,4 +1533,24 @@ group.ev6_doors:
     friendly_name: Autotüren
     icon: mdi:car-door
     device_class: cover
+
+#------------------------------------------------------------------------------
+sensor.gemusebeet_soil_humidity:
+    friendly_name: Gemüsebeet
+
+sensor.gemusebeet_soil_temperature:
+    friendly_name: Gemüsebeet
+
+sensor.hochbeet_vorne_soil_humidity:
+    friendly_name: Hochbeet vorne
+
+sensor.hochbeet_vorne_soil_temperature:
+    friendly_name: Hochbeet vorne
+
+sensor.hochbeet_hinten_soil_humidity:
+    friendly_name: Hochbeet hinten
+
+sensor.hochbeet_hinten_soil_temperature:
+    friendly_name: Hochbeet hinten
+
 #------------------------------------------------------------------------------

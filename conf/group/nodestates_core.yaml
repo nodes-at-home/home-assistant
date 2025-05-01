@@ -32,7 +32,6 @@ entities:
     - binary_sensor.nodestate_shelly_shower
     - binary_sensor.nodestate_gas_utilityroom
     - binary_sensor.nodestate_led_corridor
-    - binary_sensor.nodestate_soil_garden
     - binary_sensor.nodestate_rain_garden
     - binary_sensor.nodestate_dht11_utilityroom
     - binary_sensor.nodestate_ws2812_x1c

@@ -32,12 +32,6 @@
         - sensor.DHT22_lounge_pressure
         - sensor.ds18b20_pool_temperature
         - sensor.ds18b20_pool_voltage
-        - sensor.soil_garden_temperature1
-        - sensor.soil_garden_temperature2
-        - sensor.soil_garden_temperature3
-        - sensor.soil_garden_moisture1
-        - sensor.soil_garden_moisture2
-        - sensor.soil_garden_moisture3
         - sensor.rain_garden_precipitation
         - sensor.goldfruchtpalme_flowercare_battery
         - sensor.goldfruchtpalme_flowercare_moisture
@@ -165,6 +159,12 @@
         - input_number.wastewater_price
         - sensor.water_quarterhourly
         - sensor.wallbox_quarterhourly
+        - sensor.gemusebeet_soil_humidity
+        - sensor.gemusebeet_soil_temperature
+        - sensor.hochbeet_hinten_soil_humidity
+        - sensor.hochbeet_hinten_soil_temperature
+        - sensor.hochbeet_vorne_soil_humidity
+        - sensor.hochbeet_vorne_soil_temperature
   ignore_attributes:
     - friendly_name
     - icon

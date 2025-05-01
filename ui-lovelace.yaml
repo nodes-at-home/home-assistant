@@ -294,105 +294,6 @@ views:
                 use_media_info: true
               - type: markdown
                 content: " "
-          # - type: horizontal-stack
-          #   cards:
-          #    - type: custom:state-switch
-          #      entity: >
-          #        {% set cam = 'galerie' %}
-          #        {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
-          #      states:
-          #        "stream":
-          #          type: picture-entity
-          #          entity: camera.galerie
-          #          double_tap_action:
-          #            action: url
-          #            url_path: http://esp32-cam-1
-          #        "off":
-          #          type: button
-          #          name: Galerie
-          #          icon: mdi:camera-off-outline
-          #          tap_action:
-          #            action: none
-          #          hold_action:
-          #            action: none
-          #          double_tap_action:
-          #            action: none
-          #          more_info:
-          #            action: none
-          #    - type: custom:state-switch
-          #      entity: >
-          #        {% set cam = 'esszimmer' %}
-          #        {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
-          #      states:
-          #        "stream":
-          #          type: picture-entity
-          #          entity: camera.esszimmer
-          #          double_tap_action:
-          #            action: url
-          #            url_path: http://esp32-cam-2
-          #        "off":
-          #          type: button
-          #          name: Esszimmer
-          #          icon: mdi:camera-off-outline
-          #          tap_action:
-          #            action: none
-          #          hold_action:
-          #            action: none
-          #          double_tap_action:
-          #            action: none
-          #          more_info:
-          #            action: none
-          #    - type: custom:state-switch
-          #      entity: >
-          #        {% set cam = 'hauswirtschaftsraum' %}
-          #        {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
-          #      states:
-          #        "stream":
-          #          type: picture-entity
-          #          entity: camera.hauswirtschaftsraum
-          #          double_tap_action:
-          #            action: url
-          #            url_path: http://esp32-cam-3
-          #          card_mod:
-          #            style: |
-          #              hui-image{
-          #                transform: rotate(-90deg);
-          #              }
-          #        "off":
-          #          type: button
-          #          name: Hauswirtschaftsraum
-          #          icon: mdi:camera-off-outline
-          #          tap_action:
-          #            action: none
-          #          hold_action:
-          #            action: none
-          #          double_tap_action:
-          #            action: none
-          #          more_info:
-          #            action: none
-          #    - type: custom:state-switch
-          #      entity: >
-          #        {% set cam = 'garage' %}
-          #        {% if is_state ( 'binary_sensor.prod_mode', 'on' ) and states ( 'camera.' + cam ) != 'unavailable' and states ( 'camera.' + cam ) !='unknown' %} stream {% else %} off {% endif %}
-          #      states:
-          #        "stream":
-          #          type: picture-entity
-          #          entity: camera.garage
-          #          double_tap_action:
-          #            action: url
-          #            url_path: http://esp32-cam-4
-          #        "off":
-          #          type: button
-          #          name: Garage
-          #          icon: mdi:camera-off-outline
-          #          tap_action:
-          #            action: none
-          #          hold_action:
-          #            action: none
-          #          double_tap_action:
-          #            action: none
-          #          more_info:
-          #            action: none
 
       - type: vertical-stack
         cards:
@@ -475,13 +376,13 @@ views:
                 hold_action:
                     action: more-info
               - type: entity-button
-                entity: switch.relay_garden_valve1
+                entity: switch.relay_garden_valve3
                 icon: mdi:watering-can
               - type: entity-button
                 entity: switch.relay_garden_valve2
                 icon: mdi:watering-can
               - type: entity-button
-                entity: switch.relay_garden_valve3
+                entity: switch.relay_garden_valve1
                 icon: mdi:watering-can
           - type: horizontal-stack
             cards:
@@ -1192,12 +1093,12 @@ views:
                 style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
-                - sensor.soil_garden_temperature1
-                - sensor.soil_garden_temperature2
-                - sensor.soil_garden_temperature3
-                - sensor.soil_garden_moisture1
-                - sensor.soil_garden_moisture2
-                - sensor.soil_garden_moisture3
+                - sensor.gemusebeet_soil_humidity
+                - sensor.gemusebeet_soil_temperature
+                - sensor.hochbeet_vorne_soil_humidity
+                - sensor.hochbeet_vorne_soil_temperature
+                - sensor.hochbeet_hinten_soil_humidity
+                - sensor.hochbeet_hinten_soil_temperature
           - type: conditional
             conditions:
               - entity: lawn_mower.sileno

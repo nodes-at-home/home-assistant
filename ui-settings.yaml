@@ -251,25 +251,6 @@ views:
       - type: vertical-stack
         cards:
           - type: entities
-            title: Bodenfeuchte
-            show_header_toggle: false
-            entities:
-                - input_number.soil_moisture1_min_voltage
-                - input_number.soil_moisture1_max_voltage
-                - input_number.soil_moisture2_min_voltage
-                - input_number.soil_moisture2_max_voltage
-                - input_number.soil_moisture3_min_voltage
-                - input_number.soil_moisture3_max_voltage
-          - type: markdown
-            title: Hinweise
-            content: >
-                ### Bodenfeuchte
-
-                Die Sensoren wurden am 16.07.2023 erneuert. Wenn ein Sensor nicht angeschlossen ist, werden ca. 550mV gemessen und gesendet. Es ergeben sich dann vermeintliche 100% Bodenfeuchte.
-
-      - type: vertical-stack
-        cards:
-          - type: entities
             title: Pool
             show_header_toggle: false
             entities:
