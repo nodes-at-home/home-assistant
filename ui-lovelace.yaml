@@ -107,8 +107,13 @@ views:
         color: "{{ iif ( is_state ( entity, 'Online' ), 'limegreen', 'red' ) }}"
         tap_action:
             action: more-info
-      #- entity: binary_sensor.gardena_smart_system_connection
-      #  display_type: complete
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.gardena_smart_system_connection
+        content: Gardena
+        icon: mdi:flower
+        color: "{{ iif ( is_state ( entity, 'on' ), 'limegreen', 'red' ) }}"
+        tap_action:
+            action: more-info
       - type: custom:mushroom-template-badge
         entity: sensor.cpu_temp
         content: "{{ states ( 'sensor.cpu_temp', with_unit = true ) }}"
@@ -1195,7 +1200,7 @@ views:
                 - sensor.soil_garden_moisture3
           - type: conditional
             conditions:
-              - entity: vacuum.sileno
+              - entity: lawn_mower.sileno
                 state_not: unavailable
             card:
                 type: vertical-stack
@@ -1208,7 +1213,7 @@ views:
                     elements:
                       # central
                       - type: state-label
-                        entity: vacuum.sileno
+                        entity: lawn_mower.sileno
                         tap_action:
                           action: more-info
                         style:
@@ -1223,7 +1228,7 @@ views:
                          border-radius: 6px
                          background-color: '#cccccc'
                       - type: state-label
-                        entity: vacuum.sileno
+                        entity: lawn_mower.sileno
                         attribute: operating_hours
                         prefix: "Zeit: "
                         suffix: " h"
@@ -1238,7 +1243,7 @@ views:
                           font-weight: bold
                       # left
                       - type: state-label
-                        entity: sensor.vacuum_operation
+                        entity: sensor.mower_operation
                         style:
                          top: 10%
                          left: 1%
@@ -1252,7 +1257,7 @@ views:
                          background-color: '#3090C7'
                          border-radius: 6px
                       - type: state-label
-                        entity: vacuum.sileno
+                        entity: lawn_mower.sileno
                         attribute: activity
                         prefix: "Status: "
                         style:
@@ -1281,7 +1286,7 @@ views:
                           border-left-style: solid
                           border-color: rgb(34, 154, 210)
                       - type: state-label
-                        entity: vacuum.sileno
+                        entity: lawn_mower.sileno
                         attribute: error
                         prefix: "Fehler: "
                         style:
@@ -1296,7 +1301,7 @@ views:
                           border-left-style: solid
                           border-color: rgb(34, 154, 210)
                       - type: state-label
-                        entity: vacuum.sileno
+                        entity: lawn_mower.sileno
                         attribute: last_error
                         prefix: "Meldung: "
                         style:
@@ -1315,9 +1320,9 @@ views:
                         icon: mdi:play
                         tap_action:
                           action: call-service
-                          service: vacuum.start
+                          service: lawn_mower.start_mowing
                           service_data:
-                              entity_id: vacuum.sileno
+                              entity_id: lawn_mower.sileno
                         style:
                          top: 90%
                          left: 35%
@@ -1326,9 +1331,9 @@ views:
                         icon: mdi:stop
                         tap_action:
                           action: call-service
-                          service: vacuum.stop
+                          service: lawn_mower.pause
                           service_data:
-                              entity_id: vacuum.sileno
+                              entity_id: lawn_mower.sileno
                         style:
                          top: 90%
                          left: 50%
@@ -1337,16 +1342,16 @@ views:
                         icon: mdi:home
                         tap_action:
                           action: call-service
-                          service: vacuum.return_to_base
+                          service: lawn_mower.dock
                           service_data:
-                              entity_id: vacuum.sileno
+                              entity_id: lawn_mower.sileno
                         style:
                          top: 90%
                          left: 65%
                          color: '#3090C7'
                       # right
                       - type: state-label
-                        entity: vacuum.sileno
+                        entity: lawn_mower.sileno
                         attribute: rf_link_state
                         #prefix: "Netzwerk: "
                         style:
@@ -1362,7 +1367,7 @@ views:
                          background-color: '#3090C7'
                          border-radius: 6px
                       - type: state-label
-                        entity: vacuum.sileno
+                        entity: lawn_mower.sileno
                         attribute: rf_link_level
                         prefix: "Level: "
                         style:

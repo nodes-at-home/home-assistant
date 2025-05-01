@@ -4,7 +4,7 @@
 
   - platform: template
     sensors:
-      vacuum_operation:
+      mower_operation:
         value_template: 'Betrieb'
-      vacuum_accessories:
+      mower_accessories:
         value_template: 'Wartung'

@@ -4,10 +4,10 @@
 
   - alias: mower_start
     id: mower_start
-    trigger:
-      - platform: time
+    triggers:
+      - trigger: time
         at: input_datetime.mowing_start
-    condition:
+    conditions:
         # check stage
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -28,15 +28,23 @@
                day == 5 and states ( 'input_boolean.mowing_at_saturday' )  == 'on' or
                day == 6 and states ( 'input_boolean.mowing_at_sunday' )    == 'on'
             }}
-    action:
-      - service: vacuum.start
-        entity_id: vacuum.sileno
+    actions:
+      - action: gardena_smart_system.start_override
+        target:
+            entity_id: lawn_mower.sileno
+        data:
+            duration: "{{ ( as_timestamp ( today_at ( states ( 'input_datetime.mowing_end' ) ) ) - as_timestamp ( today_at ( states ( 'input_datetime.mowing_start' ) ) ) ) | int }}"
 
   - alias: mower_end
     id: mower_end
-    trigger:
-      - platform: time
+    triggers:
+      - trigger: time
         at: input_datetime.mowing_end
+    conditions:
+        # check stage
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     action:
-      - service: vacuum.stop
-        entity_id: vacuum.sileno
+      - service: lawn_mower.pause
+        entity_id: lawn_mower.sileno
