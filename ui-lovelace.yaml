@@ -387,11 +387,22 @@ views:
           - type: horizontal-stack
             cards:
               - type: entity-button
-                entity: switch.poolpumpe
-                icon: mdi:pump
+                entity: switch.relay_garden2_valve1
+                icon: mdi:watering-can
+              # - type: entity-button
+              #   entity: switch.relay_garden2_valve2
+              #   icon: mdi:watering-can
+              - type: entity-button
+                entity: switch.relay_garden2_valve3
+                icon: mdi:watering-can
               - type: entity-button
                 entity: switch.relay_hydrotower_pump
                 icon: mdi:pump
+              - type: entity-button
+                entity: switch.poolpumpe
+                icon: mdi:pump
+          - type: horizontal-stack
+            cards:
               - type: entity-button
                 entity: switch.bosch_ladestation
                 icon: mdi:power-plug-battery
@@ -399,6 +410,10 @@ views:
                     action: toggle
                 hold_action:
                     action: more-info
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
               - type: markdown
                 content: " "
 
@@ -1077,6 +1092,9 @@ views:
                 - switch.relay_garden_valve1
                 - switch.relay_garden_valve2
                 - switch.relay_garden_valve3
+                - switch.relay_garden2_valve1
+                - switch.relay_garden2_valve2
+                - switch.relay_garden2_valve3
                 - entity: switch.wasserpumpe
                   icon: mdi:water-pump
           - type: glance

@@ -255,6 +255,13 @@
     force_update: true
     off_delay: 1200
 
+  - name: "nodestate_relay@garden2"
+    state_topic: nodes@home/switch/relay/garden2/value/voltage
+    qos: 0
+    value_template: "ON"
+    force_update: true
+    off_delay: 1200
+
   - name: "nodestate_ws2812@terrace1"
     state_topic: nodes@home/light/ws2812/terrace1/value/voltage
     qos: 0

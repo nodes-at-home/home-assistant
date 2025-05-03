@@ -19,3 +19,21 @@
     state_topic: nodes@home/switch/relay/garden/valve3/state
     optimistic: false
     retain: true
+
+  - name: "relay@garden2_valve1"
+    command_topic: nodes@home/switch/relay/garden2/valve1
+    state_topic: nodes@home/switch/relay/garden2/valve1/state
+    optimistic: false
+    retain: true
+
+  - name: "relay@garden2_valve2"
+    command_topic: nodes@home/switch/relay/garden2/valve2
+    state_topic: nodes@home/switch/relay/garden2/valve2/state
+    optimistic: false
+    retain: true
+
+  - name: "relay@garden2_valve3"
+    command_topic: nodes@home/switch/relay/garden2/valve3
+    state_topic: nodes@home/switch/relay/garden2/valve3/state
+    optimistic: false
+    retain: true

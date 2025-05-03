@@ -22,3 +22,24 @@
     name: "relay@garden_lastvoltage"
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/switch/relay/garden2
+    name: "relay@garden2_version"
+    qos: 0
+    value_template: '{{ value }}'
+
+  - state_topic: nodes@home/switch/relay/garden2
+    name: "relay@garden2_lastboot"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/switch/relay/garden2/value/voltage
+    name: "relay@garden2_voltage"
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - state_topic: nodes@home/switch/relay/garden2/value/voltage
+    name: "relay@garden2_lastvoltage"
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

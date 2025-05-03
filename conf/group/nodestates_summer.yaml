@@ -10,6 +10,7 @@ entities:
     #- binary_sensor.nodestate_ds18b20_brewery
     #- binary_sensor.nodestate_spindle_fermenter
     - binary_sensor.nodestate_relay_garden
+    - binary_sensor.nodestate_relay_garden2
     #- binary_sensor.nodestate_ws2812_terrace1
     #- binary_sensor.nodestate_ws2812_terrace2
     - binary_sensor.nodestate_relay_hydrotower

@@ -861,6 +861,35 @@ sensor.relay_garden_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
+switch.relay_garden2_valve1:
+    friendly_name: Gemüsebeet
+    icon: mdi:watering-can
+
+switch.relay_garden2_valve2:
+    friendly_name: nicht belegt
+    icon: mdi:watering-can
+
+switch.relay_garden2_valve3:
+    friendly_name: Rasen
+    icon: mdi:watering-can
+
+sensor.relay_garden2_voltage:
+    friendly_name: 'Bewässerung Garten'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relay_garden2_lastvoltage:
+    friendly_name: 'Bewässerung Garten'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relay_garden2_lastboot:
+    friendly_name: 'Bewässerung Garten'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.relay_garden2_version:
+    friendly_name: 'Bewässerung Garten'
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
 sensor.rain_garden_precipitation:
     friendly_name: Regen aktuell
     icon: mdi:weather-rainy
