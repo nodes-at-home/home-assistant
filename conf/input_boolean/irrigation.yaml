@@ -58,3 +58,60 @@ irrigation_valve3_at_saturday:
     name: Bewässerung Rosengarten samstags
 irrigation_valve3_at_sunday:
     name: Bewässerung Rosengarten sonntags
+
+irrigation_scheduled_valve4:
+    name: Bewässerung Rosengarten geplant
+    # initial: 'off'
+
+irrigation_valve4_at_monday:
+    name: Bewässerung Gemüsebeet montags
+irrigation_valve4_at_tuesday:
+    name: Bewässerung Gemüsebeet dienstags
+irrigation_valve4_at_wednesday:
+    name: Bewässerung Gemüsebeet mittwochs
+irrigation_valve4_at_thursday:
+    name: Bewässerung Gemüsebeet donnerstags
+irrigation_valve4_at_friday:
+    name: Bewässerung Gemüsebeet freitags
+irrigation_valve4_at_saturday:
+    name: Bewässerung Gemüsebeet samstags
+irrigation_valve4_at_sunday:
+    name: Bewässerung Gemüsebeet sonntags
+
+irrigation_scheduled_valve5:
+    name: Bewässerung Rosengarten geplant
+    # initial: 'off'
+
+irrigation_valve5_at_monday:
+    name: Bewässerung <undefined> montags
+irrigation_valve5_at_tuesday:
+    name: Bewässerung <undefined> dienstags
+irrigation_valve5_at_wednesday:
+    name: Bewässerung <undefined> mittwochs
+irrigation_valve5_at_thursday:
+    name: Bewässerung <undefined> donnerstags
+irrigation_valve5_at_friday:
+    name: Bewässerung <undefined> freitags
+irrigation_valve5_at_saturday:
+    name: Bewässerung <undefined> samstags
+irrigation_valve5_at_sunday:
+    name: Bewässerung <undefined> sonntags
+
+irrigation_scheduled_valve6:
+    name: Bewässerung Rosengarten geplant
+    # initial: 'off'
+
+irrigation_valve6_at_monday:
+    name: Bewässerung Rasen montags
+irrigation_valve6_at_tuesday:
+    name: Bewässerung Rasen dienstags
+irrigation_valve6_at_wednesday:
+    name: Bewässerung Rasen mittwochs
+irrigation_valve6_at_thursday:
+    name: Bewässerung Rasen donnerstags
+irrigation_valve6_at_friday:
+    name: Bewässerung Rasen freitags
+irrigation_valve6_at_saturday:
+    name: Bewässerung Rasen samstags
+irrigation_valve6_at_sunday:
+    name: Bewässerung Rasen sonntags
