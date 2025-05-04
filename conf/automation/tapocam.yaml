@@ -96,7 +96,7 @@
         entity_id: group.family
         to: 'not_home'
         variables:
-            mode: "on"
+            mode: "{{ input_boolean.tapocam_notifications }}"
     conditions:
       - condition: state
         alias: process only on production server

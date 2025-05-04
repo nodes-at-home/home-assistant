@@ -304,6 +304,11 @@ views:
                   name: Sa
                 - entity: input_boolean.mowing_at_sunday
                   name: So
+      - type: entities
+        title: Kamera
+        show_header_toggle: false
+        entities:
+            - input_boolean.tapocam_notifications
       - type: vertical-stack
         cards:
           - type: entities
