@@ -131,25 +131,29 @@ views:
             - input_number.waterpump_emergency_stop_power_threshold
             - type: section
               label: Regen
-            - entity: sensor.openweathermap_forecast_precipitation
-              name: Vorhersage
-            - entity: sensor.openweathermap_forecast_precipitation_probability
-              name: Wahrscheinichkeit
+            - sensor.openweathermap_forecast_precipitation
+            - sensor.openweathermap_forecast_precipitation_probability
             - entity: sensor.rain_garden_precipitation_last7d
               name: letzte 7 Tage
-            - type: section
-              label: Parameter
             - entity: sensor.precipitation_7d_plus_forecast
-              name: Erwartungswert Regen zzgl. 7d
+              name: letzte 7 Tage zzgl. Erwartungswert
             - input_number.irrigation_precipitation_threshold
-            - input_number.irrigation_temperature_threshold
-            - input_number.irrigation_duration
+            - type: section
+              label: Bewässerungsdauer
+            - sensor.dht22_terrace_temperature_max
+            - input_number.irrigation_temperature_threshold_low
+            - input_number.irrigation_temperature_threshold_high
+            - input_number.irrigation_temperature_threshold_hot
+            - input_number.irrigation_duration_uplift_high
+            - input_number.irrigation_duration_uplift_hot
             - type: section
               label: Hecke
             - entity: input_boolean.irrigation_scheduled_valve1
               name: Bewässerung geplant
             - entity: input_datetime.irrigation_start_1
               name: Startzeit
+            - input_number.irrigation_duration_valve1
+            - sensor.irrigation_duration_effective_valve1
             - type: buttons
               entities:
                 - entity: input_boolean.irrigation_valve1_at_monday
@@ -172,6 +176,8 @@ views:
               name: Bewässerung geplant
             - entity: input_datetime.irrigation_start_2
               name: Startzeit
+            - input_number.irrigation_duration_valve2
+            - sensor.irrigation_duration_effective_valve2
             - type: buttons
               entities:
                 - entity: input_boolean.irrigation_valve2_at_monday
@@ -194,6 +200,8 @@ views:
               name: Bewässerung geplant
             - entity: input_datetime.irrigation_start_3
               name: Startzeit
+            - input_number.irrigation_duration_valve3
+            - sensor.irrigation_duration_effective_valve3
             - type: buttons
               entities:
                 - entity: input_boolean.irrigation_valve3_at_monday
@@ -216,6 +224,8 @@ views:
               name: Bewässerung geplant
             - entity: input_datetime.irrigation_start_4
               name: Startzeit
+            - input_number.irrigation_duration_valve4
+            - sensor.irrigation_duration_effective_valve4
             - type: buttons
               entities:
                 - entity: input_boolean.irrigation_valve4_at_monday
@@ -238,6 +248,8 @@ views:
               name: Bewässerung geplant
             - entity: input_datetime.irrigation_start_6
               name: Startzeit
+            - input_number.irrigation_duration_valve6
+            - sensor.irrigation_duration_effective_valve6
             - type: buttons
               entities:
                 - entity: input_boolean.irrigation_valve6_at_monday

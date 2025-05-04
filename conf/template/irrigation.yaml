@@ -13,3 +13,111 @@
                 {% set probability = states ( 'sensor.openweathermap_forecast_precipitation_probability' ) | float / 100 %}
                 {% set rain = states ( 'sensor.rain_garden_precipitation_last7d' ) | float %}
                 {{ ( forecast * probability + rain ) | round ( 1 ) }}
+
+      - name: irrigation_duration_effective_valve1
+        unit_of_measurement: min
+        icon: mdi:timelapse
+        state: >
+            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+            {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+            {% set duration = states ( 'input_number.irrigation_duration_valve1' ) | float %}
+            {% set duration_uplift_high = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_high' ) | float / 100 ) %}
+            {% set duration_uplift_hot = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_hot' ) | float / 100 ) %}
+            {% if temp_max < temp_high %}
+                {{ duration | int }}
+            {% elif temp_max < temp_hot %}
+                {{ duration_uplift_high | int }}
+            {% else %}
+                {{ duration_uplift_hot | int }}
+            {% endif %}
+
+      - name: irrigation_duration_effective_valve2
+        unit_of_measurement: min
+        icon: mdi:timelapse
+        state: >
+            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+            {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+            {% set duration = states ( 'input_number.irrigation_duration_valve2' ) | float %}
+            {% set duration_uplift_high = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_high' ) | float / 100 ) %}
+            {% set duration_uplift_hot = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_hot' ) | float / 100 ) %}
+            {% if temp_max < temp_high %}
+                {{ duration | int }}
+            {% elif temp_max < temp_hot %}
+                {{ duration_uplift_high | int }}
+            {% else %}
+                {{ duration_uplift_hot | int }}
+            {% endif %}
+
+      - name: irrigation_duration_effective_valve3
+        unit_of_measurement: min
+        icon: mdi:timelapse
+        state: >
+            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+            {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+            {% set duration = states ( 'input_number.irrigation_duration_valve3' ) | float %}
+            {% set duration_uplift_high = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_high' ) | float / 100 ) %}
+            {% set duration_uplift_hot = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_hot' ) | float / 100 ) %}
+            {% if temp_max < temp_high %}
+                {{ duration | int }}
+            {% elif temp_max < temp_hot %}
+                {{ duration_uplift_high | int }}
+            {% else %}
+                {{ duration_uplift_hot | int }}
+            {% endif %}
+
+      - name: irrigation_duration_effective_valve4
+        unit_of_measurement: min
+        icon: mdi:timelapse
+        state: >
+            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+            {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+            {% set duration = states ( 'input_number.irrigation_duration_valve4' ) | float %}
+            {% set duration_uplift_high = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_high' ) | float / 100 ) %}
+            {% set duration_uplift_hot = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_hot' ) | float / 100 ) %}
+            {% if temp_max < temp_high %}
+                {{ duration | int }}
+            {% elif temp_max < temp_hot %}
+                {{ duration_uplift_high | int }}
+            {% else %}
+                {{ duration_uplift_hot | int }}
+            {% endif %}
+
+      - name: irrigation_duration_effective_valve5
+        unit_of_measurement: min
+        icon: mdi:timelapse
+        state: >
+            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+            {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+            {% set duration = states ( 'input_number.irrigation_duration_valve5' ) | float %}
+            {% set duration_uplift_high = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_high' ) | float / 100 ) %}
+            {% set duration_uplift_hot = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_hot' ) | float / 100 ) %}
+            {% if temp_max < temp_high %}
+                {{ duration | int }}
+            {% elif temp_max < temp_hot %}
+                {{ duration_uplift_high | int }}
+            {% else %}
+                {{ duration_uplift_hot | int }}
+            {% endif %}
+
+      - name: irrigation_duration_effective_valve6
+        unit_of_measurement: min
+        icon: mdi:timelapse
+        state: >
+            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+            {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+            {% set duration = states ( 'input_number.irrigation_duration_valve6' ) | float %}
+            {% set duration_uplift_high = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_high' ) | float / 100 ) %}
+            {% set duration_uplift_hot = duration * ( 1 + states ( 'input_number.irrigation_duration_uplift_hot' ) | float / 100 ) %}
+            {% if temp_max < temp_high %}
+                {{ duration | int }}
+            {% elif temp_max < temp_hot %}
+                {{ duration_uplift_high | int }}
+            {% else %}
+                {{ duration_uplift_hot | int }}
+            {% endif %}

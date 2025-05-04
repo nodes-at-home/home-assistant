@@ -63,7 +63,7 @@
         entity_id: switch.relay_garden_valve1
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
+            minutes: "{{ states ( 'input_number.irrigation_duration_valve1' ) | int }}"
     actions:
       - action: switch.turn_off
         entity_id: switch.relay_garden_valve1
@@ -75,7 +75,7 @@
         entity_id: switch.relay_garden_valve2
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
+            minutes: "{{ states ( 'input_number.irrigation_duration_valve2' ) | int }}"
     actions:
       - action: switch.turn_off
         entity_id: switch.relay_garden_valve2
@@ -87,7 +87,7 @@
         entity_id: switch.relay_garden_valve3
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
+            minutes: "{{ states ( 'input_number.irrigation_duration_valve3' ) | int }}"
     actions:
       - action: switch.turn_off
         entity_id: switch.relay_garden_valve3
@@ -99,7 +99,7 @@
         entity_id: switch.relay_garden2_valve1
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
+            minutes: "{{ states ( 'input_number.irrigation_duration_valve4' ) | int }}"
     actions:
       - action: switch.turn_off
         entity_id: switch.relay_garden2_valve1
@@ -111,7 +111,7 @@
         entity_id: switch.relay_garden2_valve2
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
+            minutes: "{{ states ( 'input_number.irrigation_duration_valve5' ) | int }}"
     actions:
       - action: switch.turn_off
         entity_id: switch.relay_garden_valve3
@@ -123,7 +123,7 @@
         entity_id: switch.relay_garden2_valve3
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration' ) | int }}"
+            minutes: "{{ states ( 'input_number.irrigation_duration_valve6' ) | int }}"
     actions:
       - action: switch.turn_off
         entity_id: switch.relay_garden2_valve3
@@ -320,7 +320,9 @@
             mode: >
                 {% set val = states ( 'sensor.precipitation_7d_plus_forecast' ) | float %}
                 {% set thr = states ( 'input_number.irrigation_precipitation_threshold' ) | float %}
-                {% if val < thr %}
+                {% set t_max = states ( 'sensor.dht22_terrace_temperature_max' ) | float %}
+                {% set t_thr_low = states ( 'input_number.irrigation_temperature_threshold_low' ) | float %}
+                {% if val < thr and t_max >= t_thr_low %}
                     on
                 {% else %}
                     off
@@ -332,26 +334,86 @@
                 target:
                     entity_id: "input_boolean.irrigation_scheduled_valve{{ repeat.index }}"
 
-  - alias: irrigation_set_duration
-    id: irrigation_set_duration
+  - alias: irrigation_set_temperature_thresholds_by_low
+    id: irrigation_set_temperature_thresholds_by_low
+    mode: single
+    max_exceeded: silent
     triggers:
-      - trigger: time
-        at: '23:57:00'
-    condition:
-        # check manual flag
-      - condition: state
-        entity_id: input_boolean.irrigation_activated
-        state: 'on'
+      - trigger: state
+        entity_id: input_number.irrigation_temperature_threshold_low
     actions:
+      - variables:
+            temp_high_new: >
+                {% set temp_low = states ( 'input_number.irrigation_temperature_threshold_low' ) | int %}
+                {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+                {{ max ( [temp_low, temp_high] ) }}
+            temp_hot_new: >
+                {% set temp_low = states ( 'input_number.irrigation_temperature_threshold_low' ) | int %}
+                {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+                {{ max ( [temp_low, temp_hot] ) }}
       - action: input_number.set_value
         target:
-            entity_id: input_number.irrigation_duration
+            entity_id: input_number.irrigation_temperature_threshold_high
         data:
-            value: >
-                {% if states ( 'sensor.dht22_terrace_temperature_max' ) | float < 25 %}
-                    {{ 60 }}
-                {% elif states ( 'sensor.dht22_terrace_temperature_max' ) | float < 30 %}
-                    {{ 90 }}
-                {% else %}
-                    {{ 120 }}
-                {% endif %}
+            value: "{{ temp_high_new }}"
+      - action: input_number.set_value
+        target:
+            entity_id: input_number.irrigation_temperature_threshold_hot
+        data:
+            value: "{{ temp_hot_new }}"
+
+  - alias: irrigation_set_temperature_thresholds_by_high
+    id: irrigation_set_temperature_thresholds_by_high
+    mode: single
+    max_exceeded: silent
+    triggers:
+      - trigger: state
+        entity_id: input_number.irrigation_temperature_threshold_high
+    actions:
+      - variables:
+            temp_low_new: >
+                {% set temp_low = states ( 'input_number.irrigation_temperature_threshold_low' ) | int %}
+                {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+                {{ min ( [temp_low, temp_high] ) }}
+            temp_hot_new: >
+                {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+                {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+                {{ max ( [temp_high, temp_hot] ) }}
+      - action: input_number.set_value
+        target:
+            entity_id: input_number.irrigation_temperature_threshold_low
+        data:
+            value: "{{ temp_low_new }}"
+      - action: input_number.set_value
+        target:
+            entity_id: input_number.irrigation_temperature_threshold_hot
+        data:
+            value: "{{ temp_hot_new }}"
+
+  - alias: irrigation_set_temperature_thresholds_by_hot
+    id: irrigation_set_temperature_thresholds_by_hot
+    mode: single
+    max_exceeded: silent
+    triggers:
+      - trigger: state
+        entity_id: input_number.irrigation_temperature_threshold_hot
+    actions:
+      - variables:
+            temp_low_new: >
+                {% set temp_low = states ( 'input_number.irrigation_temperature_threshold_low' ) | int %}
+                {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+                {{ min ( [temp_low, temp_hot] ) }}
+            temp_high_new: >
+                {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
+                {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
+                {{ min ( [temp_high, temp_hot] ) }}
+      - action: input_number.set_value
+        target:
+            entity_id: input_number.irrigation_temperature_threshold_low
+        data:
+            value: "{{ temp_low_new }}"
+      - action: input_number.set_value
+        target:
+            entity_id: input_number.irrigation_temperature_threshold_high
+        data:
+            value: "{{ temp_high_new }}"

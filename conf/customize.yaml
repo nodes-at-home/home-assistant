@@ -1583,3 +1583,32 @@ sensor.hochbeet_hinten_soil_temperature:
     friendly_name: Hochbeet hinten
 
 #------------------------------------------------------------------------------
+sensor.openweathermap_forecast_precipitation:
+    friendly_name: Vorhersage
+
+sensor.openweathermap_forecast_precipitation_probability:
+    friendly_name: Wahrscheinichkeit
+    icon: mdi:percent-circle-outline
+    unit_of_measurement: '%'
+
+#------------------------------------------------------------------------------
+sensor.irrigation_duration_effective_valve1:
+    friendly_name: effektive Bewässeriungsdauer
+
+sensor.irrigation_duration_effective_valve2:
+    friendly_name: effektive Bewässeriungsdauer
+
+sensor.irrigation_duration_effective_valve3:
+    friendly_name: effektive Bewässeriungsdauer
+
+sensor.irrigation_duration_effective_valve4:
+    friendly_name: effektive Bewässeriungsdauer
+
+sensor.irrigation_duration_effective_valve5:
+    friendly_name: effektive Bewässeriungsdauer
+
+sensor.irrigation_duration_effective_valve6:
+    friendly_name: effektive Bewässeriungsdauer
+
+
+#------------------------------------------------------------------------------
