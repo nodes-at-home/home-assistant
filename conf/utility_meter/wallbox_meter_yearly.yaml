@@ -2,6 +2,6 @@
 ### 23.02.2025
 ###
 
-source: sensor.go_echarger_energy_total
+source: sensor.wallbox_energy_total
 cycle: yearly
 delta_values: false

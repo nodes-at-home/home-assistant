@@ -98,6 +98,7 @@
     sensor:
       - name: wallbox_power
         unit_of_measurement: W
+        device_class: energy
         state: >
             {% set val = states ( 'sensor.go_echarger_power_total' ) | float | round ( 0 ) %}
             {% set lastval = state_attr ( 'sensor.wallbox_power', 'lastvalue' ) | float ( 0 ) | round ( 0 ) %}
@@ -113,6 +114,32 @@
                 {% set lastval = state_attr ( 'sensor.wallbox_power', 'lastvalue' ) | float ( 0 ) | round ( 0 ) %}
                 {% set max = states ( 'input_number.wallbox_threshold_power' ) | float | round ( 0 ) %}
                 {% if val < 0 or val > max %}
+                    {{ lastval }}
+                {% else %}
+                    {{ val }}
+                {% endif %}
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.go_echarger_energy_total
+    sensor:
+      - name: wallbox_energy_total
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        state: >
+            {% set val = states ( 'sensor.go_echarger_energy_total' ) | float | round ( 1 ) %}
+            {% set lastval = state_attr ( 'sensor.wallbox_energy_total', 'lastvalue' ) | float ( 0 ) | round ( 1 ) %}
+            {% if val < lastval %}
+                {{ lastval }}
+            {% else %}
+                {{ val }}
+            {% endif %}
+        attributes:
+            lastvalue: >
+                {% set val = states ( 'sensor.go_echarger_energy_total' ) | float | round ( 1 ) %}
+                {% set lastval = state_attr ( 'sensor.wallbox_energy_total', 'lastvalue' ) | float ( 0 ) | round ( 1 ) %}
+                {% if val < lastval %}
                     {{ lastval }}
                 {% else %}
                     {{ val }}
