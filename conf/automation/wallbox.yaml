@@ -32,6 +32,10 @@
     triggers:
       - trigger: state
         entity_id: input_boolean.wallbox_allow_charging
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
@@ -59,6 +63,10 @@
     triggers:
       - trigger: state
         entity_id: input_select.wallbox_access_state
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
@@ -86,6 +94,10 @@
     triggers:
       - trigger: state
         entity_id: input_select.wallbox_cable_lock_mode
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
@@ -113,6 +125,10 @@
     triggers:
       - trigger: state
         entity_id: input_number.wallbox_led_brightness
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
@@ -140,6 +156,10 @@
     triggers:
       - trigger: state
         entity_id: input_boolean.wallbox_led_save_energy
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
@@ -167,6 +187,10 @@
     triggers:
       - trigger: state
         entity_id: input_number.wallbox_max_current
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
@@ -194,6 +218,10 @@
     triggers:
       - trigger: state
         entity_id: input_number.wallbox_current_volatile
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
@@ -221,6 +249,10 @@
     triggers:
       - trigger: state
         entity_id: input_number.wallbox_current_eeprom
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
@@ -248,6 +280,10 @@
     triggers:
       - trigger: state
         entity_id: input_select.wallbox_phase_switch_mode
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
@@ -275,6 +311,10 @@
     triggers:
       - trigger: state
         entity_id: input_boolean.wallbox_cloud_disabled
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: modbus.write_register
         data_template:
