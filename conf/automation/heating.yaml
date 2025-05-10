@@ -140,3 +140,195 @@
                         entity_id: "climate.room_climate_{{ repeat.item }}"
                     data:
                         temperature: "{{ states ( 'input_number.heating_templevel_' + level ) }}"
+
+  - alias: circulating_pump_set_datetimes
+    id: circulating_pump_set_datetimes
+    trigger:
+      - platform: state
+        entity_id: input_datetime.standup_workday
+      - platform: state
+        entity_id: input_datetime.sleep
+      - platform: state
+        entity_id: input_datetime.standup_weekend
+      - platform: state
+        entity_id: input_number.circulating_pump_schedule_after_standup
+      - platform: state
+        entity_id: input_number.circulating_pump_schedule_before_sleeping
+      - platform: homeassistant
+        event: start
+      - platform: event
+        event_type:
+          - automation_reloaded
+    condition:
+    action:
+      - service: input_datetime.set_datetime
+        target:
+            entity_id: input_datetime.circulating_pump_scheduling_after_standup_workday
+        data:
+            time: "{{ states ( 'input_datetime.standup_workday' ) | as_timedelta + timedelta ( hours = states ( 'input_number.circulating_pump_schedule_after_standup' ) | int ) }}"
+      - service: input_datetime.set_datetime
+        target:
+            entity_id: input_datetime.circulating_pump_scheduling_after_standup_weekend
+        data:
+            time: "{{ states ( 'input_datetime.standup_weekend' ) | as_timedelta + timedelta ( hours = states ( 'input_number.circulating_pump_schedule_after_standup' ) | int ) }}"
+      - service: input_datetime.set_datetime
+        target:
+            entity_id: input_datetime.circulating_pump_scheduling_before_sleeping
+        data:
+            time: "{{ states ( 'input_datetime.sleep' ) | as_timedelta - timedelta ( hours = states ( 'input_number.circulating_pump_schedule_before_sleeping' ) | int ) }}"
+
+  - alias: circulating_pump_start_scheduling
+    id: circulating_pump_start_scheduling
+    trigger:
+      - platform: time
+        at: input_datetime.standup_workday
+      - platform: time
+        at: input_datetime.standup_weekend
+      - platform: state
+        entity_id: group.family
+        to: 'home'
+      - platform: time
+        at: input_datetime.circulating_pump_scheduling_before_sleeping
+    condition:
+      - condition: state
+        entity_id: group.family
+        state: 'home'
+      - condition: or
+        conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: 'on'
+              - condition: time
+                after: input_datetime.standup_workday
+                before: input_datetime.circulating_pump_scheduling_after_standup_workday
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: 'off'
+              - condition: time
+                after: input_datetime.standup_weekend
+                before: input_datetime.circulating_pump_scheduling_after_standup_weekend
+          - condition: time # every day
+            after: input_datetime.circulating_pump_scheduling_before_sleeping
+            before: input_datetime.sleep
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.circulating_pump_scheduled
+
+  - alias: circulating_pump_stop_scheduling
+    id: circulating_pump_stop_scheduling
+    trigger:
+      - platform: time
+        at: input_datetime.sleep
+      - platform: state
+        entity_id: group.family
+        to: 'not_home'
+      - platform: state
+        entity_id: remote.sony_kd_55ag9
+        from: "on"
+        to: "off"
+        for:
+            minutes: "{{ states ( 'input_number.tvoff_lightsoff_delay1' ) | int }}"
+    condition:
+      # no conditions
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.circulating_pump_scheduled
+
+  - alias: circulating_pump_stop_scheduling_after_standup_workday
+    id: circulating_pump_stop_scheduling_after_standup_workday
+    trigger:
+      - platform: time
+        at: input_datetime.circulating_pump_scheduling_after_standup_workday
+    condition:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.circulating_pump_scheduled
+
+  - alias: circulating_pump_stop_scheduling_after_standup_weekend
+    id: circulating_pump_stop_scheduling_after_standup_weekend
+    trigger:
+      - platform: time
+        at: input_datetime.circulating_pump_scheduling_after_standup_weekend
+    condition:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: 'off'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.circulating_pump_scheduled
+
+  - alias: circulating_pump_switching
+    id: circulating_pump_switching
+    trigger:
+      # check every minute
+      - platform: time_pattern
+        minutes: "/1"
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: template
+        value_template: >
+            {% set t = now () %}
+            {{ ( t.hour * 60 + t.minute ) % states ( 'input_number.circulating_pump_on_period' ) | int == 0 }}
+      - condition: state
+        entity_id: input_boolean.circulating_pump_activated
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.circulating_pump_scheduled
+        state: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id:
+            - switch.shelly_utilityroom_circulatingpump_switch_0
+      # pump switched on for n minutes
+      - delay:
+            minutes: "{{ states ( 'input_number.circulating_pump_on_duration' ) | int }}"
+      - service: switch.turn_off
+        entity_id:
+            - switch.shelly_utilityroom_circulatingpump_switch_0
+
+  - alias: circulating_pump_running_disinfection
+    id: circulating_pump_running_disinfection
+    trigger:
+      - platform: state
+        entity_id: input_number.circulating_pump_running_above_temp
+      - platform: state
+        entity_id: sensor.boiler_wwcurtemp
+      - platform: state
+        entity_id: switch.shelly_utilityroom_circulatingpump_switch_0
+      - platform: state
+        entity_id: input_boolean.circulating_pump_running_disinfection
+    condition:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    action:
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ states ( 'switch.shelly_utilityroom_circulatingpump_switch_0' ) == 'off' and states ( 'sensor.boiler_wwcurtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+            sequence:
+              - service: switch.turn_on
+                entity_id:
+                    - switch.shelly_utilityroom_circulatingpump_switch_0
+              - service: input_boolean.turn_on
+                entity_id:
+                    - input_boolean.circulating_pump_running_disinfection
+          - conditions:
+              - condition: template
+                value_template: "{{ states ( 'input_boolean.circulating_pump_running_disinfection' ) == 'on' and states ( 'sensor.boiler_wwcurtemp' ) | float < states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+            sequence:
+              - service: switch.turn_off
+                entity_id:
+                    - switch.shelly_utilityroom_circulatingpump_switch_0
+              - service: input_boolean.turn_off
+                entity_id:
+                    - input_boolean.circulating_pump_running_disinfection
