@@ -749,6 +749,39 @@ views:
           - sensor.go_echarger_phase_b_current
           - sensor.go_echarger_phase_c_current
 
+  - title: Garten
+    path: gardengraph
+    type: panel
+    cards:
+      - type: history-graph
+        hours_to_show: 168
+        entities:
+          - sensor.dht22_terrace_temperature
+          - sensor.dht22_roof_temperature
+          - sensor.relay_garage_temperature
+          - sensor.dht22_terrace_humidity
+          - sensor.dht22_roof_humidity
+          - sensor.relay_garage_humidity
+          - sensor.DHT22_lounge_pressure
+          - sensor.ds18b20_pool_temperature
+          - sensor.rain_garden_precipitation
+          - sensor.wasserampel_text
+          - entity: sensor.boiler_outdoortemp
+            name: Außen
+          - sensor.gemusebeet_soil_humidity
+          - sensor.gemusebeet_soil_temperature
+          - sensor.hochbeet_hinten_soil_humidity
+          - sensor.hochbeet_hinten_soil_temperature
+          - sensor.hochbeet_vorne_soil_humidity
+          - sensor.hochbeet_vorne_soil_temperature
+          - switch.relay_garden_valve1
+          - switch.relay_garden_valve2
+          - switch.relay_garden_valve3
+          - switch.relay_garden2_valve1
+          # - switch.relay_garden2_valve2
+          - switch.relay_garden2_valve3
+          - lawn_mower.sileno
+
   - title: MPPT
     path: mpptgraph
     type: panel
