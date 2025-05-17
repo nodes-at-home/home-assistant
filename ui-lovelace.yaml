@@ -1049,6 +1049,13 @@ views:
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.gardena_smart_system_connection
+        content: Gardena
+        icon: mdi:flower
+        color: "{{ iif ( is_state ( entity, 'on' ), 'limegreen', 'red' ) }}"
+        tap_action:
+            action: more-info
       - type: entity-filter
         entities:
           - entity: binary_sensor.garagentur
@@ -1117,6 +1124,8 @@ views:
                 - sensor.hochbeet_vorne_soil_temperature
                 - sensor.hochbeet_hinten_soil_humidity
                 - sensor.hochbeet_hinten_soil_temperature
+                - sensor.vorgarten_soil_humidity
+                - sensor.vorgarten_soil_temperature
           - type: conditional
             conditions:
               - entity: lawn_mower.sileno

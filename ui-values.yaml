@@ -774,6 +774,8 @@ views:
           - sensor.hochbeet_hinten_soil_temperature
           - sensor.hochbeet_vorne_soil_humidity
           - sensor.hochbeet_vorne_soil_temperature
+          - sensor.vorgarten_soil_humidity
+          - sensor.vorgarten_soil_temperature
           - switch.relay_garden_valve1
           - switch.relay_garden_valve2
           - switch.relay_garden_valve3
