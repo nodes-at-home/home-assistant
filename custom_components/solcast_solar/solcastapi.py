@@ -28,6 +28,7 @@ import aiofiles
 from aiohttp import ClientConnectionError, ClientResponseError, ClientSession
 from aiohttp.client_reqrep import ClientResponse
 
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_API_KEY
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ServiceValidationError
@@ -44,6 +45,7 @@ from .const import (
     CUSTOM_HOUR_SENSOR,
     DATE_FORMAT,
     DOMAIN,
+    EXCLUDE_SITES,
     HARD_LIMIT_API,
     KEY_ESTIMATE,
     SITE_DAMP,
@@ -51,9 +53,11 @@ from .const import (
 from .util import (
     Api,
     DataCallStatus,
+    DateTimeEncoder,
+    JSONDecoder,
+    NoIndentEncoder,
     SitesStatus,
     SolcastApiStatus,
-    SolcastConfigEntry,
     UsageStatus,
     cubic_interp,
 )
@@ -89,6 +93,7 @@ STATUS_TRANSLATE: Final = {
     504: "Gateway timeout",
     996: "Connection refused",
     997: "Connect call failed",
+    999: "Prior crash",
 }
 
 FRESH_DATA: dict[str, Any] = {
@@ -103,49 +108,6 @@ _LOGGER = logging.getLogger(__name__)
 
 # Return the function name at a specified caller depth. 0=current, 1=caller, 2=caller of caller, etc.
 FunctionName = lambda n=0: sys._getframe(n + 1).f_code.co_name  # noqa: E731, SLF001
-
-
-class DateTimeEncoder(json.JSONEncoder):
-    """Helper to convert datetime dict values to ISO format."""
-
-    def default(self, o: Any) -> str | Any:
-        """Convert to ISO format if datetime."""
-        return o.isoformat() if isinstance(o, dt) else super().default(o)
-
-
-class NoIndentEncoder(json.JSONEncoder):
-    """Helper to output semi-indented json."""
-
-    def iterencode(self, o: Any, _one_shot: bool = False):
-        """Recursive encoder to indent only top level keys."""
-        list_lvl = 0
-        for s in super().iterencode(o, _one_shot=_one_shot):
-            if s.startswith("["):
-                list_lvl += 1
-                s = s.replace(" ", "").replace("\n", "").rstrip()
-            elif list_lvl > 0:
-                s = s.replace(" ", "").replace("\n", "").rstrip()
-            if s.endswith("]"):
-                list_lvl -= 1
-            yield s
-
-
-class JSONDecoder(json.JSONDecoder):
-    """Helper to convert ISO format dict values to datetime."""
-
-    def __init__(self, *args, **kwargs) -> None:
-        """Initialise the decoder."""
-        json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)  # noqa: B026
-
-    def object_hook(self, o: Any) -> dict:
-        """Return converted datetimes."""
-        result = {}
-        for key, value in o.items():
-            try:
-                result[key] = dt.fromisoformat(value)
-            except:  # noqa: E722
-                result[key] = value
-        return result
 
 
 @dataclass
@@ -169,6 +131,7 @@ class ConnectionOptions:
     attr_brk_halfhourly: bool
     attr_brk_hourly: bool
     attr_brk_site_detailed: bool
+    exclude_sites: list[str]
 
 
 class SolcastApi:  # pylint: disable=too-many-public-methods
@@ -179,7 +142,7 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
         aiohttp_session: ClientSession,
         options: ConnectionOptions,
         hass: HomeAssistant,
-        entry: SolcastConfigEntry | None = None,
+        entry: ConfigEntry | None = None,
     ) -> None:
         """Initialise the API interface.
 
@@ -187,14 +150,14 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             aiohttp_session (ClientSession): The aiohttp client session provided by Home Assistant
             options (ConnectionOptions): The integration stored configuration options.
             hass (HomeAssistant): The Home Assistant instance.
-            entry (SolcastConfigEntry): The entry options.
+            entry (ConfigEntry): The entry options.
 
         """
 
         self.auto_update_divisions: int = 0
         self.custom_hour_sensor: int = options.custom_hour_sensor
         self.damp: dict = options.dampening
-        self.entry: SolcastConfigEntry | None = entry
+        self.entry = entry
         self.entry_options: dict[str, Any] = {}
         if self.entry is not None:
             self.entry_options = {**self.entry.options}
@@ -282,6 +245,7 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             options[BRK_HALFHOURLY],
             options[BRK_HOURLY],
             options[BRK_SITE_DETAILED],
+            options[EXCLUDE_SITES],
         )
         self.hard_limit = self.options.hard_limit
         self._use_forecast_confidence = f"pv_{self.options.key_estimate}"
@@ -461,13 +425,17 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
         self.reauth_required = False
         return 200, ""
 
-    async def __sites_data(self) -> None:  # noqa: C901
+    async def __sites_data(self, prior_crash: bool = False) -> None:  # noqa: C901
         """Request site details.
 
         If the sites cannot be loaded then the integration cannot function, and this will
         result in Home Assistant repeatedly trying to initialise.
 
         If the sites cache exists and is valid then it is loaded on API error.
+
+        Arguments:
+            prior_crash (bool): When a prior crash during init has occurred use cached sites, and do not call Solcast.
+
         """
         one_only = False
 
@@ -496,7 +464,7 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             return re.sub(r"itude\': [0-9\-\.]+", "itude': **.******", s)
 
         def set_sites(response_json: dict, api_key: str) -> None:
-            sites_data = cast(dict, response_json)
+            sites_data = response_json
             _LOGGER.debug(
                 "Sites data: %s",
                 self.__redact_msg_api_key(redact_lat_lon(str(sites_data)), api_key),
@@ -538,31 +506,35 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             for api_key in api_keys:
                 api_key = api_key.strip()
                 cache_filename = self.__get_sites_cache_filename(api_key)
+                cache_exists = Path(cache_filename).is_file()
+                if not cache_exists:
+                    prior_crash = False
                 _LOGGER.debug(
                     "%s",
-                    f"Sites cache {'exists' if Path(cache_filename).is_file() else 'does not yet exist'}"
-                    f" for {self.__redact_api_key(api_key)}",
+                    f"Sites cache {'exists' if cache_exists else 'does not yet exist'} for {self.__redact_api_key(api_key)}",
                 )
-                url = f"{self.options.host}/rooftop_sites"
-                params = {"format": "json", "api_key": api_key}
-                _LOGGER.debug("Connecting to %s?format=json&api_key=%s", url, self.__redact_api_key(api_key))
-
                 success = False
-                cache_exists = Path(cache_filename).is_file()
-                response: ClientResponse = await self._aiohttp_session.get(url=url, params=params, headers=self.headers, ssl=False)
-                status = response.status
-                (_LOGGER.debug if status == 200 else _LOGGER.warning)(
-                    "HTTP session returned status %s%s",
-                    self.__translate(status),
-                    ", trying cache" if status not in (200, 403) and cache_exists else "",
-                )
-                try:
-                    text_response = await response.text()
-                    if text_response != "":
-                        response_json = json.loads(text_response)
-                except json.decoder.JSONDecodeError:
-                    _LOGGER.error("API did not return a json object, returned `%s`", text_response)
-                    status = 500
+
+                if not prior_crash:
+                    url = f"{self.options.host}/rooftop_sites"
+                    params = {"format": "json", "api_key": api_key}
+                    _LOGGER.debug("Connecting to %s?format=json&api_key=%s", url, self.__redact_api_key(api_key))
+                    response: ClientResponse = await self._aiohttp_session.get(url=url, params=params, headers=self.headers, ssl=False)
+                    status = response.status
+                    (_LOGGER.debug if status == 200 else _LOGGER.warning)(
+                        "HTTP session returned status %s%s",
+                        self.__translate(status),
+                        ", trying cache" if status not in (200, 403) and cache_exists else "",
+                    )
+                    try:
+                        text_response = await response.text()
+                        if text_response != "":
+                            response_json = json.loads(text_response)
+                    except json.decoder.JSONDecodeError:
+                        _LOGGER.error("API did not return a json object, returned `%s`", text_response)
+                        status = 500
+                else:
+                    status = 999  # Force a cache load instead of using the API
 
                 if status == 200:
                     for site in response_json.get("sites", []):
@@ -779,7 +751,7 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             self._api_used[api_key] = 0
             await self.__serialise_usage(api_key, reset=True)
 
-    async def get_sites_and_usage(self):  # noqa: C901
+    async def get_sites_and_usage(self, prior_crash: bool = False):  # noqa: C901
         """Get the sites and usage, and validate API key changes against the cache files in use.
 
         Both the sites and usage are gathered here.
@@ -792,6 +764,10 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
 
         The reason is that sites are loaded in groups of API key, and similarly for API
         usage, so these must be cached separately.
+
+        Arguments:
+            prior_crash (bool): When a prior crash during init has occurred use cached sites, and do not call Solcast.
+
         """
 
         def rename(file1, file2, api_key):
@@ -823,12 +799,13 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             """Remove orphaned cache files."""
             for file in all_cached:
                 if file not in multi_cached:
-                    component_parts = re.search(r"(.+solcast-.+-)([0-9a-zA-Z]+)(\.json)", file)
-                    _LOGGER.warning(
-                        "Removing orphaned %s",
-                        component_parts.group(1) + "******" + component_parts.group(2)[:6] + component_parts.group(3),
-                    )
-                    Path(file).unlink()
+                    component_parts = re.search(r"(.+solcast-(sites-|usage-))(.+)(\.json)", file)
+                    if component_parts is not None:
+                        _LOGGER.warning(
+                            "Removing orphaned %s",
+                            component_parts.group(1) + "******" + component_parts.group(3)[-6:] + component_parts.group(4),
+                        )
+                        Path(file).unlink()
 
         def list_all_files() -> tuple[list[str], list[str]]:
             sites = [str(sites) for sites in Path(self._config_dir).glob("solcast-sites*.json")]
@@ -888,7 +865,7 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
         remove_orphans(multi_key_sites, multi_sites)
         remove_orphans(multi_key_usage, multi_usage)
 
-        await self.__sites_data()
+        await self.__sites_data(prior_crash)
         if self.sites_status == SitesStatus.OK:
             await self.__sites_usage()
 
@@ -943,7 +920,8 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
                 options[SITE_DAMP] = enable
                 if set_allow_reset:
                     self._granular_allow_reset = enable
-                self.hass.config_entries.async_update_entry(self.entry, options=options)
+                if self.entry is not None:
+                    self.hass.config_entries.async_update_entry(self.entry, options=options)
             return enable
 
         error = False
@@ -1401,6 +1379,7 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             "tilt": _site.get("tilt"),
             "install_date": _site.get("install_date"),
             "loss_factor": _site.get("loss_factor"),
+            "tags": _site.get("tags"),
         }
         return {k: v for k, v in result.items() if v is not None}
 
@@ -1541,12 +1520,12 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             result["detailedForecast"] = _tuple
             if self.options.attr_brk_site_detailed:
                 for site in self.sites:
-                    result[f"detailedForecast-{site['resource_id']}"] = tuples[site["resource_id"]]
+                    result[f"detailedForecast_{site['resource_id'].replace('-', '_')}"] = tuples[site["resource_id"]]
         if self.options.attr_brk_hourly:
             result["detailedHourly"] = hourly_tuple
             if self.options.attr_brk_site_detailed:
                 for site in self.sites:
-                    result[f"detailedHourly-{site['resource_id']}"] = hourly_tuples[site["resource_id"]]
+                    result[f"detailedHourly_{site['resource_id'].replace('-', '_')}"] = hourly_tuples[site["resource_id"]]
         return result
 
     def get_forecast_n_hour(
@@ -1722,9 +1701,9 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
         result = {}
         if self.options.attr_brk_site:
             for site in self.sites:
-                result[site["resource_id"]] = get_forecast_value(n, site=site["resource_id"])
+                result[site["resource_id"].replace("-", "_")] = get_forecast_value(n, site=site["resource_id"])
                 for forecast_confidence in self.estimate_set:
-                    result[forecast_confidence.replace("pv_", "") + "-" + site["resource_id"]] = get_forecast_value(
+                    result[forecast_confidence.replace("pv_", "") + "_" + site["resource_id"].replace("-", "_")] = get_forecast_value(
                         n,
                         site=site["resource_id"],
                         forecast_confidence=forecast_confidence,
@@ -2573,7 +2552,7 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
                                 _LOGGER.error("Client error: %s", e)
                                 status = 1000
                                 break
-                            if status in (200, 400, 401, 403, 404):  # Do not retry for these statuses.
+                            if status in (200, 400, 401, 403, 404, 500):  # Do not retry for these statuses.
                                 break
                             if status == 429:
                                 # Test for API limit exceeded.
@@ -2665,30 +2644,26 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             dict: An energy dashboard compatible data structure.
 
         """
-        forecast_generation = {}
-        last_value: float = -1
-        last_period_start = ""
-        for forecast in self._data_forecasts:
-            period_start = forecast["period_start"].isoformat()
-            value = forecast[self._use_forecast_confidence]
-            if value == 0.0:
-                if last_value > 0.0:
-                    forecast_generation[period_start] = 0.0
-                    forecast_generation[last_period_start] = 0.0
-            else:
-                if last_value == 0.0:
-                    forecast_generation[last_period_start] = 0.0
-                forecast_generation[period_start] = round(value * 500, 0)
-
-            last_period_start = period_start
-            last_value = value
-        return {"wh_hours": forecast_generation}
+        return {
+            "wh_hours": {
+                forecast["period_start"].isoformat(): round(forecast[self._use_forecast_confidence] * 500, 0)
+                for index, forecast in enumerate(self._data_forecasts)
+                if index > 0
+                and index < len(self._data_forecasts) - 1
+                and (
+                    forecast[self._use_forecast_confidence] > 0
+                    or self._data_forecasts[index - 1][self._use_forecast_confidence] > 0
+                    or self._data_forecasts[index + 1][self._use_forecast_confidence] > 0
+                )
+            }
+        }
 
     def __site_api_key(self, site: str) -> str | None:
         api_key: str | None = None
         for _site in self.sites:
             if _site["resource_id"] == site:
                 api_key = _site["api_key"]
+                break
         return api_key
 
     def hard_limit_set(self) -> tuple[bool, bool]:
@@ -2716,6 +2691,7 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
             for index, key in enumerate(self.options.api_key.split(",")):
                 if key == api_key:
                     limit = float(hard_limit[index])
+                    break
         return limit
 
     async def build_forecast_data(self) -> bool:  # noqa: C901
@@ -2891,28 +2867,29 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
                                         * 0.5
                                     )
 
-                                # Add the forecast for this site to the total.
-                                extant = forecasts.get(period_start)
-                                if extant:
-                                    extant["pv_estimate"] = round(
-                                        extant["pv_estimate"] + site_forecasts[period_start]["pv_estimate"],
-                                        4,
-                                    )
-                                    extant["pv_estimate10"] = round(
-                                        extant["pv_estimate10"] + site_forecasts[period_start]["pv_estimate10"],
-                                        4,
-                                    )
-                                    extant["pv_estimate90"] = round(
-                                        extant["pv_estimate90"] + site_forecasts[period_start]["pv_estimate90"],
-                                        4,
-                                    )
-                                else:
-                                    forecasts[period_start] = {
-                                        "period_start": period_start,
-                                        "pv_estimate": site_forecasts[period_start]["pv_estimate"],
-                                        "pv_estimate10": site_forecasts[period_start]["pv_estimate10"],
-                                        "pv_estimate90": site_forecasts[period_start]["pv_estimate90"],
-                                    }
+                                # If the forecast is for today, and the site is not excluded, add to the total.
+                                if site not in self.options.exclude_sites:
+                                    extant = forecasts.get(period_start)
+                                    if extant:
+                                        extant["pv_estimate"] = round(
+                                            extant["pv_estimate"] + site_forecasts[period_start]["pv_estimate"],
+                                            4,
+                                        )
+                                        extant["pv_estimate10"] = round(
+                                            extant["pv_estimate10"] + site_forecasts[period_start]["pv_estimate10"],
+                                            4,
+                                        )
+                                        extant["pv_estimate90"] = round(
+                                            extant["pv_estimate90"] + site_forecasts[period_start]["pv_estimate90"],
+                                            4,
+                                        )
+                                    else:
+                                        forecasts[period_start] = {
+                                            "period_start": period_start,
+                                            "pv_estimate": site_forecasts[period_start]["pv_estimate"],
+                                            "pv_estimate10": site_forecasts[period_start]["pv_estimate10"],
+                                            "pv_estimate90": site_forecasts[period_start]["pv_estimate90"],
+                                        }
                         site_data_forecasts[site] = sorted(site_forecasts.values(), key=itemgetter("period_start"))
                         if update_tally:
                             rounded_tally: Any = round(tally, 4) if tally is not None else 0.0
@@ -2978,7 +2955,7 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
         except UnboundLocalError:
             return 0
 
-    async def check_data_records(self) -> None:
+    async def check_data_records(self) -> None:  # noqa: C901
         """Log whether all records are present for each day.
 
         Returns:
@@ -3092,7 +3069,6 @@ class SolcastApi:  # pylint: disable=too-many-public-methods
                         is_fixable=self.entry.options["auto_update"] == 0,
                         data={
                             "contiguous": contiguous,
-                            "entry": self.entry,
                         },
                         severity=ir.IssueSeverity.WARNING,
                         translation_key=raise_issue,
