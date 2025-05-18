@@ -1564,11 +1564,17 @@ group.ev6_doors:
     device_class: cover
 
 #------------------------------------------------------------------------------
-sensor.gemusebeet_soil_humidity:
-    friendly_name: Gemüsebeet
+sensor.gemusebeet_vorne_soil_humidity:
+    friendly_name: Gemüsebeet vorne
 
-sensor.gemusebeet_soil_temperature:
-    friendly_name: Gemüsebeet
+sensor.gemusebeet_vorne_soil_temperature:
+    friendly_name: Gemüsebeet vorne
+
+sensor.gemusebeet_hinten_soil_humidity:
+    friendly_name: Gemüsebeet hinten
+
+sensor.gemusebeet_hinten_soil_temperature:
+    friendly_name: Gemüsebeet hinten
 
 sensor.hochbeet_vorne_soil_humidity:
     friendly_name: Hochbeet vorne

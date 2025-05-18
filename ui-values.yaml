@@ -765,17 +765,20 @@ views:
           - sensor.DHT22_lounge_pressure
           - sensor.ds18b20_pool_temperature
           - sensor.rain_garden_precipitation
+          - sensor.rain_garden_precipitation_last24h
+          - sensor.rain_garden_precipitation_last5d
+          - sensor.rain_garden_precipitation_last7d
           - sensor.wasserampel_text
           - entity: sensor.boiler_outdoortemp
             name: Außen
-          - sensor.gemusebeet_soil_humidity
-          - sensor.gemusebeet_soil_temperature
+          - sensor.gemusebeet_vorne_soil_humidity
+          - sensor.gemusebeet_vorne_soil_temperature
+          - sensor.gemusebeet_hinten_soil_humidity
+          - sensor.gemusebeet_hinten_soil_temperature
           - sensor.hochbeet_hinten_soil_humidity
           - sensor.hochbeet_hinten_soil_temperature
           - sensor.hochbeet_vorne_soil_humidity
           - sensor.hochbeet_vorne_soil_temperature
-          - sensor.vorgarten_soil_humidity
-          - sensor.vorgarten_soil_temperature
           - switch.relay_garden_valve1
           - switch.relay_garden_valve2
           - switch.relay_garden_valve3

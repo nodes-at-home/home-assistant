@@ -1050,6 +1050,13 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
+        entity: binary_sensor.wasserampel
+        content: Wasserampel
+        icon: "{{ state_attr ( entity, 'icon' )}}"
+        color: "{{ state_attr ( entity, 'icon_color' )}}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
         entity: binary_sensor.gardena_smart_system_connection
         content: Gardena
         icon: mdi:flower
@@ -1118,14 +1125,14 @@ views:
                 style: "ha-card .card-header { font-size: 18px; line-height: 18px; }"
             columns: 3
             entities:
-                - sensor.gemusebeet_soil_humidity
-                - sensor.gemusebeet_soil_temperature
+                - sensor.gemusebeet_vorne_soil_humidity
+                - sensor.gemusebeet_vorne_soil_temperature
+                - sensor.gemusebeet_hinten_soil_humidity
+                - sensor.gemusebeet_hinten_soil_temperature
                 - sensor.hochbeet_vorne_soil_humidity
                 - sensor.hochbeet_vorne_soil_temperature
                 - sensor.hochbeet_hinten_soil_humidity
                 - sensor.hochbeet_hinten_soil_temperature
-                - sensor.vorgarten_soil_humidity
-                - sensor.vorgarten_soil_temperature
           - type: conditional
             conditions:
               - entity: lawn_mower.sileno
