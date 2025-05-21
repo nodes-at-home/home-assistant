@@ -50,9 +50,9 @@
             {{ ns.msg1 }}
             {{ ns.msg2 }}
     action:
-      - action: script.notify_channel
+      - action: script.notify
         data:
-            channel: "tv"
+            domain: open_doors_and_windows
             message: "{{ msg }}"
 
 # template  getting all nodestate entities
@@ -92,7 +92,6 @@
           - binary_sensor.nodestate_shelly_shower
           - binary_sensor.nodestate_gas_utilityroom
           - binary_sensor.nodestate_led_corridor
-          - binary_sensor.nodestate_soil_garden
           - binary_sensor.nodestate_rain_garden
           - binary_sensor.nodestate_dht11_utilityroom
           #- binary_sensor.nodestate_sonoff_pool
@@ -117,11 +116,7 @@
         entity_id: binary_sensor.prod_mode
         state: 'on'
     actions:
-      - action: script.notify_channel
+      - action: script.notify
         data:
-            channel: "simplepush"
-            message: "{{ trigger.entity_id [24:] }} is not alive"
-      - action: script.notify_channel
-        data:
-            channel: "whatsapp"
+            domain: nodestate
             message: "{{ trigger.entity_id [24:] }} is not alive"
