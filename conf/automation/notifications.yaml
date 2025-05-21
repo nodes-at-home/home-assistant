@@ -45,26 +45,15 @@
               {% endif %}
             {% endfor %}
             {% if ns.msg2 != '' %}
-              {% set ns.msg2 = 'Offene Türen: ' + ns.msg2 %}
+              {% set ns.msg2 = '\nOffene Türen: ' + ns.msg2 %}
             {% endif %}
             {{ ns.msg1 }}
             {{ ns.msg2 }}
     action:
-      # - service: notify.simplepush
-        # data:
-          # title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
-          # message: "{{ msg }}"
-      - service: notify.tv_lounge
+      - action: script.notify_channel
         data:
-          title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
-          message: "{{ msg }}"
-          data:
-            duration: 20
-            position: "bottom-left"
-            fontsize: "medium"
-            transparency: "0%"
-            color: "indigo"
-            interrupt: 0
+            channel: "tv"
+            message: "{{ msg }}"
 
 # template  getting all nodestate entities
 # - {{ states.binary_sensor | selectattr ( 'entity_id', 'search', 'nodestate_' ) | map ( attribute = 'entity_id' ) | list | join ( '\n- ' ) }}
@@ -72,8 +61,6 @@
   - alias: nodestate
     id: nodestate
     mode: queued
-    variables:
-      hostname: !env_var PARENT_HOSTNAME
     triggers:
       - trigger: state
         alias: When any nodestate changes
@@ -130,7 +117,11 @@
         entity_id: binary_sensor.prod_mode
         state: 'on'
     actions:
-      - action: notify.simplepush
+      - action: script.notify_channel
         data:
-          message: "{{ trigger.entity_id [24:] }} is not alive"
-          title: "Home Assistant ({{ hostname }})"
+            channel: "simplepush"
+            message: "{{ trigger.entity_id [24:] }} is not alive"
+      - action: script.notify_channel
+        data:
+            channel: "whatsapp"
+            message: "{{ trigger.entity_id [24:] }} is not alive"

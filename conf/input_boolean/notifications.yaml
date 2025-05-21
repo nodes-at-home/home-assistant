@@ -1,0 +1,24 @@
+###
+### 21.05.2025
+###
+
+debug_notifications:
+    name: Benachritigungen immer schicken
+
+notify_open_doors_and_windows_tv:
+    name: tv
+
+notify_open_doors_and_windows_simplepush:
+    name: simplepush
+
+notify_open_doors_and_windows_whatsapp:
+    name: whatsapp
+
+notify_nodestate_tv:
+    name: tv
+
+notify_nodestate_simplepush:
+    name: simplepush
+
+notify_nodestate_whatsapp:
+    name: whatsapp

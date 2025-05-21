@@ -14,6 +14,7 @@ views:
         show_header_toggle: false
         entities:
             - input_boolean.show_debug_fields
+            - input_boolean.debug_notifications
       - type: entities
         title: Abwesenheit
         show_header_toggle: false
@@ -115,6 +116,40 @@ views:
             - sensor.solcast_pv_forecast_prognose_nachste_stunde
             - sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_heute
             - sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_morgen
+
+  - title: Benachrichtiungen
+    path: notifications
+    panel: false
+    cards:
+      - type: entities
+        title: Debug
+        show_header_toggle: false
+        entities:
+            - input_boolean.debug_notifications
+      - type: entities
+        title: Domänen
+        show_header_toggle: false
+        entities:
+            - type: section
+              label: Offene Türen und Fenster
+            - type: buttons
+              entities:
+                - entity: input_boolean.notify_open_doors_and_windows_tv
+                  name: tv
+                - entity: input_boolean.notify_open_doors_and_windows_simplepush
+                  name: simplepush
+                - entity: input_boolean.notify_open_doors_and_windows_whatsapp
+                  name: whatsapp
+            - type: section
+              label: Gerätestatus
+            - type: buttons
+              entities:
+                - entity: input_boolean.notify_nodestate_tv
+                  name: tv
+                - entity: input_boolean.notify_nodestate_simplepush
+                  name: simplepush
+                - entity: input_boolean.notify_nodestate_whatsapp
+                  name: whatsapp
 
   - title: Garten
     path: garden

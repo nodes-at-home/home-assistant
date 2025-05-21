@@ -1,0 +1,89 @@
+###
+### junand 20.05.2025
+###
+
+  - notify:
+        fields:
+            domain:
+                name: Domäne
+                description: die Domäne
+                advanced: false
+                required: true
+                example: open_doors_and_windows
+                default: keine
+            message:
+                name: Nachricht
+                description: die Nachricht
+                advanced: false
+                required: true
+                example: Das ist eine Nachricht
+                default: Das ist eine Nachricht
+        variables:
+            title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
+        sequence:
+          - repeat:
+              for_each:
+                - tv
+                - simplepush
+                - whatsapp
+              sequence:
+                - if:
+                    - condition: template
+                      value_template: "{{ states ( 'input_boolean.notify_' + domain + '_' + repeat.item ) == 'on' }}"
+                  then:
+                    - action: script.notify_channel
+                      data:
+                          channel: "{{ repeat.item }}"
+                          message: "{{ message }}"
+
+  - notify_channel:
+        fields:
+            channel:
+                name: Kanal
+                description: der Kanal
+                advanced: false
+                required: true
+                example: simplepush
+                default: simplepush
+            message:
+                name: Nachricht
+                description: die Nachricht
+                advanced: false
+                required: true
+                example: Das ist eine Nachricht
+                default: Das ist eine Nachricht
+        variables:
+            title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
+        sequence:
+          - or:
+            - condition: state
+              entity_id: binary_sensor.prod_mode
+              state: 'on'
+            - condition: state
+              entity_id: input_boolean.debug_notifications
+              state: 'on'
+          - choose:
+              - conditions: "{{ channel == 'simplepush' }}"
+                sequence:
+                  - action: notify.simplepush
+                    data:
+                        title: "{{ title }}"
+                        message: "{{ message }}"
+              - conditions: "{{ channel == 'tv' }}"
+                sequence:
+                  - action: notify.tv_lounge
+                    data:
+                        title: "{{ title }}"
+                        message: "{{ message }}"
+                        data:
+                            duration: 20
+                            position: "bottom-left"
+                            fontsize: "medium"
+                            transparency: "0%"
+                            color: "indigo"
+                            interrupt: 0
+              - conditions: "{{ channel == 'whatsapp' }}"
+                sequence:
+                  - action: notify.whatsapp
+                    data:
+                        message: "*{{ title }}*\n{{ message }}"
