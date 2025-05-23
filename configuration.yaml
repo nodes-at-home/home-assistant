@@ -89,6 +89,10 @@ notify:
 frontend:
     themes: !include_dir_merge_named conf/themes
 
+# -------------------------------------------------------------------------------
+# integration for companion app
+mobile_app:
+
 lovelace:
     mode: yaml
     resources:
