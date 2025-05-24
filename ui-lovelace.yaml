@@ -150,7 +150,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
-                entity: sensor.boiler_wwcurtemp
+                entity: sensor.boiler_dhw_curtemp
                 name: Warmwasser
                 layout: vertical
                 icon: mdi:thermometer
@@ -767,9 +767,9 @@ views:
               - entity: switch.shelly_utilityroom_biocat_switch_0
                 name: Entkalker
                 icon: mdi:water-sync
-              - entity: sensor.boiler_wwcurtemp
+              - entity: sensor.boiler_dhw_curtemp
                 name: Warmwasser
-              - entity: switch.boiler_wwonetime
+              - entity: switch.boiler_dhw_onetime
                 name: Warmwasser
               - entity: binary_sensor.rauchmelder_hauswirtsch
                 name: Rauchmelder

@@ -464,9 +464,9 @@ views:
       - binary_sensor.boiler_tapwateractive
       - binary_sensor.boiler_burngas
       - binary_sensor.boiler_heatingpump
-      - binary_sensor.boiler_wwcharging
-      # - binary_sensor.boiler_wwactive
-      - binary_sensor.boiler_ww3wayvalve
+      - binary_sensor.boiler_dhw_charging
+      # - binary_sensor.boiler_dhw_active
+      - binary_sensor.boiler_dhw_3wayvalve
     cards:
       - type: entities
         title: Einstellungen Gastherme
@@ -475,9 +475,9 @@ views:
           - number.boiler_selflowtemp
           - number.boiler_heatingtemp
           - type: divider
-          - number.boiler_wwseltemp
-          - number.boiler_wwflowtempoffset
-          - number.boiler_wwdisinfectiontemp
+          - number.boiler_dhw_seltemp
+          - number.boiler_dhw_flowtempoffset
+          - number.boiler_dhw_disinfectiontemp
           - type: divider
           - number.thermostat_hc1_seltemp
           - number.thermostat_hc1_heattemp
@@ -485,8 +485,8 @@ views:
           - select.thermostat_hc1_mode
           # - select.thermostat_hc1_roomsensor
           - type: divider
-          - switch.boiler_wwonetime
-          - switch.boiler_wwdisinfecting
+          - switch.boiler_dhw_onetime
+          - switch.boiler_dhw_disinfecting
       - type: entities
         title: Messwerte Gastherme
         show_header_toggle: false
@@ -501,10 +501,10 @@ views:
           - sensor.boiler_curburnpow
           - sensor.boiler_heatingpumpmod
           - type: divider
-          - sensor.boiler_wwsettemp
-          - sensor.boiler_wwcurtemp
-          # - sensor.boiler_wwcurflow
-          # - sensor.boiler_wwchargetype
+          - sensor.boiler_dhw_settemp
+          - sensor.boiler_dhw_curtemp
+          # - sensor.boiler_dhw_curflow
+          # - sensor.boiler_dhw_chargetype
       - type: entities
         title: Fußboden Erdgeschoss
         show_header_toggle: false
@@ -815,15 +815,15 @@ views:
         hours_to_show: 24
         entities:
           - binary_sensor.boiler_heatingpump
-          - binary_sensor.boiler_ww3wayvalve
+          - binary_sensor.boiler_dhw_3wayvalve
           - switch.zirkulationspumpe
           - sensor.boiler_outdoortemp
           - number.boiler_selflowtemp
           - number.boiler_heatingtemp
           - sensor.boiler_curflowtemp
           - sensor.boiler_rettemp
-          - number.boiler_wwseltemp
-          - sensor.boiler_wwcurtemp
+          - number.boiler_dhw_seltemp
+          - sensor.boiler_dhw_curtemp
           - sensor.ds18b20_groundfloor_temperature_lounge1
           - sensor.ds18b20_groundfloor_temperature_lounge2
           - sensor.ds18b20_groundfloor_temperature_dining1

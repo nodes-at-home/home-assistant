@@ -656,9 +656,9 @@ views:
           - number.boiler_heatingtemp
           - type: section
             label: Warmwasser
-          - number.boiler_wwseltemp
-          - number.boiler_wwflowtempoffset
-          - number.boiler_wwdisinfectiontemp
+          - number.boiler_dhw_seltemp
+          - number.boiler_dhw_flowtempoffset
+          - number.boiler_dhw_disinfectiontemp
           - type: section
             label: Thermostat
           - number.thermostat_hc1_seltemp

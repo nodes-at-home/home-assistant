@@ -145,13 +145,13 @@
         - binary_sensor.boiler_heatingactive
         - number.boiler_heatingtemp
         - number.boiler_selflowtemp
-        - number.boiler_wwseltemp
+        - number.boiler_dhw_seltemp
         - number.thermostat_hc1_seltemp
         - number.thermostat_hc1_heattemp
         - sensor.boiler_curburnpow
         - sensor.boiler_setflowtemp
         - sensor.boiler_syspress
-        - sensor.boiler_wwcurtemp
+        - sensor.boiler_dhw_curtemp
         - input_number.electricity_price_in
         - input_number.electricity_price_out
         - input_number.gas_price

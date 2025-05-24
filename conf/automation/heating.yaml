@@ -301,7 +301,7 @@
       - platform: state
         entity_id: input_number.circulating_pump_running_above_temp
       - platform: state
-        entity_id: sensor.boiler_wwcurtemp
+        entity_id: sensor.boiler_dhw_curtemp
       - platform: state
         entity_id: switch.shelly_utilityroom_circulatingpump_switch_0
       - platform: state
@@ -314,7 +314,7 @@
       - choose:
           - conditions:
               - condition: template
-                value_template: "{{ states ( 'switch.shelly_utilityroom_circulatingpump_switch_0' ) == 'off' and states ( 'sensor.boiler_wwcurtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+                value_template: "{{ states ( 'switch.shelly_utilityroom_circulatingpump_switch_0' ) == 'off' and states ( 'sensor.boiler_dhw_curtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
             sequence:
               - service: switch.turn_on
                 entity_id:
@@ -324,7 +324,7 @@
                     - input_boolean.circulating_pump_running_disinfection
           - conditions:
               - condition: template
-                value_template: "{{ states ( 'input_boolean.circulating_pump_running_disinfection' ) == 'on' and states ( 'sensor.boiler_wwcurtemp' ) | float < states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+                value_template: "{{ states ( 'input_boolean.circulating_pump_running_disinfection' ) == 'on' and states ( 'sensor.boiler_dhw_curtemp' ) | float < states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
             sequence:
               - service: switch.turn_off
                 entity_id:
