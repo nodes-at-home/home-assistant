@@ -188,6 +188,7 @@ views:
   - title: Pflanzen
     path: plants
     panel: true
+    visible: false
     cards:
       - type: vertical-stack
         cards:
@@ -459,7 +460,7 @@ views:
   - title: Heizung
     path: heating
     panel: false
-    basges:
+    badges:
       - binary_sensor.boiler_heatingactive
       - binary_sensor.boiler_tapwateractive
       - binary_sensor.boiler_burngas
@@ -814,8 +815,20 @@ views:
       - type: history-graph
         hours_to_show: 24
         entities:
-          - binary_sensor.boiler_heatingpump
-          - binary_sensor.boiler_dhw_3wayvalve
+          - entity: binary_sensor.boiler_burngas
+            name: Gasbrenner
+          - entity: binary_sensor.boiler_heatingactive
+            name: Heizung aktiv
+          - entity: binary_sensor.boiler_heatingpump
+            name: Heizungspumpe
+          - entity: binary_sensor.boiler_dhw_3wayvalve
+            name: 3-Wege Ventil
+          - entity: binary_sensor.boiler_dhw_charging
+            name: Wassererwärmng
+          - entity: binary_sensor.boiler_dhw_recharging
+            name: wiederholte Wassererwärmng
+          - entity: switch.zentralheizungsrelais
+            name: Wärmebedarf
           - switch.zirkulationspumpe
           - sensor.boiler_outdoortemp
           - number.boiler_selflowtemp
