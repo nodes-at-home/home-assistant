@@ -134,33 +134,47 @@ views:
                 forecast_type: daily
           - type: horizontal-stack
             cards:
-              - type: custom:mushroom-entity-card
+              - type: tile
+                entity: lock.garagentur
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
+          - type: horizontal-stack
+            cards:
+              - type: tile
                 entity: sensor.dht22_terrace_temperature
-                layout: vertical
                 icon: mdi:thermometer
-              - type: custom:mushroom-entity-card
+              - type: tile
                 entity: sensor.dht22_lounge_pressure
-                layout: vertical
                 icon: mdi:gauge
-              - type: custom:mushroom-entity-card
+              - type: tile
                 #entity: sensor.tileboard_temperature_template
                 entity: sensor.relay_garage_temperature
-                layout: vertical
                 icon: mdi:thermometer
           - type: horizontal-stack
             cards:
-              - type: custom:mushroom-entity-card
+              - type: tile
+                entity: sensor.dht22_terrace_temperature
+                icon: mdi:thermometer
+              - type: tile
+                entity: sensor.dht22_lounge_pressure
+                icon: mdi:gauge
+              - type: tile
+                #entity: sensor.tileboard_temperature_template
+                entity: sensor.relay_garage_temperature
+                icon: mdi:thermometer
+          - type: horizontal-stack
+            cards:
+              - type: tile
                 entity: sensor.boiler_dhw_curtemp
                 name: Warmwasser
-                layout: vertical
                 icon: mdi:thermometer
-              - type: custom:mushroom-entity-card
+              - type: tile
                 entity: sensor.dht11_utilityroom_temperature
-                layout: vertical
                 icon: mdi:thermometer
-              - type: custom:mushroom-entity-card
+              - type: tile
                 entity: sensor.ds18b20_pool_temperature
-                layout: vertical
                 icon: mdi:thermometer
               #- type: markdown
               #  content: " "

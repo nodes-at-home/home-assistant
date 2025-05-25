@@ -1,0 +1,28 @@
+###
+### 25.05.2025
+###
+
+  - alias: garage_open_door
+    id: garage_open_door
+    triggers:
+      - trigger: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Garagentür auf'
+      - trigger: state
+        entity_id: switch.nebentur
+        to: "on"
+      - trigger: state
+        entity_id: switch.terassentur_kuche
+        to: "on"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.garagentur
+        state: "off"
+    actions:
+      - action: lock.open
+        entity_id: lock.garagentur
