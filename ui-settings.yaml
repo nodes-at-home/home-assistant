@@ -28,9 +28,8 @@ views:
             - input_datetime.standup_weekend
             - input_datetime.sleep
             - input_number.light_timeout
-      - type: entities
-        title: Fernseher
-        entities:
+            - type: section
+              label: Fernseher
             - input_number.tvoff_lightsoff_delay1
             - input_number.tvoff_lightsoff_delay2
             - input_datetime.tv_off_period_start
@@ -127,7 +126,12 @@ views:
         entities:
             - input_boolean.debug_notifications
       - type: entities
-        title: Domänen
+        title: Fernseher
+        show_header_toggle: false
+        entities:
+            - input_number.notification_tv_on_delay
+      - type: entities
+        title: Bereiche
         show_header_toggle: false
         entities:
             - type: section
@@ -149,6 +153,16 @@ views:
                 - entity: input_boolean.notify_nodestate_simplepush
                   name: simplepush
                 - entity: input_boolean.notify_nodestate_whatsapp
+                  name: whatsapp
+            - type: section
+              label: Türschlösser
+            - type: buttons
+              entities:
+                - entity: input_boolean.notify_doorlocks_tv
+                  name: tv
+                - entity: input_boolean.notify_doorlocks_simplepush
+                  name: simplepush
+                - entity: input_boolean.notify_doorlocks_whatsapp
                   name: whatsapp
 
   - title: Garten

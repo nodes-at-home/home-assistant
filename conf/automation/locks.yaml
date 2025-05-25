@@ -10,12 +10,6 @@
         event_data:
             event_type: SCENARIO
             event_subtype: 'Garagentür auf'
-      - trigger: state
-        entity_id: switch.nebentur
-        to: "on"
-      - trigger: state
-        entity_id: switch.terassentur_kuche
-        to: "on"
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -26,3 +20,44 @@
     actions:
       - action: lock.open
         entity_id: lock.garagentur
+
+  - alias: doors_lock_up
+    id: doors_lock_up
+    triggers:
+      - trigger: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Abschliessen'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    actions:
+      - repeat:
+          for_each:
+            # - eingangstur
+            # - nebentur
+            - garagentur
+          sequence:
+            - if:
+                - condition: template
+                  value_template: "{{ states ( 'binary_sensor.' + repeat.item ) == 'on' }}"
+              then:
+                - action: script.notify
+                  data:
+                      domain: "doorlocks"
+                      message: "{{ state_attr ( 'binary_sensor.' + repeat.item, 'friendly_name' ) }} konnte nicht abgeschlossen werden, da diese offen ist."
+              else:
+                - if:
+                    - condition: template
+                      value_template: "{{ states ( 'lock.' + repeat.item ) in ( 'unknown', 'unavailable' ) }}"
+                  then:
+                    - action: script.notify
+                      data:
+                          domain: "doorlocks"
+                          message: "{{ state_attr ( 'binary_sensor.' + repeat.item, 'friendly_name' ) }} konnte nicht abgeschlossen werden, da kein Schloss verfügbar ist."
+                  else:
+                    - action: lock.lock
+                      target:
+                          entity_id: "lock.{{ repeat.item }}"

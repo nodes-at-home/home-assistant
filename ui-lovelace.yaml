@@ -135,11 +135,19 @@ views:
           - type: horizontal-stack
             cards:
               - type: tile
+                entity: binary_sensor.eingangstur
+              - type: tile
+                entity: binary_sensor.nebentur
+              - type: tile
+                entity: binary_sensor.garagentur
+          - type: horizontal-stack
+            cards:
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
+              - type: tile
                 entity: lock.garagentur
-              - type: markdown
-                content: " "
-              - type: markdown
-                content: " "
           - type: horizontal-stack
             cards:
               - type: tile

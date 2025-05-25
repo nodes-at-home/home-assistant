@@ -76,6 +76,7 @@ zone: !include conf/zone.yaml
 
 # -------------------------------------------------------------------------------
 # https://www.callmebot.com/blog/whatsapp-text-messages-from-homeassistant/
+
 notify:
   - name: whatsapp
     platform: rest
@@ -84,14 +85,20 @@ notify:
       source: HA
       phone: !secret my_phonenumber
       apikey: !secret callmebot_api_key
+
 # -------------------------------------------------------------------------------
 # Enables the frontend
+
 frontend:
     themes: !include_dir_merge_named conf/themes
 
 # -------------------------------------------------------------------------------
 # integration for companion app
+
 mobile_app:
+
+# -------------------------------------------------------------------------------
+# dashboards and ressources
 
 lovelace:
     mode: yaml

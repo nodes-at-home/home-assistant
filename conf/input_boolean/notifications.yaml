@@ -22,3 +22,12 @@ notify_nodestate_simplepush:
 
 notify_nodestate_whatsapp:
     name: whatsapp
+
+notify_doorlocks_tv:
+    name: tv
+
+notify_doorlocks_simplepush:
+    name: simplepush
+
+notify_doorlocks_whatsapp:
+    name: whatsapp
