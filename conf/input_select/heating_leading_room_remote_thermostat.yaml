@@ -1,0 +1,19 @@
+###
+### 26.05.2025
+###
+### - {{ states.climate | selectattr ( 'entity_id', 'search', 'room_climate' ) | map ( attribute = 'name' ) | map ( 'replace', 'Room Climate ', '' ) | sort () | list | join ( '\n- ' ) }}
+###
+
+name: Leitraum
+options:
+  - Arbeitszimmer
+  - Bad
+  - Dusche
+  - Esszimmer
+  - Flur
+  - Galerie
+  - Hauswirtschaftsraum
+  - Kinderzimmer
+  - Küche
+  - Schlafzimmer
+  - Wohnzimmer

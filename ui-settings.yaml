@@ -663,21 +663,41 @@ views:
         title: Gastherme
         show_header_toggle: false
         entities:
-          - select.thermostat_hc1_mode
+          - entity: text.thermostat_datetime
+            name: Interne Uhr
+          - entity: select.thermostat_hc1_mode
+            name: betriebsart
           - type: section
             label: Vorlauf
-          - number.boiler_selflowtemp
-          - number.boiler_heatingtemp
+          - entity: number.boiler_selflowtemp
+            name: geregelte Vorlauftemperatur
+          - entity: number.boiler_heatingtemp
+            name: ungeregelt Vorlauftemperatur
           - type: section
             label: Warmwasser
-          - number.boiler_dhw_seltemp
-          - number.boiler_dhw_flowtempoffset
-          - number.boiler_dhw_disinfectiontemp
+          - entity: number.boiler_dhw_seltemp
+            name: Zieltemperatur
+          - entity: number.boiler_dhw_flowtempoffset
+            name: Offset Vorlauftemperatur
+          - entity: number.boiler_dhw_disinfectiontemp
+            name: Desinfektionstemperatur
           - type: section
             label: Thermostat
-          - number.thermostat_hc1_seltemp
-          - number.thermostat_hc1_heattemp
-          - number.thermostat_hc1_ecotemp
+          - entity: number.thermostat_hc1_seltemp
+            name: Zieltemperatur
+          - entity: number.thermostat_hc1_heattemp
+            name: Heiztemperatur
+          - entity: number.thermostat_hc1_ecotemp
+            name: Absenktemperatur
+          - entity: number.thermostat_hc1_summertemp
+            name: Sommerbetrieb ab
+          - type: section
+            label: Remote Thermostat
+          - select.thermostat_hc1_control
+          - entity: input_select.heating_leading_room_remote_thermostat
+            name: Gerät
+          - entity: number.thermostat_hc1_remotetemp
+            name: Raumtemperatur
       - type: entities
         title: Raumtemperaturen
         show_header_toggle: false

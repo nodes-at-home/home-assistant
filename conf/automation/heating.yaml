@@ -332,3 +332,36 @@
               - service: input_boolean.turn_off
                 entity_id:
                     - input_boolean.circulating_pump_running_disinfection
+
+  - alias: heating_update_remote_thermostat
+    id: heating_update_remote_thermostat
+    triggers:
+      - trigger: time_pattern
+        minutes: '/1'
+      - trigger: state
+        entity_id: select.thermostat_hc1_control
+    conditions:
+      # - condition: state
+      #   entity_id: binary_sensor.prod_mode
+      #   state: 'on'
+    actions:
+      - if:
+          - condition: template
+            value_template: "{{ states ( 'select.thermostat_hc1_control') == 'off' }}"
+        then:
+          - if:
+              - condition: numeric_state
+                entity_id: number.thermostat_hc1_remotetemp
+                above: -1
+            then:
+              - action: number.set_value
+                target:
+                    entity_id: number.thermostat_hc1_remotetemp
+                data:
+                    value: -1
+        else:
+          - action: number.set_value
+            target:
+                entity_id: number.thermostat_hc1_remotetemp
+            data:
+                value: "{{ state_attr ( 'climate.room_climate_' + states ( 'input_select.heating_leading_room_remote_thermostat' ) | lower, 'current_temperature' ) }}"
