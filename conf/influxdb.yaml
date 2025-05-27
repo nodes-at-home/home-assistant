@@ -143,11 +143,17 @@
         - sensor.boiler_outdoortemp
         - binary_sensor.boiler_burngas
         - binary_sensor.boiler_heatingactive
+        - binary_sensor.boiler_dhw_charging
+        - binary_sensor.boiler_heatingpump
         - number.boiler_heatingtemp
         - number.boiler_selflowtemp
         - number.boiler_dhw_seltemp
         - number.thermostat_hc1_seltemp
         - number.thermostat_hc1_heattemp
+        - number.thermostat_hc1_remotetemp
+        - number.thermostat_hc1_summertemp
+        - number.thermostat_hc1_nofrosttemp
+        - number.thermostat_hc1_ecotemp
         - sensor.boiler_curburnpow
         - sensor.boiler_setflowtemp
         - sensor.boiler_syspress

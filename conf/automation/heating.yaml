@@ -341,9 +341,9 @@
       - trigger: state
         entity_id: select.thermostat_hc1_control
     conditions:
-      # - condition: state
-      #   entity_id: binary_sensor.prod_mode
-      #   state: 'on'
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - if:
           - condition: template
