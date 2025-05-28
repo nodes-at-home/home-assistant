@@ -144,8 +144,8 @@ views:
             cards:
               - type: markdown
                 content: " "
-              - type: markdown
-                content: " "
+              - type: tile
+                entity: lock.nebentur
               - type: tile
                 entity: lock.garagentur
           - type: horizontal-stack

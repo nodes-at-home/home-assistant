@@ -2,8 +2,8 @@
 ### 25.05.2025
 ###
 
-  - alias: garage_open_door
-    id: garage_open_door
+  - alias: locks_open_garage_door
+    id: locks_open_garage_door
     triggers:
       - trigger: event
         event_type:  bosch_shc.event
@@ -19,10 +19,31 @@
         state: "off"
     actions:
       - action: lock.open
-        entity_id: lock.garagentur
+        target:
+            entity_id: lock.garagentur
 
-  - alias: doors_lock_up
-    id: doors_lock_up
+  - alias: locks_open_postern_door
+    id: locks_open_postern_door
+    triggers:
+      - trigger: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Nebentür auf'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.nebentur
+        state: "off"
+    actions:
+      - action: lock.open
+        target:
+            entity_id: lock.nebentur
+
+  - alias: locks_lock_up_all_doors
+    id: locks_lock_up_all_doors
     triggers:
       - trigger: event
         event_type:  bosch_shc.event
@@ -37,7 +58,7 @@
       - repeat:
           for_each:
             # - eingangstur
-            # - nebentur
+            - nebentur
             - garagentur
           sequence:
             - if:
