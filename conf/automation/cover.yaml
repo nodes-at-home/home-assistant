@@ -2,42 +2,45 @@
 ### 19.01.2023
 ###
 
+  # TODO refactore to using loops
   - alias: close_cover_bedroom
     id: close_cover_bedroom
-    trigger:
-      - platform: sun
+    triggers:
+      - trigger: sun
         event: sunset
         offset: "00:30:00"
         # offset: "{{ states ( 'input_datetime.close_cover_sunset_offset' ) }}"
-    condition:
+    conditions:
         condition: and
         conditions:
             # check stage
           - condition: state
             entity_id: binary_sensor.prod_mode
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_closing_at_cold_activated
-            state: 'on'
+            state: "on"
           - condition: numeric_state
             entity_id: sensor.dht22_terrace_temperature
             below: input_number.rooflight_close_below_temp
           - condition: state
             entity_id: input_boolean.cover_bedroom
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: binary_sensor.dachfenster_schlafzimmer
-            state: 'off'
-    action:
-      - service: cover.close_cover
-        entity_id: cover.bedroom
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.cover_closed_at_low_temp
+            state: "off"
+    actions:
+      - action: cover.close_cover
+        target:
+            entity_id: cover.bedroom
+      - action: input_boolean.turn_on
+        target:
+            entity_id: input_boolean.cover_closed_at_low_temp
 
   - alias: open_cover_bedroom
     id: open_cover_bedroom
-    trigger:
-      - platform: sun
+    triggers:
+      - trigger: sun
         event: sunrise
         offset: "-00:30:00"
     condition:
@@ -46,210 +49,221 @@
             # check stage
           - condition: state
             entity_id: binary_sensor.prod_mode
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_closing_at_cold_activated
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_bedroom
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: binary_sensor.dachfenster_schlafzimmer
-            state: 'off'
+            state: "off"
           - condition: state
             entity_id: input_boolean.cover_closed_at_low_temp
-            state: 'on'
-    action:
-      - service: cover.open_cover
-        entity_id: cover.bedroom
+            state: "on"
+    actions:
+      - action: cover.open_cover
+        target:
+            entity_id: cover.bedroom
 
   - alias: close_cover_bath
     id: close_cover_bath
-    trigger:
-      - platform: sun
+    triggers:
+      - trigger: sun
         event: sunset
         offset: "00:30:00"
-    condition:
+    conditions:
         condition: and
         conditions:
             # check stage
           - condition: state
             entity_id: binary_sensor.prod_mode
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_closing_at_cold_activated
-            state: 'on'
+            state: "on"
           - condition: numeric_state
             entity_id: sensor.dht22_terrace_temperature
             below: input_number.rooflight_close_below_temp
           - condition: state
             entity_id: input_boolean.cover_bath
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: binary_sensor.dachfenster_bad
-            state: 'off'
-    action:
-      - service: cover.close_cover
-        entity_id: cover.bath
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.cover_closed_at_low_temp
+            state: "off"
+    actions:
+      - action: cover.close_cover
+        target:
+            entity_id: cover.bath
+      - action: input_boolean.turn_on
+        target:
+            entity_id: input_boolean.cover_closed_at_low_temp
 
   - alias: open_cover_bath
     id: open_cover_bath
-    trigger:
-      - platform: sun
+    triggers:
+      - trigger: sun
         event: sunrise
         offset: "-00:30:00"
-    condition:
+    conditions:
         condition: and
         conditions:
             # check stage
           - condition: state
             entity_id: binary_sensor.prod_mode
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_closing_at_cold_activated
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_bath
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: binary_sensor.dachfenster_bad
-            state: 'off'
+            state: "off"
           - condition: state
             entity_id: input_boolean.cover_closed_at_low_temp
-            state: 'on'
-    action:
-      - service: cover.open_cover
-        entity_id: cover.bath
+            state: "on"
+    actions:
+      - action: cover.open_cover
+        target:
+            entity_id: cover.bath
 
   - alias: close_cover_office
     id: close_cover_office
-    trigger:
-      - platform: sun
+    triggers:
+      - trigger: sun
         event: sunset
         offset: "00:30:00"
-    condition:
+    conditions:
         condition: and
         conditions:
             # check stage
           - condition: state
             entity_id: binary_sensor.prod_mode
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_closing_at_cold_activated
-            state: 'on'
+            state: "on"
           - condition: numeric_state
             entity_id: sensor.dht22_terrace_temperature
             below: input_number.rooflight_close_below_temp
           - condition: state
             entity_id: input_boolean.cover_office
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: binary_sensor.dachfenster_arbeitszimmer
-            state: 'off'
-    action:
-      - service: cover.close_cover
-        entity_id: cover.office
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.cover_closed_at_low_temp
+            state: "off"
+    actions:
+      - action: cover.close_cover
+        target:
+            entity_id: cover.office
+      - action: input_boolean.turn_on
+        target:
+            entity_id: input_boolean.cover_closed_at_low_temp
 
   - alias: open_cover_office
     id: open_cover_office
-    trigger:
-      - platform: sun
+    triggers:
+      - trigger: sun
         event: sunrise
         offset: "-00:30:00"
-    condition:
+    conditions:
         condition: and
         conditions:
             # check stage
           - condition: state
             entity_id: binary_sensor.prod_mode
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_closing_at_cold_activated
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_office
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: binary_sensor.dachfenster_arbeitszimmer
-            state: 'off'
+            state: "off"
           - condition: state
             entity_id: input_boolean.cover_closed_at_low_temp
-            state: 'on'
-    action:
-      - service: cover.open_cover
-        entity_id: cover.office
+            state: "on"
+    actions:
+      - action: cover.open_cover
+        target:
+            entity_id: cover.office
 
   - alias: close_cover_nursery
     id: close_cover_nursery
-    trigger:
-      - platform: sun
+    triggers:
+      - trigger: sun
         event: sunset
         offset: "00:30:00"
-    condition:
+    conditions:
         condition: and
         conditions:
             # check stage
           - condition: state
             entity_id: binary_sensor.prod_mode
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_closing_at_cold_activated
-            state: 'on'
+            state: "on"
           - condition: numeric_state
             entity_id: sensor.dht22_terrace_temperature
             below: input_number.rooflight_close_below_temp
           - condition: state
             entity_id: input_boolean.cover_nursery
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: binary_sensor.dachfenster_kinderzimmer
-            state: 'off'
-    action:
-      - service: cover.close_cover
-        entity_id: cover.nursery
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.cover_closed_at_low_temp
+            state: "off"
+    actions:
+      - action: cover.close_cover
+        target:
+            entity_id: cover.nursery
+      - action: input_boolean.turn_on
+        target:
+            entity_id: input_boolean.cover_closed_at_low_temp
 
   - alias: open_cover_nursery
     id: open_cover_nursery
-    trigger:
-      - platform: sun
+    triggers:
+      - trigger: sun
         event: sunrise
         offset: "-00:30:00"
-    condition:
+    conditions:
         condition: and
         conditions:
             # check stage
           - condition: state
             entity_id: binary_sensor.prod_mode
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_closing_at_cold_activated
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: input_boolean.cover_nursery
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: binary_sensor.dachfenster_kinderzimmer
-            state: 'off'
+            state: "off"
           - condition: state
             entity_id: input_boolean.cover_closed_at_low_temp
-            state: 'on'
-    action:
-      - service: cover.open_cover
-        entity_id: cover.nursery
+            state: "on"
+    actions:
+      - action: cover.open_cover
+        target:
+            entity_id: cover.nursery
 
   - alias: reset_close_at_low_temp_flag
     id: reset_close_at_low_temp_flag
-    trigger:
-      - platform: sun
+    triggers:
+      - trigger: sun
         event: sunrise
         offset: "01:00:00"
-    action:
-      - service: input_boolean.turn_off
-        entity_id: input_boolean.cover_closed_at_low_temp
+    actions:
+      - action: input_boolean.turn_off
+        target:
+            entity_id: input_boolean.cover_closed_at_low_temp
 

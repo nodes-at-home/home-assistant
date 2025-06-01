@@ -4,30 +4,30 @@
 
   - alias: dishwasher_schedule
     id: dishwasher_schedule
-    trigger:
+    triggers:
       # - platform: time_pattern
         # minutes: '/5'
-      - platform: state
+      - trigger: state
         entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
-        to: 'off'
-    condition:
+        to: "off"
+    conditions:
       - condition: state
         entity_id: input_boolean.dishwasher_activated
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
         state: 'BSH.Common.EnumType.OperationState.Ready'
       - condition: state
         entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolactive
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolstartallowed
-        state: 'on'
-    action:
-      - service: input_datetime.set_datetime
+        state: "on"
+    actions:
+      - action: input_datetime.set_datetime
         target:
             entity_id: input_datetime.dishwasher_start
         data:
@@ -51,28 +51,27 @@
 
   - alias: dishwasher_start
     id: dishwasher_start
-    trigger:
-      - platform: time
+    triggers:
+      - trigger: time
         at: input_datetime.dishwasher_start
-    condition:
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.dishwasher_activated
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
         state: 'BSH.Common.EnumType.OperationState.Ready'
       - condition: state
         entity_id: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_remotecontrolactive
-        state: 'on'
-    action:
-      - service: home_connect_alt.start_program
+        state: "on"
+    actions:
+      - action: home_connect_alt.start_program
         data:
-          device_id: "{{ device_id ( 'Geschirrspüler' ) }}"
-          program_key: Dishcare.Dishwasher.Program.Quick65
-
+            device_id: "{{ device_id ( 'Geschirrspüler' ) }}"
+            program_key: Dishcare.Dishwasher.Program.Quick65

@@ -4,15 +4,15 @@
 
   - alias: pitouch_screen_on
     id: pitouch_screen_on
-    trigger:
-      - platform: time
+    triggers:
+      - trigger: time
         at: input_datetime.standup_workday
-      - platform: time
+      - trigger: time
         at: input_datetime.standup_weekend
-      - platform: state
+      - trigger: state
         entity_id: group.family
         to: 'home'
-    condition:
+    conditions:
       - condition: and
         conditions:
           - condition: state
@@ -36,40 +36,43 @@
                   - condition: time
                     after: input_datetime.standup_weekend
                     before: input_datetime.sleep
-    action:
-      - service: light.turn_on
-        entity_id:
-            - light.pitouch_corridor_screen
+    actions:
+      - action: light.turn_on
+        target:
+            entity_id:
+              - light.pitouch_corridor_screen
 
   - alias: pitouch_screen_off
     id: pitouch_screen_off
-    trigger:
-      - platform: time
+    triggers:
+      - trigger: time
         at: input_datetime.pitouch_off
-      - platform: state
+      - trigger: state
         entity_id: group.family
         to: 'not_home'
-    action:
-      - service: light.turn_off
-        entity_id:
-            - light.pitouch_corridor_screen
+    actions:
+      - action: light.turn_off
+        target:
+            entity_id:
+              - light.pitouch_corridor_screen
 
   - alias: pitouch_screen_off_after_tv_off
     id: pitouch_screen_off_after_tv_off
-    trigger:
-        platform: state
+    triggers:
+        trigger: state
         entity_id: media_player.sony_kd_55ag9
         from: "on"
         to: "off"
         for:
             minutes: 1
-    condition:
+    conditions:
       - condition: time
         after: input_datetime.tv_off_period_start
         before: input_datetime.tv_off_period_end
-    action:
+    actions:
       - delay:
             minutes: "{{ states ( 'input_number.pitouch_delay' ) | int }}"
-      - service: light.turn_off
-        entity_id:
-            - light.pitouch_corridor_screen
+      - action: light.turn_off
+        target:
+            entity_id:
+              - light.pitouch_corridor_screen

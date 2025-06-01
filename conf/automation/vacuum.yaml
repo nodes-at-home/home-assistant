@@ -4,13 +4,13 @@
 
   - alias: send_alert_after_daily_vacuum_to_empty_the_dustbin
     id: send_alert_after_daily_vacuum_to_empty_the_dustbin
-    trigger:
-      - platform: state
+    triggers:
+      - trigger: state
         entity_id: device_tracker.galaxy_note_fan_edition
         to: 'home'
         for:
             minutes: 5
-    condition:
+    conditions:
         condition: and
         conditions:
             # check stage
@@ -34,39 +34,41 @@
           - condition: state
             entity_id: input_boolean.daily_vacuum
             state: 'on'
-    action:
-      - service: media_player.volume_set
-        data_template:
+    actions:
+      - action: media_player.volume_set
+        data:
             entity_id: media_player.sony_kd_55ag9
             volume_level: 0.7
-      - service: tts.google_say
+      # TODO use notification script
+      - action: tts.google_say
         entity_id: media_player.sony_kd_55ag9
-        data_template:
+        data:
             message: 'Der Saugroboter muss geleert werden!'
             cache: false
 
   - alias: reset_daily_vacuum_done_state_at_midnight
     id: reset_daily_vacuum_done_state_at_midnight
-    trigger:
-      - platform: time
+    triggers:
+      - trigger: time
         at: '0:00:00'
-    action:
-      - service: homeassistant.turn_off
-        entity_id: input_boolean.daily_vacuum_done
+    actions:
+      - action: homeassistant.turn_off
+        target:
+            entity_id: input_boolean.daily_vacuum_done
 
   - alias: start_cleaning_ground_floor_room
     id: start_cleaning_ground_floor_room
     initial_state: false
-    trigger:
-      - platform: state
+    triggers:
+      - trigger: state
         entity_id: input_select.vacuum_ground_floor_room
         from: 'Auswahl'
-    condition:
+    conditions:
         # check stage
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
+    actions:
       # - service: script.turn_on
         # data_template:
             # entity_id: >
@@ -76,24 +78,25 @@
                  # script.vacuum_room2
                 # {% else %}
                 # {% endif %}
-      - service: input_select.select_option
-        entity_id: input_select.vacuum_ground_floor_room
-        data_template:
+      - action: input_select.select_option
+        target:
+            entity_id: input_select.vacuum_ground_floor_room
+        data:
             option: 'Auswahl'
 
   - alias: start_cleaning_first_floor_room
     id: start_cleaning_first_floor_room
     initial_state: false
-    trigger:
-      - platform: state
+    triggers:
+      - trigger: state
         entity_id: input_select.vacuum_first_floor_room
         from: 'Auswahl'
-    condition:
+    conditions:
         # check stage
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
+    actions:
       # - service: script.turn_on
         # data_template:
             # entity_id: >
@@ -103,17 +106,18 @@
                  # script.vacuum_room2
                 # {% else %}
                 # {% endif %}
-      - service: input_select.select_option
-        entity_id: input_select.vacuum_first_floor_room
-        data_template:
+      - action: input_select.select_option
+        target:
+            entity_id: input_select.vacuum_first_floor_room
+        data:
             option: 'Auswahl'
 
   - alias: start_daily_vacuum
     id: start_daily_vacuum
-    trigger:
-      - platform: time_pattern
+    triggers:
+      - trigger: time_pattern
         minutes: "/5"
-    condition:
+    conditions:
         condition: and
         conditions:
           - condition: state
@@ -140,10 +144,12 @@
           - condition: state
             entity_id: group.family
             state: 'not_home'
-    action:
-      - service: vacuum.start
-        entity_id:
-          - vacuum.roborock_s6_ground_floor
-          - vacuum.roborock_s6_first_floor
-      - service: input_boolean.toggle
-        entity_id: input_boolean.daily_vacuum_done
+    actions:
+      - action: vacuum.start
+        target:
+            entity_id:
+              - vacuum.roborock_s6_ground_floor
+              - vacuum.roborock_s6_first_floor
+      - action: input_boolean.toggle
+        target:
+            entity_id: input_boolean.daily_vacuum_done

@@ -2,68 +2,68 @@
 ### 22.08.2019 split up
 ###
 
-  - alias: pixel_node_preferences
-    id: pixel_node_preferences
-    trigger:
-      - platform: homeassistant
+  - alias: display_pixelnode_preferences
+    id: display_pixelnode_preferences
+    triggers:
+      - trigger: homeassistant
         event: start
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_time
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_date
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_weekday
-      - platform: state
+      - trigger: state
         entity_id: input_number.pixel_node_display_duration
-      - platform: state
+      - trigger: state
         entity_id: input_number.pixel_node_display_brightness
-      - platform: state
+      - trigger: state
         entity_id: input_number.pixel_node_display_shakeperiod
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg0
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg1
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg2
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg3
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg4
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg5
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg6
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg7
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg8
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg9
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg10
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg11
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg12
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg13
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg14
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg15
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg16
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg17
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg18
-      - platform: state
+      - trigger: state
         entity_id: input_boolean.pixel_node_msg19
-    action:
-      - service: mqtt.publish
-        data_template:
+    actions:
+      - action: mqtt.publish
+        data:
             topic: nodes@home/display/pixel/kitchen/command
-            payload: >
+            payload: >-
                 {
                     "display": {
                         "duration": {{ states ( 'input_number.pixel_node_display_duration' ) | round ( 0 ) }},
@@ -99,16 +99,16 @@
             qos: 0
             retain: true
 
-  - alias: display_show_outdoor_temperature
+  - alias: display_outdoor_temperature
     id: display_show_outdoor_temperature
-    trigger:
-      - platform: mqtt
+    triggers:
+      - trigger: mqtt
         topic: nodes@home/sensor/DHT22/terrace/value/temperature
-    action:
-      - service: mqtt.publish
-        data_template:
+    actions:
+      - action: mqtt.publish
+        data:
             topic: nodes@home/display/pixel/kitchen/message/temperature/outdoor
-            payload: >
+            payload: >-
                 {
                     "messages": [
                         {
@@ -119,24 +119,17 @@
                 }
             qos: 0
             retain: true
-      - service: mqtt.publish
-        data_template:
-            topic: nodes@home/display/oled/kitchen/message/outdoor
-            payload: >
-                { "title": "Terasse", "text": "{{trigger.payload_json.value}}°C" }
-            qos: 0
-            retain: true
 
-  - alias: display_show_indoor_temperature
+  - alias: display_show_temperature
     id: display_show_indoor_temperature
-    trigger:
-      - platform: mqtt
+    triggers:
+      - trigger: mqtt
         topic: nodes@home/sensor/DHT22/lounge/value/temperature
-    action:
-      - service: mqtt.publish
-        data_template:
+    actions:
+      - action: mqtt.publish
+        data:
             topic: nodes@home/display/pixel/kitchen/message/temperature/indoor
-            payload: >
+            payload: >-
                 {
                     "messages": [
                         {
@@ -147,24 +140,17 @@
                 }
             qos: 0
             retain: true
-      - service: mqtt.publish
-        data_template:
-            topic: nodes@home/display/oled/kitchen/message/indoor
-            payload: >
-                { "title": "Wohnzimmer", "text": "{{trigger.payload_json.value}}°C" }
-            qos: 0
-            retain: true
 
   - alias: display_show_pool_temperature
     id: display_show_pool_temperature
-    trigger:
-      - platform: mqtt
+    triggers:
+      - trigger: mqtt
         topic: nodes@home/sensor/ds18b20/pool/value/temperature
-    action:
-      - service: mqtt.publish
-        data_template:
+    actions:
+      - action: mqtt.publish
+        data:
             topic: nodes@home/display/pixel/kitchen/message/temperature/pool
-            payload: >
+            payload: >-
                 {
                     "messages": [
                         {
@@ -173,12 +159,5 @@
                         }
                     ]
                 }
-            qos: 0
-            retain: true
-      - service: mqtt.publish
-        data_template:
-            topic: nodes@home/display/oled/kitchen/message/pool
-            payload: >
-                { "title": "Pool", "text": "{{trigger.payload_json.value | round ( 1 )}}°C" }
             qos: 0
             retain: true

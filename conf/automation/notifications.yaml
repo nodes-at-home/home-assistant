@@ -2,15 +2,15 @@
 ### 21.06.2023
 ###
 
-  - alias: notification_open_doors_and_windows
-    id: notification_open_doors_and_windows
-    trigger:
-        platform: state
+  - alias: notifications_open_doors_and_windows
+    id: notifications_open_doors_and_windows
+    triggers:
+        trigger: state
         entity_id: media_player.sony_kd_55ag9
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.notification_tv_on_delay' ) | int }}"
-    condition:
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
@@ -49,7 +49,7 @@
             {% endif %}
             {{ ns.msg1 }}
             {{ ns.msg2 }}
-    action:
+    actions:
       - action: script.notify
         data:
             domain: open_doors_and_windows
@@ -57,9 +57,9 @@
 
 # template  getting all nodestate entities
 # - {{ states.binary_sensor | selectattr ( 'entity_id', 'search', 'nodestate_' ) | map ( attribute = 'entity_id' ) | list | join ( '\n- ' ) }}
-#
-  - alias: nodestate
-    id: nodestate
+
+  - alias: notifications_nodestate
+    id: notifications_nodestate
     mode: queued
     triggers:
       - trigger: state

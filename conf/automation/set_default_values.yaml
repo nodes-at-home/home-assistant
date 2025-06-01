@@ -5,514 +5,577 @@
   - alias: set_default_values
     id: set_default_values
     trigger:
-    action:
+    actions:
 
       #--------------------------------------------------------------------------
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.button_indoor_activated
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.button_garage_activated
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.button_pool_activated
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.gesture_kitchen_activated
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.touch_bedroom_activated
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.light_simulation
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_time
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_date
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.pixel_node_weekday
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg0
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg1
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg2
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg3
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg4
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg5
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg6
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg7
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg8
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg9
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg10
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.pixel_node_msg11
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg12
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg13
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg14
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.pixel_node_msg15
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.pixel_node_msg16
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.pixel_node_msg17
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg18
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.pixel_node_msg19
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.daily_vacuum_done
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.daily_vacuum
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.dustbin_notification
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_activated
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.mowing_activated
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.circulating_pump_activated
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_scheduled_valve1
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_valve1_at_monday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve1_at_tuesday
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_valve1_at_wednesday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve1_at_thursday
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_valve1_at_friday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve1_at_saturday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve1_at_sunday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_scheduled_valve2
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve2_at_monday
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_valve2_at_tuesday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve2_at_wednesday
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_valve2_at_thursday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve2_at_friday
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_valve2_at_saturday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve2_at_sunday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_scheduled_valve3
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_valve3_at_monday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve3_at_tuesday
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_valve3_at_wednesday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve3_at_thursday
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.irrigation_valve3_at_friday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve3_at_saturday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.irrigation_valve3_at_sunday
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.cover_closing_at_cold_activated
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.cover_bedroom
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.cover_bath
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.cover_office
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.cover_nursery
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.cover_closed_at_low_temp
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.climate_activated
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.climate_start_office
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.climate_start_bedroom
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.climate_start_nursery
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.climate_stop_office
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.climate_stop_bedroom
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.climate_stop_nursery
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.climate_office_started
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.climate_bedroom_started
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.climate_nursery_started
-      - service: input_boolean.turn_on
-        data:
+      - action: input_boolean.turn_on
+        target:
             entity_id: input_boolean.dishwasher_activated
-      - service: input_boolean.turn_off
-        data:
+      - action: input_boolean.turn_off
+        target:
             entity_id: input_boolean.circulating_pump_running_desinfection
 
       #--------------------------------------------------------------------------
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.nightlight_end
-            time: '04:00:00'
-      - service: input_datetime.set_datetime
         data:
+            time: '04:00:00'
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.pitouch_off
+        data:
             time: '23:30:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.pool_pump_start1
+        data:
             time: '11:00:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.pool_pump_start2
+        data:
             time: '20:00:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.sleep
+        data:
             time: '22:00:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.standup_weekend
-            time: '08:00:00'
-      - service: input_datetime.set_datetime
         data:
+            time: '08:00:00'
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.standup_workday
+        data:
             time: '05:30:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.tv_off_period_end
-            time: '06:00:00'
-      - service: input_datetime.set_datetime
         data:
+            time: '06:00:00'
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.tv_off_period_start
+        data:
             time: '21:00:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.vacuum_period_end
+        data:
             time: '17:00:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.vacuum_period_start
-            time: '08:00:00'
-      - service: input_datetime.set_datetime
         data:
+            time: '08:00:00'
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.irrigation_start_1
-            time: '04:00:00'
-      - service: input_datetime.set_datetime
         data:
+            time: '04:00:00'
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.irrigation_start_2
+        data:
             time: '04:00:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.irrigation_start_3
+        data:
             time: '06:00:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.mowing_start
+        data:
             time: '08:30:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.mowing_end
+        data:
             time: '16:30:00'
-      - service: input_datetime.set_datetime
-        data:
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.climate_startperiode_begin
-            time: '08:00:00'
-      - service: input_datetime.set_datetime
         data:
+            time: '08:00:00'
+      - action: input_datetime.set_datetime
+        target:
             entity_id: input_datetime.climate_startperiode_end
+        data:
             time: '12:00:00'
 
       #--------------------------------------------------------------------------
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.effect_delay
-            value: 1500
-      - service: input_number.set_value
         data:
+            value: 1500
+      - action: input_number.set_value
+        target:
             entity_id: input_number.max_random_off_duration
-            value: 120
-      - service: input_number.set_value
         data:
+            value: 120
+      - action: input_number.set_value
+        target:
             entity_id: input_number.nightlight_duration
-            value: 15
-      - service: input_number.set_value
         data:
+            value: 15
+      - action: input_number.set_value
+        target:
             entity_id: input_number.pitouch_delay
-            value: 15
-      - service: input_number.set_value
         data:
+            value: 15
+      - action: input_number.set_value
+        target:
             entity_id: input_number.pixel_node_display_brightness
-            value: 2
-      - service: input_number.set_value
         data:
+            value: 2
+      - action: input_number.set_value
+        target:
             entity_id: input_number.pixel_node_display_duration
+        data:
             value: 3
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.pixel_node_display_shakeperiod
+        data:
             value: 130
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.pool_pump_duration
+        data:
             value: 120
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.tvoff_lightsoff_delay1
-            value: 1
-      - service: input_number.set_value
         data:
+            value: 1
+      - action: input_number.set_value
+        target:
             entity_id: input_number.tvoff_lightsoff_delay2
+        data:
             value: 7
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.light_timeout
-            value: 15
-      - service: input_number.set_value
         data:
+            value: 15
+      - action: input_number.set_value
+        target:
             entity_id: input_number.irrigation_duration
+        data:
             value: 30
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.circulating_pump_activated_after_standup
+        data:
             value: 2
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.circulating_pump_activated_before_sleeping
+        data:
             value: 4
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.circulating_pump_on_period
-            value: 15
-      - service: input_number.set_value
         data:
+            value: 15
+      - action: input_number.set_value
+        target:
             entity_id: input_number.circulating_pump_on_duration
+        data:
             value: 1
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.soil_moisture1_min_voltage
-            value: 1500
-      - service: input_number.set_value
         data:
+            value: 1500
+      - action: input_number.set_value
+        target:
             entity_id: input_number.soil_moisture1_max_voltage
-            value: 3000
-      - service: input_number.set_value
         data:
+            value: 3000
+      - action: input_number.set_value
+        target:
             entity_id: input_number.soil_moisture2_min_voltage
-            value: 1500
-      - service: input_number.set_value
         data:
+            value: 1500
+      - action: input_number.set_value
+        target:
             entity_id: input_number.soil_moisture2_max_voltage
-            value: 3000
-      - service: input_number.set_value
         data:
+            value: 3000
+      - action: input_number.set_value
+        target:
             entity_id: input_number.soil_moisture3_min_voltage
+        data:
             value: 1500
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.soil_moisture3_max_voltage
+        data:
             value: 3000
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.electricity_meter_threshold_power
+        data:
             value: 15000
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.electricity_import_critical_above
+        data:
             value: 100
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.battery_state_off_below
-            value: 20
-      - service: input_number.set_value
         data:
+            value: 20
+      - action: input_number.set_value
+        target:
             entity_id: input_number.electricity_price_in
+        data:
             value: 0.40
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.electricity_price_out
+        data:
             value: 0.077
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.waterpump_emergency_stop_duration
+        data:
             value: 20
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.waterpump_emergency_stop_power_threshold
+        data:
             value: 900
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.climate_target_temperature
+        data:
             value: 25
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.climate_min_forecast_temperature
+        data:
             value: 27
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.climate_min_forecast_temperature_sunny
+        data:
             value: 24
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.climate_min_battery_level
-            value: 95
-      - service: input_number.set_value
         data:
+            value: 95
+      - action: input_number.set_value
+        target:
             entity_id: input_number.climate_min_pv_generation
-            value: 2000
-      - service: input_number.set_value
         data:
+            value: 2000
+      - action: input_number.set_value
+        target:
             entity_id: input_number.climate_min_pv_generation_duration
+        data:
             value: 10
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.dishwasher_min_pv_generation
+        data:
             value: 2000
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.dishwasher_min_battery_level
+        data:
             value: 95
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.notification_tv_on_delay
+        data:
             value: 5
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.gasmeter_threshold_high
+        data:
             value: 100000
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.gasmeter_threshold_low
+        data:
             value: 1000
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.gasmeter_heating_value
+        data:
             value: 11.23
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.gasmeter_zustandszahl
+        data:
             value: 0.9655
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.circulating_pump_running_above_temp
+        data:
             value: 65
-      - service: input_number.set_value
-        data:
+      - action: input_number.set_value
+        target:
             entity_id: input_number.default_brightness
-            value: 15
-      - service: input_number.set_value
         data:
+            value: 15
+      - action: input_number.set_value
+        target:
             entity_id: input_number.brightness_delta
+        data:
             value: 5
 
       #--------------------------------------------------------------------------
-      - service: input_select.select_option
+      - action: input_select.select_option
         target:
           entity_id: input_select.climate_hvac_mode
         data:
           option: cool
-      - service: input_select.select_option
+      - action: input_select.select_option
         target:
           entity_id: input_select.climate_fan_mode
         data:
           option: auto
-      - service: input_select.select_option
+      - action: input_select.select_option
         target:
           entity_id: input_select.climate_swing_mode
         data:
           option: on
-      - service: input_select.select_option
+      - action: input_select.select_option
         target:
           entity_id: input_select.climate_preset_mode
         data:

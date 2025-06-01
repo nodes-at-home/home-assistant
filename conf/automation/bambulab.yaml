@@ -7,21 +7,21 @@
     id: bambulab_light
     mode: restart
     variables:
-      led_brightness: 255
-      ok_duration: 2
-    trigger:
-      - platform: state
+        led_brightness: 255
+        ok_duration: 2
+    triggers:
+      - trigger: state
         alias: When printer stage,status or chamber light state changes
         entity_id:
           - light.x1c_00m09a410500788_druckraumbeleuchtung
           - sensor.x1c_00m09a410500788_druckstatus
           - sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
-    condition:
+    conditions:
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
+    actions:
       - if:
           - condition: state
             alias: chamber light is on
@@ -54,41 +54,41 @@
                     - unknown
                     - offline
               sequence:
-                - service: light.turn_on
+                - action: light.turn_on
                   data:
-                    rgb_color: [255, 0, 0]
-                    # brightnness: "{{ led_brightness }}"
-                    effect: blink
+                      rgb_color: [255, 0, 0]
+                      # brightnness: "{{ led_brightness }}"
+                      effect: blink
                   target:
-                    entity_id: light.ws2812_x1c
+                      entity_id: light.ws2812_x1c
             # idle, finsh: green for 5 min, then white
             - conditions:
               - or:
-                #- condition: state
-                #  entity_id: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
-                #  state:
-                #    - idle
+                # - condition: state
+                #   entity_id: sensor.x1c_00m09a410500788_aktueller_arbeitsschritt
+                #   state:
+                #     - idle
                 - condition: state
                   entity_id: sensor.x1c_00m09a410500788_druckstatus
                   state:
                     - finish
               sequence:
-                - service: light.turn_on
+                - action: light.turn_on
                   data:
-                    rgb_color: [0, 255, 0]
-                    # brightnness: "{{ led_brightness }}"
-                    effect: static
+                      rgb_color: [0, 255, 0]
+                      # brightnness: "{{ led_brightness }}"
+                      effect: static
                   target:
-                    entity_id: light.ws2812_x1c
+                      entity_id: light.ws2812_x1c
                 - delay:
-                    minutes: "{{ ok_duration }}"
-                - service: light.turn_on
+                      minutes: "{{ ok_duration }}"
+                - action: light.turn_on
                   data:
-                    rgb_color: [255, 255, 255]
-                    # brightnness: "{{ led_brightness }}"
-                    effect: static
+                      rgb_color: [255, 255, 255]
+                      # brightnness: "{{ led_brightness }}"
+                      effect: static
                   target:
-                    entity_id: light.ws2812_x1c
+                      entity_id: light.ws2812_x1c
             # bed leveling: blue
             - conditions:
                 - or:
@@ -107,13 +107,13 @@
                       - homing_toolhead
                       - identifying_build_plate_type
               sequence:
-                - service: light.turn_on
+                - action: light.turn_on
                   data:
-                    rgb_color: [0, 0, 255]
-                    # brightnness: "{{ led_brightness }}"
-                    effect: static
+                      rgb_color: [0, 0, 255]
+                      # brightnness: "{{ led_brightness }}"
+                      effect: static
                   target:
-                    entity_id: light.ws2812_x1c
+                      entity_id: light.ws2812_x1c
             # heating: yellow
             - conditions:
                 - or:
@@ -123,13 +123,13 @@
                       - heatbed_preheating
                       - heating_hotend
               sequence:
-                - service: light.turn_on
+                - action: light.turn_on
                   data:
-                    rgb_color: [255, 169, 0]
-                    # brightnness: "{{ led_brightness }}"
-                    effect: static
+                      rgb_color: [255, 169, 0]
+                      # brightnness: "{{ led_brightness }}"
+                      effect: static
                   target:
-                    entity_id: light.ws2812_x1c
+                      entity_id: light.ws2812_x1c
             # filament loading: lila
             - conditions:
                 - or:
@@ -139,13 +139,13 @@
                       - filament_loading
                       - filament_unloading
               sequence:
-                - service: light.turn_on
+                - action: light.turn_on
                   data:
-                    rgb_color: [255, 0, 255]
-                    # brightnness: "{{ led_brightness }}"
-                    effect: blink
+                      rgb_color: [255, 0, 255]
+                      # brightnness: "{{ led_brightness }}"
+                      effect: blink
                   target:
-                    entity_id: light.ws2812_x1c
+                      entity_id: light.ws2812_x1c
             # filament loading: blue
             - conditions:
                 - or:
@@ -154,28 +154,28 @@
                     state:
                       - cooling_chamber
               sequence:
-                - service: light.turn_on
+                - action: light.turn_on
                   data:
-                    rgb_color: [0, 0, 255]
-                    # brightnness: "{{ led_brightness }}"
-                    effect: static
+                      rgb_color: [0, 0, 255]
+                      # brightnness: "{{ led_brightness }}"
+                      effect: static
                   target:
-                    entity_id: light.ws2812_x1c
+                      entity_id: light.ws2812_x1c
             default:
             # white
-              - service: light.turn_on
+              - action: light.turn_on
                 alias: torn on with white light (default)
                 data:
-                  rgb_color: [255, 255, 255]
-                  # brightnness: "{{ led_brightness }}"
-                  effect: static
+                    rgb_color: [255, 255, 255]
+                    # brightnness: "{{ led_brightness }}"
+                    effect: static
                 target:
-                  entity_id: light.ws2812_x1c
+                    entity_id: light.ws2812_x1c
         else:
-          - service: light.turn_off
+          - action: light.turn_off
             alias: turn off
             target:
-              entity_id: light.ws2812_x1c
+                entity_id: light.ws2812_x1c
 
 
 
