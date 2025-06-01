@@ -18,8 +18,6 @@
                 required: true
                 example: Das ist eine Nachricht
                 default: Das ist eine Nachricht
-        variables:
-            title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
         sequence:
           - repeat:
               for_each:
@@ -34,6 +32,7 @@
                     - action: script.notify_channel
                       data:
                           channel: "{{ repeat.item }}"
+                          domain: "{{ domain }}"
                           message: "{{ message }}"
 
   - notify_channel:
@@ -45,6 +44,13 @@
                 required: true
                 example: simplepush
                 default: simplepush
+            domain:
+                name: Domäne
+                description: die Domäne
+                advanced: false
+                required: true
+                example: open_doors_and_windows
+                default: keine
             message:
                 name: Nachricht
                 description: die Nachricht
@@ -52,16 +58,16 @@
                 required: true
                 example: Das ist eine Nachricht
                 default: Das ist eine Nachricht
-        variables:
-            title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
         sequence:
+          - variables:
+                title: "{{ states ( 'input_text.hostname' ) | lower }}: Home Assistant ({{ domain }})"
           - or:
-            - condition: state
-              entity_id: binary_sensor.prod_mode
-              state: 'on'
-            - condition: state
-              entity_id: input_boolean.debug_notifications
-              state: 'on'
+              - condition: state
+                entity_id: binary_sensor.prod_mode
+                state: 'on'
+              - condition: state
+                entity_id: input_boolean.debug_notifications
+                state: 'on'
           - choose:
               - conditions: "{{ channel == 'simplepush' }}"
                 sequence:

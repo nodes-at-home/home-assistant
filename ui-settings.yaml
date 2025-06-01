@@ -164,6 +164,16 @@ views:
                   name: simplepush
                 - entity: input_boolean.notify_doorlocks_whatsapp
                   name: whatsapp
+            - type: section
+              label: USV
+            - type: buttons
+              entities:
+                - entity: input_boolean.notify_ups_tv
+                  name: tv
+                - entity: input_boolean.notify_ups_simplepush
+                  name: simplepush
+                - entity: input_boolean.notify_ups_whatsapp
+                  name: whatsapp
 
   - title: Garten
     path: garden

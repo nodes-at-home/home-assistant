@@ -2,46 +2,47 @@
 ### 22.08.2019 split up
 ###
 
-  - alias: send_effect_delay
-    id: send_effect_delay
-    trigger:
-        platform: state
+  - alias: lights_send_effect_delay
+    id: lights_send_effect_delay
+    triggers:
+        trigger: state
         entity_id: input_number.effect_delay
     conditions:
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
-    action:
-      - service: mqtt.publish
-        data_template:
+        state: "on"
+    actions:
+      # TODO refactor to use repeat loop
+      - action: mqtt.publish
+        data:
             topic: nodes@home/light/ws2812/terrace1/service/set
             payload: '{"delay":{{ trigger.to_state.state | int }}}'
             qos: 0
             retain: false
-      - service: mqtt.publish
-        data_template:
+      - action: mqtt.publish
+        data:
             topic: nodes@home/light/ws2812/terrace2/service/set
             payload: '{"delay":{{ trigger.to_state.state | int }}}'
             qos: 0
             retain: false
-      - service: mqtt.publish
-        data_template:
+      - action: mqtt.publish
+        data:
             topic: nodes@home/light/ws2812/office/service/set
             payload: '{"delay":{{ trigger.to_state.state | int }}}'
             qos: 0
             retain: false
 
-  - alias: indoor_lights_on_at_coming_home_or_sunset
-    id: indoor_lights_on_at_coming_home_or_sunset
+  - alias: lights_indoor_on_at_coming_home_or_sunset
+    id: lights_indoor_on_at_coming_home_or_sunset
     triggers:
-      - platform: state
+      - trigger: state
         entity_id: group.family
         to: 'home'
-      - platform: sun
+      - trigger: sun
         event: sunset
         offset: "00:00:00"
-      - platform: event
+      - trigger: event
         event_type:  bosch_shc.event
         event_data:
             event_type: SCENARIO
@@ -50,7 +51,7 @@
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
       - condition: sun
         after: sunset
         after_offset: "00:00:00"
@@ -63,20 +64,21 @@
             state: 'home'
           - condition: state
             entity_id: input_boolean.light_simulation
-            state: 'on'
+            state: "on"
     actions:
       - action: homeassistant.turn_on
-        entity_id:
-            - light.automatic_indoor_lights_immediatly_switched_off
-            - light.automatic_indoor_lights_delayed_switched_off
+        target:
+          entity_id:
+              - light.automatic_indoor_lights_immediatly_switched_off
+              - light.automatic_indoor_lights_delayed_switched_off
 
-  - alias: indoor_lights_by_night_on_at_coming_home
-    id: indoor_lights_by_night_on_at_coming_home
+  - alias: lights_indoor_by_night_on_at_coming_home
+    id: lights_indoor_by_night_on_at_coming_home
     triggers:
-      - platform: state
+      - trigger: state
         entity_id: group.family
         to: 'home'
-      - platform: event
+      - trigger: event
         event_type:  bosch_shc.event
         event_data:
             event_type: SCENARIO
@@ -85,7 +87,7 @@
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
       - condition: sun
         after: sunset
         after_offset: "00:00:00"
@@ -96,27 +98,27 @@
         entity_id: group.family
         state: 'home'
     actions:
-      - service: homeassistant.turn_on
-        entity_id:
-            - light.automatic_indoor_lights_by_night
+      - action: homeassistant.turn_on
+        target:
+            entity_id: light.automatic_indoor_lights_by_night
       - delay:
             minutes: "{{ states ( 'input_number.nightlight_duration' ) | int }}"
-      - service: homeassistant.turn_off
-        entity_id:
-            - light.automatic_indoor_lights_by_night
+      - action: homeassistant.turn_off
+        target:
+            entity_id: light.automatic_indoor_lights_by_night
 
-  - alias: indoor_lights_off_at_getting_out_or_sunrise
-    id: indoor_lights_off_at_getting_out_or_sunrise
+  - alias: lights_indoor_off_at_getting_out_or_sunrise
+    id: lights_indoor_off_at_getting_out_or_sunrise
     triggers:
-      - platform: state
+      - trigger: state
         entity_id: group.family
         to: 'not_home'
         for:
-          minutes: 1
-      - platform: sun
+            minutes: 1
+      - trigger: sun
         event: sunrise
         offset: "+00:00:00"
-      - platform: event
+      - trigger: event
         event_type:  bosch_shc.event
         event_data:
             event_type: SCENARIO
@@ -125,22 +127,24 @@
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
-      - service: scene.turn_on
-        entity_id: scene.kitchen_background_light
+      - action: scene.turn_on
+        target:
+            entity_id: scene.kitchen_background_light
       - service: homeassistant.turn_off
-        entity_id:
-            - light.automatic_indoor_lights_immediatly_switched_off
-            - light.automatic_indoor_lights_delayed_switched_off
-            - light.automatic_indoor_lights_immediatly_switched_off_extra
-            - light.automatic_indoor_lights_delayed_switched_off_extra
-            - light.automatic_indoor_lights_sunrise_switched_off_extra
+        target:
+            entity_id:
+              - light.automatic_indoor_lights_immediatly_switched_off
+              - light.automatic_indoor_lights_delayed_switched_off
+              - light.automatic_indoor_lights_immediatly_switched_off_extra
+              - light.automatic_indoor_lights_delayed_switched_off_extra
+              - light.automatic_indoor_lights_sunrise_switched_off_extra
 
-  - alias: indoor_lights_off_when_tv_switched_off
-    id: indoor_lights_off_when_tv_switched_off
+  - alias: lights_indoor_off_when_tv_switched_off
+    id: lights_indoor_off_when_tv_switched_off
     triggers:
-        platform: state
+        trigger: state
         entity_id: remote.sony_kd_55ag9
         from: "on"
         to: "off"
@@ -150,84 +154,91 @@
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
       - condition: time
         after: input_datetime.tv_off_period_start
         before: input_datetime.tv_off_period_end
     actions:
       - delay:
             minutes: "{{ states ( 'input_number.tvoff_lightsoff_delay1' ) | int - 1 }}"
-      - service: scene.turn_on
-        entity_id: scene.kitchen_background_light
-      - service: homeassistant.turn_off
-        entity_id:
-            - light.automatic_indoor_lights_immediatly_switched_off
-            - light.automatic_indoor_lights_immediatly_switched_off_extra
+      - action: scene.turn_on
+        target:
+            entity_id: scene.kitchen_background_light
+      - action: homeassistant.turn_off
+        target:
+            entity_id:
+              - light.automatic_indoor_lights_immediatly_switched_off
+              - light.automatic_indoor_lights_immediatly_switched_off_extra
       - delay:
             minutes: "{{ ( states ( 'input_number.tvoff_lightsoff_delay2' ) | int - states ( 'input_number.tvoff_lightsoff_delay1' ) | int ) }}"
-      - service: homeassistant.turn_off
-        entity_id:
-            - light.automatic_indoor_lights_delayed_switched_off
-            - light.automatic_indoor_lights_delayed_switched_off_extra
+      - action: homeassistant.turn_off
+        target:
+            entity_id:
+              - light.automatic_indoor_lights_delayed_switched_off
+              - light.automatic_indoor_lights_delayed_switched_off_extra
 
-  - alias: indoor_lights_off_after_random_delay
-    id: indoor_lights_off_after_random_delay
+  - alias: lights_indoor_off_after_random_delay
+    id: lights_indoor_off_after_random_delay
     triggers:
-      - platform: time
+      - trigger: time
         at: input_datetime.sleep
     conditions:
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.light_simulation
-        state: 'on'
+        state: "on"
     actions:
       # switch off between 22:00 amd 24:00
       - delay:
             minutes: "{{ range ( 0,  states ( 'input_number.max_random_off_duration' ) | int ) | random | int }}"
-      - service: scene.turn_on
-        entity_id: scene.kitchen_background_light
-      - service: homeassistant.turn_off
-        entity_id:
-            - light.automatic_indoor_lights_immediatly_switched_off
-            - light.automatic_indoor_lights_delayed_switched_off
-            - light.automatic_indoor_lights_immediatly_switched_off_extra
-            - light.automatic_indoor_lights_delayed_switched_off_extra
+      - action: scene.turn_on
+        target:
+            entity_id: scene.kitchen_background_light
+      - action: homeassistant.turn_off
+        target:
+            entity_id:
+              - light.automatic_indoor_lights_immediatly_switched_off
+              - light.automatic_indoor_lights_delayed_switched_off
+              - light.automatic_indoor_lights_immediatly_switched_off_extra
+              - light.automatic_indoor_lights_delayed_switched_off_extra
 
-  - alias: indoor_lights_simulation_off_at_coming_home
-    id: indoor_lights_simulation_off_at_coming_home
+  - alias: lights_indoor_simulation_off_at_coming_home
+    id: lights_indoor_simulation_off_at_coming_home
     triggers:
-      - platform: state
+      - trigger: state
         entity_id: group.family
         to: 'home'
     conditions:
       - condition: state
         entity_id: input_boolean.light_simulation
-        state: 'on'
+        state: "on"
     actions:
-      - service: input_boolean.turn_off
-        entity_id: input_boolean.light_simulation
+      - action: input_boolean.turn_off
+        target:
+            entity_id: input_boolean.light_simulation
 
-  - alias: indoor_roof_light
-    id: indoor_roof_light
+  - alias: lights_indoor_attic_light_toggle
+    id: lights_indoor_attic_light_toggle
     triggers:
-      - platform: state
+      - trigger: state
         entity_id: binary_sensor.dachboden
     conditions:
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
-      - service: light.turn_{{ trigger.to_state.state }}
-        entity_id: light.shelly_roof_socket
+      - action: light.turn_{{ trigger.to_state.state }}
+        target:
+            entity_id: light.shelly_roof_socket
 
-  - alias: indoor_lights_shelly_off_after_timeout
-    id: indoor_lights_shelly_off_after_timeout
+  - alias: lights_indoor_shelly_off_after_timeout
+    id: lights_indoor_shelly_off_after_timeout
     triggers:
-      - platform: state
+      - trigger: state
         entity_id:
           - light.shelly_shower_socket
           - light.shelly_bath_socket
@@ -241,17 +252,17 @@
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: sun.sun
         state: 'above_horizon'
     actions:
       - action: light.turn_off
         target:
-          entity_id: "{{ trigger.entity_id }}"
+            entity_id: "{{ trigger.entity_id }}"
 
-  - alias: indoor_lights_hall_on_at_opening_door
-    id: indoor_lights_hall_on_at_opening_door
+  - alias: lights_indoor_hall_on_at_opening_door
+    id: lights_indoor_lights_on_at_opening_door
     triggers:
       - platform: state
         entity_id: binary_sensor.eingangstur
@@ -260,14 +271,14 @@
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: sun.sun
         state: 'below_horizon'
     actions:
       - action: light.turn_on
         target:
-          entity_id: light.shelly_flur_switch_0
+            entity_id: light.shelly_flur_switch_0
 
   # - alias: indoor_lights_desk_rgblamp_on
   #   id: indoor_lights_desk_rgblamp_on
@@ -281,7 +292,7 @@
   #     - condition: state
   #       alias: process only on production server
   #       entity_id: binary_sensor.prod_mode
-  #       state: 'on'
+  #       state: "on"
   #   actions:
   #     - action: light.turn_on
   #       target:
@@ -302,7 +313,7 @@
   #     - condition: state
   #       alias: process only on production server
   #       entity_id: binary_sensor.prod_mode
-  #       state: 'on'
+  #       state: "on"
   #   actions:
   #     - action: light.turn_off
   #       target:
@@ -329,11 +340,11 @@
   #     - condition: state
   #       alias: process only on production server
   #       entity_id: binary_sensor.prod_mode
-  #       state: 'on'
+  #       state: "on"
   #     - condition: state
   #       alias: only when light is on
   #       entity_id: light.ws2812_office
-  #       state: 'on'
+  #       state: "on"
   #   actions:
   #     - action: light.turn_on
   #       target:
@@ -341,125 +352,132 @@
   #       data:
   #         brightness: "{{ state_attr ( 'light.ws2812_office', 'brightness' ) | int + delta * states ( 'input_number.brightness_delta' ) | int }}"
 
-  - alias: bedroom_lights_toggle
-    id: bedroom_lights_toggle
-    trigger:
-      - platform: state
+  - alias: lights_bedroom_toggle
+    id: lights_bedroom_toggle
+    triggers:
+      - trigger: state
         entity_id: binary_sensor.ttp223_bedroom_touch1
-        to: 'on'
-      - platform: state
+        to: "on"
+      - trigger: state
         entity_id: binary_sensor.ttp223_bedroom_touch2
-        to: 'on'
-      - platform: state
+        to: "on"
+      - trigger: state
         entity_id: binary_sensor.ttp223_bedroom_touch3
-        to: 'on'
-      - platform: state
+        to: "on"
+      - trigger: state
         entity_id: binary_sensor.ttp223_bedroom_touch4
-        to: 'on'
-    condition:
+        to: "on"
+    conditions:
       - condition: state
         entity_id: input_boolean.touch_bedroom_activated
-        state: 'on'
-    action:
-      - service: light.toggle
-        entity_id:
-            - light.sonoff_bedroom_socket
+        state: "on"
+    actions:
+      - action: light.toggle
+        target:
+            entity_id:
+              - light.sonoff_bedroom_socket
 
-  - alias: kitchen_desk_light_toggle
-    id: kitchen_desk_light_toggle
-    trigger:
-      - platform: state
+  - alias: lights_kitchen_desk_toggle
+    id: lights_kitchen_desk_toggle
+    triggers:
+      - trigger: state
         entity_id: binary_sensor.gesture_kitchen
-        to: 'on'
+        to: "on"
     conditions:
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.gesture_kitchen_activated
-        state: 'on'
-    action:
+        state: "on"
+    actions:
       - if:
           - condition: or
             conditions:
               - condition: state
                 entity_id: light.led_kitchen_led
-                state: 'off'
+                state: "off"
               - condition: and
                 conditions:
                   - condition: state
                     entity_id: light.led_kitchen_led
-                    state: 'on'
+                    state: "on"
                   - condition: template
                     value_template: '{{ states.light.led_kitchen_led.attributes.color_temp == 500 }}'
         then:
-          - service: scene.turn_on
-            entity_id: scene.kitchen_full_light
+          - action: scene.turn_on
+            target:
+                entity_id: scene.kitchen_full_light
         else:
-          - service: scene.turn_on
-            entity_id: scene.kitchen_background_light
+          - action: scene.turn_on
+            target:
+                entity_id: scene.kitchen_background_light
           - if:
               - condition: state
                 entity_id: light.relay_dining1_lamp
-                state: 'on'
+                state: "on"
                 alias: check for night lights switched on
             then:
             else:
-              - service: light.turn_off
-                entity_id: light.led_kitchen_led
+              - action: light.turn_off
+                target:
+                    entity_id: light.led_kitchen_led
 
-  - alias: kitchen_desk_light_on_by_motion
-    id: kitchen_desk_light_on_by_motion
-    trigger:
-      - platform: state
+  - alias: lights_kitchen_desk_on_by_motion
+    id: lights_kitchen_desk_on_by_motion
+    triggers:
+      - trigger: state
         entity_id: binary_sensor.bewegungsmelder1
-        to: 'on'
+        to: "on"
     conditions:
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.gesture_kitchen_activated
-        state: 'on'
+        state: "on"
       - condition: numeric_state
         entity_id: sensor.bewegungsmelder1_illuminance
         below: input_number.kitchen_desk_illuminance_threshold
-    action:
-      - service: scene.turn_on
-        entity_id: scene.kitchen_full_light
+    actions:
+      - action: scene.turn_on
+        target:
+            entity_id: scene.kitchen_full_light
 
-  - alias: kitchen_desk_light_off_by_motion
-    id: kitchen_desk_light_off_by_motion
-    trigger:
-      - platform: state
+  - alias: lights_kitchen_desk_off_by_motion
+    id: lights_kitchen_desk_off_by_motion
+    triggers:
+      - trigger: state
         entity_id: binary_sensor.bewegungsmelder1
-        to: 'off'
-    condition:
+        to: "off"
+    conditions:
       - condition: state
         entity_id: input_boolean.gesture_kitchen_activated
-        state: 'on'
-    action:
-      - service: scene.turn_on
-        entity_id: scene.kitchen_background_light
+        state: "on"
+    actions:
+      - action: scene.turn_on
+        target:
+            entity_id: scene.kitchen_background_light
       - if:
           - condition: state
             entity_id: light.relay_dining1_lamp
-            state: 'on'
+            state: "on"
             alias: check for night lights switched on
         then:
         else:
-          - service: light.turn_off
-            entity_id: light.led_kitchen_led
+          - action: light.turn_off
+            target:
+                entity_id: light.led_kitchen_led
 
-  - alias: outdoor_lights_on_at_night
-    id: outdoor_lights_on_at_night
-    trigger:
-      - platform: sun
+  - alias: lights_outdoor_on_at_night
+    id: lights_outdoor_on_at_night
+    triggers:
+      - trigger: sun
         event: sunset
         offset: "00:00:00"
-      - platform: event
+      - trigger: event
         event_type:  bosch_shc.event
         event_data:
             event_type: SCENARIO
@@ -468,19 +486,20 @@
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
-    action:
-      - service: light.turn_on
-        entity_id:
-            - light.automatic_outdoor_lights
+        state: "on"
+    actions:
+      - action: light.turn_on
+        target:
+            entity_id:
+              - light.automatic_outdoor_lights
 
-  - alias: outdoor_lights_off_at_morning
-    id: outdoor_lights_off_at_morning
-    trigger:
-      - platform: sun
+  - alias: lights_outdoor_off_at_morning
+    id: lights_outdoor_off_at_morning
+    triggers:
+      - trigger: sun
         event: sunrise
         offset: "+00:00:00"
-      - platform: event
+      - trigger: event
         event_type:  bosch_shc.event
         event_data:
             event_type: SCENARIO
@@ -489,8 +508,9 @@
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
-        state: 'on'
-    action:
-      - service: light.turn_off
-        entity_id:
-            - light.automatic_outdoor_lights
+        state: "on"
+    actions:
+      - action: light.turn_off
+        target:
+            entity_id:
+              - light.automatic_outdoor_lights

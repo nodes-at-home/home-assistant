@@ -31,3 +31,12 @@ notify_doorlocks_simplepush:
 
 notify_doorlocks_whatsapp:
     name: whatsapp
+
+notify_ups_tv:
+    name: tv
+
+notify_ups_simplepush:
+    name: simplepush
+
+notify_ups_whatsapp:
+    name: whatsapp

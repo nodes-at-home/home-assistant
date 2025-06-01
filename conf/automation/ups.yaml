@@ -17,37 +17,36 @@
     # https://www.reddit.com/r/homeassistant/comments/mydvfp/network_ups_tool_create_automation/
   - alias: ups_status_change
     id: ups_status_change
-    trigger:
-      - platform: state
+    triggers:
+      - trigger: state
         entity_id: sensor.ups_status
-    condition:
-        # check stage
-      # - condition: state
-        # entity_id: binary_sensor.prod_mode
-        # state: 'on'
+    conditions:
       - condition: template
         value_template: "{{ trigger.from_state is not none and trigger.to_state is not none }}"
-    action:
-      - service: notify.simplepush
+    actions:
+      - action: script.notify
         data:
-          message: "Neuer Status USV: {{ states ( 'sensor.ups_status' ) }}"
-          title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
+            domain: ups
+            message: "Neuer Status USV: {{ states ( 'sensor.ups_status' ) }}"
+
 
     # https://stackoverflow.com/questions/42660690/is-it-possible-to-shut-down-the-host-machine-by-executing-a-command-on-one-of-it
   - alias: ups_shutdown_on_low_battery
     id: ups_shutdown_on_low_battery
-    trigger:
+    triggers:
       - platform: numeric_state
         entity_id: sensor.ups_batterielaufzeit
         below: input_number.ups_shutdown_at_battery_runtime
-    condition:
+    conditions:
         not:
           - condition: state
             entity_id: sensor.ups_status
             state: "Online"
-    action:
-      - service: notify.simplepush
+    actions:
+      - action: script.notify
         data:
-          message: "Runterfahren bei USV-Restlaufzeit von {{ '{:02d}:{:02d}'.format ( (states ( 'sensor.ups_batterielaufzeit' ) | int / 60) | int, (states ( 'sensor.ups_batterielaufzeit' ) | int % 60) | int ) }} min"
-          title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
-      - service: shell_command.request_shutdown
+            domain: ups
+            message: "Runterfahren bei USV-Restlaufzeit von {{ '{:02d}:{:02d}'.format ( (states ( 'sensor.ups_batterielaufzeit' ) | int / 60) | int, (states ( 'sensor.ups_batterielaufzeit' ) | int % 60) | int ) }} min"
+      - delay:
+            minutes: 1
+      - action: shell_command.request_shutdown

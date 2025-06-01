@@ -163,18 +163,6 @@ views:
           - type: horizontal-stack
             cards:
               - type: tile
-                entity: sensor.dht22_terrace_temperature
-                icon: mdi:thermometer
-              - type: tile
-                entity: sensor.dht22_lounge_pressure
-                icon: mdi:gauge
-              - type: tile
-                #entity: sensor.tileboard_temperature_template
-                entity: sensor.relay_garage_temperature
-                icon: mdi:thermometer
-          - type: horizontal-stack
-            cards:
-              - type: tile
                 entity: sensor.boiler_dhw_curtemp
                 name: Warmwasser
                 icon: mdi:thermometer

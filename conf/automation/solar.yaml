@@ -4,11 +4,10 @@
 
   - alias: solar_set_battery_forced_charge_discharge
     id: solar_set_battery_forced_charge_discharge
-    trigger:
-      - platform: state
-        entity_id:
-          - input_select.set_battery_forced_charge_discharge
-    condition:
+    triggers:
+      - trigger: state
+        entity_id: input_select.set_battery_forced_charge_discharge
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
@@ -16,9 +15,9 @@
         forced_charge: 0xAA
         forced_discharge: 0xBB
         stop_default: 0xCC
-    action:
-      - service: modbus.write_register
-        data_template:
+    actions:
+      - action: modbus.write_register
+        data:
             hub: SH10RT_master
             slave: 1
             address: 13050 # reg 13051
@@ -33,45 +32,41 @@
                 {% else %}
                     {{stop_default}}
                 {% endif %}
-    mode: single
 
   - alias: solar_update_battery_forced_charge_discharge
     id: solar_update_battery_forced_charge_discharge
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.battery_forced_charge_discharge
-    condition: []
-    action:
-      - service: input_select.select_option
+    triggers:
+      - trigger: state
+        entity_id: sensor.battery_forced_charge_discharge
+    conditions: []
+    actions:
+      - action: input_select.select_option
         target:
-          entity_id: input_select.set_battery_forced_charge_discharge
+            entity_id: input_select.set_battery_forced_charge_discharge
         data:
-          option: "{{ states ( 'sensor.battery_forced_charge_discharge' ) }}"
+            option: "{{ states ( 'sensor.battery_forced_charge_discharge' ) }}"
 
   - alias: solar_sh10rt_master_set_inverter_runmode
     id: solar_sh10rt_master_inverter_runmode
-    trigger:
-      - platform: state
-        entity_id:
-          - input_button.inverter_master_startup
+    triggers:
+      - trigger: state
+        entity_id: input_button.inverter_master_startup
         variables:
             runmode: startup
-      - platform: state
-        entity_id:
-          - input_button.inverter_master_shutdown
+      - trigger: state
+        entity_id: input_button.inverter_master_shutdown
         variables:
             runmode: shutdown
-    condition:
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
     variables:
         inverter_start: 0xCF
         inverter_stop: 0xCE
-    action:
-      - service: modbus.write_register
-        data_template:
+    actions:
+      - action: modbus.write_register
+        data:
             hub: SH10RT_master
             slave: 1
             address: 12999 # reg 13000
@@ -81,31 +76,28 @@
                 {% else %}
                     {{inverter_stop}}
                 {% endif %}
-    mode: single
 
   - alias: solar_sh10rt_slave_set_inverter_runmode
     id: solar_sh10rt_slave_set_inverter_runmode
-    trigger:
-      - platform: state
-        entity_id:
-          - input_button.inverter_slave_startup
+    triggers:
+      - trigger: state
+        entity_id: input_button.inverter_slave_startup
         variables:
             runmode: startup
-      - platform: state
-        entity_id:
-          - input_button.inverter_slave_shutdown
+      - trigger: state
+        entity_id: input_button.inverter_slave_shutdown
         variables:
             runmode: shutdown
-    condition:
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
     variables:
         inverter_start: 0xCF
         inverter_stop: 0xCE
-    action:
-      - service: modbus.write_register
-        data_template:
+    actions:
+      - action: modbus.write_register
+        data:
             hub: SH10RT_slave
             slave: 2
             address: 12999 # reg 13000
@@ -115,36 +107,32 @@
                 {% else %}
                     {{inverter_stop}}
                 {% endif %}
-    mode: single
 
   - alias: solar_set_max_soc
     id: solar_set_max_soc
-    trigger:
-      - platform: state
-        entity_id:
-          - input_number.set_max_soc
-    condition:
+    triggers:
+      - trigger: state
+        entity_id: input_number.set_max_soc
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
-      - service: modbus.write_register
-        data_template:
-          hub: SH10RT_master
-          slave: 1
-          address: 13057 # reg 13058
-          value: "{{ states ( 'input_number.set_max_soc' ) | int * 10 }}"
-    mode: single
+    actions:
+      - action: modbus.write_register
+        data:
+            hub: SH10RT_master
+            slave: 1
+            address: 13057 # reg 13058
+            value: "{{ states ( 'input_number.set_max_soc' ) | int * 10 }}"
 
   - alias: solar_update_max_soc
     id: solar_update_max_soc
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.sh10rt_master_max_soc
-    condition: []
-    action:
-      - service: input_number.set_value
+    triggers:
+      - trigger: state
+        entity_id: sensor.sh10rt_master_max_soc
+    conditions: []
+    actions:
+      - action: input_number.set_value
         target:
             entity_id: input_number.set_max_soc
         data:
@@ -152,32 +140,30 @@
 
   - alias: solar_set_min_soc
     id: solar_set_min_soc
-    trigger:
-      - platform: state
-        entity_id:
-          - input_number.set_min_soc
-    condition:
+    triggers:
+      - trigger: state
+        entity_id: input_number.set_min_soc
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
-      - service: modbus.write_register
-        data_template:
-          hub: SH10RT_master
-          slave: 1
-          address: 13058 # reg 13059
-          value: "{{ states ( 'input_number.set_min_soc' ) | int * 10 }}"
-    mode: single
+    actions:
+      - action: modbus.write_register
+        data:
+            hub: SH10RT_master
+            slave: 1
+            address: 13058 # reg 13059
+            value: "{{ states ( 'input_number.set_min_soc' ) | int * 10 }}"
 
   - alias: solar_update_min_soc
     id: solar_update_min_soc
-    trigger:
-      - platform: state
+    triggers:
+      - trigger: state
         entity_id:
           - sensor.sh10rt_master_min_soc
-    condition: []
-    action:
-      - service: input_number.set_value
+    conditions: []
+    actions:
+      - action: input_number.set_value
         target:
             entity_id: input_number.set_min_soc
         data:
@@ -185,236 +171,215 @@
 
   - alias: solar_set_backup_soc
     id: solar_set_backup_soc
-    trigger:
-      - platform: state
-        entity_id:
-          - input_number.set_backup_soc
-    condition:
+    triggers:
+      - trigger: state
+        entity_id: input_number.set_backup_soc
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
-      - service: modbus.write_register
-        data_template:
-          hub: SH10RT_master
-          slave: 1
-          address: 13099 # reg 13100
-          value: "{{ states ( 'input_number.set_backup_soc' ) | int }}"
-    mode: single
+    actions:
+      - action: modbus.write_register
+        data:
+            hub: SH10RT_master
+            slave: 1
+            address: 13099 # reg 13100
+            value: "{{ states ( 'input_number.set_backup_soc' ) | int }}"
 
   - alias: solar_update_backup_soc
     id: solar_update_backup_soc
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.sh10rt_master_reserved_soc_for_backup
-    condition: []
-    action:
-      - service: input_number.set_value
+    triggers:
+      - trigger: state
+        entity_id: sensor.sh10rt_master_reserved_soc_for_backup
+    conditions: []
+    actions:
+      - action: input_number.set_value
         target:
-            entity_id: input_number.set_backup_soc
+              entity_id: input_number.set_backup_soc
         data:
-            value: "{{ states ( 'sensor.sh10rt_master_reserved_soc_for_backup' ) }}"
+              value: "{{ states ( 'sensor.sh10rt_master_reserved_soc_for_backup' ) }}"
 
   - alias: solar_set_battery_charge_start_power
     id: solar_set_battery_charge_start_power
-    trigger:
-      - platform: state
-        entity_id:
-          - input_number.set_battery_charge_start_power
-    condition:
+    triggers:
+      - trigger: state
+        entity_id: input_number.set_battery_charge_start_power
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
-      - service: modbus.write_register
-        data_template:
-          hub: SH10RT_master
-          slave: 1
-          address: 33148 # reg 33149
-          value: "{{ ( states ( 'input_number.set_battery_charge_start_power' ) | float / 10.0 ) | int }}"
-    mode: single
+    actions:
+      - action: modbus.write_register
+        data:
+            hub: SH10RT_master
+            slave: 1
+            address: 33148 # reg 33149
+            value: "{{ ( states ( 'input_number.set_battery_charge_start_power' ) | float / 10.0 ) | int }}"
 
   - alias: solar_update_battery_charge_start_power
     id: solar_update_battery_charge_start_power
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.sh10rt_master_battery_charge_start_power
-    condition: []
-    action:
-      - service: input_number.set_value
+    triggers:
+      - trigger: state
+        entity_id: sensor.sh10rt_master_battery_charge_start_power
+    conditions: []
+    actions:
+      - action: input_number.set_value
         target:
-          entity_id: input_number.set_battery_charge_start_power
+            entity_id: input_number.set_battery_charge_start_power
         data:
-          value: "{{ states ( 'sensor.sh10rt_master_battery_charge_start_power' ) }}"
-    mode: single
+            value: "{{ states ( 'sensor.sh10rt_master_battery_charge_start_power' ) }}"
 
   - alias: solar_set_battery_discharge_start_power
     id: solar_set_battery_dischargestart_power
-    trigger:
-      - platform: state
-        entity_id:
-          - input_number.set_battery_discharge_start_power
-    condition:
+    triggers:
+      - trigger: state
+        entity_id: input_number.set_battery_discharge_start_power
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
-      - service: modbus.write_register
-        data_template:
-          hub: SH10RT_master
-          slave: 1
-          address: 33149 # reg 33150
-          value: "{{ ( states ( 'input_number.set_battery_discharge_start_power' ) |float / 10.0 ) | int}}"
-    mode: single
+    actions:
+      - action: modbus.write_register
+        data:
+            hub: SH10RT_master
+            slave: 1
+            address: 33149 # reg 33150
+            value: "{{ ( states ( 'input_number.set_battery_discharge_start_power' ) |float / 10.0 ) | int}}"
 
   - alias: solar_update_battery_discharge_start_power
     id: solar_update_battery_discharge_start_power
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.sh10rt_master_battery_discharge_start_power
+    triggers:
+      - trigger: state
+        entity_id: sensor.sh10rt_master_battery_discharge_start_power
     condition: []
-    action:
-      - service: input_number.set_value
+    actions:
+      - action: input_number.set_value
         target:
-          entity_id: input_number.set_battery_discharge_start_power
+            entity_id: input_number.set_battery_discharge_start_power
         data:
-          value: "{{ states ( 'sensor.sh10rt_master_battery_discharge_start_power' ) }}"
-    mode: single
+            value: "{{ states ( 'sensor.sh10rt_master_battery_discharge_start_power' ) }}"
 
   - alias: solar_set_battery_max_charge_power
     id: solar_set_battery_max_charge_power
-    trigger:
-      - platform: state
-        entity_id:
-          - input_number.set_battery_max_charge_power
-    condition:
+    triggers:
+      - trigger: state
+        entity_id: input_number.set_battery_max_charge_power
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
-      - service: modbus.write_register
-        data_template:
-          hub: SH10RT_master
-          slave: 1
-          address: 33046 # reg 33047
-          value: "{{ ( states ( 'input_number.set_battery_max_charge_power' ) | float / 10.0 ) | int}}"
-    mode: single
+    actions:
+      - action: modbus.write_register
+        data:
+            hub: SH10RT_master
+            slave: 1
+            address: 33046 # reg 33047
+            value: "{{ ( states ( 'input_number.set_battery_max_charge_power' ) | float / 10.0 ) | int}}"
 
   - alias: solar_update_battery_max_charge_power
     id: solar_update_battery_max_charge_power
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.sh10rt_master_battery_max_charge_power
-    condition: []
-    action:
-      - service: input_number.set_value
+    triggers:
+      - trigger: state
+        entity_id: sensor.sh10rt_master_battery_max_charge_power
+    conditions: []
+    actions:
+      - action: input_number.set_value
         target:
-          entity_id: input_number.set_battery_max_charge_power
+            entity_id: input_number.set_battery_max_charge_power
         data:
-          value: "{{ states ( 'sensor.sh10rt_master_battery_max_charge_power' ) }}"
+            value: "{{ states ( 'sensor.sh10rt_master_battery_max_charge_power' ) }}"
 
   - alias: solar_set_battery_max_discharge_power
     id: solar_set_battery_max_discharge_power
-    trigger:
-      - platform: state
-        entity_id:
-          - input_number.set_battery_max_discharge_power
-    condition:
+    triggers:
+      - trigger: state
+        entity_id: input_number.set_battery_max_discharge_power
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
-      - service: modbus.write_register
-        data_template:
-          hub: SH10RT_master
-          slave: 1
-          address: 33047 # reg 33048
-          value: "{{ ( states ( 'input_number.set_battery_max_discharge_power' ) | float / 10.0 ) | int}}"
-    mode: single
+    actions:
+      - action: modbus.write_register
+        data:
+            hub: SH10RT_master
+            slave: 1
+            address: 33047 # reg 33048
+            value: "{{ ( states ( 'input_number.set_battery_max_discharge_power' ) | float / 10.0 ) | int}}"
 
   - alias: solar_update_battery_max_discharge_power
     id: solar_update_battery_max_discharge_power
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.sh10rt_master_battery_max_discharge_power
-    condition: []
-    action:
-      - service: input_number.set_value
+    triggers:
+      - trigger: state
+        entity_id: sensor.sh10rt_master_battery_max_discharge_power
+    conditions: []
+    actions:
+      - action: input_number.set_value
         target:
-          entity_id: input_number.set_battery_max_discharge_power
+            entity_id: input_number.set_battery_max_discharge_power
         data:
-          value: "{{ states('sensor.sh10rt_master_battery_max_discharge_power') }}"
+            value: "{{ states('sensor.sh10rt_master_battery_max_discharge_power') }}"
 
   - alias: solar_set_battery_forced_charge_discharge_power
     id: solar_set_battery_forced_charge_discharge_power
-    trigger:
-      - platform: state
-        entity_id:
-          - input_number.set_battery_forced_charge_discharge_power
-    condition:
+    triggers:
+      - trigger: state
+        entity_id: input_number.set_battery_forced_charge_discharge_power
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
-      - service: modbus.write_register
-        data_template:
+    actions:
+      - action: modbus.write_register
+        data:
             hub: SH10RT_master
             slave: 1
             address: 13051 # reg 13052
             value: "{{ states ( 'input_number.set_battery_forced_charge_discharge_power' ) | int }}"
-    mode: single
 
   - alias: solar_update_battery_forced_charge_discharge_power
     id: solar_update_battery_forced_charge_discharge_power
-    trigger:
-      - platform: state
+    triggers:
+      - trigger: state
         entity_id:
           - sensor.sh10rt_master_battery_forced_charge_discharge_power
     condition: []
-    action:
-      - service: input_number.set_value
+    actions:
+      - action: input_number.set_value
         target:
             entity_id: input_number.set_battery_forced_charge_discharge_power
         data:
             value: "{{ states ( 'sensor.sh10rt_master_battery_forced_charge_discharge_power' ) }}"
-    mode: single
 
   - alias: solcast_update_forecast
     id: solcast_update_forecast
-    mode: single
-    trigger:
-      - platform: template
+    triggers:
+      - trigger: template
         value_template: >-
-          {% set nr = as_datetime(state_attr('sun.sun','next_rising')) | as_local %}
-          {% set ns = as_datetime(state_attr('sun.sun','next_setting')) | as_local %}
-          {% set api_request_limit = 5 %}
-          {% if nr > ns %}
-            {% set nr = nr - timedelta(hours = 24) %}
-          {% endif %}
-          {% set hours_difference = (ns - nr) %}
-          {% set interval_hours = hours_difference / api_request_limit %}
-          {% set ns = namespace(match = false) %}
-          {% for i in range(api_request_limit) %}
-            {% set start_time = nr + (i * interval_hours) %}
-            {% if ((start_time - timedelta(seconds=30)) <= now()) and (now() <= (start_time + timedelta(seconds=30))) %}
-              {% set ns.match = true %}
+            {% set nr = as_datetime(state_attr('sun.sun','next_rising')) | as_local %}
+            {% set ns = as_datetime(state_attr('sun.sun','next_setting')) | as_local %}
+            {% set api_request_limit = 5 %}
+            {% if nr > ns %}
+                {% set nr = nr - timedelta(hours = 24) %}
             {% endif %}
-          {% endfor %}
-          {{ ns.match }}
-    condition:
+            {% set hours_difference = (ns - nr) %}
+            {% set interval_hours = hours_difference / api_request_limit %}
+            {% set ns = namespace(match = false) %}
+            {% for i in range(api_request_limit) %}
+                {% set start_time = nr + (i * interval_hours) %}
+                {% if ((start_time - timedelta(seconds=30)) <= now()) and (now() <= (start_time + timedelta(seconds=30))) %}
+                    {% set ns.match = true %}
+                {% endif %}
+            {% endfor %}
+            {{ ns.match }}
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
       - condition: sun
         before: sunset
         after: sunrise
-    action:
+    actions:
       - delay:
-          seconds: "{{ range(30, 360)|random|int }}"
-      - service: solcast_solar.update_forecasts
+            seconds: "{{ range ( 30, 360 ) | random | int }}"
+      - action: solcast_solar.update_forecasts
         data: {}

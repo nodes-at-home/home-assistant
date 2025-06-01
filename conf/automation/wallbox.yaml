@@ -35,7 +35,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -66,7 +66,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -97,7 +97,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -128,7 +128,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -159,7 +159,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -190,7 +190,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -221,7 +221,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -252,7 +252,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -283,7 +283,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -314,7 +314,7 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
-        state: 'on'
+        state: "on"
     actions:
       - action: modbus.write_register
         data_template:
@@ -322,3 +322,64 @@
             slave: 1
             address: 217
             value: "{{ [state_attr ( trigger.entity_id, 'options' ).index ( states ( trigger.entity_id ) ), 0] }}"
+
+  - alias: wallbox_start_charging
+    id: wallbox_start_charging
+    triggers:
+      - trigger: state
+        entity_id: sensor.go_echarger_allow_charging
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+      - condition: state
+        entity_id: sensor.go_echarger_allow_charging
+        state: "1"
+    actions:
+      - action: input_number.set_value
+        target:
+            entity_id: number.evcc_wallbox_limit_soc
+        data:
+            value: 100
+      - action: select.select_option
+        target:
+            entity_id: select.evcc_priority_soc
+        data:
+            option: "95"
+      - action: select.select_option
+        target:
+            entity_id: select.evcc_wallbox_mode
+        data:
+            option: "pv"
+      - action: script.notify
+        data:
+            domain: wallbox
+            message: "Laden gestartet"
+
+  - alias: wallbox_stop_charging
+    id: wallbox_stop_charging
+    triggers:
+      - trigger: template
+        value_template: "{{ states ( 'sensor.evcc_wallbox_vehicle_soc' ) | float >= states ( 'number.evcc_wallbox_limit_soc' ) | float }}"
+      - trigger: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: "Laden beenden"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+      - condition: state
+        entity_id: binary_sensor.evcc_wallbox_enabled
+        state: "on"
+    actions:
+      - action: select.select_option
+        target:
+            entity_id: select.evcc_wallbox_mode
+        data:
+            option: "off"
+      - action: script.notify
+        data:
+            domain: wallbox
+            message: "Laden gestoppt"
