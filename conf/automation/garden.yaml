@@ -2,8 +2,8 @@
 ### 13.03.2021 new
 ###
 
-  - alias: irrigation_off
-    id: irrigation_off
+  - alias: garden_irrigation_off
+    id: garden_irrigation_off
     triggers:
       - trigger: event
         event_type:  bosch_shc.event
@@ -12,16 +12,17 @@
             event_subtype: 'Wasser aus'
     actions:
       - action: switch.turn_off
-        entity_id:
-          - switch.relay_garden_valve1
-          - switch.relay_garden_valve2
-          - switch.relay_garden_valve3
-          - switch.relay_garden2_valve1
-          - switch.relay_garden2_valve2
-          - switch.relay_garden2_valve3
+        target:
+            entity_id:
+              - switch.relay_garden_valve1
+              - switch.relay_garden_valve2
+              - switch.relay_garden_valve3
+              - switch.relay_garden2_valve1
+              - switch.relay_garden2_valve2
+              - switch.relay_garden2_valve3
 
-  - alias: irrigation_valve1_on
-    id: irrigation_valve1_on
+  - alias: garden_irrigation_valve1_on
+    id: garden_irrigation_valve1_on
     triggers:
       - trigger: event
         event_type:  bosch_shc.event
@@ -30,10 +31,11 @@
             event_subtype: 'Hecke bewässern'
     actions:
       - action: switch.turn_on
-        entity_id: switch.relay_garden_valve1
+        target:
+            entity_id: switch.relay_garden_valve1
 
-  - alias: irrigation_valve2_on
-    id: irrigation_valve2_on
+  - alias: garden_irrigation_valve2_on
+    id: garden_irrigation_valve2_on
     triggers:
       - trigger: event
         event_type:  bosch_shc.event
@@ -42,10 +44,11 @@
             event_subtype: 'Hochbeete bewässern'
     actions:
       - action: switch.turn_on
-        entity_id: switch.relay_garden_valve2
+        target:
+            entity_id: switch.relay_garden_valve2
 
-  - alias: irrigation_valve3_on
-    id: irrigation_valve3_on
+  - alias: garden_irrigation_valve3_on
+    id: garden_irrigation_valve3_on
     triggers:
       - trigger: event
         event_type:  bosch_shc.event
@@ -54,10 +57,11 @@
             event_subtype: 'Rosengarten bewässern'
     actions:
       - action: switch.turn_on
-        entity_id: switch.relay_garden_valve3
+        target:
+            entity_id: switch.relay_garden_valve3
 
-  - alias: irrigation_valve1_off_after_timeout
-    id: irrigation_valve1_off_after_timeout
+  - alias: garden_irrigation_valve1_off_after_timeout
+    id: garden_irrigation_valve1_off_after_timeout
     triggers:
       - trigger: state
         entity_id: switch.relay_garden_valve1
@@ -66,10 +70,11 @@
             minutes: "{{ states ( 'input_number.irrigation_duration_valve1' ) | int }}"
     actions:
       - action: switch.turn_off
-        entity_id: switch.relay_garden_valve1
+        target:
+            entity_id: switch.relay_garden_valve1
 
-  - alias: irrigation_valve2_off_after_timeout
-    id: irrigation_valve2_off_after_timeout
+  - alias: garden_irrigation_valve2_off_after_timeout
+    id: garden_irrigation_valve2_off_after_timeout
     triggers:
       - trigger: state
         entity_id: switch.relay_garden_valve2
@@ -78,10 +83,11 @@
             minutes: "{{ states ( 'input_number.irrigation_duration_valve2' ) | int }}"
     actions:
       - action: switch.turn_off
-        entity_id: switch.relay_garden_valve2
+        target:
+            entity_id: switch.relay_garden_valve2
 
-  - alias: irrigation_valve3_off_after_timeout
-    id: irrigation_valve3_off_after_timeout
+  - alias: garden_irrigation_valve3_off_after_timeout
+    id: garden_irrigation_valve3_off_after_timeout
     triggers:
       - trigger: state
         entity_id: switch.relay_garden_valve3
@@ -90,10 +96,11 @@
             minutes: "{{ states ( 'input_number.irrigation_duration_valve3' ) | int }}"
     actions:
       - action: switch.turn_off
-        entity_id: switch.relay_garden_valve3
+        target:
+            entity_id: switch.relay_garden_valve3
 
-  - alias: irrigation_valve4_off_after_timeout
-    id: irrigation_valve4_off_after_timeout
+  - alias: garden_irrigation_valve4_off_after_timeout
+    id: garden_irrigation_valve4_off_after_timeout
     triggers:
       - trigger: state
         entity_id: switch.relay_garden2_valve1
@@ -102,10 +109,11 @@
             minutes: "{{ states ( 'input_number.irrigation_duration_valve4' ) | int }}"
     actions:
       - action: switch.turn_off
-        entity_id: switch.relay_garden2_valve1
+        target:
+            entity_id: switch.relay_garden2_valve1
 
-  - alias: irrigation_valve5_off_after_timeout
-    id: irrigation_valve5_off_after_timeout
+  - alias: garden_irrigation_valve5_off_after_timeout
+    id: garden_irrigation_valve5_off_after_timeout
     triggers:
       - trigger: state
         entity_id: switch.relay_garden2_valve2
@@ -114,10 +122,11 @@
             minutes: "{{ states ( 'input_number.irrigation_duration_valve5' ) | int }}"
     actions:
       - action: switch.turn_off
-        entity_id: switch.relay_garden_valve3
+        target:
+            entity_id: switch.relay_garden_valve3
 
-  - alias: irrigation_valve6_off_after_timeout
-    id: irrigation_valve6_off_after_timeout
+  - alias: garden_irrigation_valve6_off_after_timeout
+    id: garden_irrigation_valve6_off_after_timeout
     triggers:
       - trigger: state
         entity_id: switch.relay_garden2_valve3
@@ -126,10 +135,11 @@
             minutes: "{{ states ( 'input_number.irrigation_duration_valve6' ) | int }}"
     actions:
       - action: switch.turn_off
-        entity_id: switch.relay_garden2_valve3
+        target:
+            entity_id: switch.relay_garden2_valve3
 
-  - alias: irrigation_valve1
-    id: irrigation_valve1
+  - alias: garden_irrigation_valve1_start
+    id: garden_irrigation_valve1_start
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_1
@@ -137,11 +147,11 @@
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
-        state: 'on'
+        state: "on"
         # flag from irrigation rules
       - condition: state
         entity_id: input_boolean.irrigation_scheduled_valve1
-        state: 'on'
+        state: "on"
       - condition: template
         value_template: >
             {% set day = now().weekday() %}
@@ -156,10 +166,11 @@
             }}
     actions:
       - action: switch.turn_on
-        entity_id: switch.relay_garden_valve1
+        target:
+            entity_id: switch.relay_garden_valve1
 
-  - alias: irrigation_valve2
-    id: irrigation_valve2
+  - alias: garden_irrigation_valve2_start
+    id: garden_irrigation_valve2_start
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_2
@@ -186,10 +197,11 @@
             }}
     actions:
       - action: switch.turn_on
-        entity_id: switch.relay_garden_valve2
+        target:
+            entity_id: switch.relay_garden_valve2
 
-  - alias: irrigation_valve3
-    id: irrigation_valve3
+  - alias: garden_irrigation_valve3_start
+    id: garden_irrigation_valve3_start
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_3
@@ -197,11 +209,11 @@
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
-        state: 'on'
+        state: "on"
         # flag from irrigation rules
       - condition: state
         entity_id: input_boolean.irrigation_scheduled_valve3
-        state: 'on'
+        state: "on"
       - condition: template
         value_template: >
             {% set day = now().weekday() %}
@@ -216,10 +228,11 @@
             }}
     actions:
       - action: switch.turn_on
-        entity_id: switch.relay_garden_valve3
+        target:
+            entity_id: switch.relay_garden_valve3
 
-  - alias: irrigation_valve4
-    id: irrigation_valve4
+  - alias: garden_irrigation_valve4_start
+    id: garden_irrigation_valve4_start
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_4
@@ -227,11 +240,11 @@
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
-        state: 'on'
+        state: "on"
         # flag from irrigation rules
       - condition: state
         entity_id: input_boolean.irrigation_scheduled_valve4
-        state: 'on'
+        state: "on"
       - condition: template
         value_template: >
             {% set day = now().weekday() %}
@@ -246,10 +259,11 @@
             }}
     actions:
       - action: switch.turn_on
-        entity_id: switch.relay_garden2_valve1
+        target:
+            entity_id: switch.relay_garden2_valve1
 
-  - alias: irrigation_valve5
-    id: irrigation_valve5
+  - alias: garden_irrigation_valve5_start
+    id: garden_irrigation_valve5_start
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_5
@@ -257,11 +271,11 @@
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
-        state: 'on'
+        state: "on"
         # flag from irrigation rules
       - condition: state
         entity_id: input_boolean.irrigation_scheduled_valve5
-        state: 'on'
+        state: "on"
       - condition: template
         value_template: >
             {% set day = now().weekday() %}
@@ -276,10 +290,11 @@
             }}
     actions:
       - action: switch.turn_on
-        entity_id: switch.relay_garden2_valve2
+        target:
+            entity_id: switch.relay_garden2_valve2
 
-  - alias: irrigation_valve6
-    id: irrigation_valve6
+  - alias: garden_irrigation_valve6_start
+    id: garden_irrigation_valve6_start
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_6
@@ -287,11 +302,11 @@
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
-        state: 'on'
+        state: "on"
         # flag from irrigation rules
       - condition: state
         entity_id: input_boolean.irrigation_scheduled_valve6
-        state: 'on'
+        state: "on"
       - condition: template
         value_template: >
             {% set day = now().weekday() %}
@@ -306,10 +321,11 @@
             }}
     actions:
       - action: switch.turn_on
-        entity_id: switch.relay_garden2_valve3
+        target:
+            entity_id: switch.relay_garden2_valve3
 
-  - alias: irrigation_schedule
-    id: irrigation_schedule
+  - alias: garden_irrigation_schedule_start
+    id: garden_irrigation_schedule_start
     triggers:
       - trigger: state
         entity_id: input_number.irrigation_precipitation_threshold
@@ -334,8 +350,8 @@
                 target:
                     entity_id: "input_boolean.irrigation_scheduled_valve{{ repeat.index }}"
 
-  - alias: irrigation_set_temperature_thresholds_by_low
-    id: irrigation_set_temperature_thresholds_by_low
+  - alias: garden_irrigation_set_temperature_thresholds_by_low
+    id: garden_irrigation_set_temperature_thresholds_by_low
     mode: single
     max_exceeded: silent
     triggers:
@@ -362,8 +378,8 @@
         data:
             value: "{{ temp_hot_new }}"
 
-  - alias: irrigation_set_temperature_thresholds_by_high
-    id: irrigation_set_temperature_thresholds_by_high
+  - alias: garden_irrigation_set_temperature_thresholds_by_high
+    id: garden_irrigation_set_temperature_thresholds_by_high
     mode: single
     max_exceeded: silent
     triggers:
@@ -390,8 +406,8 @@
         data:
             value: "{{ temp_hot_new }}"
 
-  - alias: irrigation_set_temperature_thresholds_by_hot
-    id: irrigation_set_temperature_thresholds_by_hot
+  - alias: garden_irrigation_set_temperature_thresholds_by_hot
+    id: garden_irrigation_set_temperature_thresholds_by_hot
     mode: single
     max_exceeded: silent
     triggers:
@@ -418,36 +434,37 @@
         data:
             value: "{{ temp_high_new }}"
 
-  - alias: hydrotower_pump_switching
-    id: hydrotower_pump_switching
+  - alias: garden_hydrotower_pump_switching
+    id: garden_hydrotower_pump_switching
     mode: single
     max_exceeded: silent
-    trigger:
-      - platform: time_pattern
+    triggers:
+      - trigger: time_pattern
         minutes: "/1"
-    condition:
+    conditions:
       - condition: state
         entity_id: input_boolean.hydrotower_activated
-        state: 'on'
-    action:
-      - service: switch.turn_on
+        state: "on"
+    actions:
+      - action: switch.turn_on
         entity_id:
             - switch.relay_hydrotower_pump
       - delay:
             minutes: "{{ states ( 'input_number.hydrotower_pump_duration' ) | int }}"
-      - service: switch.turn_off
-        entity_id:
+      - action: switch.turn_off
+        target:
+            entity_id:
             - switch.relay_hydrotower_pump
       - delay:
             minutes: "{{ states ( 'input_number.hydrotower_pump_period' ) | int - states ( 'input_number.hydrotower_pump_duration' ) | int - 1 }}"
 
-  - alias: pool_pump_switching
-    id: pool_pump_switching
+  - alias: garden_pool_pump_switching
+    id: garden_pool_pump_switching
     mode: single
     max_exceeded: silent
     triggers:
       # check every minute
-      - platform: time_pattern
+      - trigger: time_pattern
         minutes: "/1"
     conditions:
       - condition: state
@@ -460,63 +477,65 @@
         after: input_datetime.pool_pump_start
         before: input_datetime.pool_pump_end
     actions:
-      - service: switch.turn_on
-        entity_id:
-            - switch.poolpumpe
+      - action: switch.turn_on
+        target:
+            entity_id: switch.poolpumpe
       # pump switched on for n minutes
       - delay:
             minutes: "{{ states ( 'input_number.pool_pump_duration_period' ) | int }}"
-      - service: switch.turn_off
-        entity_id:
-            - switch.poolpumpe
+      - action: switch.turn_off
+        target:
+            entity_id: switch.poolpumpe
       # automation throttled, see above at mode and max_exceeded
       - delay:
             minutes: "{{ states ( 'sensor.pool_pump_period_length' ) | int - states ( 'input_number.pool_pump_duration_period' ) | int - 1 }}"
 
-  - alias: pool_pump_off_after_timeout
-    id: pool_pump_off_after_timeout
+  - alias: garden_pool_pump_off_after_timeout
+    id: garden_pool_pump_off_after_timeout
     triggers:
-      - platform: state
+      - trigger: state
         entity_id: switch.poolpumpe
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.pool_pump_duration_period' ) | int }}"
     actions:
-      - service: switch.turn_off
-        entity_id: switch.poolpumpe
+      - action: switch.turn_off
+        target:
+            entity_id: switch.poolpumpe
 
-  - alias: set_pool_nonworking
-    id: set_pool_nonworking
+  - alias: garden_set_pool_nonworking
+    id: garden_set_pool_nonworking
     triggers:
     actions:
-      - service: mqtt.publish
+      - action: mqtt.publish
         data:
             topic: nodes@home/sensor/ds18b20/pool/value/temperature
             payload: "{\"value\":\"außer Betrieb\",\"unit\":\"\"}"
             qos: 1
             retain: true
 
-  - alias: waterpump_emergency_stop
-    id: waterpump_emegency_stop
-    trigger:
-      - platform: template
+  - alias: garden_waterpump_emergency_stop
+    id: garden_waterpump_emegency_stop
+    triggers:
+      - trigger: template
         value_template: "{{ states ( 'sensor.wasserpumpe_power' ) | int > states ( 'input_number.waterpump_emergency_stop_power_threshold' ) | int }}"
         for:
             minutes: "{{ states ( 'input_number.waterpump_emergency_stop_duration' ) | int }}"
-    condition:
+    conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-    action:
-      - service: notify.simplepush
+    actions:
+      - action: notify.simplepush
         data:
-          message: "Notfallstop Wasserpumpe mit Leistung größer {{ states ( 'input_number.waterpump_emergency_stop_power_threshold' ) | int }} für {{ states ( 'input_number.waterpump_emergency_stop_duration' ) | int }} Minuten."
-          title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
-      - service: switch.turn_off
-        entity_id: switch.wasserpumpe
+            message: "Notfallstop Wasserpumpe mit Leistung größer {{ states ( 'input_number.waterpump_emergency_stop_power_threshold' ) | int }} für {{ states ( 'input_number.waterpump_emergency_stop_duration' ) | int }} Minuten."
+            title: "Home Assistant ({{ states ( 'input_text.hostname' ) | lower }})"
+      - action: switch.turn_off
+        target:
+            entity_id: switch.wasserpumpe
 
-  - alias: mower_start
-    id: mower_start
+  - alias: garden_mower_start
+    id: garden_mower_start
     triggers:
       - trigger: time
         at: input_datetime.mowing_start
@@ -548,8 +567,8 @@
         data:
             duration: "{{ ( as_timestamp ( today_at ( states ( 'input_datetime.mowing_end' ) ) ) - as_timestamp ( today_at ( states ( 'input_datetime.mowing_start' ) ) ) ) | int }}"
 
-  - alias: mower_end
-    id: mower_end
+  - alias: garden_mower_end
+    id: garden_mower_end
     triggers:
       - trigger: time
         at: input_datetime.mowing_end
@@ -559,5 +578,6 @@
         entity_id: binary_sensor.prod_mode
         state: 'on'
     action:
-      - service: lawn_mower.pause
-        entity_id: lawn_mower.sileno
+      - action: lawn_mower.pause
+        target:
+            entity_id: lawn_mower.sileno
