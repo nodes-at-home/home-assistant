@@ -351,7 +351,7 @@ views:
                 hold_action:
                     action: more-info
               - type: entity-button
-                entity: switch.shelly_office_bambulab_switch_0
+                entity: switch.shelly_bambulab_x1c_switch_0
                 name: 3D Drucker
                 icon: mdi:printer-3d
                 tap_action:
@@ -738,7 +738,7 @@ views:
             title: Dusche
             columns: 3
             entities:
-              - entity: light.shelly_shower_socket
+              - entity: light.shelly_shower_switch_0
                 name: Deckenlampe
               - entity: binary_sensor.fenster_dusche
                 name: Fenster
@@ -925,7 +925,7 @@ views:
                 name: Deckenlampe
               - light.sonoff_corridor_lamp
               - light.ws2812_office
-              - entity: switch.shelly_office_bambulab_switch_0
+              - entity: switch.shelly_bambulab_x1c_switch_0
                 name: Bambulab X1C
                 icon: mdi:printer-3d
               - entity: switch.shelly_xtool_m1ultra_switch_0
@@ -967,7 +967,7 @@ views:
             title: Bad
             columns: 3
             entities:
-              - entity: light.shelly_bath_socket
+              - entity: light.shelly_bath_switch_0
                 name: Deckenlampe
               - entity: binary_sensor.fenster_bad
                 name: Fenster
@@ -1000,7 +1000,7 @@ views:
             title: Dachgeschoss
             columns: 3
             entities:
-              - entity: light.shelly_roof_socket
+              - entity: light.shelly_attic_switch_0
                 name: Beleuchtung
               - entity: binary_sensor.fenster_dachboden
                 name: Dachfenster
@@ -1090,8 +1090,7 @@ views:
           - type: glance
             columns: 3
             entities:
-              - entity: light.shelly_terrace_lamp
-                name: Terasse
+              - light.shelly_terrace_switch_0
               - entity: light.relay_backyard_lamp
                 name: Hinterhof
               - entity: light.sonoff_garage_lamp
@@ -2305,10 +2304,10 @@ views:
                     class: button-on
             - entities:
               - light.sonoff_garage_lamp
-              - entity: light.shelly_terrace_lamp
-                element: light.shelly_terrace_lamp1
-              - entity: light.shelly_terrace_lamp
-                element: light.shelly_terrace_lamp2
+              - entity: light.shelly_terrace_switch_0
+                element: light.shelly_terrace_switch_0a
+              - entity: light.shelly_terrace_switch_0
+                element: light.shelly_terrace_switch_0b
               - light.relay_backyard_lamp
               - light.sonoff_yardgate_lamp
               # - light.ws2812_terrace1
@@ -2327,10 +2326,10 @@ views:
               - light.led_kitchen_led
               - light.relay_dining1_lamp
               - light.relay_dining2_lamp
-              - light.shelly_shower_socket
+              - light.shelly_shower_switch_0
               - light.sonoff_corridor_lamp
               - light.sonoff_gallery1_socket
-              - light.shelly_bath_socket
+              - light.shelly_bath_switch_0
               - light.sonoff_bedroom_socket
               - entity: light.shelly_treppe_switch_0
                 element: light.shelly_treppe_switch_0_groundfloor
@@ -2338,7 +2337,7 @@ views:
                 element: light.shelly_treppe_switch_0_firstfloor
               - light.shelly_flur_switch_0
               - light.shelly_korridor_switch_0
-              - light.shelly_roof_socket
+              - light.shelly_attic_switch_0
               - light.shelly_esszimmer1_switch_0
               - light.shelly_esszimmer2_switch_0
               - light.shelly_esszimmer2_switch_1
@@ -2348,7 +2347,6 @@ views:
               - light.shelly_galerie_switch_0
               - light.shelly_wohnzimmer_switch_0
               - light.shelly_wohnzimmer_switch_1
-              # - light.shelly_galerie_switch_0
               state_action:
                 - action: call-service
                   service: floorplan.class_set
@@ -2357,9 +2355,9 @@ views:
               #tap_action:
               #  - service: light.toggle
             - entities:
-              - entity: light.shelly_shower_socket
+              - entity: light.shelly_shower_switch_0
                 element: room.shower
-              - entity: light.shelly_bath_socket
+              - entity: light.shelly_bath_switch_0
                 element: room.bath
               - entity: light.shelly_treppe_switch_0
                 element: room.stairs_groundfloor
@@ -2369,7 +2367,7 @@ views:
                 element: room.hall
               - entity: light.shelly_korridor_switch_0
                 element: room.corridor
-              - entity: light.shelly_roof_socket
+              - entity: light.shelly_attic_switch_0
                 element: room.attic
               - entity: light.shelly_arbeitszimmer_switch_0
                 element: room.office

@@ -233,15 +233,15 @@
     actions:
       - action: light.turn_{{ trigger.to_state.state }}
         target:
-            entity_id: light.shelly_roof_socket
+            entity_id: light.shelly_attic_switch_0
 
   - alias: lights_indoor_shelly_off_after_timeout
     id: lights_indoor_shelly_off_after_timeout
     triggers:
       - trigger: state
         entity_id:
-          - light.shelly_shower_socket
-          - light.shelly_bath_socket
+          - light.shelly_shower_switch_0
+          - light.shelly_bath_switch_0
           - light.shelly_treppe_switch_0
           - light.shelly_flur_switch_0
           - light.shelly_korridor_switch_0

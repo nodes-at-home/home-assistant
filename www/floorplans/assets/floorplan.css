@@ -23,6 +23,10 @@
     transition: fill 1s ease;
 }
 
+.light-unavailable, .light-unavailable * {
+    display: none !important;
+}
+
 .thermostat-text {
     font: 25px sans-serif;
     fill: rgb(43, 0, 255);

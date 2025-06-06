@@ -5,7 +5,7 @@
   - platform: group
     name: automatic_outdoor_lights
     entities:
-      - light.shelly_terrace_lamp
+      - light.shelly_terrace_switch_0
       - light.relay_backyard_lamp
       - light.sonoff_garage_lamp
       - light.sonoff_yardgate_lamp

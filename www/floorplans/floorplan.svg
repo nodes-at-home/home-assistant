@@ -382,8 +382,8 @@
         <g id="stairs" >
         </g>
 
-        <use id="light.shelly_terrace_lamp1" x="350" y="57" href="#walllight_up" />
-        <use id="light.shelly_terrace_lamp2" x="840" y="57" href="#walllight_up" />
+        <use id="light.shelly_terrace_switch_0a" x="350" y="57" href="#walllight_up" />
+        <use id="light.shelly_terrace_switch_0b" x="840" y="57" href="#walllight_up" />
         <use id="light.relay_backyard_lamp" x="-5" y="440" href="#walllight_left" />
         <use id="light.sonoff_yardgate_lamp" x="1170" y="1040" href="#ledspotlight" />
         <use id="light.shelly_lounge_schwibbogen1_switch_0" x="1010" y="1005" href="#schwibbogen" />
@@ -403,7 +403,7 @@
         <use id="light.shelly_treppe_switch_0_groundfloor" x="445" y="790" href="#walllight_right" />
         <use id="light.shelly_esszimmer2_switch_0" x="445" y="210" href="#walllight_right" />
         <use id="light.shelly_esszimmer2_switch_1" x="749" y="210" href="#walllight_left" />
-        <use id="light.shelly_shower_socket" x="80" y="800" href="#ceilinglight" />
+        <use id="light.shelly_shower_switch_0" x="80" y="800" href="#ceilinglight" />
         <use id="light.shelly_flur_switch_0" x="300" y="830" href="#ceilinglight" />
         <use id="light.shelly_korridor_switch_0" x="330" y="570" href="#ceilinglight" />
         <use id="light.shelly_esszimmer1_switch_0" x="575" y="560" href="#ceilinglight" />
@@ -521,7 +521,7 @@
 
         <use id="light.shelly_treppe_switch_0_firstfloor" x="445" y="790" href="#walllight_right" />
 
-        <use id="light.shelly_bath_socket" x="190" y="760" href="#ceilinglight" />
+        <use id="light.shelly_bath_switch_0" x="190" y="760" href="#ceilinglight" />
         <use id="light.shelly_arbeitszimmer_switch_0" x="190" y="380" href="#ceilinglight" />
         <use id="light.shelly_kinderzimmer_switch_0" x="960" y="350" href="#ceilinglight" />
         <use id="light.shelly_schlafzimmer_switch_0" x="960" y="700" href="#ceilinglight" />
@@ -584,7 +584,7 @@
 
         <g id="room.attic" > <rect x="27" y="406" width="1140" height="281" /> </g>
 
-        <use id="light.shelly_roof_socket" x="440" y="540" href="#ceilinglight" />
+        <use id="light.shelly_attic_switch_0" x="440" y="540" href="#ceilinglight" />
 
         <text id="sensor.dht22_roof_temperature" x="640" y="550" class="thermostat-text" ><tspan>°C</tspan></text>
         <text id="sensor.dht22_roof_humidity" x="640" y="580" class="thermostat-text" ><tspan>%</tspan></text>

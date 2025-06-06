@@ -11,7 +11,7 @@ entities:
     - binary_sensor.nodestate_relay_garage
     #- binary_sensor.nodestate_sonoff_utilityroom
     - binary_sensor.nodestate_sonoff_garage
-    - binary_sensor.nodestate_shelly_terrace
+    # - binary_sensor.nodestate_shelly_terrace
     - binary_sensor.nodestate_relay_backyard
     - binary_sensor.nodestate_sonoff_yardgate
     - binary_sensor.nodestate_relay_dining1
@@ -27,9 +27,9 @@ entities:
     - binary_sensor.nodestate_pixel_kitchen
     - binary_sensor.nodestate_ds18b20_groundfloor
     - binary_sensor.nodestate_ds18b20_firstfloor
-    - binary_sensor.nodestate_shelly_roof
-    - binary_sensor.nodestate_shelly_bath
-    - binary_sensor.nodestate_shelly_shower
+    # - binary_sensor.nodestate_shelly_roof
+    # - binary_sensor.nodestate_shelly_bath
+    # - binary_sensor.nodestate_shelly_shower
     - binary_sensor.nodestate_gas_utilityroom
     - binary_sensor.nodestate_led_corridor
     - binary_sensor.nodestate_rain_garden

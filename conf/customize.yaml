@@ -236,6 +236,18 @@ light.shelly_entrance_drops_switch_0:
     friendly_name: Tropfen
     icon: mdi:string-lights
 
+light.shelly_attic_switch_0:
+    friendly_name: Dachboden
+
+light.shelly_terrace_switch_0:
+    friendly_name: Terasse
+
+light.shelly_bath_switch_0:
+    friendly_name: Bad
+
+light.shelly_shower_switch_0:
+    friendly_name: Dusche
+
 #------------------------------------------------------------------------------
 cover.relay_garage:
     friendly_name: Garagentor
@@ -415,66 +427,6 @@ sensor.sonoff_pool_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
-light.shelly_roof_socket:
-    friendly_name: Dachboden
-
-sensor.shelly_roof_voltage:
-    friendly_name: 'Licht Dachboden'
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_roof_lastvoltage:
-    friendly_name: 'Licht Dachboden'
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_roof_lastboot:
-    friendly_name: 'Licht Dachboden'
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_roof_version:
-    friendly_name: 'Licht Dachboden'
-    entity_picture: /local/images/shelly.jpg
-
-#------------------------------------------------------------------------------
-light.shelly_bath_socket:
-    friendly_name: Bad
-
-sensor.shelly_bath_voltage:
-    friendly_name: 'Licht Bad'
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_bath_lastvoltage:
-    friendly_name: 'Licht Bad'
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_bath_lastboot:
-    friendly_name: 'Licht Bad'
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_bath_version:
-    friendly_name: 'Licht Bad'
-    entity_picture: /local/images/shelly.jpg
-
-#------------------------------------------------------------------------------
-light.shelly_shower_socket:
-    friendly_name: Dusche
-
-sensor.shelly_shower_voltage:
-    friendly_name: 'Licht Dusche'
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_shower_lastvoltage:
-    friendly_name: 'Licht Dusche'
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_shower_lastboot:
-    friendly_name: 'Licht Dusche'
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_shower_version:
-    friendly_name: 'Licht Dusche'
-    entity_picture: /local/images/shelly.jpg
-
-#------------------------------------------------------------------------------
 binary_sensor.ttp223_bedroom_touch1:
     friendly_name: 'Touchsensor 1 Schlafzimmer'
 
@@ -522,26 +474,6 @@ sensor.sonoff_bedroom_lastboot:
 sensor.sonoff_bedroom_version:
     friendly_name: 'Steckdose Schlafzimmerschrank'
     entity_picture: /local/images/sonoff_s20.jpg
-
-#------------------------------------------------------------------------------
-light.shelly_terrace_lamp:
-    friendly_name: Außenlicht Terasse
-
-sensor.shelly_terrace_voltage:
-    friendly_name: Terrasseschalter
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_terrace_lastvoltage:
-    friendly_name: Terrasseschalter
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_terrace_lastboot:
-    friendly_name: Terrasseschalter
-    entity_picture: /local/images/shelly.jpg
-
-sensor.shelly_terrace_version:
-    friendly_name: Terrasseschalter
-    entity_picture: /local/images/shelly.jpg
 
 #------------------------------------------------------------------------------
 light.sonoff_yardgate_lamp:
@@ -1615,6 +1547,5 @@ sensor.irrigation_duration_effective_valve5:
 
 sensor.irrigation_duration_effective_valve6:
     friendly_name: effektive Bewässeriungsdauer
-
 
 #------------------------------------------------------------------------------
