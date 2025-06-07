@@ -1,0 +1,81 @@
+###
+### 08.06.2025
+###
+
+  - sensor:
+
+      - name: lock_state_tab
+        state: dummy
+        attributes:
+            data: >-
+                {%
+                    set val = [
+                            { 'state': 'locked', 'icon': 'mdi:door-closed-lock', 'icon_color': 'green', 'text': 'Abgeschlossen' },
+                            { 'state': 'locking', 'icon': 'mdi:door', 'icon_color': 'amber', 'text': 'Schließend' },
+                            { 'state': 'unlocked', 'icon': 'mdi:door-closed', 'icon_color': 'amber', 'text': 'Aufgeschlossen' },
+                            { 'state': 'unlocking', 'icon': 'mdi:door', 'icon_color': 'amber', 'text': 'Öffnend' },
+                            { 'state': 'open', 'icon': 'mdi:door-open', 'icon_color': 'red', 'text': 'Offen' },
+                            { 'state': 'unknown', 'icon': 'mdi:door', 'icon_color': 'red', 'text': 'Unbekannt' },
+                    ]
+                %}
+                {{ val }}
+
+      - name: entry_doorlock
+        variables:
+            door: eingangstur
+            state: >-
+                {% if is_state ( 'binary_sensor.' + door, 'on' ) %}
+                    open
+                {% else %}
+                    {{ states ( 'lock.' + door, 'unlocked' ) }}
+                {% endif %}
+            icon: "{{ state_attr ( 'sensor.lock_state_tab', 'data' ) | selectattr ( 'state', 'eq', state ) | map ( attribute = 'icon' ) | join () }}"
+            icon_color: "{{ state_attr ( 'sensor.lock_state_tab', 'data' ) | selectattr ( 'state', 'eq', state ) | map ( attribute = 'icon_color' ) | join () }}"
+            text: "{{ state_attr ( 'sensor.lock_state_tab', 'data' ) | selectattr ( 'state', 'eq', state ) | map ( attribute = 'text' ) | join () }}"
+        availability: "{{ not states ( 'lock.' + door ) in ['unknown', 'availability'] and not states ( 'binary_sensor.' + door ) in ['unknown', 'availability'] }}"
+        state: "{{ state}}"
+        icon: "{{ icon }}"
+        attributes:
+            name: Eingangstür
+            icon_color: "{{ icon_color }}"
+            text: "{{ text }}"
+
+      - name: postern_doorlock
+        variables:
+            door: nebentur
+            state: >-
+                {% if is_state ( 'binary_sensor.' + door, 'on' ) %}
+                    open
+                {% else %}
+                    {{ states ( 'lock.' + door, 'unlocked' ) }}
+                {% endif %}
+            icon: "{{ state_attr ( 'sensor.lock_state_tab', 'data' ) | selectattr ( 'state', 'eq', state ) | map ( attribute = 'icon' ) | join () }}"
+            icon_color: "{{ state_attr ( 'sensor.lock_state_tab', 'data' ) | selectattr ( 'state', 'eq', state ) | map ( attribute = 'icon_color' ) | join () }}"
+            text: "{{ state_attr ( 'sensor.lock_state_tab', 'data' ) | selectattr ( 'state', 'eq', state ) | map ( attribute = 'text' ) | join () }}"
+        availability: "{{ not states ( 'lock.' + door ) in ['unknown', 'availability'] and not states ( 'binary_sensor.' + door ) in ['unknown', 'availability'] }}"
+        state: "{{ state}}"
+        icon: "{{ icon }}"
+        attributes:
+            name: Nebentür
+            icon_color: "{{ icon_color }}"
+            text: "{{ text }}"
+
+      - name: garage_doorlock
+        variables:
+            door: garagentur
+            state: >-
+                {% if is_state ( 'binary_sensor.' + door, 'on' ) %}
+                    open
+                {% else %}
+                    {{ states ( 'lock.' + door, 'unlocked' ) }}
+                {% endif %}
+            icon: "{{ state_attr ( 'sensor.lock_state_tab', 'data' ) | selectattr ( 'state', 'eq', state ) | map ( attribute = 'icon' ) | join () }}"
+            icon_color: "{{ state_attr ( 'sensor.lock_state_tab', 'data' ) | selectattr ( 'state', 'eq', state ) | map ( attribute = 'icon_color' ) | join () }}"
+            text: "{{ state_attr ( 'sensor.lock_state_tab', 'data' ) | selectattr ( 'state', 'eq', state ) | map ( attribute = 'text' ) | join () }}"
+        availability: "{{ not states ( 'lock.' + door ) in ['unknown', 'availability'] and not states ( 'binary_sensor.' + door ) in ['unknown', 'availability'] }}"
+        state: "{{ state}}"
+        icon: "{{ icon }}"
+        attributes:
+            name: Garagentür
+            icon_color: "{{ icon_color }}"
+            text: "{{ text }}"

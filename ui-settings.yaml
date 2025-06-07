@@ -22,25 +22,27 @@ views:
             - input_boolean.light_simulation
             - input_number.max_random_off_duration
       - type: entities
-        title: Zeiten
+        title: Licht
         entities:
+            - type: section
+              label: Zeiten
             - input_datetime.standup_workday
             - input_datetime.standup_weekend
             - input_datetime.sleep
-            - input_number.light_timeout
-            - type: section
-              label: Fernseher
-            - input_number.tvoff_lightsoff_delay1
-            - input_number.tvoff_lightsoff_delay2
             - input_datetime.tv_off_period_start
             - input_datetime.tv_off_period_end
-            - input_number.notification_tv_on_delay
-      - type: entities
-        title: Lichter
-        entities:
-            - input_number.nightlight_duration
             - input_datetime.nightlight_end
+            - type: section
+              label: Dauer
+            - input_number.light_timeout
+            - input_number.tvoff_lightsoff_delay1
+            - input_number.tvoff_lightsoff_delay2
+            - input_number.notification_tv_on_delay
+            - input_number.nightlight_duration
+            - type: section
+              label: Sonstiges
             - input_number.kitchen_desk_illuminance_threshold
+            - input_number.alarm_arming_after
       - type: entities
         title: PiTouch
         entities:
@@ -173,6 +175,16 @@ views:
                 - entity: input_boolean.notify_ups_simplepush
                   name: simplepush
                 - entity: input_boolean.notify_ups_whatsapp
+                  name: whatsapp
+            - type: section
+              label: Alarmanlage
+            - type: buttons
+              entities:
+                - entity: input_boolean.notify_alarm_tv
+                  name: tv
+                - entity: input_boolean.notify_alarm_simplepush
+                  name: simplepush
+                - entity: input_boolean.notify_alarm_whatsapp
                   name: whatsapp
 
   - title: Garten

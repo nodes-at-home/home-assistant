@@ -40,3 +40,12 @@ notify_ups_simplepush:
 
 notify_ups_whatsapp:
     name: whatsapp
+
+notify_alarm_tv:
+    name: tv
+
+notify_alarm_simplepush:
+    name: simplepush
+
+notify_alarm_whatsapp:
+    name: whatsapp

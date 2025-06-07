@@ -121,6 +121,13 @@ views:
         color: "{{ iif ( states ( entity ) | float <= 50.0, 'limegreen', 'red' ) }}"
         tap_action:
             action: more-info
+      - type: custom:mushroom-template-badge
+        entity: alarm_control_panel.intrusion_detection_system
+        content: "Alarm"
+        icon: mdi:shield-lock
+        color: "{{ 'grey' if is_state ( entity, 'disarmed' ) else 'limegreen' if is_state ( entity, 'armed_away' ) else 'red' }}"
+        tap_action:
+            action: more-info
 
     cards:
       - type: vertical-stack
@@ -134,20 +141,33 @@ views:
                 forecast_type: daily
           - type: horizontal-stack
             cards:
-              - type: tile
-                entity: binary_sensor.eingangstur
-              - type: tile
-                entity: binary_sensor.nebentur
-              - type: tile
-                entity: binary_sensor.garagentur
-          - type: horizontal-stack
-            cards:
-              - type: tile
-                entity: lock.eingangstur
-              - type: tile
-                entity: lock.nebentur
-              - type: tile
-                entity: lock.garagentur
+              - type: custom:mushroom-template-card
+                entity: sensor.entry_doorlock
+                primary: "{{ state_attr ( entity, 'name' ) }}"
+                secondary: "{{ state_attr ( entity, 'text' ) }}"
+                icon: "{{ state_attr ( entity, 'icon' ) }}"
+                icon_color: "{{ state_attr ( entity, 'icon_color' ) }}"
+                tap_action:
+                    action: more-info
+                    entity: lock.eingangstur
+              - type: custom:mushroom-template-card
+                entity: sensor.postern_doorlock
+                primary: "{{ state_attr ( entity, 'name' ) }}"
+                secondary: "{{ state_attr ( entity, 'text' ) }}"
+                icon: "{{ state_attr ( entity, 'icon' ) }}"
+                icon_color: "{{ state_attr ( entity, 'icon_color' ) }}"
+                tap_action:
+                    action: more-info
+                    entity: lock.nebentur
+              - type: custom:mushroom-template-card
+                entity: sensor.garage_doorlock
+                primary: "{{ state_attr ( entity, 'name' ) }}"
+                secondary: "{{ state_attr ( entity, 'text' ) }}"
+                icon: "{{ state_attr ( entity, 'icon' ) }}"
+                icon_color: "{{ state_attr ( entity, 'icon_color' ) }}"
+                tap_action:
+                    action: more-info
+                    entity: lock.garagentur
           - type: horizontal-stack
             cards:
               - type: tile
