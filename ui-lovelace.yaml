@@ -142,8 +142,8 @@ views:
                 entity: binary_sensor.garagentur
           - type: horizontal-stack
             cards:
-              - type: markdown
-                content: " "
+              - type: tile
+                entity: lock.eingangstur
               - type: tile
                 entity: lock.nebentur
               - type: tile
