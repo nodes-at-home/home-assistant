@@ -139,6 +139,22 @@ views:
                 entity: weather.openweathermap
                 show_forecast: true
                 forecast_type: daily
+          # - type: horizontal-stack
+          #   cards:
+          #     - type: tile
+          #       entity: binary_sensor.eingangstur
+          #     - type: tile
+          #       entity: binary_sensor.nebentur
+          #     - type: tile
+          #       entity: binary_sensor.garagentur
+          # - type: horizontal-stack
+          #   cards:
+          #     - type: tile
+          #       entity: lock.eingangstur
+          #     - type: tile
+          #       entity: lock.nebentur
+          #     - type: tile
+          #       entity: lock.garagentur
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-template-card
