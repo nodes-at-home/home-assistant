@@ -69,7 +69,7 @@
         entity_id: group.family
         to: "not_home"
         for:
-            minutes: "{{ states ( 'input_number.alarm_arming_after' ) }}"
+            minutes: "{{ states ( 'input_number.doors_lock_up_after' ) }}"
       - trigger: event
         event_type:  bosch_shc.event
         event_data:

@@ -4,40 +4,33 @@
 
 gesture_kitchen_activated:
     name: Gestensensor Küche aktiv
-    # initial: on
 
 touch_bedroom_activated:
     name: Touchsensor Schlafzimmer aktiv
-    # initial: on
 
 irrigation_activated:
     name: Bewässerung aktiv
-    # initial: off
 
 mowing_activated:
     name: Rasenmäher aktiv
-    # initial: off
 
 circulating_pump_activated:
     name: Zirkulationspumpe aktiv
-    # initial: off
 
 cover_closing_at_cold_activated:
     name: Schließen bei Kälte aktiv
-    # initial: off
 
 climate_activated:
     name: Klimageräte aktiv
-    # initial: on
 
 dishwasher_activated:
     name: Geschirrspüler aktiv
-    # initial: on
 
 hydrotower_activated:
     name: Hydrotower aktiv
-    # initial: on
 
 pool_pump_activated:
     name: Poolpumpe aktiv
-    # initial: on
+
+alarm_activated:
+    name: Alarmanlage aktiv

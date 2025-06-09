@@ -19,6 +19,13 @@ views:
         title: Abwesenheit
         show_header_toggle: false
         entities:
+            - type: section
+              label: Alarmanlage
+            - input_boolean.alarm_activated
+            - input_number.alarm_arming_after
+            - input_number.doors_lock_up_after
+            - type: section
+              label: Licht
             - input_boolean.light_simulation
             - input_number.max_random_off_duration
       - type: entities
@@ -37,12 +44,11 @@ views:
             - input_number.light_timeout
             - input_number.tvoff_lightsoff_delay1
             - input_number.tvoff_lightsoff_delay2
-            - input_number.notification_tv_on_delay
             - input_number.nightlight_duration
+            - input_number.notification_tv_on_delay
             - type: section
               label: Sonstiges
             - input_number.kitchen_desk_illuminance_threshold
-            - input_number.alarm_arming_after
       - type: entities
         title: PiTouch
         entities:
