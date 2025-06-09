@@ -12,19 +12,10 @@
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: "on"
-      - condition: state
-        entity_id: group.family
-        state: "not_home"
+      # - condition: state
+      #   entity_id: group.family
+      #   state: "not_home"
     actions:
-      - action: lock.lock
-        target:
-            entity_id: 
-              - lock.eingangstur
-              # - lock.nebentur
-              # - lock.garagentur
-      # - action: alarm_control_panel.alarm_arm_away
-      #   target:
-      #     entity_id: alarm_control_panel.intrusion_detection_system
       - action: script.notify
         data:
             domain: "alarm"
@@ -38,24 +29,11 @@
         to: "not_home"
         for:
             minutes: "{{ states ( 'input_number.alarm_arming_after' ) }}"
-      - trigger: state
-        entity_id: lock.eingangstur
-        from: "unlocked"
-        to: "locked"
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-      - condition: state
-        entity_id: group.family
-        state: 'not_home'
     actions:
-      - action: lock.lock
-        target:
-            entity_id:
-              - lock.eingangstur
-              # - lock.nebentur
-              # - lock.garagentur
       # - action: alarm_control_panel.alarm_arm_away
       #   target:
       #       entity_id: alarm_control_panel.intrusion_detection_system
@@ -86,3 +64,18 @@
         data:
             domain: "alarm"
             message: "Alarmsystem deaktiviert."
+
+  - alias: alarm_state_changed
+    id: alarm_state_changed
+    triggers:
+      - trigger: state
+        entity_id: alarm_control_panel.intrusion_detection_system
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+    actions:
+      - action: script.notify
+        data:
+            domain: "alarm"
+            message: "Neuer Status Alarmanlage: {{ states ( 'alarm_control_panel.intrusion_detection_system' ) }}."

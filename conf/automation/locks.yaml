@@ -65,6 +65,11 @@
   - alias: locks_lock_up_all_doors
     id: locks_lock_up_all_doors
     triggers:
+      - trigger: state
+        entity_id: group.family
+        to: "not_home"
+        for:
+            minutes: "{{ states ( 'input_number.alarm_arming_after' ) }}"
       - trigger: event
         event_type:  bosch_shc.event
         event_data:
