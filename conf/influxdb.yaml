@@ -138,26 +138,27 @@
         - sensor.thermostat_kuche_temperature
         - sensor.thermostat_schlafziummer_temperature
         - sensor.thermostat_wohnzimmer_temperature
-        - sensor.boiler_curflowtemp
-        - sensor.boiler_rettemp
-        - sensor.boiler_outdoortemp
-        - binary_sensor.boiler_burngas
-        - binary_sensor.boiler_heatingactive
+        - sensor.boiler_current_flow_temperature
+        - sensor.boiler_return_temperature
+        - sensor.boiler_outside_temperature
+        - binary_sensor.boiler_gas
+        - binary_sensor.boiler_heating_active
         - binary_sensor.boiler_dhw_charging
-        - binary_sensor.boiler_heatingpump
-        - number.boiler_heatingtemp
-        - number.boiler_selflowtemp
-        - number.boiler_dhw_seltemp
-        - number.thermostat_hc1_seltemp
-        - number.thermostat_hc1_heattemp
-        - number.thermostat_hc1_remotetemp
-        - number.thermostat_hc1_summertemp
-        - number.thermostat_hc1_nofrosttemp
-        - number.thermostat_hc1_ecotemp
-        - sensor.boiler_curburnpow
-        - sensor.boiler_setflowtemp
-        - sensor.boiler_syspress
-        - sensor.boiler_dhw_curtemp
+        - binary_sensor.boiler_heating_pump
+        - number.boiler_heating_temperature
+        - number.boiler_selected_flow_temperature
+        - number.boiler_dhw_selected_temperature
+        - number.thermostat_hc1_selected_room_temperature
+        - number.thermostat_hc1_heat_temperature
+        - number.thermostat_hc1_room_temperature_from_remote
+        - number.thermostat_hc1_summer_temperature
+        - number.thermostat_hc1_nofrost_temperature
+        - number.thermostat_hc1_eco_temperature
+        - sensor.boiler_burner_current_power
+        - sensor.thermostat_hc1_heat_temperature
+        - sensor.boiler_system_pressure
+        - sensor.boiler_dhw_current_extern_temperature
+        - sensor.boiler_dhw_current_intern_temperature
         - input_number.electricity_price_in
         - input_number.electricity_price_out
         - input_number.gas_price

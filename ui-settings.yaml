@@ -691,40 +691,43 @@ views:
         title: Gastherme
         show_header_toggle: false
         entities:
-          - entity: text.thermostat_datetime
+          - entity: text.thermostat_date_time
             name: Interne Uhr
-          - entity: select.thermostat_hc1_mode
+          - entity: select.thermostat_hc1_operating_mode
             name: betriebsart
           - type: section
             label: Vorlauf
-          - entity: number.boiler_selflowtemp
+          - entity: number.boiler_selected_flow_temperature
             name: geregelte Vorlauftemperatur
-          - entity: number.boiler_heatingtemp
+          - entity: number.boiler_heating_temperature
             name: ungeregelt Vorlauftemperatur
           - type: section
             label: Warmwasser
-          - entity: number.boiler_dhw_seltemp
+          - entity: number.boiler_dhw_selected_temperature
             name: Zieltemperatur
-          - entity: number.boiler_dhw_flowtempoffset
+          - entity: number.boiler_dhw_flow_temperature_offset
             name: Offset Vorlauftemperatur
-          - entity: number.boiler_dhw_disinfectiontemp
+          - entity: number.boiler_dhw_disinfection_temperature
             name: Desinfektionstemperatur
           - type: section
             label: Thermostat
-          - entity: number.thermostat_hc1_seltemp
+          - entity: number.thermostat_hc1_selected_room_temperature
             name: Zieltemperatur
-          - entity: number.thermostat_hc1_heattemp
+          - entity: number.thermostat_hc1_heat_temperature
             name: Heiztemperatur
-          - entity: number.thermostat_hc1_ecotemp
+          - entity: number.thermostat_hc1_eco_temperature
             name: Absenktemperatur
-          - entity: number.thermostat_hc1_summertemp
+          - entity: number.thermostat_hc1_nofrost_temperature
+            name: Außerbetriebtemperatur
+          - entity: number.thermostat_hc1_summer_temperature
             name: Sommerbetrieb ab
           - type: section
             label: Remote Thermostat
-          - select.thermostat_hc1_control
+          - entity: select.thermostat_hc1_control_device
+            name: Referenzthermostat
           - entity: input_select.heating_leading_room_remote_thermostat
             name: Gerät
-          - entity: number.thermostat_hc1_remotetemp
+          - entity: number.thermostat_hc1_room_temperature_from_remote
             name: Raumtemperatur
       - type: entities
         title: Raumtemperaturen

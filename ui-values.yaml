@@ -461,55 +461,88 @@ views:
     path: heating
     panel: false
     badges:
-      - binary_sensor.boiler_heatingactive
-      - binary_sensor.boiler_tapwateractive
-      - binary_sensor.boiler_burngas
-      - binary_sensor.boiler_heatingpump
+      - binary_sensor.boiler_heating_active
+      - binary_sensor.boiler_tapwater_active
+      - binary_sensor.boiler_gas
+      - binary_sensor.boiler_heating_pump
       - binary_sensor.boiler_dhw_charging
-      # - binary_sensor.boiler_dhw_active
-      - binary_sensor.boiler_dhw_3wayvalve
+      - binary_sensor.boiler_dhw_active
+      - binary_sensor.boiler_dhw_3_way_valve_active
     cards:
       - type: entities
         title: Einstellungen Gastherme
         show_header_toggle: false
         entities:
-          - number.boiler_selflowtemp
-          - number.boiler_heatingtemp
+          - entity: number.boiler_selected_flow_temperature
+            name: selected flow temperarture
+          - entity: number.boiler_heating_temperature
+            name: heating temperature
           - type: divider
-          - number.boiler_dhw_seltemp
-          - number.boiler_dhw_flowtempoffset
-          - number.boiler_dhw_disinfectiontemp
+          - entity: switch.boiler_dhw_activated
+            name: dhw activated
+          - entity: number.boiler_dhw_selected_temperature
+            name: dhw selected temperarture
+          - entity: number.boiler_dhw_flow_temperature_offset
+            name: dhw flow temperarture offset
+          - entity: number.boiler_dhw_disinfection_temperature
+            name: dhw disinfection temperarture
           - type: divider
-          - number.thermostat_hc1_seltemp
-          - number.thermostat_hc1_heattemp
-          - number.thermostat_hc1_ecotemp
-          - select.thermostat_hc1_mode
+          - entity: select.thermostat_hc1_operating_mode
+            name: hc1 operating mode
+          - entity: select.thermostat_hc1_control_device
+            name: hc1 control device
+          - entity: number.thermostat_hc1_selected_room_temperature
+            name: hc1 selected room temperarture
+          - entity: number.thermostat_hc1_nofrost_temperature
+            name: hc1 nofrost temperarture
+          - entity: number.thermostat_hc1_eco_temperature
+            name: hc1 eco temperarture
+          - entity: number.thermostat_hc1_heat_temperature
+            name: hc1 heat temperarture
+          - entity: number.thermostat_hc1_summer_temperature
+            name: hc1 summer temperarture
           # - select.thermostat_hc1_roomsensor
           - type: divider
-          - switch.boiler_dhw_onetime
-          - switch.boiler_dhw_disinfecting
+          - entity: switch.boiler_dhw_one_time_charging
+            name: dhw one time charging
+          - entity: switch.boiler_dhw_disinfecting
+            name: dhw disinfecting
       - type: entities
         title: Messwerte Gastherme
         show_header_toggle: false
         entities:
-          - text.thermostat_datetime
+          - entity: text.thermostat_date_time
+            name: datetime
           - type: divider
-          - sensor.boiler_outdoortemp
-          - sensor.boiler_curflowtemp
-          - sensor.boiler_rettemp
+          - entity: sensor.thermostat_hc1_rf_room_temperature_sensor
+            name: rf room temperature
           - type: divider
-          - sensor.boiler_syspress
-          - sensor.boiler_curburnpow
-          - sensor.boiler_heatingpumpmod
+          - entity: sensor.boiler_outside_temperature
+            name: outside temperarture
+          - entity: sensor.boiler_current_flow_temperature
+            name: current flow temperarture
+          - entity: sensor.boiler_return_temperature
+            name: return temperarture
           - type: divider
-          - sensor.boiler_dhw_settemp
-          - sensor.boiler_dhw_curtemp
+          - entity: sensor.boiler_system_pressure
+            name: system pressure
+          - entity: sensor.boiler_burner_current_power
+            name: burner current power
+          - entity: sensor.boiler_heating_pump_modulation
+            name: heating pump modulation
+          - type: divider
+          - entity: sensor.boiler_dhw_current_extern_temperature
+            name: current extern temperarture
+          - entity: sensor.boiler_dhw_current_intern_temperature
+            name: current intern temperarture
           # - sensor.boiler_dhw_curflow
           # - sensor.boiler_dhw_chargetype
       - type: entities
         title: Fußboden Erdgeschoss
         show_header_toggle: false
         entities:
+          - entity: sensor.ds18b20_groundfloor_temperature_flow
+          - type: divider
           - entity: sensor.ds18b20_groundfloor_temperature_lounge1
           - entity: sensor.ds18b20_groundfloor_temperature_lounge2
           - entity: sensor.ds18b20_groundfloor_temperature_dining1
@@ -520,17 +553,17 @@ views:
           - entity: sensor.ds18b20_groundfloor_temperature_utilityroom
           - entity: sensor.ds18b20_groundfloor_temperature_floor
           - entity: sensor.ds18b20_groundfloor_temperature_shower
-          - entity: sensor.ds18b20_groundfloor_temperature_flow
       - type: entities
         title: Fußboden Obergeschoss
         show_header_toggle: false
         entities:
+          - entity: sensor.ds18b20_firstfloor_temperature_flow
+          - type: divider
           - entity: sensor.ds18b20_firstfloor_temperature_bath
           - entity: sensor.ds18b20_firstfloor_temperature_office
           - entity: sensor.ds18b20_firstfloor_temperature_gallery
           - entity: sensor.ds18b20_firstfloor_temperature_nursery
           - entity: sensor.ds18b20_firstfloor_temperature_bedroom
-          - entity: sensor.ds18b20_firstfloor_temperature_flow
       - type: gauge
         name: Füllstand Gasspeicher Deutschland
         entity: sensor.gas_storage_germany_full_level
@@ -815,13 +848,13 @@ views:
       - type: history-graph
         hours_to_show: 24
         entities:
-          - entity: binary_sensor.boiler_burngas
+          - entity: binary_sensor.boiler_gas
             name: Gasbrenner
-          - entity: binary_sensor.boiler_heatingactive
+          - entity: binary_sensor.boiler_heating_active
             name: Heizung aktiv
-          - entity: binary_sensor.boiler_heatingpump
+          - entity: binary_sensor.boiler_heating_pump
             name: Heizungspumpe
-          - entity: binary_sensor.boiler_dhw_3wayvalve
+          - entity: binary_sensor.boiler_dhw_3_way_valve_active
             name: 3-Wege Ventil
           - entity: binary_sensor.boiler_dhw_charging
             name: Wassererwärmng
@@ -830,13 +863,16 @@ views:
           - entity: switch.zentralheizungsrelais
             name: Wärmebedarf
           - switch.zirkulationspumpe
-          - sensor.boiler_outdoortemp
-          - number.boiler_selflowtemp
-          - number.boiler_heatingtemp
-          - sensor.boiler_curflowtemp
-          - sensor.boiler_rettemp
-          - number.boiler_dhw_seltemp
-          - sensor.boiler_dhw_curtemp
+          - sensor.thermostat_hc1_rf_room_temperature_sensor
+          - sensor.boiler_outside_temperature
+          - sensor.boiler_current_flow_temperature
+          - number.boiler_selected_flow_temperature
+          - number.boiler_heating_temperature
+          - sensor.boiler_current_flow_temperature
+          - sensor.boiler_return_temperature
+          - number.boiler_dhw_selected_temperature
+          - sensor.boiler_dhw_current_extern_temperature
+          - sensor.boiler_dhw_current_intern_temperature
           - sensor.ds18b20_groundfloor_temperature_lounge1
           - sensor.ds18b20_groundfloor_temperature_lounge2
           - sensor.ds18b20_groundfloor_temperature_dining1
@@ -854,9 +890,9 @@ views:
           - sensor.ds18b20_firstfloor_temperature_nursery
           - sensor.ds18b20_firstfloor_temperature_bedroom
           - sensor.ds18b20_firstfloor_temperature_flow
-          - sensor.boiler_heatingpumpmod
-          - sensor.boiler_curburnpow
-          - sensor.boiler_syspress
+          - sensor.boiler_heating_pump_modulation
+          - sensor.boiler_burner_current_power
+          - sensor.boiler_system_pressure
 
   - title: Stromdiagramm
     path: electricitygraph
