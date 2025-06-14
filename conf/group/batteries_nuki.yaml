@@ -1,0 +1,11 @@
+###
+### 13.06.2025
+###
+
+name: 'Batterien Nuki-Geräte'
+entities:
+  - binary_sensor.eingangstur_battery_critical
+  - binary_sensor.eingangstur_keypad_battery_critical
+  - binary_sensor.nebentur_batteriestand
+  - binary_sensor.garagentur_batteriestand
+

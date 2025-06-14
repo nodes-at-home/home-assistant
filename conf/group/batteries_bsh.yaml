@@ -1,0 +1,41 @@
+###
+### 11.06.2025
+###
+
+name: 'Batterien bsh-Geräte'
+entities:
+  - binary_sensor.rauchmelder_flur_battery
+  - binary_sensor.rauchmelder_esszimmer_battery
+  - binary_sensor.rauchmelder_wohnzimmer_battery
+  - binary_sensor.rauchmelder_hauswirtsch_battery
+  - binary_sensor.rauchmelder_garage_battery
+  - binary_sensor.rauchmelder_buro_battery
+  - binary_sensor.rauchmelder_schlafzimmer_battery
+  - binary_sensor.rauchmelder_kinderzimmer_battery
+  - binary_sensor.rauchmelder_galerie_battery
+  - binary_sensor.rauchmelder_dachboden_battery
+  - binary_sensor.dachfenster_galerie_battery
+  - binary_sensor.fenster_arbeitszimmer_battery
+  - binary_sensor.dachfenster_arbeitszimmer_battery
+  - binary_sensor.fenster_kinderzimmer_battery
+  - binary_sensor.dachfenster_kinderzimmer_battery
+  - binary_sensor.fenster_bad_battery
+  - binary_sensor.dachfenster_bad_battery
+  - binary_sensor.fenster_dachboden_battery
+  - binary_sensor.fenster_flur_battery
+  - binary_sensor.fenster_dusche_battery
+  - binary_sensor.fenster_wohnzimmer_1_battery
+  - binary_sensor.fenster_wohnzimmer_2_battery
+  - binary_sensor.fenster_wohnzimmer_3_battery
+  - binary_sensor.fenster_wohnzimmer_4_battery
+  - binary_sensor.fenster_wohnzimmer_5_battery
+  - binary_sensor.fenster_wohnzimmer_6_battery
+  - binary_sensor.eingangstur_battery
+  - binary_sensor.nebentur_battery
+  - binary_sensor.dachboden_battery
+  - binary_sensor.garagentur_battery
+  - binary_sensor.garagentor_battery
+  - binary_sensor.terassentur_kuche_battery
+  - binary_sensor.terassentur_esszimmer_battery
+  - binary_sensor.terassentur_wohnzimmer_battery
+  - binary_sensor.bewegungsmelder1_battery
