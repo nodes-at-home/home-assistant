@@ -351,17 +351,17 @@
         then:
           - if:
               - condition: numeric_state
-                entity_id: number.thermostat_hc1_remotetemp
+                entity_id: number.thermostat_hc1_room_temperature_from_remote
                 above: -1
             then:
               - action: number.set_value
                 target:
-                    entity_id: number.thermostat_hc1_remotetemp
+                    entity_id: number.thermostat_hc1_room_temperature_from_remote
                 data:
                     value: -1
         else:
           - action: number.set_value
             target:
-                entity_id: number.thermostat_hc1_remotetemp
+                entity_id: number.thermostat_hc1_room_temperature_from_remote
             data:
                 value: "{{ state_attr ( 'climate.room_climate_' + states ( 'input_select.heating_leading_room_remote_thermostat' ) | lower, 'current_temperature' ) }}"
