@@ -199,7 +199,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: tile
-                entity: sensor.boiler_dhw_curtemp
+                entity: sensor.boiler_dhw_current_intern_temperature
                 name: Warmwasser
                 icon: mdi:thermometer
               - type: tile
