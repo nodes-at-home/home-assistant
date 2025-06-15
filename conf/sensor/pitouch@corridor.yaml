@@ -12,7 +12,7 @@
                 {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Garage' ) %}
                     {{ states ( 'sensor.relay_garage_temperature' ) }}
                 {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Warmwasser' ) %}
-                    {{ states ( 'sensor.boiler_dhw_curtemp' ) }}
+                    {{ states ( 'sensor.boiler_dhw_current_intern_temperature' ) }}
                 {% else %}
                     x
                 {% endif %}

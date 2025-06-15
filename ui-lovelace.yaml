@@ -1755,7 +1755,7 @@ views:
             action: url
             url_path: https://nodesathome1:7070
       - type: custom:mushroom-template-badge
-        entity: binary_sensor.boiler_burngas_state_badge
+        entity: binary_sensor.boiler_gas_state_badge
         content: Gas
         icon: "{{ state_attr ( entity, 'icon' )}}"
         color: "{{ state_attr ( entity, 'icon_color' )}}"
