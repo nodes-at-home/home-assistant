@@ -2,7 +2,7 @@
 ### 04.05.2025
 ###
 
-name: lang ab
+name: '"lang" ab'
 icon: mdi:thermometer-lines
 mode: slider
 min: 10

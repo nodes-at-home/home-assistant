@@ -220,8 +220,8 @@ views:
             - sensor.dht22_terrace_temperature_max
             - input_number.irrigation_temperature_threshold_low
             - input_number.irrigation_temperature_threshold_high
-            - input_number.irrigation_temperature_threshold_hot
             - input_number.irrigation_duration_uplift_high
+            - input_number.irrigation_temperature_threshold_hot
             - input_number.irrigation_duration_uplift_hot
             - type: section
               label: Hecke
@@ -703,6 +703,8 @@ views:
             name: ungeregelt Vorlauftemperatur
           - type: section
             label: Warmwasser
+          - entity: select.boiler_dhw_comfort
+            name: Komfortmodus
           - entity: number.boiler_dhw_selected_temperature
             name: Zieltemperatur
           - entity: number.boiler_dhw_flow_temperature_offset
@@ -711,6 +713,8 @@ views:
             name: Desinfektionstemperatur
           - type: section
             label: Thermostat
+          - entity: select.thermostat_hc1_heatup
+            name: Aufheizmodus
           - entity: number.thermostat_hc1_selected_room_temperature
             name: Zieltemperatur
           - entity: number.thermostat_hc1_heat_temperature
