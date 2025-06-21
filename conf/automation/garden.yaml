@@ -67,7 +67,7 @@
         entity_id: switch.relay_garden_valve1
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration_effective_valve1' ) | int }}"
+            minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve1' ) | int }}"
     actions:
       - action: switch.turn_off
         target:
@@ -80,7 +80,7 @@
         entity_id: switch.relay_garden_valve2
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration_effective_valve2' ) | int }}"
+            minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve2' ) | int }}"
     actions:
       - action: switch.turn_off
         target:
@@ -93,7 +93,7 @@
         entity_id: switch.relay_garden_valve3
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration_effective_valve3' ) | int }}"
+            minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve3' ) | int }}"
     actions:
       - action: switch.turn_off
         target:
@@ -106,7 +106,7 @@
         entity_id: switch.relay_garden2_valve1
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration_effective_valve4' ) | int }}"
+            minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve4' ) | int }}"
     actions:
       - action: switch.turn_off
         target:
@@ -119,7 +119,7 @@
         entity_id: switch.relay_garden2_valve2
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration_effective_valve5' ) | int }}"
+            minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve5' ) | int }}"
     actions:
       - action: switch.turn_off
         target:
@@ -132,7 +132,7 @@
         entity_id: switch.relay_garden2_valve3
         to: "on"
         for:
-            minutes: "{{ states ( 'input_number.irrigation_duration_effective_valve6' ) | int }}"
+            minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve6' ) | int }}"
     actions:
       - action: switch.turn_off
         target:
