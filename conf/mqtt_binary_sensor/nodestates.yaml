@@ -213,19 +213,12 @@
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_sonoff@pool"
-    state_topic: nodes@home/switch/sonoff/pool/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
   - name: "nodestate_ds18b20@pool"
-    state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
+    state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
-    off_delay: 1200
+    off_delay: 2100
 
   - name: "nodestate_ds18b20@brewery"
     state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
