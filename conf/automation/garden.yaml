@@ -480,18 +480,16 @@
       - action: switch.turn_on
         target:
             entity_id: switch.poolpumpe
-      # pump switched on for n minutes
-      - delay:
-            minutes: "{{ states ( 'input_number.pool_pump_duration_period' ) | int }}"
-      - action: switch.turn_off
-        target:
-            entity_id: switch.poolpumpe
       # automation throttled, see above at mode and max_exceeded
       - delay:
-            minutes: "{{ states ( 'sensor.pool_pump_period_length' ) | int - states ( 'input_number.pool_pump_duration_period' ) | int - 1 }}"
+            minutes: "{{ states ( 'sensor.pool_pump_period_length' ) | int - 1 }}"
 
   - alias: garden_pool_pump_off_after_timeout
     id: garden_pool_pump_off_after_timeout
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     triggers:
       - trigger: state
         entity_id: switch.poolpumpe
