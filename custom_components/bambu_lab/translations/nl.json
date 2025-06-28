@@ -63,6 +63,16 @@
           "host": "Lokaal IP-adres van printer:",
           "access_code": "Toegangscode:",
           "usage_hours": "Huidige gebruiksduur in uren (optioneel):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Geavanceerde opties",
+            "description": "Deze opties zijn alleen nodig als u een niet-standaardinstelling hebt.",
+            "data": {
+              "disable_ssl_verify": "Schakel SSL -verificatie uit",
+              "enable_firmware_update": "Ondersteuning van firmware -updates inschakelen"
+            }
+          }
         }
       },
       "Lan": {
@@ -72,14 +82,16 @@
           "serial": "Serienummer:",
           "host": "Lokaal IP-adres van printer:",
           "access_code": "Toegangscode:",
-          "usage_hours": "Huidige gebruiksduur in uren (optioneel):"
+          "usage_hours": "Huidige gebruiksduur in uren (optioneel):",
+          "developer_lan_mode": "Ontwikkelaar LAN -modus ingeschakeld:"
         },
         "sections": {
           "advanced": {
             "name": "Geavanceerde opties",
             "description": "Deze opties zijn alleen nodig als u een niet-standaardinstelling hebt.",
             "data": {
-              "disable_ssl_verify": "Schakel SSL -verificatie uit"
+              "disable_ssl_verify": "Schakel SSL -verificatie uit",
+              "enable_firmware_update": "Ondersteuning van firmware -updates inschakelen"
             }
           }
         }
@@ -132,6 +144,16 @@
           "access_code": "Toegangscode:",
           "local_mqtt": "Lokaal verbinden met de printer in plaats van via Bambu Lab Cloud:",
           "usage_hours": "Huidige gebruiksduur in uren (optioneel):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Geavanceerde opties",
+            "description": "Deze geavanceerde opties zijn vroege of risicovolle functionaliteit. Lees de documentatie en gebruik ze op eigen risico.",
+            "data": {
+              "disable_ssl_verify": "Schakel SSL -verificatie uit",
+              "enable_firmware_update": "Ondersteuning van firmware -updates inschakelen"
+            }
+          }
         }
       },
       "Lan": {
@@ -140,14 +162,16 @@
         "data": {
           "host": "Lokaal IP-adres van printer:",
           "access_code": "Toegangscode:",
-          "usage_hours": "Huidige gebruiksduur in uren (optioneel):"
+          "usage_hours": "Huidige gebruiksduur in uren (optioneel):",
+          "developer_lan_mode": "Ontwikkelaar LAN -modus ingeschakeld:"
         },
         "sections": {
           "advanced": {
             "name": "Geavanceerde opties",
-            "description": "Deze opties zijn alleen nodig als u een niet-standaardinstelling hebt.",
+            "description": "Deze geavanceerde opties zijn vroege of risicovolle functionaliteit. Lees de documentatie en gebruik ze op eigen risico.",
             "data": {
-              "disable_ssl_verify": "Schakel SSL -verificatie uit"
+              "disable_ssl_verify": "Schakel SSL -verificatie uit",
+              "enable_firmware_update": "Ondersteuning van firmware -updates inschakelen"
             }
           }
         }
@@ -173,6 +197,18 @@
       },
       "firmware_update": {
         "name": "Firmware-update"
+      },
+      "extruder_filament_state": {
+        "name": "Extruder Filament State"
+      },
+      "developer_lan_mode": {
+        "name": "Ontwikkelaar LAN -modus"
+      },
+      "mqtt_encryption": {
+        "name": "MQTT -coderingsfirmware"
+      },
+      "active_ams": {
+        "name": "Actief"
       }
     },
     "button": {
@@ -242,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Gereedschapsmodule",
+        "state": {
+          "none": "Niet gemonteerd",
+          "laser": "Laser",
+          "cutter": "Snijder"
+        }
+      },
       "wifi_signal": {
         "name": "Wi-Fi-signaal"
       },
@@ -367,7 +411,8 @@
           "textured_plate": "Textured plate",
           "cool_plate": "Cool Plate / PLA Plate",
           "hot_plate": "Smooth PEI Plate / High Temp Plate",
-          "eng_plate": "Engineering Plate"
+          "eng_plate": "Engineering Plate",
+          "supertack_plate": "Coole plaat supertack"
         }
       },
       "print_length": {
@@ -408,9 +453,6 @@
       "active_tray": {
         "name": "Actieve tray"
       },
-      "active_tray_index": {
-        "name": "Actieve tray-index"
-      },
       "nozzle_diameter": {
         "name": "Nozzle-grootte"
       },
@@ -426,9 +468,6 @@
       },
       "humidity_index": {
         "name": "Luchtvochtigheidsindex"
-      },
-      "ams_temp": {
-        "name": "AMS-temperatuur"
       },
       "external_spool": {
         "name": "Externe spoel",
@@ -456,6 +495,21 @@
           },
           "type": {
             "name": "Type"
+          },
+          "remain": {
+            "name": "Resterende gloeidraad"
+          },
+          "remain_enabled": {
+            "name": "Resterende schatting van de filament ingeschakeld"
+          },
+          "tag_uid": {
+            "name": "Spoel serienummer"
+          },
+          "filament_id": {
+            "name": "Filament -ID"
+          },
+          "tray_weight": {
+            "name": "Maximaal gewicht van de gloeidraad"
           }
         }
       },
@@ -491,6 +545,15 @@
           },
           "type": {
             "name": "Type"
+          },
+          "remain_enabled": {
+            "name": "Resterende schatting van de gloeidraad ingeschakeld"
+          },
+          "filament_id": {
+            "name": "Filament -ID"
+          },
+          "tray_weight": {
+            "name": "Maximaal gewicht van de gloeidraad"
           }
         }
       },
@@ -526,6 +589,15 @@
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament -ID"
+          },
+          "tray_weight": {
+            "name": "Maximaal gewicht van de gloeidraad"
+          },
+          "remain_enabled": {
+            "name": "Resterende schatting van de filament ingeschakeld"
           }
         }
       },
@@ -561,6 +633,15 @@
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament -ID"
+          },
+          "tray_weight": {
+            "name": "Maximaal gewicht van de gloeidraad"
+          },
+          "remain_enabled": {
+            "name": "Resterende schatting van de filament ingeschakeld"
           }
         }
       },
@@ -596,11 +677,53 @@
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament -ID"
+          },
+          "tray_weight": {
+            "name": "Maximaal gewicht van de gloeidraad"
+          },
+          "remain_enabled": {
+            "name": "Resterende schatting van de filament ingeschakeld"
           }
         }
       },
       "skipped_objects": {
         "name": "Objecten overgeslagen"
+      },
+      "gcode_file_downloaded": {
+        "name": "Gcode -bestand gedownload"
+      },
+      "remaining_drying_time": {
+        "name": "Resterende droogtijd"
+      },
+      "ams_temp": {
+        "name": "Temperatuur"
+      },
+      "humidity": {
+        "name": "Vochtigheid"
+      },
+      "left_nozzle_temp": {
+        "name": "Linker mondstuktemperatuur"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Verlof mondstuk doeltemperatuur"
+      },
+      "right_nozzle_temp": {
+        "name": "Juiste mondstuktemperatuur"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Rechter mondstuk doeltemperatuur"
+      },
+      "sdcard_status": {
+        "name": "SD -kaartstatus",
+        "state": {
+          "missing": "Ontbrekend",
+          "normal": "Normaal",
+          "abnormal": "Abnormaal",
+          "readonly": "Alleen lezen"
+        }
       }
     },
     "camera": {
@@ -609,9 +732,6 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Handmatige vernieuwingsmodus"
-      },
       "camera": {
         "name": "Camera inschakelen"
       },
@@ -626,6 +746,14 @@
       },
       "timelapse": {
         "name": "Nieuwste timelapse vanuit de printer inladen"
+      },
+      "download_gcode_file": {
+        "name": "Sla Gcode -bestand op in HA"
+      }
+    },
+    "update": {
+      "firmware_update": {
+        "name": "Firmware-update"
       }
     }
   },
@@ -635,6 +763,12 @@
         "bambu": "Bambu Lab cloud",
         "lan": "Lan-modus"
       }
+    }
+  },
+  "issues": {
+    "authentication_failed": {
+      "title": "Authenticatie mislukt voor {device}",
+      "description": "Proberen om verbinding te maken met Bambu Lab is mislukt. Configureer de integratie opnieuw en geef nieuwe referenties."
     }
   }
 }

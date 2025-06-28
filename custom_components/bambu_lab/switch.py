@@ -17,13 +17,6 @@ from homeassistant.components.switch import (
 from .coordinator import BambuDataUpdateCoordinator
 
 
-MANUAL_REFRESH_MODE_SWITCH_DESCRIPTION = SwitchEntityDescription(
-    key="manual",
-    icon="mdi:refresh-auto",
-    translation_key="manual",
-    entity_category=EntityCategory.CONFIG,
-)
-
 PROMPT_SOUND_SWITCH_DESCRIPTION = SwitchEntityDescription(
     key="prompt_sound",
     icon="mdi:audio",
@@ -59,6 +52,13 @@ TIMELAPSE_SWITCH_DESCRIPTION = SwitchEntityDescription(
     entity_category=EntityCategory.CONFIG,
 )
 
+DOWNLOAD_GCODE_FILE_SWITCH_DESCRIPTION = SwitchEntityDescription(
+    key="download_gcode_file",
+    icon="mdi:folder-network",
+    translation_key="download_gcode_file",
+    entity_category=EntityCategory.CONFIG,
+)
+
 
 async def async_setup_entry(
         hass: HomeAssistant,
@@ -67,9 +67,6 @@ async def async_setup_entry(
 ) -> None:
     coordinator: BambuDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
     LOGGER.debug(f"SWITCH::async_setup_entry")
-
-    if coordinator.get_model().supports_feature(Features.MANUAL_MODE):
-        async_add_entities([BambuLabManualModeSwitch(coordinator, entry)])
 
     # A camera is always present so the switch to turn it on and off should be always present.
     async_add_entities([BambuLabCameraSwitch(coordinator, entry)])
@@ -85,6 +82,9 @@ async def async_setup_entry(
 
     if coordinator.get_model().supports_feature(Features.TIMELAPSE):
         async_add_entities([BambuLabTimelapseSwitch(coordinator, entry)])
+        
+    if coordinator.get_model().supports_feature(Features.DOWNLOAD_GCODE_FILE):
+        async_add_entities([BambuLabDownloadGcodeFileSwitch(coordinator, entry)])
 
 
 class BambuLabSwitch(BambuLabEntity, SwitchEntity):
@@ -101,39 +101,6 @@ class BambuLabSwitch(BambuLabEntity, SwitchEntity):
             f"{config_entry.data['serial']}_{self.entity_description.key}"
         )
         self._attr_is_on = False
-
-
-class BambuLabManualModeSwitch(BambuLabSwitch):
-    """BambuLab Refresh data Switch"""
-
-    entity_description = MANUAL_REFRESH_MODE_SWITCH_DESCRIPTION
-
-    def __init__(
-            self,
-            coordinator: BambuDataUpdateCoordinator,
-            config_entry: ConfigEntry
-    ) -> None:
-        super().__init__(coordinator, config_entry)
-        self._attr_is_on = self.coordinator.get_option_enabled(Options.MANUALREFRESH)
-
-    @property
-    def available(self) -> bool:
-        return self.coordinator.get_model().info.mqtt_mode == "local"
-
-    @property
-    def icon(self) -> str:
-        """Return the icon for the switch."""
-        return "mdi:pause-octagon-outline" if self.is_on else "mdi:refresh-auto"
-
-    async def async_turn_on(self, **kwargs: Any) -> None:
-        """Enable manual refresh mode."""
-        self._attr_is_on = True
-        await self.coordinator.set_option_enabled(Options.MANUALREFRESH, True)
-
-    async def async_turn_off(self, **kwargs: Any) -> None:
-        """Disable manual refresh mode."""
-        self._attr_is_on = False
-        await self.coordinator.set_option_enabled(Options.MANUALREFRESH, False)
 
 
 class BambuLabCameraSwitch(BambuLabSwitch):
@@ -284,9 +251,48 @@ class BambuLabPromptSoundSwitch(BambuLabSwitch):
         return self.coordinator.get_model().home_flag.xcam_prompt_sound
 
     async def async_turn_on(self, **kwargs: Any) -> None:
-        """Enable manual refresh mode."""
+        """Enable A1 sound."""
         self.coordinator.get_model().info.set_prompt_sound(True)
 
     async def async_turn_off(self, **kwargs: Any) -> None:
-        """Disable manual refresh mode."""
+        """Disable A1 sound."""
         self.coordinator.get_model().info.set_prompt_sound(False)
+
+
+class BambuLabDownloadGcodeFileSwitch(BambuLabSwitch):
+    """BambuLab DOWNLOAD_GCODE_FILE Switch"""
+
+    entity_description = DOWNLOAD_GCODE_FILE_SWITCH_DESCRIPTION
+
+    def __init__(
+            self,
+            coordinator: BambuDataUpdateCoordinator,
+            config_entry: ConfigEntry
+    ) -> None:
+        super().__init__(coordinator, config_entry)
+        self._attr_is_on = self.coordinator.get_option_enabled(Options.DOWNLOAD_GCODE_FILE)
+
+    @property
+    def available(self) -> bool:
+        return self.coordinator.get_option_enabled(Options.FTP)
+
+    @property
+    def is_on(self) -> bool:
+        """Return True if entity is on."""
+        return self.coordinator.get_option_enabled(Options.FTP) and self.coordinator.get_option_enabled(Options.DOWNLOAD_GCODE_FILE)
+
+    @property
+    def icon(self) -> str:
+        """Return the icon for the switch."""
+        return "mdi:folder-network" if self.is_on else "mdi:folder-hidden"
+
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Enable DOWNLOAD_GCODE_FILE."""
+        self._attr_is_on = True
+        await self.coordinator.set_option_enabled(Options.DOWNLOAD_GCODE_FILE, self._attr_is_on)
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Disable DOWNLOAD_GCODE_FILE."""
+        self._attr_is_on = False
+        await self.coordinator.set_option_enabled(Options.DOWNLOAD_GCODE_FILE, self._attr_is_on)
+

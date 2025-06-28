@@ -63,6 +63,16 @@
           "host": "Lokal printer-IP-adresse:",
           "access_code": "Adgangskode:",
           "usage_hours": "Aktuelle brugstimer (valgfrit):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Avancerede muligheder",
+            "description": "Disse indstillinger er kun nødvendige, hvis du har en ikke-standardopsætning.",
+            "data": {
+              "disable_ssl_verify": "Deaktiver SSL -verifikation",
+              "enable_firmware_update": "Aktivér firmwareopdateringsstøtte"
+            }
+          }
         }
       },
       "Lan": {
@@ -72,14 +82,16 @@
           "serial": "Serienummer:",
           "host": "Lokal printer-IP-adresse:",
           "access_code": "Adgangskode:",
-          "usage_hours": "Aktuelle brugstimer (valgfrit):"
+          "usage_hours": "Aktuelle brugstimer (valgfrit):",
+          "developer_lan_mode": "Udvikler LAN -tilstand aktiveret:"
         },
         "sections": {
           "advanced": {
             "name": "Avancerede muligheder",
             "description": "Disse indstillinger er kun nødvendige, hvis du har en ikke-standardopsætning.",
             "data": {
-              "disable_ssl_verify": "Deaktiver SSL -verifikation"
+              "disable_ssl_verify": "Deaktiver SSL -verifikation",
+              "enable_firmware_update": "Aktivér firmwareopdateringsstøtte"
             }
           }
         }
@@ -132,6 +144,16 @@
           "access_code": "Adgangskode:",
           "local_mqtt": "Tilslut direkte til printeren i stedet for via Bambu Lab-skyen:",
           "usage_hours": "Aktuelle brugstimer (valgfrit):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Avancerede muligheder",
+            "description": "Disse avancerede muligheder er tidlig eller risikabel funktionalitet. Læs dokumentationen, og brug dem på din egen risiko.",
+            "data": {
+              "disable_ssl_verify": "Deaktiver SSL -verifikation",
+              "enable_firmware_update": "Aktivér firmwareopdateringsstøtte"
+            }
+          }
         }
       },
       "Lan": {
@@ -140,14 +162,16 @@
         "data": {
           "host": "Lokal printer-IP-adresse:",
           "access_code": "Adgangskode:",
-          "usage_hours": "Aktuelle brugstimer (valgfrit):"
+          "usage_hours": "Aktuelle brugstimer (valgfrit):",
+          "developer_lan_mode": "Udvikler LAN -tilstand aktiveret:"
         },
         "sections": {
           "advanced": {
             "name": "Avancerede muligheder",
-            "description": "Disse indstillinger er kun nødvendige, hvis du har en ikke-standardopsætning.",
+            "description": "Disse avancerede muligheder er tidlig eller risikabel funktionalitet. Læs dokumentationen og brug dem på din egen risiko.",
             "data": {
-              "disable_ssl_verify": "Deaktiver SSL -verifikation"
+              "disable_ssl_verify": "Deaktiver SSL -verifikation",
+              "enable_firmware_update": "Aktivér firmwareopdateringsstøtte"
             }
           }
         }
@@ -173,6 +197,18 @@
       },
       "firmware_update": {
         "name": "Firmware opdatering"
+      },
+      "extruder_filament_state": {
+        "name": "Ekstruderfilamentstilstand"
+      },
+      "developer_lan_mode": {
+        "name": "Udvikler LAN -tilstand"
+      },
+      "mqtt_encryption": {
+        "name": "MQTT Encryption Firmware"
+      },
+      "active_ams": {
+        "name": "Aktiv"
       }
     },
     "button": {
@@ -242,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Værktøjsmodul",
+        "state": {
+          "none": "Ikke monteret",
+          "laser": "Laser",
+          "cutter": "Skærer"
+        }
+      },
       "wifi_signal": {
         "name": "Wi-Fi signal"
       },
@@ -364,7 +408,8 @@
           "textured_plate": "Tekstureret plade",
           "cool_plate": "Køleplade / PLA plade",
           "hot_plate": "Glat PEI plade / Højtemperatur plade",
-          "eng_plate": "Ingeniørplade"
+          "eng_plate": "Ingeniørplade",
+          "supertack_plate": "Cool Plate Supertack"
         }
       },
       "print_length": {
@@ -405,9 +450,6 @@
       "active_tray": {
         "name": "Aktiv bakke"
       },
-      "active_tray_index": {
-        "name": "Indeks for aktiv bakke"
-      },
       "nozzle_diameter": {
         "name": "Dyse størrelse"
       },
@@ -420,9 +462,6 @@
       },
       "humidity_index": {
         "name": "Fugtighedsindeks"
-      },
-      "ams_temp": {
-        "name": "AMS temperatur"
       },
       "external_spool": {
         "name": "Ekstern spole",
@@ -450,6 +489,21 @@
           },
           "type": {
             "name": "Type"
+          },
+          "remain": {
+            "name": "Resterende glødetråd"
+          },
+          "remain_enabled": {
+            "name": "Resterende filamentestimering aktiveret"
+          },
+          "tag_uid": {
+            "name": "Spole serienummer"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maksimal vægt af glødetråd"
           }
         }
       },
@@ -485,6 +539,15 @@
           },
           "type": {
             "name": "Type"
+          },
+          "remain_enabled": {
+            "name": "Resterende filamentestimering aktiveret"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maksimal vægt af glødetråd"
           }
         }
       },
@@ -520,6 +583,15 @@
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maksimal vægt af glødetråd"
+          },
+          "remain_enabled": {
+            "name": "Resterende filamentestimering aktiveret"
           }
         }
       },
@@ -555,6 +627,15 @@
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maksimal vægt af glødetråd"
+          },
+          "remain_enabled": {
+            "name": "Resterende filamentestimering aktiveret"
           }
         }
       },
@@ -590,6 +671,15 @@
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maksimal vægt af glødetråd"
+          },
+          "remain_enabled": {
+            "name": "Resterende filamentestimering aktiveret"
           }
         }
       },
@@ -601,6 +691,39 @@
       },
       "skipped_objects": {
         "name": "Springede objekter"
+      },
+      "gcode_file_downloaded": {
+        "name": "Gcode -fil downloadet"
+      },
+      "remaining_drying_time": {
+        "name": "Resterende tørretid"
+      },
+      "ams_temp": {
+        "name": "Temperatur"
+      },
+      "humidity": {
+        "name": "Fugtighed"
+      },
+      "left_nozzle_temp": {
+        "name": "Efterladt dysetemperatur"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Efterladt dyse måltemperatur"
+      },
+      "right_nozzle_temp": {
+        "name": "Højre dysetemperatur"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Højre dysemåltemperatur"
+      },
+      "sdcard_status": {
+        "name": "SD -kortstatus",
+        "state": {
+          "missing": "Manglende",
+          "normal": "Normal",
+          "abnormal": "Abnorm",
+          "readonly": "Læs kun"
+        }
       }
     },
     "camera": {
@@ -609,9 +732,6 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Manuel opdateringstilstand"
-      },
       "camera": {
         "name": "Aktiver kamera"
       },
@@ -626,6 +746,14 @@
       },
       "timelapse": {
         "name": "Indlæs den seneste tidslap fra printer"
+      },
+      "download_gcode_file": {
+        "name": "Gem gcode -fil i ha"
+      }
+    },
+    "update": {
+      "firmware_update": {
+        "name": "Firmware opdatering"
       }
     }
   },
@@ -635,6 +763,12 @@
         "bambu": "Bambu Lab sky",
         "lan": "Lan-tilstand"
       }
+    }
+  },
+  "issues": {
+    "authentication_failed": {
+      "title": "Autentificering mislykkedes for {device}",
+      "description": "Forsøg på at oprette forbindelse til Bambu Lab mislykkedes. Konfigurer integrationen igen og giver friske legitimationsoplysninger."
     }
   }
 }

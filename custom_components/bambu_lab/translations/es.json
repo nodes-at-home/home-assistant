@@ -63,6 +63,16 @@
           "host": "Dirección de IP Local de la Impresora:",
           "access_code": "Código de Acceso:",
           "usage_hours": "Cantidad de horas de uso (opcional):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Opciones avanzadas",
+            "description": "Estas opciones solo son necesarias si tiene una configuración no estándar.",
+            "data": {
+              "disable_ssl_verify": "Desactivar la verificación SSL",
+              "enable_firmware_update": "Habilitar soporte de actualización de firmware"
+            }
+          }
         }
       },
       "Lan": {
@@ -72,14 +82,16 @@
           "serial": "Número de Serie:",
           "host": "Dirección de IP Local de la Impresora:",
           "access_code": "Código de Acceso:",
-          "usage_hours": "Cantidad de horas de uso (opcional):"
+          "usage_hours": "Cantidad de horas de uso (opcional):",
+          "developer_lan_mode": "Modo LAN de desarrollador habilitado:"
         },
         "sections": {
           "advanced": {
             "name": "Opciones avanzadas",
             "description": "Estas opciones solo son necesarias si tiene una configuración no estándar.",
             "data": {
-              "disable_ssl_verify": "Desactivar la verificación SSL"
+              "disable_ssl_verify": "Desactivar la verificación SSL",
+              "enable_firmware_update": "Habilitar soporte de actualización de firmware"
             }
           }
         }
@@ -132,6 +144,16 @@
           "access_code": "Código de Acceso:",
           "local_mqtt": "Conéctese directamente a la impresora en lugar de hacerlo a través de la nube de Bambu Lab:",
           "usage_hours": "Cantidad de horas de uso (opcional):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Opciones avanzadas",
+            "description": "Estas opciones avanzadas son la funcionalidad temprana o arriesgada. Lea la documentación y úsela bajo su propio riesgo.",
+            "data": {
+              "disable_ssl_verify": "Desactivar la verificación SSL",
+              "enable_firmware_update": "Habilitar soporte de actualización de firmware"
+            }
+          }
         }
       },
       "Lan": {
@@ -140,14 +162,16 @@
         "data": {
           "host": "Dirección de IP Local de la Impresora:",
           "access_code": "Código de Acceso:",
-          "usage_hours": "Cantidad de horas de uso (opcional):"
+          "usage_hours": "Cantidad de horas de uso (opcional):",
+          "developer_lan_mode": "Modo LAN de desarrollador habilitado:"
         },
         "sections": {
           "advanced": {
             "name": "Opciones avanzadas",
-            "description": "Estas opciones solo son necesarias si tiene una configuración no estándar.",
+            "description": "Estas opciones avanzadas son la funcionalidad temprana o arriesgada. Lea la documentación y úsela bajo su propio riesgo.",
             "data": {
-              "disable_ssl_verify": "Desactivar la verificación SSL"
+              "disable_ssl_verify": "Desactivar la verificación SSL",
+              "enable_firmware_update": "Habilitar soporte de actualización de firmware"
             }
           }
         }
@@ -173,6 +197,18 @@
       },
       "firmware_update": {
         "name": "Actualización de Firmware"
+      },
+      "extruder_filament_state": {
+        "name": "Estado del filamento extrusor"
+      },
+      "developer_lan_mode": {
+        "name": "Modo LAN de desarrollador"
+      },
+      "mqtt_encryption": {
+        "name": "Firmware de cifrado MQTT"
+      },
+      "active_ams": {
+        "name": "Activo"
       }
     },
     "button": {
@@ -242,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Módulo de herramienta",
+        "state": {
+          "none": "No montado",
+          "laser": "Láser",
+          "cutter": "Cortador"
+        }
+      },
       "wifi_signal": {
         "name": "Señal Wi-Fi"
       },
@@ -364,7 +408,8 @@
           "textured_plate": "Placa Texturizada",
           "cool_plate": "Placa Fría / Placa PLA",
           "hot_plate": "Placa PEI Lisa / Placa de Alta Temperatura",
-          "eng_plate": "Placa de Ingeniería"
+          "eng_plate": "Placa de Ingeniería",
+          "supertack_plate": "Supertack de placa fría"
         }
       },
       "print_length": {
@@ -405,9 +450,6 @@
       "active_tray": {
         "name": "Bandeja activa"
       },
-      "active_tray_index": {
-        "name": "Índice de bandeja activa"
-      },
       "nozzle_diameter": {
         "name": "Tamaño de boquilla"
       },
@@ -420,9 +462,6 @@
       },
       "humidity_index": {
         "name": "Índice de humedad"
-      },
-      "ams_temp": {
-        "name": "Temperatura del AMS"
       },
       "external_spool": {
         "name": "Bobina externa",
@@ -450,6 +489,21 @@
           },
           "type": {
             "name": "Tipo"
+          },
+          "remain": {
+            "name": "Filamento restante"
+          },
+          "remain_enabled": {
+            "name": "Estimación de filamentos restante habilitada"
+          },
+          "tag_uid": {
+            "name": "Número de serie de spool"
+          },
+          "filament_id": {
+            "name": "Filamento ID"
+          },
+          "tray_weight": {
+            "name": "Peso máximo del filamento"
           }
         }
       },
@@ -485,6 +539,15 @@
           },
           "type": {
             "name": "Tipo"
+          },
+          "remain_enabled": {
+            "name": "Estimación de filamentos restante habilitada"
+          },
+          "filament_id": {
+            "name": "Filamento ID"
+          },
+          "tray_weight": {
+            "name": "Peso máximo del filamento"
           }
         }
       },
@@ -520,6 +583,15 @@
           },
           "type": {
             "name": "Tipo"
+          },
+          "filament_id": {
+            "name": "Filamento ID"
+          },
+          "tray_weight": {
+            "name": "Peso máximo del filamento"
+          },
+          "remain_enabled": {
+            "name": "Estimación de filamentos restante habilitada"
           }
         }
       },
@@ -555,6 +627,15 @@
           },
           "type": {
             "name": "Tipo"
+          },
+          "filament_id": {
+            "name": "Filamento ID"
+          },
+          "tray_weight": {
+            "name": "Peso máximo del filamento"
+          },
+          "remain_enabled": {
+            "name": "Estimación de filamentos restante habilitada"
           }
         }
       },
@@ -590,6 +671,15 @@
           },
           "type": {
             "name": "Tipo"
+          },
+          "filament_id": {
+            "name": "Filamento ID"
+          },
+          "tray_weight": {
+            "name": "Peso máximo del filamento"
+          },
+          "remain_enabled": {
+            "name": "Estimación de filamentos restante habilitada"
           }
         }
       },
@@ -601,6 +691,39 @@
       },
       "skipped_objects": {
         "name": "Objetos omitidos"
+      },
+      "gcode_file_downloaded": {
+        "name": "Archivo Gcode descargado"
+      },
+      "remaining_drying_time": {
+        "name": "Tiempo de secado restante"
+      },
+      "ams_temp": {
+        "name": "Temperatura"
+      },
+      "humidity": {
+        "name": "Humedad"
+      },
+      "left_nozzle_temp": {
+        "name": "Temperatura de la boquilla izquierda"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Temperatura objetivo de la boquilla izquierda"
+      },
+      "right_nozzle_temp": {
+        "name": "Temperatura de la boquilla derecha"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Temperatura objetivo de la boquilla derecha"
+      },
+      "sdcard_status": {
+        "name": "Estado de la tarjeta SD",
+        "state": {
+          "missing": "Desaparecido",
+          "normal": "Normal",
+          "abnormal": "Anormal",
+          "readonly": "Solo lectura"
+        }
       }
     },
     "camera": {
@@ -609,9 +732,6 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Modo de actualización manual"
-      },
       "camera": {
         "name": "Habilitar cámara"
       },
@@ -626,6 +746,14 @@
       },
       "timelapse": {
         "name": "Cargue el último timelapse de la impresora"
+      },
+      "download_gcode_file": {
+        "name": "Guardar el archivo Gcode en HA"
+      }
+    },
+    "update": {
+      "firmware_update": {
+        "name": "Actualización de Firmware"
       }
     }
   },
@@ -635,6 +763,12 @@
         "bambu": "Nube de laboratorio de bambú",
         "lan": "Modo LAN"
       }
+    }
+  },
+  "issues": {
+    "authentication_failed": {
+      "title": "La autenticación falló para {device}",
+      "description": "Intentar conectarse al laboratorio Bambu falló. Controle la integración y proporcione credenciales nuevas."
     }
   }
 }

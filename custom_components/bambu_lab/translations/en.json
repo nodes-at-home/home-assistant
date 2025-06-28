@@ -63,6 +63,16 @@
           "host": "Local Printer IP Address:",
           "access_code": "Access Code:",
           "usage_hours": "Current usage hours (optional):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Advanced options",
+            "description": "These options are only needed if you have a non-standard setup.",
+            "data": {
+              "disable_ssl_verify": "Disable SSL verification",
+              "enable_firmware_update": "Enable firmware update support"
+            }
+          }
         }
       },
       "Lan": {
@@ -72,6 +82,7 @@
           "serial": "Serial Number:",
           "host": "Local Printer IP Address:",
           "access_code": "Access Code:",
+          "developer_lan_mode": "Developer Lan Mode Enabled:",
           "usage_hours": "Current usage hours (optional):"
         },
         "sections": {
@@ -79,7 +90,8 @@
             "name": "Advanced options",
             "description": "These options are only needed if you have a non-standard setup.",
             "data": {
-              "disable_ssl_verify": "Disable SSL verification"
+              "disable_ssl_verify": "Disable SSL verification",
+              "enable_firmware_update": "Enable firmware update support"
             }
           }
         }
@@ -132,6 +144,16 @@
           "access_code": "Access Code:",
           "local_mqtt": "Connect directly to printer instead of by Bambu Lab cloud:",
           "usage_hours": "Current usage hours (optional):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Advanced options",
+            "description": "These advanced options are early or risky functionality. Read the documentation and use them at your own risk.",
+            "data": {
+              "disable_ssl_verify": "Disable SSL verification",
+              "enable_firmware_update": "Enable firmware update support"
+            }
+          }
         }
       },
       "Lan": {
@@ -140,14 +162,16 @@
         "data": {
           "host": "Local Printer IP Address:",
           "access_code": "Access Code:",
+          "developer_lan_mode": "Developer Lan Mode Enabled:",
           "usage_hours": "Current usage hours (optional):"
         },
         "sections": {
           "advanced": {
             "name": "Advanced options",
-            "description": "These options are only needed if you have a non-standard setup.",
+            "description": "These advanced options are early or risky functionality. Read the documentation and use them at your own risk.",
             "data": {
-              "disable_ssl_verify": "Disable SSL verification"
+              "disable_ssl_verify": "Disable SSL verification",
+              "enable_firmware_update": "Enable firmware update support"
             }
           }
         }
@@ -156,6 +180,12 @@
   },
   "entity": {
     "binary_sensor": {
+      "active_ams": {
+        "name": "Active"
+      },
+      "developer_lan_mode": {
+        "name": "Developer Lan Mode"
+      },
       "door_open": {
         "name": "Enclosure door"
       },
@@ -171,8 +201,14 @@
       "online": {
         "name": "Online"
       },
+      "mqtt_encryption": {
+        "name": "MQTT encryption firmware"
+      },
       "firmware_update": {
         "name": "Firmware update"
+      },
+      "extruder_filament_state": {
+        "name": "Extruder filament state"
       }
     },
     "button": {
@@ -242,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Tool module",
+        "state": {
+          "none": "Not mounted",
+          "laser": "Laser",
+          "cutter": "Cutter"
+        }
+      },
       "wifi_signal": {
         "name": "Wi-Fi signal"
       },
@@ -259,6 +303,18 @@
       },
       "nozzle_temp": {
         "name": "Nozzle temperature"
+      },
+      "left_nozzle_temp": {
+        "name": "Left nozzle temperature"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Left nozzle target temperature"
+      },
+      "right_nozzle_temp": {
+        "name": "Right nozzle temperature"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Right nozzle target temperature"
       },
       "aux_fan_speed": {
         "name": "Aux fan speed"
@@ -331,6 +387,15 @@
           "idle": "Idle"
         }
       },
+      "sdcard_status": { 
+        "name": "SD card status",
+        "state": {
+          "missing": "Missing",
+          "normal": "Normal",
+          "abnormal": "Abnormal",
+          "readonly": "Read only"
+        }
+      },
       "print_progress": {
         "name": "Print progress"
       },
@@ -364,13 +429,26 @@
       "gcode_file": {
         "name": "Gcode filename"
       },
+      "gcode_file_downloaded": {
+        "name": "Gcode file downloaded"
+      },
+      "remaining_drying_time": {
+        "name": "Remaining drying time"
+      },
+      "ams_temp": {
+        "name": "Temperature"
+      },
+      "humidity": {
+        "name": "Humidity"
+      },
       "print_bed_type": {
         "name": "Print bed type",
         "state": {
           "textured_plate": "Textured plate",
           "cool_plate": "Cool Plate / PLA Plate",
           "hot_plate": "Smooth PEI Plate / High Temp Plate",
-          "eng_plate": "Engineering Plate"
+          "eng_plate": "Engineering Plate",
+          "supertack_plate": "Cool Plate SuperTack"
         }
       },
       "print_length": {
@@ -411,9 +489,6 @@
       "active_tray": {
         "name": "Active tray"
       },
-      "active_tray_index": {
-        "name": "Active tray index"
-      },
       "nozzle_diameter": {
         "name": "Nozzle size"
       },
@@ -429,9 +504,6 @@
       },
       "humidity_index": {
         "name": "Humidity index"
-      },
-      "ams_temp": {
-        "name": "AMS temperature"
       },
       "external_spool": {
         "name": "External spool",
@@ -457,8 +529,23 @@
           "nozzle_temp_max": {
             "name": "Nozzle max temperature"
           },
+          "remain": {
+            "name": "Remaining filament"
+          },
+          "remain_enabled": {
+            "name": "Remaining filament estimation enabled"
+          },
+          "tag_uid": {
+            "name": "Spool serial number"
+          },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maximum weight of filament"
           }
         }
       },
@@ -489,11 +576,20 @@
           "remain": {
             "name": "Remaining filament"
           },
+          "remain_enabled": {
+            "name": "Remaining filament estimation enabled"
+          },
           "tag_uid": {
             "name": "Spool serial number"
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maximum weight of filament"
           }
         }
       },
@@ -524,11 +620,20 @@
           "remain": {
             "name": "Remaining filament"
           },
+          "remain_enabled": {
+            "name": "Remaining filament estimation enabled"
+          },
           "tag_uid": {
             "name": "Spool serial number"
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maximum weight of filament"
           }
         }
       },
@@ -559,11 +664,20 @@
           "remain": {
             "name": "Remaining filament"
           },
+          "remain_enabled": {
+            "name": "Remaining filament estimation enabled"
+          },
           "tag_uid": {
             "name": "Spool serial number"
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maximum weight of filament"
           }
         }
       },
@@ -594,11 +708,20 @@
           "remain": {
             "name": "Remaining filament"
           },
+          "remain_enabled": {
+            "name": "Remaining filament estimation enabled"
+          },
           "tag_uid": {
             "name": "Spool serial number"
           },
           "type": {
             "name": "Type"
+          },
+          "filament_id": {
+            "name": "Filament ID"
+          },
+          "tray_weight": {
+            "name": "Maximum weight of filament"
           }
         }
       }
@@ -609,9 +732,6 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Manual refresh mode"
-      },
       "camera": {
         "name": "Enable camera"
       },
@@ -626,6 +746,14 @@
       },
       "timelapse": {
         "name": "Load latest timelapse from printer"
+      },
+      "download_gcode_file": {
+        "name": "Save GCode file in HA"
+      }
+    },
+    "update": {
+      "firmware_update": {
+        "name": "Firmware update"
       }
     }
   },
@@ -635,6 +763,12 @@
         "bambu": "Bambu Lab cloud",
         "lan": "Lan Mode"
       }
+    }
+  },
+  "issues": {
+    "authentication_failed": {
+      "title": "Authentication Failed for {device}",
+      "description": "Attempting to connect to Bambu Lab failed. Please reconfigure the integration and provide fresh credentials."
     }
   }
 }

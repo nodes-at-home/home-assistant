@@ -33,7 +33,7 @@ from .commands import (
     PUSH_ALL,
     START_PUSH,
 )
-
+from .tests import MockMQTTClient
 
 class WatchdogThread(threading.Thread):
 
@@ -55,7 +55,7 @@ class WatchdogThread(threading.Thread):
         self.setName(f"{self._client._device.info.device_type}-Watchdog-{threading.get_native_id()}")
         LOGGER.debug("Watchdog thread started.")
 
-        WATCHDOG_TIMER = 30
+        WATCHDOG_TIMER = 60
         while True:
             # Wait out the remainder of the watchdog delay or 1s, whichever is higher.
             interval = time.time() - self._last_received_data
@@ -71,7 +71,7 @@ class WatchdogThread(threading.Thread):
             elif interval < WATCHDOG_TIMER:
                 self._watchdog_fired = False
 
-        LOGGER.info("Watchdog thread exited.")
+        LOGGER.debug("Watchdog thread exited.")
 
 
 class ChamberImageThread(threading.Thread):
@@ -215,13 +215,13 @@ class ChamberImageThread(threading.Thread):
                     LOGGER.error("A Chamber Image thread outer exception occurred:")
                     LOGGER.error(f"Exception. Type: {type(e)} Args: {e}")
                 if not self._stop_event.is_set():
-                    time.sleep(1)  # Avoid a tight loop if this is a persistent error.
+                    time.sleep(2)  # Avoid a tight loop if this is a persistent error.
 
             except Exception as e:
                 LOGGER.error(f"A Chamber Image thread outer exception occurred:")
                 LOGGER.error(f"Exception. Type: {type(e)} Args: {e}")
                 if not self._stop_event.is_set():
-                    time.sleep(1)  # Avoid a tight loop if this is a persistent error.
+                    time.sleep(2)  # Avoid a tight loop if this is a persistent error.
 
         LOGGER.debug("Chamber image thread exited.")
 
@@ -324,10 +324,12 @@ class BambuClient:
     """Initialize Bambu Client to connect to MQTT Broker"""
     _watchdog = None
     _camera = None
-    _usage_hours: float
-    _test_mode = bool
+    _usage_hours: float = 0
+    _test_mode: bool = False
+    _mock: bool = False
 
     def __init__(self, config):
+        self._config = config
         self.host = config['host']
         self._callback = None
         self._test_mode = False
@@ -336,14 +338,16 @@ class BambuClient:
         self._auth_token = config.get('auth_token', '')
         self._device_type = config.get('device_type', 'unknown').upper()
         self._local_mqtt = config.get('local_mqtt', False)
-        self._manual_refresh_mode = False #config.get('manual_refresh_mode', False)
         self._serial = config.get('serial', '')
+        if self._serial.startswith('MOCK-'):
+            self._mock = True
         self._usage_hours = config.get('usage_hours', 0)
         self._username = config.get('username', '')
         self._enable_camera = config.get('enable_camera', True)
         self._enable_ftp = config.get('enable_ftp', self._local_mqtt)
         self._enable_timelapse = config.get('enable_timelapse', False)
         self._disable_ssl_verify = config.get('disable_ssl_verify', False)
+        self._enable_download_gcode_file = config.get('enable_download_gcode_file', False)
 
         self._connected = False
         self._port = 1883
@@ -366,6 +370,10 @@ class BambuClient:
         self._user_language = language
 
     @property
+    def settings(self):
+        return self._config
+
+    @property
     def user_language(self):
         return self._user_language
 
@@ -373,20 +381,6 @@ class BambuClient:
     def connected(self):
         """Return if connected to server"""
         return self._connected
-
-    @property
-    def manual_refresh_mode(self):
-        """Return if the integration is running in poll mode"""
-        return self._manual_refresh_mode
-
-    async def set_manual_refresh_mode(self, on):
-        self._manual_refresh_mode = on
-        if self._manual_refresh_mode:
-            # Disconnect from the server. User must manually hit the refresh button to connect to refresh and then it will immediately disconnect.
-            self.disconnect()
-        else:
-            # Reconnect normally
-            await self.connect(self._callback)
 
     @property
     def camera_enabled(self):
@@ -409,6 +403,13 @@ class BambuClient:
 
     def set_ftp_enabled(self, enable):
         self._enable_ftp = enable
+        
+    @property
+    def download_gcode_file_enabled(self):
+        return self._device.supports_feature(Features.DOWNLOAD_GCODE_FILE) and self._enable_download_gcode_file
+
+    def set_download_gcode_file_enabled(self, enable):
+        self._enable_download_gcode_file = enable
 
     @property
     def timelapse_enabled(self):
@@ -432,7 +433,10 @@ class BambuClient:
 
     async def connect(self, callback):
         """Connect to the MQTT Broker"""
-        self.client = mqtt.Client()
+        if self._mock:
+            self.client = MockMQTTClient(self._serial)
+        else:
+            self.client = mqtt.Client()
         self._callback = callback
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
@@ -476,7 +480,7 @@ class BambuClient:
         if not self._device.supports_feature(Features.CAMERA_RTSP):
             if self._device.supports_feature(Features.CAMERA_IMAGE):
                 if self._enable_camera and not self._test_mode:
-                    if self._device.info.ip_address != "" and self._access_code != "":
+                    if self._device.info.ip_address != "" and self._device.info.ip_address != "0.0.0.0" and self._access_code != "":
                         LOGGER.debug("Starting Chamber Image thread")
                         self._camera = ChamberImageThread(self)
                         self._camera.start()
@@ -492,11 +496,13 @@ class BambuClient:
 
     def _on_connect(self):
         self._connected = True
-        self.subscribe_and_request_info()
 
-        LOGGER.debug("Starting watchdog thread")
-        self._watchdog = WatchdogThread(self)
-        self._watchdog.start()
+        if self._device.info.ip_address != "" and self._device.info.ip_address != "0.0.0.0":
+            LOGGER.debug("Starting watchdog thread")
+            self._watchdog = WatchdogThread(self)
+            self._watchdog.start()
+
+        self.subscribe_and_request_info()
 
         # Start camera if enabled
         self.start_camera()
@@ -546,7 +552,7 @@ class BambuClient:
         self.publish(START_PUSH)
 
     def on_jpeg_received(self, bytes):
-        self._device.chamber_image.set_jpeg(bytes)
+        self._device.chamber_image.set_image(bytes)
 
     def on_message(self, client, userdata, message):
         """Return the payload when received"""
@@ -582,17 +588,16 @@ class BambuClient:
                     self._on_disconnect()
             else:
                 self._device.info.set_online(True)
-                self._watchdog.received_data()
+                if self._watchdog is not None:
+                    self._watchdog.received_data()
                 if json_data.get("print"):
                     self._device.print_update(data=json_data.get("print"))
-                    # Once we receive data, if in manual refresh mode, we disconnect again.
-                    if self._manual_refresh_mode:
-                        self.disconnect()
                     if json_data.get("print").get("msg", 0) == 0:
                         self._refreshed= False
                 elif json_data.get("info") and json_data.get("info").get("command") == "get_version":
                     LOGGER.debug("Got Version Data")
                     self._device.info_update(data=json_data.get("info"))
+
 
         except Exception as e:
             LOGGER.error("An exception occurred processing a message:", exc_info=e)
@@ -606,7 +611,7 @@ class BambuClient:
     def publish(self, msg):
         """Publish a custom message"""
         result = self.client.publish(f"device/{self._serial}/request", json.dumps(msg))
-        status = result[0]
+        status = result.rc
         if status == 0:
             LOGGER.debug(f"Sent {msg} to topic device/{self._serial}/request")
             return True
@@ -616,16 +621,12 @@ class BambuClient:
 
     async def refresh(self):
         """Force refresh data"""
-
-        if self._manual_refresh_mode:
-            await self.connect(self._callback)
-        else:
-            LOGGER.debug("Force Refresh: Getting Version Info")
-            self._refreshed = True
-            self.publish(GET_VERSION)
-            LOGGER.debug("Force Refresh: Request Push All")
-            self._refreshed = True
-            self.publish(PUSH_ALL)
+        LOGGER.debug("Force Refresh: Getting Version Info")
+        self._refreshed = True
+        self.publish(GET_VERSION)
+        LOGGER.debug("Force Refresh: Request Push All")
+        self._refreshed = True
+        self.publish(PUSH_ALL)
 
     def get_device(self):
         """Return device"""
@@ -677,7 +678,10 @@ class BambuClient:
                 result.put(True)
 
         self._test_mode = True
-        self.client = mqtt.Client()
+        if self._mock:
+            self.client = MockMQTTClient(self._serial)
+        else:
+            self.client = mqtt.Client()
         self.client.on_connect = self.try_on_connect
         self.client.on_disconnect = self.on_disconnect
         self.client.on_message = on_message
@@ -697,14 +701,15 @@ class BambuClient:
         try:
             self.client.connect(host, self._port)
             self.client.loop_start()
+            LOGGER.debug("Waiting for reponse.")
             if result.get(timeout=10):
                 LOGGER.debug("Connection test was successful")
                 return True
         except OSError as e:
-            LOGGER.error(f"Connection test failed with exception {type(e)} Args: {e}")
+            LOGGER.error(f"Connection test to '{host}' failed: {type(e)} Args: {e}")
             return False
         except queue.Empty:
-            LOGGER.error(f"Connection test failed with timeout")
+            LOGGER.error(f"Connection test to '{host}' failed with timeout")
             return False
         finally:
             self.disconnect()

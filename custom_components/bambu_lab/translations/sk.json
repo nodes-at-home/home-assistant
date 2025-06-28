@@ -63,6 +63,16 @@
           "host": "Lokálna IP adresa tlačiarne:",
           "access_code": "Prístupový kód:",
           "usage_hours": "Aktuálne hodiny používania (voliteľné):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Pokročilé možnosti",
+            "description": "Tieto možnosti sú potrebné iba vtedy, ak máte neštandardné nastavenie.",
+            "data": {
+              "disable_ssl_verify": "Zakázať overenie SSL",
+              "enable_firmware_update": "Povoľte podporu aktualizácie firmvéru"
+            }
+          }
         }
       },
       "Lan": {
@@ -72,14 +82,16 @@
           "serial": "Sériové čislo:",
           "host": "Lokálna IP adresa tlačiarne:",
           "access_code": "Prístupový kód:",
-          "usage_hours": "Aktuálne hodiny používania (voliteľné):"
+          "usage_hours": "Aktuálne hodiny používania (voliteľné):",
+          "developer_lan_mode": "Povolený režim LAN s vývojárom:"
         },
         "sections": {
           "advanced": {
             "name": "Pokročilé možnosti",
             "description": "Tieto možnosti sú potrebné iba vtedy, ak máte neštandardné nastavenie.",
             "data": {
-              "disable_ssl_verify": "Zakázať overenie SSL"
+              "disable_ssl_verify": "Zakázať overenie SSL",
+              "enable_firmware_update": "Povoľte podporu aktualizácie firmvéru"
             }
           }
         }
@@ -132,6 +144,16 @@
           "access_code": "Prístupový kód:",
           "local_mqtt": "Pripojte sa priamo k tlačiarni namiesto cloudu Bambu Lab:",
           "usage_hours": "Aktuálne hodiny používania (voliteľné):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Pokročilé možnosti",
+            "description": "Tieto pokročilé možnosti sú včasnou alebo riskantnou funkciou. Prečítajte si dokumentáciu a použite ich na svoje vlastné riziko.",
+            "data": {
+              "disable_ssl_verify": "Zakázať overenie SSL",
+              "enable_firmware_update": "Povoľte podporu aktualizácie firmvéru"
+            }
+          }
         }
       },
       "Lan": {
@@ -140,14 +162,16 @@
         "data": {
           "host": "Lokálna IP adresa tlačiarne:",
           "access_code": "Prístupový kód:",
-          "usage_hours": "Aktuálne hodiny používania (voliteľné):"
+          "usage_hours": "Aktuálne hodiny používania (voliteľné):",
+          "developer_lan_mode": "Povolený režim LAN s vývojárom:"
         },
         "sections": {
           "advanced": {
             "name": "Pokročilé možnosti",
-            "description": "Tieto možnosti sú potrebné iba vtedy, ak máte neštandardné nastavenie.",
+            "description": "Tieto pokročilé možnosti sú včasnou alebo riskantnou funkciou. Prečítajte si dokumentáciu a použite ich na svoje vlastné riziko.",
             "data": {
-              "disable_ssl_verify": "Zakázať overenie SSL"
+              "disable_ssl_verify": "Zakázať overenie SSL",
+              "enable_firmware_update": "Povoľte podporu aktualizácie firmvéru"
             }
           }
         }
@@ -173,6 +197,18 @@
       },
       "firmware_update": {
         "name": "Aktualizácia firmvéru"
+      },
+      "extruder_filament_state": {
+        "name": "Extrudérový vlákno štát"
+      },
+      "developer_lan_mode": {
+        "name": "Vývojár LAN Mode"
+      },
+      "mqtt_encryption": {
+        "name": "Šifrovací firmvér MQTT"
+      },
+      "active_ams": {
+        "name": "Aktívny"
       }
     },
     "button": {
@@ -242,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Nástrojový modul",
+        "state": {
+          "none": "Nenamontovaný",
+          "laser": "Laser",
+          "cutter": "Rezačka"
+        }
+      },
       "wifi_signal": {
         "name": "Wi-Fi signál"
       },
@@ -364,7 +408,8 @@
           "textured_plate": "Textúrovaná podložka",
           "cool_plate": "Cool Plate / PLA Plate",
           "hot_plate": "Smooth PEI Plate / High Temp Plate",
-          "eng_plate": "Engineering Plate"
+          "eng_plate": "Engineering Plate",
+          "supertack_plate": "Cool Plate Supertack"
         }
       },
       "print_length": {
@@ -405,9 +450,6 @@
       "active_tray": {
         "name": "Aktívny zásobník"
       },
-      "active_tray_index": {
-        "name": "Index aktívneho zásobníka"
-      },
       "nozzle_diameter": {
         "name": "Priemer trysky"
       },
@@ -420,9 +462,6 @@
       },
       "humidity_index": {
         "name": "Index vlhkosti"
-      },
-      "ams_temp": {
-        "name": "Teplota AMS"
       },
       "external_spool": {
         "name": "Vonkajšia cievka",
@@ -450,6 +489,21 @@
           },
           "type": {
             "name": "Typ"
+          },
+          "remain": {
+            "name": "Zostávajúce vlákno"
+          },
+          "remain_enabled": {
+            "name": "Zostávajúci odhad vlákna povolený"
+          },
+          "tag_uid": {
+            "name": "Sériové číslo cievky"
+          },
+          "filament_id": {
+            "name": "ID vlákna"
+          },
+          "tray_weight": {
+            "name": "Maximálna hmotnosť vlákna"
           }
         }
       },
@@ -485,6 +539,15 @@
           },
           "type": {
             "name": "Typ"
+          },
+          "remain_enabled": {
+            "name": "Zostávajúci odhad vlákna povolený"
+          },
+          "filament_id": {
+            "name": "ID vlákna"
+          },
+          "tray_weight": {
+            "name": "Maximálna hmotnosť vlákna"
           }
         }
       },
@@ -520,6 +583,15 @@
           },
           "type": {
             "name": "Typ"
+          },
+          "filament_id": {
+            "name": "ID vlákna"
+          },
+          "tray_weight": {
+            "name": "Maximálna hmotnosť vlákna"
+          },
+          "remain_enabled": {
+            "name": "Zostávajúci odhad vlákna povolený"
           }
         }
       },
@@ -555,6 +627,15 @@
           },
           "type": {
             "name": "Typ"
+          },
+          "filament_id": {
+            "name": "ID vlákna"
+          },
+          "tray_weight": {
+            "name": "Maximálna hmotnosť vlákna"
+          },
+          "remain_enabled": {
+            "name": "Zostávajúci odhad vlákna povolený"
           }
         }
       },
@@ -590,6 +671,15 @@
           },
           "type": {
             "name": "Typ"
+          },
+          "filament_id": {
+            "name": "ID vlákna"
+          },
+          "tray_weight": {
+            "name": "Maximálna hmotnosť vlákna"
+          },
+          "remain_enabled": {
+            "name": "Zostávajúci odhad vlákna povolený"
           }
         }
       },
@@ -601,6 +691,39 @@
       },
       "skipped_objects": {
         "name": "Preskočené predmety"
+      },
+      "gcode_file_downloaded": {
+        "name": "Stiahnutý súbor GCode"
+      },
+      "remaining_drying_time": {
+        "name": "Zostávajúci čas sušenia"
+      },
+      "ams_temp": {
+        "name": "Teplota"
+      },
+      "humidity": {
+        "name": "Vlhkosť"
+      },
+      "left_nozzle_temp": {
+        "name": "Teplota ľavej dýzy"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Ľavá dýza cieľová teplota"
+      },
+      "right_nozzle_temp": {
+        "name": "Pravá dýza teplota"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Pravá dýza cieľová teplota"
+      },
+      "sdcard_status": {
+        "name": "Stav karty SD",
+        "state": {
+          "missing": "Chýbajúci",
+          "normal": "Normálny",
+          "abnormal": "Neobvyklý",
+          "readonly": "Čítať"
+        }
       }
     },
     "camera": {
@@ -609,9 +732,6 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Režim manuálneho obnovenia"
-      },
       "camera": {
         "name": "Povoliť kameru"
       },
@@ -626,6 +746,14 @@
       },
       "timelapse": {
         "name": "Načítať najnovší časový čas z tlačiarne"
+      },
+      "download_gcode_file": {
+        "name": "Uložte súbor GCode v HA"
+      }
+    },
+    "update": {
+      "firmware_update": {
+        "name": "Aktualizácia firmvéru"
       }
     }
   },
@@ -635,6 +763,12 @@
         "bambu": "Bambu Lab cloud",
         "lan": "Režim LAN"
       }
+    }
+  },
+  "issues": {
+    "authentication_failed": {
+      "title": "Autentifikácia zlyhala pre {device}",
+      "description": "Pokus o pripojenie k laboratória Bambu zlyhal. Prekonfigurujte integráciu a poskytnite nové poverenia."
     }
   }
 }

@@ -27,8 +27,8 @@
       "code_needed": "Es muss ein Bestätigungscode angegeben werden.",
       "verifyCode": "Ein Bestätigungscode ist erforderlich. Überprüfen Sie Ihre E-Mails oder Ihr Telefon.",
       "code_expired": "Der Bestätigungscode ist abgelaufen. Neuer Code angefordert. Überprüfen Sie Ihre E-Mails oder Ihr Telefon.",
-      "code_incorrect": "Der Bestätigungscode war falsch. ",
-      "tfaCode": "2FA-Code ist erforderlich. "
+      "code_incorrect": "Der Bestätigungscode war falsch.",
+      "tfaCode": "2FA-Code ist erforderlich."
     },
     "step": {
       "user": {
@@ -63,6 +63,16 @@
           "host": "IP-Adresse des lokalen Druckers:",
           "access_code": "Zugangscode",
           "usage_hours": "Aktuelle Nutzungsstunden (optional):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Erweiterte Optionen",
+            "description": "Diese Optionen sind nur erforderlich, wenn Sie ein nicht standardmäßiges Setup haben.",
+            "data": {
+              "disable_ssl_verify": "SSL-Überprüfung deaktivieren",
+              "enable_firmware_update": "Unterstützung für Firmware-Updates aktivieren"
+            }
+          }
         }
       },
       "Lan": {
@@ -72,14 +82,16 @@
           "serial": "Seriennummer:",
           "host": "IP-Adresse des lokalen Druckers:",
           "access_code": "Zugangscode",
-          "usage_hours": "Aktuelle Nutzungsstunden (optional):"
+          "usage_hours": "Aktuelle Nutzungsstunden (optional):",
+          "developer_lan_mode": "Entwickler LAN -Modus aktiviert:"
         },
         "sections": {
           "advanced": {
             "name": "Erweiterte Optionen",
             "description": "Diese Optionen sind nur erforderlich, wenn Sie ein nicht standardmäßiges Setup haben.",
             "data": {
-              "disable_ssl_verify": "Deaktivieren Sie die SSL -Überprüfung"
+              "disable_ssl_verify": "SSL-Überprüfung deaktivieren",
+              "enable_firmware_update": "Unterstützung für Firmware-Updates aktivieren"
             }
           }
         }
@@ -106,7 +118,7 @@
     "step": {
       "init": {
         "title": "Verbindungseinstellungen anpassen",
-        "description": "Die Konfiguration über die Bambu Lab Cloud ist am einfachsten und schnellsten. Social-Media-Konten ohne Passwort werden nicht unterstützt.\n\rSie können auch funktionierende Authentifizierungsdaten von anderen Druckern wiederverwenden. Wenn diese gefunden werden, werden sie nach der E-Mail-Adresse aufgelistet.\n\rAlternativ können Sie eine Verbindung herstellen, indem Sie die lokalen Verbindungsdetails des Druckers manuell angeben. Dies ist für einen Drucker im Lan-Modus erforderlich.",
+        "description": "Die Konfiguration über die Bambu Lab Cloud ist am einfachsten und schnellsten. Social-Media-Konten ohne Passwort werden nicht unterstützt.\n\rSie können auch funktionierende Authentifizierungsdaten von anderen Druckern wiederverwenden. Wenn diese gefunden werden, werden sie nach der E-Mail-Adresse aufgelistet.\n\rAlternativ können Sie eine Verbindung herstellen, indem Sie die lokalen Verbindungsdetails des Druckers manuell angeben. Dies ist für einen Drucker im LAN-Modus erforderlich.",
         "data": {
           "printer_mode": "Drucker-Konfigurationsmodus:"
         }
@@ -132,6 +144,16 @@
           "access_code": "Zugangscode",
           "local_mqtt": "Stellen Sie eine direkte Verbindung zum Drucker statt über die Bambu Lab-Cloud her:",
           "usage_hours": "Aktuelle Nutzungsstunden (optional):"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Erweiterte Optionen",
+            "description": "Diese erweiterten Optionen sind frühe oder riskante Funktionen. Lesen Sie die Dokumentation und verwenden Sie sie auf eigenes Risiko.",
+            "data": {
+              "disable_ssl_verify": "SSL-Überprüfung deaktivieren",
+              "enable_firmware_update": "Unterstützung für Firmware-Updates aktivieren"
+            }
+          }
         }
       },
       "Lan": {
@@ -140,14 +162,16 @@
         "data": {
           "host": "IP-Adresse des lokalen Druckers:",
           "access_code": "Zugangscode",
-          "usage_hours": "Aktuelle Nutzungsstunden (optional):"
+          "usage_hours": "Aktuelle Nutzungsstunden (optional):",
+          "developer_lan_mode": "Entwickler LAN -Modus aktiviert:"
         },
         "sections": {
           "advanced": {
             "name": "Erweiterte Optionen",
-            "description": "Diese Optionen sind nur erforderlich, wenn Sie ein nicht standardmäßiges Setup haben.",
+            "description": "Diese erweiterten Optionen sind frühe oder riskante Funktionen. Lesen Sie die Dokumentation und verwenden Sie sie auf eigenes Risiko.",
             "data": {
-              "disable_ssl_verify": "Deaktivieren Sie die SSL -Überprüfung"
+              "disable_ssl_verify": "SSL-Überprüfung deaktivieren",
+              "enable_firmware_update": "Unterstützung für Firmware-Updates aktivieren"
             }
           }
         }
@@ -173,6 +197,18 @@
       },
       "firmware_update": {
         "name": "Firmware Status"
+      },
+      "extruder_filament_state": {
+        "name": "Extruder Filament Status"
+      },
+      "developer_lan_mode": {
+        "name": "Entwickler LAN -Modus"
+      },
+      "mqtt_encryption": {
+        "name": "MQTT -Verschlüsselungsfirmware"
+      },
+      "active_ams": {
+        "name": "Aktiv"
       }
     },
     "button": {
@@ -242,6 +278,14 @@
       }
     },
     "sensor": {
+      "tool_module": {
+        "name": "Werkzeugmodul",
+        "state": {
+          "none": "Nicht montiert",
+          "laser": "Laser",
+          "cutter": "Schneider"
+        }
+      },
       "wifi_signal": {
         "name": "Wi-Fi-Signalqualität"
       },
@@ -249,7 +293,7 @@
         "name": "Druckbetttemperatur"
       },
       "target_bed_temp": {
-        "name": "Zieltemperatur des Druckbett"
+        "name": "Zieltemperatur vom Druckbett"
       },
       "chamber_temp": {
         "name": "Temperatur im Druckraum"
@@ -358,13 +402,17 @@
       "gcode_file": {
         "name": "Gcode Dateiname"
       },
+      "gcode_file_downloaded": {
+        "name": "Gcode Dateiname heruntergeladen"
+      },
       "print_bed_type": {
         "name": "Druckbett Typ",
         "state": {
           "textured_plate": "Strukturierte Platte",
           "cool_plate": "Kühlplatte / PLA-Platte",
           "hot_plate": "Glatte PEI-Platte/Hochtemperaturplatte",
-          "eng_plate": "Technische Platte"
+          "eng_plate": "Technische Platte",
+          "supertack_plate": "Cool Plate Supertack"
         }
       },
       "print_length": {
@@ -391,7 +439,7 @@
         "name": "Verbleibende Zeit"
       },
       "end_time": {
-        "name": "Vrs. Fertigstellung"
+        "name": "Endzeit"
       },
       "total_usage_hours": {
         "name": "Gesamtnutzung"
@@ -405,9 +453,6 @@
       "active_tray": {
         "name": "Aktiver Slot"
       },
-      "active_tray_index": {
-        "name": "Aktiver Slotindex"
-      },
       "nozzle_diameter": {
         "name": "Düsengröße"
       },
@@ -420,9 +465,6 @@
       },
       "humidity_index": {
         "name": "Index der Luftfeuchtigkeit"
-      },
-      "ams_temp": {
-        "name": "AMS-Temperatur"
       },
       "external_spool": {
         "name": "Externe Spule",
@@ -450,6 +492,21 @@
           },
           "type": {
             "name": "Typ"
+          },
+          "remain": {
+            "name": "Verbleibendes Filament"
+          },
+          "remain_enabled": {
+            "name": "Berechnung verbleibendes Filament aktiviert"
+          },
+          "tag_uid": {
+            "name": "Seriennummer der Spule"
+          },
+          "filament_id": {
+            "name": "Filament-ID"
+          },
+          "tray_weight": {
+            "name": "Maximales Filamentgewicht"
           }
         }
       },
@@ -481,10 +538,19 @@
             "name": "Verbleibende Filamentmenge"
           },
           "tag_uid": {
-            "name": "Seriennummer des Filaments"
+            "name": "Seriennummer der Spule"
           },
           "type": {
             "name": "Typ"
+          },
+          "remain_enabled": {
+            "name": "Berechnung verbleibendes Filament aktiviert"
+          },
+          "filament_id": {
+            "name": "Filament-ID"
+          },
+          "tray_weight": {
+            "name": "Maximales Filamentgewicht"
           }
         }
       },
@@ -516,10 +582,19 @@
             "name": "Verbleibende Filamentmenge"
           },
           "tag_uid": {
-            "name": "Seriennummer des Filaments"
+            "name": "Seriennummer der Spule"
           },
           "type": {
             "name": "Typ"
+          },
+          "filament_id": {
+            "name": "Filament-ID"
+          },
+          "tray_weight": {
+            "name": "Maximales Filamentgewicht"
+          },
+          "remain_enabled": {
+            "name": "Berechnung verbleibendes Filament aktiviert"
           }
         }
       },
@@ -551,10 +626,19 @@
             "name": "Verbleibende Filamentmenge"
           },
           "tag_uid": {
-            "name": "Seriennummer des Filaments"
+            "name": "Seriennummer der Spule"
           },
           "type": {
             "name": "Typ"
+          },
+          "filament_id": {
+            "name": "Filament-ID"
+          },
+          "tray_weight": {
+            "name": "Maximales Filamentgewicht"
+          },
+          "remain_enabled": {
+            "name": "Berechnung verbleibendes Filament aktiviert"
           }
         }
       },
@@ -586,10 +670,19 @@
             "name": "Verbleibende Filamentmenge"
           },
           "tag_uid": {
-            "name": "Seriennummer des Filaments"
+            "name": "Seriennummer der Spule"
           },
           "type": {
             "name": "Typ"
+          },
+          "filament_id": {
+            "name": "Filament-ID"
+          },
+          "tray_weight": {
+            "name": "Maximales Filamentgewicht"
+          },
+          "remain_enabled": {
+            "name": "Berechnung verbleibendes Filament aktiviert"
           }
         }
       },
@@ -601,6 +694,36 @@
       },
       "skipped_objects": {
         "name": "Übersprungene Objekte"
+      },
+      "remaining_drying_time": {
+        "name": "Verbleibende Trocknungszeit"
+      },
+      "ams_temp": {
+        "name": "Temperatur"
+      },
+      "humidity": {
+        "name": "Luftfeuchtigkeit"
+      },
+      "left_nozzle_temp": {
+        "name": "Linke Düsentemperatur"
+      },
+      "left_target_nozzle_temp": {
+        "name": "Linksdüsenzieltemperatur"
+      },
+      "right_nozzle_temp": {
+        "name": "Rechte Düsentemperatur"
+      },
+      "right_target_nozzle_temp": {
+        "name": "Rechte Düsenzieltemperatur"
+      },
+      "sdcard_status": {
+        "name": "SD -Kartenstatus",
+        "state": {
+          "missing": "Fehlen",
+          "normal": "Normal",
+          "abnormal": "Abnormal",
+          "readonly": "Nur lesen"
+        }
       }
     },
     "camera": {
@@ -609,23 +732,28 @@
       }
     },
     "switch": {
-      "manual": {
-        "name": "Manueller Aktualisierungsmodus"
-      },
       "camera": {
         "name": "Kamera aktivieren"
       },
       "imagecamera": {
-        "name": "Verwenden Sie eine Bildsensorkamera"
+        "name": "Bildsensorkamera verwenden"
       },
       "prompt_sound": {
         "name": "Aufforderungston zulassen"
       },
       "ftp": {
-        "name": "Laden Sie Modelldaten aus dem Drucker laden"
+        "name": "Modelldaten vom Drucker laden"
       },
       "timelapse": {
-        "name": "Laden Sie den neuesten Zeitplan aus dem Drucker"
+        "name": "Neuste Zeitraffer-Aufnahme vom Drucker laden"
+      },
+      "download_gcode_file": {
+        "name": "GCode Datei in HA speichern"
+      }
+    },
+    "update": {
+      "firmware_update": {
+        "name": "Firmware Status"
       }
     }
   },
@@ -635,6 +763,12 @@
         "bambu": "Bambu Lab-Cloud",
         "lan": "LAN-Modus"
       }
+    }
+  },
+  "issues": {
+    "authentication_failed": {
+      "title": "Authentifizierung fehlgeschlagen für {device}",
+      "description": "Der Versuch eine Verbindung zu Bambu Lab herzustellen, schlug fehl. Bitte konfigurieren Sie die Integration und geben Sie aktuelle Anmeldeinformationen ein."
     }
   }
 }
