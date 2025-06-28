@@ -815,10 +815,10 @@ views:
               - entity: switch.shelly_utilityroom_biocat_switch_0
                 name: Entkalker
                 icon: mdi:water-sync
-              - entity: sensor.boiler_dhw_curtemp
+              - entity: sensor.boiler_dhw_current_extern_temperature
                 name: Warmwasser
-              - entity: switch.boiler_dhw_onetime
-                name: Warmwasser
+              - entity: switch.boiler_dhw_one_time_charging
+                name: Warmwasser sofort
               - entity: binary_sensor.rauchmelder_hauswirtsch
                 name: Rauchmelder
             card_mod:
