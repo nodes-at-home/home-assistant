@@ -61,7 +61,7 @@
 
       - name: postern_doorlock
         variables:
-            door: Nebentur
+            door: nebentur
         availability: "{{ not states ( 'lock.' + door ) in ['unknown', 'availability'] and not states ( 'binary_sensor.' + door ) in ['unknown', 'availability'] }}"
         state: >-
             {% if is_state ( 'binary_sensor.' + door, 'on' ) %}
