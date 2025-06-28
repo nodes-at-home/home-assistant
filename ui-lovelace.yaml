@@ -622,6 +622,8 @@ views:
                 name: Kühlschrank
               - entity: switch.kuhlschrank
                 icon: mdi:fridge-industrial-outline
+              - switch.shelly_kitchen_coffeemaker
+              - switch.shelly_kitchen_icemaker
               - entity: binary_sensor.terassentur_kuche
                 name: Terassentür
               - entity: climate.room_climate_kuche
@@ -1127,8 +1129,7 @@ views:
             columns: 3
             entities:
               - light.shelly_terrace_switch_0
-              - entity: light.relay_backyard_lamp
-                name: Hinterhof
+              - light.shelly_hinterhof
               - entity: light.sonoff_garage_lamp
                 name: Garage
               - entity: light.sonoff_yardgate_lamp
@@ -2344,7 +2345,7 @@ views:
                 element: light.shelly_terrace_switch_0a
               - entity: light.shelly_terrace_switch_0
                 element: light.shelly_terrace_switch_0b
-              - light.relay_backyard_lamp
+              - light.shelly_hinterhof
               - light.sonoff_yardgate_lamp
               # - light.ws2812_terrace1
               # - light.ws2812_terrace2

@@ -6,7 +6,7 @@
     name: automatic_outdoor_lights
     entities:
       - light.shelly_terrace_switch_0
-      - light.relay_backyard_lamp
+      - light.shelly_hinterhof
       - light.sonoff_garage_lamp
       - light.sonoff_yardgate_lamp
       - light.shelly_lounge_schwibbogen1_switch_0

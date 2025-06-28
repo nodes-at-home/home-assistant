@@ -51,13 +51,6 @@
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_relay@backyard"
-    state_topic: nodes@home/switch/relay/backyard/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
   - name: "nodestate_sonoff@yardgate"
     state_topic: nodes@home/switch/sonoff/yardgate/value/voltage
     qos: 0

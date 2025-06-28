@@ -384,7 +384,7 @@
 
         <use id="light.shelly_terrace_switch_0a" x="350" y="57" href="#walllight_up" />
         <use id="light.shelly_terrace_switch_0b" x="840" y="57" href="#walllight_up" />
-        <use id="light.relay_backyard_lamp" x="-5" y="440" href="#walllight_left" />
+        <use id="light.shelly_hinterhof" x="-5" y="440" href="#walllight_left" />
         <use id="light.sonoff_yardgate_lamp" x="1170" y="1040" href="#ledspotlight" />
         <use id="light.shelly_lounge_schwibbogen1_switch_0" x="1010" y="1005" href="#schwibbogen" />
         <use id="light.shelly_lounge_schwibbogen2_switch_0" x="860" y="1005" href="#schwibbogen" />

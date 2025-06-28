@@ -248,6 +248,20 @@ light.shelly_bath_switch_0:
 light.shelly_shower_switch_0:
     friendly_name: Dusche
 
+light.shelly_hinterhof:
+    friendly_name: Hinterhof
+
+switch.shelly_utilityroom_circulatingpump_switch_0:
+    friendly_name: Zirkulationspumpe
+    icon: mdi:pump
+
+switch.shelly_kitchen_coffeemaker:
+    friendly_name: Kaffeemaschine
+    icon: mdi:coffee-maker-outline
+
+switch.shelly_kitchen_icemaker:
+    friendly_name: Eismaschine
+    icon: mdi:delete-variant
 #------------------------------------------------------------------------------
 cover.relay_garage:
     friendly_name: Garagentor
@@ -324,26 +338,6 @@ sensor.relay_dining1_lastboot:
 
 sensor.relay_dining1_version:
     friendly_name: Schrankschalter links
-    entity_picture: /local/images/wifi-relay.jpg
-
-#------------------------------------------------------------------------------
-light.relay_backyard_lamp:
-    friendly_name: Außenlicht Hinterhof
-
-sensor.relay_backyard_voltage:
-    friendly_name: Hinterhofschalter
-    entity_picture: /local/images/wifi-relay.jpg
-
-sensor.relay_backyard_lastvoltage:
-    friendly_name: Hinterhofschalter
-    entity_picture: /local/images/wifi-relay.jpg
-
-sensor.relay_backyard_lastboot:
-    friendly_name: Hinterhofschalter
-    entity_picture: /local/images/wifi-relay.jpg
-
-sensor.relay_backyard_version:
-    friendly_name: Hinterhofschalter
     entity_picture: /local/images/wifi-relay.jpg
 
 #------------------------------------------------------------------------------
@@ -1483,11 +1477,6 @@ switch.nodesathome1:
 switch.nodesathome2:
     friendly_name: nodesathome2
     icon: mdi:server
-
-#------------------------------------------------------------------------------
-switch.shelly_utilityroom_circulatingpump_switch_0:
-    friendly_name: Zirkulationspumpe
-    icon: mdi:pump
 
 #------------------------------------------------------------------------------
 group.ev6_doors:
