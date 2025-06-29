@@ -6,8 +6,8 @@
     name: automatic_indoor_lights_by_night
     entities:
       - light.sonoff_gallery_lamp
-      - light.relay_dining1_lamp
-      - light.relay_dining2_lamp
+      - light.shelly_esszimmerschrank1
+      - light.shelly_esszimmerschrank2
       - light.led_kitchen_led
       - light.sonoff_corridor_lamp
       - light.sonoff_gallery1_socket

@@ -272,7 +272,7 @@
             <path d="M 175 6 h 101 m 0 3 h -101" />
         </g>
 
-        <g id="light.sonoff_garage_lamp" > <use x="257" y="730" href="#ledspotlight" /> </g>
+        <g id="light.shelly_garagentor" > <use x="257" y="730" href="#ledspotlight" /> </g>
 
         <text id="sensor.relay_garage_temperature" x="120" y="400" class="thermostat-text" ><tspan>°C</tspan></text>
         <text id="sensor.relay_garage_humidity" x="120" y="425" class="thermostat-text" ><tspan>%</tspan></text>
@@ -385,7 +385,7 @@
         <use id="light.shelly_terrace_switch_0a" x="350" y="57" href="#walllight_up" />
         <use id="light.shelly_terrace_switch_0b" x="840" y="57" href="#walllight_up" />
         <use id="light.shelly_hinterhof" x="-5" y="440" href="#walllight_left" />
-        <use id="light.sonoff_yardgate_lamp" x="1170" y="1040" href="#ledspotlight" />
+        <use id="light.shelly_gartentor" x="1170" y="1040" href="#ledspotlight" />
         <use id="light.shelly_lounge_schwibbogen1_switch_0" x="1010" y="1005" href="#schwibbogen" />
         <use id="light.shelly_lounge_schwibbogen2_switch_0" x="860" y="1005" href="#schwibbogen" />
         <use id="light.shelly_entrance_star_switch_0" x="550" y="910" href="#star" />
@@ -394,8 +394,8 @@
         <use id="light.shelly_lounge_whiteball_switch_0" x="1100" y="940" href="#lightbulb" />
         <use id="light.led_corridor_led" x="330" y="470" href="#lightbulb" />
         <use id="light.led_kitchen_led" x="30" y="330" href="#lightbulb" />
-        <use id="light.relay_dining1_lamp" x="700" y="440" href="#lightbulb" />
-        <use id="light.relay_dining2_lamp" x="700" y="685" href="#lightbulb" />
+        <use id="light.shelly_esszimmerschrank1" x="700" y="440" href="#lightbulb" />
+        <use id="light.shelly_esszimmerschrank2" x="700" y="685" href="#lightbulb" />
 
         <use id="light.shelly_entrance_drops_switch_0a" x="30" y="1035" href="#lightchain" />
         <use id="light.shelly_entrance_drops_switch_0b" x="770" y="1035" href="#lightchain" />

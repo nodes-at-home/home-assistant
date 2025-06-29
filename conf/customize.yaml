@@ -236,6 +236,19 @@ light.shelly_entrance_drops_switch_0:
     friendly_name: Tropfen
     icon: mdi:string-lights
 
+switch.shelly_utilityroom_circulatingpump_switch_0:
+    friendly_name: Zirkulationspumpe
+    icon: mdi:pump
+
+switch.shelly_kitchen_coffeemaker:
+    friendly_name: Kaffeemaschine
+    icon: mdi:coffee-maker-outline
+
+switch.shelly_kitchen_icemaker:
+    friendly_name: Eismaschine
+    icon: mdi:delete-variant
+
+#------------------------------------------------------------------------------
 light.shelly_attic_switch_0:
     friendly_name: Dachboden
 
@@ -251,17 +264,24 @@ light.shelly_shower_switch_0:
 light.shelly_hinterhof:
     friendly_name: Hinterhof
 
-switch.shelly_utilityroom_circulatingpump_switch_0:
-    friendly_name: Zirkulationspumpe
-    icon: mdi:pump
+light.shelly_garagentor:
+    friendly_name: Garagentor
 
-switch.shelly_kitchen_coffeemaker:
-    friendly_name: Kaffeemaschine
-    icon: mdi:coffee-maker-outline
+light.shelly_gartentor:
+    friendly_name: Gartentor
 
-switch.shelly_kitchen_icemaker:
-    friendly_name: Eismaschine
-    icon: mdi:delete-variant
+light.shelly_esszimmerschrank1:
+    friendly_name: Schrank links
+
+light.shelly_esszimmerschrank2:
+    friendly_name: Schrank rechts
+
+light.shelly_garage1:
+    friendly_name: Kleiner Raum
+
+light.shelly_garage2:
+    friendly_name: Großer Raum
+
 #------------------------------------------------------------------------------
 cover.relay_garage:
     friendly_name: Garagentor
@@ -299,66 +319,6 @@ sensor.relay_garage_version:
 #------------------------------------------------------------------------------
 weblink.home_assistant:
     entity_picture: /local/images/home-assistant.jpg
-
-#------------------------------------------------------------------------------
-light.sonoff_garage_lamp:
-    friendly_name: Außenlicht Garage
-
-sensor.sonoff_garage_voltage:
-    friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_garage_lastvoltage:
-    friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_garage_lastboot:
-    friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_garage_version:
-    friendly_name: 'Außenlicht Garage'
-    entity_picture: /local/images/sonoff.jpg
-
-#------------------------------------------------------------------------------
-light.relay_dining1_lamp:
-    friendly_name: Lampe linker Schrank
-
-sensor.relay_dining1_voltage:
-    friendly_name: Schrankschalter links
-    entity_picture: /local/images/wifi-relay.jpg
-
-sensor.relay_dining1_lastvoltage:
-    friendly_name: Schrankschalter links
-    entity_picture: /local/images/wifi-relay.jpg
-
-sensor.relay_dining1_lastboot:
-    friendly_name: Schrankschalter links
-    entity_picture: /local/images/wifi-relay.jpg
-
-sensor.relay_dining1_version:
-    friendly_name: Schrankschalter links
-    entity_picture: /local/images/wifi-relay.jpg
-
-#------------------------------------------------------------------------------
-light.relay_dining2_lamp:
-    friendly_name: Lampe rechter Schrank
-
-sensor.relay_dining2_voltage:
-    friendly_name: Schrankschalter rechts
-    entity_picture: /local/images/wifi-relay.jpg
-
-sensor.relay_dining2_lastvoltage:
-    friendly_name: Schrankschalter rechts
-    entity_picture: /local/images/wifi-relay.jpg
-
-sensor.relay_dining2_lastboot:
-    friendly_name: Schrankschalter rechts
-    entity_picture: /local/images/wifi-relay.jpg
-
-sensor.relay_dining2_version:
-    friendly_name: Schrankschalter rechts
-    entity_picture: /local/images/wifi-relay.jpg
 
 #------------------------------------------------------------------------------
 light.xmastree_dining_leds:
@@ -468,26 +428,6 @@ sensor.sonoff_bedroom_lastboot:
 sensor.sonoff_bedroom_version:
     friendly_name: 'Steckdose Schlafzimmerschrank'
     entity_picture: /local/images/sonoff_s20.jpg
-
-#------------------------------------------------------------------------------
-light.sonoff_yardgate_lamp:
-    friendly_name: Außenlicht Gartentor
-
-sensor.sonoff_yardgate_voltage:
-    friendly_name: 'Außenlicht Gartentor'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_yardgate_lastvoltage:
-    friendly_name: 'Außenlicht Gartentor'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_yardgate_lastboot:
-    friendly_name: 'Außenlicht Gartentor'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_yardgate_version:
-    friendly_name: 'Außenlicht Gartentor'
-    entity_picture: /local/images/sonoff.jpg
 
 #------------------------------------------------------------------------------
 light.sonoff_corridor_lamp:
@@ -714,27 +654,6 @@ sensor.ws2812_office_lastboot:
 sensor.ws2812_office_version:
     friendly_name: Tischlampe
     entity_picture: /local/images/wemos_mini.jpg
-
-#-------------------------------------------------------------------------  -----
-switch.sonoff_k8200_socket:
-    friendly_name: Bambulab X1C
-    icon: mdi:printer-3d
-
-sensor.sonoff_k8200_voltage:
-    friendly_name: Steckdose Bambulab X1C
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_k8200_lastvoltage:
-    friendly_name: Steckdose Bambulab X1C
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_k8200_lastboot:
-    friendly_name: Steckdose Bambulab X1C
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_k8200_version:
-    friendly_name: Steckdose Bambulab X1C
-    entity_picture: /local/images/sonoff_s20.jpg
 
 #-------------------------------------------------------------------------  -----
 light.sonoff_gallery1_socket:

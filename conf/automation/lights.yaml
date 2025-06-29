@@ -415,7 +415,7 @@
                 entity_id: scene.kitchen_background_light
           - if:
               - condition: state
-                entity_id: light.relay_dining1_lamp
+                entity_id: light.shelly_esszimmerschrank2
                 state: "on"
                 alias: check for night lights switched on
             then:
@@ -462,7 +462,7 @@
             entity_id: scene.kitchen_background_light
       - if:
           - condition: state
-            entity_id: light.relay_dining1_lamp
+            entity_id: light.shelly_esszimmerschrank2
             state: "on"
             alias: check for night lights switched on
         then:

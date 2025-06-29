@@ -654,10 +654,8 @@ views:
                 name: Wandlicht links
               - entity: light.shelly_esszimmer2_switch_1
                 name: Wandlicht rechts
-              - entity: light.relay_dining1_lamp
-                name: Linker Schrank
-              - entity: light.relay_dining2_lamp
-                name: Rechter Schrank
+              - light.shelly_esszimmerschrank1
+              - light.shelly_esszimmerschrank2
               - light.ws2812_xmasstar
               - light.shelly_dining_xmastree_switch_0
               # Xmas
@@ -1130,11 +1128,9 @@ views:
             entities:
               - light.shelly_terrace_switch_0
               - light.shelly_hinterhof
-              - entity: light.sonoff_garage_lamp
-                name: Garage
-              - entity: light.sonoff_yardgate_lamp
-                name: Gartentor
-              - light.shelly_lounge_schwibbogen1_switch_0
+              - light.shelly_garagentor
+              - light.shelly_gartentor
+              -  light.shelly_lounge_schwibbogen1_switch_0
               - light.shelly_lounge_schwibbogen2_switch_0
               - light.shelly_entrance_star_switch_0
               - light.shelly_entrance_drops_switch_0
@@ -1372,6 +1368,8 @@ views:
           - type: glance
             columns: 3
             entities:
+              - light.shelly_garage1
+              - light.shelly_garage2
               - cover.relay_garage
               - sensor.relay_garage_state
               - binary_sensor.garagentor
@@ -1667,7 +1665,6 @@ views:
       - type: conditional
         conditions:
           - entity:
-                # - switch.sonoff_pool_socket
                 - sensor.ds18b20_pool_temperature
             state_not: "unknown"
         card:
@@ -2340,13 +2337,13 @@ views:
                     element: attic_floor.button
                     class: button-on
             - entities:
-              - light.sonoff_garage_lamp
+              - light.shelly_garagentor
               - entity: light.shelly_terrace_switch_0
                 element: light.shelly_terrace_switch_0a
               - entity: light.shelly_terrace_switch_0
                 element: light.shelly_terrace_switch_0b
               - light.shelly_hinterhof
-              - light.sonoff_yardgate_lamp
+              - light.shelly_gartentor
               # - light.ws2812_terrace1
               # - light.ws2812_terrace2
               - light.shelly_lounge_schwibbogen1_switch_0
@@ -2361,8 +2358,8 @@ views:
               - light.shelly_lounge_whiteball_switch_0
               - light.led_corridor_led
               - light.led_kitchen_led
-              - light.relay_dining1_lamp
-              - light.relay_dining2_lamp
+              - light.shelly_esszimmerschrank1
+              - light.shelly_esszimmerschrank2
               - light.shelly_shower_switch_0
               - light.sonoff_corridor_lamp
               - light.sonoff_gallery1_socket

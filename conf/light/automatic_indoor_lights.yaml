@@ -9,8 +9,8 @@
       - light.shelly_corridor_studypillar_switch_0
       - light.shelly_kitchen_ledshort_switch_0
       - light.shelly_kitchen_ledlong_switch_0
-      - light.relay_dining1_lamp
-      - light.relay_dining2_lamp
+      - light.shelly_esszimmerschrank1
+      - light.shelly_esszimmerschrank2
       - light.sonoff_corridor_lamp
       - light.sonoff_gallery1_socket
       - light.shelly_dining_xmastree_switch_0
