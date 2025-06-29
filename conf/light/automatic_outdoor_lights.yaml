@@ -7,8 +7,8 @@
     entities:
       - light.shelly_terrace_switch_0
       - light.shelly_hinterhof
-      - light.sonoff_garage_lamp
-      - light.sonoff_yardgate_lamp
+      - light.shelly_garagentor
+      - light.shelly_gartentor
       - light.shelly_lounge_schwibbogen1_switch_0
       - light.shelly_lounge_schwibbogen2_switch_0
       - light.shelly_entrance_star_switch_0

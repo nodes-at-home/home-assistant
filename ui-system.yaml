@@ -179,34 +179,6 @@ views:
             badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
             badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
           - type: custom:mushroom-template-card
-            entity: binary_sensor.nodestate_sonoff_garage
-            tap_action:
-              action: more-info
-            multiline_secondary: true
-            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
-            secondary: |
-              {% set info_entity_base = 'sensor.' + entity[24:] %}
-              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
-              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
-              {#{ states ( entity | replace ( '@', '_' ) ) }#}
-            picture: /local/images/sonoff.jpg
-            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
-            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
-          - type: custom:mushroom-template-card
-            entity: binary_sensor.nodestate_sonoff_yardgate
-            tap_action:
-              action: more-info
-            multiline_secondary: true
-            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
-            secondary: |
-              {% set info_entity_base = 'sensor.' + entity[24:] %}
-              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
-              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
-              {#{ states ( entity | replace ( '@', '_' ) ) }#}
-            picture: /local/images/sonoff.jpg
-            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
-            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
-          - type: custom:mushroom-template-card
             entity: binary_sensor.nodestate_relay_dining1
             tap_action:
               action: more-info
@@ -998,6 +970,16 @@ views:
           - entity: sensor.shelly_hinterhof_power
           - entity: update.shelly_hinterhof_firmware
           - entity: button.shelly_hinterhof_reboot
+          - light.shelly_garagentor
+          - entity: sensor.shelly_garagentor_energy
+          - entity: sensor.shelly_garagentor_power
+          - entity: update.shelly_garagentor_firmware
+          - entity: button.shelly_garagentor_reboot
+          - light.shelly_gartentor
+          - entity: sensor.shelly_gartentor_energy
+          - entity: sensor.shelly_gartentor_power
+          - entity: update.shelly_gartentor_firmware
+          - entity: button.shelly_gartentor_reboot
       - type: entities
         title: Obergeschoss
         show_header_toggle: false
