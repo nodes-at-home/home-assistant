@@ -10,6 +10,10 @@
         event_data:
             event_type: SCENARIO
             event_subtype: 'Wasser aus'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_off
         target:
@@ -29,6 +33,10 @@
         event_data:
             event_type: SCENARIO
             event_subtype: 'Hecke bewässern'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_on
         target:
@@ -42,6 +50,10 @@
         event_data:
             event_type: SCENARIO
             event_subtype: 'Hochbeete bewässern'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_on
         target:
@@ -55,6 +67,10 @@
         event_data:
             event_type: SCENARIO
             event_subtype: 'Rosengarten bewässern'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_on
         target:
@@ -68,6 +84,10 @@
         to: "on"
         for:
             minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve1' ) | int }}"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_off
         target:
@@ -81,6 +101,10 @@
         to: "on"
         for:
             minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve2' ) | int }}"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_off
         target:
@@ -94,6 +118,10 @@
         to: "on"
         for:
             minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve3' ) | int }}"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_off
         target:
@@ -107,6 +135,10 @@
         to: "on"
         for:
             minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve4' ) | int }}"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_off
         target:
@@ -120,6 +152,10 @@
         to: "on"
         for:
             minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve5' ) | int }}"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_off
         target:
@@ -133,6 +169,10 @@
         to: "on"
         for:
             minutes: "{{ states ( 'sensor.irrigation_duration_effective_valve6' ) | int }}"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
     actions:
       - action: switch.turn_off
         target:
@@ -143,7 +183,10 @@
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_1
-    condition:
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
@@ -174,7 +217,10 @@
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_2
-    condition:
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
@@ -205,7 +251,10 @@
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_3
-    condition:
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
@@ -236,7 +285,10 @@
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_4
-    condition:
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
@@ -267,7 +319,10 @@
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_5
-    condition:
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
@@ -298,7 +353,13 @@
     triggers:
       - trigger: time
         at: input_datetime.irrigation_start_6
-    condition:
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.wasserampel
+        state: 'on'
         # check manual flag
       - condition: state
         entity_id: input_boolean.irrigation_activated
@@ -442,6 +503,9 @@
       - trigger: time_pattern
         minutes: "/1"
     conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
       - condition: state
         entity_id: input_boolean.hydrotower_activated
         state: "on"
