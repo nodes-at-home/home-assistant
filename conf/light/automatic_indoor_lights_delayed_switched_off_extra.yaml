@@ -5,5 +5,5 @@
   - platform: group
     name: automatic_indoor_lights_delayed_switched_off_extra
     entities:
-      - light.shelly_flur_switch_0
-      - light.shelly_korridor_switch_0
+      - light.shelly_flur
+      - light.shelly_korridor

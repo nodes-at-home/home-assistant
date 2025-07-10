@@ -233,18 +233,18 @@
     actions:
       - action: light.turn_{{ trigger.to_state.state }}
         target:
-            entity_id: light.shelly_attic_switch_0
+            entity_id: light.shelly_dachboden
 
   - alias: lights_indoor_shelly_off_after_timeout
     id: lights_indoor_shelly_off_after_timeout
     triggers:
       - trigger: state
         entity_id:
-          - light.shelly_shower_switch_0
-          - light.shelly_bath_switch_0
-          - light.shelly_treppe_switch_0
-          - light.shelly_flur_switch_0
-          - light.shelly_korridor_switch_0
+          - light.shelly_dusche
+          - light.shelly_bad
+          - light.shelly_treppe
+          - light.shelly_flur
+          - light.shelly_korridor
         to: "on"
         for:
             minutes: "{{ states ( 'input_number.light_timeout' ) | int }}"
@@ -278,7 +278,7 @@
     actions:
       - action: light.turn_on
         target:
-            entity_id: light.shelly_flur_switch_0
+            entity_id: light.shelly_flur
 
   # - alias: indoor_lights_desk_rgblamp_on
   #   id: indoor_lights_desk_rgblamp_on

@@ -893,29 +893,29 @@ views:
             - sensor.thermostat_bad_humidity
             - type: divider
 
-  - title: Shelly
-    path: shelly
+  - title: Shelly 1
+    path: shelly1
     panel: false
     cards:
       - type: entities
         title: Erdgeschoss
         show_header_toggle: false
         entities:
-          - light.shelly_flur_switch_0
-          - entity: sensor.shelly_flur_switch_0_energy
-          - entity: sensor.shelly_flur_switch_0_power
+          - light.shelly_flur
+          - entity: sensor.shelly_flur_energy
+          - entity: sensor.shelly_flur_power
           - entity: update.shelly_flur_firmware
           - entity: button.shelly_flur_reboot
           - type: divider
-          - light.shelly_korridor_switch_0
-          - entity: sensor.shelly_korridor_switch_0_energy
-          - entity: sensor.shelly_korridor_switch_0_power
+          - light.shelly_korridor
+          - entity: sensor.shelly_korridor_energy
+          - entity: sensor.shelly_korridor_power
           - entity: update.shelly_korridor_firmware
           - entity: button.shelly_korridor_reboot
           - type: divider
-          - light.shelly_esszimmer1_switch_0
-          - entity: sensor.shelly_esszimmer1_switch_0_energy
-          - entity: sensor.shelly_esszimmer1_switch_0_power
+          - light.shelly_esszimmer1
+          - entity: sensor.shelly_esszimmer1_energy
+          - entity: sensor.shelly_esszimmer1_power
           - entity: update.shelly_esszimmer1_firmware
           - entity: button.shelly_esszimmer1_reboot
           - type: divider
@@ -937,59 +937,59 @@ views:
           - entity: update.shelly_wohnzimmer_firmware
           - entity: button.shelly_wohnzimmer_reboot
           - type: divider
-          - light.shelly_shower_switch_0
-          - entity: sensor.shelly_shower_switch_0_energy
-          - entity: sensor.shelly_shower_switch_0_power
-          - entity: update.shelly_shower_firmware
-          - entity: button.shelly_shower_reboot
+          - light.shelly_dusche
+          - entity: sensor.shelly_dusche_energy
+          - entity: sensor.shelly_dusche_power
+          - entity: update.shelly_dusche_firmware
+          - entity: button.shelly_dusche_reboot
       - type: entities
         title: Obergeschoss
         show_header_toggle: false
         entities:
-          - light.shelly_treppe_switch_0
-          - entity: sensor.shelly_treppe_switch_0_energy
-          - entity: sensor.shelly_treppe_switch_0_power
+          - light.shelly_treppe
+          - entity: sensor.shelly_treppe_energy
+          - entity: sensor.shelly_treppe_power
           - entity: update.shelly_treppe_firmware
           - entity: button.shelly_treppe_reboot
           - type: divider
-          - light.shelly_galerie_switch_0
-          - entity: sensor.shelly_galerie_switch_0_energy
-          - entity: sensor.shelly_galerie_switch_0_power
+          - light.shelly_galerie
+          - entity: sensor.shelly_galerie_energy
+          - entity: sensor.shelly_galerie_power
           - entity: update.shelly_galerie_firmware
           - entity: button.shelly_galerie_reboot
           - type: divider
-          - light.shelly_arbeitszimmer_switch_0
-          - entity: sensor.shelly_arbeitszimmer_switch_0_energy
-          - entity: sensor.shelly_arbeitszimmer_switch_0_power
+          - light.shelly_arbeitszimmer
+          - entity: sensor.shelly_arbeitszimmer_energy
+          - entity: sensor.shelly_arbeitszimmer_power
           - entity: update.shelly_arbeitszimmer_firmware
           - entity: button.shelly_arbeitszimmer_reboot
           - type: divider
-          - light.shelly_kinderzimmer_switch_0
-          - entity: sensor.shelly_kinderzimmer_switch_0_energy
-          - entity: sensor.shelly_kinderzimmer_switch_0_power
+          - light.shelly_kinderzimmer
+          - entity: sensor.shelly_kinderzimmer_energy
+          - entity: sensor.shelly_kinderzimmer_power
           - entity: update.shelly_kinderzimmer_firmware
           - entity: button.shelly_kinderzimmer_reboot
           - type: divider
-          - light.shelly_schlafzimmer_switch_0
-          - entity: sensor.shelly_schlafzimmer_switch_0_energy
-          - entity: sensor.shelly_schlafzimmer_switch_0_power
+          - light.shelly_schlafzimmer
+          - entity: sensor.shelly_schlafzimmer_energy
+          - entity: sensor.shelly_schlafzimmer_power
           - entity: update.shelly_schlafzimmer_firmware
           - entity: button.shelly_schlafzimmer_reboot
           - type: divider
-          - light.shelly_bath_switch_0
-          - entity: sensor.shelly_bath_switch_0_energy
-          - entity: sensor.shelly_bath_switch_0_power
-          - entity: update.shelly_bath_firmware
-          - entity: button.shelly_bath_reboot
+          - light.shelly_bad
+          - entity: sensor.shelly_bad_energy
+          - entity: sensor.shelly_bad_power
+          - entity: update.shelly_bad_firmware
+          - entity: button.shelly_bad_reboot
       - type: entities
         title: Dachgeschoss
         show_header_toggle: false
         entities:
-          - light.shelly_attic_switch_0
-          - entity: sensor.shelly_attic_switch_0_energy
-          - entity: sensor.shelly_attic_switch_0_power
-          - entity: update.shelly_attic_firmware
-          - entity: button.shelly_attic_reboot
+          - light.shelly_dachboden
+          - entity: sensor.shelly_dachboden_energy
+          - entity: sensor.shelly_dachboden_power
+          - entity: update.shelly_dachboden_firmware
+          - entity: button.shelly_dachboden_reboot
       - type: entities
         title: Garage
         show_header_toggle: false
@@ -1009,6 +1009,12 @@ views:
         title: Außenlichter
         show_header_toggle: false
         entities:
+          - light.shelly_terasse
+          - entity: sensor.shelly_terasse_energy
+          - entity: sensor.shelly_terasse_power
+          - entity: update.shelly_terasse_firmware
+          - entity: button.shelly_terasse_reboot
+          - type: divider
           - light.shelly_hinterhof
           - entity: sensor.shelly_hinterhof_energy
           - entity: sensor.shelly_hinterhof_power
@@ -1026,6 +1032,141 @@ views:
           - entity: sensor.shelly_gartentor_power
           - entity: update.shelly_gartentor_firmware
           - entity: button.shelly_gartentor_reboot
+
+  - title: Shelly 2
+    path: shelly2
+    panel: false
+    cards:
+      - type: entities
+        title: Erdgeschoss
+        show_header_toggle: false
+        entities:
+          - switch.shelly_kitchen_coffeemaker
+          - entity: sensor.shelly_kitchen_coffeemaker_energy
+          - entity: sensor.shelly_kitchen_coffeemaker_power
+          - entity: update.shelly_kitchen_coffeemaker_firmware
+          - entity: button.shelly_kitchen_coffeemaker_reboot
+          - type: divider
+          - switch.shelly_kitchen_icemaker
+          - entity: sensor.shelly_kitchen_icemaker_energy
+          - entity: sensor.shelly_kitchen_icemaker_power
+          - entity: update.shelly_kitchen_icemaker_firmware
+          - entity: button.shelly_kitchen_icemaker_reboot
+          - type: divider
+          - switch.shelly_utilityroom_boiler
+          - entity: sensor.shelly_utilityroom_boiler_energy
+          - entity: sensor.shelly_utilityroom_boiler_power
+          - entity: update.shelly_utilityroom_boiler_firmware
+          - entity: button.shelly_utilityroom_boiler_reboot
+          - type: divider
+          - switch.shelly_utilityroom_biocat
+          - entity: sensor.shelly_utilityroom_biocat_energy
+          - entity: sensor.shelly_utilityroom_biocat_power
+          - entity: update.shelly_utilityroom_biocat_firmware
+          - entity: button.shelly_utilityroom_biocat_reboot
+          - type: divider
+          - light.shelly_corridor_studypillar
+          - entity: sensor.shelly_corridor_studypillar_energy
+          - entity: sensor.shelly_corridor_studypillar_power
+          - entity: update.shelly_corridor_studypillar_firmware
+          - entity: button.shelly_corridor_studypillar_reboot
+          - type: divider
+          - light.shelly_dining_xmastree
+          - entity: sensor.shelly_dining_xmastree_energy
+          - entity: sensor.shelly_dining_xmastree_power
+          - entity: update.shelly_dining_xmastree_firmware
+          - entity: button.shelly_dining_xmastree_reboot
+          - type: divider
+          - light.shelly_lounge_schwibbogen1
+          - entity: sensor.shelly_lounge_schwibbogen1_energy
+          - entity: sensor.shelly_lounge_schwibbogen1_power
+          - entity: update.shelly_lounge_schwibbogen1_firmware
+          - entity: button.shelly_lounge_schwibbogen1_reboot
+          - type: divider
+          - light.shelly_lounge_schwibbogen2
+          - entity: sensor.shelly_lounge_schwibbogen2_energy
+          - entity: sensor.shelly_lounge_schwibbogen2_power
+          - entity: update.shelly_lounge_schwibbogen2_firmware
+          - entity: button.shelly_lounge_schwibbogen2_reboot
+          - type: divider
+          - light.shelly_lounge_blackbowl
+          - entity: sensor.shelly_lounge_blackbowl_energy
+          - entity: sensor.shelly_lounge_blackbowl_power
+          - entity: update.shelly_lounge_blackbowl_firmware
+          - entity: button.shelly_lounge_blackbowl_reboot
+          - type: divider
+          - light.shelly_lounge_readinglamp
+          - entity: sensor.shelly_lounge_readinglamp_energy
+          - entity: sensor.shelly_lounge_readinglamp_power
+          - entity: update.shelly_lounge_readinglamp_firmware
+          - entity: button.shelly_lounge_readinglamp_reboot
+          - type: divider
+          - light.shelly_lounge_whiteball
+          - entity: sensor.shelly_lounge_whiteball_energy
+          - entity: sensor.shelly_lounge_whiteball_power
+          - entity: update.shelly_lounge_whiteball_firmware
+          - entity: button.shelly_lounge_whiteball_reboot
+          - type: divider
+          - light.shelly_kitchen_longstrip
+          - entity: sensor.shelly_kitchen_longstrip_energy
+          - entity: sensor.shelly_kitchen_longstrip_power
+          - entity: update.shelly_kitchen_longstrip_firmware
+          - entity: button.shelly_kitchen_longstrip_reboot
+          - type: divider
+          - light.shelly_kitchen_shortstrip
+          - entity: sensor.shelly_kitchen_shortstrip_energy
+          - entity: sensor.shelly_kitchen_shortstrip_power
+          - entity: update.shelly_kitchen_shortstrip_firmware
+          - entity: button.shelly_kitchen_shortstrip_reboot
+          - type: divider
+          - switch.shelly_utilityroom_circulatingpump
+          - entity: sensor.shelly_utilityroom_circulatingpump_energy
+          - entity: sensor.shelly_utilityroom_circulatingpump_power
+          - entity: update.shelly_utilityroom_circulatingpump_firmware
+          - entity: button.shelly_utilityroom_circulatingpump_reboot
+      - type: entities
+        title: Obergeschoss
+        show_header_toggle: false
+        entities:
+          - switch.shelly_xtool_m1ultra
+          - entity: sensor.shelly_xtool_m1ultra_energy
+          - entity: sensor.shelly_xtool_m1ultra_power
+          - entity: update.shelly_xtool_m1ultra_firmware
+          - entity: button.shelly_xtool_m1ultra_reboot
+          - type: divider
+          - switch.shelly_xtool_safetypro
+          - entity: sensor.shelly_xtool_safetypro_energy
+          - entity: sensor.shelly_xtool_safetypro_power
+          - entity: update.shelly_xtool_safetypro_firmware
+          - entity: button.shelly_xtool_safetypro_reboot
+          - type: divider
+          - switch.shelly_bambulab_x1c
+          - entity: sensor.shelly_bambulab_x1c_energy
+          - entity: sensor.shelly_bambulab_x1c_power
+          - entity: update.shelly_bambulab_x1c_firmware
+          - entity: button.shelly_bambulab_x1c_reboot
+          - type: divider
+      - type: entities
+        title: Außenbereich
+        show_header_toggle: false
+        entities:
+          - light.shelly_entrance_star
+          - entity: sensor.shelly_entrance_star_energy
+          - entity: sensor.shelly_entrance_star_power
+          - entity: update.shelly_entrance_star_firmware
+          - entity: button.shelly_entrance_star_reboot
+          - type: divider
+          - light.shelly_entrance_drops
+          - entity: sensor.shelly_entrance_drops_energy
+          - entity: sensor.shelly_entrance_drops_power
+          - entity: update.shelly_entrance_drops_firmware
+          - entity: button.shelly_entrance_drops_reboot
+          - type: divider
+          - light.shelly_entrance_lightbirch
+          - entity: sensor.shelly_entrance_lightbirch_energy
+          - entity: sensor.shelly_entrance_lightbirch_power
+          - entity: update.shelly_entrance_lightbirch_firmware
+          - entity: button.shelly_entrance_lightbirch_reboot
 
   - title: Nuki
     path: nuki

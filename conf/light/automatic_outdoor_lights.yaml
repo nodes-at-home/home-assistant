@@ -5,12 +5,12 @@
   - platform: group
     name: automatic_outdoor_lights
     entities:
-      - light.shelly_terrace_switch_0
+      - light.shelly_terasse
       - light.shelly_hinterhof
       - light.shelly_garagentor
       - light.shelly_gartentor
-      - light.shelly_lounge_schwibbogen1_switch_0
-      - light.shelly_lounge_schwibbogen2_switch_0
-      - light.shelly_entrance_star_switch_0
-      - light.shelly_entrance_drops_switch_0
-      - light.shelly_entrance_lightbirch_switch_0
+      - light.shelly_lounge_schwibbogen1
+      - light.shelly_lounge_schwibbogen2
+      - light.shelly_entrance_star
+      - light.shelly_entrance_drops
+      - light.shelly_entrance_lightbirch

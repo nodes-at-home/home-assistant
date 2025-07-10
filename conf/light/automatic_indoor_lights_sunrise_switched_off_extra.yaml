@@ -5,17 +5,17 @@
   - platform: group
     name: automatic_indoor_lights_sunrise_switched_off_extra
     entities:
-      - light.shelly_roof_switch_0
-      - light.shelly_bath_switch_0
+      - light.shelly_dachboden
+      - light.shelly_bad
       - light.shelly_shower_socket
-      - light.shelly_flur_switch_0
-      - light.shelly_korridor_switch_0
-      - light.shelly_esszimmer1_switch_0
+      - light.shelly_flur
+      - light.shelly_korridor
+      - light.shelly_esszimmer1
       - light.shelly_esszimmer2_switch_0
       - light.shelly_esszimmer2_switch_1
-      - light.shelly_arbeitszimmer_switch_0
-      - light.shelly_kinderzimmer_switch_0
-      - light.shelly_schlafzimmer_switch_0
-      - light.shelly_galerie_switch_0
+      - light.shelly_arbeitszimmer
+      - light.shelly_kinderzimmer
+      - light.shelly_schlafzimmer
+      - light.shelly_galerie
       - light.shelly_wohnzimmer_switch_0
       - light.shelly_wohnzimmer_switch_1

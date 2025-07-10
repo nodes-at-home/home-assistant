@@ -7,15 +7,15 @@
   - platform: group
     name: automatic_indoor_lights_immediatly_switched_off_extra
     entities:
-      - light.shelly_lounge_whiteball_switch_0
+      - light.shelly_lounge_whiteball
       - light.sonoff_bedroom_socket
-      - light.shelly_esszimmer1_switch_0
+      - light.shelly_esszimmer1
       - light.shelly_esszimmer2_switch_0
       - light.shelly_esszimmer2_switch_1
-      - light.shelly_arbeitszimmer_switch_0
-      - light.shelly_kinderzimmer_switch_0
-      - light.shelly_schlafzimmer_switch_0
-      - light.shelly_galerie_switch_0
+      - light.shelly_arbeitszimmer
+      - light.shelly_kinderzimmer
+      - light.shelly_schlafzimmer
+      - light.shelly_galerie
       - light.shelly_wohnzimmer_switch_0
       - light.shelly_wohnzimmer_switch_1
       - light.shelly_garage1

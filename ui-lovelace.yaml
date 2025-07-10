@@ -387,7 +387,7 @@ views:
                 hold_action:
                     action: more-info
               - type: entity-button
-                entity: switch.shelly_bambulab_x1c_switch_0
+                entity: switch.shelly_bambulab_x1c
                 name: 3D Drucker
                 icon: mdi:printer-3d
                 tap_action:
@@ -395,7 +395,7 @@ views:
                 hold_action:
                     action: more-info
               - type: entity-button
-                entity: switch.shelly_xtool_m1ultra_switch_0
+                entity: switch.shelly_xtool_m1ultra
                 name: xTool M1 Ultra
                 icon: mdi:box-cutter
                 tap_action:
@@ -403,7 +403,7 @@ views:
                 hold_action:
                     action: more-info
               - type: entity-button
-                entity: switch.shelly_xtool_safetypro_switch_0
+                entity: switch.shelly_xtool_safetypro
                 name: xTool SafetyPro
                 icon: mdi:air-filter
                 tap_action:
@@ -604,8 +604,8 @@ views:
             title: Küche
             columns: 3
             entities:
-              - light.shelly_kitchen_shortstrip_switch_0
-              - light.shelly_kitchen_longstrip_switch_0
+              - light.shelly_kitchen_shortstrip
+              - light.shelly_kitchen_longstrip
               - entity: light.led_kitchen_led
                 name: Arbeitslicht
               - entity: sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
@@ -648,7 +648,7 @@ views:
             title: Esszimmer
             columns: 3
             entities:
-              - entity: light.shelly_esszimmer1_switch_0
+              - entity: light.shelly_esszimmer1
                 name: Deckenlampe
               - entity: light.shelly_esszimmer2_switch_0
                 name: Wandlicht links
@@ -657,7 +657,7 @@ views:
               - light.shelly_esszimmerschrank1
               - light.shelly_esszimmerschrank2
               - light.ws2812_xmasstar
-              - light.shelly_dining_xmastree_switch_0
+              - light.shelly_dining_xmastree
               # Xmas
               # - light.xmastreedining_leds
               - entity: binary_sensor.terassentur_esszimmer
@@ -689,9 +689,9 @@ views:
                 name: Deckenlampe Couch
               - entity: light.shelly_wohnzimmer_switch_1
                 name: Deckenlampe Tisch
-              - light.shelly_lounge_whiteball_switch_0
-              - light.shelly_lounge_blackbowl_switch_0
-              - light.shelly_lounge_readinglamp_switch_0
+              - light.shelly_lounge_whiteball
+              - light.shelly_lounge_blackbowl
+              - light.shelly_lounge_readinglamp
               - entity: binary_sensor.terassentur_wohnzimmer
                 name: Terassentür
               - entity: binary_sensor.fenster_wohnzimmer_1
@@ -729,7 +729,7 @@ views:
             title: Flur
             columns: 3
             entities:
-              - entity: light.shelly_flur_switch_0
+              - entity: light.shelly_flur
                 name: Deckenlampe
               - binary_sensor.eingangstur
               - entity: binary_sensor.fenster_flur
@@ -757,9 +757,9 @@ views:
             title: Korridor
             columns: 3
             entities:
-              - entity: light.shelly_korridor_switch_0
+              - entity: light.shelly_korridor
                 name: Deckenlampe
-              - entity: light.shelly_corridor_studypillar_switch_0
+              - entity: light.shelly_corridor_studypillar
               - light.led_corridor_led
               - light.pitouch_corridor_screen
             card_mod:
@@ -774,7 +774,7 @@ views:
             title: Dusche
             columns: 3
             entities:
-              - entity: light.shelly_shower_switch_0
+              - entity: light.shelly_dusche
                 name: Deckenlampe
               - entity: binary_sensor.fenster_dusche
                 name: Fenster
@@ -806,13 +806,9 @@ views:
               - switch.waschmaschine
               - switch.nodesathome1
               - switch.nodesathome2
-              - entity: switch.shelly_utilityroom_circulatingpump_switch_0
-              - entity: switch.shelly_utilityroom_boiler_switch_0
-                name: Heiztherme
-                icon: mdi:water-boiler
-              - entity: switch.shelly_utilityroom_biocat_switch_0
-                name: Entkalker
-                icon: mdi:water-sync
+              - switch.shelly_utilityroom_circulatingpump
+              - switch.shelly_utilityroom_boiler
+              - switch.shelly_utilityroom_biocat
               - entity: sensor.boiler_dhw_current_extern_temperature
                 name: Warmwasser
               - entity: switch.boiler_dhw_one_time_charging
@@ -856,10 +852,10 @@ views:
             title: Galerie
             columns: 3
             entities:
-              - entity: light.shelly_galerie_switch_0
+              - entity: light.shelly_galerie
                 name: Deckenlampe
               - light.sonoff_gallery1_socket
-              - entity: light.shelly_treppe_switch_0
+              - entity: light.shelly_treppe
                 name: Treppe
               - entity: binary_sensor.dachfenster_galerie
                 name: Dachfenster
@@ -886,7 +882,7 @@ views:
             title: Schlafzimmer
             columns: 3
             entities:
-              - entity: light.shelly_schlafzimmer_switch_0
+              - entity: light.shelly_schlafzimmer
                 name: Deckenlampe
               - light.sonoff_bedroom_socket
               - type: thermostat
@@ -922,7 +918,7 @@ views:
             title: Kinderzimmer
             columns: 3
             entities:
-              - entity: light.shelly_kinderzimmer_switch_0
+              - entity: light.shelly_kinderzimmer
                 name: Deckenlampe
               - type: thermostat
                 entity: climate.nursery
@@ -957,17 +953,17 @@ views:
             title: Arbeitszimmer
             columns: 3
             entities:
-              - entity: light.shelly_arbeitszimmer_switch_0
+              - entity: light.shelly_arbeitszimmer
                 name: Deckenlampe
               - light.sonoff_corridor_lamp
               - light.ws2812_office
-              - entity: switch.shelly_bambulab_x1c_switch_0
+              - entity: switch.shelly_bambulab_x1c
                 name: Bambulab X1C
                 icon: mdi:printer-3d
-              - entity: switch.shelly_xtool_m1ultra_switch_0
+              - entity: switch.shelly_xtool_m1ultra
                 name: xTool M1 Ultra
                 icon: mdi:box-cutter
-              - entity: switch.shelly_xtool_safetypro_switch_0
+              - entity: switch.shelly_xtool_safetypro
                 name: xTool SafetyPro
                 icon: mdi:air-filter
               - type: thermostat
@@ -1003,7 +999,7 @@ views:
             title: Bad
             columns: 3
             entities:
-              - entity: light.shelly_bath_switch_0
+              - entity: light.shelly_bad
                 name: Deckenlampe
               - entity: binary_sensor.fenster_bad
                 name: Fenster
@@ -1033,10 +1029,10 @@ views:
         title: Dachgeschoss
         cards:
           - type: glance
-            title: Dachgeschoss
+            title: Dachboden
             columns: 3
             entities:
-              - entity: light.shelly_attic_switch_0
+              - entity: light.shelly_dachboden
                 name: Beleuchtung
               - entity: binary_sensor.fenster_dachboden
                 name: Dachfenster
@@ -1126,15 +1122,15 @@ views:
           - type: glance
             columns: 3
             entities:
-              - light.shelly_terrace_switch_0
+              - light.shelly_terasse
               - light.shelly_hinterhof
               - light.shelly_garagentor
               - light.shelly_gartentor
-              -  light.shelly_lounge_schwibbogen1_switch_0
-              - light.shelly_lounge_schwibbogen2_switch_0
-              - light.shelly_entrance_star_switch_0
-              - light.shelly_entrance_drops_switch_0
-              - light.shelly_entrance_lightbirch_switch_0
+              -  light.shelly_lounge_schwibbogen1
+              - light.shelly_lounge_schwibbogen2
+              - light.shelly_entrance_star
+              - light.shelly_entrance_drops
+              - light.shelly_entrance_lightbirch
 
       - type: vertical-stack
         title: Garten
@@ -2220,7 +2216,7 @@ views:
             location: /local/floorplans/floorplan.svg
             cache: false
           stylesheet: /local/floorplans/assets/floorplan.css
-          #log_level: debug
+          # log_level: debug
           console_log_level: debug
           defaults:
             hover_action: hover-info
@@ -2338,49 +2334,51 @@ views:
                     class: button-on
             - entities:
               - light.shelly_garagentor
-              - entity: light.shelly_terrace_switch_0
-                element: light.shelly_terrace_switch_0a
-              - entity: light.shelly_terrace_switch_0
-                element: light.shelly_terrace_switch_0b
+              - entity: light.shelly_terasse
+                element: light.shelly_terasse_a
+              - entity: light.shelly_terasse
+                element: light.shelly_terasse_b
               - light.shelly_hinterhof
               - light.shelly_gartentor
               # - light.ws2812_terrace1
               # - light.ws2812_terrace2
-              - light.shelly_lounge_schwibbogen1_switch_0
-              - light.shelly_lounge_schwibbogen2_switch_0
-              - light.shelly_entrance_star_switch_0
-              - entity: light.shelly_entrance_drops_switch_0
-                element: light.shelly_entrance_drops_switch_0a
-              - entity: light.shelly_entrance_drops_switch_0
-                element: light.shelly_entrance_drops_switch_0b
-              - light.shelly_lounge_blackbowl_switch_0
-              - light.shelly_lounge_readinglamp_switch_0
-              - light.shelly_lounge_whiteball_switch_0
+              - light.shelly_lounge_schwibbogen1
+              - light.shelly_lounge_schwibbogen2
+              - light.shelly_entrance_star
+              - entity: light.shelly_entrance_drops
+                element: light.shelly_entrance_drops_a
+              - entity: light.shelly_entrance_drops
+                element: light.shelly_entrance_drops_b
+              - light.shelly_lounge_blackbowl
+              - light.shelly_lounge_readinglamp
+              - light.shelly_lounge_whiteball
               - light.led_corridor_led
               - light.led_kitchen_led
               - light.shelly_esszimmerschrank1
               - light.shelly_esszimmerschrank2
-              - light.shelly_shower_switch_0
+              - light.shelly_dusche
               - light.sonoff_corridor_lamp
               - light.sonoff_gallery1_socket
-              - light.shelly_bath_switch_0
+              - light.shelly_bad
               - light.sonoff_bedroom_socket
-              - entity: light.shelly_treppe_switch_0
-                element: light.shelly_treppe_switch_0_groundfloor
-              - entity: light.shelly_treppe_switch_0
-                element: light.shelly_treppe_switch_0_firstfloor
-              - light.shelly_flur_switch_0
-              - light.shelly_korridor_switch_0
-              - light.shelly_attic_switch_0
-              - light.shelly_esszimmer1_switch_0
+              - entity: light.shelly_treppe
+                element: light.shelly_treppe_groundfloor
+              - entity: light.shelly_treppe
+                element: light.shelly_treppe_firstfloor
+              - light.shelly_flur
+              - light.shelly_korridor
+              - light.shelly_dachboden
+              - light.shelly_esszimmer1
               - light.shelly_esszimmer2_switch_0
               - light.shelly_esszimmer2_switch_1
-              - light.shelly_arbeitszimmer_switch_0
-              - light.shelly_kinderzimmer_switch_0
-              - light.shelly_schlafzimmer_switch_0
-              - light.shelly_galerie_switch_0
+              - light.shelly_arbeitszimmer
+              - light.shelly_kinderzimmer
+              - light.shelly_schlafzimmer
+              - light.shelly_galerie
               - light.shelly_wohnzimmer_switch_0
               - light.shelly_wohnzimmer_switch_1
+              - light.shelly_garage1
+              - light.shelly_garage2
               state_action:
                 - action: call-service
                   service: floorplan.class_set
@@ -2389,38 +2387,42 @@ views:
               #tap_action:
               #  - service: light.toggle
             - entities:
-              - entity: light.shelly_shower_switch_0
+              - entity: light.shelly_dusche
                 element: room.shower
-              - entity: light.shelly_bath_switch_0
+              - entity: light.shelly_bad
                 element: room.bath
-              - entity: light.shelly_treppe_switch_0
+              - entity: light.shelly_treppe
                 element: room.stairs_groundfloor
-              - entity: light.shelly_treppe_switch_0
+              - entity: light.shelly_treppe
                 element: room.stairs_firstfloor
-              - entity: light.shelly_flur_switch_0
+              - entity: light.shelly_flur
                 element: room.hall
-              - entity: light.shelly_korridor_switch_0
+              - entity: light.shelly_korridor
                 element: room.corridor
-              - entity: light.shelly_attic_switch_0
+              - entity: light.shelly_dachboden
                 element: room.attic
-              - entity: light.shelly_arbeitszimmer_switch_0
+              - entity: light.shelly_arbeitszimmer
                 element: room.office
-              - entity: light.shelly_kinderzimmer_switch_0
+              - entity: light.shelly_kinderzimmer
                 element: room.nursery
-              - entity: light.shelly_schlafzimmer_switch_0
+              - entity: light.shelly_schlafzimmer
                 element: room.bedroom
-              - entity: light.shelly_galerie_switch_0
+              - entity: light.shelly_galerie
                 element: room.gallery
               - entity: light.shelly_wohnzimmer_switch_0
                 element: room.lounge_couch
               - entity: light.shelly_wohnzimmer_switch_1
                 element: room.lounge_table
-              - entity: light.shelly_esszimmer1_switch_0
+              - entity: light.shelly_esszimmer1
                 element: room.dining1
               - entity: light.shelly_esszimmer2_switch_0
                 element: room.dining2
               - entity: light.shelly_esszimmer2_switch_1
                 element: room.dining3
+              - entity: light.shelly_garage1
+                element: room.garage1
+              - entity: light.shelly_garage2
+                element: room.garage2
               state_action:
                 - action: call-service
                   service: floorplan.class_set
@@ -2836,7 +2838,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:button-card
-                entity: switch.shelly_office_bambulab_switch_0
+                entity: switch.shelly_office_bambulab
                 name: X1C
                 icon: mdi:printer-3d
                 tap_action:

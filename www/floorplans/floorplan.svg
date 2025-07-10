@@ -261,7 +261,13 @@
             <!-- west -->
             <rect x="0" y="715" width="31" height="15" />
             <rect x="268.5" y="715" width="31.5" height="15" />
+            <!-- mid -->
+            <rect x="15" y="210" width="90" height="15" />
+            <rect x="195" y="210" width="90" height="15" />
         </g>
+
+        <g id="room.garage1" > <rect x="15" y="15" width="270" height="195" /> </g>
+        <g id="room.garage2" > <rect x="15" y="225" width="270" height="490" /> </g>
 
         <g id="doors" stroke="black" fill="none" stroke-width="1" >
             <path d="M 24 0 v 101 a 101 101 90 0 0 101 -101 v 0 v 15 h -101 v -10 h 101" />
@@ -272,10 +278,13 @@
             <path d="M 175 6 h 101 m 0 3 h -101" />
         </g>
 
+        <use id="light.shelly_garage1" x="130" y="100" href="#ceilinglight" />
+        <use id="light.shelly_garage2" x="130" y="450" href="#ceilinglight" />
+
         <g id="light.shelly_garagentor" > <use x="257" y="730" href="#ledspotlight" /> </g>
 
-        <text id="sensor.relay_garage_temperature" x="120" y="400" class="thermostat-text" ><tspan>°C</tspan></text>
-        <text id="sensor.relay_garage_humidity" x="120" y="425" class="thermostat-text" ><tspan>%</tspan></text>
+        <text id="sensor.relay_garage_temperature" x="120" y="350" class="thermostat-text" ><tspan>°C</tspan></text>
+        <text id="sensor.relay_garage_humidity" x="120" y="375" class="thermostat-text" ><tspan>%</tspan></text>
 
     </g>
 
@@ -382,31 +391,31 @@
         <g id="stairs" >
         </g>
 
-        <use id="light.shelly_terrace_switch_0a" x="350" y="57" href="#walllight_up" />
-        <use id="light.shelly_terrace_switch_0b" x="840" y="57" href="#walllight_up" />
+        <use id="light.shelly_terasse_a" x="350" y="57" href="#walllight_up" />
+        <use id="light.shelly_terasse_b" x="840" y="57" href="#walllight_up" />
         <use id="light.shelly_hinterhof" x="-5" y="440" href="#walllight_left" />
         <use id="light.shelly_gartentor" x="1170" y="1040" href="#ledspotlight" />
-        <use id="light.shelly_lounge_schwibbogen1_switch_0" x="1010" y="1005" href="#schwibbogen" />
-        <use id="light.shelly_lounge_schwibbogen2_switch_0" x="860" y="1005" href="#schwibbogen" />
-        <use id="light.shelly_entrance_star_switch_0" x="550" y="910" href="#star" />
-        <use id="light.shelly_lounge_blackbowl_switch_0" x="1100" y="470" href="#lightbulb" />
-        <use id="light.shelly_lounge_readinglamp_switch_0" x="1070" y="500" href="#lightbulb" />
-        <use id="light.shelly_lounge_whiteball_switch_0" x="1100" y="940" href="#lightbulb" />
+        <use id="light.shelly_lounge_schwibbogen1" x="1010" y="1005" href="#schwibbogen" />
+        <use id="light.shelly_lounge_schwibbogen2" x="860" y="1005" href="#schwibbogen" />
+        <use id="light.shelly_entrance_star" x="550" y="910" href="#star" />
+        <use id="light.shelly_lounge_blackbowl" x="1100" y="470" href="#lightbulb" />
+        <use id="light.shelly_lounge_readinglamp" x="1070" y="500" href="#lightbulb" />
+        <use id="light.shelly_lounge_whiteball" x="1100" y="940" href="#lightbulb" />
         <use id="light.led_corridor_led" x="330" y="470" href="#lightbulb" />
         <use id="light.led_kitchen_led" x="30" y="330" href="#lightbulb" />
         <use id="light.shelly_esszimmerschrank1" x="700" y="440" href="#lightbulb" />
         <use id="light.shelly_esszimmerschrank2" x="700" y="685" href="#lightbulb" />
 
-        <use id="light.shelly_entrance_drops_switch_0a" x="30" y="1035" href="#lightchain" />
-        <use id="light.shelly_entrance_drops_switch_0b" x="770" y="1035" href="#lightchain" />
+        <use id="light.shelly_entrance_drops_a" x="30" y="1035" href="#lightchain" />
+        <use id="light.shelly_entrance_drops_b" x="770" y="1035" href="#lightchain" />
 
-        <use id="light.shelly_treppe_switch_0_groundfloor" x="445" y="790" href="#walllight_right" />
+        <use id="light.shelly_treppe_groundfloor" x="445" y="790" href="#walllight_right" />
         <use id="light.shelly_esszimmer2_switch_0" x="445" y="210" href="#walllight_right" />
         <use id="light.shelly_esszimmer2_switch_1" x="749" y="210" href="#walllight_left" />
-        <use id="light.shelly_shower_switch_0" x="80" y="800" href="#ceilinglight" />
-        <use id="light.shelly_flur_switch_0" x="300" y="830" href="#ceilinglight" />
-        <use id="light.shelly_korridor_switch_0" x="330" y="570" href="#ceilinglight" />
-        <use id="light.shelly_esszimmer1_switch_0" x="575" y="560" href="#ceilinglight" />
+        <use id="light.shelly_dusche" x="80" y="800" href="#ceilinglight" />
+        <use id="light.shelly_flur" x="300" y="830" href="#ceilinglight" />
+        <use id="light.shelly_korridor" x="330" y="570" href="#ceilinglight" />
+        <use id="light.shelly_esszimmer1" x="575" y="560" href="#ceilinglight" />
         <use id="light.shelly_wohnzimmer_switch_0" x="970" y="330" href="#ceilinglight" />
         <use id="light.shelly_wohnzimmer_switch_1" x="970" y="800" href="#ceilinglight" />
 
@@ -519,13 +528,13 @@
         <use id="light.sonoff_corridor_lamp" x="40" y="460" href="#lightbulb" />
         <use id="light.sonoff_bedroom_socket" x="940" y="550" href="#lightbulb" />
 
-        <use id="light.shelly_treppe_switch_0_firstfloor" x="445" y="790" href="#walllight_right" />
+        <use id="light.shelly_treppe_firstfloor" x="445" y="790" href="#walllight_right" />
 
-        <use id="light.shelly_bath_switch_0" x="190" y="760" href="#ceilinglight" />
-        <use id="light.shelly_arbeitszimmer_switch_0" x="190" y="380" href="#ceilinglight" />
-        <use id="light.shelly_kinderzimmer_switch_0" x="960" y="350" href="#ceilinglight" />
-        <use id="light.shelly_schlafzimmer_switch_0" x="960" y="700" href="#ceilinglight" />
-        <use id="light.shelly_galerie_switch_0" x="575" y="500" href="#ceilinglight" />
+        <use id="light.shelly_bad" x="190" y="760" href="#ceilinglight" />
+        <use id="light.shelly_arbeitszimmer" x="190" y="380" href="#ceilinglight" />
+        <use id="light.shelly_kinderzimmer" x="960" y="350" href="#ceilinglight" />
+        <use id="light.shelly_schlafzimmer" x="960" y="700" href="#ceilinglight" />
+        <use id="light.shelly_galerie" x="575" y="500" href="#ceilinglight" />
 
         <text id="sensor.thermostat_arbeitszimmer_temperature" x="340" y="335" class="thermostat-text" ><tspan>°C</tspan></text>
         <text id="sensor.thermostat_arbeitszimmer_humidity" x="340" y="360" class="thermostat-text" ><tspan>%</tspan></text>
@@ -584,7 +593,7 @@
 
         <g id="room.attic" > <rect x="27" y="406" width="1140" height="281" /> </g>
 
-        <use id="light.shelly_attic_switch_0" x="440" y="540" href="#ceilinglight" />
+        <use id="light.shelly_dachboden" x="440" y="540" href="#ceilinglight" />
 
         <text id="sensor.dht22_roof_temperature" x="640" y="550" class="thermostat-text" ><tspan>°C</tspan></text>
         <text id="sensor.dht22_roof_humidity" x="640" y="580" class="thermostat-text" ><tspan>%</tspan></text>

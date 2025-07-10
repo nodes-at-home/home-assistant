@@ -5,13 +5,13 @@
   - platform: group
     name: automatic_indoor_lights_immediatly_switched_off
     entities:
-      - light.shelly_lounge_blackbowl_switch_0
-      - light.shelly_lounge_readinglamp_switch_0
-      - light.shelly_kitchen_shortstrip_switch_0
-      - light.shelly_kitchen_longstrip_switch_0
+      - light.shelly_lounge_blackbowl
+      - light.shelly_lounge_readinglamp
+      - light.shelly_kitchen_shortstrip
+      - light.shelly_kitchen_longstrip
       - light.shelly_esszimmerschrank1
       - light.shelly_esszimmerschrank2
       - light.led_kitchen_led
-      - light.shelly_corridor_studypillar_switch_0
-      - light.shelly_dining_xmastree_switch_0
+      - light.shelly_corridor_studypillar
+      - light.shelly_dining_xmastree
 

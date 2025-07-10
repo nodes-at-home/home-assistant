@@ -287,13 +287,13 @@
     action:
       - service: switch.turn_on
         entity_id:
-            - switch.shelly_utilityroom_circulatingpump_switch_0
+            - switch.shelly_utilityroom_circulatingpump
       # pump switched on for n minutes
       - delay:
             minutes: "{{ states ( 'input_number.circulating_pump_on_duration' ) | int }}"
       - service: switch.turn_off
         entity_id:
-            - switch.shelly_utilityroom_circulatingpump_switch_0
+            - switch.shelly_utilityroom_circulatingpump
 
   - alias: circulating_pump_running_disinfection
     id: circulating_pump_running_disinfection
@@ -303,7 +303,7 @@
       - platform: state
         entity_id: sensor.boiler_dhw_curtemp
       - platform: state
-        entity_id: switch.shelly_utilityroom_circulatingpump_switch_0
+        entity_id: switch.shelly_utilityroom_circulatingpump
       - platform: state
         entity_id: input_boolean.circulating_pump_running_disinfection
     condition:
@@ -314,11 +314,11 @@
       - choose:
           - conditions:
               - condition: template
-                value_template: "{{ states ( 'switch.shelly_utilityroom_circulatingpump_switch_0' ) == 'off' and states ( 'sensor.boiler_dhw_curtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+                value_template: "{{ states ( 'switch.shelly_utilityroom_circulatingpump' ) == 'off' and states ( 'sensor.boiler_dhw_curtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
             sequence:
               - service: switch.turn_on
                 entity_id:
-                    - switch.shelly_utilityroom_circulatingpump_switch_0
+                    - switch.shelly_utilityroom_circulatingpump
               - service: input_boolean.turn_on
                 entity_id:
                     - input_boolean.circulating_pump_running_disinfection
@@ -328,7 +328,7 @@
             sequence:
               - service: switch.turn_off
                 entity_id:
-                    - switch.shelly_utilityroom_circulatingpump_switch_0
+                    - switch.shelly_utilityroom_circulatingpump
               - service: input_boolean.turn_off
                 entity_id:
                     - input_boolean.circulating_pump_running_disinfection
