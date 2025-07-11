@@ -1,0 +1,8 @@
+###
+### 11.06.2025
+###
+
+name: 'Batterien Geräte'
+entities:
+  - group.batteries_bsh
+  - group.batteries_nuki

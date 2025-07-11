@@ -49,6 +49,13 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
+        entity: group.batteries
+        content: Batterien
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
         entity: binary_sensor.grid_state
         content: Strom
         icon: "{{ state_attr ( entity, 'icon' )}}"

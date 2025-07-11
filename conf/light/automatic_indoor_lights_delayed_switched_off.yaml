@@ -10,4 +10,3 @@
       - light.led_corridor_led
       - light.shelly_treppe
       - light.ws2812_office
-

@@ -39,3 +39,5 @@ entities:
   - binary_sensor.terassentur_esszimmer_battery
   - binary_sensor.terassentur_wohnzimmer_battery
   - binary_sensor.bewegungsmelder1_battery
+  - binary_sensor.heizkorper_bad_battery
+  - binary_sensor.heizkorper_dusche_battery
