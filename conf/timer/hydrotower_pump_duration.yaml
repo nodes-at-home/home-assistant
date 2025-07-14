@@ -4,3 +4,4 @@
 
 name: Bewässerungsdauer
 duration: "00:00:00"
+restore: true
