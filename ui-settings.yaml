@@ -409,7 +409,7 @@ views:
                 Die **Einplanung** einer Bewässerung erfolgt, sobald der Erwartungswert für den vorhergesagten Regen zzgl. der Regenmenge der letzten 7 Tage unterhalb der eingestellten Schwelle ist.
                 Die Bewässerung erfolgt für das jeweilige Ventil an den eingestellten Tagen zum dort eingestellten Zeitpunkt.
 
-                Eine **manuelle Steuerung** je Ventil kann erfolgen, wenn die Automatisierungsregel "garden_irrigation_schedule_start" deaktiviert wird.
+                Eine **manuelle Steuerung** je Ventil kann erfolgen, wenn die Automatisierungsregel "garden_irrigation_schedule" deaktiviert wird.
 
                 Die **Bewässerungsdauer** wird in den Templates 'irrigation_duration_effective_valveX' aus den diversen Einstellungen ermittelt.
                 Pro Ventil kann die Standardbewässerungsdauer eingestellt werden und über zwei Temperaturstufen können Zuschläge für die Bewässerungsdauer als Basis der effektiven Bewässerungsdauer je Ventil gewählt werden.

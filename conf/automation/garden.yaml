@@ -79,11 +79,10 @@
         state: "on"
       - condition: template
         value_template: >
-            {#% set valve_no = trigger.entity_id [32:] %#}
             {% set n = valve_no | string %}
             {% set day = now().weekday() %}
             {{
-                states ( 'input_boolean.irrigation_scheduled_valve' + n ) and
+                states ( 'input_boolean.irrigation_scheduled_valve' + n ) == 'on' and
                 (
                     day == 0 and states ( 'input_boolean.irrigation_valve' + n + '_at_monday' )    == 'on' or
                     day == 1 and states ( 'input_boolean.irrigation_valve' + n + '_at_tuesday' )   == 'on' or
@@ -157,9 +156,15 @@
     id: garden_irrigation_schedule
     triggers:
       - trigger: state
-        entity_id: input_number.irrigation_precipitation_threshold
+        entity_id: input_boolean.irrigation_activated
       - trigger: state
         entity_id: sensor.precipitation_7d_plus_forecast
+      - trigger: state
+        entity_id: input_number.irrigation_precipitation_threshold
+      - trigger: state
+        entity_id: sensor.dht22_terrace_temperature_max
+      - trigger: state
+        entity_id: input_number.irrigation_temperature_threshold_low
     actions:
       - variables:
             mode: >
