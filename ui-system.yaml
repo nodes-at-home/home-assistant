@@ -754,7 +754,7 @@ views:
             - binary_sensor.bewegungsmelder1
             - binary_sensor.bewegungsmelder1_battery
       - type: entities
-        title: Allgemein
+        title: Dienste
         show_header_toggle: false
         entities:
             - entity: binary_sensor.64_da_a0_03_b3_1e_smokedetectionsystem
@@ -799,6 +799,24 @@ views:
             - switch.poolpumpe
             - sensor.poolpumpe_energy
             - sensor.poolpumpe_power
+            - type: divider
+            - switch.klimaanlage_arbeitszimmer
+            - sensor.klimaanlage_arbeitszimmer_energy
+            - sensor.klimaanlage_arbeitszimmer_power
+            - type: divider
+            - switch.klimaanlage_kinderzimmer
+            - sensor.klimaanlage_kinderzimmer_energy
+            - sensor.klimaanlage_kinderzimmer_power
+            - type: divider
+            - switch.klimaanlage_schlafzimmer
+            - sensor.klimaanlage_schlafzimmer_energy
+            - sensor.klimaanlage_schlafzimmer_power
+      - type: entities
+        title: Wassermelder
+        show_header_toggle: false
+        entities:
+            - binary_sensor.wassermelder
+            - binary_sensor.wassermelder_battery
       - type: entities
         title: Heizkörperthermostate
         show_header_toggle: false

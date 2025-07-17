@@ -49,3 +49,12 @@ notify_alarm_simplepush:
 
 notify_alarm_whatsapp:
     name: whatsapp
+
+notify_flood_tv:
+    name: tv
+
+notify_flood_simplepush:
+    name: simplepush
+
+notify_flood_whatsapp:
+    name: whatsapp

@@ -1383,7 +1383,9 @@ views:
                 icon: mdi:fridge-variant-outline
               - entity: switch.bosch_ladestation
                 icon: mdi:battery-charging-medium
-              - binary_sensor.rauchmelder_garage
+              - binary_sensor.wassermelder
+              - entity: binary_sensor.rauchmelder_garage
+                name: Rauchmelder
       
       - type: vertical-stack
         title: Auto

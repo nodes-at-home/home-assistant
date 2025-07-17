@@ -108,3 +108,16 @@
         data:
             domain: nodestate
             message: "{{ trigger.entity_id [24:] }} is not alive"
+
+  - alias: notifications_garage_flood
+    id: notifications_garage_flood
+    triggers:
+      - trigger: state
+        entity_id: binary_sensor.wassermelder
+        to: "on"
+    conditions:
+    actions:
+      - action: script.notify
+        data:
+            domain: "flood"
+            message: "Überschwemmung erkannt"

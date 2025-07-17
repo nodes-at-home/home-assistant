@@ -41,3 +41,4 @@ entities:
   - binary_sensor.bewegungsmelder1_battery
   - binary_sensor.heizkorper_bad_battery
   - binary_sensor.heizkorper_dusche_battery
+  - binary_sensor.wassermelder_battery
