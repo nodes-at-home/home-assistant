@@ -616,6 +616,7 @@ views:
         show_header_toggle: false
         entities:
             - input_boolean.climate_activated
+            - input_boolean.climate_onetime_goon
             - type: attribute
               entity: climate.office
               attribute: hvac_action

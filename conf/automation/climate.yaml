@@ -14,33 +14,18 @@
       #   entity_id: input_boolean.climate_activated
       #   to: "on"
       - trigger: state
-        entity_id: input_number.climate_target_temperature
+        entity_id: 
+          - input_number.climate_target_temperature
+          - input_number.climate_min_forecast_temperature
+          - input_number.climate_min_forecast_temperature_sunny
       - trigger: state
-        entity_id: input_number.climate_min_forecast_temperature
-      - trigger: state
-        entity_id: input_number.climate_min_forecast_temperature_sunny
-      - trigger: state
-        entity_id: binary_sensor.fenster_schlafzimmer
-        to: "off"
-        for: "00:00:10"
-      - trigger: state
-        entity_id: binary_sensor.dachfenster_schlafzimmer
-        to: "off"
-        for: "00:00:10"
-      - trigger: state
-        entity_id: binary_sensor.fenster_kinderzimmer
-        to: "off"
-        for: "00:00:10"
-      - trigger: state
-        entity_id: binary_sensor.dachfenster_kinderzimmer
-        to: "off"
-        for: "00:00:10"
-      - trigger: state
-        entity_id: binary_sensor.fenster_arbeitszimmer
-        to: "off"
-        for: "00:00:10"
-      - trigger: state
-        entity_id: binary_sensor.dachfenster_arbeitszimmer
+        entity_id:
+          - binary_sensor.fenster_schlafzimmer
+          - binary_sensor.dachfenster_schlafzimmer
+          - binary_sensor.fenster_kinderzimmer
+          - binary_sensor.dachfenster_kinderzimmer
+          - binary_sensor.fenster_arbeitszimmer
+          - binary_sensor.dachfenster_arbeitszimmer
         to: "off"
         for: "00:00:10"
     conditions:
@@ -107,13 +92,10 @@
       - trigger: time_pattern
         minutes: "/1"
       - trigger: state
-        entity_id: input_boolean.climate_office_started
-        to: "on"
-      - trigger: state
-        entity_id: input_boolean.climate_bedroom_started
-        to: "on"
-      - trigger: state
-        entity_id: input_boolean.climate_nursery_started
+        entity_id: 
+          - input_boolean.climate_office_started
+          - input_boolean.climate_bedroom_started
+          - input_boolean.climate_nursery_started
         to: "on"
     conditions:
       - condition: state
@@ -175,20 +157,13 @@
     id: climate_supervise_temperature
     triggers:
       - trigger: state
-        entity_id: climate.office
+        entity_id:
+          - climate.office
+          - climate.bedroom
+          - climate.nursery
         attribute: current_temperature
         variables:
-            device: office
-      - trigger: state
-        entity_id: climate.bedroom
-        attribute: current_temperature
-        variables:
-            device: bedroom
-      - trigger: state
-        entity_id: climate.nursery
-        attribute: current_temperature
-        variables:
-            device: nursery
+            device: "{{ trigger.entity_id [8:] }}"
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -211,9 +186,9 @@
     id: climate_target_temperature
     triggers:
       - trigger: state
-        entity_id: input_number.climate_target_temperature
-      - trigger: state
-        entity_id: input_number.climate_target_temperature_step
+        entity_id: 
+          - input_number.climate_target_temperature
+          - input_number.climate_target_temperature_step
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -236,8 +211,8 @@
                     data:
                         device: "{{ repeat.item }}"
 
-  - alias: climate_turn_off
-    id: climate_turn_off
+  - alias: climate_stop
+    id: climate_stop
     triggers:
       - trigger: numeric_state
         entity_id: sensor.total_dc_power
@@ -250,7 +225,7 @@
         entity_id: group.family
         to: "not_home"
         variables:
-            immediate_turn_off: true
+            immediate_turn_off: "{{ states ( 'input_boolean.climate_onetime_goon' ) != 'on' }}"
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -286,25 +261,17 @@
                     target:
                         entity_id: "climate.{{ repeat.item }}"
 
-  # TODO refactor using variable trigger.entity_id
   - alias: climate_turned_off_extern
     id: climate_turned_off_extern
     triggers:
       - trigger: state
-        entity_id: climate.office
+        entity_id: 
+          - climate.office
+          - climate.bedroom
+          - climate.nursery
         to: 'off'
         variables:
-            device: office
-      - trigger: state
-        entity_id: climate.bedroom
-        to: 'off'
-        variables:
-            device: bedroom
-      - trigger: state
-        entity_id: climate.nursery
-        to: 'off'
-        variables:
-            device: nursery
+            device: "{{ trigger.entity_id [8:] }}"
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -353,3 +320,26 @@
                         entity_id: "climate.{{ repeat.item }}"
                     data:
                         preset_mode: sleep
+
+  - alias: climate_onetime_goon
+    id: climate_onetime_goon
+    triggers:
+      - trigger: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Klimaanlage anlassen'
+    actions:
+      - action: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_onetime_goon
+
+  - alias: climate_onetime_goon_reset
+    id: climate_onetime_goon_reset
+    triggers:
+      - trigger: time
+        at: "23:59:00"
+    actions:
+      - action: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.climate_onetime_goon

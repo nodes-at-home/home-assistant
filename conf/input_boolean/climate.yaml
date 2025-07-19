@@ -31,3 +31,6 @@ climate_stop_bedroom:
 climate_stop_nursery:
     name: Kinderzimmer
     # initial: 'on'
+
+climate_onetime_goon:
+    name: Klimageräte anlassen
