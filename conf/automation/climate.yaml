@@ -177,18 +177,12 @@
       - trigger: state
         entity_id: climate.office
         attribute: current_temperature
-        variables:
-            device: office
       - trigger: state
         entity_id: climate.bedroom
         attribute: current_temperature
-        variables:
-            device: bedroom
       - trigger: state
         entity_id: climate.nursery
         attribute: current_temperature
-        variables:
-            device: nursery
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -199,6 +193,8 @@
         entity_id: input_boolean.climate_activated
         state: "on"
     actions:
+      - variables:
+            device: trigger.entity_id [8:]
       - if:
           - condition: template
             value_template: "{{ states ( 'climate.' + device ) != 'off' }}"
@@ -250,7 +246,7 @@
         entity_id: group.family
         to: "not_home"
         variables:
-            immediate_turn_off: true
+            immediate_turn_off: "{{ states ( 'input_boolean.climate_onetime_goon' ) != 'on' }}"
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -285,26 +281,22 @@
                   - action: climate.turn_off
                     target:
                         entity_id: "climate.{{ repeat.item }}"
+      - action: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.climate_onetime_goon
 
-  # TODO refactor using variable trigger.entity_id
   - alias: climate_turned_off_extern
     id: climate_turned_off_extern
     triggers:
       - trigger: state
         entity_id: climate.office
         to: 'off'
-        variables:
-            device: office
       - trigger: state
         entity_id: climate.bedroom
         to: 'off'
-        variables:
-            device: bedroom
       - trigger: state
         entity_id: climate.nursery
         to: 'off'
-        variables:
-            device: nursery
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -313,6 +305,8 @@
         entity_id: input_boolean.climate_activated
         state: 'on'
     actions:
+      - variables:
+            device: trigger.entity_id [8:]
       - action: input_boolean.turn_off
         data:
             entity_id: "{{ 'input_boolean.climate_' + device + '_started' }}"
@@ -353,3 +347,16 @@
                         entity_id: "climate.{{ repeat.item }}"
                     data:
                         preset_mode: sleep
+
+  - alias: climate_onetime_goon
+    id: climate_onetime_goon
+    triggers:
+      - trigger: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Klimaanlage anlassen'
+    actions:
+      - action: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.climate_onetime_goon

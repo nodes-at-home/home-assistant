@@ -215,8 +215,16 @@ views:
               - type: tile
                 entity: sensor.ds18b20_pool_temperature
                 icon: mdi:thermometer
-              #- type: markdown
-              #  content: " "
+          - type: horizontal-stack
+            cards:
+              - type: tile
+                entity: input_boolean.climate_onetime_goon
+                name: Anlassen
+                icon: mdi:hvac
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
           - type: horizontal-stack
             cards:
               - type: custom:state-switch
