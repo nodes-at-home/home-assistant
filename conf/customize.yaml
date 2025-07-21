@@ -527,8 +527,30 @@ sensor.led_kitchen_version:
     entity_picture: /local/images/sonoff_led.jpg
 
 #------------------------------------------------------------------------------
+light.led_kitchen2_led:
+    friendly_name: Küchenregalbeleuchtung
+    icon: mdi:led-strip
+
+sensor.led_kitchen2_voltage:
+    friendly_name: 'Ledstrip'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.led_kitchen2_lastvoltage:
+    friendly_name: 'Ledstrip'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.led_kitchen2_lastboot:
+    friendly_name: 'Ledstrip'
+    entity_picture: /local/images/sonoff_led.jpg
+
+sensor.led_kitchen2_version:
+    friendly_name: 'Ledstrip'
+    entity_picture: /local/images/sonoff_led.jpg
+
+#------------------------------------------------------------------------------
 light.led_corridor_led:
     friendly_name: Korridorschranklicht
+    icon: mdi:led-strip
 
 sensor.led_corridor_voltage:
     friendly_name: 'Ledstrip'

@@ -8,5 +8,6 @@
       - light.sonoff_corridor_lamp
       - light.sonoff_gallery1_socket
       - light.led_corridor_led
+      - light.led_kitchen2_led
       - light.shelly_treppe
       - light.ws2812_office

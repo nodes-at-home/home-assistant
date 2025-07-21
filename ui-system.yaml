@@ -223,6 +223,20 @@ views:
             badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
             badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
           - type: custom:mushroom-template-card
+            entity: binary_sensor.nodestate_led_kitchen2
+            tap_action:
+              action: more-info
+            multiline_secondary: true
+            primary: "{{ entity[24:] | replace ( '_', '@' ) }}"
+            secondary: |
+              {% set info_entity_base = 'sensor.' + entity[24:] %}
+              boot: {{ states ( info_entity_base + '_lastboot' ) }}   version: {{ states ( info_entity_base + '_version' ) }}
+              ping: {{ states ( info_entity_base + '_lastvoltage' ) }}    voltage: {{ states ( info_entity_base + '_voltage', with_unit = true ) }}
+              {#{ states ( entity | replace ( '@', '_' ) ) }#}
+            picture: /local/images/sonoff_led.jpg
+            badge_icon: "{{ 'mdi:check' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'mdi:alert-circle-outline' }}"
+            badge_color: "{{ 'green' if is_state ( entity | replace ( '@', '_' ), 'on' ) else 'red' }}"
+          - type: custom:mushroom-template-card
             entity: binary_sensor.nodestate_gesture_kitchen
             tap_action:
               action: more-info

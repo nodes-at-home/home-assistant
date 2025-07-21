@@ -377,13 +377,15 @@ views:
               - type: light
                 entity: light.led_kitchen_led
               - type: light
+                entity: light.led_kitchen2_led
+              - type: light
                 entity: light.led_corridor_led
               # - type: light
                 # entity: light.ws2812_terrace1
               # - type: light
                 # entity: light.ws2812_terrace2
-              - type: light
-                entity: light.ws2812_xmasstar
+              # - type: light
+              #   entity: light.ws2812_xmasstar
               - type: light
                 entity: light.ws2812_office
               # - type: markdown
@@ -623,6 +625,7 @@ views:
               - light.shelly_kitchen_longstrip
               - entity: light.led_kitchen_led
                 name: Arbeitslicht
+              - light.led_kitchen2_led
               - entity: sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_operationstate
                 name: Geschirrspüler
               - entity: binary_sensor.bosch_smv88tx16d_68a40e0c161c_bsh_common_status_doorstate

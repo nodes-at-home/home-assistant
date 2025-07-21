@@ -1,0 +1,12 @@
+###
+### 13.07.2025
+###
+
+  - name: "led@kitchen2_led"
+    schema: json
+    command_topic: nodes@home/light/led/kitchen2/led
+    state_topic: nodes@home/light/led/kitchen2/led/state
+    brightness: true
+    supported_color_modes: ["rgb"]
+    optimistic: false
+    retain: true
