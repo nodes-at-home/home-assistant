@@ -202,6 +202,16 @@ views:
                   name: simplepush
                 - entity: input_boolean.notify_flood_whatsapp
                   name: whatsapp
+            - type: section
+              label: Rasenmäher
+            - type: buttons
+              entities:
+                - entity: input_boolean.notify_mower_tv
+                  name: tv
+                - entity: input_boolean.notify_mower_simplepush
+                  name: simplepush
+                - entity: input_boolean.notify_mower_whatsapp
+                  name: whatsapp
 
   - title: Garten
     path: garden

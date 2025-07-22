@@ -122,3 +122,19 @@
         data:
             domain: "flood"
             message: "Überschwemmung erkannt"
+
+  - alias: notifications_mower_error
+    id: notifications_mower_error
+    triggers:
+      - trigger: state
+        entity_id: binary_sensor.wassermelder
+        to:
+          - error
+          - unavailable
+          - unknown
+    conditions:
+    actions:
+      - action: script.notify
+        data:
+            domain: "mower"
+            message: "Rasenmäher Fehler: {{ trigger.to_state.state }}"

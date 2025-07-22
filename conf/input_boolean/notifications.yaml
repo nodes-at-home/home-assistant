@@ -58,3 +58,12 @@ notify_flood_simplepush:
 
 notify_flood_whatsapp:
     name: whatsapp
+
+notify_mower_tv:
+    name: tv
+
+notify_mower_simplepush:
+    name: simplepush
+
+notify_mower_whatsapp:
+    name: whatsapp
