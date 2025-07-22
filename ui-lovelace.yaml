@@ -130,9 +130,16 @@ views:
             action: more-info
       - type: custom:mushroom-template-badge
         entity: alarm_control_panel.intrusion_detection_system
-        content: "Alarm"
+        content: Alarm
         icon: mdi:shield-lock
         color: "{{ 'grey' if is_state ( entity, 'disarmed' ) else 'limegreen' if is_state ( entity, 'armed_away' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.wassermelder
+        content: Flut
+        icon: mdi:home-flood
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
 
@@ -1121,6 +1128,13 @@ views:
         content: Gardena
         icon: mdi:flower
         color: "{{ iif ( is_state ( entity, 'on' ), 'limegreen', 'red' ) }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: binary_sensor.wassermelder
+        content: Flut
+        icon: mdi:home-flood
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
       - type: entity-filter
