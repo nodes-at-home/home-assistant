@@ -127,7 +127,7 @@
     id: notifications_mower_error
     triggers:
       - trigger: state
-        entity_id: binary_sensor.wassermelder
+        entity_id: lawn_mower.sileno
         to:
           - error
           - unavailable
