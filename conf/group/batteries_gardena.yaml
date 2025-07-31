@@ -1,0 +1,11 @@
+###
+### 31.07.2025
+###
+
+name: 'Batterien Gardena-Sensoren'
+entities:
+  - binary_sensor.gemusebeet_vorne_battery
+  - binary_sensor.gemusebeet_hinten_battery
+  - binary_sensor.hochbeet_vorne_battery
+  - binary_sensor.hochbeet_hinten_battery
+

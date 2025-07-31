@@ -1082,7 +1082,7 @@ views:
                 }
 
   - title: Außenbereich
-    path: otdoor
+    path: outdoor
     panel: false
     badges:
       - entity: sensor.rain_garden_precipitation_last7d

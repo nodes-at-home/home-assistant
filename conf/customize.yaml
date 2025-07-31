@@ -1535,3 +1535,20 @@ sensor.irrigation_duration_effective_valve6:
     friendly_name: effektive Bewässeriungsdauer
 
 #------------------------------------------------------------------------------
+binary_sensor.gemusebeet_vorne_battery:
+    friendly_name: Gemüsebeet vorne Batteriezustand
+    icon: mdi:battery
+
+binary_sensor.gemusebeet_hinten_battery:
+    friendly_name: Gemüsebeet hinten Batteriezustand
+    icon: mdi:battery
+
+binary_sensor.hochbeet_vorne_battery:
+    friendly_name: Hochbeet vorne Batteriezustand
+    icon: mdi:battery
+
+binary_sensor.hochbeet_hinten_battery:
+    friendly_name: Hochbeet hinten Batteriezustand
+    icon: mdi:battery
+
+#------------------------------------------------------------------------------

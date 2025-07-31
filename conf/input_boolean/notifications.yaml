@@ -67,3 +67,12 @@ notify_mower_simplepush:
 
 notify_mower_whatsapp:
     name: whatsapp
+
+notify_battery_tv:
+    name: tv
+
+notify_battery_simplepush:
+    name: simplepush
+
+notify_battery_whatsapp:
+    name: whatsapp

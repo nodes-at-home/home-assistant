@@ -11,9 +11,6 @@
         for:
             minutes: "{{ states ( 'input_number.notification_tv_on_delay' ) | int }}"
     conditions:
-      - condition: state
-        entity_id: binary_sensor.prod_mode
-        state: 'on'
     variables:
         msg: |-
             {% set ns = namespace ( msg1 = '', msg2 = '' ) %}
@@ -30,7 +27,7 @@
               {% endif %}
             {% endfor %}
             {% if ns.msg1 != '' %}
-              {% set ns.msg1 = 'Offene Fenster: ' + ns.msg1 %}
+              {% set ns.msg1 = 'Offene Fenster: ' + ns.msg1 + " | " %}
             {% endif %}
             {% for state in states.binary_sensor 
                | selectattr ( 'attributes.device_class', 'defined' ) 
@@ -138,3 +135,18 @@
         data:
             domain: "mower"
             message: "Rasenmäher Fehler: {{ trigger.to_state.state }}"
+
+  - alias: notifications_battery_low
+    id: notifications_battery_low
+    triggers:
+      - trigger: state
+        entity_id: group.batteries
+        to: "on"
+    conditions:
+    variables:
+        b: "{{ expand ( 'group.batteries' ) | selectattr ( 'state', 'eq', 'on' ) | map ( attribute = 'attributes.friendly_name' ) | map('regex_replace', '^(\\S+)\\s(\\S+).*', '\\1 \\2') | list | join ( ', ' ) }}"
+    actions:
+      - action: script.notify
+        data:
+            domain: "battery"
+            message: "Niedriger Batteriestand: {{ b }}"

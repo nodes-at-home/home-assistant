@@ -6,3 +6,4 @@ name: 'Batterien Geräte'
 entities:
   - group.batteries_bsh
   - group.batteries_nuki
+  - group.batteries_gardena
