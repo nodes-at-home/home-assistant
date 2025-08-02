@@ -1671,6 +1671,10 @@ views:
               #     right: 30px
               #     margin-top: 0px
               #     color: black
+          - type: custom:mushroom-number-card
+            entity: number.ev6_ac_charging_limit
+            layout: horizontal
+            display_mode: buttons
           - type: conditional
             conditions:
               - entity: sensor.go_echarger_power_total
