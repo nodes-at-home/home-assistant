@@ -76,3 +76,12 @@ notify_battery_simplepush:
 
 notify_battery_whatsapp:
     name: whatsapp
+
+notify_kia_ev6_tv:
+    name: tv
+
+notify_kia_ev6_simplepush:
+    name: simplepush
+
+notify_kia_ev6_whatsapp:
+    name: whatsapp

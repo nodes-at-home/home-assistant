@@ -222,6 +222,16 @@ views:
                 name: simplepush
               - entity: input_boolean.notify_battery_whatsapp
                 name: whatsapp
+          - type: section
+            label: Kia EV6 Warnung
+          - type: buttons
+            entities:
+              - entity: input_boolean.notify_kia_ev6_tv
+                name: tv
+              - entity: input_boolean.notify_kia_ev6_simplepush
+                name: simplepush
+              - entity: input_boolean.notify_kia_ev6_whatsapp
+                name: whatsapp
 
   - title: Außenbereich
     path: outdoor
