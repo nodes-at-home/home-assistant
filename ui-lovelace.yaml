@@ -9,24 +9,32 @@ views:
     path: home
     panel: false
     badges:
-      - entity: person.andreas
-        display_type: complete
-        show_entity_picture: true
-      - entity: person.undine
-        display_type: complete
-        show_entity_picture: true
-      - entity: person.nora
-        display_type: complete
-        show_entity_picture: true
-      - entity: person.nina
-        display_type: complete
-        show_entity_picture: true
-      - entity: person.niklas
-        display_type: complete
-        show_entity_picture: true
-      - entity: person.dominik
-        display_type: complete
-        show_entity_picture: true
+      - type: entity-filter
+        entities:
+          - entity: person.gast
+            display_type: complete
+            show_entity_picture: true
+          - entity: person.andreas
+            display_type: complete
+            show_entity_picture: true
+          - entity: person.undine
+            display_type: complete
+            show_entity_picture: true
+          - entity: person.nora
+            display_type: complete
+            show_entity_picture: true
+          - entity: person.nina
+            display_type: complete
+            show_entity_picture: true
+          - entity: person.niklas
+            display_type: complete
+            show_entity_picture: true
+          - entity: person.dominik
+            display_type: complete
+            show_entity_picture: true
+        state_filter:
+          - home
+          - not_home
       - type: custom:mushroom-template-badge
         entity: group.nodestates_core
         content: Geräte

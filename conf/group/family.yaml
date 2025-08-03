@@ -6,4 +6,8 @@ name: 'Familie'
 entities:
     - person.andreas
     - person.undine
-    - group.kids
+    - person.nina
+    - person.dominik
+    - person.nora
+    - person.niklas
+    - person.gast
