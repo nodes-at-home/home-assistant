@@ -3,85 +3,85 @@
 ###
 
 debug_notifications:
-    name: Benachritigungen immer schicken
+    name: Benachrichtigungen immer schicken
 
 notify_open_doors_and_windows_tv:
     name: tv
 
-notify_open_doors_and_windows_simplepush:
-    name: simplepush
+notify_open_doors_and_windows_whatsapp_a:
+    name: wa a
 
-notify_open_doors_and_windows_whatsapp:
-    name: whatsapp
+notify_open_doors_and_windows_whatsapp_u:
+    name: wa u
 
 notify_nodestate_tv:
     name: tv
 
-notify_nodestate_simplepush:
-    name: simplepush
+notify_nodestate_whatsapp_a:
+    name: whatsapp
 
-notify_nodestate_whatsapp:
+notify_nodestate_whatsapp_u:
     name: whatsapp
 
 notify_doorlocks_tv:
     name: tv
 
-notify_doorlocks_simplepush:
-    name: simplepush
+notify_doorlocks_whatsapp_a:
+    name: whatsapp
 
-notify_doorlocks_whatsapp:
+notify_doorlocks_whatsapp_u:
     name: whatsapp
 
 notify_ups_tv:
     name: tv
 
-notify_ups_simplepush:
-    name: simplepush
+notify_ups_whatsapp_a:
+    name: whatsapp
 
-notify_ups_whatsapp:
+notify_ups_whatsapp_u:
     name: whatsapp
 
 notify_alarm_tv:
     name: tv
 
-notify_alarm_simplepush:
-    name: simplepush
+notify_alarm_whatsapp_a:
+    name: whatsapp
 
-notify_alarm_whatsapp:
+notify_alarm_whatsapp_u:
     name: whatsapp
 
 notify_flood_tv:
     name: tv
 
-notify_flood_simplepush:
-    name: simplepush
+notify_flood_whatsapp_a:
+    name: whatsapp
 
-notify_flood_whatsapp:
+notify_flood_whatsapp_u:
     name: whatsapp
 
 notify_mower_tv:
     name: tv
 
-notify_mower_simplepush:
-    name: simplepush
+notify_mower_whatsapp_a:
+    name: whatsapp
 
-notify_mower_whatsapp:
+notify_mower_whatsapp_u:
     name: whatsapp
 
 notify_battery_tv:
     name: tv
 
-notify_battery_simplepush:
-    name: simplepush
+notify_battery_whatsapp_a:
+    name: whatsapp
 
-notify_battery_whatsapp:
+notify_battery_whatsapp_u:
     name: whatsapp
 
 notify_kia_ev6_tv:
     name: tv
 
-notify_kia_ev6_simplepush:
-    name: simplepush
+notify_kia_ev6_whatsapp_a:
+    name: whatsapp
 
-notify_kia_ev6_whatsapp:
+notify_kia_ev6_whatsapp_u:
     name: whatsapp

@@ -22,8 +22,8 @@
           - repeat:
               for_each:
                 - tv
-                - simplepush
-                - whatsapp
+                - whatsapp_a
+                - whatsapp_u
               sequence:
                 - if:
                     - condition: template
@@ -69,12 +69,6 @@
                 entity_id: input_boolean.debug_notifications
                 state: 'on'
           - choose:
-              - conditions: "{{ channel == 'simplepush' }}"
-                sequence:
-                  - action: notify.simplepush
-                    data:
-                        title: "{{ title }}"
-                        message: "{{ message }}"
               - conditions: "{{ channel == 'tv' }}"
                 sequence:
                   - action: notify.tv_lounge
@@ -88,8 +82,13 @@
                             transparency: "0%"
                             color: "indigo"
                             interrupt: 0
-              - conditions: "{{ channel == 'whatsapp' }}"
+              - conditions: "{{ channel == 'whatsapp_a' }}"
                 sequence:
-                  - action: notify.whatsapp
+                  - action: notify.whatsapp_a
+                    data:
+                        message: "*{{ title }}*\n{{ message }}"
+              - conditions: "{{ channel == 'whatsapp_u' }}"
+                sequence:
+                  - action: notify.whatsapp_u
                     data:
                         message: "*{{ title }}*\n{{ message }}"

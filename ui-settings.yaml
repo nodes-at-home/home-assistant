@@ -124,7 +124,7 @@ views:
           - sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_heute
           - sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_morgen
 
-  - title: Benachrichtiungen
+  - title: Benachrichtigungen
     path: notifications
     panel: false
     cards:
@@ -148,90 +148,90 @@ views:
             entities:
               - entity: input_boolean.notify_open_doors_and_windows_tv
                 name: tv
-              - entity: input_boolean.notify_open_doors_and_windows_simplepush
-                name: simplepush
-              - entity: input_boolean.notify_open_doors_and_windows_whatsapp
-                name: whatsapp
+              - entity: input_boolean.notify_open_doors_and_windows_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_open_doors_and_windows_whatsapp_u
+                name: undine
           - type: section
             label: Gerätestatus
           - type: buttons
             entities:
               - entity: input_boolean.notify_nodestate_tv
                 name: tv
-              - entity: input_boolean.notify_nodestate_simplepush
-                name: simplepush
-              - entity: input_boolean.notify_nodestate_whatsapp
-                name: whatsapp
+              - entity: input_boolean.notify_nodestate_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_nodestate_whatsapp_u
+                name: undine
           - type: section
             label: Türschlösser
           - type: buttons
             entities:
               - entity: input_boolean.notify_doorlocks_tv
                 name: tv
-              - entity: input_boolean.notify_doorlocks_simplepush
-                name: simplepush
-              - entity: input_boolean.notify_doorlocks_whatsapp
-                name: whatsapp
+              - entity: input_boolean.notify_doorlocks_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_doorlocks_whatsapp_u
+                name: undine
           - type: section
             label: USV
           - type: buttons
             entities:
               - entity: input_boolean.notify_ups_tv
                 name: tv
-              - entity: input_boolean.notify_ups_simplepush
-                name: simplepush
-              - entity: input_boolean.notify_ups_whatsapp
-                name: whatsapp
+              - entity: input_boolean.notify_ups_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_ups_whatsapp_u
+                name: undine
           - type: section
             label: Alarmanlage
           - type: buttons
             entities:
               - entity: input_boolean.notify_alarm_tv
                 name: tv
-              - entity: input_boolean.notify_alarm_simplepush
-                name: simplepush
-              - entity: input_boolean.notify_alarm_whatsapp
-                name: whatsapp
+              - entity: input_boolean.notify_alarm_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_alarm_whatsapp_u
+                name: undine
           - type: section
             label: Überschwemmung
           - type: buttons
             entities:
               - entity: input_boolean.notify_flood_tv
                 name: tv
-              - entity: input_boolean.notify_flood_simplepush
-                name: simplepush
-              - entity: input_boolean.notify_flood_whatsapp
-                name: whatsapp
+              - entity: input_boolean.notify_flood_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_flood_whatsapp_u
+                name: undine
           - type: section
             label: Rasenmäher
           - type: buttons
             entities:
               - entity: input_boolean.notify_mower_tv
                 name: tv
-              - entity: input_boolean.notify_mower_simplepush
-                name: simplepush
-              - entity: input_boolean.notify_mower_whatsapp
-                name: whatsapp
+              - entity: input_boolean.notify_mower_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_mower_whatsapp_u
+                name: undine
           - type: section
             label: Niedriger Betteriestand
           - type: buttons
             entities:
               - entity: input_boolean.notify_battery_tv
                 name: tv
-              - entity: input_boolean.notify_battery_simplepush
-                name: simplepush
-              - entity: input_boolean.notify_battery_whatsapp
-                name: whatsapp
+              - entity: input_boolean.notify_battery_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_battery_whatsapp_u
+                name: undine
           - type: section
             label: Kia EV6 Warnung
           - type: buttons
             entities:
               - entity: input_boolean.notify_kia_ev6_tv
                 name: tv
-              - entity: input_boolean.notify_kia_ev6_simplepush
-                name: simplepush
-              - entity: input_boolean.notify_kia_ev6_whatsapp
-                name: whatsapp
+              - entity: input_boolean.notify_kia_ev6_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_kia_ev6_whatsapp_u
+                name: undine
 
   - title: Außenbereich
     path: outdoor

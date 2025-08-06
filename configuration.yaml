@@ -80,6 +80,20 @@ notify:
       source: HA
       phone: !secret my_phonenumber
       apikey: !secret callmebot_api_key
+  - name: whatsapp_a
+    platform: rest
+    resource: https://api.callmebot.com/whatsapp.php
+    data:
+      source: HA
+      phone: !secret phonenumber_a
+      apikey: !secret callmebot_api_key_a
+  - name: whatsapp_u
+    platform: rest
+    resource: https://api.callmebot.com/whatsapp.php
+    data:
+      source: HA
+      phone: !secret phonenumber_u
+      apikey: !secret callmebot_api_key_u
 
 # -------------------------------------------------------------------------------
 # Enables the frontend
