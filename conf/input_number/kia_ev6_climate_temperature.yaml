@@ -1,0 +1,11 @@
+###
+### 09.08.2025
+###
+
+name: Zieltemperatur
+icon: mdi:thermometer-lines
+mode: slider
+min: 15
+max: 25
+step: 1
+unit_of_measurement: "°C"

@@ -63,7 +63,7 @@
     id: garage_unlock_ev6
     triggers:
       - trigger: event
-        event_type:  bosch_shc.event
+        event_type: bosch_shc.event
         event_data:
             event_type: SCENARIO
             event_subtype: 'Auto auf'
@@ -86,7 +86,7 @@
     id: garage_lock_ev6
     triggers:
       - trigger: event
-        event_type:  bosch_shc.event
+        event_type: bosch_shc.event
         event_data:
             event_type: SCENARIO
             event_subtype: 'Auto zu'
@@ -103,5 +103,33 @@
     actions:
       - action: kia_uvo.lock
         data:
+            device_id: "{{ device_id ( 'EV6' ) }}"
+
+  - alias: garage_climate_ev6
+    id: garage_climate_ev6
+    triggers:
+      - trigger: state
+        entity_id: input_button.kia_ev6_climate
+      - trigger: event
+        event_type: bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Auto klimatisieren'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: group.family
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.ev6_location
+        state: 'Zuhause'
+    actions:
+      - action: kia_uvo.schedule_charging_and_climate
+        data:
+            climate_enabled: true
+            temperature: "{{ states ( 'input_number.ev6_climate_temperature' ) | int }}"
+            temperature_unit: "0"
             device_id: "{{ device_id ( 'EV6' ) }}"
 

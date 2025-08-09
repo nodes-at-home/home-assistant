@@ -431,6 +431,20 @@ views:
         show_header_toggle: false
         entities:
           - input_boolean.tapocam_notifications
+      - type: entities
+        title: Kia EV6
+        show_header_toggle: false
+        entities:
+          - type: section
+            label: Laden
+          - number.ev6_ac_charging_limit
+          - type: section
+            label: KLimatisierung
+          - input_number.kia_ev6_climate_temperature
+          - type: buttons
+            entities:
+              - entity: input_button.kia_ev6_climate
+                name: Start
       - type: vertical-stack
         cards:
           - type: entities
@@ -587,22 +601,22 @@ views:
         title: Wechselrichter
         show_header_toggle: false
         entities:
-            - type: section
-              label: Master
-            - type: buttons
-              entities:
-                - entity: input_button.inverter_master_startup
-                  name: Startup
-                - entity: input_button.inverter_master_shutdown
-                  name: Shutdown
-            - type: section
-              label: Slave
-            - type: buttons
-              entities:
-                - entity: input_button.inverter_slave_startup
-                  name: Startup
-                - entity: input_button.inverter_slave_shutdown
-                  name: Shutdown
+          - type: section
+            label: Master
+          - type: buttons
+            entities:
+              - entity: input_button.inverter_master_startup
+                name: Startup
+              - entity: input_button.inverter_master_shutdown
+                name: Shutdown
+          - type: section
+            label: Slave
+          - type: buttons
+            entities:
+              - entity: input_button.inverter_slave_startup
+                name: Startup
+              - entity: input_button.inverter_slave_shutdown
+                name: Shutdown
       - type: entities
         title: Preise
         show_header_toggle: false
