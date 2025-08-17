@@ -23,8 +23,6 @@ views:
                 graph: line
                 detail: 2
                 hours_to_show: 24
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
               - type: sensor
                 entity: sensor.rain_garden_precipitation_last7d
                 graph: line
@@ -63,11 +61,6 @@ views:
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.dht22_office_temperature
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
                 entity: sensor.dht11_utilityroom_temperature
                 graph: line
                 detail: 2
@@ -92,11 +85,6 @@ views:
                 hours_to_show: 24
               - type: sensor
                 entity: sensor.relay_garage_humidity
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
-                entity: sensor.dht22_office_humidity
                 graph: line
                 detail: 2
                 hours_to_show: 24
@@ -129,11 +117,6 @@ views:
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.dht22_office_tau
-                graph: line
-                detail: 2
-                hours_to_show: 24
-              - type: sensor
                 entity: sensor.dht11_utilityroom_tau
                 graph: line
                 detail: 2
@@ -141,47 +124,49 @@ views:
           - type: horizontal-stack
             cards:
               - type: sensor
-                entity: sensor.soil_garden_temperature1
+                entity: sensor.hochbeet_vorne_soil_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.soil_garden_temperature2
+                entity: sensor.hochbeet_hinten_soil_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.soil_garden_temperature3
+                entity: sensor.gemusebeet_hinten_soil_temperature
                 graph: line
                 detail: 2
                 hours_to_show: 24
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: sensor
+                entity: sensor.gemusebeet_vorne_soil_temperature
+                graph: line
+                detail: 2
+                hours_to_show: 24
               - type: markdown
                 content: <br/><br/><br/><br/><br/><br/><br/><br/>
           - type: horizontal-stack
             cards:
               - type: sensor
-                entity: sensor.soil_garden_moisture1
+                entity: sensor.hochbeet_vorne_soil_humidity
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.soil_garden_moisture2
+                entity: sensor.hochbeet_hinten_soil_humidity
                 graph: line
                 detail: 2
                 hours_to_show: 24
               - type: sensor
-                entity: sensor.soil_garden_moisture3
+                entity: sensor.gemusebeet_hinten_soil_humidity
                 graph: line
                 detail: 2
                 hours_to_show: 24
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
-              - type: markdown
-                content: <br/><br/><br/><br/><br/><br/><br/><br/>
+              - type: sensor
+                entity: sensor.gemusebeet_vorne_soil_humidity
+                graph: line
+                detail: 2
+                hours_to_show: 24
               - type: markdown
                 content: <br/><br/><br/><br/><br/><br/><br/><br/>
 
@@ -802,7 +787,8 @@ views:
           - sensor.rain_garden_precipitation_last24h
           - sensor.rain_garden_precipitation_last5d
           - sensor.rain_garden_precipitation_last7d
-          - sensor.wasserampel_text
+          - entity: sensor.wasserampel_text
+            name: Wasserampel
           - entity: sensor.boiler_outside_temperature
             name: Außen
           - sensor.gemusebeet_vorne_soil_humidity
@@ -820,6 +806,11 @@ views:
           # - switch.relay_garden2_valve2
           - switch.relay_garden2_valve3
           - lawn_mower.sileno
+          - switch.poolpumpe
+          - switch.wasserpumpe
+          - sensor.poolpumpe_power
+          - sensor.wasserpumpe_power
+          - sensor.ds18b20_pool_temperature
 
   - title: MPPT
     path: mpptgraph
