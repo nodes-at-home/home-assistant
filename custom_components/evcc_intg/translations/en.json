@@ -1,5 +1,10 @@
 {
   "config": {
+    "abort": {
+      "already_configured": "Device is already configured",
+      "reauth_successful": "Re-authentication was successful",
+      "reconfigure_successful": "Re-configuration was successful"
+    },
     "step": {
       "user": {
         "description": "If you need help setting it up, you can find it here: https://github.com/marq24/ha-evcc.",
@@ -12,23 +17,7 @@
       }
     },
     "error": {
-      "auth": "URL is wrong - could not reach EVCC-Server"
-    }
-  },
-  "options": {
-    "step": {
-      "user": {
-        "description": "If you need help setting it up, you can find it here: https://github.com/marq24/ha-evcc.",
-        "data": {
-          "host": "Your local EVCC-Server (including the port)",
-          "use_websocket": "Use Websocket - The Polling Interval will be ignored",
-          "scan_interval": "Polling Interval in seconds [min: 5sec]",
-          "include_evcc": "Include the prefix '[evcc]' in all sensor 'friendly names'"
-        }
-      }
-    },
-    "error": {
-      "auth": "URL is wrong - could not reach EVCC-Server"
+      "auth": "You HA instance could not connect to an EVCC-Server under the specified URL."
     }
   },
   "services": {
@@ -316,7 +305,15 @@
       "batterymode": {"name": "Battery mode [CODE]"},
       "batterymode_value": {"name": "Battery mode"},
       "batterypower": {"name": "Power battery"},
+      "battery_0_power": {"name": "Power Battery 1"},
+      "battery_1_power": {"name": "Power Battery 2"},
+      "battery_2_power": {"name": "Power Battery 3"},
+      "battery_3_power": {"name": "Power Battery 4"},
       "batterysoc": {"name": "Battery SOC"},
+      "battery_0_soc": {"name": "Battery SOC 1"},
+      "battery_1_soc": {"name": "Battery SOC 2"},
+      "battery_2_soc": {"name": "Battery SOC 3"},
+      "battery_3_soc": {"name": "Battery SOC 4"},
       "gridcurrents_0": {"name": "Grid Phase 1"},
       "gridcurrents_1": {"name": "Grid Phase 2"},
       "gridcurrents_2": {"name": "Grid Phase 3"},

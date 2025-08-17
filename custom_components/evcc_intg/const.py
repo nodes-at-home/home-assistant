@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Final
 
-from custom_components.evcc_intg.pyevcc_ha.keys import Tag, GRID_CONTENT, PV_CONTENT, FORECAST_CONTENT
 from homeassistant.components.binary_sensor import BinarySensorEntityDescription, BinarySensorDeviceClass
 from homeassistant.components.button import ButtonEntityDescription
 from homeassistant.components.number import NumberEntityDescription, NumberMode, NumberDeviceClass
@@ -19,12 +18,17 @@ from homeassistant.const import (
 )
 from homeassistant.util.frozen_dataclass_compat import FrozenOrThawed
 
+from custom_components.evcc_intg.pyevcc_ha.keys import Tag, GRID_CONTENT, PV_CONTENT, FORECAST_CONTENT, BATTERY_CONTENT
+
 # Base component constants
 MANUFACTURER: Final = "marq24"
 NAME: Final = "evcc☀️🚘- Solar Charging"
 NAME_SHORT: Final = "evcc☀️🚘"
 DOMAIN: Final = "evcc_intg"
 ISSUE_URL: Final = "https://github.com/marq24/ha-evcc/issues"
+
+CONFIG_VERSION: Final = 2
+CONFIG_MINOR_VERSION: Final = 0
 
 STARTUP_MESSAGE: Final = f"""
 -------------------------------------------------------------------
@@ -49,6 +53,7 @@ class EntityDescriptionStub(metaclass=FrozenOrThawed, frozen_or_thawed=True):
     unit_of_measurement: str | None = None
     entity_category: EntityCategory | None = None
     entity_registry_enabled_default: bool = True
+    integrated_supported: bool = True
 
 
 @dataclass
@@ -89,7 +94,6 @@ class ExtNumberEntityDescriptionStub(EntityDescriptionStub):
     native_step: float | None = None
     native_unit_of_measurement: str | None = None
     step: None = None
-
 
 @dataclass
 class ExtNumberEntityDescription(NumberEntityDescription):
@@ -172,7 +176,8 @@ BINARY_SENSORS_PER_LOADPOINT = [
         tag=Tag.CONNECTED,
         icon=None,
         icon_off=None,
-        device_class=BinarySensorDeviceClass.CONNECTIVITY
+        device_class=BinarySensorDeviceClass.CONNECTIVITY,
+        integrated_supported=False
     ),
     ExtBinarySensorEntityDescriptionStub(
         tag=Tag.ENABLED,
@@ -190,19 +195,22 @@ BINARY_SENSORS_PER_LOADPOINT = [
         tag=Tag.VEHICLEDETECTIONACTIVE,
         entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:car-search",
-        icon_off="mdi:car-search-outline"
+        icon_off="mdi:car-search-outline",
+        integrated_supported=False
     ),
     ExtBinarySensorEntityDescriptionStub(
         tag=Tag.VEHICLECLIMATERACTIVE,
         entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:snowflake-thermometer",
-        icon_off="mdi:snowflake-off"
+        icon_off="mdi:snowflake-off",
+        integrated_supported=False
     ),
     ExtBinarySensorEntityDescriptionStub(
         tag=Tag.VEHICLEWELCOMEACTIVE,
         entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:gift-outline",
         icon_off="mdi:gift-off-outline",
+        integrated_supported=False
     ),
     ExtBinarySensorEntityDescriptionStub(
         tag=Tag.PLANACTIVE,
@@ -227,26 +235,30 @@ BUTTONS_PER_LOADPOINT = [
         tag=Tag.VEHICLEPLANSDELETE,
         entity_category=EntityCategory.CONFIG,
         device_class=None,
-        icon="mdi:restart"
+        icon="mdi:restart",
+        integrated_supported = False
     ),
     ExtButtonEntityDescriptionStub(
         tag=Tag.PLANDELETE,
         entity_category=EntityCategory.CONFIG,
         device_class=None,
         icon="mdi:restart",
-        entity_registry_enabled_default=False
+        entity_registry_enabled_default=False,
+        integrated_supported = False
     ),
     ExtButtonEntityDescriptionStub(
         tag=Tag.DETECTVEHICLE,
         device_class=None,
-        icon="mdi:car-search-outline"
+        icon="mdi:car-search-outline",
+        integrated_supported = False
     ),
     ExtButtonEntityDescriptionStub(
         tag=Tag.SMARTCOSTLIMIT,
         entity_category=EntityCategory.CONFIG,
         device_class=None,
         icon = "mdi:cash-off",
-        entity_registry_enabled_default=False
+        entity_registry_enabled_default=False,
+        integrated_supported = False
     )
 ]
 
@@ -285,6 +297,7 @@ NUMBER_SENSORS_PER_LOADPOINT = [
         native_step=5,
         native_unit_of_measurement=PERCENTAGE,
         device_class= NumberDeviceClass.BATTERY,
+        #integrated_supported=False
     ),
     ExtNumberEntityDescriptionStub(
         tag=Tag.ENABLETHRESHOLD,
@@ -397,7 +410,8 @@ SELECT_SENSORS_PER_LOADPOINT = [
     ExtSelectEntityDescriptionStub(
         tag=Tag.VEHICLENAME,
         #entity_category=EntityCategory.CONFIG,
-        icon="mdi:car-outline"
+        icon="mdi:car-outline",
+        integrated_supported=False
     ),
     ExtSelectEntityDescriptionStub(
         tag=Tag.MINCURRENT,
@@ -420,6 +434,7 @@ SELECT_SENSORS_PER_LOADPOINT = [
         # we render the states via translations - so we can render '0 %' as '---'
         #unit_of_measurement=PERCENTAGE,
         #device_class= NumberDeviceClass.BATTERY,
+        integrated_supported=False
     ),
     ExtSelectEntityDescriptionStub(
         tag=Tag.VEHICLEMINSOC,
@@ -428,6 +443,7 @@ SELECT_SENSORS_PER_LOADPOINT = [
         # we render the states via translations - so we can render '0 %' as '---'
         #unit_of_measurement=PERCENTAGE,
         #device_class= NumberDeviceClass.BATTERY,
+        integrated_supported=False
     )
 ]
 
@@ -472,7 +488,6 @@ SENSOR_SENSORS_GRID_AS_PREFIX = [
         entity_registry_enabled_default=False
     )
 ]
-
 SENSOR_SENSORS_GRID_AS_OBJECT = [
     ExtSensorEntityDescription(
         tag=Tag.GRID,
@@ -547,6 +562,46 @@ SENSOR_SENSORS = [
         device_class=SensorDeviceClass.POWER
     ),
     ExtSensorEntityDescription(
+        tag=Tag.BATTERY,
+        key="battery_0_power",
+        tuple_idx = [0, BATTERY_CONTENT.POWER.value],
+        icon="mdi:battery-charging",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        entity_registry_enabled_default=False
+    ),
+    ExtSensorEntityDescription(
+        tag=Tag.BATTERY,
+        key="battery_1_power",
+        tuple_idx = [1, BATTERY_CONTENT.POWER.value],
+        icon="mdi:battery-charging",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        entity_registry_enabled_default=False
+    ),
+    ExtSensorEntityDescription(
+        tag=Tag.BATTERY,
+        key="battery_2_power",
+        tuple_idx = [2, BATTERY_CONTENT.POWER.value],
+        icon="mdi:battery-charging",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        entity_registry_enabled_default=False
+    ),
+    ExtSensorEntityDescription(
+        tag=Tag.BATTERY,
+        key="battery_3_power",
+        tuple_idx = [3, BATTERY_CONTENT.POWER.value],
+        icon="mdi:battery-charging",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        entity_registry_enabled_default=False
+    ),
+    ExtSensorEntityDescription(
         tag=Tag.BATTERYSOC,
         key=Tag.BATTERYSOC.key,
         icon="mdi:home-battery-outline",
@@ -555,6 +610,51 @@ SENSOR_SENSORS = [
         device_class=None,
         suggested_display_precision=0
     ),
+    ExtSensorEntityDescription(
+        tag=Tag.BATTERY,
+        key="battery_0_soc",
+        tuple_idx = [0, BATTERY_CONTENT.SOC.value],
+        icon="mdi:home-battery-outline",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=None,
+        suggested_display_precision=0,
+        entity_registry_enabled_default=False
+    ),
+    ExtSensorEntityDescription(
+        tag=Tag.BATTERY,
+        key="battery_1_soc",
+        tuple_idx = [1, BATTERY_CONTENT.SOC.value],
+        icon="mdi:home-battery-outline",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=None,
+        suggested_display_precision=0,
+        entity_registry_enabled_default=False
+    ),
+    ExtSensorEntityDescription(
+        tag=Tag.BATTERY,
+        key="battery_2_soc",
+        tuple_idx = [2, BATTERY_CONTENT.SOC.value],
+        icon="mdi:home-battery-outline",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=None,
+        suggested_display_precision=0,
+        entity_registry_enabled_default=False
+    ),
+    ExtSensorEntityDescription(
+        tag=Tag.BATTERY,
+        key="battery_3_soc",
+        tuple_idx = [3, BATTERY_CONTENT.SOC.value],
+        icon="mdi:home-battery-outline",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=None,
+        suggested_display_precision=0,
+        entity_registry_enabled_default=False
+    ),
+
     ExtSensorEntityDescription(
         tag=Tag.HOMEPOWER,
         key=Tag.HOMEPOWER.key,
@@ -1006,7 +1106,8 @@ SENSOR_SENSORS_PER_LOADPOINT = [
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=PERCENTAGE,
         device_class=None,
-        suggested_display_precision=0
+        suggested_display_precision=0,
+        #integrated_supported=False
     ),
     ExtSensorEntityDescriptionStub(
         tag=Tag.PHASEACTION,
@@ -1095,7 +1196,8 @@ SENSOR_SENSORS_PER_LOADPOINT = [
         native_unit_of_measurement=UnitOfLength.KILOMETERS,
         device_class=None,
         suggested_display_precision=0,
-        ignore_zero=True
+        ignore_zero=True,
+        integrated_supported=False
     ),
     ExtSensorEntityDescriptionStub(
         tag=Tag.VEHICLERANGE,
@@ -1103,7 +1205,8 @@ SENSOR_SENSORS_PER_LOADPOINT = [
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfLength.KILOMETERS,
         device_class=None,
-        suggested_display_precision=0
+        suggested_display_precision=0,
+        integrated_supported=False
     ),
     ExtSensorEntityDescriptionStub(
         tag=Tag.VEHICLESOC,
@@ -1111,7 +1214,8 @@ SENSOR_SENSORS_PER_LOADPOINT = [
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=PERCENTAGE,
         device_class=None,
-        suggested_display_precision=0
+        suggested_display_precision=0,
+        #integrated_supported=False - requested in https://github.com/marq24/ha-evcc/issues/157
     ),
 
     ExtSensorEntityDescriptionStub(
@@ -1120,6 +1224,7 @@ SENSOR_SENSORS_PER_LOADPOINT = [
         entity_category=EntityCategory.DIAGNOSTIC,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=PERCENTAGE,
+        integrated_supported=False
     ),
     ExtSensorEntityDescriptionStub(
         tag=Tag.VEHICLEPLANSTIME,
@@ -1127,7 +1232,8 @@ SENSOR_SENSORS_PER_LOADPOINT = [
         entity_category=EntityCategory.DIAGNOSTIC,
         #state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TIMESTAMP,
-        #device_class=None
+        #device_class=None,
+        integrated_supported=False
     ),
     ExtSensorEntityDescriptionStub(
         tag=Tag.PLANENERGY,
@@ -1178,6 +1284,7 @@ SENSOR_SENSORS_PER_LOADPOINT = [
         entity_category=EntityCategory.DIAGNOSTIC,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=PERCENTAGE,
+        #integrated_supported=False
     ),
 
     ExtSensorEntityDescriptionStub(
@@ -1203,6 +1310,25 @@ SENSOR_SENSORS_PER_LOADPOINT = [
         #device_class=None,
     )
 ]
+# SENSOR_SENSORS_PER_VEHICLE = [
+#
+#     ExtSensorEntityDescriptionStub(
+#         tag=Tag.VEHOBJ_LIMITSOC,
+#         icon="mdi:battery-charging",
+#         state_class=SensorStateClass.MEASUREMENT,
+#         native_unit_of_measurement=PERCENTAGE,
+#         device_class=None,
+#         suggested_display_precision=0,
+#     ),
+#     ExtSensorEntityDescriptionStub(
+#         tag=Tag.VEHOBJ_MINSOC,
+#         icon="mdi:car-electric-outline",
+#         state_class=SensorStateClass.MEASUREMENT,
+#         native_unit_of_measurement=PERCENTAGE,
+#         device_class=None,
+#         suggested_display_precision=0,
+#     ),
+# ]
 
 SWITCH_SENSORS = [
     ExtSwitchEntityDescription(
