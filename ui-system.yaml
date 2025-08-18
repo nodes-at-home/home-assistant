@@ -30,6 +30,13 @@ views:
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
+      - type: custom:mushroom-template-badge
+        entity: group.batteries_gardena
+        content: Batterien
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
+        tap_action:
+            action: more-info
       - type: entity
         entity: sensor.log_db_file_size
         show_name: true
@@ -1230,3 +1237,35 @@ views:
           - lock.garagentur
           - sensor.garagentur_batterie
           - binary_sensor.garagentur_batteriestand
+
+  - title: Gardena
+    path: gardena
+    panel: false
+    badges:
+      - type: custom:mushroom-template-badge
+        entity: group.batteries_gardena
+        content: Batterien
+        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
+        tap_action:
+            action: more-info
+    cards:
+      - type: entities
+        title: Sensoren
+        show_header_toggle: false
+        entities:
+          - sensor.hochbeet_vorne_battery_level
+          - sensor.hochbeet_vorne_soil_humidity
+          - sensor.hochbeet_vorne_soil_temperature
+          - type: divider
+          - sensor.hochbeet_hinten_battery_level
+          - sensor.hochbeet_hinten_soil_humidity
+          - sensor.hochbeet_hinten_soil_temperature
+          - type: divider
+          - sensor.gemusebeet_vorne_battery_level
+          - sensor.gemusebeet_vorne_soil_humidity
+          - sensor.gemusebeet_vorne_soil_temperature
+          - type: divider
+          - sensor.gemusebeet_hinten_battery_level
+          - sensor.gemusebeet_hinten_soil_humidity
+          - sensor.gemusebeet_hinten_soil_temperature
