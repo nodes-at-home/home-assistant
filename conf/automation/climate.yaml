@@ -18,6 +18,8 @@
           - input_number.climate_target_temperature
           - input_number.climate_min_forecast_temperature
           - input_number.climate_min_forecast_temperature_sunny
+          - input_number.climate_min_outdoor_temperature
+          - sensor.boiler_outside_temperature
       - trigger: state
         entity_id:
           - binary_sensor.fenster_schlafzimmer
@@ -39,6 +41,9 @@
         entity_id: group.family
         state: "home"
       - condition: numeric_state
+        entity_id: sensor.sh10rt_master_battery_level
+        above: input_number.climate_min_battery_level
+      - condition: numeric_state
         entity_id: sensor.total_dc_power
         above: input_number.climate_min_pv_generation
       - or:
@@ -58,8 +63,8 @@
                 entity_id: sensor.openweathermap_forecast_temperature
                 above: input_number.climate_min_forecast_temperature_sunny
       - condition: numeric_state
-        entity_id: sensor.sh10rt_master_battery_level
-        above: input_number.climate_min_battery_level
+        entity_id: sensor.boiler_outside_temperature
+        above: input_number.climate_min_outdoor_temperature
     actions:
       - repeat:
             for_each:
@@ -70,13 +75,14 @@
               - climate: nursery
                 window: kinderzimmer
             sequence:
+              # TODO switch on and off depending on all states of windows, temps and pv_production
               - if:
                   - condition: template
                     value_template: >
-                        {# start only climates which are permitted, not running and with closed windows #}
+                        {# start only climates which are scheduled, not running and with closed windows #}
                         {{
                             states ( 'input_boolean.climate_start_' + repeat.item.climate ) == 'on'
-                            and states ( 'input_boolean.climate_' + repeat.item.climate + '_started' ) == 'off'
+                            and states ( 'input_boolean.climate_' + repeat.item.climate + '_scheduled' ) == 'off'
                             and states ( 'climate.' + repeat.item.climate ) == 'off'
                             and states ( 'binary_sensor.fenster_' + repeat.item.window ) == 'off'
                             and states ( 'binary_sensor.dachfenster_' + repeat.item.window ) == 'off'
@@ -84,7 +90,7 @@
                 then:
                   - action: input_boolean.turn_on
                     data:
-                        entity_id: "{{ 'input_boolean.climate_' + repeat.item.climate + '_started' }}"
+                        entity_id: "{{ 'input_boolean.climate_' + repeat.item.climate + '_scheduled' }}"
 
   - alias: climate_start
     id: climate_start
@@ -93,9 +99,9 @@
         minutes: "/1"
       - trigger: state
         entity_id: 
-          - input_boolean.climate_office_started
-          - input_boolean.climate_bedroom_started
-          - input_boolean.climate_nursery_started
+          - input_boolean.climate_office_scheduled
+          - input_boolean.climate_bedroom_scheduled
+          - input_boolean.climate_nursery_scheduled
         to: "on"
     conditions:
       - condition: state
@@ -117,9 +123,9 @@
               - if:
                   - condition: template
                     value_template: >
-                        {# start climates which are not running and started #}
+                        {# start climates which are not running and scheduled #}
                         {{
-                            states ( 'input_boolean.climate_' + repeat.item.climate + '_started' ) == 'on'
+                            states ( 'input_boolean.climate_' + repeat.item.climate + '_scheduled' ) == 'on'
                             and states ( 'climate.' + repeat.item.climate ) == 'off'
                         }}
                 then:
@@ -169,7 +175,7 @@
         entity_id: binary_sensor.prod_mode
         state: "on"
       - condition: template
-        value_template: "{{ states ( 'input_boolean.climate_' + device + '_started' ) == 'on' }}"
+        value_template: "{{ states ( 'input_boolean.climate_' + device + '_scheduled' ) == 'on' }}"
       - condition: state
         entity_id: input_boolean.climate_activated
         state: "on"
@@ -221,11 +227,32 @@
             minutes: "{{ states ( 'input_number.climate_min_pv_generation_duration' ) }}"
         variables:
             immediate_turn_off: false
+            window_turn_off: false
       - trigger: state
         entity_id: group.family
         to: "not_home"
         variables:
-            immediate_turn_off: "{{ states ( 'input_boolean.climate_onetime_goon' ) != 'on' }}"
+            immediate_turn_off: "{{ states ( 'input_boolean.climate_absence_goon' ) != 'on' }}"
+            window_turn_off: false
+      - trigger: numeric_state
+        entity_id: sensor.boiler_outside_temperature
+        below: input_number.climate_min_outdoor_temperature
+        variables:
+            immediate_turn_off: false
+            window_turn_off: false
+      - trigger: state
+        entity_id:
+          - binary_sensor.fenster_schlafzimmer
+          - binary_sensor.dachfenster_schlafzimmer
+          - binary_sensor.fenster_kinderzimmer
+          - binary_sensor.dachfenster_kinderzimmer
+          - binary_sensor.fenster_arbeitszimmer
+          - binary_sensor.dachfenster_arbeitszimmer
+        to: "on"
+        for: "00:00:10"
+        variables:
+            immediate_turn_off: false
+            window_turn_off: true
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -236,33 +263,41 @@
     actions:
       - repeat:
             for_each:
-              - office
-              - bedroom
-              - nursery
+              - climate: office
+                window: arbeitszimmer
+              - climate: bedroom
+                window: schlafzimmer
+              - climate: nursery
+                window: kinderzimmer
             sequence:
               - if:
                   - condition: template
                     value_template: >
                         {{
-                            states ( 'climate.' + repeat.item ) != 'off'
+                            states ( 'climate.' + repeat.item.climate ) != 'off'
                             and (
                                 immediate_turn_off
                                 or (
-                                    states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'on'
-                                    and states ( 'input_boolean.climate_stop_' + repeat.item ) == 'on'
+                                    not window_turn_off and
+                                    states ( 'input_boolean.climate_' + repeat.item.climate + '_scheduled' ) == 'on'
+                                    and states ( 'input_boolean.climate_stop_' + repeat.item.climate ) == 'on'
+                                ) 
+                                or (
+                                    window_turn_off and
+                                    (
+                                        states ( 'binary_sensor.fenster_' + repeat.item.window ) == 'on'
+                                        or states ( 'binary_sensor.dachfenster_' + repeat.item.window ) == 'on'
+                                    )
                                 )
                             )
                         }}
                 then:
-                  - action: input_boolean.turn_off
-                    data:
-                        entity_id: "{{ 'input_boolean.climate_' + repeat.item + '_started' }}"
                   - action: climate.turn_off
                     target:
-                        entity_id: "climate.{{ repeat.item }}"
+                        entity_id: "climate.{{ repeat.item.climate }}"
 
-  - alias: climate_turned_off_extern
-    id: climate_turned_off_extern
+  - alias: climate_turned_off
+    id: climate_turned_off
     triggers:
       - trigger: state
         entity_id: 
@@ -282,7 +317,7 @@
     actions:
       - action: input_boolean.turn_off
         data:
-            entity_id: "{{ 'input_boolean.climate_' + device + '_started' }}"
+            entity_id: "{{ 'input_boolean.climate_' + device + '_scheduled' }}"
 
   - alias: climate_night_mode
     id: climate_night_mode
@@ -311,7 +346,7 @@
                   - condition: template
                     value_template: >
                         {{
-                            states ( 'input_boolean.climate_' + repeat.item + '_started' ) == 'on'
+                            states ( 'input_boolean.climate_' + repeat.item + '_scheduled' ) == 'on'
                             and states ( 'climate.' + repeat.item ) != 'off'
                         }}
                 then:
@@ -321,8 +356,8 @@
                     data:
                         preset_mode: sleep
 
-  - alias: climate_onetime_goon
-    id: climate_onetime_goon
+  - alias: climate_absence_goon
+    id: climate_absence_goon
     triggers:
       - trigger: event
         event_type:  bosch_shc.event
@@ -332,14 +367,14 @@
     actions:
       - action: input_boolean.turn_on
         data:
-            entity_id: input_boolean.climate_onetime_goon
+            entity_id: input_boolean.climate_absence_goon
 
-  - alias: climate_onetime_goon_reset
-    id: climate_onetime_goon_reset
+  - alias: climate_absence_goon_reset
+    id: climate_absence_goon_reset
     triggers:
       - trigger: time
         at: "23:59:00"
     actions:
       - action: input_boolean.turn_off
         data:
-            entity_id: input_boolean.climate_onetime_goon
+            entity_id: input_boolean.climate_absence_goon

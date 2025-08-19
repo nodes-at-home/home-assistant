@@ -661,11 +661,13 @@ views:
     panel: false
     cards:
       - type: entities
-        title: Parameter
+        title: Klimageräte
         show_header_toggle: false
         entities:
-          - input_boolean.climate_activated
-          - input_boolean.climate_onetime_goon
+          - entity: input_boolean.climate_activated
+            name: aktiv
+          - entity: input_boolean.climate_absence_goon
+            name: Anlassen bei Abwesenheit 
           - type: attribute
             entity: climate.office
             attribute: hvac_action
@@ -681,16 +683,24 @@ views:
           - input_select.climate_fan_mode
           - input_select.climate_swing_mode
           - input_select.climate_preset_mode
+      - type: entities
+        title: Temperaturen
+        show_header_toggle: false
+        entities:
           - type: section
-            label: Temperaturen
+            label: Zieltemperatur
           - input_number.climate_target_temperature
+          - input_number.climate_target_temperature_step
+          - type: section
+            label: Einschaltschwellen
           - input_number.climate_min_forecast_temperature
           - input_number.climate_min_forecast_temperature_sunny
-          - input_number.climate_target_temperature_step
+          - input_number.climate_min_outdoor_temperature
           - type: section
             label: Vorhersage
           - sensor.openweathermap_forecast_temperature
           - sensor.openweathermap_forecast_condition
+          - sensor.boiler_outside_temperature
       - type: entities
         title: Start
         show_header_toggle: false
@@ -718,11 +728,11 @@ views:
             label: Gesteuerte Geräte
           - type: buttons
             entities:
-              - entity: input_boolean.climate_office_started
+              - entity: input_boolean.climate_office_scheduled
                 name: Büro
-              - entity: input_boolean.climate_bedroom_started
+              - entity: input_boolean.climate_bedroom_scheduled
                 name: Schlafzimmer
-              - entity: input_boolean.climate_nursery_started
+              - entity: input_boolean.climate_nursery_scheduled
                 name: Kinderzimmer
       - type: entities
         title: Stop

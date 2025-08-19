@@ -2,13 +2,13 @@
 ### 11.06.2021
 ###
 
-climate_office_started:
+climate_office_scheduled:
     name: Büro
     # initial: 'off'
-climate_bedroom_started:
+climate_bedroom_scheduled:
     name: Schlafzimmer
     # initial: 'off'
-climate_nursery_started:
+climate_nursery_scheduled:
     name: Kinderzimmer
     # initial: 'off'
 
@@ -32,5 +32,5 @@ climate_stop_nursery:
     name: Kinderzimmer
     # initial: 'on'
 
-climate_onetime_goon:
-    name: Klimageräte anlassen
+climate_absence_goon:
+    name: Klimageräte bei Abwesenheit anlassen

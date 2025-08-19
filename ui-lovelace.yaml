@@ -233,7 +233,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: tile
-                entity: input_boolean.climate_onetime_goon
+                entity: input_boolean.climate_absence_goon
                 name: Anlassen
                 icon: mdi:hvac
               - type: markdown
