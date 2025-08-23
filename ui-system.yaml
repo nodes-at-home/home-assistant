@@ -809,6 +809,10 @@ views:
             - sensor.bosch_ladestation_energy
             - sensor.bosch_ladestation_power
             - type: divider
+            - switch.rechenzentrum
+            - sensor.rechenzentrum_energy
+            - sensor.rechenzentrum_power
+            - type: divider
             - switch.nodesathome1
             - sensor.nodesathome1_energy
             - sensor.nodesathome1_power
@@ -832,6 +836,18 @@ views:
             - switch.klimaanlage_schlafzimmer
             - sensor.klimaanlage_schlafzimmer_energy
             - sensor.klimaanlage_schlafzimmer_power
+            - type: divider
+            - switch.schreibtisch_arbeitszimmer
+            - sensor.schreibtisch_arbeitszimmer_energy
+            - sensor.schreibtisch_arbeitszimmer_power
+            - type: divider
+            - switch.schreibtisch_wohnzimmer
+            - sensor.schreibtisch_wohnzimmer_energy
+            - sensor.schreibtisch_wohnzimmer_power
+            - type: divider
+            - switch.fernseher
+            - sensor.fernseher_energy
+            - sensor.fernseher_power
       - type: entities
         title: Wassermelder
         show_header_toggle: false
@@ -901,7 +917,6 @@ views:
             - number.thermostat_hauswirtschaft_offset
             - sensor.thermostat_hauswirtschaft_temperature
             - sensor.thermostat_hauswirtschaft_humidity
-            - type: divider
       - type: entities
         title: Wandthermostate Obergeschoss
         show_header_toggle: false
@@ -930,7 +945,6 @@ views:
             - number.thermostat_bad_offset
             - sensor.thermostat_bad_temperature
             - sensor.thermostat_bad_humidity
-            - type: divider
 
   - title: Shelly 1
     path: shelly1

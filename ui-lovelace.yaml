@@ -725,6 +725,11 @@ views:
               - light.shelly_lounge_whiteball
               - light.shelly_lounge_blackbowl
               - light.shelly_lounge_readinglamp
+              - entity: switch.schreibtisch_wohnzimmer
+                name: Schreibtisch
+                icon: mdi:chair-rolling
+              - entity: switch.fernseher
+                icon: mdi:television
               - entity: binary_sensor.terassentur_wohnzimmer
                 name: Terassentür
               - entity: binary_sensor.fenster_wohnzimmer_1
@@ -837,6 +842,7 @@ views:
               - entity: climate.room_climate_hauswirtschaftsraum
                 name: Thermostat
               - switch.waschmaschine
+              - switch.rechenzentrum
               - switch.nodesathome1
               - switch.nodesathome2
               - switch.shelly_utilityroom_circulatingpump
@@ -921,6 +927,8 @@ views:
               - type: thermostat
                 entity: climate.bedroom
                 name: Klimaanlage
+              - entity: switch.klimaanlage_schlafzimmer
+                name: Klimaanlage
               - entity: binary_sensor.fenster_schlafzimmer
                 name: Fenster
               - entity: binary_sensor.dachfenster_schlafzimmer
@@ -956,6 +964,8 @@ views:
               - type: thermostat
                 entity: climate.nursery
                 name: Klimaanlage
+              - entity: switch.klimaanlage_kinderzimmer
+                name: Klimaanlage
               - entity: binary_sensor.fenster_kinderzimmer
                 name: Fenster
               - entity: binary_sensor.dachfenster_kinderzimmer
@@ -990,6 +1000,9 @@ views:
                 name: Deckenlampe
               - light.sonoff_corridor_lamp
               - light.ws2812_office
+              - entity: switch.schreibtisch_arbeitszimmer
+                name: Schreibtisch
+                icon: mdi:chair-rolling
               - entity: switch.shelly_bambulab_x1c
                 name: Bambulab X1C
                 icon: mdi:printer-3d
@@ -1001,6 +1014,8 @@ views:
                 icon: mdi:air-filter
               - type: thermostat
                 entity: climate.office
+                name: Klimaanlage
+              - entity: switch.klimaanlage_arbeitszimmer
                 name: Klimaanlage
               - entity: binary_sensor.fenster_arbeitszimmer
                 name: Fenster
