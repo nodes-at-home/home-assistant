@@ -27,7 +27,7 @@
       - name: sh10rt_master_inverter_state_badge
         state: >
             {% set val = states ( 'sensor.sh10rt_master_inverter_state' ) %}
-            {% if val == "Running" or val == "Restarting" or val == "Startup" %}
+            {% if val in ( "Running", "Derating Running", "Restarting", "Startup" ) %}
                 on
             {% else %}
                 off
@@ -36,11 +36,11 @@
         attributes:
             icon_color: >
                 {% set val = states ( 'sensor.sh10rt_master_inverter_state' ) %}
-                {% if val == "Running" or val == "Restarting" or val == "Startup" %}
+                {% if val in ( "Running", "Derating Running", "Restarting", "Startup" ) %}
                     limegreen
-                {% elif val == "Standby" or val == "Initial Standby" %}
+                {% elif val in ( "Standby", "Initial Standby" ) %}
                     dodgerblue
-                {% elif val == "Fault" or val == "Stop" %}
+                {% elif val in ( "Fault", "Stop" ) %}
                     red
                 {% else %}
                     silver
@@ -50,7 +50,7 @@
       - name: sh10rt_slave_inverter_state_badge
         state: >
             {% set val = states ( 'sensor.sh10rt_slave_inverter_state' ) %}
-            {% if val == "Running" or val == "Restarting" or val == "Startup" %}
+            {% if val in ( "Running", "Derating Running", "Restarting", "Startup" ) %}
                 on
             {% else %}
                 off
@@ -58,12 +58,12 @@
         icon: mdi:home-lightning-bolt
         attributes:
             icon_color: >
-                {% set val = states ( 'sensor.sh10rt_slave_inverter_state' ) %}
-                {% if val == "Running" or val == "Restarting" or val == "Startup" %}
+                {% set val = states ( 'sensor.sh10rt_master_inverter_state' ) %}
+                {% if val in ( "Running", "Derating Running", "Restarting", "Startup" ) %}
                     limegreen
-                {% elif val == "Standby" or val == "Initial Standby" %}
+                {% elif val in ( "Standby", "Initial Standby" ) %}
                     dodgerblue
-                {% elif val == "Fault" or val == "Stop" %}
+                {% elif val in ( "Fault", "Stop" ) %}
                     red
                 {% else %}
                     silver
@@ -93,14 +93,17 @@
         availability: "{{ states ( 'sensor.energy_production_today' ) | is_number and states ( 'sensor.energy_production_today_2' ) | is_number }}"
         state: "{{ states ( 'sensor.energy_production_today' ) | float + states ( 'sensor.energy_production_today_2' ) | float }}"
   
+        # 0x0000 = 0        Running
         # 0x0001 = 1        Stop
         # 0x0002 = 2        Shutdown
         # 0x0004 = 4        Emergency Stop
         # 0x0008 = 8        Standby
         # 0x0010 = 16       Initial standby
+        # 0x0014 = 20       Microgrid +
         # 0x0020 = 41       Startup
         # 0x0040 = 64       Running
-        # 0x0080 = 128      ??? maybe Running
+        # 0x0041 = 65       Off-grid Charge
+        # 0x0080 = 128      Derating Running
         # 0x0100 = 256      Fault
         # 0x0200 = 512      Update failed
         # 0x0400 = 1024     Maintain Mode
@@ -116,20 +119,25 @@
         # 0x1800 = 6144     Intelligent Station Building Status
         # 0x1900 = 6400     Safe Mode
         # 0x2000 = 8192     Open Loop
+        # 0x2500 = 9472     Communicate Fault +
         # 0x2501 = 9473     Restarting
         # 0x4000 = 16384    External EMS Mode
         # 0x4001 = 16385    Emergeny Charging Operation
         # 0x5500 = 21760    Fault
+        # 0x8000 = 32768    Stop
         # 0x8100 = 33024    Derating Running
         # 0x8200 = 33280    Dispatch Running
         # 0x9100 = 37120    Warn Run
 
         # 13.12.2024: new system state 0x80 only for master inverter inerpreted as running
+        # 30.08.2025 bases on documentation v1.1.9 it is now "Derating Running"
       - name: sh10rt_master_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_master_system_state' ) | int (default = 0) %}
-            {% if  val == 0x0080 or val == 0x0040 or val == 0x0000 %}
+            {% if  val == 0x0040 or val == 0x0000 %}
                 Running
+            {% elif  val == 0x0080 or val == 0x8100 %}
+                Derating Running
             {% elif  val == 0x0041 %}
                 Off-grid Charge
             {% elif  val == 0x0200 %}
@@ -184,8 +192,10 @@
       - name: sh10rt_slave_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_slave_system_state' ) | int (default = 0) %}
-            {% if  val == 0x0080 or val == 0x0040 or val == 0x0000 %}
+            {% if  val == 0x0040 or val == 0x0000 %}
                 Running
+            {% elif  val == 0x0080 or val == 0x8100 %}
+                Derating Running
             {% elif  val == 0x0041 %}
                 Off-grid Charge
             {% elif  val == 0x0200 %}
