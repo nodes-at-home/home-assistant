@@ -92,6 +92,18 @@
       - name: wallbox_charge_remaining_duration
         state: "{{ timedelta ( seconds = states ( 'sensor.evcc_wallbox_charge_remaining_duration' ) | int ( 0 ) ) }} h"
 
+      - name: wallbox_vehicle_soc
+        unit_of_measurement: "%"
+        device_class: battery
+        state: >-
+            {% set soc_kia = states ( 'sensor.ev6_ev_battery_level.state' ) %}
+            {% set soc_evcc = states ( 'sensor.evcc_wallbox_vehicle_soc' ) %}
+            {% if has_value ( soc_kia ) %}
+                {{ soc_kia | int }}
+            {% else %}
+                {{ soc_evcc | int }}
+            {% endif %}
+
       # for debug
       - name: wallbox_energy_total_lastvalue
         availability: "{{ state_attr ( 'sensor.wallbox_energy_total', 'lastvalue' ) | is_number }}"
