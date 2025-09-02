@@ -41,16 +41,16 @@
       - action: lock.open
         target:
             entity_id: lock.garagentur
-      - wait_for_trigger:
-          - trigger: state
-            entity_id: lock.garagentur
-            to: "on"
-        timeout:
-            seconds: 5
-        continue_on_timeout: false
-      - action: lock.open
-        target:
-            entity_id: lock.garagentur
+      - delay:
+          seconds: 10
+      - if:
+          - condition: state
+            entity_id: binary_sensor.garagentur
+            state: "off"
+        then:
+          - action: lock.open
+            target:
+                entity_id: lock.garagentur
 
   - alias: locks_open_postern_door
     id: locks_open_postern_door
