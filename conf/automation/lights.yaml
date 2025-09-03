@@ -176,6 +176,7 @@
             entity_id:
               - light.automatic_indoor_lights_delayed_switched_off
               - light.automatic_indoor_lights_delayed_switched_off_extra
+              - switch.fernseher
 
   - alias: lights_indoor_off_after_random_delay
     id: lights_indoor_off_after_random_delay

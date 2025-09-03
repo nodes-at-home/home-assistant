@@ -1,0 +1,20 @@
+###
+### 03.09.2025
+###
+
+# tv plug is turne doff in automation lights_indoor_off_when_tv_switched_off
+
+  - alias: television_switch_on_plug
+    id: television_switch_on_plug
+    triggers:
+      - trigger: time
+        at: input_datetime.television_switch_on_at
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+    actions:
+      - action: switch.turn_on
+        target:
+            entity_id: switch.fernseher
+
