@@ -69,11 +69,11 @@
       - repeat:
             for_each:
               - climate: office
-                window: arbeitszimmer
+                room: arbeitszimmer
               - climate: bedroom
-                window: schlafzimmer
+                room: schlafzimmer
               - climate: nursery
-                window: kinderzimmer
+                room: kinderzimmer
             sequence:
               # TODO switch on and off depending on all states of windows, temps and pv_production
               - if:
@@ -84,10 +84,23 @@
                             states ( 'input_boolean.climate_start_' + repeat.item.climate ) == 'on'
                             and states ( 'input_boolean.climate_' + repeat.item.climate + '_scheduled' ) == 'off'
                             and states ( 'climate.' + repeat.item.climate ) == 'off'
-                            and states ( 'binary_sensor.fenster_' + repeat.item.window ) == 'off'
-                            and states ( 'binary_sensor.dachfenster_' + repeat.item.window ) == 'off'
+                            and states ( 'binary_sensor.fenster_' + repeat.item.room ) == 'off'
+                            and states ( 'binary_sensor.dachfenster_' + repeat.item.room ) == 'off'
                         }}
                 then:
+                  - if:
+                      - condition: template
+                        value_template: "{{ states ( 'switch.klimaanlage_' + repeat.item.room ) == 'off' }}"
+                    then:
+                      - action: switch.turn_on
+                        data: {}
+                        target:
+                            entity_id: "switch.klimaanlage_{{ repeat.item.room }}"
+                      - wait_template: "{{ states ( 'switch.klimaanlage_' + repeat.item.room ) == 'on' }}"
+                      - delay:
+                          seconds: 10
+                  - condition: template
+                    value_template: "{{ states ( 'switch.klimaanlage_' + repeat.item.room ) == 'on' }}"
                   - action: input_boolean.turn_on
                     data:
                         entity_id: "{{ 'input_boolean.climate_' + repeat.item.climate + '_scheduled' }}"
