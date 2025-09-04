@@ -58,7 +58,7 @@
         icon: mdi:home-lightning-bolt
         attributes:
             icon_color: >
-                {% set val = states ( 'sensor.sh10rt_master_inverter_state' ) %}
+                {% set val = states ( 'sensor.sh10rt_slave_inverter_state' ) %}
                 {% if val in ( "Running", "Derating Running", "Restarting", "Startup" ) %}
                     limegreen
                 {% elif val in ( "Standby", "Initial Standby" ) %}
