@@ -83,7 +83,10 @@
                         {{
                             states ( 'input_boolean.climate_start_' + repeat.item.climate ) == 'on'
                             and states ( 'input_boolean.climate_' + repeat.item.climate + '_scheduled' ) == 'off'
-                            and states ( 'climate.' + repeat.item.climate ) == 'off'
+                            and (
+                              states ( 'climate.' + repeat.item.climate ) == 'off'
+                              or states ( 'switch.klimaanlage_' + repeat.item.room ) == 'off'
+                            )
                             and states ( 'binary_sensor.fenster_' + repeat.item.room ) == 'off'
                             and states ( 'binary_sensor.dachfenster_' + repeat.item.room ) == 'off'
                         }}
