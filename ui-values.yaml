@@ -647,6 +647,7 @@ views:
           - type: section
             label: Leistung
           - entity: sensor.sh10rt_master_powerflow_state
+          - entity: sensor.sh10rt_master_powerflow_txt
           - entity: sensor.sh10rt_master_total_dc_power
           - entity: sensor.sh10rt_master_power_factor
           - entity: sensor.sh10rt_master_bdc_rated_power
@@ -690,6 +691,7 @@ views:
           - type: section
             label: Leistung
           - entity: sensor.sh10rt_slave_powerflow_state
+          - entity: sensor.sh10rt_slave_powerflow_txt
           - entity: sensor.sh10rt_slave_total_dc_power
           - entity: sensor.sh10rt_slave_power_factor
           - entity: sensor.sh10rt_slave_bdc_rated_power

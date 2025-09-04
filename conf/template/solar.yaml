@@ -389,6 +389,32 @@
                 {{ val }}
             {% endif %}
 
+      - name: sh10rt_master_powerflow_txt
+        state: >-
+            {% set val = states ( 'sensor.sh10rt_master_powerflow_state' ) | int ( 0 ) %}
+            {% set s =
+            ( 'pv ' if val | bitwise_and ( 0x01 ) > 0 else '' )
+            + ( 'charge ' if val | bitwise_and ( 0x02 ) > 0 else '' )
+            + ( 'discharge ' if val | bitwise_and ( 0x04 ) > 0 else '' )
+            + ( 'load ' if val | bitwise_and ( 0x08 ) > 0 else '' )
+            + ( 'export ' if val | bitwise_and ( 0x10 ) > 0 else '' )
+            + ( 'import' if val | bitwise_and ( 0x20 ) > 0 else '' )
+            %}
+            {{ s.split () | join ( '|' ) }}
+
+      - name: sh10rt_slave_powerflow_txt
+        state: >-
+            {% set val = states ( 'sensor.sh10rt_slave_powerflow_state' ) | int ( 0 ) %}
+            {% set s =
+            ( 'pv ' if val | bitwise_and ( 0x01 ) > 0 else '' )
+            + ( 'charge ' if val | bitwise_and ( 0x02 ) > 0 else '' )
+            + ( 'discharge ' if val | bitwise_and ( 0x04 ) > 0 else '' )
+            + ( 'load ' if val | bitwise_and ( 0x08 ) > 0 else '' )
+            + ( 'export ' if val | bitwise_and ( 0x10 ) > 0 else '' )
+            + ( 'import' if val | bitwise_and ( 0x20 ) > 0 else '' )
+            %}
+            {{ s.split () | join ( '|' ) }}
+
   - trigger:
       - platform: state
         entity_id: sensor.sh10rt_master_daily_pv_generation
