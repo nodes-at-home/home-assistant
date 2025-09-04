@@ -27,7 +27,7 @@
       - name: sh10rt_master_inverter_state_badge
         state: >
             {% set val = states ( 'sensor.sh10rt_master_inverter_state' ) %}
-            {% if val in ( "Running", "Derating Running", "Restarting", "Startup" ) %}
+            {% if val in ["Running", "Derated Running", "Restarting", "Startup"] %}
                 on
             {% else %}
                 off
@@ -36,21 +36,22 @@
         attributes:
             icon_color: >
                 {% set val = states ( 'sensor.sh10rt_master_inverter_state' ) %}
-                {% if val in ( "Running", "Derating Running", "Restarting", "Startup" ) %}
+                {% if val in ["Running", "Derated Running", "Restarting", "Startup"] %}
                     limegreen
-                {% elif val in ( "Standby", "Initial Standby" ) %}
+                {% elif val in ["Standby", "Initial Standby"] %}
                     dodgerblue
-                {% elif val in ( "Fault", "Stop" ) %}
+                {% elif val in ["Fault", "Stop"] %}
                     red
                 {% else %}
                     silver
                 {% endif %}
             status: "{{ states ( 'sensor.sh10rt_master_inverter_state' ) }}"
+            state_code: "{{ states ( 'sensor.sh10rt_master_system_state' ) }}"
 
       - name: sh10rt_slave_inverter_state_badge
         state: >
             {% set val = states ( 'sensor.sh10rt_slave_inverter_state' ) %}
-            {% if val in ( "Running", "Derating Running", "Restarting", "Startup" ) %}
+            {% if val in ["Running", "Derated Running", "Restarting", "Startup"] %}
                 on
             {% else %}
                 off
@@ -59,16 +60,17 @@
         attributes:
             icon_color: >
                 {% set val = states ( 'sensor.sh10rt_slave_inverter_state' ) %}
-                {% if val in ( "Running", "Derating Running", "Restarting", "Startup" ) %}
+                {% if val in ["Running", "Derated Running", "Restarting", "Startup"] %}
                     limegreen
-                {% elif val in ( "Standby", "Initial Standby" ) %}
+                {% elif val in ["Standby", "Initial Standby"] %}
                     dodgerblue
-                {% elif val in ( "Fault", "Stop" ) %}
+                {% elif val in ["Fault", "Stop"] %}
                     red
                 {% else %}
                     silver
                 {% endif %}
             status: "{{ states ( 'sensor.sh10rt_slave_inverter_state' ) }}"
+            state_code: "{{ states ( 'sensor.sh10rt_slave_system_state' ) }}"
 
   - sensor:
 
@@ -125,19 +127,19 @@
         # 0x4001 = 16385    Emergeny Charging Operation
         # 0x5500 = 21760    Fault
         # 0x8000 = 32768    Stop
-        # 0x8100 = 33024    Derating Running
+        # 0x8100 = 33024    Derated Running
         # 0x8200 = 33280    Dispatch Running
         # 0x9100 = 37120    Warn Run
 
         # 13.12.2024: new system state 0x80 only for master inverter inerpreted as running
-        # 30.08.2025 bases on documentation v1.1.9 it is now "Derating Running"
+        # 30.08.2025 bases on documentation v1.1.9 it is now "Derated Running"
       - name: sh10rt_master_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_master_system_state' ) | int (default = 0) %}
             {% if  val == 0x0040 or val == 0x0000 %}
                 Running
             {% elif  val == 0x0080 or val == 0x8100 %}
-                Derating Running
+                Derated Running
             {% elif  val == 0x0041 %}
                 Off-grid Charge
             {% elif  val == 0x0200 %}
@@ -179,7 +181,7 @@
             {% elif  val == 0x0001 or val == 0x8000 %}
                 Stop
             {% elif  val == 0x8100 %}
-                Derating Runnung
+                Derated Runnung
             {% elif  val == 0x8200 %}
                 Dispatch Running
             {% elif  val == 0x9100 %}
@@ -195,7 +197,7 @@
             {% if  val == 0x0040 or val == 0x0000 %}
                 Running
             {% elif  val == 0x0080 or val == 0x8100 %}
-                Derating Running
+                Derated Running
             {% elif  val == 0x0041 %}
                 Off-grid Charge
             {% elif  val == 0x0200 %}
@@ -237,7 +239,7 @@
             {% elif  val == 0x0001 or val == 0x8000 %}
                 Stop
             {% elif  val == 0x8100 %}
-                Derating Runnung
+                Derated Runnung
             {% elif  val == 0x8200 %}
                 Dispatch Running
             {% elif  val == 0x9100 %}

@@ -646,22 +646,24 @@ views:
           - entity: sensor.sh10rt_master_self_consumption_today
           - type: section
             label: Leistung
+          - entity: sensor.sh10rt_master_powerflow_state
           - entity: sensor.sh10rt_master_total_dc_power
           - entity: sensor.sh10rt_master_power_factor
           - entity: sensor.sh10rt_master_bdc_rated_power
           - entity: sensor.sh10rt_master_load_power
           - entity: sensor.sh10rt_master_export_power
-          - entity: sensor.sh10rt_master_powerflow_state
-          - entity: sensor.sh10rt_master_backup_phase_a_power
-          - entity: sensor.sh10rt_master_backup_phase_b_power
-          - entity: sensor.sh10rt_master_backup_phase_c_power
-          - entity: sensor.sh10rt_master_backup_total_power
           - type: section
             label: Strings (1+4)
           - entity: sensor.sh10rt_master_mppt1_voltage
           - entity: sensor.sh10rt_master_mppt1_current
           - entity: sensor.sh10rt_master_mppt2_voltage
           - entity: sensor.sh10rt_master_mppt2_current
+          - type: section
+            label: Backup
+          - entity: sensor.sh10rt_master_backup_phase_a_power
+          - entity: sensor.sh10rt_master_backup_phase_b_power
+          - entity: sensor.sh10rt_master_backup_phase_c_power
+          - entity: sensor.sh10rt_master_backup_total_power
       - type: entities
         title: Slave
         entities:
@@ -687,12 +689,12 @@ views:
           - entity: sensor.sh10rt_slave_self_consumption_today
           - type: section
             label: Leistung
+          - entity: sensor.sh10rt_slave_powerflow_state
           - entity: sensor.sh10rt_slave_total_dc_power
           - entity: sensor.sh10rt_slave_power_factor
           - entity: sensor.sh10rt_slave_bdc_rated_power
           - entity: sensor.sh10rt_slave_load_power
           - entity: sensor.sh10rt_slave_export_power
-          - entity: sensor.sh10rt_slave_powerflow_state
           - type: section
             label: Strings (2+3)
           - entity: sensor.sh10rt_slave_mppt1_voltage

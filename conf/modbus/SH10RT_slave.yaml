@@ -230,28 +230,6 @@
         scale: 100
         scan_interval: 10
 
-      - name: sh10rt_slave_bms_max_charging_current
-        device_address: 2
-        address: 5634 # reg 5635
-        input_type: input
-        data_type: uint16
-        precision: 0
-        unit_of_measurement: A
-        device_class: Current
-        scale: 1
-        scan_interval: 60
-
-      - name: sh10rt_slave_bms_max_discharging_current
-        device_address: 2
-        address: 5635 # reg 5636
-        input_type: input
-        data_type: uint16
-        precision: 0
-        unit_of_measurement: A
-        device_class: Current
-        scale: 1
-        scan_interval: 60
-
       - name: sh10rt_slave_system_state
         device_address: 2
         address: 12999 # reg 13000
