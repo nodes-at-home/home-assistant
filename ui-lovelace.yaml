@@ -683,6 +683,7 @@ views:
             entities:
               - entity: light.shelly_esszimmer1
                 name: Deckenlampe
+                icon: mdi:ceiling-light
               - entity: light.shelly_esszimmer2_switch_0
                 name: Wandlicht links
               - entity: light.shelly_esszimmer2_switch_1
@@ -720,8 +721,10 @@ views:
             entities:
               - entity: light.shelly_wohnzimmer_switch_0
                 name: Deckenlampe Couch
+                icon: mdi:ceiling-light
               - entity: light.shelly_wohnzimmer_switch_1
                 name: Deckenlampe Tisch
+                icon: mdi:ceiling-light
               - light.shelly_lounge_whiteball
               - light.shelly_lounge_blackbowl
               - light.shelly_lounge_readinglamp
@@ -769,6 +772,7 @@ views:
             entities:
               - entity: light.shelly_flur
                 name: Deckenlampe
+                icon: mdi:ceiling-light
               - binary_sensor.eingangstur
               - entity: binary_sensor.fenster_flur
                 name: Fenster
@@ -797,6 +801,7 @@ views:
             entities:
               - entity: light.shelly_korridor
                 name: Deckenlampe
+                icon: mdi:ceiling-light
               - entity: light.shelly_corridor_studypillar
               - light.led_corridor_led
               - light.pitouch_corridor_screen
@@ -812,8 +817,9 @@ views:
             title: Dusche
             columns: 3
             entities:
-              - entity: light.shelly_dusche
+              - entity: light.deckenlicht_dusche
                 name: Deckenlampe
+                icon: mdi:ceiling-light
               - entity: binary_sensor.fenster_dusche
                 name: Fenster
               - entity: climate.room_climate_dusche
@@ -1047,8 +1053,9 @@ views:
             title: Bad
             columns: 3
             entities:
-              - entity: light.shelly_bad
+              - entity: light.deckenlicht_bad
                 name: Deckenlampe
+                icon: mdi:ceiling-light
               - entity: binary_sensor.fenster_bad
                 name: Fenster
               - entity: binary_sensor.dachfenster_bad
@@ -2417,10 +2424,10 @@ views:
               - light.led_kitchen_led
               - light.shelly_esszimmerschrank1
               - light.shelly_esszimmerschrank2
-              - light.shelly_dusche
+              - light.deckenlicht_dusche
               - light.sonoff_corridor_lamp
               - light.sonoff_gallery1_socket
-              - light.shelly_bad
+              - light.deckenlicht_bad
               - light.sonoff_bedroom_socket
               - entity: light.shelly_treppe
                 element: light.shelly_treppe_groundfloor
@@ -2448,9 +2455,9 @@ views:
               #tap_action:
               #  - service: light.toggle
             - entities:
-              - entity: light.shelly_dusche
+              - entity: light.deckenlicht_dusche
                 element: room.shower
-              - entity: light.shelly_bad
+              - entity: light.deckenlicht_bad
                 element: room.bath
               - entity: light.shelly_treppe
                 element: room.stairs_groundfloor

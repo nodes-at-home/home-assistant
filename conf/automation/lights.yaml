@@ -232,17 +232,19 @@
         entity_id: binary_sensor.prod_mode
         state: "on"
     actions:
-      - action: light.turn_{{ trigger.to_state.state }}
+      - action: light.turn_{{ 'on' if trigger.to_state.state == 'on' else 'off' }}
         target:
             entity_id: light.shelly_dachboden
 
-  - alias: lights_indoor_shelly_off_after_timeout
-    id: lights_indoor_shelly_off_after_timeout
+  - alias: lights_indoor_off_after_timeout
+    id: lights_indoor_off_after_timeout
     triggers:
       - trigger: state
         entity_id:
-          - light.shelly_dusche
-          - light.shelly_bad
+          # - light.shelly_dusche
+          # - light.shelly_bad
+          - light.deckenlicht_bad
+          - light.deckenlicht_dusche
           - light.shelly_treppe
           - light.shelly_flur
           - light.shelly_korridor
@@ -261,6 +263,25 @@
       - action: light.turn_off
         target:
             entity_id: "{{ trigger.entity_id }}"
+
+  - alias: lights_indoor_ikea_jetstrom
+    id: lights_indoor_ikea_jetstrom
+    triggers:
+      - platform: state
+        entity_id: 
+          - binary_sensor.shelly_bad_input_0
+          - binary_sensor.shelly_dusche_input_0
+    variables:
+        room: "{{ trigger.entity_id.split ( '_' ) [2] }}"
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+    actions:
+      - action: light.turn_{{ 'on' if trigger.to_state.state == 'on' else 'off' }}
+        target:
+            entity_id: light.deckenlicht_{{ room }}
 
   - alias: lights_indoor_hall_on_at_opening_door
     id: lights_indoor_lights_on_at_opening_door

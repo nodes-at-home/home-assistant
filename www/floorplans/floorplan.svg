@@ -412,7 +412,7 @@
         <use id="light.shelly_treppe_groundfloor" x="445" y="790" href="#walllight_right" />
         <use id="light.shelly_esszimmer2_switch_0" x="445" y="210" href="#walllight_right" />
         <use id="light.shelly_esszimmer2_switch_1" x="749" y="210" href="#walllight_left" />
-        <use id="light.shelly_dusche" x="80" y="800" href="#ceilinglight" />
+        <use id="light.deckenlicht_dusche" x="80" y="800" href="#ceilinglight" />
         <use id="light.shelly_flur" x="300" y="830" href="#ceilinglight" />
         <use id="light.shelly_korridor" x="330" y="570" href="#ceilinglight" />
         <use id="light.shelly_esszimmer1" x="575" y="560" href="#ceilinglight" />
@@ -530,7 +530,7 @@
 
         <use id="light.shelly_treppe_firstfloor" x="445" y="790" href="#walllight_right" />
 
-        <use id="light.shelly_bad" x="190" y="760" href="#ceilinglight" />
+        <use id="light.deckenlicht_bad" x="190" y="760" href="#ceilinglight" />
         <use id="light.shelly_arbeitszimmer" x="190" y="380" href="#ceilinglight" />
         <use id="light.shelly_kinderzimmer" x="960" y="350" href="#ceilinglight" />
         <use id="light.shelly_schlafzimmer" x="960" y="700" href="#ceilinglight" />
