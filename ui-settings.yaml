@@ -715,7 +715,7 @@ views:
           - type: buttons
             entities:
               - entity: input_boolean.climate_start_office
-                name: Büro
+                name: Arbeitszimmer
               - entity: input_boolean.climate_start_bedroom
                 name: Schlafzimmer
               - entity: input_boolean.climate_start_nursery
@@ -734,7 +734,7 @@ views:
           - type: buttons
             entities:
               - entity: input_boolean.climate_office_scheduled
-                name: Büro
+                name: Arbeitszimmer
               - entity: input_boolean.climate_bedroom_scheduled
                 name: Schlafzimmer
               - entity: input_boolean.climate_nursery_scheduled
@@ -748,7 +748,7 @@ views:
           - type: buttons
             entities:
               - entity: input_boolean.climate_stop_office
-                name: Büro
+                name: Arbeitszimmer
               - entity: input_boolean.climate_stop_bedroom
                 name: Schlafzimmer
               - entity: input_boolean.climate_stop_nursery
@@ -757,6 +757,18 @@ views:
             label: Ausschaltkriterien
           - input_number.climate_min_pv_generation
           - input_number.climate_min_pv_generation_duration
+          - type: section
+            label: Steckdosen
+          - input_number.climate_switch_off_delay
+          - type: buttons
+            entities:
+              - entity: switch.klimaanlage_arbeitszimmer
+                name: Arbeitszimmer
+              - entity: switch.klimaanlage_schlafzimmer
+                name: Schlafzimmer
+              - entity: switch.klimaanlage_kinderzimmer
+                name: Kinderzimmer
+
 
   - title: Heizung
     path: heating

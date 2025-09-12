@@ -335,6 +335,33 @@
         data:
             entity_id: "{{ 'input_boolean.climate_' + device + '_scheduled' }}"
 
+  - alias: climate_switch_off
+    id: climate_switch_off
+    triggers:
+      - trigger: state
+        entity_id:
+          - climate.office
+          - climate.bedroom
+          - climate.nursery
+        to: 'off'
+        for:
+            minutes: "{{ states ( 'input_number.climate_switch_off_delay' ) | int }}"
+        variables:
+            device: "{{ trigger.entity_id [8:] }}"
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.climate_activated
+        state: 'on'
+    actions:
+      - action: switch.turn_off
+        data:
+            entity_id: >-
+                {% set room = { "office": "arbeitszimmer", "nursery": "kinderzimmer", "bedroom": "schlafzimmer" } %}
+                {{ 'switch.klimaanlage_' + room [device] }}
+
   - alias: climate_night_mode
     id: climate_night_mode
     triggers:
