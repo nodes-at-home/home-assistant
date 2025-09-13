@@ -7,8 +7,8 @@
       - light.shelly_lounge_blackbowl
       - light.shelly_lounge_readinglamp
       - light.shelly_corridor_studypillar
-      - light.shelly_kitchen_ledshort
-      - light.shelly_kitchen_ledlong
+      - light.shelly_kitchen_shortstrip
+      - light.shelly_kitchen_longstrip
       - light.shelly_esszimmerschrank1
       - light.shelly_esszimmerschrank2
       - light.sonoff_corridor_lamp

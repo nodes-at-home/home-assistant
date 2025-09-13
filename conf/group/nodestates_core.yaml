@@ -25,6 +25,7 @@ entities:
     - binary_sensor.nodestate_rain_garden
     - binary_sensor.nodestate_dht11_utilityroom
     - binary_sensor.nodestate_ws2812_x1c
+    - binary_sensor.nodestate_ws2812_office
     - binary_sensor.nodestate_pitouch_corridor
     - binary_sensor.nodestate_tasmota
     - binary_sensor.nodestate_ems_esp

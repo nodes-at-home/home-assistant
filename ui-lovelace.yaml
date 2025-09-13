@@ -395,16 +395,31 @@ views:
                 entity: light.led_kitchen2_led
               - type: light
                 entity: light.led_corridor_led
-              # - type: light
-                # entity: light.ws2812_terrace1
-              # - type: light
-                # entity: light.ws2812_terrace2
-              # - type: light
-              #   entity: light.ws2812_xmasstar
               - type: light
                 entity: light.ws2812_office
-              # - type: markdown
-              #   content: " "
+          - type: horizontal-stack
+            cards:
+              - type: light
+                entity: light.deckenlicht_dusche
+                name: Dusche
+                icon: mdi:ceiling-light
+              - type: light
+                entity: light.deckenlicht_bad
+                name: Bad
+                icon: mdi:ceiling-light
+              - type: custom:state-switch
+                entity: "{{ 'visible' if states ( 'light.ws2812_xmasstar' ) in ['on', 'off'] else 'unvisible' }}"
+                default: "unvisible"
+                states:
+                  "visible":
+                      type: light
+                      entity: light.ws2812_xmasstar
+                  "unvisible":
+                      type: markdown
+                      content: " "
+                      show_empty: false
+              - type: markdown
+                content: " "
           - type: horizontal-stack
             cards:
               - type: button
