@@ -241,8 +241,6 @@
     triggers:
       - trigger: state
         entity_id:
-          # - light.shelly_dusche
-          # - light.shelly_bad
           - light.deckenlicht_bad
           - light.deckenlicht_dusche
           - light.shelly_treppe

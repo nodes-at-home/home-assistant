@@ -899,6 +899,7 @@ views:
             entities:
               - entity: light.shelly_galerie
                 name: Deckenlampe
+                icon: mdi:ceiling-light
               - light.sonoff_gallery1_socket
               - entity: light.shelly_treppe
                 name: Treppe
@@ -929,6 +930,7 @@ views:
             entities:
               - entity: light.shelly_schlafzimmer
                 name: Deckenlampe
+                icon: mdi:ceiling-light
               - light.sonoff_bedroom_socket
               - type: thermostat
                 entity: climate.bedroom
@@ -967,6 +969,7 @@ views:
             entities:
               - entity: light.shelly_kinderzimmer
                 name: Deckenlampe
+                icon: mdi:ceiling-light
               - type: thermostat
                 entity: climate.nursery
                 name: Klimaanlage
@@ -1004,6 +1007,7 @@ views:
             entities:
               - entity: light.shelly_arbeitszimmer
                 name: Deckenlampe
+                icon: mdi:ceiling-light
               - light.sonoff_corridor_lamp
               - light.ws2812_office
               - entity: switch.schreibtisch_arbeitszimmer

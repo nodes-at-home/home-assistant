@@ -6,8 +6,6 @@
     name: automatic_indoor_lights_sunrise_switched_off_extra
     entities:
       - light.shelly_dachboden
-      - light.shelly_bad
-      - light.shelly_shower_socket
       - light.shelly_flur
       - light.shelly_korridor
       - light.shelly_esszimmer1
@@ -19,3 +17,5 @@
       - light.shelly_galerie
       - light.shelly_wohnzimmer_switch_0
       - light.shelly_wohnzimmer_switch_1
+      - light.deckenlicht_bad
+      - light.deckenlicht_dusche
