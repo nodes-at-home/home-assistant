@@ -7,3 +7,4 @@ entities:
   - group.batteries_bsh
   - group.batteries_nuki
   - group.batteries_gardena
+  - group.batteries_ikea

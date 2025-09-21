@@ -1,0 +1,9 @@
+###
+### 31.07.2025
+###
+
+name: 'Batterien IKEA Fernbedineungen'
+entities:
+  - binary_sensor.fernbedienung_bad_battery
+  - binary_sensor.fernbedienung_dusche_battery
+

@@ -1,0 +1,15 @@
+###
+### 31.07.2025
+###
+
+  - binary_sensor:
+
+      - name: fernbedienung_bad_battery
+        state: "{{ states ( 'sensor.fernbedienung_bad' ) | int <= states ( 'input_number.ikea_remotes_battery_critical_level' ) | int }}"
+        unit_of_measurement: "%"
+        device_class: battery
+
+      - name: fernbedienung_dusche_battery
+        state: "{{ states ( 'sensor.fernbedienung_dusche' ) | int <= states ( 'input_number.ikea_remotes_battery_critical_level' ) | int }}"
+        unit_of_measurement: "%"
+        device_class: battery

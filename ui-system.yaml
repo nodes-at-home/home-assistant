@@ -18,22 +18,29 @@ views:
             action: more-info
       - type: custom:mushroom-template-badge
         entity: group.batteries_bsh
-        content: Batterien
-        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        content: Bosch
+        icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
         entity: group.batteries_nuki
-        content: Batterien
-        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        content: Nuki
+        icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
         entity: group.batteries_gardena
-        content: Batterien
-        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        content: Gardena
+        icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: group.batteries_ikea
+        content: IKEA
+        icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
@@ -663,7 +670,7 @@ views:
       - type: custom:mushroom-template-badge
         entity: group.batteries_bsh
         content: Batterien
-        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
@@ -1004,7 +1011,7 @@ views:
           - entity: update.shelly_wohnzimmer_firmware
           - entity: button.shelly_wohnzimmer_reboot
           - type: divider
-          - light.shelly_dusche
+          - switch.shelly_dusche
           - entity: sensor.shelly_dusche_energy
           - entity: sensor.shelly_dusche_power
           - entity: update.shelly_dusche_firmware
@@ -1043,7 +1050,7 @@ views:
           - entity: update.shelly_schlafzimmer_firmware
           - entity: button.shelly_schlafzimmer_reboot
           - type: divider
-          - light.shelly_bad
+          - switch.shelly_bad
           - entity: sensor.shelly_bad_energy
           - entity: sensor.shelly_bad_power
           - entity: update.shelly_bad_firmware
@@ -1242,7 +1249,7 @@ views:
       - type: custom:mushroom-template-badge
         entity: group.batteries_nuki
         content: Batterien
-        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
@@ -1273,7 +1280,7 @@ views:
       - type: custom:mushroom-template-badge
         entity: group.batteries_gardena
         content: Batterien
-        icon: "{{ 'mdi:checkbox-marked-circle' if is_state ( entity, 'off' ) else 'mdi:alert-circle-outline' }}"
+        icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
@@ -1297,3 +1304,22 @@ views:
           - sensor.gemusebeet_hinten_battery_level
           - sensor.gemusebeet_hinten_soil_humidity
           - sensor.gemusebeet_hinten_soil_temperature
+
+  - title: IKEA
+    path: ikea
+    panel: false
+    badges:
+      - type: custom:mushroom-template-badge
+        entity: group.batteries_ikea
+        content: Batterien
+        icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
+        tap_action:
+            action: more-info
+    cards:
+      - type: entities
+        title: Sensoren
+        show_header_toggle: false
+        entities:
+          - sensor.fernbedienung_bad
+          - sensor.fernbedienung_dusche
