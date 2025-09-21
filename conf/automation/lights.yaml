@@ -534,3 +534,30 @@
         target:
             entity_id:
               - light.automatic_outdoor_lights
+
+  - alias: light_indoor_ikea_jetstrom_set_sunrise
+    id: light_indoor_ikea_jetstrom_set_sunrise
+    triggers:
+      - trigger: time
+        at: "01:00:00"
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+    actions:
+      - if:
+          - condition: state
+            entity_id: binary_sensor.workday_sensor
+            state: "on"
+        then:
+          - action: adaptive_lighting.change_switch_settings
+            data:
+              entity_id: switch.adaptive_lighting_ikea_jetstrom
+              use_defaults: configuration
+              max_sunrise_time: "{{ states ( 'input_datetime.standup_workday' ) }}"
+        else:
+          - action: adaptive_lighting.change_switch_settings
+            data:
+              entity_id: switch.adaptive_lighting_ikea_jetstrom
+              use_defaults: configuration
