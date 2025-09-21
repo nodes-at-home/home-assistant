@@ -92,16 +92,21 @@
                         }}
                 then:
                   - if:
-                      - condition: template
-                        value_template: "{{ states ( 'switch.klimaanlage_' + repeat.item.room ) == 'off' }}"
+                      - condition: state
+                        entity_id: binary_sensor.prod_mode
+                        state: "on"
                     then:
-                      - action: switch.turn_on
-                        data: {}
-                        target:
-                            entity_id: "switch.klimaanlage_{{ repeat.item.room }}"
-                      - wait_template: "{{ states ( 'switch.klimaanlage_' + repeat.item.room ) == 'on' }}"
-                      - delay:
-                          seconds: 10
+                      - if:
+                          - condition: template
+                            value_template: "{{ states ( 'switch.klimaanlage_' + repeat.item.room ) == 'off' }}"
+                        then:
+                          - action: switch.turn_on
+                            data: {}
+                            target:
+                                entity_id: "switch.klimaanlage_{{ repeat.item.room }}"
+                          - wait_template: "{{ states ( 'switch.klimaanlage_' + repeat.item.room ) == 'on' }}"
+                          - delay:
+                              seconds: 10
                   - condition: template
                     value_template: "{{ states ( 'switch.klimaanlage_' + repeat.item.room ) == 'on' }}"
                   - action: input_boolean.turn_on
