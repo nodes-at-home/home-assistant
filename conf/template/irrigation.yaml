@@ -5,6 +5,7 @@
   - sensor:
 
       - name: precipitation_7d_plus_forecast
+        unique_id: precipitation_7d_plus_forecast
         unit_of_measurement: mm
         device_class: precipitation
         availability: "{{ states ( 'sensor.openweathermap_forecast_precipitation') | is_number and states ( 'sensor.openweathermap_forecast_precipitation_probability' ) | is_number and states ( 'sensor.rain_garden_precipitation_last7d' ) | is_number }}"
@@ -15,6 +16,7 @@
                 {{ ( forecast * probability + rain ) | round ( 1 ) }}
 
       - name: irrigation_duration_effective_valve1
+        unique_id: irrigation_duration_effective_valve1
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
@@ -33,6 +35,7 @@
             {% endif %}
 
       - name: irrigation_duration_effective_valve2
+        unique_id: irrigation_duration_effective_valve2
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
@@ -51,6 +54,7 @@
             {% endif %}
 
       - name: irrigation_duration_effective_valve3
+        unique_id: irrigation_duration_effective_valve3
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
@@ -69,6 +73,7 @@
             {% endif %}
 
       - name: irrigation_duration_effective_valve4
+        unique_id: irrigation_duration_effective_valve4
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
@@ -87,6 +92,7 @@
             {% endif %}
 
       - name: irrigation_duration_effective_valve5
+        unique_id: irrigation_duration_effective_valve5
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
@@ -105,6 +111,7 @@
             {% endif %}
 
       - name: irrigation_duration_effective_valve6
+        unique_id: irrigation_duration_effective_valve6
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >

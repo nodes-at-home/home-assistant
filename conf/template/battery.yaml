@@ -5,14 +5,17 @@
   - binary_sensor:
 
       - name: battery_charging
+        unique_id: battery_charging
         availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number }}"
         state: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | int (default=0) | bitwise_and ( 0x2 ) > 0 }}"
 
       - name: battery_discharging
+        unique_id: battery_discharging
         availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number }}"
         state: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | int (default=0) | bitwise_and ( 0x4 ) > 0 }}"
 
       - name: battery_state
+        unique_id: battery_state
         availability: "{{ states ( 'sensor.sh10rt_master_battery_level' ) | is_number }}"
         state: >
             {% set val = states ( 'sensor.sh10rt_master_battery_level' ) | default ( 0 ) | int %}
@@ -91,6 +94,7 @@
         # positive if charging and negative if discharging
         # 13.12.2024 battery_power_raw is since v95.03 signed and with oposite sign
       - name: battery_power
+        unique_id: battery_power
         unit_of_measurement: W
         device_class: power
         state_class: measurement
@@ -105,6 +109,7 @@
         # positive if charging else zero
         # 13.12.2024 battery_power_raw is since v95.03 signed and with oposite sign
       - name: battery_charging_power
+        unique_id: battery_charging_power
         unit_of_measurement: W
         device_class: power
         state_class: measurement
@@ -118,6 +123,7 @@
 
         # positive if discharging else zero
       - name: battery_discharging_power
+        unique_id: battery_discharging_power
         unit_of_measurement: W
         device_class: power
         state_class: measurement
@@ -130,6 +136,7 @@
             {% endif %}
 
       - name: battery_current
+        unique_id: battery_current
         unit_of_measurement: A
         device_class: current
         availability: "{{ states ( 'sensor.sh10rt_master_battery_current' ) | is_number }}"
@@ -146,6 +153,7 @@
         attribute: last_reset
     sensor:
       - name: battery_quarterhourly_in
+        unique_id: battery_quarterhourly_in
         unit_of_measurement: kWh
         state: "{{ state_attr ( 'sensor.battery_meter_quarterhourly_in', 'last_period' ) }}"
         attributes:
@@ -157,6 +165,7 @@
         attribute: last_reset
     sensor:
       - name: battery_quarterhourly_out
+        unique_id: battery_quarterhourly_out
         unit_of_measurement: kWh
         state: "{{ state_attr ( 'sensor.battery_meter_quarterhourly_out', 'last_period' ) }}"
         attributes:

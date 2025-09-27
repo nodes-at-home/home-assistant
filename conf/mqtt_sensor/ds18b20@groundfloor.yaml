@@ -3,99 +3,114 @@
 ###
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_lounge1"
+    name: ds18b20@groundfloor_temperature_lounge1
+    unique_id: ds18b20_groundfloor_temperature_lounge1
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['lounge1'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_lounge2"
+    name: ds18b20@groundfloor_temperature_lounge2
+    unique_id: ds18b20_groundfloor_temperature_lounge2
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['lounge2'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_dining1"
+    name: ds18b20@groundfloor_temperature_dining1
+    unique_id: ds18b20_groundfloor_temperature_dining1
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['dining1'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_dining2"
+    name: ds18b20@groundfloor_temperature_dining2
+    unique_id: ds18b20_groundfloor_temperature_dining2
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['dining2'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_dining3"
+    name: ds18b20@groundfloor_temperature_dining3
+    unique_id: ds18b20_groundfloor_temperature_dining3
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['dining3'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_kitchen"
+    name: ds18b20@groundfloor_temperature_kitchen
+    unique_id: ds18b20_groundfloor_temperature_kitchen
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['kitchen'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_corridor"
+    name: ds18b20@groundfloor_temperature_corridor
+    unique_id: ds18b20_groundfloor_temperature_corridor
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['corridor'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_utilityroom"
+    name: ds18b20@groundfloor_temperature_utilityroom
+    unique_id: ds18b20_groundfloor_temperature_utilityroom
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['utilityroom'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_floor"
+    name: ds18b20@groundfloor_temperature_floor
+    unique_id: ds18b20_groundfloor_temperature_floor
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['floor'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_shower"
+    name: ds18b20@groundfloor_temperature_shower
+    unique_id: ds18b20_groundfloor_temperature_shower
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['shower'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/temperature
-    name: "ds18b20@groundfloor_temperature_flow"
+    name: ds18b20@groundfloor_temperature_flow
+    unique_id: ds18b20_groundfloor_temperature_flow
     qos: 0
     unit_of_measurement: "°C"
     value_template: "{{ value_json ['values'] ['flow'] ['temp'] | round ( 1 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/voltage
-    name: "ds18b20@groundfloor_voltage"
+    name: ds18b20@groundfloor_voltage
+    unique_id: ds18b20_groundfloor_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor/value/voltage
-    name: "ds18b20@groundfloor_lastvoltage"
+    name: ds18b20@groundfloor_lastvoltage
+    unique_id: ds18b20_groundfloor_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor
-    name: "ds18b20@groundfloor_version"
+    name: ds18b20@groundfloor_version
+    unique_id: ds18b20_groundfloor_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/sensor/ds18b20/groundfloor
-    name: "ds18b20@groundfloor_lastboot"
+    name: ds18b20@groundfloor_lastboot
+    unique_id: ds18b20_groundfloor_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

@@ -4,6 +4,7 @@
 
   - platform: group
     name: automatic_indoor_lights_sunrise_switched_off_extra
+    unique_id: automatic_indoor_lights_sunrise_switched_off_extra
     entities:
       - light.shelly_dachboden
       - light.shelly_flur

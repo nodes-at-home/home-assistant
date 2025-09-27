@@ -2,9 +2,12 @@
 ### 08.11.2019 new
 ###
 
-  - platform: template
-    sensors:
-      mower_operation:
-        value_template: 'Betrieb'
-      mower_accessories:
-        value_template: 'Wartung'
+  - sensor:
+
+      - name: mower_operation
+        unique_id: mower_operation
+        state: Betrieb
+
+      - name: mower_accessories
+        unique_id: mower_accessories
+        state: Wartung

@@ -3,7 +3,8 @@
 ###
 
   - state_topic: nodes@home/light/ws2812/terrace1/value/voltage
-    name: "ws2812@terrace1_voltage"
+    name: ws2812@terrace1_voltage
+    unique_id: ws2812_terrace1_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
@@ -11,16 +12,19 @@
     # value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/light/ws2812/terrace1/value/voltage
-    name: "ws2812@terrace1_lastvoltage"
+    name: ws2812@terrace1_lastvoltage
+    unique_id: ws2812_terrace1_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/light/ws2812/terrace1
-    name: "ws2812@terrace1_version"
+    name: ws2812@terrace1_version
+    unique_id: ws2812_terrace1_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/light/ws2812/terrace1
-    name: "ws2812@terrace1_lastboot"
+    name: ws2812@terrace1_lastboot
+    unique_id: ws2812_terrace1_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

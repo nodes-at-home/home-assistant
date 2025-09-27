@@ -3,28 +3,33 @@
 ###
 
   - state_topic: nodes@home/switch/relay/hydrotower
-    name: "relay@hydrotower_version"
+    name: relay@hydrotower_version
+    unique_id: relay_hydrotower_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/switch/relay/hydrotower
-    name: "relay@hydrotower_lastboot"
+    name: relay@hydrotower_lastboot
+    unique_id: relay_hydrotower_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/switch/relay/hydrotower/value/voltage
-    name: "relay@hydrotower_voltage"
+    name: relay@hydrotower_voltage
+    unique_id: relay_hydrotower_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/switch/relay/hydrotower/value/voltage
-    name: "relay@hydrotower_lastvoltage"
+    name: relay@hydrotower_lastvoltage
+    unique_id: relay_hydrotower_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/switch/relay/hydrotower/value/temperature
-    name: "relay@hydrotower_temperature"
+    name: relay@hydrotower_temperature
+    unique_id: relay_hydrotower_temperature
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value | round ( 1 ) }}'

@@ -5,17 +5,20 @@
   - sensor:
     
     - name: gas_storage_germany_day
+      unique_id: gas_storage_germany_day
       icon: mdi:calendar
       state: "{{ state_attr('sensor.gas_storage_germany', 'gasDayStart') }}"
       # device_class: "gas"
     
     - name: gas_storage_germany_full_level
+      unique_id: gas_storage_germany_full_level
       icon: mdi:storage-tank
       unit_of_measurement: "%"
       state: "{{ state_attr('sensor.gas_storage_germany', 'full') }}"
       # device_class: "gas"
     
     - name: gas_storage_germany_full_total
+      unique_id: gas_storage_germany_full_total
       icon: mdi:storage-tank
       unit_of_measurement: "TWh"
       state: "{{ state_attr('sensor.gas_storage_germany', 'gasInStorage') }}"
@@ -23,16 +26,19 @@
 
       # annual consumption
     - name: gas_storage_germany_storage_consumption_level
+
       icon: mdi:gas-burner
       unit_of_measurement: "%"
       state: "{{ state_attr('sensor.gas_storage_germany', 'consumptionFull') }}"            
     
     - name: gas_storage_germany_consumption_total
+      unique_id: gas_storage_germany_consumption_total
       icon: mdi:gas-burner
       unit_of_measurement: "TWh"
       state: "{{ state_attr('sensor.gas_storage_germany', 'consumption') | int ( 0 ) }}"
 
     - name: gas_storage_germany_trend
+      unique_id: gas_storage_germany_trend
       unit_of_measurement: "%"
       state: "{{ state_attr('sensor.gas_storage_germany', 'trend') }}"
       icon: >

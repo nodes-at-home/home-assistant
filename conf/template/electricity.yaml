@@ -5,6 +5,7 @@
   - binary_sensor:
 
       - name: importing_power
+        unique_id: importing_power
         availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number }}"
         state: >
             {% if states ( 'sensor.sh10rt_master_powerflow_state') | is_number %}
@@ -14,6 +15,7 @@
             {% endif %}
 
       - name: exporting_power
+        unique_id: exporting_power
         availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state') | is_number }}"
         state: >
             {% if states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number %}
@@ -23,6 +25,7 @@
             {% endif %}
 
       - name: grid_state
+        unique_id: grid_state
         availability: "{{ states ( 'sensor.electricity_meter_power') | is_number and states ( 'input_number.electricity_import_critical_above' ) | is_number }}"
         state: >
             {% if states ( 'binary_sensor.importing_power' ) or states ( 'binary_sensor.exporting_power' ) %}
@@ -55,24 +58,28 @@
   - sensor:
 
       - name: electricity_daily_in_costs
+        unique_id: electricity_daily_in_costs
         unit_of_measurement: EUR
         device_class: monetary
         availability: "{{ states ( 'sensor.electricity_meter_daily_in' ) | is_number and states ( 'input_number.electricity_price_in' ) | is_number }}"
         state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_daily_in' ) | float * states ( 'input_number.electricity_price_in' ) | float ) | round ( 2 ) ) }}"
 
       - name: electricity_yearly_in_costs
+        unique_id: electricity_yearly_in_costs
         unit_of_measurement: EUR
         device_class: monetary
         availability: "{{ states ( 'sensor.electricity_meter_yearly_in' ) | is_number and states ( 'input_number.electricity_price_in' ) | is_number }}"
         state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_yearly_in' ) | float * states ( 'input_number.electricity_price_in' ) | float ) | round ( 2 ) ) }}"
 
       - name: electricity_daily_out_returns
+        unique_id: electricity_daily_out_returns
         unit_of_measurement: EUR
         device_class: monetary
         availability: "{{ states ( 'sensor.electricity_meter_daily_out' ) | is_number and states ( 'input_number.electricity_price_out' ) | is_number }}"
         state: "{{ '{:.2f}'.format ( ( states ( 'sensor.electricity_meter_daily_out' ) | float * states ( 'input_number.electricity_price_out' ) | float ) | round ( 2 ) ) }}"
 
       - name: electricity_yearly_out_returns
+        unique_id: electricity_yearly_out_returns
         unit_of_measurement: EUR
         device_class: monetary
         availability: "{{ states ( 'sensor.electricity_meter_yearly_out' ) | is_number and states ( 'input_number.electricity_price_out' ) | is_number }}"
@@ -101,6 +108,7 @@
         # for: 00:00:10
     sensor:
       - name: daily_load
+        unique_id: daily_load
         unit_of_measurement: kWh
         device_class: energy
         availability: >
@@ -153,6 +161,7 @@
         entity_id: sensor.tasmota_lk13be_power
     sensor:
       - name: electricity_meter_power
+        unique_id: electricity_meter_power
         unit_of_measurement: W
         state: >
             {% set val = states ( 'sensor.tasmota_lk13be_power' ) | float | round ( 0 ) %}
@@ -179,6 +188,7 @@
         entity_id: sensor.tasmota_lk13be_energy_total_in
     sensor:
       - name: electricity_meter_in
+        unique_id: electricity_meter_in
         unit_of_measurement: kWh
         state: >
             {% set val = states ( 'sensor.tasmota_lk13be_energy_total_in' ) | float %}
@@ -217,6 +227,7 @@
         entity_id: sensor.tasmota_lk13be_energy_total_out
     sensor:
       - name: electricity_meter_out
+        unique_id: electricity_meter_out
         unit_of_measurement: kWh
         state: >
             {% set val = states ( 'sensor.tasmota_lk13be_energy_total_out' ) | float %}
@@ -256,6 +267,7 @@
         attribute: last_reset
     sensor:
       - name: electricity_quarterhourly_in
+        unique_id: electricity_quarterhourly_in
         unit_of_measurement: kWh
         state: "{{ state_attr ( 'sensor.electricity_meter_quarterhourly_in', 'last_period' ) }}"
         attributes:
@@ -267,6 +279,7 @@
         attribute: last_reset
     sensor:
       - name: electricity_quarterhourly_out
+        unique_id: electricity_quarterhourly_out
         unit_of_measurement: kWh
         state: "{{ state_attr ( 'sensor.electricity_meter_quarterhourly_out', 'last_period' ) }}"
         attributes:
@@ -283,6 +296,7 @@
         for: 00:00:10
     sensor:
       - name: electricity_price
+        unique_id: electricity_price
         unit_of_measurement: ct/kWh
         state: "{{ state_attr ( 'sensor.epex_spot_de_lu_price', 'price_ct_per_kwh' ) | float }}"
         attributes:
@@ -298,6 +312,7 @@
         attribute: last_reset
     sensor:
       - name: load_quarterhourly
+        unique_id: load_quarterhourly
         unit_of_measurement: kWh
         state: "{{ state_attr ( 'sensor.load_meter_quarterhourly', 'last_period' ) }}"
         attributes:

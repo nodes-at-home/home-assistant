@@ -3,28 +3,33 @@
 ###
 
   - state_topic: nodes@home/sensor/ds18b20/pool/value/temperature
-    name: "ds18b20@pool_temperature"
+    name: ds18b20@pool_temperature
+    unique_id: ds18b20_pool_temperature
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
-    name: "ds18b20@pool_voltage"
+    name: ds18b20@pool_voltage
+    unique_id: ds18b20_pool_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
-    name: "ds18b20@pool_lastvoltage"
+    name: ds18b20@pool_lastvoltage
+    unique_id: ds18b20_pool_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/sensor/ds18b20/pool
-    name: "ds18b20@pool_version"
+    name: ds18b20@pool_version
+    unique_id: ds18b20_pool_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/sensor/ds18b20/pool
-    name: "ds18b20@pool_lastboot"
+    name: ds18b20@pool_lastboot
+    unique_id: ds18b20_pool_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

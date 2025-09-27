@@ -4,6 +4,7 @@
 
   - platform: group
     name: automatic_outdoor_lights
+    unique_id: automatic_outdoor_lights
     entities:
       - light.shelly_terasse
       - light.shelly_hinterhof

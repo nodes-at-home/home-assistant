@@ -3,22 +3,26 @@
 ###
 
   - state_topic: nodes@home/switch/sonoff/bedroom
-    name: "sonoff@bedroom_version"
+    name: sonoff@bedroom_version
+    unique_id: sonoff_bedroom_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/switch/sonoff/bedroom
-    name: "sonoff@bedroom_lastboot"
+    name: sonoff@bedroom_lastboot
+    unique_id: sonoff_bedroom_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/switch/sonoff/bedroom/value/voltage
-    name: "sonoff@bedroom_voltage"
+    name: sonoff@bedroom_voltage
+    unique_id: sonoff_bedroom_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/switch/sonoff/bedroom/value/voltage
-    name: "sonoff@bedroom_lastvoltage"
+    name: sonoff@bedroom_lastvoltage
+    unique_id: sonoff_bedroom_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

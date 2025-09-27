@@ -5,3 +5,4 @@
 source: sensor.daily_load
 cycle: quarter-hourly
 delta_values: false
+unique_id: load_meter_quarterhourly

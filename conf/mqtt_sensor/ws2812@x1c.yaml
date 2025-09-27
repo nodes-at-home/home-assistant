@@ -3,7 +3,8 @@
 ###
 
   - state_topic: nodes@home/light/ws2812/x1c/value/voltage
-    name: "ws2812@x1c_voltage"
+    name: ws2812@x1c_voltage
+    unique_id: ws2812_x1c_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
@@ -11,16 +12,19 @@
     # value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/light/ws2812/x1c/value/voltage
-    name: "ws2812@x1c_lastvoltage"
+    name: ws2812@x1c_lastvoltage
+    unique_id: ws2812_x1c_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/light/ws2812/x1c
-    name: "ws2812@x1c_version"
+    name: ws2812@x1c_version
+    unique_id: ws2812_x1c_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/light/ws2812/x1c
-    name: "ws2812@x1c_lastboot"
+    name: ws2812@x1c_lastboot
+    unique_id: ws2812_x1c_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

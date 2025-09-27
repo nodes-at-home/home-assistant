@@ -3,7 +3,8 @@
 ###
 
   - platform: statistics
-    name: "rain@garden_precipitation_last24h"
+    name: rain@garden_precipitation_last24h
+    unique_id: rain_garden_precipitation_last24h
     entity_id: "sensor.rain_garden_precipitation"
     state_characteristic: total
     sampling_size: 100
@@ -11,7 +12,8 @@
         hours: 24
 
   - platform: statistics
-    name: "rain@garden_precipitation_last5d"
+    name: rain@garden_precipitation_last5d
+    unique_id: rain_garden_precipitation_last5d
     entity_id: "sensor.rain_garden_precipitation"
     state_characteristic: total
     sampling_size: 500
@@ -19,7 +21,8 @@
         hours: 120
 
   - platform: statistics
-    name: "rain@garden_precipitation_last7d"
+    name: rain@garden_precipitation_last7d
+    unique_id: rain_garden_precipitation_last7d
     entity_id: "sensor.rain_garden_precipitation"
     state_characteristic: total
     sampling_size: 700

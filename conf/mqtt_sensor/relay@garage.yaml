@@ -3,43 +3,51 @@
 ###
 
   - state_topic: nodes@home/cover/relay/garage/value/temperature
-    name: "relay@garage_temperature"
+    name: relay@garage_temperature
+    unique_id: relay_garage_temperature
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/cover/relay/garage/value/humidity
-    name: "relay@garage_humidity"
+    name: relay@garage_humidity
+    unique_id: relay_garage_humidity
     qos: 0
     unit_of_measurement: "%"
     value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/cover/relay/garage/value/tau
-    name: "relay@garage_tau"
+    name: relay@garage_tau
+    unique_id: relay_garage_tau
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value | round ( 1 ) }}'
 
   - state_topic: nodes@home/cover/relay/garage/value/voltage
-    name: "relay@garage_voltage"
+    name: relay@garage_voltage
+    unique_id: relay_garage_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/cover/relay/garage/value/voltage
-    name: "relay@garage_lastvoltage"
+    name: relay@garage_lastvoltage
+    unique_id: relay_garage_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/cover/relay/garage
-    name: "relay@garage_version"
+    name: relay@garage_version
+    unique_id: relay_garage_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/cover/relay/garage
-    name: "relay@garage_lastboot"
+    name: relay@garage_lastboot
+    unique_id: relay_garage_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
-  - name: "relay@garage_state"
+  - name: relay@garage_state
+    unique_id: relay_garage_state
     state_topic: nodes@home/cover/relay/garage/value/position

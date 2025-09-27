@@ -5,3 +5,4 @@
 source: sensor.gas_utilityroom_meter
 cycle: daily
 delta_values: true
+unique_id: gas_meter_daily

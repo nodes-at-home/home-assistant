@@ -31,6 +31,15 @@ person.gast:
     icon: mdi:shield-account
 
 #------------------------------------------------------------------------------
+binary_sensor.prod_mode:
+    friendly_name: Produktionsserver
+    icon: mdi:factory
+
+binary_sensor.dev_mode:
+    friendly_name: Entwicklungsserver
+    icon: mdi:laptop-code
+
+#------------------------------------------------------------------------------
 sensor.DHT22_terrace_temperature:
     friendly_name: Terrasse
 

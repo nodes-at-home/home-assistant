@@ -3,22 +3,26 @@
 ###
 
   - state_topic: nodes@home/light/led/kitchen2
-    name: "led@kitchen2_version"
+    name: led@kitchen2_version
+    unique_id: led_kitchen2_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/light/led/kitchen2
-    name: "led@kitchen2_lastboot"
+    name: led@kitchen2_lastboot
+    unique_id: led_kitchen2_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/light/led/kitchen2/value/voltage
-    name: "led@kitchen2_voltage"
+    name: led@kitchen2_voltage
+    unique_id: led_kitchen2_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/light/led/kitchen2/value/voltage
-    name: "led@kitchen2_lastvoltage"
+    name: led@kitchen2_lastvoltage
+    unique_id: led_kitchen2_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

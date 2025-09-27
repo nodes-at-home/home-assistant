@@ -3,22 +3,26 @@
 ###
 
   - state_topic: nodes@home/switch/sonoff/gallery1
-    name: "sonoff@gallery1_version"
+    name: sonoff@gallery1_version
+    unique_id: sonoff_gallery1_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/switch/sonoff/gallery1
-    name: "sonoff@gallery1_lastboot"
+    name: sonoff@gallery1_lastboot
+    unique_id: sonoff_gallery1_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/switch/sonoff/gallery1/value/voltage
-    name: "sonoff@gallery1_voltage"
+    name: sonoff@gallery1_voltage
+    unique_id: sonoff_gallery1_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/switch/sonoff/gallery1/value/voltage
-    name: "sonoff@gallery1_lastvoltage"
+    name: sonoff@gallery1_lastvoltage
+    unique_id: sonoff_gallery1_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

@@ -3,43 +3,50 @@
 ###
 
   - state_topic: nodes@home/sensor/gas/utilityroom
-    name: "gas@utilityroom_version"
+    name: gas@utilityroom_version
+    unique_id: gas_utilityroom_version
     qos: 0
     value_template: "{{ value }}"
 
   - state_topic: nodes@home/sensor/gas/utilityroom
-    name: "gas@utilityroom_lastboot"
+    name: gas@utilityroom_lastboot
+    unique_id: gas_utilityroom_lastboot
     qos: 0
     value_template: "{{ as_timestamp ( now () ) | timestamp_custom ( '%d.%m.%Y %H:%M:%S', true ) }}"
 
   - state_topic: nodes@home/sensor/gas/utilityroom/value/voltage
-    name: "gas@utilityroom_voltage"
+    name: gas@utilityroom_voltage
+    unique_id: gas_utilityroom_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: "{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}"
 
   - state_topic: nodes@home/sensor/gas/utilityroom/value/voltage
-    name: "gas@utilityroom_lastvoltage"
+    name: gas@utilityroom_lastvoltage
+    unique_id: gas_utilityroom_lastvoltage
     qos: 0
     value_template: "{{ as_timestamp ( now () ) | timestamp_custom ( '%d.%m.%Y %H:%M:%S', true ) }}"
 
     # one tick are 0.01 m³ gas
   - state_topic: nodes@home/sensor/gas/utilityroom/value/tick
-    name: "gas@utilityroom_meter"
+    name: gas@utilityroom_meter
+    unique_id: gas_utilityroom_meter
     qos: 0
     unit_of_measurement: "m³"
     value_template: 0.01
     force_update: true
 
   - state_topic: nodes@home/sensor/gas/utilityroom/value/tick
-    name: "gas@utilityroom_energy"
+    name: gas@utilityroom_energy
+    unique_id: gas_utilityroom_energy
     qos: 0
     unit_of_measurement: "kWh"
     value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 2 ) }}"
     force_update: true
 
   - state_topic: nodes@home/sensor/gas/utilityroom/value/tick
-    name: "gas@utilityroom_energy_hotwater"
+    name: gas@utilityroom_energy_hotwater
+    unique_id: gas_utilityroom_energy_hotwater
     qos: 0
     unit_of_measurement: "kWh"
     value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 2 ) if is_state ( 'binary_sensor.boiler_dhw_3_way_valve_active', 'on' ) else 0 }}"

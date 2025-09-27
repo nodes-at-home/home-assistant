@@ -5,6 +5,7 @@
   - binary_sensor:
 
       - name: pv_generating
+        unique_id: pv_generating
         availability: "{{ states ( 'sensor.sh10rt_master_powerflow_state' ) | is_number or states ( 'sensor.sh10rt_slave_powerflow_state' ) | is_number }}"
         state: >
             {% set result = false %}
@@ -25,6 +26,7 @@
                 {% endif %}
 
       - name: sh10rt_master_inverter_state_badge
+        unique_id: sh10rt_master_inverter_state_badge
         state: >
             {% set val = states ( 'sensor.sh10rt_master_inverter_state' ) %}
             {% if val in ["Running", "Derated Running", "Restarting", "Startup"] %}
@@ -49,6 +51,7 @@
             state_code: "{{ states ( 'sensor.sh10rt_master_system_state' ) }}"
 
       - name: sh10rt_slave_inverter_state_badge
+        unique_id: sh10rt_slave_inverter_state_badge
         state: >
             {% set val = states ( 'sensor.sh10rt_slave_inverter_state' ) %}
             {% if val in ["Running", "Derated Running", "Restarting", "Startup"] %}
@@ -75,6 +78,7 @@
   - sensor:
 
       - name: total_dc_power
+        unique_id: total_dc_power
         unit_of_measurement: W
         device_class: power
         state_class: measurement
@@ -90,6 +94,7 @@
             {{ result | round ( 0 ) }}
 
       - name: estimated_energy_production_today
+        unique_id: estimated_energy_production_today
         unit_of_measurement: kWh
         device_class: energy
         availability: "{{ states ( 'sensor.energy_production_today' ) | is_number and states ( 'sensor.energy_production_today_2' ) | is_number }}"
@@ -134,6 +139,7 @@
         # 13.12.2024: new system state 0x80 only for master inverter inerpreted as running
         # 30.08.2025 bases on documentation v1.1.9 it is now "Derated Running"
       - name: sh10rt_master_inverter_state
+        unique_id: sh10rt_master_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_master_system_state' ) | int (default = 0) %}
             {% if  val == 0x0040 or val == 0x0000 %}
@@ -192,6 +198,7 @@
 
         # 23.02.2025: new system state 0x80 for slave too, seen on startup after controlled blackout
       - name: sh10rt_slave_inverter_state
+        unique_id: sh10rt_slave_inverter_state
         state: >
             {% set val = states ( 'sensor.sh10rt_slave_system_state' ) | int (default = 0) %}
             {% if  val == 0x0040 or val == 0x0000 %}
@@ -249,6 +256,7 @@
             {% endif %}
 
       - name: sh10rt_master_device_type
+        unique_id: sh10rt_master_device_type
         state: >
             {% set val = states ( 'sensor.sh10rt_master_device_type_code' ) | int (default = 0) %}
             {% if val  == 0x0D06 %}
@@ -290,6 +298,7 @@
             {% endif %}
 
       - name: sh10rt_slave_device_type
+        unique_id: sh10rt_slave_device_type
         state: >
             {% set val = states ( 'sensor.sh10rt_slave_device_type_code' ) | int (default = 0) %}
             {% if val  == 0x0D06 %}
@@ -355,6 +364,7 @@
             # {% endif %}
 
       - name: load_power
+        unique_id: load_power
         unit_of_measurement: W
         device_class: power
         state_class: measurement
@@ -377,6 +387,7 @@
       # 0xBB forced discharge
       # 0xCC Stop (Default)
       - name: battery_forced_charge_discharge
+        unique_id: battery_forced_charge_discharge
         state: >
             {% set val = states ( 'sensor.sh10rt_master_battery_forced_charge_discharge_raw' ) %}
             {% if (  val | int ( default = 0 ) == 0x00AA ) %}
@@ -390,6 +401,7 @@
             {% endif %}
 
       - name: sh10rt_master_powerflow_txt
+        unique_id: sh10rt_master_powerflow_txt
         state: >-
             {% set val = states ( 'sensor.sh10rt_master_powerflow_state' ) | int ( 0 ) %}
             {% set s =
@@ -403,6 +415,7 @@
             {{ s.split () | join ( '|' ) }}
 
       - name: sh10rt_slave_powerflow_txt
+        unique_id: sh10rt_slave_powerflow_txt
         state: >-
             {% set val = states ( 'sensor.sh10rt_slave_powerflow_state' ) | int ( 0 ) %}
             {% set s =
@@ -424,6 +437,7 @@
         for: 00:00:10
     sensor:
       - name: daily_pv_generation
+        unique_id: daily_pv_generation
         unit_of_measurement: kWh
         device_class: energy
         availability: "{{ states ( 'sensor.sh10rt_master_daily_pv_generation' ) | is_number and states ( 'sensor.sh10rt_slave_daily_pv_generation' ) | is_number }}"
@@ -443,6 +457,7 @@
         attribute: last_reset
     sensor:
       - name: solar_quarterhourly
+        unique_id: solar_quarterhourly
         unit_of_measurement: kWh
         state: "{{ state_attr ( 'sensor.solar_meter_quarterhourly', 'last_period' ) }}"
         attributes:

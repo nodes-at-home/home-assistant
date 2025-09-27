@@ -4,39 +4,46 @@
 
   - state_topic: nodes@home/sensor/DHT11/utilityroom/value/temperature
     name: "DHT11@utilityroom_temperature"
+    unique_id: dht11_utilityroom_temperature
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/sensor/DHT11/utilityroom/value/humidity
-    name: "DHT11@utilityroom_humidity"
+    name: DHT11@utilityroom_humidity
+    unique_id: dht11_utilityroom_humidity
     qos: 0
     unit_of_measurement: "%"
     value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/sensor/DHT11/utilityroom/value/tau
-    name: "DHT11@utilityroom_tau"
+    name: DHT11@utilityroom_tau
+    unique_id: dht11_utilityroom_tau
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/DHT11/utilityroom/value/voltage
-    name: "DHT11@utilityroom_voltage"
+    name: DHT11@utilityroom_voltage
+    unique_id: dht11_utilityroom_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/DHT11/utilityroom/value/voltage
-    name: "DHT11@utilityroom_lastvoltage"
+    name: DHT11@utilityroom_lastvoltage
+    unique_id: dht11_utilityroom_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/sensor/DHT11/utilityroom
-    name: "DHT11@utilityroom_version"
+    name: DHT11@utilityroom_version
+    unique_id: dht11_utilityroom_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/sensor/DHT11/utilityroom
-    name: "DHT11@utilityroom_lastboot"
+    name: DHT11@utilityroom_lastboot
+    unique_id: dht11_utilityroom_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

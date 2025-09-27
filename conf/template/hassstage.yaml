@@ -2,14 +2,12 @@
 ### 09.11.2019 junand
 ###
 
-  - platform: template
-    sensors:
-      prod_mode:
-        friendly_name: Produktionsserver
-        value_template: '{{is_state ( "input_text.hostname", "nodesathome1" )}}'
+  - binary_sensor:
 
-  - platform: template
-    sensors:
-      dev_mode:
-        friendly_name: Entwicklungsserver
-        value_template: '{{not is_state ( "input_text.hostname", "nodesathome1" )}}'
+      - name: prod_mode
+        unique_id: prod_mode
+        state: "{{ is_state ( 'input_text.hostname', 'nodesathome1' ) }}"
+
+      - name: dev_mode
+        unique_id: dev_mode
+        state: "{{ not is_state ( 'input_text.hostname', 'nodesathome1' ) }}"

@@ -3,6 +3,7 @@
 ###
 
   - name: ws2812@xmasstar
+    unique_id: ws2812_xmasstar
     schema: json
     command_topic: nodes@home/light/ws2812/xmasstar/led
     state_topic: nodes@home/light/ws2812/xmasstar/led/state

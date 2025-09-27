@@ -2,7 +2,8 @@
 ### 10.05.2024
 ###
 
-  - name: "relay@hydrotower_pump"
+  - name: relay@hydrotower_pump
+    unique_id: relay_hydrotower_pump
     command_topic: nodes@home/switch/relay/hydrotower/pump
     state_topic: nodes@home/switch/relay/hydrotower/pump/state
     optimistic: false

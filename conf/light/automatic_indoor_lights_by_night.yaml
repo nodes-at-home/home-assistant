@@ -4,6 +4,7 @@
 
   - platform: group
     name: automatic_indoor_lights_by_night
+    unique_id: automatic_indoor_lights_by_night
     entities:
       - light.sonoff_gallery_lamp
       - light.shelly_esszimmerschrank1

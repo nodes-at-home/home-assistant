@@ -4,6 +4,7 @@
 
   - platform: group
     name: automatic_indoor_lights_immediatly_switched_off
+    unique_id: automatic_indoor_lights_immediatly_switched_off
     entities:
       - light.shelly_lounge_blackbowl
       - light.shelly_lounge_readinglamp

@@ -3,6 +3,7 @@
 ###
 
   - name: "led@corridor_led"
+    unique_id: led_corridor
     schema: json
     command_topic: nodes@home/light/led/corridor/led
     state_topic: nodes@home/light/led/corridor/led/state

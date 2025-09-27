@@ -3,22 +3,26 @@
 ###
 
   - state_topic: nodes@home/switch/relay/dining2
-    name: "relay@dining2_version"
+    name: relay@dining2_version
+    unique_id: relay_dining2_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/switch/relay/dining2
-    name: "relay@dining2_lastboot"
+    name: relay@dining2_lastboot
+    unique_id: relay_dining2_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/switch/relay/dining2/value/voltage
-    name: "relay@dining2_voltage"
+    name: relay@dining2_voltage
+    unique_id: relay_dining2_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/switch/relay/dining2/value/voltage
-    name: "relay@dining2_lastvoltage"
+    name: relay@dining2_lastvoltage
+    unique_id: relay_dining2_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

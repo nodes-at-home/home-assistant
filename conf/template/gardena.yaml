@@ -5,21 +5,25 @@
   - binary_sensor:
 
       - name: gemusebeet_vorne_battery
+        unique_id: gemusebeet_vorne_battery
         state: "{{ states ( 'sensor.gemusebeet_vorne_battery_level' ) | int <= states ( 'input_number.gardena_sensors_battery_critical_level' ) | int }}"
         unit_of_measurement: "%"
         device_class: battery
 
       - name: gemusebeet_hinten_battery
+        unique_id: gemusebeet_hinten_battery
         state: "{{ states ( 'sensor.gemusebeet_hinten_battery_level' ) | int <= states ( 'input_number.gardena_sensors_battery_critical_level' ) | int }}"
         unit_of_measurement: "%"
         device_class: battery
 
       - name: hochbeet_vorne_battery
+        unique_id: hochbeet_vorne_battery
         state: "{{ states ( 'sensor.hochbeet_vorne_battery_level' ) | int <= states ( 'input_number.gardena_sensors_battery_critical_level' ) | int }}"
         unit_of_measurement: "%"
         device_class: battery
 
       - name: hochbeet_hinten_battery
+        unique_id: hochbeet_hinten_battery
         state: "{{ states ( 'sensor.hochbeet_hinten_battery_level' ) | int <= states ( 'input_number.gardena_sensors_battery_critical_level' ) | int }}"
         unit_of_measurement: "%"
         device_class: battery

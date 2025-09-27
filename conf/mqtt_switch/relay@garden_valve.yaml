@@ -2,37 +2,43 @@
 ### 07.03.2021
 ###
 
-  - name: "relay@garden_valve1"
+  - name: relay@garden_valve1
+    unique_id: relay_garden_valve1
     command_topic: nodes@home/switch/relay/garden/valve1
     state_topic: nodes@home/switch/relay/garden/valve1/state
     optimistic: false
     retain: true
 
-  - name: "relay@garden_valve2"
+  - name: relay@garden_valve2
+    unique_id: relay_garden_valve2
     command_topic: nodes@home/switch/relay/garden/valve2
     state_topic: nodes@home/switch/relay/garden/valve2/state
     optimistic: false
     retain: true
 
-  - name: "relay@garden_valve3"
+  - name: relay@garden_valve3
+    unique_id: relay_garden_valve3
     command_topic: nodes@home/switch/relay/garden/valve3
     state_topic: nodes@home/switch/relay/garden/valve3/state
     optimistic: false
     retain: true
 
-  - name: "relay@garden2_valve1"
+  - name: relay@garden2_valve1
+    unique_id: relay_garden2_valve1
     command_topic: nodes@home/switch/relay/garden2/valve1
     state_topic: nodes@home/switch/relay/garden2/valve1/state
     optimistic: false
     retain: true
 
-  - name: "relay@garden2_valve2"
+  - name: relay@garden2_valve2
+    unique_id: relay_garden2_valve2
     command_topic: nodes@home/switch/relay/garden2/valve2
     state_topic: nodes@home/switch/relay/garden2/valve2/state
     optimistic: false
     retain: true
 
-  - name: "relay@garden2_valve3"
+  - name: relay@garden2_valve3
+    unique_id: relay_garden2_valve3
     command_topic: nodes@home/switch/relay/garden2/valve3
     state_topic: nodes@home/switch/relay/garden2/valve3/state
     optimistic: false

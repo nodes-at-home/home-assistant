@@ -2,7 +2,8 @@
 ### 21.10.2019 pitouch
 ###
 
-  - name: "pitouch@corridor_screen"
+  - name: pitouch@corridor_screen
+    unique_id: pitouch_corridor
     command_topic: nodes@home/display/pitouch/corridor/screen
     state_topic: nodes@home/display/pitouch/corridor/screen/state
     brightness_command_topic: nodes@home/display/pitouch/corridor/brightness

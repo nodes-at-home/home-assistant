@@ -3,6 +3,7 @@
 ###
 
   - name: ws2812@terrace1
+    unique_id: ws2812_terrace1
     schema: json
     command_topic: nodes@home/light/ws2812/terrace1/led
     state_topic: nodes@home/light/ws2812/terrace1/led/state

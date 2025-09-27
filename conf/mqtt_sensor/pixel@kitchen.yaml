@@ -3,22 +3,26 @@
 ###
 
   - state_topic: nodes@home/display/pixel/kitchen
-    name: "pixel@kitchen_version"
+    name: pixel@kitchen_version
+    unique_id: pixel_kitchen_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/display/pixel/kitchen
-    name: "pixel@kitchen_lastboot"
+    name: pixel@kitchen_lastboot
+    unique_id: pixel_kitchen_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/display/pixel/kitchen/value/voltage
-    name: "pixel@kitchen_voltage"
+    name: pixel@kitchen_voltage
+    unique_id: pixel_kitchen_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/display/pixel/kitchen/value/voltage
-    name: "pixel@kitchen_lastvoltage"
+    name: pixel@kitchen_lastvoltage
+    unique_id: pixel_kitchen_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

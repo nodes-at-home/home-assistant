@@ -3,46 +3,54 @@
 ###
 
   - state_topic: nodes@home/sensor/DHT22/lounge/value/temperature
-    name: "DHT22@lounge_temperature"
+    name: DHT22@lounge_temperature
+    unique_id: DHT22_lounge_temperature
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/sensor/DHT22/lounge/value/humidity
-    name: "DHT22@lounge_humidity"
+    name: DHT22@lounge_humidity
+    unique_id: DHT22_lounge_humidity
     qos: 0
     unit_of_measurement: "%"
     value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/sensor/DHT22/lounge/value/tau
-    name: "DHT22@lounge_tau"
+    name: DHT22@lounge_tau
+    unique_id: DHT22_lounge_tau
     qos: 0
     unit_of_measurement: "°C"
     value_template: '{{ value_json.value | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/DHT22/lounge/value/pressure
-    name: "DHT22@lounge_pressure"
+    name: DHT22@lounge_pressure
+    unique_id: DHT22_lounge_pressure
     qos: 0
     unit_of_measurement: "hPa"
     value_template: '{{ value_json.value | round ( 0 ) }}'
 
   - state_topic: nodes@home/sensor/DHT22/lounge/value/voltage
-    name: "DHT22@lounge_voltage"
+    name: DHT22@lounge_voltage
+    unique_id: DHT22_lounge_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/DHT22/lounge/value/voltage
-    name: "DHT22@lounge_lastvoltage"
+    name: DHT22@lounge_lastvoltage
+    unique_id: DHT22_lounge_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/sensor/DHT22/lounge
-    name: "DHT22@lounge_version"
+    name: DHT22@lounge_version
+    unique_id: DHT22_lounge_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/sensor/DHT22/lounge
-    name: "DHT22@lounge_lastboot"
+    name: DHT22@lounge_lastboot
+    unique_id: DHT22_lounge_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

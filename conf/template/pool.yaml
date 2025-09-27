@@ -5,6 +5,7 @@
   - sensor:
 
       - name: pool_pump_period_length
+        unique_id: pool_pump_period_length
         unit_of_measurement: min
         device_class: duration
         state: >

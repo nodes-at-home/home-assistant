@@ -5,3 +5,4 @@
 source: sensor.wallbox_energy_total
 cycle: yearly
 delta_values: false
+unique_id: wallbox_meter_yearly

@@ -2,7 +2,8 @@
 ### 13.07.2025
 ###
 
-  - name: "led@kitchen2_led"
+  - name: led@kitchen2_led
+    unique_id: led@kitchen2_led
     schema: json
     command_topic: nodes@home/light/led/kitchen2/led
     state_topic: nodes@home/light/led/kitchen2/led/state

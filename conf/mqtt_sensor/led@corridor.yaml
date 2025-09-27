@@ -3,22 +3,26 @@
 ###
 
   - state_topic: nodes@home/light/led/corridor
-    name: "led@corridor_version"
+    name: led@corridor_version
+    unique_id: led_corridor_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/light/led/corridor
-    name: "led@corridor_lastboot"
+    name: led@corridor_lastboot
+    unique_id: led_corridor_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/light/led/corridor/value/voltage
-    name: "led@corridor_voltage"
+    name: led@corridor_voltage
+    unique_id: led_corridor_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/light/led/corridor/value/voltage
-    name: "led@corridor_lastvoltage"
+    name: led@corridor_lastvoltage
+    unique_id: led_corridor_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

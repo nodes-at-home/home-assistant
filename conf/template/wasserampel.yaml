@@ -4,6 +4,7 @@
 
   - binary_sensor:
       - name: wasserampel
+        unique_id: wasserampel
         state: '{{ "off" if is_state ( "sensor.wasserampel_text", "rot" ) else "on" }}'
         icon: >
           {% set val =  states.sensor.wasserampel_text.state  %}

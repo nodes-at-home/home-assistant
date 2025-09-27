@@ -3,35 +3,41 @@
 ###
 
   - state_topic: nodes@home/sensor/rain/garden
-    name: "rain@garden_version"
+    name: rain@garden_version
+    unique_id: rain_garden_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/sensor/rain/garden
-    name: "rain@garden_lastboot"
+    name: rain@garden_lastboot
+    unique_id: rain_garden_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/sensor/rain/garden/value/voltage
-    name: "rain@garden_voltage"
+    name: rain@garden_voltage
+    unique_id: rain_garden_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/rain/garden/value/voltage
-    name: "rain@garden_lastvoltage"
+    name: rain@garden_lastvoltage
+    unique_id: rain_garden_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/sensor/rain/garden/value/rain
-    name: "rain@garden_precipitation"
+    name: rain@garden_precipitation
+    unique_id: rain_garden_precipitation
     qos: 0
     force_update: true
     unit_of_measurement: "mm"
     value_template: '{{ value_json.rain }}'
 
   - state_topic: nodes@home/sensor/rain/garden/value/rain
-    name: "rain@garden_ticks"
+    name: rain@garden_ticks
+    unique_id: rain_garden_ticks
     qos: 0
     unit_of_measurement: "mm"
     value_template: '{{ value_json.ticks }}'

@@ -3,7 +3,8 @@
 ###
 
   - state_topic: nodes@home/display/pitouch/corridor/value/ambient
-    name: "pitouch@corridor_ambientlight"
+    name: pitouch@corridor_ambientlight
+    unique_id: pitouch_corridor_ambientlight
     qos: 0
     unit_of_measurement: " "
     value_template: '{{ value_json.ambient | round ( 0 ) }}'

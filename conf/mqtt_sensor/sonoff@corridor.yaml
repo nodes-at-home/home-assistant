@@ -3,22 +3,26 @@
 ###
 
   - state_topic: nodes@home/light/sonoff/corridor
-    name: "sonoff@corridor_version"
+    name: sonoff@corridor_version
+    unique_id: sonoff_corridor_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/light/sonoff/corridor
-    name: "sonoff@corridor_lastboot"
+    name: sonoff@corridor_lastboot
+    unique_id: sonoff_corridor_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/light/sonoff/corridor/value/voltage
-    name: "sonoff@corridor_voltage"
+    name: sonoff@corridor_voltage
+    unique_id: sonoff_corridor_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/light/sonoff/corridor/value/voltage
-    name: "sonoff@corridor_lastvoltage"
+    name: sonoff@corridor_lastvoltage
+    unique_id: sonoff_corridor_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

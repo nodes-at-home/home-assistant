@@ -5,6 +5,7 @@
   - sensor:
 
       - name: entry_doorlock
+        unique_id: entry_doorlock
         variables:
             door: eingangstur
         availability: "{{ not states ( 'lock.' + door ) in ['unknown', 'availability'] and not states ( 'binary_sensor.' + door ) in ['unknown', 'availability'] }}"
@@ -60,6 +61,7 @@
                 {% endif %}
 
       - name: postern_doorlock
+        unique_id: postern_doorlock
         variables:
             door: nebentur
         availability: "{{ not states ( 'lock.' + door ) in ['unknown', 'availability'] and not states ( 'binary_sensor.' + door ) in ['unknown', 'availability'] }}"
@@ -115,6 +117,7 @@
                 {% endif %}
 
       - name: garage_doorlock
+        unique_id: garage_doorlock
         variables:
             door: garagentur
         availability: "{{ not states ( 'lock.' + door ) in ['unknown', 'availability'] and not states ( 'binary_sensor.' + door ) in ['unknown', 'availability'] }}"

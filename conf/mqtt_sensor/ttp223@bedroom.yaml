@@ -3,7 +3,8 @@
 ###
 
   - state_topic: nodes@home/sensor/ttp223/bedroom/value/voltage
-    name: "ttp223@bedroom_voltage"
+    name: ttp223@bedroom_voltage
+    unique_id: ttp223_bedroom_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
@@ -11,16 +12,19 @@
     # value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/sensor/ttp223/bedroom/value/voltage
-    name: "ttp223@bedroom_lastvoltage"
+    name: ttp223@bedroom_lastvoltage
+    unique_id: ttp223_bedroom_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/sensor/ttp223/bedroom
-    name: "ttp223@bedroom_version"
+    name: ttp223@bedroom_version
+    unique_id: ttp223_bedroom_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/sensor/ttp223/bedroom
-    name: "ttp223@bedroom_lastboot"
+    name: ttp223@bedroom_lastboot
+    unique_id: ttp223_bedroom_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

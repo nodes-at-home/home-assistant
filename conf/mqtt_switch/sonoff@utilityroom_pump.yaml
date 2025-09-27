@@ -2,7 +2,8 @@
 ### 22.08.2019 split up
 ###
 
-  - name: "sonoff@utilityroom_pump"
+  - name: sonoff@utilityroom_pump
+    unique_id: sonoff_utilityroom_pump
     command_topic: nodes@home/switch/sonoff/utilityroom/pump
     state_topic: nodes@home/switch/sonoff/utilityroom/pump/state
     optimistic: false

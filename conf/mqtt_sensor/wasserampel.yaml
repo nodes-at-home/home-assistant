@@ -3,7 +3,8 @@
 ###
 
   - state_topic: nodes@home/sensor/wasserampel
-    name: "wasserampel_text"
+    name: wasserampel_text
+    unique_id: sensor_wasserampel_text
     qos: 0
     value_template: '{{ value }}'
     

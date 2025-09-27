@@ -3,6 +3,7 @@
 ###
   - platform: group
     name: automatic_indoor_lights
+    unique_id: automatic_indoor_lights
     entities:
       - light.shelly_lounge_blackbowl
       - light.shelly_lounge_readinglamp

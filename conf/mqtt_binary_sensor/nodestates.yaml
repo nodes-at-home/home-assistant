@@ -2,133 +2,152 @@
 ### 02.10.2024
 ###
 
-  - name: "nodestate_DHT22@lounge"
+  - name: nodestate_DHT22@lounge
+    unique_id: nodestate_DHT22_lounge
     state_topic: nodes@home/sensor/DHT22/lounge/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_DHT22@terrace"
+  - name: nodestate_DHT22@terrace
+    unique_id: nodestate_DHT22_terrace
     state_topic: nodes@home/sensor/DHT22/terrace/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_DHT22@roof"
+  - name: nodestate_DHT22@roof
+    unique_id: nodestate_DHT22_roof
     state_topic: nodes@home/sensor/DHT22/roof/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_relay@garage"
+  - name: nodestate_relay@garage
+    unique_id: nodestate_relay_garage
     state_topic: nodes@home/cover/relay/garage/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_sonoff@utilityroom"
+  - name: nodestate_sonoff@utilityroom
+    unique_id: nodestate_sonoff_utilityroom
     state_topic: nodes@home/switch/sonoff/utilityroom/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_sonoff@garage"
+  - name: nodestate_sonoff@garage
+    unique_id: nodestate_sonoff_garage
     state_topic: nodes@home/switch/sonoff/garage/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_shelly@terrace"
+  - name: nodestate_shelly@terrace
+    unique_id: nodestate_shelly_terrace
     state_topic: nodes@home/switch/shelly/terrace/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_sonoff@yardgate"
+  - name: nodestate_sonoff@yardgate
+    unique_id: nodestate_sonoff_yardgate
     state_topic: nodes@home/switch/sonoff/yardgate/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_relay@dining1"
+  - name: nodestate_relay@dining1
+    unique_id: nodestate_relay_dining1
     state_topic: nodes@home/switch/relay/dining1/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_relay@dining2"
+  - name: nodestate_relay@dining2
+    unique_id: nodestate_relay_dining2
     state_topic: nodes@home/switch/relay/dining2/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_sonoff@bedroom"
+  - name: nodestate_sonoff@bedroom
+    unique_id: nodestate_sonoff_bedroom
     state_topic: nodes@home/switch/sonoff/bedroom/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ttp223@bedroom"
+  - name: nodestate_ttp223@bedroom
+    unique_id: nodestate_ttp223_bedroom
     state_topic: nodes@home/sensor/ttp223/bedroom/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_led@kitchen"
+  - name: nodestate_led@kitchen
+    unique_id: nodestate_led_kitchen
     state_topic: nodes@home/light/led/kitchen/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_led@kitchen2"
+  - name: nodestate_led@kitchen2
+    unique_id: nodestate_led_kitchen2
     state_topic: nodes@home/light/led/kitchen2/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_gesture@kitchen"
+  - name: nodestate_gesture@kitchen
+    unique_id: nodestate_gesture_kitchen
     state_topic: nodes@home/sensor/gesture/kitchen/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_sonoff@k8200"
+  - name: nodestate_sonoff@k8200
+    unique_id: nodestate_sonoff_k8200
     state_topic: nodes@home/switch/sonoff/k8200/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_sonoff@gallery1"
+  - name: nodestate_sonoff@gallery1
+    unique_id: nodestate_sonoff_gallery1
     state_topic: nodes@home/switch/sonoff/gallery1/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_sonoff@corridor"
+  - name: nodestate_sonoff@corridor
+    unique_id: nodestate_sonoff_corridor
     state_topic: nodes@home/light/sonoff/corridor/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_electricity@utilityroom"
+  - name: nodestate_electricity@utilityroom
+    unique_id: nodestate_electricity_utilityroom
     #state_topic: nodes@home/display/pixel/kitchen/value/voltage
     state_topic: tele/tasmota_08E112/STATE
     qos: 0
@@ -136,189 +155,215 @@
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_pixel@kitchen"
+  - name: nodestate_pixel@kitchen
+    unique_id: nodestate_pixel_kitchen
     state_topic: nodes@home/display/pixel/kitchen/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ds18b20@groundfloor"
+  - name: nodestate_ds18b20@groundfloor
+    unique_id: nodestate_ds18b20_groundfloor
     state_topic: nodes@home/sensor/ds18b20/groundfloor/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ds18b20@firstfloor"
+  - name: nodestate_ds18b20@firstfloor
+    unique_id: nodestate_ds18b20_firstfloor
     state_topic: nodes@home/sensor/ds18b20/firstfloor/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_shelly@roof"
+  - name: nodestate_shelly@roof
+    unique_id: nodestate_shelly_roof
     state_topic: nodes@home/switch/shelly/roof/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_shelly@bath"
+  - name: nodestate_shelly@bath
+    unique_id: nodestate_shelly_bath
     state_topic: nodes@home/switch/shelly/bath/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_shelly@shower"
+  - name: nodestate_shelly@shower
+    unique_id: nodestate_shelly_shower
     state_topic: nodes@home/switch/shelly/shower/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_gas@utilityroom"
+  - name: nodestate_gas@utilityroom
+    unique_id: nodestate_gas_utilityroom
     state_topic: nodes@home/sensor/gas/utilityroom/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_led@corridor"
+  - name: nodestate_led@corridor
+    unique_id: nodestate_led_corridor
     state_topic: nodes@home/light/led/corridor/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_soil@garden"
+  - name: nodestate_soil@garden
+    unique_id: nodestate_soil_garden
     state_topic: nodes@home/sensor/soil/garden/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_rain@garden"
+  - name: nodestate_rain@garden
+    unique_id: nodestate_rain_garden
     state_topic: nodes@home/sensor/rain/garden/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_DHT11@utilityroom"
+  - name: nodestate_DHT11@utilityroom
+    unique_id: nodestate_DHT11_utilityroom
     state_topic: nodes@home/sensor/DHT11/utilityroom/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ds18b20@pool"
+  - name: nodestate_ds18b20@pool
+    unique_id: nodestate_ds18b20_pool
     state_topic: nodes@home/sensor/ds18b20/pool/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 2100
 
-  - name: "nodestate_ds18b20@brewery"
+  - name: nodestate_ds18b20@brewery
+    unique_id: nodestate_ds18b20_brewery
     state_topic: nodes@home/sensor/ds18b20/brewery/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_spindle@fermenter"
+  - name: nodestate_spindle@fermenter
+    unique_id: nodestate_spindle_fermenter
     state_topic: nodes@home/sensor/spindle/fermenter/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_xmastree@dining"
+  - name: nodestate_xmastree@dining
+    unique_id: nodestate_xmastree_dining
     state_topic: nodes@home/light/xmastree/dining/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_relay@garden"
+  - name: nodestate_relay@garden
+    unique_id: nodestate_relay_garden
     state_topic: nodes@home/switch/relay/garden/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_relay@garden2"
+  - name: nodestate_relay@garden2
+    unique_id: nodestate_relay_garden2
     state_topic: nodes@home/switch/relay/garden2/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ws2812@terrace1"
+  - name: nodestate_ws2812@terrace1
+    unique_id: nodestate_ws2812_terrace1
     state_topic: nodes@home/light/ws2812/terrace1/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ws2812@terrace2"
+  - name: nodestate_ws2812@terrace2
+    unique_id: nodestate_ws2812_terrace2
     state_topic: nodes@home/light/ws2812/terrace2/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ws2812@xmasstar"
+  - name: nodestate_ws2812@xmasstar
+    unique_id: nodestate_ws2812_xmasstar
     state_topic: nodes@home/light/ws2812/xmasstar/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ws2812@office"
+  - name: nodestate_ws2812@office
+    unique_id: nodestate_ws2812_office
     state_topic: nodes@home/light/ws2812/office/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_relay@hydrotower"
+  - name: nodestate_relay@hydrotower
+    unique_id: nodestate_relay_hydrotower
     state_topic: nodes@home/switch/relay/hydrotower/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ws2812@x1c"
+  - name: nodestate_ws2812@x1c
+    unique_id: nodestate_ws2812_x1c
     state_topic: nodes@home/light/ws2812/x1c/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_pitouch@corridor"
+  - name: nodestate_pitouch@corridor
+    unique_id: nodestate_pitouch_corridor
     state_topic: nodes@home/display/pitouch/corridor/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_tasmota"
+  - name: nodestate_tasmota
+    unique_id: nodestate_tasmota
     state_topic: tele/tasmota_08E112/STATE
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 1200
 
-  - name: "nodestate_ems-esp"
+  - name: nodestate_ems-esp
+    unique_id: nodestate_ems_esp
     state_topic: ems-esp/heartbeat
     qos: 0
     value_template: "ON"
     force_update: true
     off_delay: 300
 
-  - name: "nodestate_watermeter"
+  - name: nodestate_watermeter
     state_topic: watermeter/status
     qos: 0
     value_template: "ON"

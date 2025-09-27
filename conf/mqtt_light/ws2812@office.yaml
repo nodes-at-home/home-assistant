@@ -3,6 +3,7 @@
 ###
 
   - name: ws2812@office
+    unique_id: ws2812_office
     schema: json
     command_topic: nodes@home/light/ws2812/office/led
     state_topic: nodes@home/light/ws2812/office/led/state

@@ -3,43 +3,51 @@
 ###
 
   - state_topic: nodes@home/switch/relay/garden
-    name: "relay@garden_version"
+    name: relay@garden_version
+    unique_id: relay_garden_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/switch/relay/garden
-    name: "relay@garden_lastboot"
+    name: relay@garden_lastboot
+    unique_id: relay_garden_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/switch/relay/garden/value/voltage
-    name: "relay@garden_voltage"
+    name: relay@garden_voltage
+    unique_id: relay_garden_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/switch/relay/garden/value/voltage
-    name: "relay@garden_lastvoltage"
+    name: relay@garden_lastvoltage
+    unique_id: relay_garden_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/switch/relay/garden2
-    name: "relay@garden2_version"
+    name: relay@garden2_version
+    unique_id: relay_garden2_version
     qos: 0
     value_template: '{{ value }}'
 
   - state_topic: nodes@home/switch/relay/garden2
-    name: "relay@garden2_lastboot"
+    name: relay@garden2_lastboot
+    unique_id: relay_garden2_lastboot
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
 
   - state_topic: nodes@home/switch/relay/garden2/value/voltage
-    name: "relay@garden2_voltage"
+    name: relay@garden2_voltage
+    unique_id: relay_garden2_voltage
     qos: 0
     unit_of_measurement: "V"
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/switch/relay/garden2/value/voltage
-    name: "relay@garden2_lastvoltage"
+    name: relay@garden2_lastvoltage
+    unique_id: relay_garden2_lastvoltage
     qos: 0
     value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

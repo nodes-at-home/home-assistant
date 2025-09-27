@@ -3,6 +3,7 @@
 ###
 
   - name: ws2812@x1c
+    unique_id: ws2812_x1c
     schema: json
     command_topic: nodes@home/light/ws2812/x1c/led
     state_topic: nodes@home/light/ws2812/x1c/led/state

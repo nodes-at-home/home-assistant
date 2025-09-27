@@ -5,6 +5,7 @@
   - binary_sensor:
 
       - name: wallbox_state
+        unique_id: wallbox_state
         availability: "{{ states ( 'sensor.go_echarger_car_state' ) | is_number }}"
         state: >
             {% set val = states ( 'sensor.go_echarger_car_state' ) | int ( 0 ) %}
@@ -57,6 +58,7 @@
   - sensor:
 
       - name: wallbox_car_state
+        unique_id: wallbox_car_state
         state: >
             {% set val = states ( 'sensor.go_echarger_car_state' ) | int ( 0 ) %}
             {% if val == 1 %}
@@ -72,6 +74,7 @@
             {% endif %}
 
       - name: wallbox_error
+        unique_id: wallbox_error
         state: >
             {% set val = states ( 'sensor.go_echarger_error' ) | int ( 0 ) %}
             {% if val == 0 %}
@@ -90,9 +93,11 @@
 
 
       - name: wallbox_charge_remaining_duration
+        unique_id: wallbox_charge_remaining_duration
         state: "{{ timedelta ( seconds = states ( 'sensor.evcc_wallbox_charge_remaining_duration' ) | int ( 0 ) ) }} h"
 
       - name: wallbox_vehicle_soc
+        unique_id: wallbox_vehicle_soc
         unit_of_measurement: "%"
         device_class: battery
         state: >-
@@ -106,6 +111,7 @@
 
       # for debug
       - name: wallbox_energy_total_lastvalue
+        unique_id: wallbox_energy_total_lastvalue
         availability: "{{ state_attr ( 'sensor.wallbox_energy_total', 'lastvalue' ) | is_number }}"
         state: "{{ state_attr ( 'sensor.wallbox_energy_total', 'lastvalue' ) | float ( 0 ) | round ( 1 ) }}"
 
@@ -114,6 +120,7 @@
         entity_id: sensor.go_echarger_power_total
     sensor:
       - name: wallbox_power
+        unique_id: wallbox_power
         unit_of_measurement: W
         device_class: energy
         state: >
@@ -141,6 +148,7 @@
         entity_id: sensor.go_echarger_energy_total
     sensor:
       - name: wallbox_energy_total
+        unique_id: wallbox_energy_total
         unit_of_measurement: kWh
         device_class: energy
         state_class: total_increasing
@@ -169,6 +177,7 @@
         attribute: last_reset
     sensor:
       - name: wallbox_quarterhourly
+        unique_id: wallbox_quarterhourly
         unit_of_measurement: kWh
         state: "{{ state_attr ( 'sensor.wallbox_meter_quarterhourly', 'last_period' ) }}"
         attributes:

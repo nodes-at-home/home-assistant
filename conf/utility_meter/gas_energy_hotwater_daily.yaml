@@ -5,3 +5,4 @@
 source: sensor.gas_utilityroom_energy_hotwater
 cycle: daily
 delta_values: true
+unique_id: gas_energy_hotwater_daily
