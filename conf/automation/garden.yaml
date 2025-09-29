@@ -369,6 +369,9 @@
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.pool_pump_activated
+        state: 'on'
       - action: switch.turn_on
         target:
             entity_id: switch.poolpumpe
@@ -383,6 +386,9 @@
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.pool_pump_activated
         state: 'on'
     actions:
       - action: switch.turn_off
