@@ -1,0 +1,11 @@
+###
+### 29.09.2025
+###
+
+name: Sonnenaufgangsoffset
+icon: mdi:timelapse
+mode: slider
+min: 0
+max: 60
+step: 5
+unit_of_measurement: "min"

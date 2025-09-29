@@ -555,7 +555,8 @@
             data:
               entity_id: switch.adaptive_lighting_ikea_jetstrom
               use_defaults: configuration
-              max_sunrise_time: "{{ states ( 'input_datetime.standup_workday' ) }}"
+              # max_sunrise_time: "{{ states ( 'input_datetime.standup_workday' ) }}"
+              max_sunrise_time: "{{ states ( 'input_datetime.standup_workday' ) | as_timedelta - timedelta ( minutes = states ( 'input_number.light_sunrise_offset' ) | int ) }}"
         else:
           - action: adaptive_lighting.change_switch_settings
             data:

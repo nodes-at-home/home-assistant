@@ -49,7 +49,7 @@ views:
           - type: section
             label: Sonstiges
           - input_number.kitchen_desk_illuminance_threshold
-          - type: section
+          - input_number.light_sunrise_offset
       - type: entities
         title: IKEA Fernbedienungen
         show_header_toggle: false
