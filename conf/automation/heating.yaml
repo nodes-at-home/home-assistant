@@ -6,7 +6,7 @@
     id: heating_mode
     trigger:
       - platform: state
-        entity_id: select.thermostat_hc1_mode
+        entity_id: select.thermostat_hc1_operating_mode
         # to: 'nofrost'
         # for: "00:00:30"
     condition:
@@ -31,14 +31,14 @@
               - choose:
                   - conditions:
                       - condition: template
-                        value_template: "{{ is_state ( 'select.thermostat_hc1_mode', 'nofrost' ) }}"
+                        value_template: "{{ is_state ( 'select.thermostat_hc1_operating_mode', 'nofrost' ) }}"
                     sequence:
                       - service: climate.turn_off
                         target:
                             entity_id: "climate.room_climate_{{ repeat.item }}"
                   - conditions:
                       - condition: template
-                        value_template: "{{ is_state ( 'select.thermostat_hc1_mode', 'eco' ) }}"
+                        value_template: "{{ is_state ( 'select.thermostat_hc1_operating_mode', 'eco' ) }}"
                     sequence:
                       - service: climate.set_hvac_mode
                         target:
@@ -52,7 +52,7 @@
                             preset_mode: eco
                   - conditions:
                       - condition: template
-                        value_template: "{{ is_state ( 'select.thermostat_hc1_mode', 'heat' ) or is_state ( 'select.thermostat_hc1_mode', 'auto' ) }}"
+                        value_template: "{{ is_state ( 'select.thermostat_hc1_operating_mode', 'heat' ) or is_state ( 'select.thermostat_hc1_operating_mode', 'auto' ) }}"
                     sequence:
                       - service: climate.set_hvac_mode
                         target:
@@ -69,27 +69,18 @@
     id: heating_update_room
     trigger:
       - platform: state
-        entity_id: input_select.heating_templevel_arbeitszimmer
-      - platform: state
-        entity_id: input_select.heating_templevel_bad
-      - platform: state
-        entity_id: input_select.heating_templevel_dusche
-      - platform: state
-        entity_id: input_select.heating_templevel_esszimmer
-      - platform: state
-        entity_id: input_select.heating_templevel_flur
-      - platform: state
-        entity_id: input_select.heating_templevel_galerie
-      - platform: state
-        entity_id: input_select.heating_templevel_kinderzimmer
-      - platform: state
-        entity_id: input_select.heating_templevel_kuche
-      - platform: state
-        entity_id: input_select.heating_templevel_schlafzimmer
-      - platform: state
-        entity_id: input_select.heating_templevel_wohnzimmer
-      - platform: state
-        entity_id: input_select.heating_templevel_hauswirtschaftsraum
+        entity_id: 
+          - input_select.heating_templevel_arbeitszimmer
+          - input_select.heating_templevel_bad
+          - input_select.heating_templevel_dusche
+          - input_select.heating_templevel_esszimmer
+          - input_select.heating_templevel_flur
+          - input_select.heating_templevel_galerie
+          - input_select.heating_templevel_kinderzimmer
+          - input_select.heating_templevel_kuche
+          - input_select.heating_templevel_schlafzimmer
+          - input_select.heating_templevel_wohnzimmer
+          - input_select.heating_templevel_hauswirtschaftsraum
     condition:
       - condition: state
         entity_id: binary_sensor.prod_mode
