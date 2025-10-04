@@ -26,8 +26,8 @@ entities:
     - binary_sensor.nodestate_dht11_utilityroom
     - binary_sensor.nodestate_ws2812_x1c
     - binary_sensor.nodestate_ws2812_office
+    - binary_sensor.nodestate_lux_dining
     - binary_sensor.nodestate_pitouch_corridor
     - binary_sensor.nodestate_tasmota
     - binary_sensor.nodestate_ems_esp
     - binary_sensor.nodestate_watermeter
-    - binary_sensor.nodestate_lux_dining
