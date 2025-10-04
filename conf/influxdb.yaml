@@ -138,27 +138,34 @@
         - sensor.thermostat_kuche_temperature
         - sensor.thermostat_schlafziummer_temperature
         - sensor.thermostat_wohnzimmer_temperature
-        - sensor.boiler_current_flow_temperature
-        - sensor.boiler_return_temperature
-        - sensor.boiler_outside_temperature
-        - binary_sensor.boiler_gas
-        - binary_sensor.boiler_heating_active
-        - binary_sensor.boiler_dhw_charging
-        - binary_sensor.boiler_heating_pump
-        - number.boiler_heating_temperature
-        - number.boiler_selected_flow_temperature
-        - number.boiler_dhw_selected_temperature
-        - number.thermostat_hc1_selected_room_temperature
-        - number.thermostat_hc1_heat_temperature
-        - number.thermostat_hc1_room_temperature_from_remote
-        - number.thermostat_hc1_summer_temperature
-        - number.thermostat_hc1_nofrost_temperature
-        - number.thermostat_hc1_eco_temperature
-        - sensor.boiler_burner_current_power
-        - sensor.thermostat_hc1_heat_temperature
-        - sensor.boiler_system_pressure
-        - sensor.boiler_dhw_current_extern_temperature
-        - sensor.boiler_dhw_current_intern_temperature
+        - sensor.ems_esp_boiler_current_flow_temperature
+        - sensor.ems_esp_boiler_return_temperature
+        - sensor.ems_esp_boiler_outside_temperature
+        - binary_sensor.ems_esp_boiler_gas
+        - binary_sensor.ems_esp_boiler_heating_active
+        - binary_sensor.ems_esp_boiler_dhw_active
+        - binary_sensor.ems_esp_boiler_dhw_charging
+        - binary_sensor.ems_esp_boiler_heating_pump
+        - number.ems_esp_boiler_heating_temperature
+        - number.ems_esp_boiler_selected_flow_temperature
+        - number.ems_esp_boiler_dhw_selected_temperature
+        - number.ems_esp_boiler_dhw_set_temperature
+        - sensor.ems_esp_boiler_system_pressure
+        - sensor.ems_esp_boiler_dhw_current_extern_temperature
+        - sensor.ems_esp_boiler_dhw_current_intern_temperature
+        - sensor.ems_esp_boiler_burner_current_power
+        - number.ems_esp_thermostat_hc1_selected_room_temperature
+        - number.ems_esp_thermostat_hc1_heat_temperature
+        - sensor.ems_esp_thermostat_hc1_current_room_temperature
+        - number.ems_esp_thermostat_hc1_summer_temperature
+        - number.ems_esp_thermostat_hc1_nofrost_temperature
+        - number.ems_esp_thermostat_hc1_eco_temperature
+        - sensor.ems_esp_thermostat_hc1_heat_temperature
+        - sensor.ems_esp_thermostat_hc1_selected_room_temperature
+        - sensor.ems_esp_thermostat_hc1_design_temperature
+        - sensor.ems_esp_thermostat_hc1_min_flow_temperature
+        - sensor.ems_esp_thermostat_hc1_max_flow_temperature
+        - sensor.ems_esp_thermostat_hc1_rf_room_temperature_sensor
         - input_number.electricity_price_in
         - input_number.electricity_price_out
         - input_number.gas_price

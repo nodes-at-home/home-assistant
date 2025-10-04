@@ -6,7 +6,7 @@
     id: heating_mode
     trigger:
       - platform: state
-        entity_id: select.thermostat_hc1_operating_mode
+        entity_id: select.ems_esp_thermostat_hc1_operating_mode
         # to: 'nofrost'
         # for: "00:00:30"
     condition:
@@ -31,14 +31,14 @@
               - choose:
                   - conditions:
                       - condition: template
-                        value_template: "{{ is_state ( 'select.thermostat_hc1_operating_mode', 'nofrost' ) }}"
+                        value_template: "{{ is_state ( 'select.ems_esp_thermostat_hc1_operating_mode', 'nofrost' ) }}"
                     sequence:
                       - service: climate.turn_off
                         target:
                             entity_id: "climate.room_climate_{{ repeat.item }}"
                   - conditions:
                       - condition: template
-                        value_template: "{{ is_state ( 'select.thermostat_hc1_operating_mode', 'eco' ) }}"
+                        value_template: "{{ is_state ( 'select.ems_esp_thermostat_hc1_operating_mode', 'eco' ) }}"
                     sequence:
                       - service: climate.set_hvac_mode
                         target:
@@ -52,7 +52,7 @@
                             preset_mode: eco
                   - conditions:
                       - condition: template
-                        value_template: "{{ is_state ( 'select.thermostat_hc1_operating_mode', 'heat' ) or is_state ( 'select.thermostat_hc1_operating_mode', 'auto' ) }}"
+                        value_template: "{{ is_state ( 'select.ems_esp_thermostat_hc1_operating_mode', 'heat' ) or is_state ( 'select.ems_esp_thermostat_hc1_operating_mode', 'auto' ) }}"
                     sequence:
                       - service: climate.set_hvac_mode
                         target:
@@ -292,7 +292,7 @@
       - platform: state
         entity_id: input_number.circulating_pump_running_above_temp
       - platform: state
-        entity_id: sensor.boiler_dhw_curtemp
+        entity_id: sensor.ems_esp_boiler_dhw_current_intern_temperature
       - platform: state
         entity_id: switch.shelly_utilityroom_circulatingpump
       - platform: state
@@ -305,7 +305,7 @@
       - choose:
           - conditions:
               - condition: template
-                value_template: "{{ states ( 'switch.shelly_utilityroom_circulatingpump' ) == 'off' and states ( 'sensor.boiler_dhw_curtemp' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+                value_template: "{{ states ( 'switch.shelly_utilityroom_circulatingpump' ) == 'off' and states ( 'sensor.ems_esp_boiler_dhw_current_intern_temperature' ) | float >= states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
             sequence:
               - service: switch.turn_on
                 entity_id:
@@ -315,7 +315,7 @@
                     - input_boolean.circulating_pump_running_disinfection
           - conditions:
               - condition: template
-                value_template: "{{ states ( 'input_boolean.circulating_pump_running_disinfection' ) == 'on' and states ( 'sensor.boiler_dhw_curtemp' ) | float < states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
+                value_template: "{{ states ( 'input_boolean.circulating_pump_running_disinfection' ) == 'on' and states ( 'sensor.ems_esp_boiler_dhw_current_intern_temperature' ) | float < states ( 'input_number.circulating_pump_running_above_temp' ) | float }}"
             sequence:
               - service: switch.turn_off
                 entity_id:
@@ -330,7 +330,7 @@
       - trigger: time_pattern
         minutes: '/1'
       - trigger: state
-        entity_id: select.thermostat_hc1_control
+        entity_id: select.ems_esp_thermostat_hc1_control_device
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
@@ -338,21 +338,21 @@
     actions:
       - if:
           - condition: template
-            value_template: "{{ states ( 'select.thermostat_hc1_control') == 'off' }}"
+            value_template: "{{ states ( 'select.ems_esp_thermostat_hc1_control_device') == 'off' }}"
         then:
           - if:
               - condition: numeric_state
-                entity_id: number.thermostat_hc1_room_temperature_from_remote
+                entity_id: number.ems_esp_thermostat_hc1_room_temperature_from_remote
                 above: -1
             then:
               - action: number.set_value
                 target:
-                    entity_id: number.thermostat_hc1_room_temperature_from_remote
+                    entity_id: number.ems_esp_thermostat_hc1_room_temperature_from_remote
                 data:
                     value: -1
         else:
           - action: number.set_value
             target:
-                entity_id: number.thermostat_hc1_room_temperature_from_remote
+                entity_id: number.ems_esp_thermostat_hc1_room_temperature_from_remote
             data:
                 value: "{{ state_attr ( 'climate.room_climate_' + states ( 'input_select.heating_leading_room_remote_thermostat' ) | lower, 'current_temperature' ) }}"

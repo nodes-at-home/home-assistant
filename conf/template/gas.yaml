@@ -5,11 +5,11 @@
   - binary_sensor:
 
       - name: boiler_gas_state_badge
-        state: "{{ states ( 'binary_sensor.boiler_gas' ) }}"
+        state: "{{ states ( 'binary_sensor.ems_esp_boiler_gas' ) }}"
         icon: mdi:fire
         attributes:
             icon_color: >
-                {% if ( states ( 'binary_sensor.boiler_gas' ) == "on" ) %}
+                {% if ( states ( 'binary_sensor.ems_esp_boiler_gas' ) == "on" ) %}
                     gold
                 {% else %}
                     silver
