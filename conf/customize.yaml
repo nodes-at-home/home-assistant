@@ -449,6 +449,27 @@ sensor.sonoff_pool_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
+sensor.lux_dining_ambientlight:
+    friendly_name: Lichtstärke
+    icon: mdi:sun-wireless
+
+sensor.lux_dining_voltage:
+    friendly_name: 'Lux Sensor'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.lux_dining_lastvoltage:
+    friendly_name: 'Lux Sensor'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.lux_dining_lastboot:
+    friendly_name: 'Lux Sensor'
+    entity_picture: /local/images/nodemcu.jpg
+
+sensor.lux_dining_version:
+    friendly_name: 'Lux Sensor'
+    entity_picture: /local/images/nodemcu.jpg
+
+#------------------------------------------------------------------------------
 binary_sensor.ttp223_bedroom_touch1:
     friendly_name: 'Touchsensor 1 Schlafzimmer'
 

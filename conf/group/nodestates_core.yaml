@@ -30,3 +30,4 @@ entities:
     - binary_sensor.nodestate_tasmota
     - binary_sensor.nodestate_ems_esp
     - binary_sensor.nodestate_watermeter
+    - binary_sensor.nodestate_lux_dining

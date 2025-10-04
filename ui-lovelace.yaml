@@ -236,8 +236,8 @@ views:
                 entity: input_boolean.climate_absence_goon
                 name: Anlassen
                 icon: mdi:hvac
-              - type: markdown
-                content: " "
+              - type: tile
+                entity: sensor.lux_dining_ambientlight
               - type: markdown
                 content: " "
           - type: horizontal-stack

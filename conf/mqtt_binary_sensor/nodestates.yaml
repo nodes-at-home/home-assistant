@@ -339,6 +339,14 @@
     force_update: true
     off_delay: 1200
 
+  - name: nodestate_lux@dining
+    unique_id: nodestate_lux_dining
+    state_topic: nodes@home/sensor/lux/dining/value/voltage
+    qos: 0
+    value_template: "ON"
+    force_update: true
+    off_delay: 600
+
   - name: nodestate_pitouch@corridor
     unique_id: nodestate_pitouch_corridor
     state_topic: nodes@home/display/pitouch/corridor/value/voltage

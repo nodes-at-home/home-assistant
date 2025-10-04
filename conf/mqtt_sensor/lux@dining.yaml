@@ -1,0 +1,35 @@
+###
+### 04.10.2025
+###
+
+  - state_topic: nodes@home/sensor/lux/dining/value/ambientlight
+    name: lux@dining_ambientlight
+    unique_id: lux_dining_ambientlight
+    qos: 0
+    unit_of_measurement: "lux"
+    value_template: '{{ value | round ( 0 )}}'
+
+  - state_topic: nodes@home/sensor/lux/dining/value/voltage
+    name: lux@dining_voltage
+    unique_id: lux_dining_voltage
+    qos: 0
+    unit_of_measurement: "V"
+    value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
+
+  - state_topic: nodes@home/sensor/lux/dining/value/voltage
+    name: lux@dining_lastvoltage
+    unique_id: lux_dining_lastvoltage
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'
+
+  - state_topic: nodes@home/sensor/lux/dining
+    name: lux@dining_version
+    unique_id: lux_dining_version
+    qos: 0
+    value_template: '{{ value }}'
+
+  - state_topic: nodes@home/sensor/lux/dining
+    name: lux@dining_lastboot
+    unique_id: lux_dining_lastboot
+    qos: 0
+    value_template: '{{ as_timestamp ( now () ) | timestamp_custom ( "%d.%m.%Y %H:%M:%S", true ) }}'

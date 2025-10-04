@@ -181,6 +181,7 @@
         - sensor.hochbeet_hinten_soil_temperature
         - sensor.hochbeet_vorne_soil_humidity
         - sensor.hochbeet_vorne_soil_temperature
+        - sensor.lux_dining_ambientlight
   ignore_attributes:
     - friendly_name
     - icon
