@@ -871,7 +871,6 @@ views:
             name: Wärmebedarf
           - switch.shelly_utilityroom_circulatingpump
 
-          - sensor.ems_esp_thermostat_hc1_rf_room_temperature_sensor
           - sensor.ems_esp_boiler_outside_temperature
           - number.ems_esp_boiler_selected_flow_temperature
           - number.ems_esp_boiler_heating_temperature
@@ -880,6 +879,11 @@ views:
           - number.ems_esp_boiler_dhw_selected_temperature
           - sensor.ems_esp_boiler_dhw_current_extern_temperature
           - sensor.ems_esp_boiler_dhw_current_intern_temperature
+
+          - sensor.ems_esp_thermostat_hc1_current_room_temperature
+          - sensor.ems_esp_thermostat_hc1_rf_room_temperature_sensor
+          - number.ems_esp_thermostat_hc1_selected_room_temperature
+
           - sensor.ds18b20_groundfloor_temperature_lounge1
           - sensor.ds18b20_groundfloor_temperature_lounge2
           - sensor.ds18b20_groundfloor_temperature_dining1

@@ -161,7 +161,7 @@
         - number.ems_esp_thermostat_hc1_nofrost_temperature
         - number.ems_esp_thermostat_hc1_eco_temperature
         - sensor.ems_esp_thermostat_hc1_heat_temperature
-        - sensor.ems_esp_thermostat_hc1_selected_room_temperature
+        - number.ems_esp_thermostat_hc1_selected_room_temperature
         - sensor.ems_esp_thermostat_hc1_design_temperature
         - sensor.ems_esp_thermostat_hc1_min_flow_temperature
         - sensor.ems_esp_thermostat_hc1_max_flow_temperature
@@ -195,4 +195,9 @@
     - cron pattern
     - device_class_str
     - state_class_str
+    - device_class_str
+    - min
+    - max
+    - step
+    - mode_str
 
