@@ -143,9 +143,9 @@
         entity_id: group.batteries
         to: "on"
     conditions:
-    variables:
-        battery: "{{ expand ( 'group.batteries' ) | selectattr ( 'state', 'eq', 'on' ) | map ( attribute = 'attributes.friendly_name' ) | map('regex_replace', '^(\\S+)\\s(\\S+).*', '\\1 \\2') | list | join ( ', ' ) }}"
     actions:
+      - variables:
+            battery: "{{ expand ( 'group.batteries' ) | selectattr ( 'state', 'eq', 'on' ) | map ( attribute = 'attributes.friendly_name' ) | map('regex_replace', '^(\\S+)\\s(\\S+).*', '\\1 \\2') | list | join ( ', ' ) }}"
       - action: script.notify
         data:
             domain: "battery"
@@ -158,9 +158,9 @@
         entity_id: group.ev6
         to: "on"
     conditions:
-    variables:
-        warning: "{{ expand ( 'group.ev6' ) | selectattr ( 'state', 'eq', 'on' ) | map ( attribute = 'attributes.friendly_name' ) | map('regex_replace', '^(\\S+\\s)(.*)', '\\2' ) | list | join ( ', ' ) }}"
     actions:
+      - variables:
+            warning: "{{ expand ( 'group.ev6' ) | selectattr ( 'state', 'eq', 'on' ) | map ( attribute = 'attributes.friendly_name' ) | map('regex_replace', '^(\\S+\\s)(.*)', '\\2' ) | list | join ( ', ' ) }}"
       - action: script.notify
         data:
             domain: "kia_ev6"
