@@ -5,7 +5,7 @@
 name: Backup State of Charge
 mode: box
 min: 0
-max: 75
+max: 100
 step: 1
 unit_of_measurement: "%"
 # initial: 0
