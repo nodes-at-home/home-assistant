@@ -130,10 +130,12 @@ views:
           - sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_heute
           - sensor.solcast_pv_forecast_zeitpunkt_spitzenleistung_morgen
       - type: entities
-        title: Fernseher
+        title: Gerätestandby
         show_header_toggle: false
         entities:
-          - input_datetime.television_switch_on_at
+          - input_datetime.standby_television_switch_on_at
+          - input_datetime.standby_desk_lounge_switch_on_at
+          - input_datetime.standby_desk_office_switch_on_at
 
   - title: Benachrichtigungen
     path: notifications
