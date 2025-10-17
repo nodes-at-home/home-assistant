@@ -473,6 +473,10 @@
         to: "off"
     conditions:
       - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+      - condition: state
         entity_id: input_boolean.gesture_kitchen_activated
         state: "on"
     actions:
@@ -489,6 +493,26 @@
           - action: light.turn_off
             target:
                 entity_id: light.led_kitchen_led
+
+  - alias: lights_outdoor_switched_by_motion
+    id: lights_outdoor_switched_by_motion
+    triggers:
+      - trigger: state
+        entity_id: binary_sensor.sensor_1
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+      - or:
+          - condition: sun
+            before: sunrise
+          - condition: sun
+            after: sunset
+    actions:
+      - action: "light.turn_{{ 'on' if trigger.to_state.state == 'on' else 'off' }}"
+        target:
+            entity_id: light.shelly_garagentor
 
   - alias: lights_outdoor_on_at_night
     id: lights_outdoor_on_at_night

@@ -9,7 +9,7 @@
       - light.shelly_terasse
       - light.shelly_hinterhof
       - light.shelly_garagentor
-      - light.shelly_gartentor
+      # - light.shelly_gartentor
       - light.shelly_lounge_schwibbogen1
       - light.shelly_lounge_schwibbogen2
       - light.shelly_entrance_star
