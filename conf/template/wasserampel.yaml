@@ -14,6 +14,8 @@
             mdi:alert-circle
           {% elif val == 'rot' %}
             mdi:minus-circle
+          {% elif val == 'außer Betrieb' %}
+            mdi:information-off
           {% endif %}
         attributes:
             text: '{{ states.sensor.wasserampel_text.state }}'
@@ -25,5 +27,7 @@
                 gold
               {% elif val == 'rot' %}
                 red
+              {% elif val == 'außer Betrieb' %}
+                grey
               {% endif %}
             
