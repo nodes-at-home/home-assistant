@@ -713,7 +713,7 @@ views:
             label: Vorhersage
           - sensor.openweathermap_forecast_temperature
           - sensor.openweathermap_forecast_condition
-          - sensor.ems_esp_boiler_outside_temperature
+          - sensor.boiler_outside_temperature
       - type: entities
         title: Start
         show_header_toggle: false
@@ -786,66 +786,66 @@ views:
         title: Gastherme
         show_header_toggle: false
         entities:
-          - entity: text.ems_esp_thermostat_date_time
+          - entity: text.thermostat_date_time
             name: Interne Uhr
-          - entity: select.ems_esp_thermostat_hc1_operating_mode
+          - entity: select.thermostat_hc1_operating_mode
             name: betriebsart
           - type: section
             label: Vorlauf
-          - entity: number.ems_esp_boiler_selected_flow_temperature
+          - entity: number.boiler_selected_flow_temperature
             name: geregelte Vorlauftemperatur
-          - entity: number.ems_esp_boiler_heating_temperature
+          - entity: number.boiler_heating_temperature
             name: ungeregelte Vorlauftemperatur
           - type: section
             label: Warmwasser
-          - entity: select.ems_esp_boiler_dhw_comfort
+          - entity: select.boiler_dhw_comfort
             name: Komfortmodus
-          - entity: number.ems_esp_boiler_dhw_selected_temperature
+          - entity: number.boiler_dhw_selected_temperature
             name: Zieltemperatur
-          - entity: number.ems_esp_boiler_dhw_flow_temperature_offset
+          - entity: number.boiler_dhw_flow_temperature_offset
             name: Offset Vorlauftemperatur
-          - entity: number.ems_esp_boiler_dhw_disinfection_temperature
+          - entity: number.boiler_dhw_disinfection_temperature
             name: Desinfektionstemperatur
           - type: section
             label: Thermostat
-          - entity: sensor.ems_esp_thermostat_hc1_heating_type
+          - entity: sensor.thermostat_hc1_heating_type
             name: Heizungsart
-          - entity: sensor.ems_esp_thermostat_hc1_design_temperature
+          - entity: sensor.thermostat_hc1_design_temperature
             name: Auslegungstemperatur
-          - entity: sensor.ems_esp_thermostat_hc1_min_flow_temperature
+          - entity: sensor.thermostat_hc1_min_flow_temperature
             name: min. Vorlauftemperatur
-          - entity: sensor.ems_esp_thermostat_hc1_max_flow_temperature
+          - entity: sensor.thermostat_hc1_max_flow_temperature
             name: max. Vorlauftemperatur
           - type: divider
-          - entity: select.ems_esp_thermostat_hc1_heatup
+          - entity: select.thermostat_hc1_heatup
             name: Aufheizmodus
-          - entity: number.ems_esp_thermostat_hc1_selected_room_temperature
+          - entity: number.thermostat_hc1_selected_room_temperature
             name: Zieltemperatur
-          - entity: number.ems_esp_thermostat_hc1_heat_temperature
+          - entity: number.thermostat_hc1_heat_temperature
             name: Heiztemperatur
-          - entity: number.ems_esp_thermostat_hc1_eco_temperature
+          - entity: number.thermostat_hc1_eco_temperature
             name: Absenktemperatur
-          - entity: number.ems_esp_thermostat_hc1_nofrost_temperature
+          - entity: number.thermostat_hc1_nofrost_temperature
             name: Außerbetriebtemperatur
-          - entity: number.ems_esp_thermostat_hc1_summer_temperature
+          - entity: number.thermostat_hc1_summer_temperature
             name: Sommerbetrieb ab
           - type: section
             label: Remote Thermostat
-          - entity: select.ems_esp_thermostat_hc1_control_device
+          - entity: select.thermostat_hc1_control_device
             name: Referenzthermostat
           - entity: input_select.heating_leading_room_remote_thermostat
             name: Referenzraum
-          - entity: sensor.ems_esp_thermostat_hc1_current_room_temperature
+          - entity: sensor.thermostat_hc1_current_room_temperature
             name: Raumtemperatur
-          - entity: select.ems_esp_thermostat_hc1_room_influence
+          - entity: select.thermostat_hc1_room_influence
             name: Raumeinfluss
-          - entity: number.ems_esp_thermostat_hc1_room_influence_factor
+          - entity: number.thermostat_hc1_room_influence_factor
             name: Raumeinflussfaktor
           - type: section
             label: Sonstiges
-          - entity: sensor.ems_esp_boiler_last_error_code
+          - entity: sensor.boiler_last_error_code
             name: Letzter Fehlercode
-          - entity: sensor.ems_esp_boiler_service_code_number
+          - entity: sensor.boiler_service_code_number
             name: Servicecode
       - type: entities
         title: Raumtemperaturen

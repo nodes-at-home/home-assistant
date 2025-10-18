@@ -446,91 +446,93 @@ views:
     path: heating
     panel: false
     badges:
-      - binary_sensor.ems_esp_boiler_heating_active
-      - binary_sensor.ems_esp_boiler_tapwater_active
-      - binary_sensor.ems_esp_boiler_gas
-      - binary_sensor.ems_esp_boiler_heating_pump
-      - binary_sensor.ems_esp_boiler_dhw_charging
-      - binary_sensor.ems_esp_boiler_dhw_active
-      - binary_sensor.ems_esp_boiler_dhw_3_way_valve_active
+      - binary_sensor.boiler_heating_active
+      - binary_sensor.boiler_tapwater_active
+      - binary_sensor.boiler_gas
+      - binary_sensor.boiler_heating_pump
+      - binary_sensor.boiler_dhw_charging
+      - binary_sensor.boiler_dhw_active
+      - binary_sensor.boiler_dhw_3_way_valve_active
     cards:
       - type: entities
         title: Einstellungen Gastherme
         show_header_toggle: false
         entities:
-          - entity: text.ems_esp_thermostat_date_time
+          - entity: text.thermostat_date_time
             name: datetime
           - type: divider
-          - entity: switch.ems_esp_boiler_heating_activated
+          - entity: switch.boiler_heating_activated
             name: heating activated
-          - entity: number.ems_esp_boiler_selected_flow_temperature
+          - entity: number.boiler_selected_flow_temperature
             name: selected flow temperarture
-          - entity: number.ems_esp_boiler_heating_temperature
+          - entity: number.boiler_heating_temperature
             name: heating temperature
           - type: divider
-          - entity: switch.ems_esp_boiler_dhw_activated
+          - entity: switch.boiler_dhw_activated
             name: dhw activated
-          - entity: number.ems_esp_boiler_dhw_selected_temperature
+          - entity: number.boiler_dhw_selected_temperature
             name: dhw selected temperarture
-          - entity: number.ems_esp_boiler_dhw_flow_temperature_offset
+          - entity: number.boiler_dhw_flow_temperature_offset
             name: dhw flow temperarture offset
-          - entity: number.ems_esp_boiler_dhw_disinfection_temperature
+          - entity: number.boiler_dhw_disinfection_temperature
             name: dhw disinfection temperarture
           - type: divider
-          - entity: select.ems_esp_thermostat_hc1_operating_mode
+          - entity: select.thermostat_hc1_operating_mode
             name: hc1 operating mode
-          - entity: select.ems_esp_thermostat_hc1_control_device
+          - entity: select.thermostat_hc1_control_device
             name: hc1 control device
-          - entity: select.ems_esp_thermostat_hc1_room_influence
+          - entity: select.thermostat_hc1_room_influence
             name: hc1 room influence
-          - entity: number.ems_esp_thermostat_hc1_selected_room_temperature
+          - entity: number.thermostat_hc1_selected_room_temperature
             name: hc1 selected room temperarture
-          - entity: number.ems_esp_thermostat_hc1_nofrost_temperature
+          - entity: number.thermostat_hc1_nofrost_temperature
             name: hc1 nofrost temperarture
-          - entity: number.ems_esp_thermostat_hc1_eco_temperature
+          - entity: number.thermostat_hc1_eco_temperature
             name: hc1 eco temperarture
-          - entity: number.ems_esp_thermostat_hc1_heat_temperature
+          - entity: number.thermostat_hc1_heat_temperature
             name: hc1 heat temperarture
-          - entity: number.ems_esp_thermostat_hc1_summer_temperature
+          - entity: number.thermostat_hc1_summer_temperature
             name: hc1 summer temperarture
           - type: divider
-          - entity: switch.ems_esp_boiler_dhw_one_time_charging
+          - entity: switch.boiler_dhw_one_time_charging
             name: dhw one time charging
-          - entity: switch.ems_esp_boiler_dhw_disinfecting
+          - entity: switch.boiler_dhw_disinfecting
             name: dhw disinfecting
       - type: entities
         title: Messwerte Gastherme
         show_header_toggle: false
         entities:
-          - entity: sensor.ems_esp_thermostat_hc1_heating_type
+          - entity: sensor.thermostat_hc1_heating_type
             name: heating type
-          - entity: sensor.ems_esp_thermostat_hc1_design_temperature
+            icon: mdi:heating-coil
+          - type: divider
+          - entity: sensor.thermostat_hc1_design_temperature
             name: design termperature
-          - entity: sensor.ems_esp_thermostat_hc1_min_flow_temperature
+          - entity: sensor.thermostat_hc1_min_flow_temperature
             name: min flow temperarture
-          - entity: sensor.ems_esp_thermostat_hc1_max_flow_temperature
+          - entity: sensor.thermostat_hc1_max_flow_temperature
             name: max flow temperarture
           - type: divider
-          - entity: sensor.ems_esp_thermostat_hc1_rf_room_temperature_sensor
+          - entity: sensor.thermostat_hc1_rf_room_temperature_sensor
             name: rf room temperature
           - type: divider
-          - entity: sensor.ems_esp_boiler_outside_temperature
+          - entity: sensor.boiler_outside_temperature
             name: outside temperarture
-          - entity: sensor.ems_esp_boiler_current_flow_temperature
+          - entity: sensor.boiler_current_flow_temperature
             name: current flow temperarture
-          - entity: sensor.ems_esp_boiler_return_temperature
+          - entity: sensor.boiler_return_temperature
             name: return temperarture
           - type: divider
-          - entity: sensor.ems_esp_boiler_system_pressure
+          - entity: sensor.boiler_system_pressure
             name: system pressure
-          - entity: sensor.ems_esp_boiler_burner_current_power
+          - entity: sensor.boiler_burner_current_power
             name: burner current power
-          - entity: sensor.ems_esp_boiler_heating_pump_modulation
+          - entity: sensor.boiler_heating_pump_modulation
             name: heating pump modulation
           - type: divider
-          - entity: sensor.ems_esp_boiler_dhw_current_extern_temperature
+          - entity: sensor.boiler_dhw_current_extern_temperature
             name: current extern temperarture
-          - entity: sensor.ems_esp_boiler_dhw_current_intern_temperature
+          - entity: sensor.boiler_dhw_current_intern_temperature
             name: current intern temperarture
       - type: entities
         title: Fußboden Erdgeschoss
@@ -803,7 +805,7 @@ views:
           - sensor.rain_garden_precipitation_last7d
           - entity: sensor.wasserampel_text
             name: Wasserampel
-          - entity: sensor.ems_esp_boiler_outside_temperature
+          - entity: sensor.boiler_outside_temperature
             name: Außen
           - sensor.gemusebeet_vorne_soil_humidity
           - sensor.gemusebeet_vorne_soil_temperature
@@ -853,36 +855,36 @@ views:
       - type: history-graph
         hours_to_show: 24
         entities:
-          - entity: binary_sensor.ems_esp_boiler_heating_active
+          - entity: binary_sensor.boiler_heating_active
             name: Heizung aktiv
-          - entity: binary_sensor.ems_esp_boiler_dhw_active
+          - entity: binary_sensor.boiler_dhw_active
             name: Warmwasser aktiv
-          - entity: binary_sensor.ems_esp_boiler_gas
+          - entity: binary_sensor.boiler_gas
             name: Gasbrenner
-          - entity: binary_sensor.ems_esp_boiler_heating_pump
+          - entity: binary_sensor.boiler_heating_pump
             name: Heizungspumpe
-          - entity: binary_sensor.ems_esp_boiler_dhw_3_way_valve_active
+          - entity: binary_sensor.boiler_dhw_3_way_valve_active
             name: 3-Wege Ventil
-          - entity: binary_sensor.ems_esp_boiler_dhw_charging
+          - entity: binary_sensor.boiler_dhw_charging
             name: Wassererwärmng
-          - entity: binary_sensor.ems_esp_boiler_dhw_recharging
+          - entity: binary_sensor.boiler_dhw_recharging
             name: wiederholte Wassererwärmng
           - entity: switch.zentralheizungsrelais
             name: Wärmebedarf
           - switch.shelly_utilityroom_circulatingpump
 
-          - sensor.ems_esp_boiler_outside_temperature
-          - number.ems_esp_boiler_selected_flow_temperature
-          - number.ems_esp_boiler_heating_temperature
-          - sensor.ems_esp_boiler_current_flow_temperature
-          - sensor.ems_esp_boiler_return_temperature
-          - number.ems_esp_boiler_dhw_selected_temperature
-          - sensor.ems_esp_boiler_dhw_current_extern_temperature
-          - sensor.ems_esp_boiler_dhw_current_intern_temperature
+          - sensor.boiler_outside_temperature
+          - number.boiler_selected_flow_temperature
+          - number.boiler_heating_temperature
+          - sensor.boiler_current_flow_temperature
+          - sensor.boiler_return_temperature
+          - number.boiler_dhw_selected_temperature
+          - sensor.boiler_dhw_current_extern_temperature
+          - sensor.boiler_dhw_current_intern_temperature
 
-          - sensor.ems_esp_thermostat_hc1_current_room_temperature
-          - sensor.ems_esp_thermostat_hc1_rf_room_temperature_sensor
-          - number.ems_esp_thermostat_hc1_selected_room_temperature
+          - sensor.thermostat_hc1_current_room_temperature
+          - sensor.thermostat_hc1_rf_room_temperature_sensor
+          - number.thermostat_hc1_selected_room_temperature
 
           - sensor.ds18b20_groundfloor_temperature_lounge1
           - sensor.ds18b20_groundfloor_temperature_lounge2
@@ -902,9 +904,9 @@ views:
           - sensor.ds18b20_firstfloor_temperature_bedroom
           - sensor.ds18b20_firstfloor_temperature_flow
 
-          - sensor.ems_esp_boiler_heating_pump_modulation
-          - sensor.ems_esp_boiler_burner_current_power
-          - sensor.ems_esp_boiler_system_pressure
+          - sensor.boiler_heating_pump_modulation
+          - sensor.boiler_burner_current_power
+          - sensor.boiler_system_pressure
 
   - title: Stromdiagramm
     path: electricitygraph

@@ -19,7 +19,7 @@
           - input_number.climate_min_forecast_temperature
           - input_number.climate_min_forecast_temperature_sunny
           - input_number.climate_min_outdoor_temperature
-          - sensor.ems_esp_boiler_outside_temperature
+          - sensor.boiler_outside_temperature
       - trigger: state
         entity_id:
           - binary_sensor.fenster_schlafzimmer
@@ -63,7 +63,7 @@
                 entity_id: sensor.openweathermap_forecast_temperature
                 above: input_number.climate_min_forecast_temperature_sunny
       - condition: numeric_state
-        entity_id: sensor.ems_esp_boiler_outside_temperature
+        entity_id: sensor.boiler_outside_temperature
         above: input_number.climate_min_outdoor_temperature
     actions:
       - repeat:
@@ -256,7 +256,7 @@
             immediate_turn_off: "{{ states ( 'input_boolean.climate_absence_goon' ) != 'on' }}"
             window_turn_off: false
       - trigger: numeric_state
-        entity_id: sensor.ems_esp_boiler_outside_temperature
+        entity_id: sensor.boiler_outside_temperature
         below: input_number.climate_min_outdoor_temperature
         variables:
             immediate_turn_off: false
