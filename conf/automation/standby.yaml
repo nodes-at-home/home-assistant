@@ -44,6 +44,8 @@
         state: 'home'
       - condition: time
         after: input_datetime.standby_desk_lounge_switch_on_at
+      - condition: time
+        before: input_datetime.standby_desk_lounge_switch_on_at
     actions:
       - action: switch.turn_on
         target:
@@ -67,6 +69,8 @@
         state: 'home'
       - condition: time
         after: input_datetime.standby_desk_office_switch_on_at
+      - condition: time
+        before: input_datetime.standby_desk_office_switch_on_at
     actions:
       - action: switch.turn_on
         target:
