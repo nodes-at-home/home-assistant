@@ -221,7 +221,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: tile
-                entity: sensor.ems_esp_boiler_dhw_current_intern_temperature
+                entity: sensor.boiler_dhw_current_intern_temperature
                 name: Warmwasser
                 icon: mdi:thermometer
               - type: tile
@@ -339,7 +339,7 @@ views:
                       - cool
                       - "off"
               - type: tile
-                entity: climate.ems_esp_thermostat_hc1
+                entity: climate.thermostat_hc1
                 name: Heizung
                 vertical: true
                 features:
@@ -869,9 +869,9 @@ views:
               - switch.shelly_utilityroom_circulatingpump
               - switch.shelly_utilityroom_boiler
               - switch.shelly_utilityroom_biocat
-              - entity: sensor.ems_esp_boiler_dhw_current_extern_temperature
+              - entity: sensor.boiler_dhw_current_extern_temperature
                 name: Warmwasser
-              - entity: switch.ems_esp_boiler_dhw_one_time_charging
+              - entity: switch.boiler_dhw_one_time_charging
                 name: Warmwasser sofort
               - entity: binary_sensor.rauchmelder_hauswirtsch
                 name: Rauchmelder
@@ -2215,6 +2215,7 @@ views:
   - title: Pflanzen
     path: plants
     panel: false
+    visible: false
     badges:
       - type: entity-filter
         entities:

@@ -49,5 +49,5 @@
     unique_id: gas_utilityroom_energy_hotwater
     qos: 0
     unit_of_measurement: "kWh"
-    value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 2 ) if is_state ( 'binary_sensor.ems_esp_boiler_dhw_3_way_valve_active', 'on' ) else 0 }}"
+    value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 2 ) if is_state ( 'binary_sensor.boiler_dhw_3_way_valve_active', 'on' ) else 0 }}"
     force_update: true
