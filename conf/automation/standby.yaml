@@ -4,8 +4,8 @@
 
 # tv plug is turne doff in automation lights_indoor_off_when_tv_switched_off
 
-  - alias: standby_television_switch_on_plug
-    id: standby_television_switch_on_plug
+  - alias: standby_television_switch_on
+    id: standby_television_switch_on
     triggers:
       - trigger: time
         at: input_datetime.standby_television_switch_on_at
@@ -27,23 +27,23 @@
             entity_id:
               - switch.fernseher
 
-  - alias: standby_desk_lounge_switch_on_plug
-    id: standby_desk_lounge_switch_on_plug
+  - alias: standby_desk_switch_on
+    id: standby_desk_switch_on
     triggers:
       - trigger: time
-        at: input_datetime.standby_desk_lounge_switch_on_at
+        at: input_datetime.standby_desk_switch_on_at
       - trigger: state
-        entity_id: person.undine
+        entity_id: group.family
         to: 'home'
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
       - condition: state
-        entity_id: person.undine
-        state: 'home'
+        entity_id: group.family
+        to: 'home'
       - condition: time
-        after: input_datetime.standby_desk_lounge_switch_on_at
+        after: input_datetime.standby_desk_switch_on_at
       - condition: time
         before: input_datetime.sleep
     actions:
@@ -51,30 +51,6 @@
         target:
             entity_id:
               - switch.schreibtisch_wohnzimmer
-
-  - alias: standby_desk_office_switch_on_plug
-    id: standby_desk_office_switch_on_plug
-    triggers:
-      - trigger: time
-        at: input_datetime.standby_desk_office_switch_on_at
-      - trigger: state
-        entity_id: person.andreas
-        to: 'home'
-    conditions:
-      - condition: state
-        entity_id: binary_sensor.prod_mode
-        state: 'on'
-      - condition: state
-        entity_id: person.andreas
-        state: 'home'
-      - condition: time
-        after: input_datetime.standby_desk_office_switch_on_at
-      - condition: time
-        before: input_datetime.sleep
-    actions:
-      - action: switch.turn_on
-        target:
-            entity_id:
               - switch.schreibtisch_arbeitszimmer
 
   - alias: standby_switch_off_plugs
