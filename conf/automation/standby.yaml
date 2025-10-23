@@ -41,7 +41,7 @@
         state: 'on'
       - condition: state
         entity_id: group.family
-        to: 'home'
+        state: 'home'
       - condition: time
         after: input_datetime.standby_desk_switch_on_at
       - condition: time
