@@ -303,41 +303,69 @@ views:
         cards:
           - type: horizontal-stack
             cards:
-              - type: tile
-                entity: climate.office
-                name: Büro
-                vertical: true
-                features:
-                  - type: "target-temperature"
-                  - type: "climate-hvac-modes"
-                    style: icons
-                    hvac_modes:
-                      - cool
-                      - "off"
-              - type: tile
-                entity: climate.bedroom
-                name: Schlafzimmer
-                vertical: true
-                features:
-                  - type: "target-temperature"
-                  - type: "climate-hvac-modes"
-                    style: icons
-                    hvac_modes:
-                      - cool
-                      - "off"
+              - type: custom:state-switch
+                entity: "{{ 'visible' if not states ( 'climate.office' ) in ['unknown', 'unavailable'] else 'unvisible' }}"
+                default: "unvisible"
+                states:
+                  "visible":
+                      type: tile
+                      entity: climate.office
+                      name: Büro
+                      vertical: true
+                      features:
+                        - type: "target-temperature"
+                        - type: "climate-hvac-modes"
+                          style: icons
+                          hvac_modes:
+                            - cool
+                            - "off"
+                  "unvisible":
+                      type: markdown
+                      content: " "
+                      show_empty: false
+              - type: custom:state-switch
+                entity: "{{ 'visible' if not states ( 'climate.bedroom' ) in ['unknown', 'unavailable'] else 'unvisible' }}"
+                default: "unvisible"
+                states:
+                  "visible":
+                      type: tile
+                      entity: climate.bedroom
+                      name: Büro
+                      vertical: true
+                      features:
+                        - type: "target-temperature"
+                        - type: "climate-hvac-modes"
+                          style: icons
+                          hvac_modes:
+                            - cool
+                            - "off"
+                  "unvisible":
+                      type: markdown
+                      content: " "
+                      show_empty: false
           - type: horizontal-stack
             cards:
-              - type: tile
-                entity: climate.nursery
-                name: Kinderzimmer
-                vertical: true
-                features:
-                  - type: "target-temperature"
-                  - type: "climate-hvac-modes"
-                    style: icons
-                    hvac_modes:
-                      - cool
-                      - "off"
+              - type: custom:state-switch
+                entity: "{{ 'visible' if not states ( 'climate.nursery' ) in ['unknown', 'unavailable'] else 'unvisible' }}"
+                default: "unvisible"
+                states:
+                  "visible":
+                      type: tile
+                      entity: climate.nursery
+                      name: Büro
+                      vertical: true
+                      features:
+                        - type: "target-temperature"
+                        - type: "climate-hvac-modes"
+                          style: icons
+                          hvac_modes:
+                            - cool
+                            - "off"
+                  "unvisible":
+                      type: markdown
+                      content: " "
+                      show_empty: false
+
               - type: tile
                 entity: climate.thermostat_hc1
                 name: Heizung
