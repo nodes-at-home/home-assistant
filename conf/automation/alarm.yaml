@@ -34,7 +34,7 @@
         entity_id: binary_sensor.prod_mode
         state: 'on'
       - condition: state
-        entity_id: input_boolean.e
+        entity_id: input_boolean.alarm_activated
         state: 'on'
     actions:
       - action: alarm_control_panel.alarm_arm_away
