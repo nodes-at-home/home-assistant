@@ -101,9 +101,9 @@
         unit_of_measurement: "%"
         device_class: battery
         state: >-
-            {% set soc_kia = states ( 'sensor.ev6_ev_battery_level.state' ) %}
+            {% set soc_kia = states ( 'sensor.ev6_ev_battery_level' ) %}
             {% set soc_evcc = states ( 'sensor.evcc_wallbox_vehicle_soc' ) %}
-            {% if has_value ( soc_kia ) %}
+            {% if has_value ( 'sensor.ev6_ev_battery_level' ) %}
                 {{ soc_kia | int }}
             {% else %}
                 {{ soc_evcc | int }}
