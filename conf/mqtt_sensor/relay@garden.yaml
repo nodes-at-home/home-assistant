@@ -19,6 +19,8 @@
     unique_id: relay_garden_voltage
     qos: 0
     unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/switch/relay/garden/value/voltage
@@ -44,6 +46,8 @@
     unique_id: relay_garden2_voltage
     qos: 0
     unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/switch/relay/garden2/value/voltage

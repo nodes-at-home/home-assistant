@@ -104,6 +104,8 @@ notify:
 
 frontend:
     themes: !include_dir_merge_named conf/themes
+    extra_module_url:
+      - /hacsfiles/lovelace-card-mod/card-mod.js
 
 # -------------------------------------------------------------------------------
 # integration for companion app
@@ -117,8 +119,8 @@ lovelace:
     mode: yaml
     resources:
       # https://github.com/thomasloven/lovelace-card-mod
-      - url: /hacsfiles/lovelace-card-mod/card-mod.js
-        type: module
+      # - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      #   type: module
       # https://github.com/ExperienceLovelace/ha-floorplan
       - url: /hacsfiles/ha-floorplan/floorplan.js
         type: module
@@ -148,6 +150,9 @@ lovelace:
         type: module
       # https://github.com/RomRider/apexcharts-card
       - url: /hacsfiles/apexcharts-card/apexcharts-card.js
+        type: module
+      # https://github.com/homeassistant-extras/room-summary-card
+      - url: /hacsfiles/room-summary-card/room-summary-card.js
         type: module
     dashboards:
         values-dashboard:

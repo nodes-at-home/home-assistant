@@ -6,6 +6,8 @@
     name: "ws2812@terrace2_voltage"
     qos: 0
     unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
     # unit_of_measurement: "mV"
     # value_template: '{{ value_json.value }}'

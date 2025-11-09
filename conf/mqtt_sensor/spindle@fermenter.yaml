@@ -7,6 +7,8 @@
     unique_id: spindle_fermenter_temperature
     qos: 0
     unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
     value_template: '{{ value_json.value | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/spindle/fermenter/value/tilt

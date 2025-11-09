@@ -7,18 +7,24 @@
     qos: 0
     value_template: '{{ value_json.battery | int }}'
     unit_of_measurement: "%"
+    device_class: battery
+    state_class: measurement
 
   - state_topic: nodes@home/sensor/flowercare/palmlilie
     name: "palmlilie@flowercare_moisture"
     qos: 0
     value_template: '{{ value_json.moisture | int }}'
     unit_of_measurement: "%"
+    device_class: moisture
+    state_class: measurement
 
   - state_topic: nodes@home/sensor/flowercare/palmlilie
     name: "palmlilie@flowercare_temperature"
     qos: 0
     value_template: '{{ value_json.temperature | float }}'
     unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
 
   - state_topic: nodes@home/sensor/flowercare/palmlilie
     name: "palmlilie@flowercare_conductivity"
@@ -30,5 +36,7 @@
     name: "palmlilie@flowercare_brightness"
     qos: 0
     value_template: '{{ value_json.light | int }}'
-    unit_of_measurement: "Lux"
+    unit_of_measurement: "lx"
+    device_class: illuminance
+    state_class: measurement
 

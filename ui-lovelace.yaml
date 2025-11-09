@@ -538,6 +538,314 @@ views:
               - type: markdown
                 content: " "
 
+    # Default values: 80°F (26.7°C) for temperature, 60% for humidity
+  - title: Räume
+    path: rooms
+    panel: false
+    cards:
+      - type: grid
+        title: Erdgeschoss
+        columns: 3
+        square: true
+        cards:
+          - type: custom:room-summary-card
+            area: dusche
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_dusche_temperature
+              - sensor.thermostat_dusche_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_dusche
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_dusche
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.deckenlicht_dusche
+                tap_action:
+                    action: more-info
+            # styles:
+            #     card:
+            #         aspect-ratio: '16/9'
+          - type: custom:room-summary-card
+            area: flur
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_flur_temperature
+              - sensor.thermostat_flur_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_flur
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_flur
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_flur
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: korridor
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            entities:
+              - entity_id: light.shelly_korridor
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_corridor_studypillar
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: kuche
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_kuche_temperature
+              - sensor.thermostat_kuche_humidity
+            entities:
+              - entity_id: binary_sensor.terassentur_kuche
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_kuche
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_kitchen_longstrip
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_kitchen_shortstrip
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: esszimmer
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_esszimmer_temperature
+              - sensor.thermostat_esszimmer_humidity
+            entities:
+              - entity_id: binary_sensor.terassentur_esszimmer
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_esszimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_esszimmer1 # TODO create light group including shelly_esszimmer2
+                tap_action:
+                    action: more-info
+              - entity_id: vacuum.erdgeschoss
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: wohnzimmer
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_wohnzimmer_temperature
+              - sensor.thermostat_wohnzimmer_humidity
+            entities:
+              - entity_id: binary_sensor.terassentur_wohnzimmer # create group
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_wohnzimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_wohnzimmer_switch_0 # TODO create light group including shelly_wohnzimmer_switch_1
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: hauswirtschaftsraum
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_hauswirtschaft_temperature
+              - sensor.thermostat_hauswirtschaft_humidity
+            entities:
+              - entity_id: binary_sensor.nebentur
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_hauswirtschaftsraum
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+      - type: grid
+        title: Obergeschoss
+        columns: 3
+        square: true
+        cards:
+          - type: custom:room-summary-card
+            area: bad
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_bad_temperature
+              - sensor.thermostat_bad_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_bad
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_bad
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.deckenlicht_bad
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: arbeitszimmer
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_arbeitszimmer_temperature
+              - sensor.thermostat_arbeitszimmer_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_arbeitszimmer
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_arbeitszimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_arbeitszimmer
+                tap_action:
+                    action: more-info
+              - entity_id: climate.office
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: kinderzimmer
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_kinderzimmer_temperature
+              - sensor.thermostat_kinderzimmer_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_kinderzimmer
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_kinderzimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_kinderzimmer
+                tap_action:
+                    action: more-info
+              - entity_id: climate.nursery
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: schlafzimmer
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_schlafzimmer_temperature
+              - sensor.thermostat_schlafzimmer_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_schlafzimmer
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_schlafzimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_schlafzimmer
+                tap_action:
+                    action: more-info
+              - entity_id: climate.bedroom
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: galerie
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.thermostat_galerie_temperature
+              - sensor.thermostat_galerie_humidity
+            entities:
+              - entity_id: binary_sensor.dachfenster_galerie
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_galerie
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_galerie
+                tap_action:
+                    action: more-info
+              - entity_id: vacuum.obergeschoss
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: treppe
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            entities:
+              - entity_id: light.shelly_treppe
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: dachboden
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            sensors:
+              - sensor.dht22_roof_temperature
+              - sensor.dht22_roof_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_dachboden
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: light.shelly_dachboden
+                tap_action:
+                    action: more-info
+      - type: grid
+        title: Sonstige Bereiche
+        columns: 3
+        square: true
+        cards:
+          - type: custom:room-summary-card
+            area: eingang
+          - type: custom:room-summary-card
+            area: garage
+          - type: custom:room-summary-card
+            area: garten
+          - type: custom:room-summary-card
+            area: system
+          - type: custom:room-summary-card
+            area: solar
+          - type: custom:room-summary-card
+            area: heizung
+          - type: custom:room-summary-card
+            area: klimaanlagen
+
   - title: Haus
     path: house
     panel: false
@@ -656,7 +964,6 @@ views:
         state_filter:
           - operator: "!="
             value: "docked"
-
     cards:
       - type: vertical-stack
         title: Erdgeschoss

@@ -19,6 +19,8 @@
     unique_id: gas_utilityroom_voltage
     qos: 0
     unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
     value_template: "{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}"
 
   - state_topic: nodes@home/sensor/gas/utilityroom/value/voltage
@@ -33,6 +35,8 @@
     unique_id: gas_utilityroom_meter
     qos: 0
     unit_of_measurement: "m³"
+    device_class: volume
+    state_class: measurement
     value_template: 0.01
     force_update: true
 
@@ -41,6 +45,8 @@
     unique_id: gas_utilityroom_energy
     qos: 0
     unit_of_measurement: "kWh"
+    device_class: energy
+    state_class: measurement
     value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 2 ) }}"
     force_update: true
 
@@ -49,5 +55,7 @@
     unique_id: gas_utilityroom_energy_hotwater
     qos: 0
     unit_of_measurement: "kWh"
+    device_class: energy
+    state_class: measurement
     value_template: "{{ ( states ( 'input_number.gas_meter_zustandszahl' ) | float * states ( 'input_number.gas_meter_heating_value' ) | float * 0.01 ) | round ( 2 ) if is_state ( 'binary_sensor.boiler_dhw_3_way_valve_active', 'on' ) else 0 }}"
     force_update: true

@@ -19,6 +19,8 @@
     unique_id: sonoff_corridor_voltage
     qos: 0
     unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/light/sonoff/corridor/value/voltage

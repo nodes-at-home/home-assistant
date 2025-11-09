@@ -129,33 +129,6 @@ sensor.DHT22_roof_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-sensor.DHT22_office_temperature:
-    friendly_name: Büro
-
-sensor.DHT22_office_humidity:
-    friendly_name: Luftfeuchtigkeit Büro
-    icon: mdi:water-percent
-
-sensor.DHT22_office_tau:
-    friendly_name: Taupunkt Büro
-
-sensor.DHT22_office_voltage:
-    friendly_name: Büro
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.DHT22_office_lastvoltage:
-    friendly_name: Büro
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.DHT22_office_lastboot:
-    friendly_name: Büro
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.DHT22_office_version:
-    friendly_name: Büro
-    entity_picture: /local/images/nodemcu.jpg
-
-#------------------------------------------------------------------------------
 sensor.DHT11_utilityroom_temperature:
     friendly_name: Kammer
 
@@ -203,6 +176,8 @@ sensor.speedtest_upload:
     entity_picture: /local/images/o2dsl2.jpg
 
 #------------------------------------------------------------------------------
+# shelly plugs
+
 light.shelly_kitchen_longstrip:
     friendly_name: Lange Ledleiste
     icon: mdi:led-strip
@@ -281,6 +256,8 @@ switch.shelly_bambulab_x1c:
     icon: mdi:printer-3d
 
 #------------------------------------------------------------------------------
+# shelly lights
+
 light.shelly_hinterhof:
     friendly_name: Hinterhof
 
@@ -298,57 +275,77 @@ light.shelly_esszimmerschrank2:
 
 light.shelly_garage1:
     friendly_name: Kleiner Raum
+    icon: mdi:lightbulb-fluorescent-tube
 
 light.shelly_garage2:
     friendly_name: Großer Raum
+    icon: mdi:lightbulb-fluorescent-tube
 
 light.shelly_flur:
     friendly_name: Flur
+    icon: mdi:ceiling-light
 
 light.shelly_korridor:
     friendly_name: Korridor
+    icon: mdi:ceiling-light
 
 light.shelly_esszimmer1:
     friendly_name: Esszimmer
 
 light.shelly_esszimmer2_switch_0:
     friendly_name: Esszimer Wandleuchte links
+    icon: mdi:lightbulb-spot
 
 light.shelly_esszimmer2_switch_1:
     friendly_name: Esszimer Wandleuchte rechts
+    icon: mdi:lightbulb-spot
 
 light.shelly_wohnzimmer_switch_0:
     friendly_name: Wohnzimmer Couch
+    icon: mdi:ceiling-light
 
 light.shelly_wohnzimmer_switch_1:
     friendly_name: Wohnzimmer Schreibtisch
-
-light.shelly_dusche:
-    friendly_name: Dusche
+    icon: mdi:ceiling-light
 
 light.shelly_treppe:
     friendly_name: Treppe
+    icon: mdi:lightbulb-spot
 
 light.shelly_galerie:
     friendly_name: Galerie
+    icon: mdi:ceiling-light
 
 light.shelly_arbeitszimmer:
     friendly_name: Arbeitszimmer
+    icon: mdi:ceiling-light
 
 light.shelly_kinderzimmer:
     friendly_name: Kinderzimmer
+    icon: mdi:ceiling-light
 
 light.shelly_schlafzimmer:
     friendly_name: Schlafzimmer
-
-light.shelly_bad:
-    friendly_name: Bad
+    icon: mdi:ceiling-light
 
 light.shelly_dachboden:
     friendly_name: Dachboden
+    icon: mdi:ceiling-light
 
 light.shelly_terasse:
     friendly_name: Terasse
+    icon: mdi:wall-sconce-flat-variant
+
+#------------------------------------------------------------------------------
+# ikea lights
+
+light.deckenlicht_dusche:
+    friendly_name: Dusche
+    icon: mdi:ceiling-light
+
+light.deckenlicht_bad:
+    friendly_name: Bad
+    icon: mdi:ceiling-light
 
 #------------------------------------------------------------------------------
 cover.relay_garage:
