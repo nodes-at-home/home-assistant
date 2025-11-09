@@ -56,9 +56,11 @@
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-      - condition: state
-        entity_id: alarm_control_panel.intrusion_detection_system
-        state: "armed_away"
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: alarm_control_panel.intrusion_detection_system
+            state: "disarmed"
     actions:
       - action: alarm_control_panel.alarm_disarm
         target:
