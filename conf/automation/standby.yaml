@@ -4,12 +4,14 @@
 
 # tv plug is turne doff in automation lights_indoor_off_when_tv_switched_off
 
-  - alias: standby_television_switch_on
-    id: standby_television_switch_on
+  - alias: standby_plugs_switch_on
+    id: standby_plugs_switch_on
     triggers:
-      - trigger: time
-        at: input_datetime.standby_television_switch_on_at
-      - trigger: state
+      - platform: time
+        at: input_datetime.standup_workday
+      - platform: time
+        at: input_datetime.standup_weekend
+      - platform: state
         entity_id: group.family
         to: 'home'
     conditions:
@@ -19,42 +21,34 @@
       - condition: state
         entity_id: group.family
         state: 'home'
-      - condition: time
-        after: input_datetime.standby_television_switch_on_at
+      - condition: or
+        conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: 'on'
+              - condition: time
+                after: input_datetime.standup_workday
+                before: input_datetime.sleep
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: 'off'
+              - condition: time
+                after: input_datetime.standup_weekend
+                before: input_datetime.sleep
     actions:
       - action: switch.turn_on
         target:
             entity_id:
               - switch.fernseher
-
-  - alias: standby_desk_switch_on
-    id: standby_desk_switch_on
-    triggers:
-      - trigger: time
-        at: input_datetime.standby_desk_switch_on_at
-      - trigger: state
-        entity_id: group.family
-        to: 'home'
-    conditions:
-      - condition: state
-        entity_id: binary_sensor.prod_mode
-        state: 'on'
-      - condition: state
-        entity_id: group.family
-        state: 'home'
-      - condition: time
-        after: input_datetime.standby_desk_switch_on_at
-      - condition: time
-        before: input_datetime.sleep
-    actions:
-      - action: switch.turn_on
-        target:
-            entity_id:
-              - switch.schreibtisch_wohnzimmer
               - switch.schreibtisch_arbeitszimmer
+              - switch.schreibtisch_wohnzimmer
 
-  - alias: standby_switch_off_plugs
-    id: standby_television_switch_off_plugs
+  - alias: standby_switch_off_plugs_by_tv_off
+    id: standby_switch_off_plugs_by_tv_off
     triggers:
         trigger: state
         entity_id: remote.sony_kd_55ag9
@@ -74,6 +68,27 @@
       - delay:
             minutes: "{{ states ( 'input_number.tvoff_lightsoff_delay1' ) | int - 1 }}"
       - action: switch.turn_off
+        target:
+            entity_id:
+              - switch.fernseher
+              - switch.schreibtisch_arbeitszimmer
+              - switch.schreibtisch_wohnzimmer
+
+  - alias: standby_plugs_off_at_getting_out
+    id: standby_plugs_off_at_getting_out
+    triggers:
+      - trigger: state
+        entity_id: group.family
+        to: 'not_home'
+        for:
+            minutes: 1
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+    actions:
+      - service: switch.turn_off
         target:
             entity_id:
               - switch.fernseher
