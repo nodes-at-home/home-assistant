@@ -33,12 +33,12 @@
     id: tapocam_set_day_mode
     mode: single
     triggers:
-      - trigger: sun
-        event: sunrise
-        offset: "+00:00:00"
       - trigger: state
         entity_id: group.family
         to: 'not_home'
+      - trigger: sun
+        event: sunrise
+        offset: "+00:00:00"
     conditions:
       - condition: state
         alias: process only on production server
@@ -63,14 +63,23 @@
     id: tapocam_set_night_mode
     mode: single
     triggers:
+      - trigger: state
+        entity_id: group.family
+        to: 'home'
       - trigger: sun
         event: sunset
-        offset: "+00:00:00"
+        offset: "+00:01:00"
     conditions:
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
         state: 'on'
+      - condition: state
+        entity_id: group.family
+        state: 'home'
+      - condition: state
+        entity_id: sun.sun
+        state: 'below_horizon'
     actions:
       - action: switch.turn_off
         target:
