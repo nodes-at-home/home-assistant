@@ -16,3 +16,4 @@ solcast*.json
 backups/
 ha-bambulab/
 .ha_run.lock
+tts/
