@@ -577,13 +577,14 @@
           - action: adaptive_lighting.change_switch_settings
             data:
               entity_id: switch.adaptive_lighting_ikea_jetstrom
-              use_defaults: configuration
+              use_defaults: current
               max_sunrise_time: "{{ states ( 'input_datetime.standup_workday' ) | as_timedelta - timedelta ( minutes = states ( 'input_number.light_sunrise_offset' ) | int ) }}"
         else:
           - action: adaptive_lighting.change_switch_settings
             data:
               entity_id: switch.adaptive_lighting_ikea_jetstrom
-              use_defaults: configuration
+              use_defaults: current
+              max_sunrise_time: "{{ states ( 'input_datetime.standup_weekend' ) | as_timedelta - timedelta ( minutes = states ( 'input_number.light_sunrise_offset' ) | int ) }}"
 
   - alias: light_indoor_ikea_jetstrom_set_sunset
     id: light_indoor_ikea_jetstrom_set_sunset
@@ -599,5 +600,5 @@
       - action: adaptive_lighting.change_switch_settings
         data:
           entity_id: switch.adaptive_lighting_ikea_jetstrom
-          use_defaults: configuration
+          use_defaults: current
           min_sunset_time: "{{ states ( 'input_datetime.sleep' ) | as_timedelta - timedelta ( minutes = states ( 'input_number.light_sunset_offset' ) | int ) }}"
