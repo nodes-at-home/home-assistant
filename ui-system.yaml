@@ -52,6 +52,11 @@ views:
         entity: sensor.cpu_temp
         show_name: true
         icon: mdi:memory
+      - type: entity
+        entity: sensor.zapdos_zapdos_cpu_temperature
+        name: zapdos
+        show_name: true
+        icon: mdi:router
     cards:
       - type: entities
         title: Stage
@@ -97,6 +102,21 @@ views:
             - switch.fritz_box_7590_wi_fi_mauzigast
             - switch.fritz_box_7590_wi_fi_pokemonnetwlan
             - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
+      - type: entities
+        title: Unify
+        show_header_toggle: false
+        entities:
+            - sensor.zapdos_state
+            - sensor.zapdos_uplink_mac
+            - sensor.zapdos_uptime
+            - sensor.zapdos_cpu_utilization
+            - sensor.zapdos_memory_utilization
+            # - sensor.zapdos_zapdos_cpu_temperature
+            - switch.pokemonnethome
+            - switch.pokemonnetuser
+            - switch.pokemonnetwlan
+            - switch.pokemonnetwlan5
+            - switch.tp_link_32907c
       - type: entities
         title: USV
         show_header_toggle: false
