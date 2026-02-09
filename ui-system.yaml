@@ -52,11 +52,11 @@ views:
         entity: sensor.cpu_temp
         show_name: true
         icon: mdi:memory
-      - type: entity
-        entity: sensor.zapdos_zapdos_cpu_temperature
-        name: zapdos
-        show_name: true
-        icon: mdi:router
+      # - type: entity
+      #   entity: sensor.zapdos_zapdos_cpu_temperature
+      #   name: zapdos
+      #   show_name: true
+      #   icon: mdi:router
     cards:
       - type: entities
         title: Stage
