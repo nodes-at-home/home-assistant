@@ -1232,6 +1232,12 @@ views:
           - entity: sensor.shelly_utilityroom_circulatingpump_power
           - entity: update.shelly_utilityroom_circulatingpump_firmware
           - entity: button.shelly_utilityroom_circulatingpump_reboot
+          - type: divider
+          - switch.shelly_rack1
+          - entity: sensor.shelly_rack1_energy
+          - entity: sensor.shelly_rack1_power
+          - entity: update.shelly_rack1_firmware
+          - entity: button.shelly_rack1_reboot
       - type: entities
         title: Obergeschoss
         show_header_toggle: false
