@@ -1,7 +1,6 @@
 """The Bambu Lab component."""
 
 import asyncio
-import json
 import os
 import mimetypes
 from datetime import datetime
@@ -106,7 +105,6 @@ class PrintHistoryAPIView(HomeAssistantView):
                 response_data["filtered_by_serial"] = serial_filter
             
             LOGGER.debug(f"Print history response: {len(all_files)} files from {response_data['total_printers']} printers")
-            LOGGER.debug(response_data)
             
             return web.json_response(response_data)
             
@@ -193,7 +191,6 @@ class VideoAPIView(HomeAssistantView):
                 response_data["filtered_by_serial"] = serial_filter
             
             LOGGER.debug(f"Video response: {len(all_videos)} videos from {response_data['total_printers']} printers")
-            LOGGER.debug(response_data)
             
             return web.json_response(response_data)
             
@@ -307,10 +304,13 @@ class EnsureCacheFileAPIView(HomeAssistantView):
                 return web.json_response({"error": f"Printer with serial {serial} not found"}, status=404)
 
             model = coordinator.get_model()
-            BASE_CACHE_DIR = "/config/www/media/ha-bambulab/"
-            local_path = os.path.join(BASE_CACHE_DIR, cache_path)
-            # local_path is of form '/config/www/media/ha-bambulab/<SERIAL>/prints/Fidgets_v14.3mf'
-            #                    or '/config/www/media/ha-bambulab/<SERIAL>/prints/cache/Fidgets_v14.3mf'
+            # First get the cached path from the print UX. This may be for a different printer (i.e. it already
+            # includes the serial) so we need to allow for that.
+            base_cache_path = Path(coordinator.get_file_cache_directory()).parent
+            local_path = str(base_cache_path / cache_path)
+
+            # local_path is of form '/config/www/media/ha-bambulab/<SERIAL>/prints/<file_size>-Fidgets_v14.3mf'
+            #                    or '/config/www/media/ha-bambulab/<SERIAL>/prints/cache/<file_size>-Fidgets_v14.3mf'
             # Depending where the print source chose to put the file onto the printer.
             # Orca likes the root. Bambu Studio likes the cache directory.
             remote_path_index = cache_path.find('/prints/')
@@ -323,6 +323,15 @@ class EnsureCacheFileAPIView(HomeAssistantView):
             present = await model.print_job.async_ftp_file_check(remote_path, expected_size)
             if present:
                 return web.json_response({"status": "present", "detail": "File already present with expected size."})
+            else:
+                # Now check the legacy path without <file_size>- in the fiulename and use that if we find a match.
+                legacy_remote_path = Path(remote_path)
+                if legacy_remote_path.name.startswith(f"{expected_size}-"):
+                    legacy_remote_path = legacy_remote_path.parent / legacy_remote_path.name.removeprefix(f"{expected_size}-")
+                    LOGGER.debug(f"Checking legacy remote path: {legacy_remote_path}")
+                    present = await model.print_job.async_ftp_file_check(str(legacy_remote_path), expected_size)
+                    if present:
+                        return web.json_response({"status": "use_legacy_path", "detail": str(legacy_remote_path)})
 
             def ha_progress_callback(progress_data):
                 # Schedule the event fire on the event loop thread
@@ -348,12 +357,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
 
     # Register file cache API endpoints
-    LOGGER.info("Registering file cache API endpoints")
     hass.http.register_view(PrintHistoryAPIView(hass))
     hass.http.register_view(VideoAPIView(hass))
     hass.http.register_view(FileCacheFileView(hass))
     hass.http.register_view(EnsureCacheFileAPIView(hass))
-    LOGGER.info("File cache API endpoints registered successfully")
 
     async def handle_service_call(call: ServiceCall):
         LOGGER.debug(f"handle_service_call: {call.service}")
@@ -367,7 +374,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         # Wait for the result from the second instance
         try:
             result = await asyncio.wait_for(future, timeout=15)
-            LOGGER.debug(f"Service call result: {result}")
+            if (call.service == 'extrude_retract' or
+                call.service == 'get_filament_data'):
+                # Only report result for service calls that return a result to avoid confusion.
+                if isinstance(result, (list, dict, tuple)):
+                    LOGGER.debug("Service call result: %s with length %d", type(result).__name__, len(result))
+                else:
+                    LOGGER.debug("Service call result: %s", result)
+            else:
+                LOGGER.debug("Service call complete.")
             return result
         except asyncio.TimeoutError:
             LOGGER.error("Service call timed out")
@@ -381,7 +396,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 # Integration may have been reloaded, ignore cleanup errors
                 pass
 
-    # Register the serviceS with Home Assistant
+    # Register the services with Home Assistant
     services = {
         "send_command": SupportsResponse.NONE,
         "print_project_file": SupportsResponse.NONE,
@@ -392,6 +407,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         "extrude_retract": SupportsResponse.ONLY,
         "set_filament": SupportsResponse.NONE,
         "get_filament_data": SupportsResponse.ONLY,
+        "read_rfid": SupportsResponse.NONE,
+        "start_filament_drying": SupportsResponse.NONE,
+        "stop_filament_drying": SupportsResponse.NONE,
     }
     for command in services:
         hass.services.async_register(

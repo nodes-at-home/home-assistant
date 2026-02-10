@@ -17,7 +17,7 @@ class HaVisualiserPanel extends HTMLElement {
   }
  
   connectedCallback() {
-    console.log('HA Visualiser Panel v0.8.13: Config flow enabled - should install via Settings → Integrations');
+    console.log('HA Visualiser Panel v0.8.20: Fixed NoneType error when group attributes are null');
     console.log('HA Visualiser Panel: Loading enhanced vis.js version');
     
     // Load vis.js if not already loaded
@@ -128,11 +128,12 @@ class HaVisualiserPanel extends HTMLElement {
           align-items: flex-start;
           gap: 16px;
           min-height: 56px;
+          flex-wrap: wrap;
         }
         
         .search-container {
-          flex: 0 1 70%;
-          max-width: 400px;
+          flex: 1 1 300px;
+          max-width: 500px;
           position: relative;
           display: flex;
           flex-direction: column;
@@ -164,7 +165,8 @@ class HaVisualiserPanel extends HTMLElement {
           border: 1px solid var(--divider-color);
           border-radius: 4px;
           box-shadow: var(--ha-card-box-shadow, 0 2px 8px rgba(0,0,0,0.15));
-          z-index: 2;
+          z-index: 1001;
+          pointer-events: auto;
         }
         
         .search-result {
@@ -174,6 +176,8 @@ class HaVisualiserPanel extends HTMLElement {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
         }
         
         .search-result:hover {
@@ -369,8 +373,216 @@ class HaVisualiserPanel extends HTMLElement {
           color: var(--error-color);
           text-align: center;
         }
+        
+        /* Mobile Navigation Header */
+        .mobile-nav-header {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 56px;
+          background: var(--primary-color, #0369a1);
+          color: var(--text-primary-color, white);
+          z-index: 1000;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 16px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .nav-button {
+          background: none;
+          border: none;
+          color: inherit;
+          padding: 12px;
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 44px;
+          min-height: 44px;
+          transition: background-color 0.2s;
+        }
+        
+        .nav-button:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-button:active {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-button svg {
+          width: 24px;
+          height: 24px;
+        }
+        
+        .nav-title {
+          font-size: 18px;
+          font-weight: 500;
+          flex: 1;
+          text-align: center;
+          margin: 0 16px;
+        }
+        
+        .nav-spacer {
+          width: 68px; /* Same width as nav-button to balance layout */
+        }
+        
+        /* Mobile Responsive Design - Higher specificity */
+        @media (max-width: 870px) {
+          .mobile-nav-header {
+            display: flex !important;
+          }
+          
+          ha-visualiser-panel .container {
+            padding: 12px !important;
+            height: calc(100vh - 80px) !important;
+            margin-top: 56px !important;
+          }
+          
+          ha-visualiser-panel .search-section {
+            flex-direction: column !important;
+            gap: 12px !important;
+            padding: 12px !important;
+            margin-bottom: 16px !important;
+          }
+          
+          ha-visualiser-panel .search-container {
+            flex: 1 !important;
+            max-width: none !important;
+            width: 100% !important;
+          }
+          
+          ha-visualiser-panel .search-input {
+            width: 100% !important;
+            font-size: 16px !important;
+            min-height: 44px !important;
+            height: 44px !important;
+            padding: 12px !important;
+            -webkit-appearance: none !important;
+            box-sizing: border-box !important;
+          }
+          
+          ha-visualiser-panel .search-results {
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            max-height: 250px !important;
+            z-index: 1001 !important;
+            pointer-events: auto !important;
+          }
+          
+          ha-visualiser-panel .search-result {
+            padding: 12px !important;
+            min-height: 44px !important;
+            align-items: center !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            pointer-events: auto !important;
+          }
+          
+          ha-visualiser-panel .depth-control,
+          ha-visualiser-panel .filter-control,
+          ha-visualiser-panel .layout-control {
+            min-width: auto !important;
+            width: 100% !important;
+            justify-content: space-between !important;
+            margin-bottom: 8px !important;
+          }
+          
+          ha-visualiser-panel .depth-control:last-child,
+          ha-visualiser-panel .filter-control:last-child,
+          ha-visualiser-panel .layout-control:last-child {
+            margin-bottom: 0 !important;
+          }
+          
+          ha-visualiser-panel .depth-control select,
+          ha-visualiser-panel .layout-control select {
+            min-width: 120px !important;
+            flex-shrink: 0 !important;
+          }
+          
+          ha-visualiser-panel .graph-section {
+            min-height: 500px !important;
+          }
+          
+          ha-visualiser-panel .graph-controls {
+            top: 12px !important;
+            right: 12px !important;
+            flex-direction: column !important;
+            gap: 6px !important;
+          }
+          
+          ha-visualiser-panel .control-button {
+            padding: 10px 16px !important;
+            font-size: 14px !important;
+            min-height: 40px !important;
+          }
+          
+          ha-visualiser-panel .graph-info {
+            bottom: 12px !important;
+            left: 12px !important;
+            right: 12px !important;
+            text-align: center !important;
+          }
+        }
+        
+        /* Tablet breakpoint - Better desktop compatibility */
+        @media (max-width: 1024px) and (min-width: 769px) {
+          ha-visualiser-panel .search-section {
+            flex-wrap: wrap !important;
+            gap: 16px !important;
+          }
+          
+          ha-visualiser-panel .search-container {
+            flex: 1 1 400px !important;
+            min-width: 300px !important;
+            max-width: 500px !important;
+          }
+          
+          ha-visualiser-panel .depth-control,
+          ha-visualiser-panel .filter-control,
+          ha-visualiser-panel .layout-control {
+            flex-shrink: 0 !important;
+            min-width: auto !important;
+          }
+        }
+        
+        /* Desktop improvements - ensure good layout on larger screens */
+        @media (min-width: 1025px) {
+          ha-visualiser-panel .search-section {
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            gap: 16px !important;
+          }
+          
+          ha-visualiser-panel .search-container {
+            flex: 1 1 400px !important;
+            max-width: 500px !important;
+          }
+          
+          ha-visualiser-panel .depth-control,
+          ha-visualiser-panel .filter-control,
+          ha-visualiser-panel .layout-control {
+            flex-shrink: 0 !important;
+          }
+        }
       </style>
       
+      <!-- Mobile Navigation Header -->
+      <div class="mobile-nav-header" id="mobileNavHeader">
+        <button class="nav-button back-button" id="backBtn" title="Go back">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
+          </svg>
+        </button>
+        <div class="nav-title">Entity Visualizer</div>
+        <div class="nav-spacer"></div>
+      </div>
+
       <div class="container">
         <div class="search-section">
           <div class="search-container">
@@ -423,6 +635,7 @@ class HaVisualiserPanel extends HTMLElement {
     `;
 
     this.setupSearchEventListeners();
+    this.setupMobileNavigation();
     
     // Load and apply saved preferences before setting up controls
     const preferences = this.loadUserPreferences();
@@ -451,8 +664,23 @@ class HaVisualiserPanel extends HTMLElement {
       }, 300);
     });
     
+    // Prevent zoom on iOS when focusing search input
+    searchInput.addEventListener('touchstart', (e) => {
+      // Ensure the viewport meta tag is properly set for mobile
+      if (window.innerWidth < 768) {
+        searchInput.style.fontSize = '16px'; // Prevents zoom on iOS
+      }
+    });
+    
     // Hide search results when clicking outside
     document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+      }
+    });
+    
+    // Also handle touch events for mobile
+    document.addEventListener('touchend', (e) => {
       if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
         searchResults.style.display = 'none';
       }
@@ -495,6 +723,60 @@ class HaVisualiserPanel extends HTMLElement {
           this.selectEntity(this.currentEntityId);
         }
       });
+    }
+  }
+
+  setupMobileNavigation() {
+    const backBtn = this.querySelector('#backBtn');
+    
+    if (backBtn) {
+      backBtn.addEventListener('click', () => {
+        this.navigateBack();
+      });
+    }
+  }
+  
+  navigateBack() {
+    console.log('HA Visualiser: Attempting navigation back');
+    
+    // Method 1: Use browser history if available
+    if (window.history.length > 1) {
+      try {
+        window.history.back();
+        console.log('HA Visualiser: Used browser back navigation');
+        return;
+      } catch (error) {
+        console.warn('HA Visualiser: Browser back navigation failed:', error);
+      }
+    }
+    
+    // Method 2: Navigate to dashboard via Home Assistant
+    try {
+      if (this.hass) {
+        const navigateEvent = new CustomEvent('hass-action', {
+          bubbles: true,
+          composed: true,
+          detail: {
+            config: {
+              action: 'navigate',
+              navigation_path: '/dashboard'
+            }
+          }
+        });
+        this.dispatchEvent(navigateEvent);
+        console.log('HA Visualiser: Navigate event dispatched to dashboard');
+        return;
+      }
+    } catch (error) {
+      console.warn('HA Visualiser: HA navigation event failed:', error);
+    }
+    
+    // Method 3: Direct URL navigation fallback
+    try {
+      window.location.href = '/dashboard';
+      console.log('HA Visualiser: Direct URL navigation to dashboard');
+    } catch (error) {
+      console.error('HA Visualiser: All navigation methods failed:', error);
     }
   }
 
@@ -561,13 +843,24 @@ class HaVisualiserPanel extends HTMLElement {
     
     searchResults.style.display = 'block';
     
-    // Add click handlers
+    // Add touch and click handlers for mobile compatibility
     searchResults.querySelectorAll('.search-result').forEach(result => {
-      result.addEventListener('click', () => {
+      const handleSelection = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const entityId = result.dataset.entityId;
         this.selectEntity(entityId);
         searchResults.style.display = 'none';
-      });
+      };
+
+      // Add both touch and click handlers
+      result.addEventListener('click', handleSelection, { passive: false });
+      result.addEventListener('touchend', handleSelection, { passive: false });
+
+      // Prevent touch scrolling on search results
+      result.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+      }, { passive: false });
     });
   }
 

@@ -9,9 +9,9 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
-from .const import ATTRIBUTION, DOMAIN, KEY_ESTIMATE, MANUFACTURER
+from .const import DOMAIN, KEY_ESTIMATE, MANUFACTURER
 from .coordinator import SolcastUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
@@ -47,7 +47,7 @@ ESTIMATE_MODE = SelectEntityDescription(
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
-    async_add_entities: AddEntitiesCallback,
+    async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up a Solcast select.
 
@@ -72,7 +72,6 @@ async def async_setup_entry(
 class EstimateModeEntity(SelectEntity):
     """Entity representing the solcast estimate field to use for calculations."""
 
-    _attr_attribution = ATTRIBUTION
     _attr_should_poll = False
     _attr_has_entity_name = True
 

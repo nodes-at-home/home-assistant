@@ -10,46 +10,46 @@ from enum import (
 LOGGER = logging.getLogger(__package__)
 
 class Printers(StrEnum):
+    A1 = "A1"
+    A1MINI = "A1MINI"
+    P1P = "P1P"
+    P1S = "P1S"
+    P2S = "P2S"
+    H2C = "H2C"
+    H2D = "H2D"
+    H2DPRO = "H2DPRO"
+    H2S = "H2S"
     X1E = "X1E"
     X1C = "X1C"
     X1 = "X1"
-    P1P = "P1P"
-    P1S = "P1S"
-    H2D = "H2D"
-    H2S = "H2S"
-    A1MINI = "A1MINI"
-    A1 = "A1"
+
 
 class Features(IntEnum):
     AUX_FAN = 1,
-    CHAMBER_LIGHT = 2,
-    CHAMBER_FAN = 3,
-    CHAMBER_TEMPERATURE = 4,
-    CURRENT_STAGE = 5,
-    PRINT_LAYERS = 6,
-    AMS = 7, # Supports either AMS or AMS Lite
-    EXTERNAL_SPOOL = 8,
-    K_VALUE = 9,
-    START_TIME = 10,
+    CHAMBER_FAN = 2,
+    CHAMBER_TEMPERATURE = 3,
+    K_VALUE = 4,
+    AMS = 5, # Supports either AMS or AMS Lite
+    AMS_DRYING = 6,
+    AMS_FILAMENT_REMAINING = 7,
+    AMS_HUMIDITY = 8,
+    AMS_READ_RFID_COMMAND = 9,
+    AMS_SWITCH_COMMAND = 10,
     AMS_TEMPERATURE = 11,
-    CAMERA_RTSP = 13,
-    START_TIME_GENERATED = 14,
-    CAMERA_IMAGE = 15,
-    DOOR_SENSOR = 16,
-    AMS_FILAMENT_REMAINING = 18,
-    SET_TEMPERATURE = 19,
-    PROMPT_SOUND = 20,
-    FTP = 21,
-    AMS_SWITCH_COMMAND = 23,
-    AMS_HUMIDITY = 25,
-    AMS_DRYING = 26,
-    CHAMBER_LIGHT_2 = 27,
-    DUAL_NOZZLES = 28,
-    EXTRUDER_TOOL = 29,
-    MQTT_ENCRYPTION_FIRMWARE = 30,
-    MQTT_ENCRYPTION_ENABLED = 31,
-    FIRE_ALARM_BUZZER = 32,
-    HEATBED_LIGHT = 33,
+    CAMERA_RTSP = 12,
+    CAMERA_IMAGE = 13,
+    DOOR_SENSOR = 14,
+    PROMPT_SOUND = 15,
+    CHAMBER_LIGHT_2 = 16,
+    DUAL_NOZZLES = 17,
+    EXTRUDER_TOOL = 18,
+    FIRE_ALARM_BUZZER = 19,
+    HEATBED_LIGHT = 20,
+    HYBRID_MODE_BLOCKS_CONTROL = 21,
+    MQTT_ENCRYPTION_FIRMWARE = 22,
+    AIRDUCT_MODE = 23,
+    SUPPORTS_EARLY_FTP_DOWNLOAD = 24,
+    SECONDARY_AUX_FAN = 25,
 
 
 class FansEnum(IntEnum):
@@ -57,6 +57,7 @@ class FansEnum(IntEnum):
     AUXILIARY = 2,
     CHAMBER = 3,
     HEATBREAK = 4,
+    SECONDARY_AUXILIARY = 5,
 
 
 class TempEnum(IntEnum):
@@ -160,6 +161,25 @@ PRINT_TYPE_OPTIONS = {
     "unknown"
 }
 
+AMS_DRYING_MODELS = [
+    "AMS 2 Pro",
+    "AMS HT"
+]
+
+AMS_MODELS = [
+    "AMS",
+    "AMS Lite",
+    "AMS 2 Pro",
+    "AMS HT"
+]
+
+AMS_MODELS_AND_EXTERNAL_SPOOL = [
+    "AMS",
+    "AMS Lite",
+    "AMS 2 Pro",
+    "AMS HT",
+    "External Spool"
+]
 
 def load_dict(filename: str) -> dict:
     with open(filename) as f:
@@ -215,6 +235,11 @@ class Print_Fun_Values(IntEnum):
     # {"print":{"fun":"3EC18FFF9CFF"}} <- dev mode enabled
     MQTT_SIGNATURE_REQUIRED             = 0x20000000
 
+class Stat_Flag_Values(IntEnum):
+    # Gap
+    DOOR_OPEN                           = 0x00800000,
+    # Gap
+
 class BambuUrl(IntEnum):
     LOGIN = 1,
     TFA_LOGIN = 2,
@@ -224,6 +249,8 @@ class BambuUrl(IntEnum):
     SLICER_SETTINGS = 6,
     TASKS = 7,
     PROJECTS = 8,
+    USERDETAIL = 9,
+    PREFERENCE = 10,
 
 BAMBU_URL = {
     BambuUrl.LOGIN: 'https://api.bambulab.com/v1/user-service/user/login',
@@ -234,4 +261,5 @@ BAMBU_URL = {
     BambuUrl.SLICER_SETTINGS: 'https://api.bambulab.com/v1/iot-service/api/slicer/setting?version=1.10.0.89',
     BambuUrl.TASKS: 'https://api.bambulab.com/v1/user-service/my/tasks',
     BambuUrl.PROJECTS: 'https://api.bambulab.com/v1/iot-service/api/user/project',
+    BambuUrl.PREFERENCE: 'https://api.bambulab.com/v1/design-user-service/my/preference',
 }

@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry, entity_registry, area_registry, label_registry
+from homeassistant.helpers.template import Template
 from homeassistant.const import ATTR_LATITUDE, ATTR_LONGITUDE
 
 _LOGGER = logging.getLogger(__name__)
@@ -181,20 +182,20 @@ class GraphService:
                 if domain in group_domains:
                     # Check if group-like entity has any member entities
                     member_entities = []
-                    
+
                     if domain == "group":
-                        member_entities = state.attributes.get("entity_id", [])
+                        member_entities = state.attributes.get("entity_id") or []
                     elif domain == "light":
-                        light_entities = state.attributes.get("entity_id", [])
-                        lights_attr = state.attributes.get("lights", [])
+                        light_entities = state.attributes.get("entity_id") or []
+                        lights_attr = state.attributes.get("lights") or []
                         member_entities = light_entities + lights_attr
                     elif domain in ["switch", "cover", "fan", "climate"]:
-                        entity_attr = state.attributes.get("entity_id", [])
-                        plural_attr = state.attributes.get(f"{domain}s", [])
+                        entity_attr = state.attributes.get("entity_id") or []
+                        plural_attr = state.attributes.get(f"{domain}s") or []
                         member_entities = entity_attr + plural_attr
                     elif domain == "media_player":
-                        media_entities = state.attributes.get("entity_id", [])
-                        group_members = state.attributes.get("group_members", [])
+                        media_entities = state.attributes.get("entity_id") or []
+                        group_members = state.attributes.get("group_members") or []
                         member_entities = media_entities + group_members
                     
                     # Only include if it's a real group with members or if it might be a group
@@ -1145,24 +1146,24 @@ class GraphService:
                 
                 # Traditional groups use 'entity_id' attribute
                 if entity_id.startswith("group."):
-                    member_entities = group_state.attributes.get("entity_id", [])
-                
+                    member_entities = group_state.attributes.get("entity_id") or []
+
                 # Light groups
                 elif entity_id.startswith("light."):
                     # Standard entity_id attribute
-                    light_entities = group_state.attributes.get("entity_id", [])
+                    light_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(light_entities)
-                    
+
                     # Alternative attributes that group helpers might use
-                    lights_attr = group_state.attributes.get("lights", [])
+                    lights_attr = group_state.attributes.get("lights") or []
                     member_entities.extend(lights_attr)
-                    
+
                     # Some light groups might use different attributes
-                    group_members = group_state.attributes.get("group_members", [])
+                    group_members = group_state.attributes.get("group_members") or []
                     member_entities.extend(group_members)
-                    
+
                     # Light helper-specific attributes
-                    light_list = group_state.attributes.get("light_list", [])
+                    light_list = group_state.attributes.get("light_list") or []
                     member_entities.extend(light_list)
                     
                     # Debug logging for empty light groups
@@ -1179,13 +1180,13 @@ class GraphService:
                 
                 # Switch groups
                 elif entity_id.startswith("switch."):
-                    switch_entities = group_state.attributes.get("entity_id", [])
+                    switch_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(switch_entities)
-                    switches_attr = group_state.attributes.get("switches", [])
+                    switches_attr = group_state.attributes.get("switches") or []
                     member_entities.extend(switches_attr)
-                    
+
                     # Additional switch group attributes
-                    group_members = group_state.attributes.get("group_members", [])
+                    group_members = group_state.attributes.get("group_members") or []
                     member_entities.extend(group_members)
                     
                     # Debug logging for empty switch groups
@@ -1201,28 +1202,28 @@ class GraphService:
                 
                 # Cover groups
                 elif entity_id.startswith("cover."):
-                    cover_entities = group_state.attributes.get("entity_id", [])
+                    cover_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(cover_entities)
-                    covers_attr = group_state.attributes.get("covers", [])
+                    covers_attr = group_state.attributes.get("covers") or []
                     member_entities.extend(covers_attr)
-                
+
                 # Fan groups
                 elif entity_id.startswith("fan."):
-                    fan_entities = group_state.attributes.get("entity_id", [])
+                    fan_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(fan_entities)
-                    fans_attr = group_state.attributes.get("fans", [])
+                    fans_attr = group_state.attributes.get("fans") or []
                     member_entities.extend(fans_attr)
-                
+
                 # Media player groups
                 elif entity_id.startswith("media_player."):
-                    media_entities = group_state.attributes.get("entity_id", [])
+                    media_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(media_entities)
-                    players_attr = group_state.attributes.get("group_members", [])
+                    players_attr = group_state.attributes.get("group_members") or []
                     member_entities.extend(players_attr)
-                
+
                 # Climate groups
                 elif entity_id.startswith("climate."):
-                    climate_entities = group_state.attributes.get("entity_id", [])
+                    climate_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(climate_entities)
                 
                 # Scene groups
@@ -2062,12 +2063,19 @@ class GraphService:
                     entities.add(device_node_id)
                     _LOGGER.debug(f"Found device trigger for device {device_id}, using device node: {device_node_id}")
                 
-            # Check area_id references and resolve to entities  
+            # Check area_id references and resolve to entities
             area_id = config.get("area_id")
             if area_id:
                 area_entities = self._get_entities_for_area(area_id)
                 entities.update(area_entities)
-                
+
+            # Check for template triggers - use HA's template compiler
+            value_template = config.get("value_template")
+            if value_template:
+                template_entities = self._extract_template_entities_using_ha(value_template)
+                entities.update(template_entities)
+                _LOGGER.debug(f"Found entities in trigger value_template: {template_entities}")
+
             # Recursively check nested configurations
             for value in config.values():
                 if isinstance(value, list):
@@ -2088,8 +2096,8 @@ class GraphService:
         
         # Handle different condition formats
         if isinstance(conditions, str):
-            # Template shorthand condition
-            entities.update(self._extract_entities_from_template_string_advanced(conditions))
+            # Template shorthand condition - use HA's template compiler
+            entities.update(self._extract_template_entities_using_ha(conditions))
             _LOGGER.debug(f"Found entities in template condition: {entities}")
         elif isinstance(conditions, dict):
             # Single condition object
@@ -2145,10 +2153,10 @@ class GraphService:
                 entities.add(specific_entity)
                 _LOGGER.debug(f"Found specific device entity: {specific_entity}")
         
-        # Template conditions
+        # Template conditions - use HA's template compiler
         value_template = condition.get("value_template")
         if value_template:
-            template_entities = self._extract_entities_from_template_string_advanced(value_template)
+            template_entities = self._extract_template_entities_using_ha(value_template)
             entities.update(template_entities)
             _LOGGER.debug(f"Found entities in value_template: {template_entities}")
         
@@ -2479,27 +2487,28 @@ class GraphService:
                     template_fields = [
                         "state",              # Direct state field for template entities
                         "value_template",
-                        "state_template", 
+                        "state_template",
                         "availability_template",
                         "icon_template",
-                        "picture_template"
+                        "picture_template",
+                        "options"             # Template select options list
                     ]
-                    
+
                     for field in template_fields:
                         template_str = template_data.get(field, "")
                         if isinstance(template_str, str) and template_str:
-                            # Parse template for entity references
-                            referenced_entities = self._extract_entities_from_template_string_advanced(template_str)
-                            
+                            # Use HA's built-in template parser to extract entity references
+                            referenced_entities = self._extract_template_entities_using_ha(template_str)
+
                             if is_relevant and is_template_entity:
                                 _LOGGER.debug(f"Found template field '{field}' with content: {template_str[:100]}...")
                                 _LOGGER.debug(f"Extracted entities from {field}: {referenced_entities}")
-                            
+
                             if entity_id in referenced_entities:
                                 if is_template_entity:
                                     _LOGGER.debug(f"Found template relationship: {template_entity_id} uses {entity_id}")
                                 related.append((template_entity_id, "template_uses"))
-                            
+
                             # Also check reverse - if this IS the template entity, show what it depends on
                             if entity_id == template_entity_id:
                                 if is_template_entity:
@@ -2508,8 +2517,8 @@ class GraphService:
                                     if is_template_entity:
                                         _LOGGER.debug(f"Found template dependency: {entity_id} depends on {referenced_entity}")
                                     related.append((referenced_entity, "template_depends"))
-                            
-                            # IMPORTANT: Also check if entity_id might be this template entity 
+
+                            # IMPORTANT: Also check if entity_id might be this template entity
                             # even if generated ID doesn't match exactly
                             if (template_str and entity_id.startswith(f"{template_type}.") and
                                 template_name.lower().replace(' ', '_') in entity_id.lower()):
@@ -2517,11 +2526,53 @@ class GraphService:
                                     if is_template_entity:
                                         _LOGGER.debug(f"Template dependency fuzzy match: {entity_id} depends on {referenced_entity}")
                                     related.append((referenced_entity, "template_depends"))
-                                    
+
+                    # Handle select_option actions (can be dict or list of actions)
+                    select_option = template_data.get("select_option")
+                    if select_option:
+                        # Convert to string to search for entity references
+                        select_option_str = str(select_option)
+                        referenced_entities = self._extract_template_entities_using_ha(select_option_str)
+
+                        if entity_id == template_entity_id or (
+                            entity_id.startswith(f"{template_type}.") and
+                            template_name.lower().replace(' ', '_') in entity_id.lower()
+                        ):
+                            for referenced_entity in referenced_entities:
+                                if is_template_entity:
+                                    _LOGGER.debug(f"Found select_option dependency: {entity_id} depends on {referenced_entity}")
+                                related.append((referenced_entity, "template_depends"))
+
         except Exception as e:
             _LOGGER.debug(f"Error finding template config relationships: {e}")
-        
+
         return related
+
+    def _extract_template_entities_using_ha(self, template_str: str) -> Set[str]:
+        """Extract entity references from a template using HA's built-in template parser.
+
+        This method uses Home Assistant's Template.async_render_to_info() which is the same
+        method used by Developer Tools to show "Entities in template". This is more reliable
+        than regex parsing for complex templates.
+        """
+        if not isinstance(template_str, str) or not template_str.strip():
+            return set()
+
+        try:
+            # Create a Template object and render it to get dependency info
+            template = Template(template_str, self.hass)
+            render_info = template.async_render_to_info()
+
+            # The RenderInfo object contains a set of entity IDs that the template depends on
+            entities = render_info.entities if render_info.entities else set()
+
+            _LOGGER.debug(f"Template parser found {len(entities)} entities: {entities}")
+            return entities
+
+        except Exception as e:
+            # If template parsing fails, fall back to regex-based extraction
+            _LOGGER.debug(f"Template parsing failed, falling back to regex: {e}")
+            return self._extract_entities_from_template_string_advanced(template_str)
 
     async def _find_label_relationships(self, entity_entry) -> List[tuple[str, str]]:
         """Find label relationships for entity."""
@@ -2558,22 +2609,22 @@ class GraphService:
                 
                 # Get member entities based on group type
                 if entity_id.startswith("group."):
-                    member_entities = group_state.attributes.get("entity_id", [])
+                    member_entities = group_state.attributes.get("entity_id") or []
                 elif entity_id.startswith("light."):
                     # Standard entity_id attribute
-                    light_entities = group_state.attributes.get("entity_id", [])
+                    light_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(light_entities)
-                    
+
                     # Alternative attributes that group helpers might use
-                    lights_attr = group_state.attributes.get("lights", [])
+                    lights_attr = group_state.attributes.get("lights") or []
                     member_entities.extend(lights_attr)
-                    
+
                     # Some light groups might use different attributes
-                    group_members = group_state.attributes.get("group_members", [])
+                    group_members = group_state.attributes.get("group_members") or []
                     member_entities.extend(group_members)
-                    
+
                     # Light helper-specific attributes
-                    light_list = group_state.attributes.get("light_list", [])
+                    light_list = group_state.attributes.get("light_list") or []
                     member_entities.extend(light_list)
                     
                     # Debug logging for empty light groups
@@ -2588,15 +2639,15 @@ class GraphService:
                                     _LOGGER.debug(f"Potential entity list found in attribute '{attr_name}': {attr_value}")
                                     member_entities.extend([item for item in attr_value if isinstance(item, str) and '.' in item])
                 elif entity_id.startswith("switch."):
-                    switch_entities = group_state.attributes.get("entity_id", [])
+                    switch_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(switch_entities)
-                    switches_attr = group_state.attributes.get("switches", [])
+                    switches_attr = group_state.attributes.get("switches") or []
                     member_entities.extend(switches_attr)
-                    
+
                     # Additional switch group attributes
-                    group_members = group_state.attributes.get("group_members", [])
+                    group_members = group_state.attributes.get("group_members") or []
                     member_entities.extend(group_members)
-                    
+
                     # Debug logging for empty switch groups
                     if not member_entities:
                         all_attrs = group_state.attributes
@@ -2608,22 +2659,22 @@ class GraphService:
                                     _LOGGER.debug(f"Potential entity list found in attribute '{attr_name}': {attr_value}")
                                     member_entities.extend([item for item in attr_value if isinstance(item, str) and '.' in item])
                 elif entity_id.startswith("cover."):
-                    cover_entities = group_state.attributes.get("entity_id", [])
+                    cover_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(cover_entities)
-                    covers_attr = group_state.attributes.get("covers", [])
+                    covers_attr = group_state.attributes.get("covers") or []
                     member_entities.extend(covers_attr)
                 elif entity_id.startswith("fan."):
-                    fan_entities = group_state.attributes.get("entity_id", [])
+                    fan_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(fan_entities)
-                    fans_attr = group_state.attributes.get("fans", [])
+                    fans_attr = group_state.attributes.get("fans") or []
                     member_entities.extend(fans_attr)
                 elif entity_id.startswith("media_player."):
-                    media_entities = group_state.attributes.get("entity_id", [])
+                    media_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(media_entities)
-                    players_attr = group_state.attributes.get("group_members", [])
+                    players_attr = group_state.attributes.get("group_members") or []
                     member_entities.extend(players_attr)
                 elif entity_id.startswith("climate."):
-                    climate_entities = group_state.attributes.get("entity_id", [])
+                    climate_entities = group_state.attributes.get("entity_id") or []
                     member_entities.extend(climate_entities)
                 
                 # Remove duplicates
@@ -2671,24 +2722,24 @@ class GraphService:
             
             # Traditional groups use 'entity_id' attribute
             if group_candidate_id.startswith("group."):
-                member_entities = group_state.attributes.get("entity_id", [])
-            
-            # Light groups use 'entity_id' attribute 
+                member_entities = group_state.attributes.get("entity_id") or []
+
+            # Light groups use 'entity_id' attribute
             elif group_candidate_id.startswith("light."):
                 # Standard entity_id attribute
-                light_entities = group_state.attributes.get("entity_id", [])
+                light_entities = group_state.attributes.get("entity_id") or []
                 member_entities.extend(light_entities)
-                
+
                 # Alternative attributes that group helpers might use
-                lights_attr = group_state.attributes.get("lights", [])
+                lights_attr = group_state.attributes.get("lights") or []
                 member_entities.extend(lights_attr)
-                
+
                 # Some light groups might use different attributes
-                group_members = group_state.attributes.get("group_members", [])
+                group_members = group_state.attributes.get("group_members") or []
                 member_entities.extend(group_members)
-                
+
                 # Light helper-specific attributes
-                light_list = group_state.attributes.get("light_list", [])
+                light_list = group_state.attributes.get("light_list") or []
                 member_entities.extend(light_list)
                 
                 # Debug for light groups specifically and check for unknown attributes
@@ -2712,15 +2763,15 @@ class GraphService:
             
             # Switch groups
             elif group_candidate_id.startswith("switch."):
-                switch_entities = group_state.attributes.get("entity_id", [])
+                switch_entities = group_state.attributes.get("entity_id") or []
                 member_entities.extend(switch_entities)
-                
+
                 # Some switch groups might use 'switches' attribute
-                switches_attr = group_state.attributes.get("switches", [])
+                switches_attr = group_state.attributes.get("switches") or []
                 member_entities.extend(switches_attr)
-                
+
                 # Additional switch group attributes
-                group_members = group_state.attributes.get("group_members", [])
+                group_members = group_state.attributes.get("group_members") or []
                 member_entities.extend(group_members)
                 
                 # Debug logging for empty switch groups in reverse lookup
@@ -2736,32 +2787,32 @@ class GraphService:
             
             # Cover groups
             elif group_candidate_id.startswith("cover."):
-                cover_entities = group_state.attributes.get("entity_id", [])
+                cover_entities = group_state.attributes.get("entity_id") or []
                 member_entities.extend(cover_entities)
-                
-                covers_attr = group_state.attributes.get("covers", [])
+
+                covers_attr = group_state.attributes.get("covers") or []
                 member_entities.extend(covers_attr)
-            
+
             # Fan groups
             elif group_candidate_id.startswith("fan."):
-                fan_entities = group_state.attributes.get("entity_id", [])
+                fan_entities = group_state.attributes.get("entity_id") or []
                 member_entities.extend(fan_entities)
-                
-                fans_attr = group_state.attributes.get("fans", [])
+
+                fans_attr = group_state.attributes.get("fans") or []
                 member_entities.extend(fans_attr)
-            
+
             # Media player groups
             elif group_candidate_id.startswith("media_player."):
-                media_entities = group_state.attributes.get("entity_id", [])
+                media_entities = group_state.attributes.get("entity_id") or []
                 member_entities.extend(media_entities)
-                
+
                 # Sonos and other systems might use different attributes
-                players_attr = group_state.attributes.get("group_members", [])
+                players_attr = group_state.attributes.get("group_members") or []
                 member_entities.extend(players_attr)
-            
+
             # Climate groups
             elif group_candidate_id.startswith("climate."):
-                climate_entities = group_state.attributes.get("entity_id", [])
+                climate_entities = group_state.attributes.get("entity_id") or []
                 member_entities.extend(climate_entities)
                 
             # Scene groups (reverse lookup)
@@ -2930,7 +2981,12 @@ class GraphService:
                     return True
                 if isinstance(service_data.get("entity_id"), list) and entity_id in service_data.get("entity_id", []):
                     return True
-                    
+
+            # Check for template triggers - use HA's template compiler
+            value_template = config.get("value_template")
+            if value_template and self._entity_referenced_in_template_string(entity_id, value_template):
+                return True
+
             # Recursively check nested configurations
             for value in config.values():
                 if isinstance(value, list):
@@ -3061,26 +3117,17 @@ class GraphService:
         return False
 
     def _entity_referenced_in_template_string(self, entity_id: str, template_str: str) -> bool:
-        """Check if entity is referenced in a Jinja2 template string."""
-        import re
-        
+        """Check if entity is referenced in a Jinja2 template string using HA's template compiler."""
         if not isinstance(template_str, str):
             return False
-        
-        # Common template patterns for entity references
-        patterns = [
-            rf"states\(['\"]?{re.escape(entity_id)}['\"]?\)",           # states('entity.id')
-            rf"state_attr\(['\"]?{re.escape(entity_id)}['\"]?,",        # state_attr('entity.id', 'attr')
-            rf"is_state\(['\"]?{re.escape(entity_id)}['\"]?,",          # is_state('entity.id', 'state')
-            rf"states\.{re.escape(entity_id.replace('.', r'\.'))}",     # states.entity.id
-        ]
-        
-        for pattern in patterns:
-            if re.search(pattern, template_str):
-                return True
-        
-        # Simple containment check as fallback
-        return entity_id in template_str
+
+        # Use HA's template compiler to get all referenced entities
+        try:
+            referenced_entities = self._extract_template_entities_using_ha(template_str)
+            return entity_id in referenced_entities
+        except Exception:
+            # If template parsing fails, fall back to simple containment check
+            return entity_id in template_str
 
     def _entity_belongs_to_device(self, entity_id: str, device_id: str) -> bool:
         """Check if an entity belongs to a specific device."""

@@ -3,11 +3,11 @@ from typing import Literal
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import STATE_ON, STATE_OFF
+from homeassistant.const import STATE_ON, STATE_OFF, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from . import EvccDataUpdateCoordinator, EvccBaseEntity
-from .const import DOMAIN, SWITCH_SENSORS, SWITCH_SENSORS_PER_LOADPOINT, ExtSwitchEntityDescription
+from .const import DOMAIN, SWITCH_ENTITIES, SWITCH_ENTITIES_PER_LOADPOINT, ExtSwitchEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
     _LOGGER.debug("SWITCH async_setup_entry")
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
     entities = []
-    for description in SWITCH_SENSORS:
+    for description in SWITCH_ENTITIES:
         entity = EvccSwitch(coordinator, description)
         entities.append(entity)
 
@@ -30,13 +30,13 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
         lp_is_heating = load_point_config["is_heating"]
         lp_is_integrated = load_point_config["is_integrated"]
 
-        for a_stub in SWITCH_SENSORS_PER_LOADPOINT:
+        for a_stub in SWITCH_ENTITIES_PER_LOADPOINT:
             if not lp_is_integrated or a_stub.integrated_supported:
                 description = ExtSwitchEntityDescription(
                     tag=a_stub.tag,
-                    idx=lp_api_index,
-                    key=f"{lp_id_addon}_{a_stub.tag.key}",
-                    translation_key=a_stub.tag.key,
+                    lp_idx=lp_api_index,
+                    key=f"{lp_id_addon}_{a_stub.tag.json_key}",
+                    translation_key=a_stub.tag.json_key,
                     name_addon=lp_name_addon if multi_loadpoint_config else None,
                     icon=a_stub.icon,
                     device_class=a_stub.device_class,
@@ -56,14 +56,14 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
 
 class EvccSwitch(EvccBaseEntity, SwitchEntity):
     def __init__(self, coordinator: EvccDataUpdateCoordinator, description: ExtSwitchEntityDescription):
-        super().__init__(coordinator=coordinator, description=description)
+        super().__init__(entity_type=Platform.SWITCH, coordinator=coordinator, description=description)
         self._attr_icon_off = self.entity_description.icon_off
 
     async def async_turn_on(self, **kwargs):
        """Turn on the switch."""
        try:
            # cause of a minor bug in evcc, we need to write 1 instead of True
-           await self.coordinator.async_write_tag(self.tag, 1, self.idx, self)
+           await self.coordinator.async_write_tag(self.tag, 1, self.lp_idx, self)
        except ValueError:
            return "unavailable"
 
@@ -71,17 +71,17 @@ class EvccSwitch(EvccBaseEntity, SwitchEntity):
        """Turn off the switch."""
        try:
             # cause of a minor bug in evcc, we need to write 0 instead of False
-            await self.coordinator.async_write_tag(self.tag, 0, self.idx, self)
+            await self.coordinator.async_write_tag(self.tag, 0, self.lp_idx, self)
        except ValueError:
            return "unavailable"
 
     @property
     def is_on(self) -> bool | None:
         try:
-            value = self.coordinator.read_tag(self.tag, self.idx)
+            value = self.coordinator.read_tag(self.tag, self.lp_idx)
 
         except KeyError:
-            _LOGGER.info(f"is_on caused KeyError for: {self.tag.key}")
+            _LOGGER.info(f"is_on caused KeyError for: {self.tag.json_key}")
             value = None
         except TypeError:
             return None

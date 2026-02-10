@@ -1,16 +1,42 @@
 from typing import Final
 
-JSONKEY_PLANS: Final = "plans"
+JSONKEY_PLANS_DEPRECATED: Final = "plans"
 JSONKEY_PLAN: Final = "plan"
-JSONKEY_PLANS_SOC: Final = "soc"
-JSONKEY_PLANS_TIME: Final = "time"
+JSONKEY_PLAN_SOC: Final = "soc"
+JSONKEY_PLAN_TIME: Final = "time"
 
+JSONKEY_AUXPOWER: Final = "auxPower"
+JSONKEY_CIRCUITS: Final = "circuits"
 JSONKEY_LOADPOINTS: Final = "loadpoints"
 JSONKEY_VEHICLES: Final = "vehicles"
-JSONKEY_AUXPOWER: Final = "auxPower"
+
+JSONKEY_EVOPT: Final = "evopt"
+JSONKEY_EVOPT_REQ: Final = "req"
+JSONKEY_EVOPT_REQ_TIME_SERIES: Final = "time_series"
+JSONKEY_EVOPT_REQ_TIME_SERIES_DT: Final = "dt"
+JSONKEY_EVOPT_REQ_TIME_SERIES_FT: Final = "ft"
+JSONKEY_EVOPT_REQ_TIME_SERIES_GT: Final = "gt"
+JSONKEY_EVOPT_REQ_TIME_SERIES_PE: Final = "p_E"
+JSONKEY_EVOPT_REQ_TIME_SERIES_PN: Final = "p_N"
+JSONKEY_EVOPT_RES: Final = "res"
+JSONKEY_EVOPT_RES_BATTERIES: Final = "batteries"
+JSONKEY_EVOPT_RES_BATTERIES_AINDEX_CHARGING_POWER: Final = "charging_power"
+JSONKEY_EVOPT_RES_BATTERIES_AINDEX_DISCHARGING_POWER: Final = "discharging_power"
+# even this is named 'state_of_charge' in evcc - the 'value' IS the total amount or stored energy in the battery!
+JSONKEY_EVOPT_RES_BATTERIES_AINDEX_CHARGED_TOTAL: Final = "state_of_charge"
+JSONKEY_EVOPT_RES_FLOW_DIRECTION: Final = "flow_direction"
+JSONKEY_EVOPT_RES_GRID_EXPORT: Final = "grid_export"
+JSONKEY_EVOPT_RES_GRID_IMPORT: Final = "grid_import"
+JSONKEY_EVOPT_RES_OBJECTIVE_VALUE: Final = "objective_value"
+JSONKEY_EVOPT_RES_LIMIT_VIOLATIONS: Final = "limit_violations"
+JSONKEY_EVOPT_RES_STATUS: Final = "status"
+JSONKEY_EVOPT_DETAILS: Final = "details"
+JSONKEY_EVOPT_DETAILS_TIMESTAMP: Final = "timestamp"
+JSONKEY_EVOPT_DETAILS_BATTERYDETAILS: Final = "batteryDetails"
+
 JSONKEY_BATTERYMODE: Final = "batteryMode"
 JSONKEY_BATTERYPOWER: Final = "batteryPower"
-JSONKEY_BATTERYSOC: Final = "batterySoc"
+#JSONKEY_BATTERYSOC: Final = "batterySoc"
 JSONKEY_HOMEPOWER: Final = "homePower"
 JSONKEY_PVENERGY: Final = "pvEnergy"
 JSONKEY_PVPOWER: Final = "pvPower"
@@ -26,6 +52,11 @@ JSONKEY_GRIDPOWER: Final = "gridPower"
 JSONKEY_GRID: Final = "grid"
 
 ADDITIONAL_ENDPOINTS_DATA_TARIFF: Final = "@@@tariff-data"
+ADDITIONAL_ENDPOINTS_DATA_SESSIONS: Final = "@@@session-data"
+SESSIONS_KEY_RAW: Final = "raw"
+SESSIONS_KEY_TOTAL: Final = "total"
+SESSIONS_KEY_VEHICLES: Final = "vehicles"
+SESSIONS_KEY_LOADPOINTS: Final = "loadpoints"
 
 # STATES: Final = [JSONKEY_LOADPOINTS, JSONKEY_AUXPOWER, JSONKEY_BATTERYMODE, JSONKEY_BATTERYPOWER, JSONKEY_BATTERYSOC,
 #                  JSONKEY_GRID, JSONKEY_GRIDCURRENTS, JSONKEY_GRIDPOWER, JSONKEY_HOMEPOWER, JSONKEY_PVENERGY,
@@ -66,7 +97,9 @@ TRANSLATIONS: Final = {
             "enable": "Ausreichend PV-Leistung vorhanden",
             "disable": "Unzureichende PV-Leistung, Aktivierung des Timeouts",
             "inactive": "Auch nach dem Timeout ist keine PV-Leistung verfügbar"
-        }
+        },
+        "device_name_loadpoint": "Ladepunkt",
+        "device_name_vehicle": "Fahrzeug"
     },
     "en": {
         "batterymode": {
@@ -84,6 +117,8 @@ TRANSLATIONS: Final = {
             "enable": "Sufficient PV power available",
             "disable": "Insufficient PV power, activating the timeout",
             "inactive": "No PV power available even after the timeout"
-        }
+        },
+        "device_name_loadpoint": "Loadpoint",
+        "device_name_vehicle": "Vehicle"
     }
 }

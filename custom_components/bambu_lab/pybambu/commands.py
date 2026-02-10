@@ -89,6 +89,8 @@ SWITCH_AMS_TEMPLATE = {
     "print": {
         "command": "ams_change_filament",
         "sequence_id": "0",
+        "ams_id": 255,              # Index of the AMS
+        "slot_id": 0,               # Index of the tray with the AMS
         "target": 255,
         "curr_temp": 0,
         "tar_temp": 0
@@ -109,9 +111,33 @@ AMS_FILAMENT_SETTING_TEMPLATE = {
     }
 }
 
+AMS_READ_RFID_TEMPLATE = {
+    "print": {
+        "sequence_id": "0",
+        "command": "ams_get_rfid",
+        "ams_id": 0,                # Index of the AMS
+        "slot_id": 0,               # Index of the tray with the AMS
+    }
+}
+
+AMS_FILAMENT_DRYING_TEMPLATE = {
+  "print": {
+    "sequence_id": "0",
+    "command": "ams_filament_drying",
+    "ams_id": 0,
+    "temp": 0,
+    "cooling_temp": 0,
+    "duration": 0,
+    "humidity": 0,
+    "mode": 0,
+    "rotate_tray": False,
+  }
+}
+
 MOVE_AXIS_GCODE = "M211 S\nM211 X1 Y1 Z1\nM1002 push_ref_mode\nG91 \nG1 {axis}{distance}.0 F{speed}\nM1002 pop_ref_mode\nM211 R\n"
 HOME_GCODE = "G28\n"
 EXTRUDER_GCODE = "M83 \nG0 E{distance}.0 F900\n"
+AMS_READ_RFID_GCODE ="M620 R{global_tray_index}\n"
 
 # X1 only currently
 GET_ACCESSORIES = {"system": {"sequence_id": "0", "command": "get_accessories", "accessory_type": "none"}}
@@ -124,3 +150,8 @@ PROMPT_SOUND_DISABLE = {"print" : {"sequence_id": "0", "command": "print_option"
 BUZZER_SET_SILENT  = {"print" : {"sequence_id": "0", "command": "buzzer_ctrl", "mode": 0, "reason": ""}}
 BUZZER_SET_ALARM   = {"print" : {"sequence_id": "0", "command": "buzzer_ctrl", "mode": 1, "reason": ""}}
 BUZZER_SET_BEEPING = {"print" : {"sequence_id": "0", "command": "buzzer_ctrl", "mode": 2, "reason": ""}}
+
+# P2S only
+AIRDUCT_SET_COOLING = {"print": {"sequence_id": "0", "command": "set_airduct", "modeId": 0, "submode": -1}}
+AIRDUCT_SET_HEATING_FILTER = {"print": {"sequence_id": "0", "command": "set_airduct", "modeId": 1, "submode": -1}}
+

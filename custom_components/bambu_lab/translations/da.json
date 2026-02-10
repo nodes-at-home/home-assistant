@@ -20,15 +20,24 @@
     },
     "error": {
       "cannot_connect": "Forbindelse mislykkedes. Tjek legitimationsoplysninger.",
-      "cannot_connect_local_ip": "Forbindelse mislykkedes. Tjek den angivne IP-adresse.",
-      "cannot_connect_local_all": "Forbindelse mislykkedes. Tjek de angivne indstillinger.",
       "invalid_auth": "Ugyldig autentifikation.",
       "unknown": "Uventet fejl.",
       "code_needed": "Bekræftelseskode skal angives.",
       "verifyCode": "Bekræftelseskode kræves. Tjek din e-mail eller telefon.",
       "code_expired": "Bekræftelseskode udløbet. Ny kode anmodet. Tjek din e-mail eller telefon.",
       "code_incorrect": "Bekræftelseskoden var forkert. Indtast venligst igen.",
-      "tfaCode": "2FA-kode kræves. Indtast den nu."
+      "tfaCode": "2FA-kode kræves. Indtast den nu.",
+      "cannot_connect_local_timeout": "Kunne ikke oprette forbindelse. Forbindelsen fik timeout.",
+      "cannot_connect_local_access_denied": "Kunne ikke oprette forbindelse. Adgang nægtet - tjek adgangskoden.",
+      "cannot_connect_local_incorrect_serial": "Kunne ikke oprette forbindelse. Forbindelsen blev lukket af printeren - tjek serienummeret.",
+      "cannot_connect_local_incorrect_address": "Kunne ikke oprette forbindelse. Forbindelse nægtet - tjek IP-adressen.",
+      "cannot_connect_local_address_unreachable": "Kunne ikke oprette forbindelse. Adressen kan ikke nås - tjek netværksforbindelsen.",
+      "cannot_connect_cloud_timeout": "Timeout for forsøget på at oprette forbindelse til Bambu Lab-skyen.",
+      "cannot_connect_cloud_access_denied": "Adgang nægtet af Bambu Lab-skyen.",
+      "cannot_connect_cloud_connection_refused": "Forbindelse nægtet af Bambu Lab-skyen.",
+      "cannot_connect_cloud_address_unreachable": "Bambu Labs cloud-adresse kan ikke nås.",
+      "cannot_connect_cloud_unknown": "Ukendt fejl ved forbindelse til Bambu Lab-skyen.",
+      "cannot_connect_local_unknown": "Kunne ikke oprette forbindelse. Tjek de angivne indstillinger."
     },
     "step": {
       "user": {
@@ -57,14 +66,15 @@
       },
       "Bambu_Lan": {
         "title": "Opsæt lokal forbindelse",
-        "description": "Du kan vælge at oprette forbindelse direkte til printeren for statusopdateringer i stedet for via Bambu Lab-skyen. Dette giver dig modstandsdygtighed over for Bambu Labs skyudfald, men Bambu Lab har begrænset kontrol over printeren, når den er i denne hybridtilstand, så nogle kontroller vil være utilgængelige.",
+        "description": "Du kan vælge at oprette forbindelse direkte til printeren mqtt i stedet for Bambu Lab cloud. Dette giver modstandsdygtighed over for Bambu Labs skyudfald, men Bambu Lab har begrænset kontrol over printeren, når den er i denne hybridtilstand, så nogle kontroller vil være utilgængelige.\n\rUanset dette valg vil integrationen få printerens IP-adresse fra Bambu Lab cloud og bekræfte, at den kan oprette forbindelse til den, da dette er påkrævet for kamera, printhistorik og timelapse support. Hvis din printer er utilgængelig for din Home Assistant, kan du deaktivere denne kontrol, men du vil miste disse funktioner.",
         "data": {
-          "local_mqtt": "Forbind lokalt til printeren:",
+          "local_mqtt": "Tilslut direkte til printeren mqtt:",
           "host": "Lokal printer-IP-adresse:",
           "access_code": "Adgangskode:",
           "usage_hours": "Aktuelle brugstimer (valgfrit):",
           "print_cache_count": "Antal modeller til cache til hjemmeassistent (-1 for ubegrænset):",
-          "timelapse_cache_count": "Antal Timelapse-videoer til cache til hjemmeassistent (-1 for ubegrænset):"
+          "timelapse_cache_count": "Antal Timelapse-videoer til cache til hjemmeassistent (-1 for ubegrænset):",
+          "skip_local_mqtt": "Spring lokal mqtt-forbindelsestest over (anbefales ikke):"
         },
         "sections": {
           "advanced": {
@@ -108,15 +118,24 @@
     },
     "error": {
       "cannot_connect": "Forbindelse mislykkedes",
-      "cannot_connect_local_ip": "Forbindelse mislykkedes. Tjek den angivne IP-adresse.",
-      "cannot_connect_local_all": "Forbindelse mislykkedes. Tjek de angivne indstillinger.",
       "invalid_auth": "Ugyldig autentifikation.",
       "unknown": "Uventet fejl.",
       "code_needed": "Bekræftelseskode skal angives.",
       "verifyCode": "Bekræftelseskode kræves. Tjek din e-mail eller telefon.",
       "code_expired": "Bekræftelseskode udløbet. Ny kode anmodet. Tjek din e-mail eller telefon.",
       "code_incorrect": "Bekræftelseskoden var forkert. Indtast venligst igen.",
-      "tfaCode": "2FA-kode kræves. Indtast den nu."
+      "tfaCode": "2FA-kode kræves. Indtast den nu.",
+      "cannot_connect_local_timeout": "Kunne ikke oprette forbindelse. Forbindelsen fik timeout.",
+      "cannot_connect_local_access_denied": "Kunne ikke oprette forbindelse. Adgang nægtet - tjek adgangskoden.",
+      "cannot_connect_local_incorrect_serial": "Kunne ikke oprette forbindelse. Forbindelsen blev lukket af printeren - tjek serienummeret.",
+      "cannot_connect_local_incorrect_address": "Kunne ikke oprette forbindelse. Forbindelse nægtet - tjek IP-adressen.",
+      "cannot_connect_local_address_unreachable": "Kunne ikke oprette forbindelse. Adressen kan ikke nås - tjek netværksforbindelsen.",
+      "cannot_connect_cloud_timeout": "Timeout for forsøget på at oprette forbindelse til Bambu Lab-skyen.",
+      "cannot_connect_cloud_access_denied": "Adgang nægtet af Bambu Lab-skyen.",
+      "cannot_connect_cloud_connection_refused": "Forbindelse nægtet af Bambu Lab-skyen.",
+      "cannot_connect_cloud_address_unreachable": "Bambu Labs cloud-adresse kan ikke nås.",
+      "cannot_connect_cloud_unknown": "Ukendt fejl ved forbindelse til Bambu Lab-skyen.",
+      "cannot_connect_local_unknown": "Kunne ikke oprette forbindelse. Tjek de angivne indstillinger."
     },
     "step": {
       "init": {
@@ -140,15 +159,16 @@
       },
       "Bambu_Lan": {
         "title": "Juster printerkonfiguration",
-        "description": "Du kan vælge at oprette forbindelse direkte til printeren for statusopdateringer i stedet for via Bambu Lab-skyen. Dette giver dig modstandsdygtighed over for Bambu Labs skyudfald, men Bambu Lab har begrænset kontrol over printeren, når den er i denne hybridtilstand, så nogle kontroller vil være utilgængelige.",
+        "description": "Du kan vælge at oprette forbindelse direkte til printeren mqtt i stedet for Bambu Lab cloud. Dette giver modstandsdygtighed over for Bambu Labs skyudfald, men Bambu Lab har begrænset kontrol over printeren, når den er i denne hybridtilstand, så nogle kontroller vil være utilgængelige.\n\rUanset dette valg vil integrationen få printerens IP-adresse fra Bambu Lab cloud og bekræfte, at den kan oprette forbindelse til den, da dette er påkrævet for kamera, printhistorik og timelapse support. Hvis din printer er utilgængelig for din Home Assistant, kan du deaktivere denne kontrol, men du vil miste disse funktioner.",
         "data": {
           "serial": "Juster indstillinger for:",
           "host": "Lokal printer-IP-adresse:",
           "access_code": "Adgangskode:",
-          "local_mqtt": "Tilslut direkte til printeren i stedet for via Bambu Lab-skyen:",
+          "local_mqtt": "Tilslut direkte til printeren mqtt:",
           "usage_hours": "Aktuelle brugstimer (valgfrit):",
           "print_cache_count": "Antal modeller til cache til hjemmeassistent (-1 for ubegrænset):",
-          "timelapse_cache_count": "Antal Timelapse-videoer til cache til hjemmeassistent (-1 for ubegrænset):"
+          "timelapse_cache_count": "Antal Timelapse-videoer til cache til hjemmeassistent (-1 for ubegrænset):",
+          "skip_local_mqtt": "Spring lokal mqtt-forbindelsestest over (anbefales ikke):"
         },
         "sections": {
           "advanced": {
@@ -215,6 +235,15 @@
       },
       "active_ams": {
         "name": "Aktiv"
+      },
+      "drying": {
+        "name": "Tørring"
+      },
+      "airduct_mode": {
+        "name": "Airduct Mode"
+      },
+      "hybrid_mode_blocks_control": {
+        "name": "Hybrid MQTT blokerer kontrol"
       }
     },
     "button": {
@@ -252,6 +281,9 @@
       },
       "chamber_fan": {
         "name": "Kabineblæser"
+      },
+      "secondary_aux_fan": {
+        "name": "Sekundær ekstra ventilator"
       }
     },
     "image": {
@@ -461,7 +493,8 @@
         "state": {
           "local": "Lokal",
           "cloud": "Cloud",
-          "idle": "Inaktiv"
+          "idle": "Inaktiv",
+          "unknown": "Ukendt"
         }
       },
       "start_time": {
@@ -483,7 +516,10 @@
         "name": "Samlet antal lag"
       },
       "active_tray": {
-        "name": "Aktiv bakke"
+        "name": "Aktiv bakke",
+        "state": {
+          "none": "Ingen"
+        }
       },
       "nozzle_diameter": {
         "name": "Dyse størrelse"
@@ -492,7 +528,12 @@
         "name": "Dysens type",
         "state": {
           "hardened_steel": "Hærdet stål",
-          "stainless_steel": "Rustfrit stål"
+          "stainless_steel": "Rustfrit stål",
+          "tungsten_carbide": "Wolframcarbid",
+          "high_flow_hardened_steel": "hærdet stål med stor strømning",
+          "high_flow_stainless_steel": "rustfrit stål med stor strømning",
+          "high_flow_tungsten_carbide": "wolframcarbid med stor strømning",
+          "unknown": "Ukendt"
         }
       },
       "humidity_index": {
@@ -759,6 +800,40 @@
           "abnormal": "Abnorm",
           "readonly": "Læs kun"
         }
+      },
+      "left_nozzle_diameter": {
+        "name": "Efterladt dysestørrelse"
+      },
+      "left_nozzle_type": {
+        "name": "Efterladt dysetype",
+        "state": {
+          "hardened_steel": "Hærdet stål",
+          "stainless_steel": "Rustfrit stål",
+          "tungsten_carbide": "Wolframcarbid",
+          "high_flow_hardened_steel": "hærdet stål med stor strømning",
+          "high_flow_stainless_steel": "rustfrit stål med stor strømning",
+          "high_flow_tungsten_carbide": "wolframcarbid med stor strømning"
+        }
+      },
+      "right_nozzle_diameter": {
+        "name": "Højre dysestørrelse"
+      },
+      "right_nozzle_type": {
+        "name": "Højre dysetype",
+        "state": {
+          "hardened_steel": "Hærdet stål",
+          "stainless_steel": "Rustfrit stål",
+          "tungsten_carbide": "Wolframcarbid",
+          "high_flow_hardened_steel": "hærdet stål med stor strømning",
+          "high_flow_stainless_steel": "rustfrit stål med stor strømning",
+          "high_flow_tungsten_carbide": "wolframcarbid med stor strømning"
+        }
+      },
+      "model_download_percentage": {
+        "name": "Download model"
+      },
+      "serial": {
+        "name": "Serienummer"
       }
     },
     "camera": {
@@ -778,6 +853,9 @@
       },
       "ftp": {
         "name": "Indlæsningsmodeldata fra printer"
+      },
+      "airduct_mode": {
+        "name": "Køletilstand eller Opvarmning/Filtertilstand"
       }
     },
     "update": {
@@ -796,8 +874,24 @@
   },
   "issues": {
     "authentication_failed": {
-      "title": "Autentificering mislykkedes for {device}",
-      "description": "Forsøg på at oprette forbindelse til Bambu Lab mislykkedes. Konfigurer integrationen igen og giver friske legitimationsoplysninger."
+      "title": "Godkendelse mislykkedes",
+      "description": "Forsøg på at oprette forbindelse til Bambu Lab mislykkedes for {device}. Genkonfigurer integrationen og angiv nye legitimationsoplysninger."
+    },
+    "no_external_storage": {
+      "title": "Intet USB- eller SD-kort fundet",
+      "description": "{device} har ikke et USB- eller SD-kort tilsluttet. Dette er nødvendigt for alle funktioner, der afhænger af ftp til printeren, såsom forsidebilledet, overspringsobjekter og udskriftshistorik."
+    },
+    "live_view_disabled": {
+      "title": "Live View deaktiveret",
+      "description": "{device} har live view deaktiveret i printerindstillingerne. Aktiver dette for at bruge kameraets funktioner."
+    },
+    "mqtt_encryption_enabled": {
+      "title": "MQTT-kryptering aktiveret",
+      "description": "{device} er en sky forbundet med mqtt-kryptering aktiveret. Kun lyset kan styres af denne integration. Alle andre kontroller er ikke tilgængelige. Printeren skal indstilles til udvikler-lan-tilstand for at tillade kontrol fra hjemmeassistenten."
+    },
+    "hybrid_mode_blocking": {
+      "title": "Hybridforbindelse blokerer kontrol",
+      "description": "{device} er cloud-forbundet, men med lokal mqtt-forbindelse af integrationen. Dette blokerer for indstilling af temperaturer og genudskrivning fra historikken. Skift forbindelsen til ren sky for at aktivere fuld kontrol."
     }
   }
 }

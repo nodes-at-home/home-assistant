@@ -20,7 +20,13 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.util import dt
 
-from .const import DOMAIN, LOGGER, MEDIA_VIEW_DAYS_ORDER, MEDIA_VIEW_RECORDINGS_ORDER
+from .const import (
+    DOMAIN,
+    LOGGER,
+    MEDIA_VIEW_DAYS_ORDER,
+    MEDIA_VIEW_RECORDINGS_ORDER,
+    RECORDINGS_UNAVAILABLE_MESSAGE,
+)
 
 from .utils import (
     getRecording,
@@ -64,11 +70,26 @@ class TapoMediaSource(MediaSource):
 
     name = "Tapo: Recordings"
 
+    def _map_recordings_exception(self, err: Exception) -> str:
+        err_msg = str(err)
+        if "-71105" in err_msg:
+            return RECORDINGS_UNAVAILABLE_MESSAGE
+        return "Unable to retrieve recordings, please try again later."
+
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize CameraMediaSource."""
         super().__init__(DOMAIN)
         self.hass = hass
         self.entry = entry
+
+    def _get_entry_data(self, entry_id: str) -> dict:
+        """Return entry data or raise a user facing error if setup is incomplete."""
+        entry_data = self.hass.data.get(DOMAIN, {}).get(entry_id)
+        if not entry_data or "name" not in entry_data or "isParent" not in entry_data:
+            raise Unresolvable(
+                "Camera setup has not finished yet. Recordings will be available once the device is connected."
+            )
+        return entry_data
 
     async def async_resolve_media(self, item: MediaSourceItem) -> PlayMedia:
         path = item.identifier.split("/")
@@ -132,7 +153,18 @@ class TapoMediaSource(MediaSource):
             raise Unresolvable(
                 "Initial local media scan still running, please try again later."
             )
-        recordingsForDay = await getRecordings(self.hass, device, tapoController, date)
+        try:
+            recordingsForDay = await getRecordings(
+                self.hass, device, tapoController, date
+            )
+        except Exception as err:
+            LOGGER.error(
+                "Unable to fetch recordings for %s on %s: %s",
+                device["name"],
+                date,
+                err,
+            )
+            raise Unresolvable(self._map_recordings_exception(err)) from err
         videoNames = []
         for searchResult in recordingsForDay:
             for key in searchResult:
@@ -208,9 +240,15 @@ class TapoMediaSource(MediaSource):
             raise Unresolvable(
                 "Cloud password is required in order to play recordings.\nSet cloud password inside Settings > Devices & Services > Tapo: Cameras Control > Configure."
             )
-        recordingsList = await self.hass.async_add_executor_job(
-            tapoController.getRecordingsList
-        )
+        try:
+            recordingsList = await self.hass.async_add_executor_job(
+                tapoController.getRecordingsList
+            )
+        except Exception as err:
+            LOGGER.error(
+                "Unable to fetch recordings list for %s: %s", device["name"], err
+            )
+            raise Unresolvable(self._map_recordings_exception(err)) from err
         recordingsDates = []
         for searchResult in recordingsList:
             for key in searchResult:
@@ -257,25 +295,29 @@ class TapoMediaSource(MediaSource):
         item: MediaSourceItem,
     ) -> BrowseMediaSource:
         if item.identifier is None:
+            children = []
+            for entry_id, entry_data in self.hass.data.get(DOMAIN, {}).items():
+                name = entry_data.get("name")
+                if not name:
+                    LOGGER.debug(
+                        "Skipping media browse for %s because setup is incomplete",
+                        entry_id,
+                    )
+                    continue
+                children.append(
+                    self.generateView(
+                        build_identifier({"entry": entry_id, "title": name}),
+                        name,
+                        False,
+                        True,
+                    )
+                )
             return self.generateView(
                 build_identifier(),
                 self.name,
                 False,
                 True,
-                children=[
-                    self.generateView(
-                        build_identifier(
-                            {
-                                "entry": entry,
-                                "title": self.hass.data[DOMAIN][entry]["name"],
-                            }
-                        ),
-                        self.hass.data[DOMAIN][entry]["name"],
-                        False,
-                        True,
-                    )
-                    for entry in self.hass.data[DOMAIN]
-                ],
+                children=children,
             )
         else:
             path = item.identifier.split("/")
@@ -284,13 +326,14 @@ class TapoMediaSource(MediaSource):
 
             query = parse_identifier(path[1])
             entry = query["entry"]
-            isParent = self.hass.data[DOMAIN][entry]["isParent"]
+            entry_data = self._get_entry_data(entry)
+            isParent = entry_data["isParent"]
             title = query["title"]
-            device = self.hass.data[DOMAIN][entry]
+            device = entry_data
             if isParent is True:
                 if "childID" in query:
                     childID = query["childID"]
-                    for child in self.hass.data[DOMAIN][entry]["childDevices"]:
+                    for child in entry_data["childDevices"]:
                         if child["camData"]["basic_info"]["dev_id"] == childID:
                             device = child
                             break
@@ -304,7 +347,7 @@ class TapoMediaSource(MediaSource):
             elif isParent is True:
                 return self.generateView(
                     build_identifier(query),
-                    self.hass.data[DOMAIN][entry]["name"],
+                    entry_data["name"],
                     False,
                     True,
                     children=[
@@ -322,7 +365,7 @@ class TapoMediaSource(MediaSource):
                             False,
                             True,
                         )
-                        for childDevice in self.hass.data[DOMAIN][entry]["childDevices"]
+                        for childDevice in entry_data["childDevices"]
                     ],
                 )
             else:

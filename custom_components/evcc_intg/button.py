@@ -2,10 +2,11 @@ import logging
 
 from homeassistant.components.button import ButtonEntity
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from . import EvccDataUpdateCoordinator, EvccBaseEntity
-from .const import DOMAIN, BUTTONS, BUTTONS_PER_LOADPOINT, ExtButtonEntityDescription
+from .const import DOMAIN, BUTTONS_ENTITIES, BUTTONS_ENTITIES_PER_LOADPOINT, ExtButtonEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,7 +15,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
     _LOGGER.debug("BUTTON async_setup_entry")
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
     entities = []
-    for description in BUTTONS:
+    for description in BUTTONS_ENTITIES:
         entity = EvccButton(coordinator, description)
         entities.append(entity)
 
@@ -28,13 +29,13 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
         lp_is_heating = load_point_config["is_heating"]
         lp_is_integrated = load_point_config["is_integrated"]
 
-        for a_stub in BUTTONS_PER_LOADPOINT:
+        for a_stub in BUTTONS_ENTITIES_PER_LOADPOINT:
             if not lp_is_integrated or a_stub.integrated_supported:
                 description = ExtButtonEntityDescription(
                     tag=a_stub.tag,
-                    idx=lp_api_index,
-                    key=f"{lp_id_addon}_{a_stub.tag.key}",
-                    translation_key=a_stub.tag.key,
+                    lp_idx=lp_api_index,
+                    key=f"{lp_id_addon}_{a_stub.tag.json_key}",
+                    translation_key=a_stub.tag.json_key,
                     name_addon=lp_name_addon if multi_loadpoint_config else None,
                     icon=a_stub.icon,
                     device_class=a_stub.device_class,
@@ -54,10 +55,10 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
 
 class EvccButton(EvccBaseEntity, ButtonEntity):
     def __init__(self, coordinator: EvccDataUpdateCoordinator, description: ExtButtonEntityDescription):
-        super().__init__(coordinator=coordinator, description=description)
+        super().__init__(entity_type=Platform.BUTTON, coordinator=coordinator, description=description)
 
     async def async_press(self, **kwargs):
         try:
-            await self.coordinator.async_press_tag(self.tag, self.entity_description.payload, self.idx, self)
+            await self.coordinator.async_press_tag(self.tag, self.entity_description.payload, self.lp_idx, self)
         except ValueError:
             return "unavailable"

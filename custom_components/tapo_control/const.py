@@ -6,9 +6,11 @@ from datetime import timedelta
 from homeassistant.helpers import config_validation as cv
 
 CONTROL_PORT = "control_port"
-PYTAPO_REQUIRED_VERSION = "3.3.49"
+PYTAPO_REQUIRED_VERSION = "3.4.7"
 DOMAIN = "tapo_control"
 BRAND = "TP-Link"
+DOORBELL_UDP_PORT = 20005
+DOORBELL_UDP_DISCOVERED = "doorbell_udp_discovered"
 ALARM_MODE = "alarm_mode"
 PRESET = "preset"
 LIGHT = "light"
@@ -22,10 +24,14 @@ TILT = "tilt"
 PAN = "pan"
 MOTION_DETECTION_MODE = "motion_detection_mode"
 AUTO_TRACK_MODE = "auto_track_mode"
+CLOUD_USERNAME = "cloud_username"
 CLOUD_PASSWORD = "cloud_password"
 DEFAULT_SCAN_INTERVAL = 10
 SCAN_INTERVAL = timedelta(seconds=5)
-CONF_CUSTOM_STREAM = "custom_stream"
+CONF_CUSTOM_STREAM_HD = "custom_stream_hd"
+CONF_CUSTOM_STREAM_SD = "custom_stream_sd"
+CONF_CUSTOM_STREAM_6 = "custom_stream6"
+CONF_CUSTOM_STREAM_7 = "custom_stream7"
 CONF_SKIP_RTSP = "skip_rtsp"
 
 ENABLE_MOTION_SENSOR = "enable_motion_sensor"
@@ -63,10 +69,15 @@ SOUND_DETECTION_DURATION = "sound_detection_duration"
 SOUND_DETECTION_RESET = "sound_detection_reset"
 
 ENABLE_TIME_SYNC = "enable_time_sync"
+HAS_STREAM_6 = "has_stream6"
+HAS_STREAM_7 = "has_stream7"
 
 LOGGER = logging.getLogger("custom_components." + DOMAIN)
 
 TIME_SYNC_PERIOD = 3600
+RECORDINGS_UNAVAILABLE_MESSAGE = (
+    "Recordings are unavailable. Insert an SD card into the camera and try again."
+)
 MEDIA_CLEANUP_PERIOD = 10 * 60
 UPDATE_CHECK_PERIOD = 86400
 

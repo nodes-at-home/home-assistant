@@ -1,3 +1,4 @@
+import asyncio
 from typing import Optional
 
 from homeassistant.core import HomeAssistant, callback
@@ -14,17 +15,17 @@ from homeassistant.components.ffmpeg import (
     get_ffmpeg_manager,
 )
 
-from homeassistant.const import STATE_ON, STATE_OFF
+from homeassistant.const import STATE_ON, STATE_OFF, CONF_IP_ADDRESS
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.util.enum import try_parse_enum
-from homeassistant.helpers.entity import EntityCategory
-
 from .const import (
     BRAND,
     DOMAIN,
     LOGGER,
     ENABLE_SOUND_DETECTION,
+    DOORBELL_UDP_DISCOVERED,
+    DOORBELL_UDP_PORT,
     SOUND_DETECTION_PEAK,
     SOUND_DETECTION_DURATION,
     SOUND_DETECTION_RESET,
@@ -35,9 +36,170 @@ from .tapo.entities import TapoBinarySensorEntity
 import haffmpeg.sensor as ffmpeg_sensor
 
 
+class TapoUdpBinarySensor(TapoBinarySensorEntity):
+    """Binary sensor that pulses on UDP packet receipt."""
+
+    def __init__(self, entry: dict, hass: HomeAssistant, config_entry):
+        super().__init__(
+            "Doorbell",
+            entry,
+            hass,
+            config_entry,
+            icon="mdi:doorbell",
+            device_class=BinarySensorDeviceClass.SOUND,
+        )
+        self._attr_is_on = False
+        self._attr_state = STATE_OFF
+
+    def turn_on(self):
+        self._attr_is_on = True
+        self._attr_state = STATE_ON
+        self.async_write_ha_state()
+
+    def turn_off(self):
+        self._attr_is_on = False
+        self._attr_state = STATE_OFF
+        self.async_write_ha_state()
+
+
+class TapoUdpMonitor:
+    """Background UDP listener for Tapo device broadcasts."""
+
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        device_ip: str | None,
+        entry: dict,
+        config_entry: ConfigEntry,
+        async_add_entities,
+        sensor_precreated: bool,
+    ):
+        self._hass = hass
+        self._device_ip = device_ip
+        self._entry = entry
+        self._config_entry = config_entry
+        self._async_add_entities = async_add_entities
+        self._transport: asyncio.DatagramTransport | None = None
+        self._binary_sensor: TapoUdpBinarySensor | None = None
+        self._turn_off_task: asyncio.Task | None = None
+        self._sensor_marked_seen = bool(
+            self._config_entry.data.get(DOORBELL_UDP_DISCOVERED)
+        )
+        if sensor_precreated:
+            self._hass.async_create_task(
+                self.async_ensure_sensor_created(reason="precreate on startup")
+            )
+
+    def handle_datagram(self):
+        """Schedule handling of an incoming UDP packet."""
+        self._hass.async_create_task(self._async_handle_datagram())
+
+    async def _async_handle_datagram(self):
+        """Create the sensor on first packet and pulse it on subsequent packets."""
+        await self.async_ensure_sensor_created(reason="incoming UDP packet")
+
+        if self._turn_off_task:
+            self._turn_off_task.cancel()
+            self._turn_off_task = None
+
+        self._binary_sensor.turn_on()
+        self._turn_off_task = self._hass.async_create_task(self._async_turn_off())
+
+    async def _async_turn_off(self):
+        try:
+            await asyncio.sleep(2)
+            if self._binary_sensor is not None:
+                self._binary_sensor.turn_off()
+        except asyncio.CancelledError:
+            return
+        finally:
+            self._turn_off_task = None
+
+    async def async_ensure_sensor_created(self, reason: str | None = None):
+        if self._binary_sensor is None:
+            LOGGER.debug(
+                "Creating doorbell UDP binary sensor (%s)",
+                reason or "no reason provided",
+            )
+            self._binary_sensor = TapoUdpBinarySensor(
+                self._entry, self._hass, self._config_entry
+            )
+            self._async_add_entities([self._binary_sensor])
+            await self._async_mark_sensor_seen()
+
+    async def _async_mark_sensor_seen(self):
+        if self._sensor_marked_seen:
+            return
+
+        self._sensor_marked_seen = True
+        new_data = {**self._config_entry.data, DOORBELL_UDP_DISCOVERED: True}
+        self._hass.config_entries.async_update_entry(self._config_entry, data=new_data)
+
+    async def async_start(self):
+        """Start listening on DOORBELL_UDP_PORT for broadcasts."""
+        loop = asyncio.get_running_loop()
+
+        try:
+            self._transport, _ = await loop.create_datagram_endpoint(
+                lambda: _TapoUdpProtocol(self, self._device_ip),
+                local_addr=("0.0.0.0", DOORBELL_UDP_PORT),
+                allow_broadcast=True,
+                reuse_port=True,
+            )
+
+            LOGGER.debug(
+                "TapoUdpMonitor started on UDP port %s for device IP %s",
+                DOORBELL_UDP_PORT,
+                self._device_ip,
+            )
+        except OSError as err:
+            LOGGER.warning(
+                "TapoUdpMonitor could not bind UDP port %s (already in use?): %s. "
+                "UDP doorbell pulses will be disabled.",
+                DOORBELL_UDP_PORT,
+                err,
+            )
+
+    async def async_stop(self):
+        """Stop listening."""
+        if self._turn_off_task:
+            self._turn_off_task.cancel()
+            self._turn_off_task = None
+
+        if self._transport is not None:
+            self._transport.close()
+            self._transport = None
+            LOGGER.debug("TapoUdpMonitor stopped")
+
+
+class _TapoUdpProtocol(asyncio.DatagramProtocol):
+    def __init__(self, monitor: TapoUdpMonitor, device_ip: str | None):
+        super().__init__()
+        self._monitor = monitor
+        self._device_ip = device_ip
+
+    def datagram_received(self, data: bytes, addr):
+        ip, _port = addr
+        # Only react to packets from the configured device (if known).
+        if self._device_ip is None or ip == self._device_ip:
+            self._monitor.handle_datagram()
+
+
 async def async_setup_entry(hass, config_entry, async_add_entities):
     LOGGER.debug("Setting up binary sensor for motion.")
     entry = hass.data[DOMAIN][config_entry.entry_id]
+    model = entry.get("camData", {}).get("basic_info", {}).get("device_model")
+    is_doorbell_model = isinstance(model, str) and model.upper().startswith("D")
+    child_models = [
+        child.get("camData", {}).get("basic_info", {}).get("device_model")
+        for child in entry.get("childDevices", [])
+    ]
+    has_doorbell_child = any(
+        isinstance(child_model, str) and child_model.upper().startswith("D")
+        for child_model in child_models
+    )
+    is_child_device = bool(entry.get("isChild"))
+    device_ip = config_entry.data.get(CONF_IP_ADDRESS)
 
     hass.data[DOMAIN][config_entry.entry_id]["eventsListener"] = EventsListener(
         async_add_entities, hass, config_entry
@@ -51,6 +213,28 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     if binarySensors:
         async_add_entities(binarySensors)
+
+    if (is_doorbell_model or has_doorbell_child) and not is_child_device:
+        precreate_udp_sensor = bool(config_entry.data.get(DOORBELL_UDP_DISCOVERED))
+
+        udp_monitor = TapoUdpMonitor(
+            hass,
+            config_entry.data.get(CONF_IP_ADDRESS),
+            entry,
+            config_entry,
+            async_add_entities,
+            precreate_udp_sensor,
+        )
+        await udp_monitor.async_start()
+        hass.data[DOMAIN][config_entry.entry_id]["udp_monitor"] = udp_monitor
+    else:
+        LOGGER.debug(
+            "Skipping doorbell UDP binary sensor setup; model=%s, child_models=%s, is_child=%s, Parent IP=%s",
+            model,
+            child_models,
+            is_child_device,
+            device_ip,
+        )
 
     return True
 
@@ -98,7 +282,7 @@ class TapoNoiseBinarySensor(TapoBinarySensorEntity):
         self._hass.data[DOMAIN][self._config_entry.entry_id][
             "noiseSensorStarted"
         ] = True
-        LOGGER.debug(getStreamSource(self._config_entry, False))
+        LOGGER.debug(getStreamSource(self._config_entry, "stream2"))
         LOGGER.debug(
             str(self._sound_detection_duration)
             + ","
@@ -107,7 +291,7 @@ class TapoNoiseBinarySensor(TapoBinarySensorEntity):
             + str(self._sound_detection_peak),
         )
         await self._noiseSensor.open_sensor(
-            input_source=getStreamSource(self._config_entry, False),
+            input_source=getStreamSource(self._config_entry, "stream2"),
             extra_cmd="-nostats",
         )
 

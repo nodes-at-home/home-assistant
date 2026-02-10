@@ -20,15 +20,24 @@
     },
     "error": {
       "cannot_connect": "Error de connexió. Revisa les credencials.",
-      "cannot_connect_local_ip": "Error de connexió. Revisa l'adreça IP proporcionada.",
-      "cannot_connect_local_all": "Error de connexió. Revisa la configuració proporcionada.",
       "invalid_auth": "Autenticació invàlida.",
       "unknown": "Error inesperat.",
       "code_needed": "S'ha de proporcionar el codi de verificació.",
       "verifyCode": "Cal un codi de verificació. Comproveu el vostre correu electrònic o telèfon.",
       "code_expired": "El codi de verificació ha caducat. S'ha sol·licitat un codi nou. Comproveu el vostre correu electrònic o telèfon.",
       "code_incorrect": "El codi de verificació és incorrecte. Si us plau, introdueix-lo de nou.",
-      "tfaCode": "Cal codi 2FA. Si us plau, introdueix-ho."
+      "tfaCode": "Cal codi 2FA. Si us plau, introdueix-ho.",
+      "cannot_connect_local_timeout": "No s'ha pogut connectar. La connexió s'ha esgotat.",
+      "cannot_connect_local_access_denied": "No s'ha pogut connectar. Accés denegat: comproveu el codi d'accés.",
+      "cannot_connect_local_incorrect_serial": "No s'ha pogut connectar. La connexió va ser tancada per la impressora: comproveu el número de sèrie.",
+      "cannot_connect_local_incorrect_address": "No s'ha pogut connectar. Connexió rebutjada: comproveu l'adreça IP.",
+      "cannot_connect_local_address_unreachable": "No s'ha pogut connectar. Adreça inaccessible: comproveu la connexió de xarxa.",
+      "cannot_connect_cloud_timeout": "S'ha esgotat el temps d'intent de connectar-se al núvol de Bambu Lab.",
+      "cannot_connect_cloud_access_denied": "Accés denegat pel núvol de Bambu Lab.",
+      "cannot_connect_cloud_connection_refused": "Connexió rebutjada pel núvol de Bambu Lab.",
+      "cannot_connect_cloud_address_unreachable": "L'adreça del núvol de Bambu Lab no és accessible.",
+      "cannot_connect_cloud_unknown": "Error desconegut en connectar-se al núvol de Bambu Lab.",
+      "cannot_connect_local_unknown": "No s'ha pogut connectar. Comproveu la configuració proporcionada."
     },
     "step": {
       "user": {
@@ -57,14 +66,15 @@
       },
       "Bambu_Lan": {
         "title": "Configuració de Connexió Local",
-        "description": "Podeu triar connectar-vos directament a la impressora per obtenir actualitzacions d'estat en comptes de fer-ho mitjançant el núvol de Bambu Lab. Això us ofereix resiliència a les interrupcions del núvol de Bambu Lab, però Bambu Lab ha restringit el control de la impressora quan esteu en aquest mode híbrid, de manera que alguns controls no estaran disponibles.",
+        "description": "Podeu triar connectar-vos directament a la impressora mqtt en lloc del núvol Bambu Lab. Això dóna resistència a les interrupcions del núvol de Bambu Lab, però Bambu Lab ha restringit el control de la impressora quan està en aquest mode híbrid, de manera que alguns controls no estaran disponibles.\n\rIndependentment d'aquesta elecció, la integració obtindrà l'adreça IP de la impressora del núvol Bambu Lab i confirmarà que es pot connectar a ella, ja que això és necessari per a la càmera, l'historial d'impressió i el suport de timelapse. Si la vostra impressora no és accessible al vostre Home Assistant, podeu desactivar aquesta comprovació, però perdràs aquestes funcions.",
         "data": {
-          "local_mqtt": "Connectar localmente a la impresora:",
+          "local_mqtt": "Connecteu-vos directament a la impressora mqtt:",
           "host": "Adreça IP Local de la Impressora:",
           "access_code": "Codi d'accés:",
           "usage_hours": "Quantitat d'hores d'ús (opcional):",
           "print_cache_count": "Nombre de models a la memòria cau a l'assistent domèstic (-1 per a il·limitada):",
-          "timelapse_cache_count": "Nombre de vídeos de Timelapse a Cache to Home Assistant (-1 per a il·limitats):"
+          "timelapse_cache_count": "Nombre de vídeos de Timelapse a Cache to Home Assistant (-1 per a il·limitats):",
+          "skip_local_mqtt": "Omet la prova de connexió mqtt local (no recomanat):"
         },
         "sections": {
           "advanced": {
@@ -108,15 +118,24 @@
     },
     "error": {
       "cannot_connect": "Error de connexió.",
-      "cannot_connect_local_ip": "Error de connexió. Revisa l'adreça IP proporcionada.",
-      "cannot_connect_local_all": "Error de connexió. Revisa configuració proporcionada.",
       "invalid_auth": "Autenticació invàlida.",
       "unknown": "Error inesperat.",
       "code_needed": "S'ha de proporcionar el codi de verificació.",
       "verifyCode": "Cal un codi de verificació. Comproveu el vostre correu electrònic o telèfon.",
       "code_expired": "El codi de verificació ha caducat. S'ha sol·licitat un codi nou. Comproveu el vostre correu electrònic o telèfon.",
       "code_incorrect": "El codi de verificació era incorrecte. Si us plau, introdueix-lo de nou.",
-      "tfaCode": "Cal codi 2FA. Si us plau, introdueix-lo."
+      "tfaCode": "Cal codi 2FA. Si us plau, introdueix-lo.",
+      "cannot_connect_local_timeout": "No s'ha pogut connectar. La connexió s'ha esgotat.",
+      "cannot_connect_local_access_denied": "No s'ha pogut connectar. Accés denegat: comproveu el codi d'accés.",
+      "cannot_connect_local_incorrect_serial": "No s'ha pogut connectar. La connexió va ser tancada per la impressora: comproveu el número de sèrie.",
+      "cannot_connect_local_incorrect_address": "No s'ha pogut connectar. Connexió rebutjada: comproveu l'adreça IP.",
+      "cannot_connect_local_address_unreachable": "No s'ha pogut connectar. Adreça inaccessible: comproveu la connexió de xarxa.",
+      "cannot_connect_cloud_timeout": "S'ha esgotat el temps d'intent de connectar-se al núvol de Bambu Lab.",
+      "cannot_connect_cloud_access_denied": "Accés denegat pel núvol de Bambu Lab.",
+      "cannot_connect_cloud_connection_refused": "Connexió rebutjada pel núvol de Bambu Lab.",
+      "cannot_connect_cloud_address_unreachable": "L'adreça del núvol de Bambu Lab no és accessible.",
+      "cannot_connect_cloud_unknown": "Error desconegut en connectar-se al núvol de Bambu Lab.",
+      "cannot_connect_local_unknown": "No s'ha pogut connectar. Comproveu la configuració proporcionada."
     },
     "step": {
       "init": {
@@ -140,15 +159,16 @@
       },
       "Bambu_Lan": {
         "title": "Ajusta la configuració de connexió",
-        "description": "Podeu triar connectar-vos directament a la impressora per obtenir actualitzacions d'estat en comptes de fer-ho mitjançant el núvol de Bambu Lab. Això us ofereix resiliència a les interrupcions del núvol de Bambu Lab, però Bambu Lab ha restringit el control de la impressora quan esteu en aquest mode híbrid, de manera que alguns controls no estaran disponibles.",
+        "description": "Podeu triar connectar-vos directament a la impressora mqtt en lloc del núvol Bambu Lab. Això dóna resistència a les interrupcions del núvol de Bambu Lab, però Bambu Lab ha restringit el control de la impressora quan està en aquest mode híbrid, de manera que alguns controls no estaran disponibles.\n\rIndependentment d'aquesta elecció, la integració obtindrà l'adreça IP de la impressora del núvol Bambu Lab i confirmarà que es pot connectar a ella, ja que això és necessari per a la càmera, l'historial d'impressió i el suport de timelapse. Si la vostra impressora no és accessible al vostre Home Assistant, podeu desactivar aquesta comprovació, però perdràs aquestes funcions.",
         "data": {
           "serial": "Ajusteu la configuració per a:",
           "host": "Adreça IP Local de la Impressora:",
           "access_code": "Codi d'accés:",
-          "local_mqtt": "Connecteu-vos directament a la impressora en lloc del núvol de Bambu Lab:",
+          "local_mqtt": "Connecteu-vos directament a la impressora mqtt:",
           "usage_hours": "Quantitat d'hores d'ús (opcional):",
           "print_cache_count": "Nombre de models a la memòria cau a l'assistent domèstic (-1 per a il·limitada):",
-          "timelapse_cache_count": "Nombre de vídeos de Timelapse a Cache to Home Assistant (-1 per a il·limitats):"
+          "timelapse_cache_count": "Nombre de vídeos de Timelapse a Cache to Home Assistant (-1 per a il·limitats):",
+          "skip_local_mqtt": "Omet la prova de connexió mqtt local (no recomanat):"
         },
         "sections": {
           "advanced": {
@@ -215,6 +235,15 @@
       },
       "active_ams": {
         "name": "Activa"
+      },
+      "drying": {
+        "name": "Assecatge"
+      },
+      "airduct_mode": {
+        "name": "Mode de conducte d'aire"
+      },
+      "hybrid_mode_blocks_control": {
+        "name": "Control híbrid de blocs MQTT"
       }
     },
     "button": {
@@ -252,6 +281,9 @@
       },
       "chamber_fan": {
         "name": "Ventilador de la carcassa"
+      },
+      "secondary_aux_fan": {
+        "name": "Ventilador auxiliar secundari"
       }
     },
     "image": {
@@ -461,7 +493,8 @@
         "state": {
           "local": "Local",
           "cloud": "Cloud",
-          "idle": "Inactiva"
+          "idle": "Inactiva",
+          "unknown": "Desconegut"
         }
       },
       "start_time": {
@@ -483,7 +516,10 @@
         "name": "Quantitat total de capes"
       },
       "active_tray": {
-        "name": "Safata activa"
+        "name": "Safata activa",
+        "state": {
+          "none": "Cap"
+        }
       },
       "nozzle_diameter": {
         "name": "Grandària del broquet"
@@ -492,7 +528,12 @@
         "name": "Tipus de broquet",
         "state": {
           "hardened_steel": "Acer endurit",
-          "stainless_steel": "Acer inoxidable"
+          "stainless_steel": "Acer inoxidable",
+          "tungsten_carbide": "Carbur de tungstè",
+          "high_flow_hardened_steel": "Acer endurit amb un gran flux",
+          "high_flow_stainless_steel": "Acer inoxidable amb un gran flux",
+          "high_flow_tungsten_carbide": "Carbur de tungstè amb gran flux",
+          "unknown": "Desconegut"
         }
       },
       "humidity_index": {
@@ -759,6 +800,40 @@
           "abnormal": "Anormal",
           "readonly": "Llegiu només"
         }
+      },
+      "left_nozzle_diameter": {
+        "name": "Mida de la boquilla esquerra"
+      },
+      "left_nozzle_type": {
+        "name": "Tipus de la boquilla esquerra",
+        "state": {
+          "hardened_steel": "Acer endurit",
+          "stainless_steel": "Acer inoxidable",
+          "tungsten_carbide": "Carbur de tungstè",
+          "high_flow_hardened_steel": "Acer endurit amb un gran flux",
+          "high_flow_stainless_steel": "Acer inoxidable amb un gran flux",
+          "high_flow_tungsten_carbide": "Carbur de tungstè amb gran flux"
+        }
+      },
+      "right_nozzle_diameter": {
+        "name": "Mida de la boquilla dreta"
+      },
+      "right_nozzle_type": {
+        "name": "Tipus de boquilla dreta",
+        "state": {
+          "hardened_steel": "Acer endurit",
+          "stainless_steel": "Acer inoxidable",
+          "tungsten_carbide": "Carbur de tungstè",
+          "high_flow_hardened_steel": "Acer endurit amb un gran flux",
+          "high_flow_stainless_steel": "Acer inoxidable amb un gran flux",
+          "high_flow_tungsten_carbide": "Carbur de tungstè amb gran flux"
+        }
+      },
+      "model_download_percentage": {
+        "name": "Descàrrega del model"
+      },
+      "serial": {
+        "name": "Número de sèrie"
       }
     },
     "camera": {
@@ -778,6 +853,9 @@
       },
       "ftp": {
         "name": "Carregueu les dades del model de la impressora"
+      },
+      "airduct_mode": {
+        "name": "Mode de refrigeració o mode de calefacció/filtre"
       }
     },
     "update": {
@@ -796,8 +874,24 @@
   },
   "issues": {
     "authentication_failed": {
-      "title": "L’autenticació ha fallat per {device}",
-      "description": "Intentant connectar -se al laboratori Bambu ha fallat. Reconfigureu la integració i proporcioneu credencials noves."
+      "title": "Ha fallat l'autenticació",
+      "description": "S'ha produït un error en intentar connectar-se a Bambu Lab per a {device}. Torneu a configurar la integració i proporcioneu credencials noves."
+    },
+    "no_external_storage": {
+      "title": "No s'ha detectat cap USB o targeta SD",
+      "description": "{device} no té una targeta USB o SD connectada. Això és necessari per a totes les funcions que depenen de l'ftp a la impressora, com ara la imatge de portada, ometre objectes i historial d'impressió."
+    },
+    "live_view_disabled": {
+      "title": "Visualització en directe desactivada",
+      "description": "{device} té la visualització en directe desactivada a la configuració de la impressora. Activeu-ho per utilitzar les funcions de la càmera."
+    },
+    "mqtt_encryption_enabled": {
+      "title": "Encriptació MQTT habilitat",
+      "description": "{device} està connectat al núvol amb el xifratge mqtt habilitat. Només la llum es pot controlar mitjançant aquesta integració. Tots els altres controls no estan disponibles. La impressora s'ha de configurar en mode LAN de desenvolupador per permetre el control des de l'assistent domèstic."
+    },
+    "hybrid_mode_blocking": {
+      "title": "Control de blocs de connexió híbrid",
+      "description": "{device} està connectat al núvol però amb connexió mqtt local per la integració. Això bloqueja la configuració de temperatures i la reimpressió de l'historial. Canvia la connexió al núvol pur per permetre el control total."
     }
   }
 }

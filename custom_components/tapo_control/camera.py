@@ -16,7 +16,6 @@ from homeassistant.components.ffmpeg import CONF_EXTRA_ARGUMENTS, DATA_FFMPEG
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers import entity_platform
 from homeassistant.helpers.aiohttp_client import async_aiohttp_proxy_stream
-from homeassistant.helpers.config_validation import boolean
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.util import slugify
 from homeassistant.components.stream import (
@@ -34,6 +33,10 @@ from .const import (
     LOGGER,
     NAME,
     BRAND,
+    HAS_STREAM_6,
+    HAS_STREAM_7,
+    CONF_CUSTOM_STREAM_6,
+    CONF_CUSTOM_STREAM_7,
 )
 from .utils import build_device_info, getStreamSource
 
@@ -57,28 +60,142 @@ async def async_setup_entry(
 
     async def setupEntities(entry):
         hasRTSPEntities = False
+        chn_id_0 = None
+        chn_id_1 = None
+        ch_info = entry.get("chInfo") or []
+        if isinstance(ch_info, list):
+            if len(ch_info) > 0:
+                chn_id_0 = ch_info[0].get("chn_id")
+            if len(ch_info) > 1:
+                chn_id_1 = ch_info[1].get("chn_id")
         if (
             len(config_entry.data[CONF_USERNAME]) > 0
             and len(config_entry.data[CONF_PASSWORD]) > 0
         ):
-            hdStream = TapoRTSPCamEntity(hass, config_entry, entry, True)
-            sdStream = TapoRTSPCamEntity(hass, config_entry, entry, False)
+            hdStream = TapoRTSPCamEntity(
+                hass, config_entry, entry, "stream1", chn_id=chn_id_0
+            )
+            sdStream = TapoRTSPCamEntity(
+                hass, config_entry, entry, "stream2", chn_id=chn_id_0
+            )
 
             entry["entities"].append({"entity": hdStream, "entry": entry})
             entry["entities"].append({"entity": sdStream, "entry": entry})
             hasRTSPEntities = True
             async_add_entities([hdStream, sdStream])
+            telephotoEntities = []
+            has_stream6 = config_entry.data.get(HAS_STREAM_6) or bool(
+                config_entry.data.get(CONF_CUSTOM_STREAM_6)
+            )
+            has_stream7 = config_entry.data.get(HAS_STREAM_7) or bool(
+                config_entry.data.get(CONF_CUSTOM_STREAM_7)
+            )
+            if not entry["isChild"] and has_stream6:
+                telephotoEntities.append(
+                    TapoRTSPCamEntity(
+                        hass,
+                        config_entry,
+                        entry,
+                        stream="stream6",
+                        stream_label="Telephoto HD",
+                        stream_unique_id="telephoto_hd",
+                        chn_id=chn_id_1,
+                    )
+                )
+            if not entry["isChild"] and has_stream7:
+                telephotoEntities.append(
+                    TapoRTSPCamEntity(
+                        hass,
+                        config_entry,
+                        entry,
+                        stream="stream7",
+                        stream_label="Telephoto SD",
+                        stream_unique_id="telephoto_sd",
+                        chn_id=chn_id_1,
+                    )
+                )
+            if len(telephotoEntities) > 0:
+                hasRTSPEntities = True
+                for telephotoEntity in telephotoEntities:
+                    entry["entities"].append(
+                        {"entity": telephotoEntity, "entry": entry}
+                    )
+                async_add_entities(telephotoEntities)
 
         if not entry["isParent"]:
+
+            allChnInfo = entry.get("camData", {}).get("allChnInfo", {})
+            if allChnInfo:
+                channel_info = allChnInfo.get("system", {}).get("chn_info", {})
+                chn_0_alias = (
+                    channel_info[0].get("chn_alias")
+                    if isinstance(channel_info, list) and channel_info
+                    else None
+                )
+                chn_1_alias = (
+                    channel_info[1].get("chn_alias")
+                    if isinstance(channel_info, list) and channel_info
+                    else None
+                )
+            else:
+                channel_info = None
+                chn_0_alias = None
+                chn_1_alias = None
+
             directStreamHD = TapoDirectCamEntity(
-                hass, config_entry, entry, True, enabledByDefault=not hasRTSPEntities
+                hass,
+                config_entry,
+                entry,
+                "stream1",
+                enabledByDefault=not hasRTSPEntities,
+                stream_label=f"{chn_0_alias} HD" if chn_0_alias is not None else None,
+                chn_id=chn_id_0,
             )
             directStreamSD = TapoDirectCamEntity(
-                hass, config_entry, entry, False, enabledByDefault=False
+                hass,
+                config_entry,
+                entry,
+                "stream2",
+                enabledByDefault=False,
+                stream_label=f"{chn_0_alias} SD" if chn_0_alias is not None else None,
+                chn_id=chn_id_0,
             )
             entry["entities"].append({"entity": directStreamHD, "entry": entry})
             entry["entities"].append({"entity": directStreamSD, "entry": entry})
             async_add_entities([directStreamHD, directStreamSD])
+
+            if channel_info:
+                directMinorStreamHD = TapoDirectCamEntity(
+                    hass,
+                    config_entry,
+                    entry,
+                    "stream6",
+                    enabledByDefault=not hasRTSPEntities,
+                    videoStream=1,
+                    stream_label=(
+                        f"{chn_1_alias} HD" if chn_1_alias is not None else None
+                    ),
+                    chn_id=chn_id_1,
+                )
+                directMinorStreamSD = TapoDirectCamEntity(
+                    hass,
+                    config_entry,
+                    entry,
+                    "stream7",
+                    enabledByDefault=False,
+                    videoStream=1,
+                    stream_label=(
+                        f"{chn_1_alias} SD" if chn_1_alias is not None else None
+                    ),
+                    chn_id=chn_id_1,
+                )
+                entry["entities"].append(
+                    {"entity": directMinorStreamHD, "entry": entry}
+                )
+                entry["entities"].append(
+                    {"entity": directMinorStreamSD, "entry": entry}
+                )
+                async_add_entities([directMinorStreamHD, directMinorStreamSD])
 
     await setupEntities(entry)
     for childDevice in entry["childDevices"]:
@@ -91,8 +208,11 @@ class TapoCamEntity(Camera):
         hass: HomeAssistant,
         config_entry: dict,
         entry: dict,
-        HDStream: boolean,
-        directStream: boolean,
+        directStream: bool,
+        stream: str = "stream1",
+        stream_label: str | None = None,
+        stream_unique_id: str | None = None,
+        chn_id: int | None = None,
     ):
         super().__init__()
         self.stream_options[CONF_RTSP_TRANSPORT] = config_entry.data.get(
@@ -104,8 +224,21 @@ class TapoCamEntity(Camera):
         self._config_entry = config_entry
         self._hass = hass
         self._enabled = False
-        self._hdstream = HDStream
         self._directStream = directStream
+        self._stream_id = stream
+        self.chn_id = chn_id
+        self.read_chn_id = str(chn_id) if chn_id else "1"
+        default_labels = {
+            "stream1": ("HD", "hd"),
+            "stream2": ("SD", "sd"),
+            "stream6": ("Telephoto HD", "telephoto_hd"),
+            "stream7": ("Telephoto SD", "telephoto_sd"),
+        }
+        fallback_label, fallback_uid = default_labels.get(
+            stream, (stream.upper(), stream)
+        )
+        self._stream_label = stream_label or fallback_label
+        self._stream_unique_id = stream_unique_id or fallback_uid
         self._extra_arguments = config_entry.data.get(CONF_EXTRA_ARGUMENTS)
         self._enable_stream = config_entry.data.get(ENABLE_STREAM)
         self._attr_extra_state_attributes = entry["camData"]["basic_info"]
@@ -134,22 +267,15 @@ class TapoCamEntity(Camera):
     @property
     def name(self) -> str:
         name = self._attr_extra_state_attributes["device_alias"]
-        if self._hdstream:
-            name += " HD Stream"
-        else:
-            name += " SD Stream"
+        name += f" {self._stream_label} Stream"
         if self._directStream:
             name += " (Direct)"
         return name
 
     @property
     def unique_id(self) -> str:
-        if self._hdstream:
-            streamType = "hd"
-        else:
-            streamType = "sd"
         return slugify(
-            f"{self._attr_extra_state_attributes['mac']}_{streamType}{"_direct" if self._directStream else ""}_tapo_control"
+            f"{self._attr_extra_state_attributes['mac']}_{self._stream_unique_id}{'_direct' if self._directStream else ''}_tapo_control"
         )
 
     @property
@@ -180,7 +306,10 @@ class TapoCamEntity(Camera):
             self._attr_state = STATE_UNAVAILABLE
         else:
             self._attr_state = "idle"
-            self._motion_detection_enabled = camData["motion_detection_enabled"]
+            motion_enabled = camData["motion_detection_enabled"]
+            if isinstance(motion_enabled, dict):
+                motion_enabled = motion_enabled.get(self.read_chn_id)
+            self._motion_detection_enabled = motion_enabled
 
             for attr, value in camData["basic_info"].items():
                 self._attr_extra_state_attributes[attr] = value
@@ -238,14 +367,20 @@ class TapoCamEntity(Camera):
     async def async_enable_motion_detection(self):
         LOGGER.debug("async_enable_motion_detection - camera")
         await self.hass.async_add_executor_job(
-            self._controller.setMotionDetection, True
+            self._controller.setMotionDetection,
+            True,
+            None,
+            [self.chn_id] if self.chn_id else None,
         )
         await self._coordinator.async_request_refresh()
 
     async def async_disable_motion_detection(self):
         LOGGER.debug("async_disable_motion_detection - camera")
         await self.hass.async_add_executor_job(
-            self._controller.setMotionDetection, False
+            self._controller.setMotionDetection,
+            False,
+            None,
+            [self.chn_id] if self.chn_id else None,
         )
         await self._coordinator.async_request_refresh()
 
@@ -302,14 +437,29 @@ class TapoRTSPCamEntity(TapoCamEntity):
         hass: HomeAssistant,
         config_entry: dict,
         entry: dict,
-        HDStream: boolean,
+        stream: str,
+        stream_label: str | None = None,
+        stream_unique_id: str | None = None,
+        chn_id: int | None = None,
     ):
-        super().__init__(hass, config_entry, entry, HDStream, False)
+        super().__init__(
+            hass,
+            config_entry,
+            entry,
+            False,
+            stream,
+            stream_label,
+            stream_unique_id,
+            chn_id,
+        )
 
     async def async_camera_image(self, width=None, height=None):
         LOGGER.debug("async_camera_image - camera")
         ffmpeg = ImageFrame(self._ffmpeg.binary)
-        streaming_url = getStreamSource(self._config_entry, self._hdstream)
+        streaming_url = getStreamSource(
+            self._config_entry,
+            self._stream_id,
+        )
         image = await asyncio.shield(
             ffmpeg.get_image(
                 streaming_url,
@@ -321,7 +471,10 @@ class TapoRTSPCamEntity(TapoCamEntity):
 
     async def handle_async_mjpeg_stream(self, request):
         LOGGER.debug("handle_async_mjpeg_stream - camera")
-        streaming_url = getStreamSource(self._config_entry, self._hdstream)
+        streaming_url = getStreamSource(
+            self._config_entry,
+            self._stream_id,
+        )
         stream = CameraMjpeg(self._ffmpeg.binary)
         await stream.open_camera(
             streaming_url,
@@ -339,7 +492,10 @@ class TapoRTSPCamEntity(TapoCamEntity):
             await stream.close()
 
     async def stream_source(self):
-        return getStreamSource(self._config_entry, self._hdstream)
+        return getStreamSource(
+            self._config_entry,
+            self._stream_id,
+        )
 
 
 class TapoDirectCamEntity(TapoCamEntity):
@@ -348,12 +504,17 @@ class TapoDirectCamEntity(TapoCamEntity):
         hass: HomeAssistant,
         config_entry: dict,
         entry: dict,
-        HDStream: boolean,
-        enabledByDefault: boolean,
+        stream: str,
+        enabledByDefault: bool,
+        videoStream: int = 0,  # 0 for main, 1 for substream
+        stream_label: str | None = None,
+        chn_id: int | None = None,
     ):
-        super().__init__(hass, config_entry, entry, HDStream, True)
+        super().__init__(
+            hass, config_entry, entry, True, stream, stream_label, None, chn_id
+        )
 
-        if HDStream:
+        if stream in ("stream1"):
             self._directQuality = "HD"
         else:
             self._directQuality = "VGA"
@@ -363,6 +524,7 @@ class TapoDirectCamEntity(TapoCamEntity):
         self._stream_fd: int | None = None
         self._stream_task: asyncio.Task | None = None
         self._enabled_by_default = enabledByDefault
+        self.videoStream = videoStream
 
     @property
     def entity_registry_enabled_default(self) -> bool:
@@ -389,6 +551,7 @@ class TapoDirectCamEntity(TapoCamEntity):
                 "-f": "image2pipe",
                 "-c:v": "mjpeg",
                 "-vsync": "0",
+                "-map-video": f"0:v:{self.videoStream}",
             },
         )
         LOGGER.debug("async_camera_image - Starting streamer")
@@ -418,6 +581,7 @@ class TapoDirectCamEntity(TapoCamEntity):
                 "-c:v": "mjpeg",
                 "-f": "mpjpeg",
                 "-vsync": "0",
+                "-map-video": f"0:v:{self.videoStream}",
             },
         )
         info = await streamer.start()

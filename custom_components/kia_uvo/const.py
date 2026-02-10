@@ -8,6 +8,7 @@ CONF_NO_FORCE_REFRESH_HOUR_START: str = "no_force_refresh_hour_start"
 CONF_NO_FORCE_REFRESH_HOUR_FINISH: str = "no_force_refresh_hour_finish"
 CONF_ENABLE_GEOLOCATION_ENTITY: str = "enable_geolocation_entity"
 CONF_USE_EMAIL_WITH_GEOCODE_API: str = "use_email_with_geocode_api"
+CONF_TOKEN: str = "token"
 
 REGION_EUROPE: str = "Europe"
 REGION_CANADA: str = "Canada"
@@ -16,6 +17,7 @@ REGION_CHINA: str = "China"
 REGION_AUSTRALIA: str = "Australia"
 REGION_INDIA: str = "India"
 REGION_NZ: str = "New Zealand"
+REGION_BRAZIL: str = "Brazil"
 REGIONS = {
     1: REGION_EUROPE,
     2: REGION_CANADA,
@@ -24,6 +26,7 @@ REGIONS = {
     5: REGION_AUSTRALIA,
     6: REGION_INDIA,
     7: REGION_NZ,
+    8: REGION_BRAZIL,
 }
 BRAND_KIA: str = "Kia"
 BRAND_HYUNDAI: str = "Hyundai"

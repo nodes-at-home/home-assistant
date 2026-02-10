@@ -12,6 +12,7 @@ from .definitions import (
     AMS_BINARY_SENSORS,
     PRINTER_BINARY_SENSORS,
     VIRTUAL_TRAY_BINARY_SENSORS,
+    BambuLabAMSBinarySensorEntityDescription,
     BambuLabBinarySensorEntityDescription,
 )
 from .models import (
@@ -28,7 +29,10 @@ async def async_setup_entry(
         async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up BambuLab sensor based on a config entry."""
+
     coordinator: BambuDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    if not coordinator.get_model().has_full_printer_data:
+        return
 
     for sensor in PRINTER_BINARY_SENSORS:    
         if sensor.exists_fn(coordinator):
@@ -37,13 +41,16 @@ async def async_setup_entry(
     for sensor in AMS_BINARY_SENSORS:
         for index in coordinator.get_model().ams.data.keys():
             if coordinator.get_model().ams.data[index] is not None:
-                async_add_entities([BambuLabAMSBinarySensor(coordinator, sensor, index)])
+                if sensor.exists_fn(coordinator, index):
+                    async_add_entities([BambuLabAMSBinarySensor(coordinator, sensor, index)])
 
     for sensor in VIRTUAL_TRAY_BINARY_SENSORS:    
         if sensor.exists_fn(coordinator):
-            async_add_entities([BambuLabExternalSpoolBinarySensor(coordinator, sensor, 0)])
             if coordinator.get_model().supports_feature(Features.DUAL_NOZZLES):
-                async_add_entities([BambuLabExternalSpoolBinarySensor(coordinator, sensor, 1)])
+                async_add_entities([BambuLabExternalSpoolBinarySensor(coordinator, sensor, 1, "")])  # Left
+                async_add_entities([BambuLabExternalSpoolBinarySensor(coordinator, sensor, 0, "2")]) # Right
+            else:
+                async_add_entities([BambuLabExternalSpoolBinarySensor(coordinator, sensor, 0, "")])
 
 
 class BambuLabBinarySensor(BambuLabEntity, BinarySensorEntity):
@@ -78,7 +85,7 @@ class BambuLabAMSBinarySensor(AMSEntity, BambuLabBinarySensor):
     def __init__(
             self,
             coordinator: BambuDataUpdateCoordinator,
-            description: BambuLabBinarySensorEntityDescription,
+            description: BambuLabAMSBinarySensorEntityDescription,
             index: int
     ) -> None:
         """Initialize the sensor."""
@@ -98,10 +105,12 @@ class BambuLabExternalSpoolBinarySensor(VirtualTrayEntity, BambuLabBinarySensor)
             coordinator: BambuDataUpdateCoordinator,
             description: BambuLabBinarySensorEntityDescription,
             index: int,
+            suffix: str
     ) -> None:
         """Initialize the sensor."""
         super().__init__(coordinator=coordinator, description=description)
         printer = coordinator.get_model().info
         self.index = index
+        self.suffix = suffix
         self.entity_description = description
-        self._attr_unique_id = f"{printer.device_type}_{printer.serial}_ExternalSpool{'2' if index==1 else ''}_{description.key}"
+        self._attr_unique_id = f"{printer.device_type}_{printer.serial}_ExternalSpool{suffix}_{description.key}"

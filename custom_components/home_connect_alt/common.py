@@ -4,8 +4,10 @@ import re
 from abc import ABC, abstractmethod
 
 from home_connect_async import Appliance, Events
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers import entity_registry as er
 
 from .const import CONF_NAME_TEMPLATE, CONF_NAME_TEMPLATE_DEFAULT, DOMAIN, DEFAULT_SETTINGS, CONF_ENTITY_SETTINGS, CONF_APPLIANCE_SETTINGS
 
@@ -28,16 +30,20 @@ class EntityBase(ABC):
    #_attr_has_entity_name = True
     should_poll = False
 
-    _appliance: Appliance = None
+    _appliance: Appliance
 
     def __init__(self, appliance:Appliance, key:str, conf:Configuration, hc_obj=None) -> None:
         """Initialize the sensor."""
         self._appliance = appliance
         self._homeconnect = appliance._homeconnect
         self._key = key
-        self._conf = conf
+        self._conf: Configuration = conf
+        self._haid:str = ""
+        self._safe_haid: str = ""
+        self._unique_id:str = ""
         self.entity_id = f'home_connect.{self.unique_id}'
         self._hc_obj = hc_obj
+
 
     def get_entity_setting(self, option, default=None):
         """ Gets the specified configuration option for the entity """
@@ -47,11 +53,36 @@ class EntityBase(ABC):
         """ Checks if the specified configuration option exists for the entity """
         return self._conf.has_entity_setting(self._key, option)
 
+    @staticmethod
+    def get_safe_haID(hass: HomeAssistant, appliance: Appliance) -> str:
+        """ Returns a haID that doesn't start with a digit by adding the brand as a prefix if needed """
+        haid = appliance.haId.lower().replace('-', '_')
+        if haid[0].isdigit():
+            # if the haID starts with a digit and there aren't entities that use that haid already then add the brand as a prefix to the haId
+            # This is to avoid issues with using such entities in templates
+            ent_reg = er.async_get(hass)
+            all_entities_ids = ent_reg.entities.keys()
+            existing_entities = [eid for eid in all_entities_ids if f".{haid}" in eid]
+            if not existing_entities:
+                haid = appliance.brand.lower() + "_" + haid
+            else:
+                _LOGGER.debug("Not adding brand prefix to haID %s because there are existing entities without it", haid)
+
+        return haid
+
     @property
     def haId(self) -> str:
         """ The haID of the appliance """
-        return self._appliance.haId.lower().replace('-','_')
+        if not self._haid:
+            self._haid =  self._appliance.haId.lower().replace('-','_')
+        return self._haid
 
+    @property
+    def safe_haId(self) -> str:
+        """ The safe haID of the appliance """
+        if not self._safe_haid:
+            self._safe_haid = EntityBase.get_safe_haID(self._conf.hass, self._appliance)
+        return self._safe_haid
 
     @property
     def device_info(self):
@@ -64,16 +95,21 @@ class EntityBase(ABC):
         }
 
     @property
-    def device_class(self) -> str:
+    def device_class(self) -> str|None:
         """ Return the device class, if defined """
         if self._conf:
             return self._conf.get_entity_setting(self._key, "class")
         return None
 
+
+
     @property
     def unique_id(self) -> str:
-        """" The unique ID oif the entity """
-        return f"{self.haId}_{self._key.lower().replace('.','_')}"
+        """" The unique ID of the entity """
+
+        if not self._unique_id:
+            self._unique_id = f"{self.safe_haId}_{self._key.lower().replace('.','_')}"
+        return self._unique_id
 
     @property
     def name_ext(self) -> str|None:
@@ -111,8 +147,10 @@ class EntityBase(ABC):
             self._appliance.connected
             and self._appliance.is_available_option(self._key)
             and  (
-                "BSH.Common.Status.RemoteControlActive" not in self._appliance.status or
-                self._appliance.status["BSH.Common.Status.RemoteControlActive"].value
+                self._appliance.status is not None
+                and ("BSH.Common.Status.RemoteControlActive" not in self._appliance.status
+                     or self._appliance.status["BSH.Common.Status.RemoteControlActive"].value
+                )
             )
         )
 
@@ -198,7 +236,8 @@ class EntityManager():
 
 class Configuration(dict):
     """ A class to handle both global config coming from configuration.yaml and the local config of each entity """
-    _global_config:dict = None
+    _global_config:dict|None = None
+    _hass:HomeAssistant
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -244,17 +283,23 @@ class Configuration(dict):
             return self[key]
         return None
 
-    def get_config(self, extra_conf:dict=None):
+    def get_config(self, extra_conf:dict|None=None):
         """Return a new config object which is the merging of the current one with the extra configuration"""
         c = Configuration(self)
         if extra_conf:
             c.update(extra_conf)
         return c
 
+    @property
+    def hass(self) -> HomeAssistant:
+        """Return the Home Assistant instance."""
+        return Configuration._hass
+
     @classmethod
-    def set_global_config(cls, global_config:dict):
+    def set_global_config(cls, hass:HomeAssistant, global_config:dict):
         """Set the global config once as a static member that will be appended automatically to each config object."""
         cls._global_config = global_config
+        cls._hass = hass
 
     @classmethod
     def get_global_config(cls):
