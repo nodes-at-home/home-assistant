@@ -535,12 +535,27 @@ views:
                     action: toggle
                 hold_action:
                     action: more-info
-              - type: markdown
-                content: " "
-              - type: markdown
-                content: " "
-              - type: markdown
-                content: " "
+              - type: entity-button
+                entity: switch.schreibtisch_arbeitszimmer
+                icon: mdi:desk
+                tap_action:
+                    action: toggle
+                hold_action:
+                    action: more-info
+              - type: entity-button
+                entity: switch.schreibtisch_wohnzimmer
+                icon: mdi:desk
+                tap_action:
+                    action: toggle
+                hold_action:
+                    action: more-info
+              - type: entity-button
+                entity: switch.fernseher
+                icon: mdi:television
+                tap_action:
+                    action: toggle
+                hold_action:
+                    action: more-info
 
   - title: Haus
     path: house
