@@ -1232,18 +1232,6 @@ views:
           - entity: sensor.shelly_utilityroom_circulatingpump_power
           - entity: update.shelly_utilityroom_circulatingpump_firmware
           - entity: button.shelly_utilityroom_circulatingpump_reboot
-          - type: divider
-          - switch.shelly_rack1
-          - entity: sensor.shelly_rack1_energy
-          - entity: sensor.shelly_rack1_power
-          - entity: update.shelly_rack1_firmware
-          - entity: button.shelly_rack1_reboot
-          - type: divider
-          - switch.shelly_rack2
-          - entity: sensor.shelly_rack2_energy
-          - entity: sensor.shelly_rack2_power
-          - entity: update.shelly_rack2_firmware
-          - entity: button.shelly_rack2_reboot
       - type: entities
         title: Obergeschoss
         show_header_toggle: false
@@ -1287,6 +1275,27 @@ views:
           - entity: sensor.shelly_entrance_lightbirch_power
           - entity: update.shelly_entrance_lightbirch_firmware
           - entity: button.shelly_entrance_lightbirch_reboot
+      - type: entities
+        title: Rechenzentrum
+        show_header_toggle: false
+        entities:
+          - switch.shelly_rack1
+          - entity: sensor.shelly_rack1_energy
+          - entity: sensor.shelly_rack1_power
+          - entity: update.shelly_rack1_firmware
+          - entity: button.shelly_rack1_reboot
+          - type: divider
+          - switch.shelly_rack2
+          - entity: sensor.shelly_rack2_energy
+          - entity: sensor.shelly_rack2_power
+          - entity: update.shelly_rack2_firmware
+          - entity: button.shelly_rack2_reboot
+          - type: divider
+          - switch.shelly_nas
+          - entity: sensor.shelly_nas_energy
+          - entity: sensor.shelly_nas_power
+          - entity: update.shelly_nas_firmware
+          - entity: button.shelly_nas_reboot
 
   - title: Nuki
     path: nuki

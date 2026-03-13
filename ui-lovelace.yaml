@@ -911,8 +911,16 @@ views:
                 name: Thermostat
               - switch.waschmaschine
               - switch.rechenzentrum
-              - switch.nodesathome1
-              - switch.nodesathome2
+              - entity: switch.shelly_rack1
+                name: Router
+                icon: mdi:router-network
+              - entity: switch.shelly_rack1
+                name: Server
+                icon: mdi:server
+              - entity: switch.shelly_nas
+                name: NAS
+                icon: mdi:nas
+              # - switch.shelly-nas
               - switch.shelly_utilityroom_circulatingpump
               - switch.shelly_utilityroom_boiler
               - switch.shelly_utilityroom_biocat
