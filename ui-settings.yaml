@@ -255,6 +255,7 @@ views:
         show_header_toggle: false
         entities:
           - input_boolean.irrigation_activated
+          - automation.garden_irrigation_schedule
           - type: section
             label: Notfallstop
           - input_number.waterpump_emergency_stop_duration
