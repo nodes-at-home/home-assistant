@@ -17,3 +17,5 @@ backups/
 ha-bambulab/
 .ha_run.lock
 tts/
+tmp_backups/
+git_ssh
