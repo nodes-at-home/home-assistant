@@ -19,3 +19,4 @@ ha-bambulab/
 tts/
 tmp_backups/
 git_ssh
+.cache/

@@ -44,14 +44,17 @@ views:
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
+      - type: custom:mushroom-template-badge
+        entity: sensor.cpu_temp
+        content: "{{ states ( 'sensor.cpu_temp', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float <= states ( 'input_number.cpu_critical_temp_threshold' ) | float, 'limegreen', 'red' ) }}"
+        tap_action:
+            action: more-info
       - type: entity
         entity: sensor.log_db_file_size
         show_name: true
         icon: mdi:database
-      - type: entity
-        entity: sensor.cpu_temp
-        show_name: true
-        icon: mdi:memory
       # - type: entity
       #   entity: sensor.zapdos_zapdos_cpu_temperature
       #   name: zapdos
@@ -122,7 +125,8 @@ views:
             - sensor.ups_batterie_ladung
             - sensor.ups_last
             - sensor.ups_ausgangsspannung
-            - sensor.ups_batterielaufzeit
+            - entity: sensor.ups_batterielaufzeit_mmss
+              name: Batterielaufzeit
             # - sensor.ups_statusdaten
 
   - title: Geräte

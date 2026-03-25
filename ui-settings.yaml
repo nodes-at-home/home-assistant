@@ -136,6 +136,11 @@ views:
         entities:
           - input_datetime.standby_television_switch_on_at
           - input_datetime.standby_desk_switch_on_at
+      - type: entities
+        title: CPU
+        show_header_toggle: false
+        entities:
+          - input_number.cpu_critical_temp_threshold
 
   - title: Benachrichtigungen
     path: notifications

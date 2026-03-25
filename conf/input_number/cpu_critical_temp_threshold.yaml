@@ -1,0 +1,11 @@
+###
+### 25.03.2026
+###
+
+name: kritische CPU-Temperatur
+icon: mdi:thermometer-lines
+mode: slider
+min: 30
+max: 90
+step: 5
+unit_of_measurement: "°C"

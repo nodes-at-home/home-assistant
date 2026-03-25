@@ -1,0 +1,12 @@
+###
+### 25.03.2026
+###
+
+  - sensor:
+
+      - name: ups_batterielaufzeit_mmss
+        unique_id: ups_batterielaufzeit_mmss
+        icon: mdi:timer-outline
+        state: >
+            {% set sec = states ( 'sensor.ups_batterielaufzeit' ) | int ( 0 ) %}
+            {{ '{:02d}:{:02d}'.format ( sec // 60, sec % 60 ) }}

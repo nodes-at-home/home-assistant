@@ -133,7 +133,7 @@ views:
         entity: sensor.cpu_temp
         content: "{{ states ( 'sensor.cpu_temp', with_unit = true ) }}"
         icon: mdi:memory
-        color: "{{ iif ( states ( entity ) | float <= 50.0, 'limegreen', 'red' ) }}"
+        color: "{{ iif ( states ( entity ) | float <= states ( 'input_number.cpu_critical_temp_threshold' ) | float, 'limegreen', 'red' ) }}"
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
