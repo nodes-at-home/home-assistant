@@ -65,7 +65,7 @@ views:
             - binary_sensor.prod_mode
             - binary_sensor.dev_mode
       - type: entities
-        title: RPi Server
+        title: Server
         show_header_toggle: false
         entities:
             - sensor.system_monitor_prozessornutzung
@@ -99,9 +99,6 @@ views:
             - sensor.fritz_box_7590_externe_ip
             - sensor.fritz_box_7590_letzter_neustart
             - sensor.fritz_box_7590_verbindungsverfugbarkeit
-            - switch.fritz_box_7590_wi_fi_mauzigast
-            - switch.fritz_box_7590_wi_fi_pokemonnetwlan
-            - switch.fritz_box_7590_wi_fi_pokemonnetwlan5
       - type: entities
         title: Unify
         show_header_toggle: false
