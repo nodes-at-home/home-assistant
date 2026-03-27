@@ -334,7 +334,7 @@ views:
                   "visible":
                       type: tile
                       entity: climate.bedroom
-                      name: Büro
+                      name: Schlafzimmer
                       vertical: true
                       features:
                         - type: "target-temperature"
@@ -356,7 +356,7 @@ views:
                   "visible":
                       type: tile
                       entity: climate.nursery
-                      name: Büro
+                      name: Kinderzimmer
                       vertical: true
                       features:
                         - type: "target-temperature"
