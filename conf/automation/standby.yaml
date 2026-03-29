@@ -2,15 +2,61 @@
 ### 03.09.2025
 ###
 
-# tv plug is turne doff in automation lights_indoor_off_when_tv_switched_off
+# tv plug is turned off in automation lights_indoor_off_when_tv_switched_off
 
-  - alias: standby_plugs_switch_on
-    id: standby_plugs_switch_on
+# (1) switch on desk wohnzimmer at morning, when undine is at home or flag input_boolean.switch_standby_by_family is on and family at home
+# (2) switch on desk arbeitszimmer at morning, when andreas is at home or flag input_boolean.switch_standby_by_family is on and family at home
+# (2) switch on tv at input_datetime.standby_television_switch_on_at, when family is at home
+# (3) 
+
+  # - alias: standby_plugs_switch_on
+  #   id: standby_plugs_switch_on
+  #   triggers:
+  #     - platform: time
+  #       at: input_datetime.standup_workday
+  #     - platform: time
+  #       at: input_datetime.standup_weekend
+  #     - platform: state
+  #       entity_id: group.family
+  #       to: 'home'
+  #   conditions:
+  #     - condition: state
+  #       entity_id: binary_sensor.prod_mode
+  #       state: 'on'
+  #     - condition: state
+  #       entity_id: group.family
+  #       state: 'home'
+  #     - condition: or
+  #       conditions:
+  #         - condition: and
+  #           conditions:
+  #             - condition: state
+  #               entity_id: binary_sensor.workday_sensor
+  #               state: 'on'
+  #             - condition: time
+  #               after: input_datetime.standup_workday
+  #               before: input_datetime.sleep
+  #         - condition: and
+  #           conditions:
+  #             - condition: state
+  #               entity_id: binary_sensor.workday_sensor
+  #               state: 'off'
+  #             - condition: time
+  #               after: input_datetime.standup_weekend
+  #               before: input_datetime.sleep
+  #   actions:
+  #     - action: switch.turn_on
+  #       target:
+  #           entity_id:
+  #             - switch.fernseher
+  #             - switch.schreibtisch_arbeitszimmer
+  #             - switch.schreibtisch_wohnzimmer
+
+  - alias: standby_tv_switch_on
+    id: standby_tv_switch_on
     triggers:
       - platform: time
-        at: input_datetime.standup_workday
-      - platform: time
-        at: input_datetime.standup_weekend
+        at: input_datetime.standby_television_switch_on_at
       - platform: state
         entity_id: group.family
         to: 'home'
@@ -20,6 +66,32 @@
         state: 'on'
       - condition: state
         entity_id: group.family
+        state: 'home'
+      - condition: time
+        after: input_datetime.standby_television_switch_on_at
+        before: input_datetime.sleep
+    actions:
+      - action: switch.turn_on
+        target:
+            entity_id:
+              - switch.fernseher
+
+  - alias: standby_desk_office_switch_on
+    id: standby_desk_office_switch_on
+    triggers:
+      - platform: time
+        at: input_datetime.standup_workday
+      - platform: time
+        at: input_datetime.standup_weekend
+      - platform: state
+        entity_id: person.andreas
+        to: 'home'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: person.andreas
         state: 'home'
       - condition: or
         conditions:
@@ -43,8 +115,85 @@
       - action: switch.turn_on
         target:
             entity_id:
-              - switch.fernseher
               - switch.schreibtisch_arbeitszimmer
+
+  - alias: standby_desk_office_switch_off
+    id: standby_desk_office_switch_off
+    triggers:
+      - trigger: state
+        entity_id: person.andreas
+        to: 'not_home'
+        for:
+            minutes: 1
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+    actions:
+      - service: switch.turn_off
+        target:
+            entity_id:
+              - switch.schreibtisch_arbeitszimmer
+
+  - alias: standby_desk_lounge_switch_on
+    id: standby_desk_lounge_switch_on
+    triggers:
+      - platform: time
+        at: input_datetime.standup_workday
+      - platform: time
+        at: input_datetime.standup_weekend
+      - platform: state
+        entity_id: person.undine
+        to: 'home'
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: 'on'
+      - condition: state
+        entity_id: person.undine
+        state: 'home'
+      - condition: or
+        conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: 'on'
+              - condition: time
+                after: input_datetime.standup_workday
+                before: input_datetime.sleep
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: 'off'
+              - condition: time
+                after: input_datetime.standup_weekend
+                before: input_datetime.sleep
+    actions:
+      - action: switch.turn_on
+        target:
+            entity_id:
+              - switch.schreibtisch_wohnzimmer
+
+  - alias: standby_desk_lounge_switch_off
+    id: standby_desk_lounge_switch_off
+    triggers:
+      - trigger: state
+        entity_id: person.undine
+        to: 'not_home'
+        for:
+            minutes: 1
+    conditions:
+      - condition: state
+        alias: process only on production server
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+    actions:
+      - service: switch.turn_off
+        target:
+            entity_id:
               - switch.schreibtisch_wohnzimmer
 
   - alias: standby_switch_off_plugs_by_tv_off
