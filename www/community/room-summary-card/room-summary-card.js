@@ -1680,7 +1680,7 @@ const $589840a8bffad2e2$export$43835e9acf248a15 = (node, type, detail, options)=
 });
 
 parcelRegister("6c3D1", function(module, exports) {
-module.exports = import("./problem-dialog.29b3b6cf.js").then(()=>parcelRequire('gIkwD'));
+module.exports = import("./problem-dialog.d101ffa9.js").then(()=>parcelRequire('gIkwD'));
 
 });
 
@@ -1824,15 +1824,36 @@ const $a6dfaa78520799c6$export$c18c768bbe3223b7 = (hass, entity, className = '')
 
 });
 
+parcelRegister("dTmXl", function(module, exports) {
+
+$parcel$export(module.exports, "d", function () { return $86dc711946e77b66$export$4368d992c4eafac0; });
+const $86dc711946e77b66$export$4368d992c4eafac0 = (config, component, category, ...args)=>{
+    if (!(config === null || config === void 0 ? void 0 : config.debug)) return;
+    const { scope: scope, categories: categories } = config.debug;
+    if ((scope === null || scope === void 0 ? void 0 : scope.length) && !scope.includes(component)) return;
+    if ((categories === null || categories === void 0 ? void 0 : categories.length) && !categories.includes(category)) return;
+    console.debug(`[${component}] ${category}`, ...args);
+};
+
+});
+
 parcelRegister("1LdRn", function(module, exports) {
 
 $parcel$export(module.exports, "HassUpdateMixin", function () { return $4aaac1c384d75a93$export$19efda5681568302; });
-
-var $evAes = parcelRequire("evAes");
-parcelRequire("jcMWt");
-var $aaQtJ = parcelRequire("aaQtJ");
 const $4aaac1c384d75a93$export$19efda5681568302 = (superClass)=>{
     class HassUpdateClass extends superClass {
+        get hass() {
+            return this.__hassValue;
+        }
+        set hass(value) {
+            this.__hassValue = value;
+        }
+        get config() {
+            return this.__configValue;
+        }
+        set config(value) {
+            this.__configValue = value;
+        }
         connectedCallback() {
             super.connectedCallback();
             globalThis.addEventListener('hass-update', this._boundHassUpdateHandler);
@@ -1849,15 +1870,384 @@ const $4aaac1c384d75a93$export$19efda5681568302 = (superClass)=>{
             super(...args), this._boundHassUpdateHandler = this._handleHassUpdate.bind(this);
         }
     }
-    (0, $evAes.__decorate)([
-        (0, $aaQtJ.property)({
-            attribute: false
-        })
-    ], HassUpdateClass.prototype, "hass", void 0);
     return HassUpdateClass;
 };
 
 });
+
+parcelRegister("wgzUt", function(module, exports) {
+
+$parcel$export(module.exports, "SubscribeEntityStateMixin", function () { return $776fb9ea2d5ddf20$export$961c110c9b2142da; });
+
+var $evAes = parcelRequire("evAes");
+parcelRequire("3NUqv");
+var $knRyT = parcelRequire("knRyT");
+
+var $dTmXl = parcelRequire("dTmXl");
+parcelRequire("jcMWt");
+var $lYE5o = parcelRequire("lYE5o");
+const $776fb9ea2d5ddf20$export$961c110c9b2142da = (superClass)=>{
+    class SubscribeEntityStateClass extends superClass {
+        /**
+     * Setup the entity subscription.
+     */ connectedCallback() {
+            super.connectedCallback();
+            this._setupEntitySubscription();
+        }
+        /**
+     * Teardown the entity subscription.
+     */ disconnectedCallback() {
+            this._teardownEntitySubscription();
+            super.disconnectedCallback();
+        }
+        /**
+     * Teardown the entity subscription.
+     */ _teardownEntitySubscription() {
+            if (!this._unsubscribe) return;
+            (0, $dTmXl.d)(this.config, 'subscribe-entity-state-mixin', 'unsubscribe');
+            this._unsubscribe();
+            this._unsubscribe = undefined;
+            this._subscribedEntityId = undefined;
+        }
+        /**
+     * Setup the entity subscription.
+     */ _setupEntitySubscription() {
+            const id = this.entity;
+            const hass = this.hass;
+            const config = this.config;
+            (0, $dTmXl.d)(config, 'subscribe-entity-state-mixin', 'setupEntitySubscription', id);
+            if (!id || !hass) {
+                (0, $dTmXl.d)(config, 'subscribe-entity-state-mixin', 'setupEntitySubscription', 'missing id or hass');
+                this._teardownEntitySubscription();
+                this.state = undefined;
+                return;
+            }
+            if (this._subscribedEntityId === id) {
+                (0, $dTmXl.d)(config, 'subscribe-entity-state-mixin', 'setupEntitySubscription', "already subscribed.. \uD83D\uDE15");
+                return;
+            }
+            this._teardownEntitySubscription();
+            this._subscribedEntityId = id;
+            const manager = (0, $knRyT.getEntitySubscriptionManager)(hass, config);
+            this._unsubscribe = manager.subscribe(id, (state)=>{
+                this.state = state;
+            }, config);
+        }
+    }
+    (0, $evAes.__decorate)([
+        (0, $lYE5o.state)()
+    ], SubscribeEntityStateClass.prototype, "state", void 0);
+    return SubscribeEntityStateClass;
+};
+
+});
+parcelRegister("3NUqv", function(module, exports) {
+
+$parcel$export(module.exports, "getEntitySubscriptionManager", function () { return (parcelRequire("knRyT")).getEntitySubscriptionManager; });
+
+var $knRyT = parcelRequire("knRyT");
+
+var $ahi97 = parcelRequire("ahi97");
+
+var $3xhFF = parcelRequire("3xhFF");
+
+});
+parcelRegister("knRyT", function(module, exports) {
+
+$parcel$export(module.exports, "getEntitySubscriptionManager", function () { return $56a4fb7ab615f3dd$export$f1d189590eee6c91; });
+/**
+ * Per-connection singleton that consolidates entity subscriptions.
+ * Multiple badges across cards share one subscribe_entities call.
+ *
+ * @see https://developers.home-assistant.io/docs/api/websocket#subscribe_entities
+ */ 
+var $dTmXl = parcelRequire("dTmXl");
+
+var $ahi97 = parcelRequire("ahi97");
+
+var $3xhFF = parcelRequire("3xhFF");
+const $56a4fb7ab615f3dd$var$managers = new Map();
+function $56a4fb7ab615f3dd$export$f1d189590eee6c91(hass, config) {
+    const conn = hass.connection;
+    let manager = $56a4fb7ab615f3dd$var$managers.get(conn);
+    if (!manager) {
+        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'initial creation');
+        manager = new $56a4fb7ab615f3dd$export$76a51d3d85415e4c(hass);
+        $56a4fb7ab615f3dd$var$managers.set(conn, manager);
+    }
+    return manager;
+}
+class $56a4fb7ab615f3dd$export$76a51d3d85415e4c {
+    /** Subscribe to entity; returns unsubscribe fn. Batches resubscribe when entity set changes. */ subscribe(entityId, onChange, config) {
+        let set = this._listeners.get(entityId);
+        if (!set) {
+            set = new Set();
+            this._listeners.set(entityId, set);
+        }
+        set.add(onChange);
+        const entityWasNew = set.size === 1;
+        if (entityWasNew) this._scheduleResubscribe(config);
+        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'subscribe', entityId, 'listeners', set.size);
+        return ()=>{
+            const s = this._listeners.get(entityId);
+            if (!s) return;
+            s.delete(onChange);
+            if (s.size === 0) {
+                this._listeners.delete(entityId);
+                this._state.delete(entityId);
+                this._scheduleResubscribe(config);
+            }
+        };
+    }
+    _scheduleResubscribe(config) {
+        this._scheduler.schedule(()=>this._resubscribe(config));
+    }
+    _resubscribe(config) {
+        if (this._unsubscribe) {
+            this._unsubscribe();
+            this._unsubscribe = undefined;
+        }
+        const entityIds = [
+            ...this._listeners.keys()
+        ];
+        if (entityIds.length === 0) return;
+        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'subscribe_entities', entityIds, "\nThis shouldn't happen alot.. \uD83E\uDD14");
+        const version = ++this._resubscribeVersion;
+        this._hass.connection.subscribeMessage((ev)=>this._handleEvent(ev, config), {
+            type: 'subscribe_entities',
+            entity_ids: entityIds
+        }).then((unsub)=>{
+            if (version !== this._resubscribeVersion) {
+                (0, $dTmXl.d)(config, 'entity-subscription-manager', 'resubscribe', 'stale', version, this._resubscribeVersion);
+                unsub();
+                return;
+            }
+            (0, $dTmXl.d)(config, 'entity-subscription-manager', 'resubscribe', 'active');
+            this._unsubscribe = unsub;
+        });
+    }
+    _handleEvent(ev, config) {
+        this._eventHandler.handle(ev, config);
+    }
+    constructor(hass){
+        this._listeners = new Map();
+        this._state = new Map();
+        this._scheduler = new (0, $ahi97.ResubscribeScheduler)();
+        this._resubscribeVersion = 0;
+        this._hass = hass;
+        this._eventHandler = new (0, $3xhFF.StatesEventHandler)(this._listeners, this._state, this._hass);
+    }
+}
+
+});
+parcelRegister("ahi97", function(module, exports) {
+
+$parcel$export(module.exports, "ResubscribeScheduler", function () { return $c735bfb9187791c0$export$746d7d6f368b83b1; });
+/**
+ * Debounces resubscribe to batch rapid entity add/remove during dashboard load.
+ */ const $c735bfb9187791c0$var$RESUBSCRIBE_DEBOUNCE_MS = 50;
+class $c735bfb9187791c0$export$746d7d6f368b83b1 {
+    /** Run fn after debounce delay; resets timer if called again before firing. */ schedule(fn) {
+        if (this._timer) clearTimeout(this._timer);
+        this._timer = setTimeout(()=>{
+            this._timer = undefined;
+            fn();
+        }, $c735bfb9187791c0$var$RESUBSCRIBE_DEBOUNCE_MS);
+    }
+    /** Cancel any pending scheduled run. */ cancel() {
+        if (this._timer) {
+            clearTimeout(this._timer);
+            this._timer = undefined;
+        }
+    }
+}
+
+});
+
+parcelRegister("3xhFF", function(module, exports) {
+
+$parcel$export(module.exports, "StatesEventHandler", function () { return $a65c367d6d102e05$export$fa096be87fabe7d3; });
+/**
+ * Handles subscribe_entities WebSocket events (add, remove, change).
+ */ 
+var $7AhDs = parcelRequire("7AhDs");
+
+var $dTmXl = parcelRequire("dTmXl");
+
+var $2WuTi = parcelRequire("2WuTi");
+class $a65c367d6d102e05$export$fa096be87fabe7d3 {
+    /** Process one WebSocket event; only notifies entities we're subscribed to. */ handle(ev, config) {
+        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'handleEvent', 'ev', ev);
+        if (ev.a) this._handleAdd(ev.a);
+        if (ev.r) this._handleRemove(ev.r);
+        if (ev.c) this._handleChange(ev.c, config);
+    }
+    _handleAdd(added) {
+        for (const [entityId, comp] of Object.entries(added)){
+            if (!this._listeners.has(entityId)) continue;
+            const state = (0, $2WuTi.compressedToEntityState)(entityId, comp);
+            this._state.set(entityId, state);
+            this._notify(entityId, state);
+        }
+    }
+    _handleRemove(removed) {
+        for (const entityId of removed){
+            if (!this._listeners.has(entityId)) continue;
+            this._state.delete(entityId);
+            this._notify(entityId, undefined);
+        }
+    }
+    _handleChange(changes, config) {
+        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'handleEvent', 'change', Object.keys(changes));
+        for (const [entityId, diff] of Object.entries(changes)){
+            if (!this._listeners.has(entityId)) continue;
+            if (!(0, $2WuTi.isMeaningfulChange)(diff)) continue;
+            var _this__state_get;
+            const base = (_this__state_get = this._state.get(entityId)) !== null && _this__state_get !== void 0 ? _this__state_get : (0, $7AhDs.getState)(this._hass.states, entityId);
+            if (!base) continue;
+            const state = (0, $2WuTi.applyDiff)(base, entityId, diff);
+            this._state.set(entityId, state);
+            this._notify(entityId, state);
+        }
+    }
+    _notify(entityId, state) {
+        const set = this._listeners.get(entityId);
+        if (!set) return;
+        for (const fn of set)fn(state);
+    }
+    constructor(_listeners, _state, _hass){
+        this._listeners = _listeners;
+        this._state = _state;
+        this._hass = _hass;
+    }
+}
+
+});
+parcelRegister("7AhDs", function(module, exports) {
+
+$parcel$export(module.exports, "getState", function () { return $6d9b59681496f671$export$50fdfeece43146fd; });
+
+var $jyxIy = parcelRequire("jyxIy");
+
+var $l3TbZ = parcelRequire("l3TbZ");
+const $6d9b59681496f671$export$50fdfeece43146fd = (0, $l3TbZ.default)((states, entityId, fakeState = false)=>{
+    if (!entityId) return undefined;
+    var _states_entityId;
+    const state = (_states_entityId = states[entityId]) !== null && _states_entityId !== void 0 ? _states_entityId : fakeState ? {
+        entity_id: entityId,
+        state: 'off',
+        // Set friendly_name to an empty string so the label is blank
+        attributes: {
+            friendly_name: ''
+        }
+    } : undefined;
+    if (!state) return undefined;
+    const domain = (0, $jyxIy.computeDomain)(state.entity_id);
+    return {
+        state: state.state,
+        attributes: state.attributes,
+        entity_id: state.entity_id,
+        domain: domain
+    };
+});
+
+});
+parcelRegister("l3TbZ", function(module, exports) {
+
+$parcel$export(module.exports, "default", function () { return $f554b0d97be25fc9$export$2e2bcd8739ae039; });
+var $f554b0d97be25fc9$var$safeIsNaN = Number.isNaN || function ponyfill(value) {
+    return typeof value === 'number' && value !== value;
+};
+function $f554b0d97be25fc9$var$isEqual(first, second) {
+    if (first === second) return true;
+    if ($f554b0d97be25fc9$var$safeIsNaN(first) && $f554b0d97be25fc9$var$safeIsNaN(second)) return true;
+    return false;
+}
+function $f554b0d97be25fc9$var$areInputsEqual(newInputs, lastInputs) {
+    if (newInputs.length !== lastInputs.length) return false;
+    for(var i = 0; i < newInputs.length; i++){
+        if (!$f554b0d97be25fc9$var$isEqual(newInputs[i], lastInputs[i])) return false;
+    }
+    return true;
+}
+function $f554b0d97be25fc9$export$2e2bcd8739ae039(resultFn, isEqual) {
+    if (isEqual === void 0) isEqual = $f554b0d97be25fc9$var$areInputsEqual;
+    var cache = null;
+    function memoized() {
+        var newArgs = [];
+        for(var _i = 0; _i < arguments.length; _i++)newArgs[_i] = arguments[_i];
+        if (cache && cache.lastThis === this && isEqual(newArgs, cache.lastArgs)) return cache.lastResult;
+        var lastResult = resultFn.apply(this, newArgs);
+        cache = {
+            lastResult: lastResult,
+            lastArgs: newArgs,
+            lastThis: this
+        };
+        return lastResult;
+    }
+    memoized.clear = function clear() {
+        cache = null;
+    };
+    return memoized;
+}
+
+});
+
+
+parcelRegister("2WuTi", function(module, exports) {
+
+$parcel$export(module.exports, "compressedToEntityState", function () { return $f6cab4e006e6bc92$export$1e451bf8ffd1807c; });
+$parcel$export(module.exports, "isMeaningfulChange", function () { return $f6cab4e006e6bc92$export$212c94ae4aa31760; });
+$parcel$export(module.exports, "applyDiff", function () { return $f6cab4e006e6bc92$export$ef16b89ca36598f4; });
+/**
+ * Shared helpers for processing subscribe_entities state diff format.
+ * Used by entity-subscription-manager.
+ *
+ * @see https://developers.home-assistant.io/docs/api/websocket#subscribe_entities
+ */ 
+var $kJycS = parcelRequire("kJycS");
+
+var $jyxIy = parcelRequire("jyxIy");
+const $f6cab4e006e6bc92$var$COMPRESSED_STATE = 's';
+const $f6cab4e006e6bc92$var$COMPRESSED_ATTRIBUTES = 'a';
+function $f6cab4e006e6bc92$export$1e451bf8ffd1807c(entityId, comp) {
+    var _comp_a;
+    return {
+        entity_id: entityId,
+        state: comp.s,
+        attributes: (_comp_a = comp.a) !== null && _comp_a !== void 0 ? _comp_a : {},
+        domain: (0, $jyxIy.computeDomain)(entityId)
+    };
+}
+function $f6cab4e006e6bc92$export$212c94ae4aa31760(diff) {
+    var _remove_a;
+    const add = diff['+'];
+    const remove = diff['-'];
+    return (add === null || add === void 0 ? void 0 : add[$f6cab4e006e6bc92$var$COMPRESSED_STATE]) !== undefined || (add === null || add === void 0 ? void 0 : add[$f6cab4e006e6bc92$var$COMPRESSED_ATTRIBUTES]) !== undefined || (remove === null || remove === void 0 ? void 0 : (_remove_a = remove.a) === null || _remove_a === void 0 ? void 0 : _remove_a.length) !== undefined && remove.a.length > 0;
+}
+function $f6cab4e006e6bc92$export$ef16b89ca36598f4(current, entityId, diff) {
+    const add = diff['+'];
+    const remove = diff['-'];
+    let state = current.state;
+    let attributes = (0, $kJycS._)({}, current.attributes);
+    if (add) {
+        if (add.s !== undefined) state = add.s;
+        if (add.a) Object.assign(attributes, add.a);
+    }
+    if (remove === null || remove === void 0 ? void 0 : remove.a) for (const key of remove.a)delete attributes[key];
+    return {
+        entity_id: entityId,
+        state: state,
+        attributes: attributes,
+        domain: (0, $jyxIy.computeDomain)(entityId)
+    };
+}
+
+});
+
+
+
+
 
 parcelRegister("cfP8R", function(module, exports) {
 
@@ -2244,6 +2634,7 @@ let $d71beedfb309b5b1$var$_ = (t)=>t, $d71beedfb309b5b1$var$t, $d71beedfb309b5b1
 const $d71beedfb309b5b1$export$8093665c9ba8ead9 = (hass, config, sensors, element)=>{
     var _config_problem;
     const { problemSensors: problemSensors } = sensors;
+    const ids = problemSensors.map((sensor)=>sensor.entity_id);
     const problemExists = problemSensors.some((sensor)=>(0, $cmVfz.stateActive)(sensor));
     var _config_problem_display;
     const problemDisplay = (_config_problem_display = (_config_problem = config.problem) === null || _config_problem === void 0 ? void 0 : _config_problem.display) !== null && _config_problem_display !== void 0 ? _config_problem_display : 'always';
@@ -2260,7 +2651,8 @@ const $d71beedfb309b5b1$export$8093665c9ba8ead9 = (hass, config, sensors, elemen
           @click=${0}
           >${0}</span
         >`), problemExists, ()=>(0, $7d7b3d36776b9b07$export$dcf8bd1e24f4d8e9)(element, {
-            entities: problemSensors
+            entities: ids,
+            config: config
         }), problemSensors.length) : (0, $ci0wX.nothing), sensors.mold && (0, $93ab8e068532bba3$export$4bb1c5099bd99a57)(sensors.mold, config) ? (0, $ci0wX.html)($d71beedfb309b5b1$var$t1 || ($d71beedfb309b5b1$var$t1 = $d71beedfb309b5b1$var$_`<div class="mold-indicator">
           <ha-state-icon
             .hass=${0}
@@ -2292,48 +2684,13 @@ const $d71beedfb309b5b1$export$6697a659ce63852 = (hass, entity, config, options 
 };
 
 
-var $f554b0d97be25fc9$var$safeIsNaN = Number.isNaN || function ponyfill(value) {
-    return typeof value === 'number' && value !== value;
-};
-function $f554b0d97be25fc9$var$isEqual(first, second) {
-    if (first === second) return true;
-    if ($f554b0d97be25fc9$var$safeIsNaN(first) && $f554b0d97be25fc9$var$safeIsNaN(second)) return true;
-    return false;
-}
-function $f554b0d97be25fc9$var$areInputsEqual(newInputs, lastInputs) {
-    if (newInputs.length !== lastInputs.length) return false;
-    for(var i = 0; i < newInputs.length; i++){
-        if (!$f554b0d97be25fc9$var$isEqual(newInputs[i], lastInputs[i])) return false;
-    }
-    return true;
-}
-function $f554b0d97be25fc9$export$2e2bcd8739ae039(resultFn, isEqual) {
-    if (isEqual === void 0) isEqual = $f554b0d97be25fc9$var$areInputsEqual;
-    var cache = null;
-    function memoized() {
-        var newArgs = [];
-        for(var _i = 0; _i < arguments.length; _i++)newArgs[_i] = arguments[_i];
-        if (cache && cache.lastThis === this && isEqual(newArgs, cache.lastArgs)) return cache.lastResult;
-        var lastResult = resultFn.apply(this, newArgs);
-        cache = {
-            lastResult: lastResult,
-            lastArgs: newArgs,
-            lastThis: this
-        };
-        return lastResult;
-    }
-    memoized.clear = function clear() {
-        cache = null;
-    };
-    return memoized;
-}
 
-
-const $b02f37b9ae80224f$export$805ddaeeece0413e = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((config, feature)=>{
+var $l3TbZ = parcelRequire("l3TbZ");
+const $b02f37b9ae80224f$export$805ddaeeece0413e = (0, $l3TbZ.default)((config, feature)=>{
     var _config_features;
     return !config || ((_config_features = config.features) === null || _config_features === void 0 ? void 0 : _config_features.includes(feature)) || false;
 });
-const $b02f37b9ae80224f$export$47f3d980c4d9b226 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity, feature)=>{
+const $b02f37b9ae80224f$export$47f3d980c4d9b226 = (0, $l3TbZ.default)((entity, feature)=>{
     var _entity_config_features;
     return !entity || ((_entity_config_features = entity.config.features) === null || _entity_config_features === void 0 ? void 0 : _entity_config_features.includes(feature)) || false;
 });
@@ -2409,622 +2766,6 @@ const $b96673d7637fba33$export$3d3654ce4577c53d = (element, entity)=>{
 
 
 var $cmVfz = parcelRequire("cmVfz");
-/**
- * Checks if an entity is currently detecting an alarm condition
- * @param hass Home Assistant instance
- * @param entityId Entity ID of the sensor
- * @returns True if condition is detected, false otherwise
- */ const $82ec124af523e08e$var$isEntityDetected = (hass, entityId)=>{
-    const entity = hass.states[entityId];
-    if (!entity) return false;
-    return (0, $cmVfz.stateActive)(entity);
-};
-/**
- * Gets the current alarm state for a configured alarm sensor
- * @param hass Home Assistant instance
- * @param config Alarm configuration
- * @returns True if condition is detected, false otherwise
- */ const $82ec124af523e08e$var$getAlarmState = (hass, config)=>{
-    if (!config) return false;
-    // Check if any of the entities detect the condition
-    return config.entities.some((entityId)=>$82ec124af523e08e$var$isEntityDetected(hass, entityId));
-};
-/**
- * Gets CSS variables for alarm styling based on current state
- * @param isDetected Current detection state
- * @param config Alarm configuration
- * @param prefix CSS variable prefix (e.g., 'occupancy' or 'smoke')
- * @param defaultColor Default color to use (e.g., 'var(--success-color)' or 'var(--error-color)')
- * @param animationName Animation name (e.g., 'occupancy-pulse' or 'smoke-pulse')
- * @returns Object with CSS variable names and values
- */ const $82ec124af523e08e$var$getAlarmCssVars = (isDetected, config, prefix = 'alarm', defaultColor = 'var(--primary-color)', animationName = 'alarm-pulse')=>{
-    var _config_options, _config_options1;
-    if (!config) return {};
-    const vars = {};
-    if (!isDetected) return vars;
-    // Set card border variable (3px solid) unless disabled
-    const isCardBorderDisabled = (_config_options = config.options) === null || _config_options === void 0 ? void 0 : _config_options.includes('disabled_card_styles');
-    if (!isCardBorderDisabled) {
-        var _config_options2;
-        var _config_card_border_color;
-        const borderColor = (_config_card_border_color = config.card_border_color) !== null && _config_card_border_color !== void 0 ? _config_card_border_color : defaultColor;
-        vars[`--${prefix}-card-border`] = `3px solid ${borderColor}`;
-        vars[`--${prefix}-card-border-color`] = borderColor;
-        // Set animation unless disabled
-        const isAnimationDisabled = (_config_options2 = config.options) === null || _config_options2 === void 0 ? void 0 : _config_options2.includes('disabled_card_styles_animation');
-        if (!isAnimationDisabled) vars[`--${prefix}-card-animation`] = `${animationName} 2s ease-in-out infinite alternate`;
-    }
-    // Icon color styling
-    const isIconColorDisabled = (_config_options1 = config.options) === null || _config_options1 === void 0 ? void 0 : _config_options1.includes('disable_icon_styles');
-    if (!isIconColorDisabled) {
-        var _config_options3;
-        var _config_icon_color;
-        const iconColor = (_config_icon_color = config.icon_color) !== null && _config_icon_color !== void 0 ? _config_icon_color : defaultColor;
-        vars[`--${prefix}-icon-color`] = iconColor;
-        // Set animation unless disabled
-        const isIconAnimationDisabled = (_config_options3 = config.options) === null || _config_options3 === void 0 ? void 0 : _config_options3.includes('disable_icon_animation');
-        if (!isIconAnimationDisabled) vars[`--${prefix}-icon-animation`] = 'icon-breathe 3s ease-in-out infinite alternate';
-    }
-    return vars;
-};
-const $82ec124af523e08e$export$9df2091f323033b9 = (hass, config)=>{
-    return $82ec124af523e08e$var$getAlarmState(hass, config);
-};
-const $82ec124af523e08e$export$a44444e2ac55f0e7 = (isOccupied, config)=>{
-    return $82ec124af523e08e$var$getAlarmCssVars(isOccupied, config, 'occupancy', 'var(--success-color)', 'occupancy-pulse');
-};
-const $82ec124af523e08e$export$9e738e3e7dcdd507 = (hass, config)=>{
-    return $82ec124af523e08e$var$getAlarmState(hass, config);
-};
-const $82ec124af523e08e$export$2b84bc3470ef94ef = (isSmokeDetected, config)=>{
-    return $82ec124af523e08e$var$getAlarmCssVars(isSmokeDetected, config, 'smoke', 'var(--error-color)', 'smoke-pulse');
-};
-const $82ec124af523e08e$export$69e97fbcf1121841 = (hass, config)=>{
-    return $82ec124af523e08e$var$getAlarmState(hass, config);
-};
-const $82ec124af523e08e$export$651c11ff3b9ded13 = (isGasDetected, config)=>{
-    return $82ec124af523e08e$var$getAlarmCssVars(isGasDetected, config, 'gas', '#FF9800', 'gas-pulse');
-};
-const $82ec124af523e08e$export$fad91fa3c977dc7 = (hass, config)=>{
-    return $82ec124af523e08e$var$getAlarmState(hass, config);
-};
-const $82ec124af523e08e$export$e9bc110247b1ae0d = (isWaterDetected, config)=>{
-    return $82ec124af523e08e$var$getAlarmCssVars(isWaterDetected, config, 'water', '#2196F3', 'water-pulse');
-};
-
-
-
-
-/**
- * Gets sensor value - from specific entity in individual sensors, or averaged sensor
- */ const $b45c3666c29a512e$var$getSensorValue = (sensorData, deviceClass, entityId)=>{
-    // If entityId is specified, look for it in individual sensors first
-    if (entityId) {
-        const individualSensor = sensorData.individual.find((s)=>s.entity_id === entityId);
-        if ((individualSensor === null || individualSensor === void 0 ? void 0 : individualSensor.attributes.device_class) === deviceClass) return Number(individualSensor.state);
-    }
-    // Look in averaged sensors
-    const averagedSensor = sensorData.averaged.find((s)=>s.device_class === deviceClass);
-    if (!averagedSensor) return null;
-    // If entityId is specified, look for it in the averaged sensor's states
-    if (entityId) {
-        const entity = averagedSensor.states.find((state)=>state.entity_id === entityId);
-        return entity ? Number(entity.state) : null;
-    }
-    return averagedSensor.average;
-};
-/**
- * Gets threshold value - from specific entity in thresholdSensors sensors, or number configuration
- */ const $b45c3666c29a512e$var$getThresholdSensorValue = (sensors, defaultValue, config)=>{
-    if (!config) return defaultValue;
-    if (typeof config === 'number') return config;
-    const sensor = sensors.find((s)=>s.entity_id === config);
-    if (sensor) return Number(sensor.state);
-    return defaultValue;
-};
-/**
- * Checks if any threshold entry in an array matches the sensor data
- *
- * @param thresholdEntries - Array of threshold configurations
- * @param sensorData - Sensor data containing individual and averaged sensors
- * @param deviceClass - Device class to filter sensors ('temperature' or 'humidity')
- * @returns Object with triggered flag and color if threshold is met
- */ const $b45c3666c29a512e$var$checkThresholdEntries = (thresholdEntries, sensorData, deviceClass)=>{
-    // coalesce to [{}] so that we always have at least one entry to iterate for default values
-    for (const entry of thresholdEntries || [
-        {}
-    ]){
-        const sensorValue = $b45c3666c29a512e$var$getSensorValue(sensorData, deviceClass, entry.entity_id);
-        if (sensorValue === null) continue;
-        // Get threshold value - can be a number or entity ID string
-        const thresholdValue = $b45c3666c29a512e$var$getThresholdSensorValue(sensorData.thresholdSensors, deviceClass === 'temperature' ? 80 : 60, entry.value);
-        var _entry_operator;
-        const operator = (_entry_operator = entry.operator) !== null && _entry_operator !== void 0 ? _entry_operator : 'gt';
-        if ($b45c3666c29a512e$var$meetsThreshold(sensorValue, thresholdValue, operator)) return {
-            triggered: true,
-            color: entry.color
-        };
-    }
-    return {
-        triggered: false
-    };
-};
-/**
- * Checks if a numeric value meets a threshold condition using the specified operator
- *
- * @param value - The numeric value to test
- * @param threshold - The threshold value to compare against
- * @param operator - The comparison operator to use
- * @returns true if the condition is met
- */ const $b45c3666c29a512e$var$meetsThreshold = (value, threshold, operator)=>{
-    switch(operator){
-        case 'gt':
-            return value > threshold;
-        case 'gte':
-            return value >= threshold;
-        case 'lt':
-            return value < threshold;
-        case 'lte':
-            return value <= threshold;
-        case 'eq':
-            return value === threshold;
-        default:
-            return value > threshold; // Default to 'gt' for backward compatibility
-    }
-};
-const $b45c3666c29a512e$export$c1ca802e67721a4 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((config, sensorData)=>{
-    if ((0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_climate_styles')) return {
-        hot: false,
-        humid: false,
-        hotColor: undefined,
-        humidColor: undefined
-    };
-    const thresholds = config.thresholds;
-    const hotResult = $b45c3666c29a512e$var$checkThresholdEntries(thresholds === null || thresholds === void 0 ? void 0 : thresholds.temperature, sensorData, 'temperature');
-    const humidResult = $b45c3666c29a512e$var$checkThresholdEntries(thresholds === null || thresholds === void 0 ? void 0 : thresholds.humidity, sensorData, 'humidity');
-    return {
-        hot: hotResult.triggered,
-        humid: humidResult.triggered,
-        hotColor: hotResult.color,
-        humidColor: humidResult.color
-    };
-});
-
-
-
-const $7806862517a8ec93$export$520c40045967cb15 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((areas, areaId)=>areas[areaId]);
-
-
-
-var $cmVfz = parcelRequire("cmVfz");
-
-
-var $jyxIy = parcelRequire("jyxIy");
-
-const $6d9b59681496f671$export$50fdfeece43146fd = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((states, entityId, fakeState = false)=>{
-    if (!entityId) return undefined;
-    var _states_entityId;
-    const state = (_states_entityId = states[entityId]) !== null && _states_entityId !== void 0 ? _states_entityId : fakeState ? {
-        entity_id: entityId,
-        state: 'off',
-        // Set friendly_name to an empty string so the label is blank
-        attributes: {
-            friendly_name: ''
-        }
-    } : undefined;
-    if (!state) return undefined;
-    const domain = (0, $jyxIy.computeDomain)(state.entity_id);
-    return {
-        state: state.state,
-        attributes: state.attributes,
-        entity_id: state.entity_id,
-        domain: domain
-    };
-});
-
-
-/**
- * https://github.com/home-assistant/frontend/blob/dev/src/data/media_source.ts
- */ const $1de811e5c0604194$export$82af5f6c9f5dec8 = (mediaId)=>mediaId.startsWith('media-source://');
-const $1de811e5c0604194$export$512e5252162de675 = async (hass, mediaContentId)=>{
-    const result = await hass.callWS({
-        type: 'media_source/resolve_media',
-        media_content_id: mediaContentId
-    });
-    return result.url;
-};
-
-
-/**
- * Resolves a media source content ID or returns it as-is
- */ const $7359f6b91fb77fd2$var$resolveMediaContentId = async (hass, mediaContentId)=>{
-    if ((0, $1de811e5c0604194$export$82af5f6c9f5dec8)(mediaContentId)) return await (0, $1de811e5c0604194$export$512e5252162de675)(hass, mediaContentId);
-    return mediaContentId;
-};
-/**
- * Handles image configuration that can be a string or object
- */ const $7359f6b91fb77fd2$var$handleImageConfig = async (hass, image)=>{
-    if (typeof image === 'string') return await $7359f6b91fb77fd2$var$resolveMediaContentId(hass, image);
-    return await $7359f6b91fb77fd2$var$resolveMediaContentId(hass, image.media_content_id);
-};
-const $7359f6b91fb77fd2$export$9dd734c640ccb658 = async (hass, config)=>{
-    var _config_background_options, _config_background, _config_background1, _config_background2;
-    const disableImage = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('disable');
-    if (disableImage) return undefined;
-    // Check entity picture first
-    if ((_config_background1 = config.background) === null || _config_background1 === void 0 ? void 0 : _config_background1.image_entity) {
-        var _entityState_attributes;
-        const entityState = (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, config.background.image_entity);
-        if (entityState === null || entityState === void 0 ? void 0 : (_entityState_attributes = entityState.attributes) === null || _entityState_attributes === void 0 ? void 0 : _entityState_attributes.entity_picture) return entityState.attributes.entity_picture;
-    }
-    // Check config image
-    if ((_config_background2 = config.background) === null || _config_background2 === void 0 ? void 0 : _config_background2.image) return await $7359f6b91fb77fd2$var$handleImageConfig(hass, config.background.image);
-    // Fallback to area picture
-    const area = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area);
-    return area === null || area === void 0 ? void 0 : area.picture;
-};
-
-
-const $7a9953f15579a0c2$export$f3dc7c019524f0e9 = (element, hass)=>{
-    var _hass_themes, _hass_themes1;
-    // If no element provided, fall back to global theme
-    if (!element) return (_hass_themes = hass.themes) === null || _hass_themes === void 0 ? void 0 : _hass_themes.theme;
-    // Traverse up the DOM to find hui-view-container
-    let currentElement = element;
-    while(currentElement && currentElement !== document.body){
-        // Check if this is the hui-view-container
-        if (currentElement.tagName === 'HUI-VIEW-CONTAINER') {
-            var _hass_themes2;
-            const viewContainer = currentElement;
-            // Return the view theme if set, otherwise fall back to global theme
-            return viewContainer.theme || ((_hass_themes2 = hass.themes) === null || _hass_themes2 === void 0 ? void 0 : _hass_themes2.theme);
-        }
-        // Move up the DOM tree, handling shadow DOM boundaries
-        if (currentElement.parentElement) currentElement = currentElement.parentElement;
-        else if (typeof currentElement.getRootNode === 'function' && typeof ShadowRoot !== 'undefined') {
-            const root = currentElement.getRootNode();
-            currentElement = root instanceof ShadowRoot ? root.host : null;
-        } else // No parent and can't traverse shadow DOM, stop here
-        currentElement = null;
-    }
-    // Fallback to global theme if view container not found
-    return (_hass_themes1 = hass.themes) === null || _hass_themes1 === void 0 ? void 0 : _hass_themes1.theme;
-};
-
-
-
-var $kJycS = parcelRequire("kJycS");
-
-
-
-/**
- * Checks if a string is a URL (starts with http:// or https://)
- * @param {string} str - The string to check
- * @returns {boolean} True if the string is a URL
- */ const $d9cd925d0860ec58$var$isUrl = (str)=>{
-    return str.startsWith('http://') || str.startsWith('https://');
-};
-const $d9cd925d0860ec58$export$25fedbc2fd674160 = (hass, config)=>{
-    var _getArea;
-    const roomEntityId = `light.${config.area}_light`;
-    var _config_navigate;
-    // Determine the navigation target
-    const navigationTarget = (_config_navigate = config.navigate) !== null && _config_navigate !== void 0 ? _config_navigate : config.area.replace('_', '-');
-    // Create appropriate action based on whether the target is a URL or path
-    const tapAction = $d9cd925d0860ec58$var$isUrl(navigationTarget) ? {
-        action: 'url',
-        url_path: navigationTarget
-    } : {
-        action: 'navigate',
-        navigation_path: navigationTarget
-    };
-    const actionConfig = {
-        tap_action: tapAction,
-        hold_action: {
-            action: 'more-info'
-        },
-        double_tap_action: {
-            action: 'none'
-        }
-    };
-    // Handle different entity configuration formats
-    if (config.entity && !(0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'ignore_entity')) {
-        if (typeof config.entity === 'string') // String format
-        return {
-            config: (0, $kJycS._)({
-                entity_id: config.entity
-            }, actionConfig),
-            state: (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, config.entity)
-        };
-        else // Object format
-        return {
-            config: (0, $kJycS._)({}, actionConfig, config.entity),
-            state: (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, config.entity.entity_id)
-        };
-    }
-    // Default room light configuration
-    return {
-        config: (0, $kJycS._)({
-            entity_id: roomEntityId,
-            icon: (_getArea = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area)) === null || _getArea === void 0 ? void 0 : _getArea.icon
-        }, actionConfig),
-        state: (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, roomEntityId, true)
-    };
-};
-
-
-
-
-
-const $62a596c6a9bc2e04$export$30c823bc834d6ab4 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((devices, deviceId)=>devices[deviceId]);
-
-
-
-/**
- * https://github.com/home-assistant/frontend/blob/dev/src/common/number/format_number.ts
- */ const $1c9527a6ee3bb670$export$88bfc1035e667f37 = (stateObj)=>$1c9527a6ee3bb670$export$b6c45d0299750e7c(stateObj.attributes);
-const $1c9527a6ee3bb670$export$b6c45d0299750e7c = (attributes, numericDeviceClasses)=>{
-    var _attributes_device_class;
-    return !!attributes.unit_of_measurement || !!attributes.state_class || (numericDeviceClasses || []).includes((_attributes_device_class = attributes.device_class) !== null && _attributes_device_class !== void 0 ? _attributes_device_class : '');
-};
-
-
-/**
- * Filters entities by device class and ensures they are numeric
- */ const $0b0bca794600042c$var$getNumericEntitiesByClass = (entities, deviceClass)=>{
-    return entities.filter((entity)=>entity.attributes.device_class === deviceClass && (0, $1c9527a6ee3bb670$export$88bfc1035e667f37)(entity) && entity.state.trim() !== '' && !Number.isNaN(Number(entity.state)));
-};
-/**
- * Groups entities by their unit of measurement
- */ const $0b0bca794600042c$var$groupEntitiesByUom = (entities)=>{
-    const uomGroups = new Map();
-    for (const entity of entities){
-        var _entity_attributes_unit_of_measurement;
-        const uom = (_entity_attributes_unit_of_measurement = entity.attributes.unit_of_measurement) !== null && _entity_attributes_unit_of_measurement !== void 0 ? _entity_attributes_unit_of_measurement : '';
-        if (!uomGroups.has(uom)) uomGroups.set(uom, []);
-        uomGroups.get(uom).push(entity);
-    }
-    return uomGroups;
-};
-/**
- * Calculates average for a group of entities
- */ const $0b0bca794600042c$var$calculateGroupAverage = (groupEntities, uom, deviceClass)=>{
-    const sum = groupEntities.reduce((total, entity)=>total + Number(entity.state), 0);
-    const average = sum / groupEntities.length;
-    return {
-        states: groupEntities,
-        uom: uom,
-        average: average,
-        device_class: deviceClass,
-        domain: 'sensor'
-    };
-};
-/**
- * Processes a single device class and returns averages
- */ const $0b0bca794600042c$var$processDeviceClass = (entities, deviceClass)=>{
-    const classEntities = $0b0bca794600042c$var$getNumericEntitiesByClass(entities, deviceClass);
-    if (classEntities.length === 0) return [];
-    const uomGroups = $0b0bca794600042c$var$groupEntitiesByUom(classEntities);
-    const averages = [];
-    for (const [uom, groupEntities] of uomGroups)if (groupEntities.length > 0) averages.push($0b0bca794600042c$var$calculateGroupAverage(groupEntities, uom, deviceClass));
-    return averages;
-};
-const $0b0bca794600042c$export$499e7395a53e0376 = (entities, deviceClasses)=>{
-    return deviceClasses.flatMap((deviceClass)=>$0b0bca794600042c$var$processDeviceClass(entities, deviceClass));
-};
-
-
-/**
- * Helper function to extract entity_id from LightConfig
- */ const $e186e7c110487ed3$var$getLightEntityId = (light)=>{
-    return typeof light === 'string' ? light : light.entity_id;
-};
-/**
- * Helper function to check if a light config is ambient type
- */ const $e186e7c110487ed3$var$isAmbientLight = (light)=>{
-    return typeof light !== 'string' && light.type === 'ambient';
-};
-const $e186e7c110487ed3$export$d4cef0abb1b35d6f = (hass, config)=>{
-    var _config_sensors, _config_thresholds, _config_thresholds1;
-    const skipDefaultEntities = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'exclude_default_entities');
-    const multiLightEnabled = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'multi_light_background');
-    const hideHiddenEntities = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_hidden_entities');
-    // Get area information to check for configured temperature/humidity sensors
-    const area = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area);
-    const areaHasTemperatureSensor = !!(area === null || area === void 0 ? void 0 : area.temperature_entity_id);
-    const areaHasHumiditySensor = !!(area === null || area === void 0 ? void 0 : area.humidity_entity_id);
-    // Default sensor classes if not specified
-    const sensorClasses = config.sensor_classes || [
-        'temperature',
-        'humidity',
-        'illuminance'
-    ];
-    // Arrays to hold different categories
-    const configOrderedSensors = [];
-    const classSensors = [];
-    const problemSensors = [];
-    const lightEntities = [];
-    const ambientLightEntities = [];
-    const thresholdSensors = [];
-    let mold = undefined;
-    // Get configured light entity IDs and their types if multi-light feature is enabled
-    // Build a map of entity_id -> isAmbient for quick lookup
-    const configuredLightIds = [];
-    const ambientLightIds = new Set();
-    if (multiLightEnabled && config.lights && config.lights.length > 0) config.lights.forEach((light)=>{
-        const entityId = $e186e7c110487ed3$var$getLightEntityId(light);
-        configuredLightIds.push(entityId);
-        if ($e186e7c110487ed3$var$isAmbientLight(light)) ambientLightIds.add(entityId);
-    });
-    // Helper function to extract entity_id from string or SensorConfig
-    const getSensorEntityId = (sensor)=>{
-        return typeof sensor === 'string' ? sensor : sensor.entity_id;
-    };
-    // Get array of entity IDs from config.sensors for quick lookup
-    const configSensorIds = ((_config_sensors = config.sensors) === null || _config_sensors === void 0 ? void 0 : _config_sensors.map(getSensorEntityId)) || [];
-    // Extract threshold entity IDs from threshold entries' value properties
-    const thresholdSensorIds = new Set();
-    if ((_config_thresholds = config.thresholds) === null || _config_thresholds === void 0 ? void 0 : _config_thresholds.temperature) config.thresholds.temperature.forEach((entry)=>{
-        if (typeof entry.value === 'string') thresholdSensorIds.add(entry.value);
-    });
-    if ((_config_thresholds1 = config.thresholds) === null || _config_thresholds1 === void 0 ? void 0 : _config_thresholds1.humidity) config.thresholds.humidity.forEach((entry)=>{
-        if (typeof entry.value === 'string') thresholdSensorIds.add(entry.value);
-    });
-    // Helper function to check if entity should be processed
-    const shouldProcessEntity = (isConfigSensor, isInArea, isConfiguredLight, isThresholdEntity)=>{
-        return isConfigSensor || isInArea || isConfiguredLight || isThresholdEntity;
-    };
-    // Helper function to collect configured light entities
-    const collectConfiguredLightEntity = (state, entityId)=>{
-        if (ambientLightIds.has(entityId)) ambientLightEntities.push(state);
-        else lightEntities.push(state);
-    };
-    // Helper function to collect area light entities (when no configured lights exist)
-    const collectAreaLightEntity = (state, entityId, isInArea)=>{
-        var _config_lights;
-        if (!((_config_lights = config.lights) === null || _config_lights === void 0 ? void 0 : _config_lights.length) && isInArea && entityId.startsWith('light.')) lightEntities.push(state);
-    };
-    // Helper function to check if entity is a class sensor
-    const isClassSensor = (state, deviceClass)=>{
-        return state.domain === 'sensor' && !!deviceClass && sensorClasses.includes(deviceClass);
-    };
-    // Process all entities in the area
-    Object.values(hass.entities).forEach((entity)=>{
-        var _entity_labels, _state_attributes, _state_attributes1;
-        // Skip hidden entities if the feature is enabled
-        if (hideHiddenEntities && entity.hidden) return;
-        // Check if this sensor is explicitly configured
-        const isConfigSensor = configSensorIds.includes(entity.entity_id);
-        const device = (0, $62a596c6a9bc2e04$export$30c823bc834d6ab4)(hass.devices, entity.device_id);
-        const isInArea = [
-            entity.area_id,
-            device === null || device === void 0 ? void 0 : device.area_id
-        ].includes(config.area);
-        // Check if this is a configured light entity (always process these)
-        const isConfiguredLight = configuredLightIds.includes(entity.entity_id);
-        // Check if this is a configured threshold entity (always process these)
-        const isThresholdEntity = thresholdSensorIds.has(entity.entity_id);
-        // If it's not a config sensor, not in the area, and not a configured light, skip it
-        // If it's a config sensor or configured light, always include it since the user has explicitly included it
-        if (!shouldProcessEntity(isConfigSensor, isInArea, isConfiguredLight, isThresholdEntity)) return;
-        const state = (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, entity.entity_id);
-        if (!state) return;
-        // Collect light entities for multi-light background feature
-        if (multiLightEnabled) {
-            if (isConfiguredLight) collectConfiguredLightEntity(state, entity.entity_id);
-            else collectAreaLightEntity(state, entity.entity_id, isInArea);
-        }
-        if ((entity === null || entity === void 0 ? void 0 : (_entity_labels = entity.labels) === null || _entity_labels === void 0 ? void 0 : _entity_labels.includes('problem')) || ((_state_attributes = state.attributes) === null || _state_attributes === void 0 ? void 0 : _state_attributes.device_class) === 'problem') problemSensors.push(state);
-        if ((entity === null || entity === void 0 ? void 0 : entity.platform) === 'mold_indicator') mold = state;
-        // If it's a config sensor, always include it in individual sensors
-        if (isConfigSensor) {
-            configOrderedSensors.push(state);
-            return;
-        }
-        if (isThresholdEntity) {
-            thresholdSensors.push(state);
-            return;
-        }
-        // If we're skipping default entities, don't process further
-        if (skipDefaultEntities) return;
-        // Check if this is the area's default temperature/humidity sensor
-        const isAreaDefaultTemp = areaHasTemperatureSensor && entity.entity_id === area.temperature_entity_id;
-        const isAreaDefaultHumidity = areaHasHumiditySensor && entity.entity_id === area.humidity_entity_id;
-        // If this is an area default sensor, add it to classSensors (unless already configured)
-        if ((isAreaDefaultTemp || isAreaDefaultHumidity) && !isConfigSensor && !isThresholdEntity) {
-            var _state_attributes2;
-            const deviceClass = (_state_attributes2 = state.attributes) === null || _state_attributes2 === void 0 ? void 0 : _state_attributes2.device_class;
-            if (isClassSensor(state, deviceClass)) classSensors.push(state);
-            return;
-        }
-        // Check if this is a sensor with a device class we care about
-        const deviceClass = (_state_attributes1 = state.attributes) === null || _state_attributes1 === void 0 ? void 0 : _state_attributes1.device_class;
-        if (isClassSensor(state, deviceClass)) {
-            // Skip temperature/humidity sensors if the area has configured defaults
-            if (deviceClass === 'temperature' && areaHasTemperatureSensor || deviceClass === 'humidity' && areaHasHumiditySensor) return;
-            classSensors.push(state);
-        }
-    });
-    // Sort config sensors by their order in the config array
-    configOrderedSensors.sort((a, b)=>{
-        var _configSensorIds_indexOf;
-        const indexA = (_configSensorIds_indexOf = configSensorIds === null || configSensorIds === void 0 ? void 0 : configSensorIds.indexOf(a.entity_id)) !== null && _configSensorIds_indexOf !== void 0 ? _configSensorIds_indexOf : -1;
-        var _configSensorIds_indexOf1;
-        const indexB = (_configSensorIds_indexOf1 = configSensorIds === null || configSensorIds === void 0 ? void 0 : configSensorIds.indexOf(b.entity_id)) !== null && _configSensorIds_indexOf1 !== void 0 ? _configSensorIds_indexOf1 : -1;
-        return indexA - indexB;
-    });
-    // Calculate averages for class-based sensors
-    const averaged = (0, $0b0bca794600042c$export$499e7395a53e0376)(classSensors, sensorClasses);
-    return {
-        individual: configOrderedSensors,
-        averaged: averaged,
-        problemSensors: problemSensors,
-        mold: mold,
-        lightEntities: lightEntities,
-        ambientLightEntities: ambientLightEntities,
-        thresholdSensors: thresholdSensors
-    };
-};
-
-
-const $c4ab0a640e168730$export$df764ae7d62abece = (hass, config, element)=>{
-    var _getArea;
-    var _config_area_name, _ref;
-    const roomInfo = {
-        area_name: (_ref = (_config_area_name = config.area_name) !== null && _config_area_name !== void 0 ? _config_area_name : (_getArea = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area)) === null || _getArea === void 0 ? void 0 : _getArea.name) !== null && _ref !== void 0 ? _ref : config.area
-    };
-    const roomEntity = (0, $d9cd925d0860ec58$export$25fedbc2fd674160)(hass, config);
-    const sensors = (0, $e186e7c110487ed3$export$d4cef0abb1b35d6f)(hass, config);
-    const thresholds = (0, $b45c3666c29a512e$export$c1ca802e67721a4)(config, sensors);
-    const image = (0, $7359f6b91fb77fd2$export$9dd734c640ccb658)(hass, config);
-    const smokeDetected = (0, $82ec124af523e08e$export$9e738e3e7dcdd507)(hass, config.smoke);
-    const gasDetected = (0, $82ec124af523e08e$export$69e97fbcf1121841)(hass, config.gas);
-    const waterDetected = (0, $82ec124af523e08e$export$fad91fa3c977dc7)(hass, config.water);
-    const occupied = (0, $82ec124af523e08e$export$9df2091f323033b9)(hass, config.occupancy);
-    // Calculate if room entity is active
-    const roomEntityActive = roomEntity.state && (0, $cmVfz.stateActive)(roomEntity.state);
-    // Calculate if any regular (non-ambient) light is active
-    const regularLightActive = sensors.lightEntities.some((entityState)=>(0, $cmVfz.stateActive)(entityState));
-    // Calculate if any ambient light is active
-    const ambientLightActive = sensors.ambientLightEntities.some((entityState)=>(0, $cmVfz.stateActive)(entityState));
-    // isActive: room entity OR any light (regular or ambient) - used for card background
-    const isActive = roomEntityActive || regularLightActive || ambientLightActive;
-    // isIconActive: room entity OR any regular light (NOT ambient) - used for icon styling
-    const isIconActive = roomEntityActive || regularLightActive;
-    // Determine alarm state with priority: Smoke > Gas > Water > Occupancy
-    let alarm;
-    if (smokeDetected) alarm = 'smoke';
-    else if (gasDetected) alarm = 'gas';
-    else if (waterDetected) alarm = 'water';
-    else if (occupied) alarm = 'occupied';
-    // Get the view theme (falls back to global theme if not set)
-    const viewTheme = (0, $7a9953f15579a0c2$export$f3dc7c019524f0e9)(element, hass);
-    var _viewTheme_startsWith;
-    // Detect Frosted Glass themes (e.g. "Frosted Glass", "Frosted Glass Lite").
-    const frostedGlass = (_viewTheme_startsWith = viewTheme === null || viewTheme === void 0 ? void 0 : viewTheme.startsWith('Frosted Glass')) !== null && _viewTheme_startsWith !== void 0 ? _viewTheme_startsWith : false;
-    return {
-        roomInfo: roomInfo,
-        roomEntity: roomEntity,
-        sensors: sensors,
-        image: image,
-        isActive: isActive,
-        isIconActive: isIconActive,
-        thresholds: thresholds,
-        flags: {
-            alarm: alarm,
-            dark: hass.themes.darkMode,
-            frostedGlass: frostedGlass
-        }
-    };
-};
-
-
-
-var $fKMMF = parcelRequire("fKMMF");
-
-
-var $kJycS = parcelRequire("kJycS");
-
 /**
  * Maps Home Assistant domains to their conventional active state colors
  * Returns a color name from the standard HA_COLORS list
@@ -3203,6 +2944,599 @@ const $2acaa25b6d047245$export$de247ce18e8ed95f = (iconColor, onColor = '', offC
     if (!active && offColor && (0, $caf1696fa639ec30$export$33537d9e76cd536a).includes(offColor)) return `var(--${offColor}-color)`;
     return iconColor;
 };
+
+
+/**
+ * Checks if an entity is currently detecting an alarm condition
+ * @param hass Home Assistant instance
+ * @param entityId Entity ID of the sensor
+ * @returns True if condition is detected, false otherwise
+ */ const $82ec124af523e08e$var$isEntityDetected = (hass, entityId)=>{
+    const entity = hass.states[entityId];
+    if (!entity) return false;
+    return (0, $cmVfz.stateActive)(entity);
+};
+/**
+ * Gets the current alarm state for a configured alarm sensor
+ * @param hass Home Assistant instance
+ * @param config Alarm configuration
+ * @returns True if condition is detected, false otherwise
+ */ const $82ec124af523e08e$var$getAlarmState = (hass, config)=>{
+    if (!config) return false;
+    // Check if any of the entities detect the condition
+    return config.entities.some((entityId)=>$82ec124af523e08e$var$isEntityDetected(hass, entityId));
+};
+/**
+ * Gets CSS variables for alarm styling based on current state
+ * @param isDetected Current detection state
+ * @param config Alarm configuration
+ * @param prefix CSS variable prefix (e.g., 'occupancy' or 'smoke')
+ * @param defaultColor Default color to use (e.g., 'var(--success-color)' or 'var(--error-color)')
+ * @param animationName Animation name (e.g., 'occupancy-pulse' or 'smoke-pulse')
+ * @returns Object with CSS variable names and values
+ */ const $82ec124af523e08e$var$getAlarmCssVars = (isDetected, config, prefix = 'alarm', defaultColor = 'var(--primary-color)', animationName = 'alarm-pulse')=>{
+    var _config_options, _config_options1;
+    if (!config) return {};
+    const vars = {};
+    if (!isDetected) return vars;
+    // Set card border variable (3px solid) unless disabled
+    const isCardBorderDisabled = (_config_options = config.options) === null || _config_options === void 0 ? void 0 : _config_options.includes('disabled_card_styles');
+    if (!isCardBorderDisabled) {
+        var _config_options2;
+        var _processHomeAssistantColors;
+        const borderColor = (_processHomeAssistantColors = (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(config.card_border_color)) !== null && _processHomeAssistantColors !== void 0 ? _processHomeAssistantColors : defaultColor;
+        vars[`--${prefix}-card-border`] = `3px solid ${borderColor}`;
+        vars[`--${prefix}-card-border-color`] = borderColor;
+        // Set animation unless disabled
+        const isAnimationDisabled = (_config_options2 = config.options) === null || _config_options2 === void 0 ? void 0 : _config_options2.includes('disabled_card_styles_animation');
+        if (!isAnimationDisabled) vars[`--${prefix}-card-animation`] = `${animationName} 2s ease-in-out infinite alternate`;
+    }
+    // Icon color styling
+    const isIconColorDisabled = (_config_options1 = config.options) === null || _config_options1 === void 0 ? void 0 : _config_options1.includes('disable_icon_styles');
+    if (!isIconColorDisabled) {
+        var _config_options3;
+        var _processHomeAssistantColors1;
+        const iconColor = (_processHomeAssistantColors1 = (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(config.icon_color)) !== null && _processHomeAssistantColors1 !== void 0 ? _processHomeAssistantColors1 : defaultColor;
+        vars[`--${prefix}-icon-color`] = iconColor;
+        // Set animation unless disabled
+        const isIconAnimationDisabled = (_config_options3 = config.options) === null || _config_options3 === void 0 ? void 0 : _config_options3.includes('disable_icon_animation');
+        if (!isIconAnimationDisabled) vars[`--${prefix}-icon-animation`] = 'icon-breathe 3s ease-in-out infinite alternate';
+    }
+    return vars;
+};
+const $82ec124af523e08e$export$9df2091f323033b9 = (hass, config)=>{
+    return $82ec124af523e08e$var$getAlarmState(hass, config);
+};
+const $82ec124af523e08e$export$a44444e2ac55f0e7 = (isOccupied, config)=>{
+    return $82ec124af523e08e$var$getAlarmCssVars(isOccupied, config, 'occupancy', 'var(--success-color)', 'occupancy-pulse');
+};
+const $82ec124af523e08e$export$9e738e3e7dcdd507 = (hass, config)=>{
+    return $82ec124af523e08e$var$getAlarmState(hass, config);
+};
+const $82ec124af523e08e$export$2b84bc3470ef94ef = (isSmokeDetected, config)=>{
+    return $82ec124af523e08e$var$getAlarmCssVars(isSmokeDetected, config, 'smoke', 'var(--error-color)', 'smoke-pulse');
+};
+const $82ec124af523e08e$export$69e97fbcf1121841 = (hass, config)=>{
+    return $82ec124af523e08e$var$getAlarmState(hass, config);
+};
+const $82ec124af523e08e$export$651c11ff3b9ded13 = (isGasDetected, config)=>{
+    return $82ec124af523e08e$var$getAlarmCssVars(isGasDetected, config, 'gas', '#FF9800', 'gas-pulse');
+};
+const $82ec124af523e08e$export$fad91fa3c977dc7 = (hass, config)=>{
+    return $82ec124af523e08e$var$getAlarmState(hass, config);
+};
+const $82ec124af523e08e$export$e9bc110247b1ae0d = (isWaterDetected, config)=>{
+    return $82ec124af523e08e$var$getAlarmCssVars(isWaterDetected, config, 'water', '#2196F3', 'water-pulse');
+};
+
+
+
+
+var $l3TbZ = parcelRequire("l3TbZ");
+/**
+ * Gets sensor value - from specific entity in individual sensors, or averaged sensor
+ */ const $b45c3666c29a512e$var$getSensorValue = (sensorData, deviceClass, entityId)=>{
+    // If entityId is specified, look for it in individual sensors first
+    if (entityId) {
+        const individualSensor = sensorData.individual.find((s)=>s.entity_id === entityId);
+        if ((individualSensor === null || individualSensor === void 0 ? void 0 : individualSensor.attributes.device_class) === deviceClass) return Number(individualSensor.state);
+    }
+    // Look in averaged sensors
+    const averagedSensor = sensorData.averaged.find((s)=>s.device_class === deviceClass);
+    if (!averagedSensor) return null;
+    // If entityId is specified, look for it in the averaged sensor's states
+    if (entityId) {
+        const entity = averagedSensor.states.find((state)=>state.entity_id === entityId);
+        return entity ? Number(entity.state) : null;
+    }
+    return averagedSensor.average;
+};
+/**
+ * Gets threshold value - from specific entity in thresholdSensors sensors, or number configuration
+ */ const $b45c3666c29a512e$var$getThresholdSensorValue = (sensors, defaultValue, config)=>{
+    if (!config) return defaultValue;
+    if (typeof config === 'number') return config;
+    const sensor = sensors.find((s)=>s.entity_id === config);
+    if (sensor) return Number(sensor.state);
+    return defaultValue;
+};
+/**
+ * Checks if any threshold entry in an array matches the sensor data
+ *
+ * @param thresholdEntries - Array of threshold configurations
+ * @param sensorData - Sensor data containing individual and averaged sensors
+ * @param deviceClass - Device class to filter sensors ('temperature' or 'humidity')
+ * @returns Object with triggered flag and color if threshold is met
+ */ const $b45c3666c29a512e$var$checkThresholdEntries = (thresholdEntries, sensorData, deviceClass)=>{
+    // coalesce to [{}] so that we always have at least one entry to iterate for default values
+    for (const entry of thresholdEntries || [
+        {}
+    ]){
+        const sensorValue = $b45c3666c29a512e$var$getSensorValue(sensorData, deviceClass, entry.entity_id);
+        if (sensorValue === null) continue;
+        // Get threshold value - can be a number or entity ID string
+        const thresholdValue = $b45c3666c29a512e$var$getThresholdSensorValue(sensorData.thresholdSensors, deviceClass === 'temperature' ? 80 : 60, entry.value);
+        var _entry_operator;
+        const operator = (_entry_operator = entry.operator) !== null && _entry_operator !== void 0 ? _entry_operator : 'gt';
+        if ($b45c3666c29a512e$var$meetsThreshold(sensorValue, thresholdValue, operator)) return {
+            triggered: true,
+            color: entry.color
+        };
+    }
+    return {
+        triggered: false
+    };
+};
+/**
+ * Checks if a numeric value meets a threshold condition using the specified operator
+ *
+ * @param value - The numeric value to test
+ * @param threshold - The threshold value to compare against
+ * @param operator - The comparison operator to use
+ * @returns true if the condition is met
+ */ const $b45c3666c29a512e$var$meetsThreshold = (value, threshold, operator)=>{
+    switch(operator){
+        case 'gt':
+            return value > threshold;
+        case 'gte':
+            return value >= threshold;
+        case 'lt':
+            return value < threshold;
+        case 'lte':
+            return value <= threshold;
+        case 'eq':
+            return value === threshold;
+        default:
+            return value > threshold; // Default to 'gt' for backward compatibility
+    }
+};
+const $b45c3666c29a512e$export$c1ca802e67721a4 = (0, $l3TbZ.default)((config, sensorData)=>{
+    if ((0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_climate_styles')) return {
+        hot: false,
+        humid: false,
+        hotColor: undefined,
+        humidColor: undefined
+    };
+    const thresholds = config.thresholds;
+    const hotResult = $b45c3666c29a512e$var$checkThresholdEntries(thresholds === null || thresholds === void 0 ? void 0 : thresholds.temperature, sensorData, 'temperature');
+    const humidResult = $b45c3666c29a512e$var$checkThresholdEntries(thresholds === null || thresholds === void 0 ? void 0 : thresholds.humidity, sensorData, 'humidity');
+    return {
+        hot: hotResult.triggered,
+        humid: humidResult.triggered,
+        hotColor: hotResult.color,
+        humidColor: humidResult.color
+    };
+});
+
+
+
+var $l3TbZ = parcelRequire("l3TbZ");
+const $7806862517a8ec93$export$520c40045967cb15 = (0, $l3TbZ.default)((areas, areaId)=>areas[areaId]);
+
+
+
+var $cmVfz = parcelRequire("cmVfz");
+
+
+var $7AhDs = parcelRequire("7AhDs");
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/data/media_source.ts
+ */ const $1de811e5c0604194$export$82af5f6c9f5dec8 = (mediaId)=>mediaId.startsWith('media-source://');
+const $1de811e5c0604194$export$512e5252162de675 = async (hass, mediaContentId)=>{
+    const result = await hass.callWS({
+        type: 'media_source/resolve_media',
+        media_content_id: mediaContentId
+    });
+    return result.url;
+};
+
+
+/**
+ * Resolves a media source content ID or returns it as-is
+ */ const $7359f6b91fb77fd2$var$resolveMediaContentId = async (hass, mediaContentId)=>{
+    if ((0, $1de811e5c0604194$export$82af5f6c9f5dec8)(mediaContentId)) return await (0, $1de811e5c0604194$export$512e5252162de675)(hass, mediaContentId);
+    return mediaContentId;
+};
+/**
+ * Handles image configuration that can be a string or object
+ */ const $7359f6b91fb77fd2$var$handleImageConfig = async (hass, image)=>{
+    if (typeof image === 'string') return await $7359f6b91fb77fd2$var$resolveMediaContentId(hass, image);
+    return await $7359f6b91fb77fd2$var$resolveMediaContentId(hass, image.media_content_id);
+};
+const $7359f6b91fb77fd2$export$9dd734c640ccb658 = async (hass, config)=>{
+    var _config_background_options, _config_background, _config_background1, _config_background2;
+    const disableImage = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('disable');
+    if (disableImage) return undefined;
+    // Check entity picture first
+    if ((_config_background1 = config.background) === null || _config_background1 === void 0 ? void 0 : _config_background1.image_entity) {
+        var _entityState_attributes;
+        const entityState = (0, $7AhDs.getState)(hass.states, config.background.image_entity);
+        if (entityState === null || entityState === void 0 ? void 0 : (_entityState_attributes = entityState.attributes) === null || _entityState_attributes === void 0 ? void 0 : _entityState_attributes.entity_picture) return entityState.attributes.entity_picture;
+    }
+    // Check config image
+    if ((_config_background2 = config.background) === null || _config_background2 === void 0 ? void 0 : _config_background2.image) return await $7359f6b91fb77fd2$var$handleImageConfig(hass, config.background.image);
+    // Fallback to area picture
+    const area = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area);
+    return area === null || area === void 0 ? void 0 : area.picture;
+};
+
+
+const $7a9953f15579a0c2$export$f3dc7c019524f0e9 = (element, hass)=>{
+    var _hass_themes, _hass_themes1;
+    // If no element provided, fall back to global theme
+    if (!element) return (_hass_themes = hass.themes) === null || _hass_themes === void 0 ? void 0 : _hass_themes.theme;
+    // Traverse up the DOM to find hui-view-container
+    let currentElement = element;
+    while(currentElement && currentElement !== document.body){
+        // Check if this is the hui-view-container
+        if (currentElement.tagName === 'HUI-VIEW-CONTAINER') {
+            var _hass_themes2;
+            const viewContainer = currentElement;
+            // Return the view theme if set, otherwise fall back to global theme
+            return viewContainer.theme || ((_hass_themes2 = hass.themes) === null || _hass_themes2 === void 0 ? void 0 : _hass_themes2.theme);
+        }
+        // Move up the DOM tree, handling shadow DOM boundaries
+        if (currentElement.parentElement) currentElement = currentElement.parentElement;
+        else if (typeof currentElement.getRootNode === 'function' && typeof ShadowRoot !== 'undefined') {
+            const root = currentElement.getRootNode();
+            currentElement = root instanceof ShadowRoot ? root.host : null;
+        } else // No parent and can't traverse shadow DOM, stop here
+        currentElement = null;
+    }
+    // Fallback to global theme if view container not found
+    return (_hass_themes1 = hass.themes) === null || _hass_themes1 === void 0 ? void 0 : _hass_themes1.theme;
+};
+
+
+
+var $kJycS = parcelRequire("kJycS");
+
+
+
+var $7AhDs = parcelRequire("7AhDs");
+/**
+ * Checks if a string is a URL (starts with http:// or https://)
+ * @param {string} str - The string to check
+ * @returns {boolean} True if the string is a URL
+ */ const $d9cd925d0860ec58$var$isUrl = (str)=>{
+    return str.startsWith('http://') || str.startsWith('https://');
+};
+const $d9cd925d0860ec58$export$25fedbc2fd674160 = (hass, config)=>{
+    var _getArea;
+    const roomEntityId = `light.${config.area}_light`;
+    var _config_navigate;
+    // Determine the navigation target
+    const navigationTarget = (_config_navigate = config.navigate) !== null && _config_navigate !== void 0 ? _config_navigate : config.area.replace('_', '-');
+    // Create appropriate action based on whether the target is a URL or path
+    const tapAction = $d9cd925d0860ec58$var$isUrl(navigationTarget) ? {
+        action: 'url',
+        url_path: navigationTarget
+    } : {
+        action: 'navigate',
+        navigation_path: navigationTarget
+    };
+    const actionConfig = {
+        tap_action: tapAction,
+        hold_action: {
+            action: 'more-info'
+        },
+        double_tap_action: {
+            action: 'none'
+        }
+    };
+    // Handle different entity configuration formats
+    if (config.entity && !(0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'ignore_entity')) {
+        if (typeof config.entity === 'string') // String format
+        return {
+            config: (0, $kJycS._)({
+                entity_id: config.entity
+            }, actionConfig),
+            state: (0, $7AhDs.getState)(hass.states, config.entity)
+        };
+        else // Object format
+        return {
+            config: (0, $kJycS._)({}, actionConfig, config.entity),
+            state: (0, $7AhDs.getState)(hass.states, config.entity.entity_id)
+        };
+    }
+    // Default room light configuration
+    return {
+        config: (0, $kJycS._)({
+            entity_id: roomEntityId,
+            icon: (_getArea = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area)) === null || _getArea === void 0 ? void 0 : _getArea.icon
+        }, actionConfig),
+        state: (0, $7AhDs.getState)(hass.states, roomEntityId, true)
+    };
+};
+
+
+
+
+
+var $l3TbZ = parcelRequire("l3TbZ");
+const $62a596c6a9bc2e04$export$30c823bc834d6ab4 = (0, $l3TbZ.default)((devices, deviceId)=>devices[deviceId]);
+
+
+
+var $7AhDs = parcelRequire("7AhDs");
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/common/number/format_number.ts
+ */ const $1c9527a6ee3bb670$export$88bfc1035e667f37 = (stateObj)=>$1c9527a6ee3bb670$export$b6c45d0299750e7c(stateObj.attributes);
+const $1c9527a6ee3bb670$export$b6c45d0299750e7c = (attributes, numericDeviceClasses)=>{
+    var _attributes_device_class;
+    return !!attributes.unit_of_measurement || !!attributes.state_class || (numericDeviceClasses || []).includes((_attributes_device_class = attributes.device_class) !== null && _attributes_device_class !== void 0 ? _attributes_device_class : '');
+};
+
+
+/**
+ * Filters entities by device class and ensures they are numeric
+ */ const $0b0bca794600042c$var$getNumericEntitiesByClass = (entities, deviceClass)=>{
+    return entities.filter((entity)=>entity.attributes.device_class === deviceClass && (0, $1c9527a6ee3bb670$export$88bfc1035e667f37)(entity) && entity.state.trim() !== '' && !Number.isNaN(Number(entity.state)));
+};
+/**
+ * Groups entities by their unit of measurement
+ */ const $0b0bca794600042c$var$groupEntitiesByUom = (entities)=>{
+    const uomGroups = new Map();
+    for (const entity of entities){
+        var _entity_attributes_unit_of_measurement;
+        const uom = (_entity_attributes_unit_of_measurement = entity.attributes.unit_of_measurement) !== null && _entity_attributes_unit_of_measurement !== void 0 ? _entity_attributes_unit_of_measurement : '';
+        if (!uomGroups.has(uom)) uomGroups.set(uom, []);
+        uomGroups.get(uom).push(entity);
+    }
+    return uomGroups;
+};
+/**
+ * Calculates average for a group of entities
+ */ const $0b0bca794600042c$var$calculateGroupAverage = (groupEntities, uom, deviceClass)=>{
+    const sum = groupEntities.reduce((total, entity)=>total + Number(entity.state), 0);
+    const average = sum / groupEntities.length;
+    return {
+        states: groupEntities,
+        uom: uom,
+        average: average,
+        device_class: deviceClass,
+        domain: 'sensor'
+    };
+};
+/**
+ * Processes a single device class and returns averages
+ */ const $0b0bca794600042c$var$processDeviceClass = (entities, deviceClass)=>{
+    const classEntities = $0b0bca794600042c$var$getNumericEntitiesByClass(entities, deviceClass);
+    if (classEntities.length === 0) return [];
+    const uomGroups = $0b0bca794600042c$var$groupEntitiesByUom(classEntities);
+    const averages = [];
+    for (const [uom, groupEntities] of uomGroups)if (groupEntities.length > 0) averages.push($0b0bca794600042c$var$calculateGroupAverage(groupEntities, uom, deviceClass));
+    return averages;
+};
+const $0b0bca794600042c$export$499e7395a53e0376 = (entities, deviceClasses)=>{
+    return deviceClasses.flatMap((deviceClass)=>$0b0bca794600042c$var$processDeviceClass(entities, deviceClass));
+};
+
+
+
+const $400a6578b3135d12$export$f554a0f6d643a046 = (state, config, area, sensorClasses)=>{
+    var _state_attributes;
+    if ((0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'exclude_default_entities')) return false;
+    const deviceClass = (_state_attributes = state.attributes) === null || _state_attributes === void 0 ? void 0 : _state_attributes.device_class;
+    if (state.domain !== 'sensor' || !deviceClass || !sensorClasses.includes(deviceClass)) return false;
+    const areaHasTemp = !!(area === null || area === void 0 ? void 0 : area.temperature_entity_id);
+    const areaHasHumidity = !!(area === null || area === void 0 ? void 0 : area.humidity_entity_id);
+    const isAreaDefaultTemp = areaHasTemp && state.entity_id === (area === null || area === void 0 ? void 0 : area.temperature_entity_id);
+    const isAreaDefaultHumidity = areaHasHumidity && state.entity_id === (area === null || area === void 0 ? void 0 : area.humidity_entity_id);
+    // Area default sensors are always included
+    if (isAreaDefaultTemp || isAreaDefaultHumidity) return true;
+    // Skip non-default temp/humidity sensors when area has configured defaults
+    if (deviceClass === 'temperature' && areaHasTemp || deviceClass === 'humidity' && areaHasHumidity) return false;
+    return true;
+};
+
+
+/**
+ * Helper function to extract entity_id from LightConfig
+ */ const $e186e7c110487ed3$var$getLightEntityId = (light)=>{
+    return typeof light === 'string' ? light : light.entity_id;
+};
+/**
+ * Helper function to check if a light config is ambient type
+ */ const $e186e7c110487ed3$var$isAmbientLight = (light)=>{
+    return typeof light !== 'string' && light.type === 'ambient';
+};
+const $e186e7c110487ed3$export$d4cef0abb1b35d6f = (hass, config)=>{
+    var _config_sensors, _config_thresholds, _config_thresholds1;
+    const multiLightEnabled = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'multi_light_background');
+    const hideHiddenEntities = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_hidden_entities');
+    // Get area information to check for configured temperature/humidity sensors
+    const area = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area);
+    // Default sensor classes if not specified
+    const sensorClasses = config.sensor_classes || [
+        'temperature',
+        'humidity',
+        'illuminance'
+    ];
+    // Arrays to hold different categories
+    const configOrderedSensors = [];
+    const classSensors = [];
+    const problemSensors = [];
+    const lightEntities = [];
+    const ambientLightEntities = [];
+    const thresholdSensors = [];
+    let mold = undefined;
+    // Get configured light entity IDs and their types if multi-light feature is enabled
+    // Build a map of entity_id -> isAmbient for quick lookup
+    const configuredLightIds = [];
+    const ambientLightIds = new Set();
+    if (multiLightEnabled && config.lights && config.lights.length > 0) config.lights.forEach((light)=>{
+        const entityId = $e186e7c110487ed3$var$getLightEntityId(light);
+        configuredLightIds.push(entityId);
+        if ($e186e7c110487ed3$var$isAmbientLight(light)) ambientLightIds.add(entityId);
+    });
+    // Helper function to extract entity_id from string or SensorConfig
+    const getSensorEntityId = (sensor)=>{
+        return typeof sensor === 'string' ? sensor : sensor.entity_id;
+    };
+    // Get array of entity IDs from config.sensors for quick lookup
+    const configSensorIds = ((_config_sensors = config.sensors) === null || _config_sensors === void 0 ? void 0 : _config_sensors.map(getSensorEntityId)) || [];
+    // Extract threshold entity IDs from threshold entries' value properties
+    const thresholdSensorIds = new Set();
+    if ((_config_thresholds = config.thresholds) === null || _config_thresholds === void 0 ? void 0 : _config_thresholds.temperature) config.thresholds.temperature.forEach((entry)=>{
+        if (typeof entry.value === 'string') thresholdSensorIds.add(entry.value);
+    });
+    if ((_config_thresholds1 = config.thresholds) === null || _config_thresholds1 === void 0 ? void 0 : _config_thresholds1.humidity) config.thresholds.humidity.forEach((entry)=>{
+        if (typeof entry.value === 'string') thresholdSensorIds.add(entry.value);
+    });
+    // Helper function to check if entity should be processed
+    const shouldProcessEntity = (isConfigSensor, isInArea, isConfiguredLight, isThresholdEntity)=>{
+        return isConfigSensor || isInArea || isConfiguredLight || isThresholdEntity;
+    };
+    // Helper function to collect configured light entities
+    const collectConfiguredLightEntity = (state, entityId)=>{
+        if (ambientLightIds.has(entityId)) ambientLightEntities.push(state);
+        else lightEntities.push(state);
+    };
+    // Helper function to collect area light entities (when no configured lights exist)
+    const collectAreaLightEntity = (state, entityId, isInArea)=>{
+        var _config_lights;
+        if (!((_config_lights = config.lights) === null || _config_lights === void 0 ? void 0 : _config_lights.length) && isInArea && entityId.startsWith('light.')) lightEntities.push(state);
+    };
+    // Process all entities in the area
+    Object.values(hass.entities).forEach((entity)=>{
+        var _entity_labels, _state_attributes;
+        // Skip hidden entities if the feature is enabled
+        if (hideHiddenEntities && entity.hidden) return;
+        // Check if this sensor is explicitly configured
+        const isConfigSensor = configSensorIds.includes(entity.entity_id);
+        const device = (0, $62a596c6a9bc2e04$export$30c823bc834d6ab4)(hass.devices, entity.device_id);
+        const isInArea = [
+            entity.area_id,
+            device === null || device === void 0 ? void 0 : device.area_id
+        ].includes(config.area);
+        // Check if this is a configured light entity (always process these)
+        const isConfiguredLight = configuredLightIds.includes(entity.entity_id);
+        // Check if this is a configured threshold entity (always process these)
+        const isThresholdEntity = thresholdSensorIds.has(entity.entity_id);
+        // If it's not a config sensor, not in the area, and not a configured light, skip it
+        // If it's a config sensor or configured light, always include it since the user has explicitly included it
+        if (!shouldProcessEntity(isConfigSensor, isInArea, isConfiguredLight, isThresholdEntity)) return;
+        const state = (0, $7AhDs.getState)(hass.states, entity.entity_id);
+        if (!state) return;
+        // Collect light entities for multi-light background feature
+        if (multiLightEnabled) {
+            if (isConfiguredLight) collectConfiguredLightEntity(state, entity.entity_id);
+            else collectAreaLightEntity(state, entity.entity_id, isInArea);
+        }
+        if ((entity === null || entity === void 0 ? void 0 : (_entity_labels = entity.labels) === null || _entity_labels === void 0 ? void 0 : _entity_labels.includes('problem')) || ((_state_attributes = state.attributes) === null || _state_attributes === void 0 ? void 0 : _state_attributes.device_class) === 'problem') problemSensors.push(state);
+        if ((entity === null || entity === void 0 ? void 0 : entity.platform) === 'mold_indicator') mold = state;
+        // If it's a config sensor, always include it in individual sensors
+        if (isConfigSensor) {
+            configOrderedSensors.push(state);
+            return;
+        }
+        if (isThresholdEntity) {
+            thresholdSensors.push(state);
+            return;
+        }
+        // Check if this entity qualifies as a class-based sensor for averaging
+        if ((0, $400a6578b3135d12$export$f554a0f6d643a046)(state, config, area, sensorClasses)) classSensors.push(state);
+    });
+    // Sort config sensors by their order in the config array
+    configOrderedSensors.sort((a, b)=>{
+        var _configSensorIds_indexOf;
+        const indexA = (_configSensorIds_indexOf = configSensorIds === null || configSensorIds === void 0 ? void 0 : configSensorIds.indexOf(a.entity_id)) !== null && _configSensorIds_indexOf !== void 0 ? _configSensorIds_indexOf : -1;
+        var _configSensorIds_indexOf1;
+        const indexB = (_configSensorIds_indexOf1 = configSensorIds === null || configSensorIds === void 0 ? void 0 : configSensorIds.indexOf(b.entity_id)) !== null && _configSensorIds_indexOf1 !== void 0 ? _configSensorIds_indexOf1 : -1;
+        return indexA - indexB;
+    });
+    // Calculate averages for class-based sensors
+    const averaged = (0, $0b0bca794600042c$export$499e7395a53e0376)(classSensors, sensorClasses);
+    return {
+        individual: configOrderedSensors,
+        averaged: averaged,
+        problemSensors: problemSensors,
+        mold: mold,
+        lightEntities: lightEntities,
+        ambientLightEntities: ambientLightEntities,
+        thresholdSensors: thresholdSensors
+    };
+};
+
+
+const $c4ab0a640e168730$export$df764ae7d62abece = (hass, config, element)=>{
+    var _getArea;
+    var _config_area_name, _ref;
+    const roomInfo = {
+        area_name: (_ref = (_config_area_name = config.area_name) !== null && _config_area_name !== void 0 ? _config_area_name : (_getArea = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area)) === null || _getArea === void 0 ? void 0 : _getArea.name) !== null && _ref !== void 0 ? _ref : config.area
+    };
+    const roomEntity = (0, $d9cd925d0860ec58$export$25fedbc2fd674160)(hass, config);
+    const sensors = (0, $e186e7c110487ed3$export$d4cef0abb1b35d6f)(hass, config);
+    const thresholds = (0, $b45c3666c29a512e$export$c1ca802e67721a4)(config, sensors);
+    const image = (0, $7359f6b91fb77fd2$export$9dd734c640ccb658)(hass, config);
+    const smokeDetected = (0, $82ec124af523e08e$export$9e738e3e7dcdd507)(hass, config.smoke);
+    const gasDetected = (0, $82ec124af523e08e$export$69e97fbcf1121841)(hass, config.gas);
+    const waterDetected = (0, $82ec124af523e08e$export$fad91fa3c977dc7)(hass, config.water);
+    const occupied = (0, $82ec124af523e08e$export$9df2091f323033b9)(hass, config.occupancy);
+    // Calculate if room entity is active
+    const roomEntityActive = roomEntity.state && (0, $cmVfz.stateActive)(roomEntity.state);
+    // Calculate if any regular (non-ambient) light is active
+    const regularLightActive = sensors.lightEntities.some((entityState)=>(0, $cmVfz.stateActive)(entityState));
+    // Calculate if any ambient light is active
+    const ambientLightActive = sensors.ambientLightEntities.some((entityState)=>(0, $cmVfz.stateActive)(entityState));
+    // isActive: room entity OR any light (regular or ambient) - used for card background
+    const isActive = roomEntityActive || regularLightActive || ambientLightActive;
+    // isIconActive: room entity OR any regular light (NOT ambient) - used for icon styling
+    const isIconActive = roomEntityActive || regularLightActive;
+    // Determine alarm state with priority: Smoke > Gas > Water > Occupancy
+    let alarm;
+    if (smokeDetected) alarm = 'smoke';
+    else if (gasDetected) alarm = 'gas';
+    else if (waterDetected) alarm = 'water';
+    else if (occupied) alarm = 'occupied';
+    // Get the view theme (falls back to global theme if not set)
+    const viewTheme = (0, $7a9953f15579a0c2$export$f3dc7c019524f0e9)(element, hass);
+    var _viewTheme_startsWith;
+    // Detect Frosted Glass themes (e.g. "Frosted Glass", "Frosted Glass Lite").
+    const frostedGlass = (_viewTheme_startsWith = viewTheme === null || viewTheme === void 0 ? void 0 : viewTheme.startsWith('Frosted Glass')) !== null && _viewTheme_startsWith !== void 0 ? _viewTheme_startsWith : false;
+    return {
+        roomInfo: roomInfo,
+        roomEntity: roomEntity,
+        sensors: sensors,
+        image: image,
+        isActive: isActive,
+        isIconActive: isIconActive,
+        thresholds: thresholds,
+        flags: {
+            alarm: alarm,
+            dark: hass.themes.darkMode,
+            frostedGlass: frostedGlass
+        }
+    };
+};
+
+
+
+var $fKMMF = parcelRequire("fKMMF");
+
+
+var $kJycS = parcelRequire("kJycS");
 
 
 parcelRequire("fPVm8");
@@ -3572,15 +3906,17 @@ var $ci0wX = parcelRequire("ci0wX");
 
 
 
-const $370eb512b0573832$export$fcf7c33d7fd02301 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entities, entityId)=>entities[entityId]);
+var $l3TbZ = parcelRequire("l3TbZ");
+const $370eb512b0573832$export$fcf7c33d7fd02301 = (0, $l3TbZ.default)((entities, entityId)=>entities[entityId]);
 
 
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 
 
+var $l3TbZ = parcelRequire("l3TbZ");
 let $6f5f72559a4d178c$var$_ = (t)=>t, $6f5f72559a4d178c$var$t;
-const $6f5f72559a4d178c$export$3703ea65b0ac4726 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((styles)=>{
+const $6f5f72559a4d178c$export$3703ea65b0ac4726 = (0, $l3TbZ.default)((styles)=>{
     if (!styles || Object.keys(styles).length === 0) return 0, $ci0wX.nothing;
     // Separate keyframes from regular styles
     const keyframesEntries = [];
@@ -3600,7 +3936,7 @@ const $6f5f72559a4d178c$export$3703ea65b0ac4726 = (0, $f554b0d97be25fc9$export$2
       </style>
     `), keyframesString, cssString);
 });
-const $6f5f72559a4d178c$export$94e56d1d743c1f9b = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((styles)=>{
+const $6f5f72559a4d178c$export$94e56d1d743c1f9b = (0, $l3TbZ.default)((styles)=>{
     if (!styles || Object.keys(styles).length === 0) return 0, $ci0wX.nothing;
     return (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)(styles);
 });
@@ -4261,11 +4597,7 @@ const $4fafc8f75bfc202b$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($4fafc8f75bfc2
 
 
 
-const $86dc711946e77b66$export$4368d992c4eafac0 = (config, ...args)=>{
-    if ((0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'debug')) console.debug(...args);
-};
-
-
+var $dTmXl = parcelRequire("dTmXl");
 let $01f4c5d41a54ca3c$var$_ = (t)=>t, $01f4c5d41a54ca3c$var$t, $01f4c5d41a54ca3c$var$t1, $01f4c5d41a54ca3c$var$t2, $01f4c5d41a54ca3c$var$t3;
 var $ee3d06fe83a6a770$exports = {};
 'use strict';
@@ -4321,7 +4653,7 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
    * @param {HomeAssistant} hass - The Home Assistant instance
    */ set hass(hass) {
         var _this__hass;
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this._config, 'room-summary-card', 'set hass');
+        (0, $dTmXl.d)(this._config, 'room-summary-card', 'set hass');
         const { roomInfo: roomInfo, roomEntity: roomEntity, sensors: sensors, image: image, isActive: isActive, isIconActive: isIconActive, thresholds: thresholds, flags: { alarm: alarm, dark: dark, frostedGlass: frostedGlass } } = (0, $c4ab0a640e168730$export$df764ae7d62abece)(hass, this._config, this);
         this.alarm = alarm;
         this.dark = dark;
@@ -4393,7 +4725,7 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
    * @returns {TemplateResult} The rendered HTML template
    */ render() {
         var _this__sensors;
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this._config, 'room-summary-card', 'render');
+        (0, $dTmXl.d)(this._config, 'room-summary-card', 'render');
         if (!this._hass) return 0, $ci0wX.nothing;
         const roomEntity = (0, $d71beedfb309b5b1$export$6697a659ce63852)(this._hass, this._roomEntity, this._config, {
             isMainRoomEntity: true,
@@ -4532,9 +4864,9 @@ var $evAes = parcelRequire("evAes");
 
 var $1LdRn = parcelRequire("1LdRn");
 
+var $wgzUt = parcelRequire("wgzUt");
 
-const $1c79672e60888038$export$7d2846cf165df04b = (entity, badge)=>{
-    const { state: state } = entity;
+const $1c79672e60888038$export$7d2846cf165df04b = (state, badge)=>{
     if (!badge.states || !state) return undefined;
     for (const stateConfig of badge.states){
         var _state_attributes;
@@ -4752,12 +5084,14 @@ const $6d8f30ccc91bbc7c$export$d58d00b4a0522baf = (stateObj, hass)=>{
 
 
 
+
+
+var $dTmXl = parcelRequire("dTmXl");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
 parcelRequire("jcMWt");
 var $aaQtJ = parcelRequire("aaQtJ");
-var $lYE5o = parcelRequire("lYE5o");
 
 parcelRequire("fPVm8");
 var $2SS2a = parcelRequire("2SS2a");
@@ -4795,39 +5129,43 @@ const $aeaea6f5f5e584ed$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($aeaea6f5f5e58
 
 
 let $7191b93f31a09a17$var$_ = (t)=>t, $7191b93f31a09a17$var$t;
-class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $1LdRn.HassUpdateMixin)((0, $2r9I1.LitElement)) {
+
+class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $wgzUt.SubscribeEntityStateMixin)((0, $1LdRn.HassUpdateMixin)((0, $2r9I1.LitElement))) {
     /**
    * Returns the component's styles
    */ static get styles() {
         return 0, $aeaea6f5f5e584ed$export$9dd6ff9ea0189349;
     }
     /**
-   * Updates the component's state when Home Assistant state changes
-   * @param {HomeAssistant} hass - The Home Assistant instance
-   */ // @ts-ignore
-    set hass(hass) {
-        this._hass = hass;
-        // Determine which entity to use for the badge (defaults to parent entity)
-        const badgeEntityState = this.config.entity_id ? (0, $6d9b59681496f671$export$50fdfeece43146fd)(this._hass.states, this.config.entity_id) : this.entity.state;
-        // Create badge entity information
-        this._entity = {
-            config: this.entity.config,
-            state: badgeEntityState
-        };
-        var _this_config_position;
+   * Badge configuration
+   */ set badge(badge) {
+        if ($ee3d06fe83a6a770$exports(badge, this._badge)) return;
+        var _badge_position;
         // Set position (convert underscores to hyphens for CSS)
-        const position = (_this_config_position = this.config.position) !== null && _this_config_position !== void 0 ? _this_config_position : 'top_right';
+        const position = (_badge_position = badge.position) !== null && _badge_position !== void 0 ? _badge_position : 'top_right';
         this.position = position.replaceAll('_', '-');
+        this.entity = badge.entity_id;
+        this._badge = badge;
     }
-    render() {
-        var _this__entity;
-        if (!this._hass || !((_this__entity = this._entity) === null || _this__entity === void 0 ? void 0 : _this__entity.state)) return 0, $ci0wX.nothing;
+    /**
+   * Only update if we have a state
+   */ shouldUpdate(changedProperties) {
+        return changedProperties.has('state');
+    }
+    /**
+   * Render the badge
+   */ render() {
+        const config = this.config;
+        const hass = this.hass;
+        const state = this.state;
+        const id = this.entity;
+        (0, $dTmXl.d)(config, 'badge', 'render', id);
         // For homeassistant mode, use renderTileBadge (HA's native badge helper)
-        if (this.config.mode === 'homeassistant') return (0, $6d8f30ccc91bbc7c$export$d58d00b4a0522baf)(this._entity.state, this._hass);
-        const matchingState = (0, $1c79672e60888038$export$7d2846cf165df04b)(this._entity, this.config);
+        const badge = this._badge;
+        if (badge.mode === 'homeassistant') return (0, $6d8f30ccc91bbc7c$export$d58d00b4a0522baf)(state, hass);
+        const matchingState = (0, $1c79672e60888038$export$7d2846cf165df04b)(state, badge);
         // For if_match mode, only render if a state match is found
-        if (this.config.mode === 'if_match' && !matchingState) return 0, $ci0wX.nothing;
-        var _matchingState_icon;
+        if (badge.mode === 'if_match' && !matchingState) return 0, $ci0wX.nothing;
         return (0, $ci0wX.html)($7191b93f31a09a17$var$t || ($7191b93f31a09a17$var$t = $7191b93f31a09a17$var$_`
       ${0}
       <ha-tile-badge
@@ -4840,8 +5178,8 @@ class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $1LdRn.HassUpdateMix
         ></ha-state-icon>
       </ha-tile-badge>
     `), (matchingState === null || matchingState === void 0 ? void 0 : matchingState.styles) ? (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)(matchingState.styles) : (0, $ci0wX.nothing), (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)({
-            '--tile-badge-background-color': matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon_color
-        }), this._hass, this._entity.state, (_matchingState_icon = matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon) !== null && _matchingState_icon !== void 0 ? _matchingState_icon : this.entity.config.icon);
+            '--tile-badge-background-color': (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon_color)
+        }), hass, state, matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon);
     }
     constructor(...args){
         super(...args), /**
@@ -4851,24 +5189,11 @@ class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $1LdRn.HassUpdateMix
 }
 (0, $evAes.__decorate)([
     (0, $aaQtJ.property)({
-        type: Object
-    })
-], $7191b93f31a09a17$export$37acb3580601e69a.prototype, "config", void 0);
-(0, $evAes.__decorate)([
-    (0, $aaQtJ.property)({
-        type: Object
-    })
-], $7191b93f31a09a17$export$37acb3580601e69a.prototype, "entity", void 0);
-(0, $evAes.__decorate)([
-    (0, $aaQtJ.property)({
         type: String,
         reflect: true,
         attribute: 'position'
     })
 ], $7191b93f31a09a17$export$37acb3580601e69a.prototype, "position", void 0);
-(0, $evAes.__decorate)([
-    (0, $lYE5o.state)()
-], $7191b93f31a09a17$export$37acb3580601e69a.prototype, "_entity", void 0);
 
 
 
@@ -4913,6 +5238,7 @@ var $lYE5o = parcelRequire("lYE5o");
 parcelRequire("aAO52");
 var $bvVEG = parcelRequire("bvVEG");
 
+var $l3TbZ = parcelRequire("l3TbZ");
 let $68ce0c44dd114f11$var$_ = (t)=>t, $68ce0c44dd114f11$var$t, $68ce0c44dd114f11$var$t1, $68ce0c44dd114f11$var$t2, $68ce0c44dd114f11$var$t3;
 class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
     _getKey(item, index) {
@@ -5163,7 +5489,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
     `), this.label || defaultLabel, this.hass.localize('ui.panel.lovelace.editor.card.config.optional'), renderItems(), this._addItem, addButtonLabel);
     }
     constructor(...args){
-        super(...args), this.mode = 'states', this.isSensor = false, this.isMainEntity = false, this._expandedStates = new Set(), this._getStateSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity_id, hass, isSensor, isMainEntity)=>{
+        super(...args), this.mode = 'states', this.isSensor = false, this.isMainEntity = false, this._expandedStates = new Set(), this._getStateSchema = (0, $l3TbZ.default)((entity_id, hass, isSensor, isMainEntity)=>{
             const schema = [
                 {
                     name: 'state',
@@ -5251,7 +5577,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                 }
             });
             return schema;
-        }), this._getThresholdSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity_id, hass, isSensor, isMainEntity)=>{
+        }), this._getThresholdSchema = (0, $l3TbZ.default)((entity_id, hass, isSensor, isMainEntity)=>{
             const schema = [
                 {
                     name: 'threshold',
@@ -5529,7 +5855,8 @@ function $3499cf776de5cef0$export$1b2909c9365ec6ff(badges, index) {
 
 var $cfP8R = parcelRequire("cfP8R");
 
-const $e9b7a98281a80f12$export$7154f02cb7867cee = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity_id, hass)=>{
+var $l3TbZ = parcelRequire("l3TbZ");
+const $e9b7a98281a80f12$export$7154f02cb7867cee = (0, $l3TbZ.default)((entity_id, hass)=>{
     return [
         {
             name: 'entity_id',
@@ -6135,6 +6462,7 @@ parcelRequire("jcMWt");
 var $aaQtJ = parcelRequire("aaQtJ");
 var $lYE5o = parcelRequire("lYE5o");
 
+var $l3TbZ = parcelRequire("l3TbZ");
 
 
 let $43564874ab3ed043$var$_ = (t)=>t, $43564874ab3ed043$var$t, $43564874ab3ed043$var$t1, $43564874ab3ed043$var$t2, $43564874ab3ed043$var$t3, $43564874ab3ed043$var$t4;
@@ -6293,7 +6621,7 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
         });
     }
     constructor(...args){
-        super(...args), this.type = 'entity', this.isMainEntity = false, this._entitiesSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity_id, hass)=>{
+        super(...args), this.type = 'entity', this.isMainEntity = false, this._entitiesSchema = (0, $l3TbZ.default)((entity_id, hass)=>{
             return [
                 {
                     name: 'entity_id',
@@ -6436,7 +6764,7 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                     ]
                 }
             ];
-        }), this._sensorsSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity_id, hass)=>{
+        }), this._sensorsSchema = (0, $l3TbZ.default)((entity_id, hass)=>{
             return [
                 {
                     name: 'entity_id',
@@ -6475,9 +6803,48 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                             }
                         }
                     ]
+                },
+                {
+                    name: 'interactions',
+                    label: 'editor.interactions.interactions',
+                    type: 'expandable',
+                    flatten: true,
+                    icon: 'mdi:gesture-tap',
+                    schema: [
+                        {
+                            name: 'tap_action',
+                            label: 'editor.interactions.tap_action',
+                            required: false,
+                            selector: {
+                                ui_action: {
+                                    default_action: 'more-info'
+                                }
+                            }
+                        },
+                        {
+                            name: 'double_tap_action',
+                            label: 'editor.interactions.double_tap_action',
+                            required: false,
+                            selector: {
+                                ui_action: {
+                                    default_action: 'none'
+                                }
+                            }
+                        },
+                        {
+                            name: 'hold_action',
+                            label: 'editor.interactions.hold_action',
+                            required: false,
+                            selector: {
+                                ui_action: {
+                                    default_action: 'none'
+                                }
+                            }
+                        }
+                    ]
                 }
             ];
-        }), this._lightsSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity_id, hass)=>{
+        }), this._lightsSchema = (0, $l3TbZ.default)((entity_id, hass)=>{
             return [
                 {
                     name: 'entity_id',
@@ -6693,6 +7060,7 @@ var $lYE5o = parcelRequire("lYE5o");
 parcelRequire("aAO52");
 var $bvVEG = parcelRequire("bvVEG");
 
+var $l3TbZ = parcelRequire("l3TbZ");
 let $460e8ac2e6479550$var$_ = (t)=>t, $460e8ac2e6479550$var$t, $460e8ac2e6479550$var$t1, $460e8ac2e6479550$var$t2;
 class $460e8ac2e6479550$export$b79a6ddbd7dc2198 extends (0, $2r9I1.LitElement) {
     _getKey(item, index) {
@@ -6824,7 +7192,7 @@ class $460e8ac2e6479550$export$b79a6ddbd7dc2198 extends (0, $2r9I1.LitElement) {
         }), this._addThreshold, addButtonLabel);
     }
     constructor(...args){
-        super(...args), this.thresholdType = 'temperature', this._expandedThresholds = new Set(), this._getThresholdSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((hass, thresholdType, availableEntities)=>{
+        super(...args), this.thresholdType = 'temperature', this._expandedThresholds = new Set(), this._getThresholdSchema = (0, $l3TbZ.default)((hass, thresholdType, availableEntities)=>{
             const isTemperature = thresholdType === 'temperature';
             const entityFilter = isTemperature ? {
                 device_class: 'temperature'
@@ -6992,6 +7360,7 @@ var $1LdRn = parcelRequire("1LdRn");
 var $kJycS = parcelRequire("kJycS");
 
 
+var $7AhDs = parcelRequire("7AhDs");
 const $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20 = (hass, config)=>{
     // Define base entities for the area
     // Support both naming conventions: light.{area}_light / light.{area} and switch.{area}_fan / fan.{area}
@@ -7015,7 +7384,7 @@ const $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20 = (hass, config)=>{
         };
         // Skip hidden entities if the feature is enabled
         if (hideHiddenEntities && ((_hass_entities_entity_entity_id = hass.entities[entity.entity_id]) === null || _hass_entities_entity_entity_id === void 0 ? void 0 : _hass_entities_entity_entity_id.hidden)) return undefined;
-        const state = (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, entity.entity_id);
+        const state = (0, $7AhDs.getState)(hass.states, entity.entity_id);
         const isBaseEntity = baseEntities.includes(entity.entity_id);
         // If state is not found:
         // - For base entities: always return undefined (don't apply sticky entities)
@@ -7050,11 +7419,11 @@ const $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20 = (hass, config)=>{
 
 
 
+var $dTmXl = parcelRequire("dTmXl");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
 parcelRequire("jcMWt");
-var $aaQtJ = parcelRequire("aaQtJ");
 var $lYE5o = parcelRequire("lYE5o");
 parcelRequire("fPVm8");
 var $2SS2a = parcelRequire("2SS2a");
@@ -7088,7 +7457,7 @@ class $b96a40707b142c90$export$b15c5e7ddecda86e extends (0, $1LdRn.HassUpdateMix
    * @param {HomeAssistant} hass - The Home Assistant instance
    */ // @ts-ignore
     set hass(hass) {
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this.config, 'entity-collection', 'set hass');
+        (0, $dTmXl.d)(this.config, 'entity-collection', 'set hass');
         const states = (0, $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20)(hass, this.config);
         // Update entities only if they've changed
         if (!$ee3d06fe83a6a770$exports(states, this._entities)) this._entities = states;
@@ -7096,7 +7465,7 @@ class $b96a40707b142c90$export$b15c5e7ddecda86e extends (0, $1LdRn.HassUpdateMix
     }
     render() {
         var _this_config_styles;
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this.config, 'entity-collection', 'render');
+        (0, $dTmXl.d)(this.config, 'entity-collection', 'render');
         if (!this._hass || !this._entities) return 0, $ci0wX.nothing;
         const stateIcons = this._entities.map((entity)=>(0, $d71beedfb309b5b1$export$6697a659ce63852)(this._hass, entity, this.config));
         return (0, $ci0wX.html)($b96a40707b142c90$var$t || ($b96a40707b142c90$var$t = $b96a40707b142c90$var$_`
@@ -7104,11 +7473,6 @@ class $b96a40707b142c90$export$b15c5e7ddecda86e extends (0, $1LdRn.HassUpdateMix
     `), (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)((_this_config_styles = this.config.styles) === null || _this_config_styles === void 0 ? void 0 : _this_config_styles.entities), stateIcons);
     }
 }
-(0, $evAes.__decorate)([
-    (0, $aaQtJ.property)({
-        type: Object
-    })
-], $b96a40707b142c90$export$b15c5e7ddecda86e.prototype, "config", void 0);
 (0, $evAes.__decorate)([
     (0, $lYE5o.state)()
 ], $b96a40707b142c90$export$b15c5e7ddecda86e.prototype, "_entities", void 0);
@@ -7148,6 +7512,7 @@ var $cmVfz = parcelRequire("cmVfz");
 
 
 
+var $dTmXl = parcelRequire("dTmXl");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
@@ -7570,7 +7935,7 @@ class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $1LdRn.HassUpdateMix
    */ // @ts-ignore
     set hass(hass) {
         var _this_config, _states_;
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this.config, 'entity-slider', 'set hass');
+        (0, $dTmXl.d)(this.config, 'entity-slider', 'set hass');
         // Update slider style from config
         this.sliderStyle = ((_this_config = this.config) === null || _this_config === void 0 ? void 0 : _this_config.slider_style) || 'minimalist';
         const states = (0, $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20)(hass, this.config);
@@ -7614,7 +7979,7 @@ class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $1LdRn.HassUpdateMix
     }
     render() {
         var _this_config_styles;
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this.config, 'entity-slider', 'render');
+        (0, $dTmXl.d)(this.config, 'entity-slider', 'render');
         if (!this._hass || !this._entity) return 0, $ci0wX.nothing;
         // Set CSS custom property for slider position (used by filled, shadow-trail, bar, and bar-filled styles)
         this.style.setProperty('--slider-position', `${this._yPosition}%`);
@@ -7704,11 +8069,6 @@ class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $1LdRn.HassUpdateMix
 }
 (0, $evAes.__decorate)([
     (0, $aaQtJ.property)({
-        type: Object
-    })
-], $21a9ea85b7e2278b$export$ec4599f0917a20c8.prototype, "config", void 0);
-(0, $evAes.__decorate)([
-    (0, $aaQtJ.property)({
         type: String,
         reflect: true,
         attribute: 'slider'
@@ -7747,15 +8107,27 @@ const $c9151a6b7cddd826$export$f11d5335cd202cec = (hass, entity, attribute, clas
   ></ha-attribute-value>`), hass, entity, attribute, className);
 
 
+
+var $kJycS = parcelRequire("kJycS");
+
+var $1izJ2 = parcelRequire("1izJ2");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 let $042bfa5e9e75bf5a$var$_ = (t)=>t, $042bfa5e9e75bf5a$var$t;
-const $042bfa5e9e75bf5a$export$5aaff3aa40310f76 = (badges, entity, hass)=>{
-    var _badges_slice;
-    const badgeConfigs = (_badges_slice = badges === null || badges === void 0 ? void 0 : badges.slice(0, 4)) !== null && _badges_slice !== void 0 ? _badges_slice : [];
-    return badgeConfigs.map((badge)=>(0, $ci0wX.html)($042bfa5e9e75bf5a$var$t || ($042bfa5e9e75bf5a$var$t = $042bfa5e9e75bf5a$var$_`
-      <room-badge .config=${0} .entity=${0} .hass=${0}></room-badge>
-    `), badge, entity, hass));
+const $042bfa5e9e75bf5a$export$5aaff3aa40310f76 = (entity, hass, config)=>{
+    var _entity_config_badges_slice, _entity_config_badges;
+    return (_entity_config_badges = entity.config.badges) === null || _entity_config_badges === void 0 ? void 0 : (_entity_config_badges_slice = _entity_config_badges.slice(0, 4)) === null || _entity_config_badges_slice === void 0 ? void 0 : _entity_config_badges_slice.map((badge)=>{
+        var _badge_entity_id;
+        return (0, $ci0wX.html)($042bfa5e9e75bf5a$var$t || ($042bfa5e9e75bf5a$var$t = $042bfa5e9e75bf5a$var$_`
+      <room-badge
+        .hass=${0}
+        .config=${0}
+        .badge=${0}
+      ></room-badge>
+    `), hass, config, (0, $1izJ2._)((0, $kJycS._)({}, badge), {
+            entity_id: (_badge_entity_id = badge.entity_id) !== null && _badge_entity_id !== void 0 ? _badge_entity_id : entity.config.entity_id
+        }));
+    });
 };
 
 
@@ -7919,6 +8291,7 @@ const $ac519daeba261117$export$d5d9aad110ad14a = (entity, config, options = {})=
 
 
 
+var $dTmXl = parcelRequire("dTmXl");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
@@ -8082,6 +8455,7 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
                 this._hideRoomIcon = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_room_icon');
                 this._hideIconContent = ((_config_background1 = config.background) === null || _config_background1 === void 0 ? void 0 : (_config_background_options1 = _config_background1.options) === null || _config_background_options1 === void 0 ? void 0 : _config_background_options1.includes('hide_icon_only')) || false;
             }
+            // todo super.config?
             this._config = config;
         }
     }
@@ -8091,23 +8465,28 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
    */ // @ts-ignore
     set hass(hass) {
         var _this_entity_state_attributes, _this_entity_state, _this_entity;
+        (0, $dTmXl.d)(this._config, 'room-state-icon', 'set hass');
         this._image = (0, $b02f37b9ae80224f$export$47f3d980c4d9b226)(this.entity, 'use_entity_icon') ? undefined : (_this_entity = this.entity) === null || _this_entity === void 0 ? void 0 : (_this_entity_state = _this_entity.state) === null || _this_entity_state === void 0 ? void 0 : (_this_entity_state_attributes = _this_entity_state.attributes) === null || _this_entity_state_attributes === void 0 ? void 0 : _this_entity_state_attributes.entity_picture;
         if (this._image) {
-            (0, $86dc711946e77b66$export$4368d992c4eafac0)(this._config, 'room-state-icon - image', this._image);
             this.image = true;
             this.iconBackground = true;
             this._hideIconContent = true;
         } else {
-            var _this__config_background_options, _this__config_background, _this__config;
+            var _this__config_background_options, _this__config_background, _this__config, _this__config_background_options1, _this__config_background1, _this__config1;
             // Reset hideIconContent when image goes away
             // If it's a main room entity, use config value, otherwise false
             this._hideIconContent = this.isMainRoomEntity ? ((_this__config = this._config) === null || _this__config === void 0 ? void 0 : (_this__config_background = _this__config.background) === null || _this__config_background === void 0 ? void 0 : (_this__config_background_options = _this__config_background.options) === null || _this__config_background_options === void 0 ? void 0 : _this__config_background_options.includes('hide_icon_only')) || false : false;
-            this.image = false;
+            var _this__config_background_options_includes;
+            // regression fix for #383 - in future handle the image logic internally
+            // but this resets the image to false when the entity_picture is removed for #333 still
+            // icon_background should only affect the main room entity - fixes #404
+            this.image = this.isMainRoomEntity && ((_this__config_background_options_includes = (_this__config1 = this._config) === null || _this__config1 === void 0 ? void 0 : (_this__config_background1 = _this__config1.background) === null || _this__config_background1 === void 0 ? void 0 : (_this__config_background_options1 = _this__config_background1.options) === null || _this__config_background_options1 === void 0 ? void 0 : _this__config_background_options1.includes('icon_background')) !== null && _this__config_background_options_includes !== void 0 ? _this__config_background_options_includes : false);
         }
         this._hass = hass;
     }
     render() {
         var _this__config_styles, _this__config, _this__config_styles1, _this__config1;
+        (0, $dTmXl.d)(this._config, 'room-state-icon', 'render');
         const { state: state } = this.entity;
         if (!state) return 0, $ci0wX.nothing;
         // If the icon should be completely hidden, return nothing
@@ -8118,7 +8497,6 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
       ></div>`), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, this.entity), (0, $b96673d7637fba33$export$8a44987212de21b)(this.entity));
         const thresholdResult = (0, $3eeea5b8a350985f$export$76969a794fd1f893)(this.entity);
         const iconStyle = (0, $591072dd54c0e5bc$export$5edf3a158822b217)(this._hass, this.entity, this.isActive, this._image, this.isMainRoomEntity, this._config);
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this._config, 'room-state-icon - iconStyle', iconStyle);
         const iconStyles = (0, $kJycS._)({}, (_this__config = this._config) === null || _this__config === void 0 ? void 0 : (_this__config_styles = _this__config.styles) === null || _this__config_styles === void 0 ? void 0 : _this__config_styles.entity_icon, this.isMainRoomEntity ? (_this__config1 = this._config) === null || _this__config1 === void 0 ? void 0 : (_this__config_styles1 = _this__config1.styles) === null || _this__config_styles1 === void 0 ? void 0 : _this__config_styles1.room_entity_icon : undefined, this.entity.config.styles, thresholdResult === null || thresholdResult === void 0 ? void 0 : thresholdResult.styles);
         // Get label (priority: state/threshold label > config label > attribute value > entity name)
         let label;
@@ -8137,7 +8515,7 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
             thresholdResult: thresholdResult
         });
         // Render badges (max 4)
-        const badgeElements = (0, $042bfa5e9e75bf5a$export$5aaff3aa40310f76)(this.entity.config.badges, this.entity, this._hass);
+        const badgeElements = (0, $042bfa5e9e75bf5a$export$5aaff3aa40310f76)(this.entity, this._hass, this._config);
         return (0, $ci0wX.html)($21884f49b48db948$var$t3 || ($21884f49b48db948$var$t3 = $21884f49b48db948$var$_`
       ${0}
       <div
@@ -8218,6 +8596,8 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
 
 
 var $kJycS = parcelRequire("kJycS");
+
+var $1izJ2 = parcelRequire("1izJ2");
 
 var $evAes = parcelRequire("evAes");
 
@@ -8332,6 +8712,8 @@ var $8jUVR = parcelRequire("8jUVR");
 
 
 
+
+var $dTmXl = parcelRequire("dTmXl");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
@@ -8597,7 +8979,7 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
    * @param {HomeAssistant} hass - The Home Assistant instance
    */ // @ts-ignore
     set hass(hass) {
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this.config, 'sensor-collection', 'set hass');
+        (0, $dTmXl.d)(this.config, 'sensor-collection', 'set hass');
         this._hass = hass;
         this.hide = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this.config, 'hide_sensor_icons');
         this._hideLabels = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this.config, 'hide_sensor_labels');
@@ -8606,9 +8988,9 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
     }
     render() {
         var _this_config_styles;
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this.config, 'sensor-collection', 'render');
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this.config, 'sensor-collection', 'config', this.config);
-        (0, $86dc711946e77b66$export$4368d992c4eafac0)(this.config, 'sensor-collection', 'sensors', this.sensors);
+        (0, $dTmXl.d)(this.config, 'sensor-collection', 'render');
+        (0, $dTmXl.d)(this.config, 'sensor-collection', 'config', this.config);
+        (0, $dTmXl.d)(this.config, 'sensor-collection', 'sensors', this.sensors);
         if (!this._hass || (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this.config, 'hide_climate_label')) return 0, $ci0wX.nothing;
         return (0, $ci0wX.html)($0a8df7eca34388c3$var$t || ($0a8df7eca34388c3$var$t = $0a8df7eca34388c3$var$_`
       ${0}
@@ -8636,18 +9018,21 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
     renderSingleSensor(state) {
         // Look up sensor config from config.sensors
         const sensorConfig = this.getSensorConfig(state.entity_id);
-        // Create EntityInformation with sensor config for state-based styling
+        // Create EntityInformation with sensor config for state-based styling and actions
         const info = {
-            config: {
-                entity_id: state.entity_id,
+            config: (0, $1izJ2._)((0, $kJycS._)({
                 tap_action: {
                     action: 'more-info'
                 },
-                label: sensorConfig === null || sensorConfig === void 0 ? void 0 : sensorConfig.label,
-                icon: sensorConfig === null || sensorConfig === void 0 ? void 0 : sensorConfig.icon,
-                states: sensorConfig === null || sensorConfig === void 0 ? void 0 : sensorConfig.states,
-                thresholds: sensorConfig === null || sensorConfig === void 0 ? void 0 : sensorConfig.thresholds
-            },
+                hold_action: {
+                    action: 'none'
+                },
+                double_tap_action: {
+                    action: 'none'
+                }
+            }, sensorConfig), {
+                entity_id: state.entity_id
+            }),
             state: state
         };
         // Get state/threshold-based styling result
@@ -8668,7 +9053,7 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
         ${0}
       </div>
     `), (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)((0, $kJycS._)({
-            '--sensor-icon-color': result === null || result === void 0 ? void 0 : result.color
+            '--sensor-icon-color': (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(result === null || result === void 0 ? void 0 : result.color)
         }, result === null || result === void 0 ? void 0 : result.styles)), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, info), (0, $b96673d7637fba33$export$8a44987212de21b)(info), this.renderStateIcon(state, icon), this.renderSensorLabel(state, label, sensorConfig));
     }
     /**
@@ -8718,11 +9103,6 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
     ></ha-state-icon>`), this._hass, state, icon);
     }
 }
-(0, $evAes.__decorate)([
-    (0, $aaQtJ.property)({
-        type: Object
-    })
-], $0a8df7eca34388c3$export$265e5e10b1eff6c6.prototype, "config", void 0);
 (0, $evAes.__decorate)([
     (0, $aaQtJ.property)({
         type: Object
@@ -10259,6 +10639,8 @@ const $d6d54e2212c78dd0$export$41b40a0c6412e2a2 = (s, i)=>s === i || s.length ==
 
 
 
+
+var $dTmXl = parcelRequire("dTmXl");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
@@ -10458,16 +10840,18 @@ class $0f35678ae26800e3$export$be1ca41262ce011e extends (0, $2r9I1.LitElement) {
    * renders the lit element card
    * @returns The rendered HTML template
    */ render() {
+        (0, $dTmXl.d)(this._config, 'room-summary-card-editor', 'render');
         if (!this.hass || !this._config) return 0, $ci0wX.nothing;
         // Show sub-element editor if active
         if (this._subElementEditorConfig) return (0, $ci0wX.html)($0f35678ae26800e3$var$t || ($0f35678ae26800e3$var$t = $0f35678ae26800e3$var$_`
         <room-summary-sub-element-editor
           .hass=${0}
           .config=${0}
+          .cardConfig=${0}
           @go-back=${0}
           @config-changed=${0}
         ></room-summary-sub-element-editor>
-      `), this.hass, this._subElementEditorConfig, this._goBack, this._handleSubElementChanged);
+      `), this.hass, this._subElementEditorConfig, this._config, this._goBack, this._handleSubElementChanged);
         return (0, $82f367c6f871e29a$export$c12c36dfee4d12e2)({
             currentTab: this._currentTab,
             showLeftScroll: this._showLeftScroll,
@@ -10706,7 +11090,7 @@ class $0f35678ae26800e3$export$be1ca41262ce011e extends (0, $2r9I1.LitElement) {
 
 
 var $649c526c16197344$exports = {};
-$649c526c16197344$exports = JSON.parse("{\"name\":\"room-summary-card\",\"version\":\"0.62.0\",\"author\":\"Patrick Masters\",\"license\":\"ISC\",\"description\":\"Custom card Home Assistant which can show a summary of room entities.\",\"source\":\"src/index.ts\",\"module\":\"dist/room-summary-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"format\":\"prettier --write .\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc npm run test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"update\":\"npx npm-check-updates -u && yarn install\"},\"devDependencies\":{\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.16.3\",\"@testing-library/dom\":\"^10.4.1\",\"@trivago/prettier-plugin-sort-imports\":\"^6.0.2\",\"@types/chai\":\"^5.2.3\",\"@types/jsdom\":\"^27.0.0\",\"@types/mocha\":\"^10.0.10\",\"@types/sinon\":\"^21.0.0\",\"chai\":\"^6.2.2\",\"jsdom\":\"^27.4.0\",\"mocha\":\"^11.7.5\",\"nyc\":\"^17.1.0\",\"parcel\":\"^2.16.3\",\"prettier\":\"3.8.0\",\"prettier-plugin-organize-imports\":\"^4.3.0\",\"proxyquire\":\"^2.1.3\",\"sinon\":\"^21.0.1\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^5.9.3\"},\"dependencies\":{\"@lit/task\":\"^1.0.3\",\"async-memoize-one\":\"^1.1.9\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.3.2\",\"memoize-one\":\"^6.0.0\"}}");
+$649c526c16197344$exports = JSON.parse("{\"name\":\"room-summary-card\",\"version\":\"0.64.0\",\"author\":\"Patrick Masters\",\"license\":\"ISC\",\"description\":\"Custom card Home Assistant which can show a summary of room entities.\",\"source\":\"src/index.ts\",\"module\":\"dist/room-summary-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"format\":\"prettier --write .\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc npm run test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"update\":\"npx npm-check-updates -u && yarn install\"},\"devDependencies\":{\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.16.4\",\"@testing-library/dom\":\"^10.4.1\",\"@trivago/prettier-plugin-sort-imports\":\"^6.0.2\",\"@types/chai\":\"^5.2.3\",\"@types/jsdom\":\"^27.0.0\",\"@types/mocha\":\"^10.0.10\",\"@types/sinon\":\"^21.0.0\",\"chai\":\"^6.2.2\",\"jsdom\":\"^29.0.0\",\"mocha\":\"^11.7.5\",\"nyc\":\"^17.1.0\",\"parcel\":\"^2.16.4\",\"prettier\":\"3.8.1\",\"prettier-plugin-organize-imports\":\"^4.3.0\",\"proxyquire\":\"^2.1.3\",\"sinon\":\"^21.0.2\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^5.9.3\"},\"dependencies\":{\"@lit/task\":\"^1.0.3\",\"async-memoize-one\":\"^1.2.0\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.3.2\",\"memoize-one\":\"^6.0.0\"}}");
 
 
 // Register the custom element with the browser
