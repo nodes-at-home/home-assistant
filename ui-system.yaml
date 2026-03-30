@@ -74,9 +74,15 @@ views:
             - sensor.system_monitor_prozessornutzung
             - sensor.system_monitor_belegter_arbeitsspeicher
             - sensor.system_monitor_arbeitsspeicher_auslastung
+            - type: divider
             - sensor.system_monitor_belegter_massenspeicher
             - sensor.system_monitor_massenspeicher_auslastung
+            - type: divider
+            - sensor.system_monitor_belegter_massenspeicher_config
+            - sensor.system_monitor_massenspeicher_auslastung_config
+            - type: divider
             - sensor.system_monitor_letzter_systemstart
+            - sensor.system_monitor_pwmfan_lufterdrehzahl
       - type: entities
         title: Home Assistant
         show_header_toggle: false
@@ -103,7 +109,7 @@ views:
             - sensor.fritz_box_7590_letzter_neustart
             - sensor.fritz_box_7590_verbindungsverfugbarkeit
       - type: entities
-        title: Unify
+        title: UniFi
         show_header_toggle: false
         entities:
             - sensor.zapdos_state
@@ -114,9 +120,9 @@ views:
             # - sensor.zapdos_zapdos_cpu_temperature
             - switch.pokemonnethome
             - switch.pokemonnetuser
+            - switch.pokemonnetiot
             - switch.pokemonnetwlan
             - switch.pokemonnetwlan5
-            - switch.tp_link_32907c
       - type: entities
         title: USV
         show_header_toggle: false
