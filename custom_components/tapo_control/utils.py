@@ -27,12 +27,19 @@ from homeassistant.helpers.network import NoURLAvailableError, get_url
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.components.ffmpeg import DATA_FFMPEG
 from homeassistant.components.onvif.event import EventManager
-from homeassistant.const import CONF_IP_ADDRESS, CONF_USERNAME, CONF_PASSWORD
+from homeassistant.const import (
+    CONF_IP_ADDRESS,
+    CONF_USERNAME,
+    CONF_PASSWORD,
+    CONF_HOST,
+)
 from homeassistant.util import slugify, dt as dt_util
 
 from .const import (
     BRAND,
+    CONF_TRANSPORT_METHOD,
     CONTROL_PORT,
+    DOMAIN_CONFIG,
     ENABLE_MEDIA_SYNC,
     ENABLE_MOTION_SENSOR,
     DOMAIN,
@@ -49,9 +56,20 @@ from .const import (
     MEDIA_SYNC_HOURS,
     TIME_SYNC_DST,
     TIME_SYNC_NDST,
+    TPLINK_DOMAIN,
 )
 
 UUID = uuid.uuid4().hex
+
+
+def _is_used_by_tplink(hass: HomeAssistant, host: str) -> bool:
+    for entry in hass.config_entries.async_entries(
+        TPLINK_DOMAIN, include_ignore=False, include_disabled=False
+    ):
+        if entry.data.get(CONF_HOST) != host:
+            continue
+        return True
+    return False
 
 
 def isUsingHTTPS(hass):
@@ -116,6 +134,15 @@ def registerController(
     is_klap=None,
     hass=None,
 ):
+    selected_transport_method = (
+        hass.data.get(DOMAIN_CONFIG, {}).get(CONF_TRANSPORT_METHOD)
+        if hass is not None
+        else None
+    )
+    LOGGER.debug(
+        f"Creating Tapo controller with transport method {selected_transport_method}."
+    )
+
     return Tapo(
         host,
         username,
@@ -130,6 +157,7 @@ def registerController(
         controlPort=control_port,
         isKLAP=is_klap,
         hass=hass,
+        transportMethod=selected_transport_method,
     )
 
 
@@ -1769,6 +1797,35 @@ async def getCamData(hass, controller, chInfo=None):
     except Exception:
         camData["quick_response"] = None
 
+    try:
+        dualLinkageTargetSetting = data["readLinkageTargetSetting"][0][
+            "dual_cam_linkage"
+        ]
+    except Exception:
+        dualLinkageTargetSetting = None
+    camData["dualLinkageTargetSetting"] = dualLinkageTargetSetting
+
+    try:
+        dualLinkageCapability = data["getLinkageTargetCapability"][0][
+            "dual_cam_linkage"
+        ]["linkage_target_capability"]
+    except Exception:
+        dualLinkageCapability = None
+    camData["dualLinkageCapability"] = dualLinkageCapability
+
+    try:
+        dualCamLinkageEnabled = data["getDualCamLinkage"][0]["dual_cam_linkage"][
+            "linkage_state"
+        ]["enabled"]
+        dualCamLinkageType = data["getDualCamLinkage"][0]["dual_cam_linkage"][
+            "linkage_state"
+        ]["linkage_type"]
+    except Exception:
+        dualCamLinkageEnabled = None
+        dualCamLinkageType = None
+    camData["dualCamLinkageEnabled"] = dualCamLinkageEnabled
+    camData["dualCamLinkageType"] = dualCamLinkageType
+
     LOGGER.debug("getCamData - done")
     LOGGER.debug("Processed update data:")
     LOGGER.debug(camData)
@@ -1812,11 +1869,29 @@ async def update_listener(hass, entry):
                 )
             if cloud_password != "":
                 tapoController = await hass.async_add_executor_job(
-                    registerController, host, controlPort, "admin", cloud_password
+                    registerController,
+                    host,
+                    controlPort,
+                    "admin",
+                    cloud_password,
+                    "",
+                    "",
+                    None,
+                    None,
+                    hass,
                 )
             else:
                 tapoController = await hass.async_add_executor_job(
-                    registerController, host, controlPort, username, password
+                    registerController,
+                    host,
+                    controlPort,
+                    username,
+                    password,
+                    "",
+                    "",
+                    None,
+                    None,
+                    hass,
                 )
             hass.data[DOMAIN][entry.entry_id]["usingCloudPassword"] = (
                 cloud_password != ""

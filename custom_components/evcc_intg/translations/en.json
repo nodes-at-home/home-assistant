@@ -95,6 +95,16 @@
       "priority": {"name": "Priority"}
     },
     "select": {
+      "batterymode": {
+        "name": "Battery mode (auto-reset after 60 sec)",
+        "state": {
+          "null": "delete",
+          "unknown": "unknown",
+          "normal": "normal",
+          "hold": "hold",
+          "charge": "charge"
+        }
+      },
       "prioritysoc": {
         "name": "Home-Battery: Home has priority",
         "state": {
@@ -170,6 +180,32 @@
           "95": "when above 95 %",
           "100": "when at 100 %",
           "0": "charge only with enough surplus"
+        }
+      },
+      "batteryboostlimit": {
+        "name": "Boost from Home-Battery Limit",
+        "state": {
+          "0": "till 0 %",
+          "5": "till 5 %",
+          "10": "till 10 %",
+          "15": "till 15 %",
+          "20": "till 20 %",
+          "25": "till 25 %",
+          "30": "till 30 %",
+          "35": "till 35 %",
+          "40": "till 40 %",
+          "45": "till 45 %",
+          "50": "till 50 %",
+          "55": "till 55 %",
+          "60": "till 60 %",
+          "65": "till 65 %",
+          "70": "till 70 %",
+          "75": "till 75 %",
+          "80": "till 80 %",
+          "85": "till 85 %",
+          "90": "till 90 %",
+          "95": "till 95 %",
+          "100": "deactivated"
         }
       },
       "vehiclename": {
@@ -279,6 +315,17 @@
       },
       "maxcurrent": {
         "name": "Charging Current Max."
+      },
+      "planstrategyprecondition": {
+        "name": "Charging plan: Late charging",
+        "state": {
+          "0": "No",
+          "900": "15 minutes",
+          "1800": "30 minutes",
+          "3600": "1 hour",
+          "7200": "2 hours",
+          "604800": "All"
+        }
       }
     },
     "sensor": {
@@ -368,18 +415,22 @@
       "tariffsolar":          {"name": "Solar Prognoses [Site]"},
 
       "stattotalsolarpercentage": {"name": "Statistics: Total Solar"},
+      "stattotalsolarkwhtemplate": {"name": "Statistics: Total Solar energy"},
       "stattotalchargedkwh": {"name": "Statistics: Total Charge energy"},
       "stattotalavgprice": {"name": "Statistics: Total Ø Price"},
       "stattotalavgco2": {"name": "Statistics: Total Ø CO₂"},
       "statthisyearsolarpercentage": {"name": "Statistics: This year Solar"},
+      "statthisyearsolarkwhtemplate": {"name": "Statistics: This year Solar energy"},
       "statthisyearchargedkwh": {"name": "Statistics: This year Charge energy"},
       "statthisyearavgprice": {"name": "Statistics: This year Ø Price"},
       "statthisyearavgco2": {"name": "Statistics: This year Ø CO₂"},
       "stat365solarpercentage": {"name": "Statistics: Last 365 days Solar"},
+      "stat365solarkwhtemplate": {"name": "Statistics: Last 365 days Solar energy"},
       "stat365chargedkwh": {"name": "Statistics: Last 365 days Charge energy"},
       "stat365avgprice": {"name": "Statistics: Last 365 days Ø Price"},
       "stat365avgco2": {"name": "Statistics: Last 365 days Ø CO₂"},
       "stat30solarpercentage": {"name": "Statistics: Last 30 days Solar"},
+      "stat30solarkwhtemplate": {"name": "Statistics: Last 30 days Solar energy"},
       "stat30chargedkwh": {"name": "Statistics: Last 30 days Charge energy"},
       "stat30avgprice": {"name": "Statistics: Last 30 days Ø Price"},
       "stat30avgco2": {"name": "Statistics: Last 30 days Ø CO₂"},
@@ -426,7 +477,13 @@
     },
     "switch": {
       "batterydischargecontrol": {"name": "Home-Battery: discharge lock"},
-      "batteryboost": {"name": "Boost from Home-Battery"}
+      "batteryboost": {"name": "Boost from Home-Battery"},
+      "planstrategycontinuous": {"name": "Charging plan: Optimization",
+        "state": {
+          "on": "Continuous",
+          "off": "Most favorable"
+        }
+      }
     }
   }
 }

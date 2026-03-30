@@ -6,6 +6,18 @@ from typing import Any, Final
 
 import aiohttp
 from aiohttp import ClientConnectionError
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_HOST, CONF_SCAN_INTERVAL, EVENT_HOMEASSISTANT_STARTED
+from homeassistant.core import HomeAssistant, Event, SupportsResponse, CoreState
+from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.helpers import entity_registry, config_validation as config_val, device_registry as device_reg
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.entity import Entity, EntityDescription
+from homeassistant.helpers.event import async_track_time_interval, async_call_later
+from homeassistant.helpers.typing import UNDEFINED, UndefinedType
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.loader import async_get_integration
+from homeassistant.util import slugify
 from packaging.version import Version
 
 from custom_components.evcc_intg.pyevcc_ha import EvccApiBridge
@@ -22,24 +34,16 @@ from custom_components.evcc_intg.pyevcc_ha.const import (
     JSONKEY_STATISTICS_THISYEAR,
     JSONKEY_STATISTICS_365D,
     JSONKEY_STATISTICS_30D,
+    JSONKEY_STAT_CHARGED_KWH,
+    JSONKEY_STAT_SOLAR_PERCENTAGE,
+    JSONKEY_STAT_SOLAR_KWH_TEMPLATE,
     ADDITIONAL_ENDPOINTS_DATA_TARIFF,
     ADDITIONAL_ENDPOINTS_DATA_SESSIONS,
     SESSIONS_KEY_LOADPOINTS,
-    SESSIONS_KEY_VEHICLES, JSONKEY_CIRCUITS
+    SESSIONS_KEY_VEHICLES,
+    JSONKEY_CIRCUITS,
 )
 from custom_components.evcc_intg.pyevcc_ha.keys import Tag, EP_TYPE, camel_to_snake
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_HOST, CONF_SCAN_INTERVAL, EVENT_HOMEASSISTANT_STARTED
-from homeassistant.core import HomeAssistant, Event, SupportsResponse, CoreState
-from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers import entity_registry, config_validation as config_val, device_registry as device_reg
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.entity import Entity, EntityDescription
-from homeassistant.helpers.event import async_track_time_interval
-from homeassistant.helpers.typing import UNDEFINED, UndefinedType
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from homeassistant.loader import async_get_integration
-from homeassistant.util import slugify
 from .const import (
     NAME,
     NAME_SHORT,
@@ -59,12 +63,13 @@ from .const import (
     EVCC_JSON_KEY_NAME,
     EVCC_JSON_ORIGIN_OBJECT
 )
+from .entity import CustomFriendlyNameEntity
 from .service import EvccService
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 SCAN_INTERVAL = timedelta(seconds=10)
-WEBSOCKET_WATCHDOG_INTERVAL: Final = timedelta(seconds=60)
+WEBSOCKET_WATCHDOG_INTERVAL: Final = timedelta(minutes=5, seconds=1)
 
 CONFIG_SCHEMA = config_val.removed(DOMAIN, raise_if_present=False)
 
@@ -122,14 +127,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     if not coordinator.last_update_success:
         raise ConfigEntryNotReady
     else:
-        # If Home Assistant is already in a running state, start the watchdog
-        # immediately, else trigger it after Home Assistant has finished starting.
-        if coordinator.use_ws:
-            if hass.state is CoreState.running:
-                await coordinator.start_watchdog()
-            else:
-                hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, coordinator.start_watchdog)
-
         # now we can attempt to initialize our coordinator with the data already read...
         if not await coordinator.read_evcc_config_on_startup(hass):
             _LOGGER.warning(f"coordinator.read_evcc_config_on_startup() was not completed successfully - please enable debug-log option in order to find a posiible root cause.")
@@ -148,6 +145,16 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
                                      supports_response=SupportsResponse.OPTIONAL)
         hass.services.async_register(DOMAIN, SERVICE_DEL_VEHICLE_PLAN, evcc_services.del_vehicle_plan,
                                      supports_response=SupportsResponse.OPTIONAL)
+
+        # If Home Assistant is already in a running state, start the watchdog
+        # immediately, else trigger it after Home Assistant has finished starting.
+        if coordinator.use_ws:
+            if hass.state is CoreState.running:
+                _LOGGER.debug(f"starting watchdog INSTANTLY")
+                await coordinator.start_watchdog()
+            else:
+                _LOGGER.debug(f"starting watchdog delayed... (when EVENT_HOMEASSISTANT_STARTED is fired)")
+                hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, coordinator.start_watchdog)
 
         config_entry.async_on_unload(config_entry.add_update_listener(entry_update_listener))
         # ok we are done...
@@ -235,6 +242,7 @@ async def check_device_registry(hass: HomeAssistant, purge_all: bool = False, co
 
 
 class EvccDataUpdateCoordinator(DataUpdateCoordinator):
+
     def __init__(self, hass: HomeAssistant, http_session: aiohttp.ClientSession, config_entry):
         _LOGGER.debug(f"starting evcc_intg for: data:{config_entry.data}")
         self.name = config_entry.title
@@ -267,6 +275,7 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
         self._cost_type = None
         self._currency = "€"
         self._device_info_dict = {}
+        self._device_info_show_ws_state = False
         self._circuit = {}
         self._loadpoint = {}
         self._vehicle = {}
@@ -274,6 +283,7 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
         self._grid_data_as_object = False
         self._battery_data_as_object = False
         self._watchdog = None
+        self._ws_start_task = None
 
         # a global store for entities that we must manipulate later on...
         self.select_entities_dict = {}
@@ -289,14 +299,48 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
         _LOGGER.debug(f"Event arrived: {evt}")
         return True
 
+    async def call_later_update_device_registry(self, now:Any):
+        _LOGGER.debug(f"call_later_update_device_registry(): called with '{now}'")
+        if self._device_info_show_ws_state:
+            if self.hass is not None:
+                a_device_reg = device_reg.async_get(self.hass)
+                if a_device_reg is not None:
+                    device = a_device_reg.async_get_device(identifiers=self._device_info_dict["identifiers"])
+                    if device:
+                        _LOGGER.info(f"call_later_update_device_registry(): device registry update triggered for device {device.name}")
+                        if self.bridge.ws_connected and self.bridge.ws_check_last_update():
+                            f_model = f"{self.lang_map.get("ws_connected", "WebSocket connected:")} ✅"
+                        else:
+                            f_model = f"{self.lang_map.get("ws_connected", "WebSocket connected:")} ⛔"
+
+                        a_device_reg.async_update_device(
+                            device.id,
+                            model=f_model
+                        )
+
     async def start_watchdog(self, event=None):
         """Start websocket watchdog."""
         await self._async_watchdog_check()
-        self._watchdog = async_track_time_interval(self.hass, self._async_watchdog_check, WEBSOCKET_WATCHDOG_INTERVAL)
+        self._watchdog = async_track_time_interval(
+            self.hass,
+            self._async_watchdog_check,
+            WEBSOCKET_WATCHDOG_INTERVAL,
+        )
 
     def stop_watchdog(self):
         if hasattr(self, "_watchdog") and self._watchdog is not None:
             self._watchdog()
+            async_call_later(self.hass, 5, self.call_later_update_device_registry)
+
+    def _check_for_ws_task_and_cancel_if_running(self):
+        if self._ws_start_task is not None and not self._ws_start_task.done():
+            _LOGGER.debug(f"Watchdog: websocket connect task is still running - canceling it...")
+            try:
+                canceled = self._ws_start_task.cancel()
+                _LOGGER.debug(f"Watchdog: websocket connect task was CANCELED? {canceled}")
+            except BaseException as ex:
+                _LOGGER.info(f"Watchdog: websocket connect task cancel failed: {type(ex).__name__} - {ex}")
+            self._ws_start_task = None
 
     async def _async_watchdog_check(self, *_):
         """Reconnect the websocket if it fails."""
@@ -308,16 +352,24 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
         else:
             if not self.bridge.ws_connected:
                 _LOGGER.info(f"Watchdog: websocket connect required")
-                self._config_entry.async_create_background_task(self.hass, self.bridge.connect_ws(), "ws_connection")
+                self._check_for_ws_task_and_cancel_if_running()
+                self._ws_start_task = self._config_entry.async_create_background_task(self.hass, self.bridge.connect_ws(), "ws_connection")
+                if self._ws_start_task is not None:
+                    _LOGGER.debug(f"Watchdog: task created {self._ws_start_task.get_coro()}")
+                    async_call_later(self.hass, 10, self.call_later_update_device_registry)
             else:
-                if self.bridge.request_tariff_endpoints:
-                    _LOGGER.debug(f"Watchdog: websocket is connected - check for optional required 'tariffs' updates")
-                    await self.bridge.ws_update_tariffs_if_required()
-
-                _LOGGER.debug(f"Watchdog: websocket is connected - check for optional required 'sessions' updates")
-                await self.bridge.ws_update_sessions_if_required()
-
                 _LOGGER.debug(f"Watchdog: websocket is connected")
+                if not self.bridge.ws_check_last_update():
+                    self._check_for_ws_task_and_cancel_if_running()
+                    async_call_later(self.hass, 5, self.call_later_update_device_registry)
+                else:
+                    if self.bridge.do_ws_update_tariffs():
+                        _LOGGER.debug(f"Watchdog: websocket is connected - check for optional required 'tariffs' updates")
+                        await self.bridge.ws_update_tariffs_if_required()
+
+                    if self.bridge.do_ws_update_sessions():
+                        _LOGGER.debug(f"Watchdog: websocket is connected - check for optional required 'sessions' updates")
+                        await self.bridge.ws_update_sessions_if_required()
 
     def clear_data(self):
         _LOGGER.debug(f"clear_data called...")
@@ -354,7 +406,8 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
             "identifiers": {(DOMAIN, unique_device_id)},
             "manufacturer": MANUFACTURER,
             "name": f"{NAME} [{self._system_id}]",
-            "sw_version": self._version
+            "sw_version": self._version,
+            "model": None
         }
 
         # init our circuits data... [this is a JSON DICT]
@@ -564,9 +617,15 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
         if self.data is not None:
             if tag.type == EP_TYPE.LOADPOINTS:
                 ret = self.read_tag_loadpoint(tag=tag, loadpoint_idx=idx)
+                # quick hack for subtype support
+                if isinstance(ret, dict) and tag.subtype is not None:
+                    ret = ret.get(tag.subtype, ret)
 
             elif tag.type == EP_TYPE.VEHICLES:
                 ret = self.read_tag_vehicle_int(tag=tag, loadpoint_idx=idx)
+                # quick hack for subtype support
+                if isinstance(ret, dict) and tag.subtype is not None:
+                    ret = ret.get(tag.subtype, ret)
 
             # in the case of circuits, the 'idx' is not a int - it is a str and this
             # str is the key in the circuits dict...
@@ -575,6 +634,7 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
                 ret = circuit_data.get(tag.json_key, None) if tag.json_key in circuit_data else None
 
             elif tag.type == EP_TYPE.SITE:
+                # this must be done generally... not only for the SITE tag...
                 if tag.json_key in self.data:
                     ret = self.data[tag.json_key]
 
@@ -597,6 +657,7 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
 
             elif tag.type == EP_TYPE.TARIFF:
                 ret = self.read_tag_tariff(tag=tag)
+
         # _LOGGER.debug(f"read from {tag.key} [@idx {idx}] -> {ret}")
         return ret
 
@@ -627,10 +688,15 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
     def read_tag_statistics(self, tag: Tag):
         if JSONKEY_STATISTICS in self.data:
             if tag.subtype in self.data[JSONKEY_STATISTICS]:
-                if tag.json_key in self.data[JSONKEY_STATISTICS][tag.subtype]:
-                    return self.data[JSONKEY_STATISTICS][tag.subtype][tag.json_key]
-                elif tag.json_key_alias is not None and tag.json_key_alias in self.data[JSONKEY_STATISTICS]:
-                    return self.data[JSONKEY_STATISTICS][tag.subtype][tag.json_key_alias]
+                period_data = self.data[JSONKEY_STATISTICS][tag.subtype]
+                if tag.json_key == JSONKEY_STAT_SOLAR_KWH_TEMPLATE:
+                    charged = period_data.get(JSONKEY_STAT_CHARGED_KWH, 0) or 0
+                    solar_pct = period_data.get(JSONKEY_STAT_SOLAR_PERCENTAGE, 0) or 0
+                    return round(float(charged) * float(solar_pct) / 100.0, 4)
+                if tag.json_key in period_data:
+                    return period_data[tag.json_key]
+                elif tag.json_key_alias is not None and tag.json_key_alias in period_data:
+                    return period_data[tag.json_key_alias]
 
     def read_tag_loadpoint(self, tag: Tag, loadpoint_idx: int = None):
         if loadpoint_idx is not None and len(self.data[JSONKEY_LOADPOINTS]) > loadpoint_idx - 1:
@@ -842,7 +908,7 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
     def battery_data_as_object(self) -> bool:
         return self._battery_data_as_object
 
-class EvccBaseEntity(Entity):
+class EvccBaseEntity(CustomFriendlyNameEntity):
     _attr_should_poll = False
     _attr_has_entity_name = True
     _attr_name_addon = None
@@ -900,6 +966,9 @@ class EvccBaseEntity(Entity):
         if self.tag.type is not EP_TYPE.CIRCUITS and self._attr_name_addon is not None:
             return self.coordinator.device_info_dict_for_loadpoint(self._attr_name_addon)
         else:
+            # only the main/site device information should show the connection status of a
+            # possible existing websocket connection
+            self.coordinator._device_info_show_ws_state = self.coordinator.use_ws
             return self.coordinator.device_info_dict
 
     @property
@@ -910,7 +979,7 @@ class EvccBaseEntity(Entity):
     @property
     def unique_id(self):
         """Return a unique ID to use for this entity."""
-        return f"{DOMAIN}.{self.entity_id.split('.')[1]}"
+        return f"{DOMAIN}.{self.entity_id.split('.')[1]}".lower()
 
     async def async_added_to_hass(self):
         """Connect to dispatcher listening for entity data notifications."""
@@ -939,6 +1008,11 @@ class EvccBaseEntity(Entity):
         device_name = device_entry.name_by_user or device_entry.name
         if name is None and self.use_device_name:
             return device_name
+
+        # check if there is a user specified entity name (overwritten)
+        if registry_entry := self.registry_entry:
+            if registry_entry.has_entity_name and registry_entry.name is not None:
+                name = registry_entry.name
 
         # we overwrite the default impl here and just return our 'name'
         # return f"{device_name} {name}" if device_name else name

@@ -1,0 +1,67 @@
+{
+  "config": {
+    "error": {
+      "hub_connection_fail": "Yhteyttä IKEA Dirigera -keskittimeen ei voitu muodostaa näillä arvoilla, tarkista IP ja tunniste"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "ip_address": "Keskittimen IP",
+          "hide_device_set_bulbs": "Piilota laiteryhmän lamput"
+        },
+        "description": "Anna IKEA Dirigera -keskittimen tiedot",
+        "title": "IKEA Dirigera -keskittimen asennus"
+      },
+      "action": {
+        "data": {
+          "ip_address": "Keskittimen IP",
+          "hide_device_set_bulbs": "Piilota laiteryhmän lamput"
+        },
+        "description": "Paina Dirigera-keskittimen toimintopainiketta ja paina Lähetä.",
+        "title": "IKEA Dirigera -keskittimen asennus"
+      }
+    }
+  },
+  "options": {
+    "error": {
+      "hub_connection_fail": "Yhteyttä IKEA Dirigera -keskittimeen ei voitu muodostaa näillä arvoilla, tarkista IP ja tunniste"
+    },
+    "step": {
+      "init": {
+        "title": "IKEA Dirigera -keskittimen alusta",
+        "data": {
+          "ip_address": "Keskittimen IP",
+          "token": "Tunniste",
+          "hide_device_set_bulbs": "Piilota laiteryhmän lamput"
+        },
+        "description": "Päivitä IKEA Dirigera -keskittimen asetukset..."
+      },
+      "action": {
+        "data": {
+          "ip_address": "Keskittimen IP",
+          "hide_device_set_bulbs": "Piilota laiteryhmän lamput"
+        },
+        "description": "Paina Dirigera-keskittimen toimintopainiketta ja paina Lähetä.",
+        "title": "IKEA Dirigera -keskittimen asennus"
+      }
+    }
+  },
+  "exceptions": {
+    "hub_exception": {
+      "message": "Keskittimen poikkeus..."
+    }
+  },
+  "device_automation": {
+    "trigger_type": {
+      "single_click": "{entity_name} Yksi painallus",
+      "long_press": "{entity_name} Pitkä painallus",
+      "double_click": "{entity_name} Kaksoispainallus",
+      "button1_single_click": "{entity_name} Painike 1 - yksi painallus",
+      "button1_long_press": "{entity_name} Painike 1 - pitkä painallus",
+      "button1_double_click": "{entity_name} Painike 1 - kaksoispainallus",
+      "button2_single_click": "{entity_name} Painike 2 - yksi painallus",
+      "button2_long_press": "{entity_name} Painike 2 - pitkä painallus",
+      "button2_double_click": "{entity_name} Painike 2 - kaksoispainallus"
+    }
+  }
+}

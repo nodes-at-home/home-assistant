@@ -3,7 +3,7 @@ import logging
 from homeassistant import config_entries, core
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 
-from .const import DOMAIN, PLATFORM
+from .const import DOMAIN, PLATFORM, DISCOVERY_COORDINATOR
 from .base_classes import  ikea_starkvind_air_purifier_binary_sensor, ikea_motion_sensor, ikea_open_close_sensor, ikea_water_sensor
 from .ikea_gateway import ikea_gateway
 
@@ -22,7 +22,7 @@ async def async_setup_entry(
     async_add_entities([ikea_open_close_sensor(x) for x in platform.open_close_sensors])
     async_add_entities([ikea_water_sensor(x) for x in platform.water_sensors])
     
-    async_add_entities([ 
+    async_add_entities([
                     ikea_starkvind_air_purifier_binary_sensor(
                             device,
                             BinarySensorDeviceClass.PROBLEM,
@@ -30,5 +30,18 @@ async def async_setup_entry(
                             "filter_alarm_status",
                             "mdi:alarm-light-outline")
                     for device in platform.air_purifiers])
-   
+
+    # Register callback and known devices with discovery coordinator
+    discovery = hass.data[DOMAIN].get(DISCOVERY_COORDINATOR)
+    if discovery:
+        discovery.register_platform_callback("binary_sensor", async_add_entities)
+        for sensor in platform.motion_sensors:
+            discovery.register_known_device(sensor._json_data.id)
+        for sensor in platform.open_close_sensors:
+            discovery.register_known_device(sensor._json_data.id)
+        for sensor in platform.water_sensors:
+            discovery.register_known_device(sensor._json_data.id)
+        total = len(platform.motion_sensors) + len(platform.open_close_sensors) + len(platform.water_sensors)
+        logger.debug(f"Registered {total} binary sensors with discovery coordinator")
+
     logger.debug("Binary Sensor Complete async_setup_entry")

@@ -95,6 +95,16 @@
       "priority": {"name": "Priorität"}
     },
     "select": {
+      "batterymode": {
+        "name": "Batterie Modus (Auto-reset nach 60 sek)",
+        "state": {
+          "null": "löschen",
+          "unknown": "unbekannt",
+          "normal": "normal",
+          "hold": "halten",
+          "charge": "laden"
+        }
+      },
       "prioritysoc": {
         "name": "Hausbatterie: Haus hat Priorität",
         "state": {
@@ -172,6 +182,32 @@
           "0": "nur mit genug PV-Überschuss laden"
         }
       },
+      "batteryboostlimit": {
+        "name": "Schnell aus Hausbatterie laden Limit",
+        "state": {
+          "0": "bis zur Vollentladung",
+          "5": "bis 5 %",
+          "10": "bis 10 %",
+          "15": "bis 15 %",
+          "20": "bis 20 %",
+          "25": "bis 25 %",
+          "30": "bis 30 %",
+          "35": "bis 35 %",
+          "40": "bis 40 %",
+          "45": "bis 45 %",
+          "50": "bis 50 %",
+          "55": "bis 55 %",
+          "60": "bis 60 %",
+          "65": "bis 65 %",
+          "70": "bis 70 %",
+          "75": "bis 75 %",
+          "80": "bis 80 %",
+          "85": "bis 85 %",
+          "90": "bis 90 %",
+          "95": "bis 95 %",
+          "100": "deaktiviert"
+        }
+      },
       "vehiclename": {
         "name": "Fahrzeug",
         "state": {
@@ -209,7 +245,18 @@
         }
       },
       "mincurrent": {"name": "Min. Ladestrom"},
-      "maxcurrent": {"name": "Max. Ladestrom"}
+      "maxcurrent": {"name": "Max. Ladestrom"},
+      "planstrategyprecondition": {
+        "name": "Ladeplanung: Spätes Laden",
+        "state": {
+          "0": "Nein",
+          "900": "15 Minuten",
+          "1800": "30 Minuten",
+          "3600": "1 Stunde",
+          "7200": "2 Stunden",
+          "604800": "Alles"
+        }
+      }
     },
     "sensor": {
       "chargecurrent": {"name": "Ladestrom"},
@@ -298,18 +345,22 @@
       "tariffsolar":          {"name": "Solar Prognose [Standort]"},
 
       "stattotalsolarpercentage": {"name": "Statistik: gesamt Sonnenenergie"},
+      "stattotalsolarkwhtemplate": {"name": "Statistik: gesamt Solar-kWh"},
       "stattotalchargedkwh": {"name": "Statistik: gesamt Ladeenergie"},
       "stattotalavgprice": {"name": "Statistik: gesamt Ø Preis"},
       "stattotalavgco2": {"name": "Statistik: gesamt Ø CO₂"},
       "statthisyearsolarpercentage": {"name": "Statistik: dieses Jahr Sonnenenergie"},
+      "statthisyearsolarkwhtemplate": {"name": "Statistik: dieses Jahr Solar-kWh"},
       "statthisyearchargedkwh": {"name": "Statistik: dieses Jahr Ladeenergie"},
       "statthisyearavgprice": {"name": "Statistik: dieses Jahr Ø Preis"},
       "statthisyearavgco2": {"name": "Statistik: dieses Jahr Ø CO₂"},
       "stat365solarpercentage": {"name": "Statistik: letzten 365 Tage Sonnenenergie"},
+      "stat365solarkwhtemplate": {"name": "Statistik: letzten 365 Tage Solar-kWh"},
       "stat365chargedkwh": {"name": "Statistik: letzten 365 Tage Ladeenergie"},
       "stat365avgprice": {"name": "Statistik: letzten 365 Tage Ø Preis"},
       "stat365avgco2": {"name": "Statistik: letzten 365 Tage Ø CO₂"},
       "stat30solarpercentage": {"name": "Statistik: letzten 30 Tage Sonnenenergie"},
+      "stat30solarkwhtemplate": {"name": "Statistik: letzten 30 Tage Solar-kWh"},
       "stat30chargedkwh": {"name": "Statistik: letzten 30 Tage Ladeenergie"},
       "stat30avgprice": {"name": "Statistik: letzten 30 Tage Ø Preis"},
       "stat30avgco2": {"name": "Statistik: letzten 30 Tage Ø CO₂"},
@@ -342,7 +393,13 @@
     },
     "switch": {
       "batterydischargecontrol": {"name": "Hausbatterie: Entladesperre"},
-      "batteryboost": {"name": "Schnell aus Hausbatterie laden."}
+      "batteryboost": {"name": "Schnell aus Hausbatterie laden."},
+      "planstrategycontinuous": {"name": "Ladeplanung: Optimierung",
+        "state": {
+          "on": "Kontinuierlich",
+          "off": "Günstigste"
+        }
+      }
     }
   }
 }

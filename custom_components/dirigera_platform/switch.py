@@ -2,7 +2,7 @@ import logging
 
 from homeassistant import config_entries, core
 
-from .const import DOMAIN, PLATFORM
+from .const import DOMAIN, PLATFORM, DISCOVERY_COORDINATOR
 from .base_classes import ikea_outlet_switch_sensor
 from .ikea_gateway import ikea_gateway
 from .base_classes import ikea_starkvind_air_purifier_switch_sensor
@@ -44,5 +44,13 @@ async def async_setup_entry(
     
     logger.debug(f"Found {len(air_purifier_entities)} air_purifier switch sensors...")
     async_add_entities(air_purifier_entities)
+
+    # Register callback and known devices with discovery coordinator
+    discovery = hass.data[DOMAIN].get(DISCOVERY_COORDINATOR)
+    if discovery:
+        discovery.register_platform_callback("switch", async_add_entities)
+        for outlet in platform.outlets:
+            discovery.register_known_device(outlet._json_data.id)
+        logger.debug(f"Registered {len(platform.outlets)} outlets with discovery coordinator")
 
     logger.debug("SWITCH Complete async_setup_entry")

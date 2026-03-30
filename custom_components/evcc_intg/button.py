@@ -5,6 +5,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
 from . import EvccDataUpdateCoordinator, EvccBaseEntity
 from .const import DOMAIN, BUTTONS_ENTITIES, BUTTONS_ENTITIES_PER_LOADPOINT, ExtButtonEntityDescription
 
@@ -31,17 +32,19 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
 
         for a_stub in BUTTONS_ENTITIES_PER_LOADPOINT:
             if not lp_is_integrated or a_stub.integrated_supported:
+                the_key = a_stub.tag.entity_key if a_stub.tag.entity_key is not None else a_stub.tag.json_key
                 description = ExtButtonEntityDescription(
                     tag=a_stub.tag,
                     lp_idx=lp_api_index,
-                    key=f"{lp_id_addon}_{a_stub.tag.json_key}",
-                    translation_key=a_stub.tag.json_key,
+                    key=f"{lp_id_addon}_{the_key}",
+                    translation_key=the_key,
                     name_addon=lp_name_addon if multi_loadpoint_config else None,
                     icon=a_stub.icon,
                     device_class=a_stub.device_class,
                     unit_of_measurement=a_stub.unit_of_measurement,
                     entity_category=a_stub.entity_category,
                     entity_registry_enabled_default=a_stub.entity_registry_enabled_default,
+                    is_lp_integrated_device=lp_is_integrated,
 
                     # the entity type specific values...
                     payload=a_stub.payload

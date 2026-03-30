@@ -1,3 +1,4 @@
+from typing import Optional
 from homeassistant import core
 from homeassistant.core import HomeAssistantError
 
@@ -20,11 +21,14 @@ from homeassistant.const import (
     UnitOfPower,
     UnitOfTemperature,
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+    CONCENTRATION_PARTS_PER_MILLION,
+    LIGHT_LUX
     )
 
 from dirigera import Hub
 from dirigera.devices.blinds import Blind
 from dirigera.devices.environment_sensor import EnvironmentSensor
+from dirigera.devices.light_sensor import LightSensor
 from dirigera.devices.controller import Controller
 from dirigera.devices.air_purifier import FanModeEnum
 
@@ -177,8 +181,9 @@ class ikea_base_device_sensor():
     
     @property
     def icon(self):
-        return self._icon 
-    
+        # Return None instead of empty string to let HA use device_class default icon
+        return self._icon if self._icon else None
+
     @property
     def native_unit_of_measurement(self) -> str:
         return self._native_unit_of_measurement
@@ -211,8 +216,13 @@ class ikea_outlet_device(ikea_base_device):
 
 class ikea_outlet_switch_sensor(ikea_base_device_sensor, SwitchEntity):
     def __init__(self, device):
-        super().__init__(device = device, name = device.name )
-        
+        # No suffix or name prefix - use device name dynamically
+        super().__init__(device)
+
+    @property
+    def device_class(self):
+        return SwitchDeviceClass.OUTLET
+
     @property
     def is_on(self):
         return self._device.is_on
@@ -240,6 +250,32 @@ class ikea_motion_sensor(ikea_base_device_sensor, BinarySensorEntity):
     @property
     def is_on(self):
         return self._device.is_on or self._device.is_detected
+
+class ikea_light_sensor_device(ikea_base_device):
+    def __init__(self, hass, hub, json_data: LightSensor):
+        logger.debug("ikea_light_sensor_device ctor...")
+        super().__init__(hass, hub, json_data, hub.get_light_sensor_by_id)
+        self.skip_update = True
+
+class ikea_light_sensor_lux(ikea_base_device_sensor, SensorEntity):
+    def __init__(self, device: ikea_light_sensor_device):
+        logger.debug("ikea_light_sensor_lux ctor...")
+        super().__init__(
+            device,
+            id_suffix="LUX",
+            name="Illuminance",
+            device_class=SensorDeviceClass.ILLUMINANCE,
+            native_unit_of_measurement=LIGHT_LUX,
+            state_class=SensorStateClass.MEASUREMENT)
+
+    @property
+    def native_value(self) -> float | None:
+        raw = self._device.illuminance
+        if raw is None or raw <= 0:
+            return 0
+        # Matter spec: MeasuredValue = 10000 * log10(lux) + 1
+        # So: lux = 10^((MeasuredValue - 1) / 10000)
+        return round(10 ** ((raw - 1) / 10000), 1)
 
 class ikea_open_close_device(ikea_base_device):
     def __init__(self, hass, hub, json_data):
@@ -390,11 +426,12 @@ class ikea_vindstyrka_humidity(ikea_base_device_sensor, SensorEntity):
     def __init__(self, device: ikea_vindstyrka_device) -> None:
         logger.debug("ikea_vindstyrka_humidity ctor...")
         super().__init__(
-                    device, 
-                    id_suffix="HUM", 
+                    device,
+                    id_suffix="HUM",
                     name="Humidity",
                     device_class=SensorDeviceClass.HUMIDITY,
-                    native_unit_of_measurement=PERCENTAGE)
+                    native_unit_of_measurement=PERCENTAGE,
+                    state_class="measurement")
 
     @property
     def native_value(self) -> int:
@@ -423,11 +460,12 @@ class ikea_vindstyrka_pm25(ikea_base_device_sensor, SensorEntity):
             id_suffix = "MINPM25"
             name_suffix = "Min Measured PM2.5"
         
-        super().__init__(device, 
-                         id_suffix=id_suffix, 
+        super().__init__(device,
+                         id_suffix=id_suffix,
                          name=name_suffix,
                          device_class=SensorDeviceClass.PM25,
-                         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER)
+                         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+                         state_class="measurement")
 
     @property
     def native_value(self) -> int:
@@ -444,15 +482,30 @@ class ikea_vindstyrka_voc_index(ikea_base_device_sensor, SensorEntity):
     def __init__(self, device: ikea_vindstyrka_device) -> None:
         logger.debug("ikea_vindstyrka_voc_index ctor...")
         super().__init__(
-            device, 
-            id_suffix="VOC", 
+            device,
+            id_suffix="VOC",
             name="VOC Index",
             device_class=SensorDeviceClass.VOLATILE_ORGANIC_COMPOUNDS,
-            native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER)
+            native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+            state_class="measurement")
 
     @property
     def native_value(self) -> int:
         return self._device.voc_index
+
+class ikea_alpstuga_co2(ikea_base_device_sensor, SensorEntity):
+    def __init__(self, device: ikea_vindstyrka_device) -> None:
+        logger.debug("ikea_alpstuga_co2 ctor...")
+        super().__init__(
+            device, 
+            id_suffix="CO2", 
+            name="CO2",
+            device_class=SensorDeviceClass.CO2,
+            native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION)
+
+    @property
+    def native_value(self) -> int:
+        return self._device.current_c_o2
 
 # SOMRIG Controllers act differently in the gateway Hub
 # While its one device but two id's are sent back each
@@ -460,7 +513,12 @@ class ikea_vindstyrka_voc_index(ikea_base_device_sensor, SensorEntity):
 # all same except _1 and _2 suffix. The serial number on the
 # controllers is same.
 
-CONTROLLER_BUTTON_MAP = { "SOMRIG shortcut button" : 2 }
+CONTROLLER_BUTTON_MAP = {
+    "SOMRIG shortcut button" : 2,
+    "Remote Control N2" : 4,  # STYRBAR 4-button remote
+    "TRADFRI on/off switch" : 2,  # Hub currently reports both as _1, but has 2 physical buttons
+    "RODRET Dimmer" : 2,
+}
 
 class ikea_controller_device(ikea_base_device, SensorEntity):
     def __init__(self,hass:core.HomeAssistant, hub:Hub, json_data:Controller):
@@ -664,7 +722,7 @@ class ikea_starkvind_air_purifier_sensor(ikea_base_device_sensor, SensorEntity):
                     id_suffix=prefix,
                     name=prefix,
                     device_class=device_class,
-                    native_unit_of_measurement=native_uom,
+                    native_unit_of_measurement=native_unit_of_measurement,
                     icon=icon_name)
 
         self._native_value_prop = native_value_prop
@@ -789,6 +847,7 @@ class current_active_power_sensor(ikea_base_device_sensor, SensorEntity):
                             id_suffix="CAP01",
                             name="Current Active Power",
                             native_unit_of_measurement=UnitOfPower.WATT,
+                            state_class=SensorStateClass.MEASUREMENT,
                             icon="mdi:lightning-bolt-outline",
                             device_class=SensorDeviceClass.POWER)
 

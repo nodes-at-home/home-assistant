@@ -12,7 +12,8 @@ from .base_classes import (
     ikea_controller_device,
     ikea_open_close_device, 
     ikea_motion_sensor_device, 
-    ikea_water_sensor_device    
+    ikea_water_sensor_device,
+    ikea_light_sensor_device,
 )
 
 from dirigera.devices.scene import Trigger, TriggerDetails, EndTriggerEvent
@@ -31,6 +32,7 @@ class HubDeviceType(Enum):
     OPEN_CLOSE_SENSOR   = "open_close"
     MOTION_SENSOR       = "motion_sensor"
     WATER_SENSOR        = "water_sensor"
+    LIGHT_SENSOR        = "light_sensor"
 
 class ikea_gateway:
     def __init__(self):
@@ -98,6 +100,11 @@ class ikea_gateway:
         logger.debug(f"Found {len(motion_sensors)} total of all motion_sensors devices to setup...")
         self.devices[HubDeviceType.MOTION_SENSOR] = [ikea_motion_sensor_device(hass, hub, x) for x in motion_sensors]
         
+        #Light Sensors (MYGGSPRAY illuminance)
+        light_sensors = await hass.async_add_executor_job(hub.get_light_sensors)
+        logger.debug(f"Found {len(light_sensors)} total of all light_sensors devices to setup...")
+        self.devices[HubDeviceType.LIGHT_SENSOR] = [ikea_light_sensor_device(hass, hub, x) for x in light_sensors]
+
         #Water Sensors
         water_sensors = await hass.async_add_executor_job(hub.get_water_sensors)
         logger.debug(f"Found {len(water_sensors)} total of all water_sensors devices to setup...")
@@ -148,6 +155,10 @@ class ikea_gateway:
     def motion_sensors(self):
         return self.get_devices(HubDeviceType.MOTION_SENSOR)
     
+    @property
+    def light_sensors(self):
+        return self.get_devices(HubDeviceType.LIGHT_SENSOR)
+
     @property
     def water_sensors(self):
         return self.get_devices(HubDeviceType.WATER_SENSOR)

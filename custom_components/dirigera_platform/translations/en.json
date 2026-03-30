@@ -61,7 +61,13 @@
         "button1_double_click": "{entity_name} Button 1 Double Click",
         "button2_single_click": "{entity_name} Button 2 Single Click",
         "button2_long_press": "{entity_name} Button 2 Long Press",
-        "button2_double_click": "{entity_name} Button 2 Double Click"
+        "button2_double_click": "{entity_name} Button 2 Double Click",
+        "button3_single_click": "{entity_name} Button 3 Single Click",
+        "button3_long_press": "{entity_name} Button 3 Long Press",
+        "button3_double_click": "{entity_name} Button 3 Double Click",
+        "button4_single_click": "{entity_name} Button 4 Single Click",
+        "button4_long_press": "{entity_name} Button 4 Long Press",
+        "button4_double_click": "{entity_name} Button 4 Double Click"
       }
    }
   }

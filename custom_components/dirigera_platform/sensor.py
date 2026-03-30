@@ -4,12 +4,14 @@ from .dirigera_lib_patch import HubX
 
 from .base_classes import (
     battery_percentage_sensor,
+    ikea_alpstuga_co2,
     ikea_vindstyrka_temperature,
     ikea_vindstyrka_humidity,
     ikea_vindstyrka_pm25,
     ikea_vindstyrka_voc_index,
     WhichPM25,
     ikea_starkvind_air_purifier_sensor,
+    ikea_light_sensor_lux,
     current_amps_sensor ,
     current_active_power_sensor,
     current_voltage_sensor,
@@ -23,11 +25,11 @@ from .ikea_gateway import ikea_gateway
 
 from homeassistant import config_entries, core
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
-from homeassistant.const import CONF_IP_ADDRESS, CONF_TOKEN
+from homeassistant.const import CONF_IP_ADDRESS, CONF_TOKEN, UnitOfTime, CONCENTRATION_MICROGRAMS_PER_CUBIC_METER
 from homeassistant.core import HomeAssistantError
 from homeassistant.helpers.entity import EntityCategory
 
-from .const import DOMAIN, PLATFORM
+from .const import DOMAIN, PLATFORM, DISCOVERY_COORDINATOR
 
 logger = logging.getLogger("custom_components.dirigera_platform")
 
@@ -53,11 +55,17 @@ async def async_setup_entry(
     await add_environment_sensors(async_add_entities, platform.environment_sensors)
     await add_outlet_power_attrs(async_add_entities, platform.outlets)
 
+    # Add light sensor illuminance entities (MYGGSPRAY)
+    light_sensor_entities = [ikea_light_sensor_lux(x) for x in platform.light_sensors]
+    logger.debug(f"Found {len(light_sensor_entities)} light sensor entities...")
+    async_add_entities(light_sensor_entities)
+
     # Add battery sensors
     battery_sensors = []
     battery_sensors.extend([battery_percentage_sensor(x) for x in platform.motion_sensors])
     battery_sensors.extend([battery_percentage_sensor(x) for x in platform.open_close_sensors])
     battery_sensors.extend([battery_percentage_sensor(x) for x in platform.water_sensors])
+    battery_sensors.extend([battery_percentage_sensor(x) for x in platform.light_sensors if getattr(x,"battery_percentage",None) is not None])
     battery_sensors.extend([battery_percentage_sensor(x) for x in platform.environment_sensors if getattr(x,"battery_percentage",None) is not None])
     battery_sensors.extend([battery_percentage_sensor(x) for x in platform.blinds if getattr(x,"battery_percentage",None) is not None])
 
@@ -65,6 +73,20 @@ async def async_setup_entry(
     async_add_entities(battery_sensors)
 
     await add_air_purifier_sensors(async_add_entities, platform.air_purifiers)
+
+    # Register callback and known devices with discovery coordinator
+    discovery = hass.data[DOMAIN].get(DISCOVERY_COORDINATOR)
+    if discovery:
+        discovery.register_platform_callback("sensor", async_add_entities)
+        for sensor in platform.environment_sensors:
+            discovery.register_known_device(sensor._json_data.id)
+        for sensor in platform.light_sensors:
+            discovery.register_known_device(sensor._json_data.id)
+        for controller in platform.controllers:
+            discovery.register_known_device(controller._json_data.id)
+        total = len(platform.environment_sensors) + len(platform.light_sensors) + len(platform.controllers)
+        logger.debug(f"Registered {total} sensors with discovery coordinator")
+
     logger.debug("sensor Complete async_setup_entry")
 
 async def add_environment_sensors(async_add_entities, env_devices):
@@ -73,18 +95,22 @@ async def add_environment_sensors(async_add_entities, env_devices):
         # For each device setup up multiple entities
         # Some non IKEA environment sensors only have some of the attributes
         # hence check if it exists and then add
-        if getattr(env_device,"current_temperature") is not None:
+        if getattr(env_device,"current_temperature", None) is not None:
             env_sensors.append(ikea_vindstyrka_temperature(env_device))
-        if getattr(env_device,"current_r_h") is not None:
+        if getattr(env_device,"current_r_h", None) is not None:
             env_sensors.append(ikea_vindstyrka_humidity(env_device))
-        if getattr(env_device,"current_p_m25") is not None:
+        if getattr(env_device,"current_p_m25", None) is not None:
             env_sensors.append(ikea_vindstyrka_pm25(env_device, WhichPM25.CURRENT))
-        if getattr(env_device,"max_measured_p_m25") is not None:
+        if getattr(env_device,"max_measured_p_m25", None) is not None:
             env_sensors.append(ikea_vindstyrka_pm25(env_device, WhichPM25.MAX))
-        if getattr(env_device,"min_measured_p_m25") is not None:
+        if getattr(env_device,"min_measured_p_m25", None) is not None:
             env_sensors.append(ikea_vindstyrka_pm25(env_device, WhichPM25.MIN))
-        if getattr(env_device,"voc_index") is not None:
+        if getattr(env_device,"voc_index", None) is not None:
             env_sensors.append(ikea_vindstyrka_voc_index(env_device))
+        if getattr(env_device,"current_c_o2") is not None:
+            env_sensors.append(ikea_alpstuga_co2(env_device))
+        if getattr(env_device,"current_c_o2", None) is not None:
+            env_sensors.append(ikea_alpstuga_co2(env_device))
 
     logger.debug("Found {} env entities to setup...".format(len(env_sensors)))
 
@@ -114,7 +140,7 @@ async def add_air_purifier_sensors(async_add_entities, air_purifiers):
                 prefix="Filter Lifetime",
                 device_class=SensorDeviceClass.DURATION,
                 native_value_prop="filter_lifetime",
-                native_uom="min",
+                native_unit_of_measurement=UnitOfTime.MINUTES,
                 icon_name="mdi:clock-time-eleven-outline",
             )
         )
@@ -125,7 +151,7 @@ async def add_air_purifier_sensors(async_add_entities, air_purifiers):
                 prefix="Filter Elapsed Time",
                 device_class=SensorDeviceClass.DURATION,
                 native_value_prop="filter_elapsed_time",
-                native_uom="min",
+                native_unit_of_measurement=UnitOfTime.MINUTES,
                 icon_name="mdi:timelapse",
             )
         )
@@ -136,7 +162,7 @@ async def add_air_purifier_sensors(async_add_entities, air_purifiers):
                 prefix="Current pm25",
                 device_class=SensorDeviceClass.PM25,
                 native_value_prop="current_p_m25",
-                native_uom="µg/m³",
+                native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
                 icon_name="mdi:molecule",
             )
         )
@@ -147,7 +173,7 @@ async def add_air_purifier_sensors(async_add_entities, air_purifiers):
                 prefix="Motor Runtime",
                 device_class=SensorDeviceClass.DURATION,
                 native_value_prop="motor_runtime",
-                native_uom="min",
+                native_unit_of_measurement=UnitOfTime.MINUTES,
                 icon_name="mdi:run-fast",
             )
         )

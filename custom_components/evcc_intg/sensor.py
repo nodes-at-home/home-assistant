@@ -3,13 +3,14 @@ from dataclasses import replace
 from datetime import datetime, timezone
 from numbers import Number
 
-from custom_components.evcc_intg.pyevcc_ha.keys import Tag, EP_TYPE, FORECAST_CONTENT
 from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfTemperature, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
+
+from custom_components.evcc_intg.pyevcc_ha.keys import Tag, EP_TYPE, FORECAST_CONTENT
 from . import EvccDataUpdateCoordinator, EvccBaseEntity
 from .const import (
     DOMAIN,
@@ -93,18 +94,20 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
 
                 # only when the json_idx has a length of 1 we must patch our key & translation_key
                 patch_keys = a_stub.json_idx is not None and len(a_stub.json_idx) == 1
+                the_key = a_stub.tag.entity_key if a_stub.tag.entity_key is not None else a_stub.tag.json_key
 
                 description = ExtSensorEntityDescription(
                     tag=a_stub.tag,
                     lp_idx=lp_api_index,
-                    key=f"{lp_id_addon}_{a_stub.tag.json_key}" if not patch_keys else f"{lp_id_addon}_{a_stub.tag.json_key}_{a_stub.json_idx[0]}",
-                    translation_key=a_stub.tag.json_key if not patch_keys else f"{a_stub.tag.json_key}_{a_stub.json_idx[0]}",
+                    key=f"{lp_id_addon}_{the_key}" if not patch_keys else f"{lp_id_addon}_{the_key}_{a_stub.json_idx[0]}",
+                    translation_key=the_key if not patch_keys else f"{the_key}_{a_stub.json_idx[0]}",
                     name_addon=lp_name_addon if multi_loadpoint_config else None,
                     icon=a_stub.icon,
                     device_class=SensorDeviceClass.TEMPERATURE if force_celsius else a_stub.device_class,
                     unit_of_measurement=UnitOfTemperature.CELSIUS if force_celsius else a_stub.unit_of_measurement,
                     entity_category=a_stub.entity_category,
                     entity_registry_enabled_default=a_stub.entity_registry_enabled_default,
+                    is_lp_integrated_device=lp_is_integrated,
 
                     # the entity type specific values...
                     state_class=a_stub.state_class,
@@ -146,11 +149,12 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
         for a_stub in SENSOR_ENTITIES_PER_VEHICLE:
             # only when the json_idx has a length of 1 we must patch our key & translation_key
             patch_keys = a_stub.json_idx is not None and len(a_stub.json_idx) == 1
+            the_key = a_stub.tag.entity_key if a_stub.tag.entity_key is not None else a_stub.tag.json_key
 
             description = ExtSensorEntityDescription(
                 tag=a_stub.tag,
-                key=f"{veh_id_addon}_{a_stub.tag.json_key}" if not patch_keys else f"{veh_id_addon}_{a_stub.tag.json_key}_{a_stub.json_idx[0]}",
-                translation_key=a_stub.tag.json_key if not patch_keys else f"{a_stub.tag.json_key}_{a_stub.json_idx[0]}",
+                key=f"{veh_id_addon}_{the_key}" if not patch_keys else f"{veh_id_addon}_{the_key}_{a_stub.json_idx[0]}",
+                translation_key=the_key if not patch_keys else f"{the_key}_{a_stub.json_idx[0]}",
                 name_addon=veh_name_addon if multi_loadpoint_config else None,
                 icon=a_stub.icon,
                 device_class=a_stub.device_class,
@@ -198,7 +202,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                     the_key = a_stub.tag.entity_key if a_stub.tag.entity_key is not None else a_stub.tag.json_key
                     description = ExtSensorEntityDescription(
                         tag=a_stub.tag,
-                        #key=a_stub.tag.entity_key if a_stub.tag.entity_key is not None else a_stub.tag.json_key,
                         key=f"{a_circuit_key}_{the_key}",
                         translation_key=the_key,
                         lp_idx=a_circuit_key,
@@ -299,36 +302,6 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
             else:
                 return a_dict
 
-        elif self.tag in [Tag.FORECAST_GRID, Tag.FORECAST_SOLAR, Tag.FORECAST_FEEDIN, Tag.FORECAST_PLANNER]:
-            data = self.coordinator.read_tag(self.tag)
-            if data is not None:
-                if self.tag in [Tag.FORECAST_GRID, Tag.FORECAST_FEEDIN, Tag.FORECAST_PLANNER]:
-                    if self.tag in TAG_TO_CONTENT_KEY:
-                        content_key = TAG_TO_CONTENT_KEY[self.tag]
-                        if content_key in data:
-                            # evcc 1/4h forecast data exceeds HA database limit (16384 bytes).
-                            # Workaround: compress by stripping 'end' values via compress_data.
-                            a_array = data[content_key]
-                            if a_array is not None:
-                                return {"rates": compress_data(a_array)}
-                            else:
-                                return {"rates": a_array}
-
-                elif self.tag == Tag.FORECAST_SOLAR and FORECAST_CONTENT.SOLAR.value in data:
-                    a_object = data[FORECAST_CONTENT.SOLAR.value]
-                    if "timeseries" in a_object:
-                        a_copy_object = a_object.copy()
-                        a_array = a_copy_object["timeseries"]
-                        if a_array is not None and "ts" in a_array[0]:
-                            a_copy_object["timeseries"] = compress_timeseries(a_array)
-                        else:
-                            a_copy_object["timeseries"] = a_array
-
-                        return a_copy_object
-                    else:
-                        # return the original object
-                        return a_object
-
         elif self.tag.type == EP_TYPE.EVOPT:
             try:
                 # json_idx=[JSONKEY_EVOPT_RES_BATTERIES, 0, JSONKEY_EVOPT_RES_BATTERIES_AINDEX_CHARGED_TOTAL, 0],
@@ -377,6 +350,50 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                         return return_obj
             except (IndexError, ValueError, TypeError, KeyError) as ex:
                 _LOGGER.info(f"Error reading tag {self.tag} ({self.lp_idx}): {ex}")
+
+        elif self.tag in [Tag.FORECAST_GRID, Tag.FORECAST_SOLAR, Tag.FORECAST_FEEDIN, Tag.FORECAST_PLANNER]:
+            data = self.coordinator.read_tag(self.tag)
+            if data is not None:
+                if self.tag in [Tag.FORECAST_GRID, Tag.FORECAST_FEEDIN, Tag.FORECAST_PLANNER]:
+                    if self.tag in TAG_TO_CONTENT_KEY:
+                        content_key = TAG_TO_CONTENT_KEY[self.tag]
+                        if content_key in data:
+                            # evcc 1/4h forecast data exceeds HA database limit (16384 bytes).
+                            # Workaround: compress by stripping 'end' values via compress_data.
+                            a_array = data[content_key]
+                            if a_array is not None:
+                                return {"rates": compress_data(a_array)}
+                            else:
+                                return {"rates": a_array}
+
+                elif self.tag == Tag.FORECAST_SOLAR and FORECAST_CONTENT.SOLAR.value in data:
+                    a_object = data[FORECAST_CONTENT.SOLAR.value]
+                    # Fix (masked) exception when a_object is None
+                    if a_object is not None and "timeseries" in a_object:
+                        a_copy_object = a_object.copy()
+                        a_array = a_copy_object["timeseries"]
+                        if a_array is not None and "ts" in a_array[0]:
+                            a_copy_object["timeseries"] = compress_timeseries(a_array)
+                        else:
+                            a_copy_object["timeseries"] = a_array
+
+                        return a_copy_object
+                    else:
+                        # return the original object
+                        return a_object
+
+        elif self.tag == Tag.PV:
+            # we check if there is a 'title' (at the given index)
+            value = self.coordinator.read_tag(self.tag, self.lp_idx)
+            if value is not None and hasattr(self.entity_description, "json_idx") and self.entity_description.json_idx is not None:
+                try:
+                    # we just need the first entry of the 'json_idx'
+                    array_idx = self.entity_description.json_idx[0]
+                    a_title = value[array_idx].get("title", None)
+                    if a_title is not None:
+                        return {"title": a_title}
+                except (IndexError, ValueError, TypeError, KeyError) as ex:
+                    _LOGGER.info(f"Error reading tag {self.tag} ({self.lp_idx}): {ex}")
 
         return {}
 

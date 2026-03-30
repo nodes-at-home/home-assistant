@@ -2,13 +2,14 @@ import asyncio
 import logging
 from dataclasses import replace
 
-from custom_components.evcc_intg.pyevcc_ha.const import MIN_CURRENT_LIST, MAX_CURRENT_LIST
-from custom_components.evcc_intg.pyevcc_ha.keys import Tag
 from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+from custom_components.evcc_intg.pyevcc_ha.const import MIN_CURRENT_LIST, MAX_CURRENT_LIST
+from custom_components.evcc_intg.pyevcc_ha.keys import Tag
 from . import EvccDataUpdateCoordinator, EvccBaseEntity
 from .const import DOMAIN, SELECT_ENTITIES, SELECT_ENTITIES_PER_LOADPOINT, ExtSelectEntityDescription
 
@@ -55,17 +56,19 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
 
         for a_stub in SELECT_ENTITIES_PER_LOADPOINT:
             if (not lp_is_single_phase_only or a_stub.tag != Tag.PHASES) and (not lp_is_integrated or a_stub.integrated_supported):
+                the_key = a_stub.tag.entity_key if a_stub.tag.entity_key is not None else a_stub.tag.json_key
                 description = ExtSelectEntityDescription(
                     tag=a_stub.tag,
                     lp_idx=lp_api_index,
-                    key=f"{lp_id_addon}_{a_stub.tag.json_key}",
-                    translation_key=a_stub.tag.json_key,
+                    key=f"{lp_id_addon}_{the_key}",
+                    translation_key=the_key,
                     name_addon=lp_name_addon if multi_loadpoint_config else None,
                     icon=a_stub.icon,
                     device_class=a_stub.device_class,
                     unit_of_measurement=a_stub.unit_of_measurement,
                     entity_category=a_stub.entity_category,
                     entity_registry_enabled_default=a_stub.entity_registry_enabled_default,
+                    is_lp_integrated_device=lp_is_integrated,
 
                     # the entity type specific values...
                     options=["null"] + list(coordinator._vehicle.keys()) if a_stub.tag == Tag.LP_VEHICLENAME else a_stub.tag.options,
@@ -98,6 +101,7 @@ class EvccSelect(EvccBaseEntity, SelectEntity):
         if self.tag == Tag.LP_VEHICLENAME:
 
             has_pf_data = hasattr(self.platform, "platform_data")
+            has_cp_trans = hasattr(self.platform.platform_data, "component_translations") if has_pf_data else hasattr(self.platform, "component_translations")
             has_pf_trans = hasattr(self.platform.platform_data, "platform_translations") if has_pf_data else hasattr(self.platform, "platform_translations")
             has_pf_default_lang_trans = hasattr(self.platform.platform_data, "default_language_platform_translations") if has_pf_data else hasattr(self.platform, "default_language_platform_translations")
 
@@ -108,12 +112,16 @@ class EvccSelect(EvccBaseEntity, SelectEntity):
                 if has_pf_data:
                     if has_pf_trans:
                         self.platform.platform_data.platform_translations[a_trans_key] = a_value
+                    if has_cp_trans:
+                        self.platform.platform_data.component_translations[a_trans_key] = a_value
                     if has_pf_default_lang_trans:
                         self.platform.platform_data.default_language_platform_translations[a_trans_key] = a_value
                 else:
                     # old HA compatible version...
                     if has_pf_trans:
                         self.platform.platform_translations[a_trans_key] = a_value
+                    if has_cp_trans:
+                        self.platform.component_translations[a_trans_key] = a_value
                     if has_pf_default_lang_trans:
                         self.platform.default_language_platform_translations[a_trans_key] = a_value
 
@@ -250,6 +258,7 @@ class EvccSelect(EvccBaseEntity, SelectEntity):
                     value = "null"
                 else:
                     value = 'unknown'
+
             if isinstance(value, (int, float)):
                 value = str(value)
 

@@ -19,8 +19,9 @@ from homeassistant.const import CONF_IP_ADDRESS, CONF_TOKEN, Platform
 from homeassistant.core import HomeAssistant
 import homeassistant.helpers.config_validation as cv
 
-from .const import DOMAIN, CONF_HIDE_DEVICE_SET_BULBS, PLATFORM
+from .const import DOMAIN, CONF_HIDE_DEVICE_SET_BULBS, PLATFORM, DISCOVERY_COORDINATOR
 from .hub_event_listener import hub_event_listener
+from .device_discovery import DeviceDiscoveryCoordinator, set_discovery_coordinator
 
 PLATFORMS_TO_SETUP = [  Platform.SWITCH, 
                         Platform.BINARY_SENSOR, 
@@ -197,22 +198,26 @@ async def async_setup_entry(
     await platform.make_devices(hass,hass_data[CONF_IP_ADDRESS], hass_data[CONF_TOKEN])
     
     #await hass.async_add_executor_job(platform.make_devices,hass, hass_data[CONF_IP_ADDRESS], hass_data[CONF_TOKEN])
-    
-    # Setup the entities
-    #setup_domains = ["switch", "binary_sensor", "light", "sensor", "cover", "fan", "scene"]
-    #hass.async_create_task(
-    #    hass.config_entries.async_forward_entry_setups(entry, setup_domains)
-    #)
-    #for setup_domain in setup_domains:
-    #    await hass.config_entries.async_forward_entry_setup(entry,setup_domain)
-    await hass.config_entries.async_forward_entry_setups (entry, PLATFORMS_TO_SETUP)
-    
-    # Now lets start the event listender too
-    hub = Hub(hass_data[CONF_TOKEN], hass_data[CONF_IP_ADDRESS])
-    
+
+    # Initialize the discovery coordinator BEFORE platform setup
+    # so platforms can register their callbacks during async_setup_entry
+    discovery = DeviceDiscoveryCoordinator(hass, hub)
+    hass.data[DOMAIN][DISCOVERY_COORDINATOR] = discovery
+    set_discovery_coordinator(discovery)
+    logger.debug("Device discovery coordinator initialized")
+
+    # Setup the entities - each platform will register its callback with discovery coordinator
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS_TO_SETUP)
+
+    # Now lets start the event listener
+    hub_basic = Hub(hass_data[CONF_TOKEN], hass_data[CONF_IP_ADDRESS])
+
     if hass_data[CONF_IP_ADDRESS] != "mock":
-        hub_events = hub_event_listener(hub, hass)
+        hub_events = hub_event_listener(hub_basic, hass, discovery)
         hub_events.start()
+        # Sync device areas from Dirigera rooms to HA device registry
+        # This ensures areas are set correctly after HA restart
+        await hub_events.sync_all_device_areas()
 
     logger.debug("Complete async_setup_entry...")
 

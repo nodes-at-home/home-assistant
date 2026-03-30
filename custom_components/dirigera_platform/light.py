@@ -18,8 +18,9 @@ from homeassistant.const import CONF_IP_ADDRESS, CONF_TOKEN
 from homeassistant.core import HomeAssistantError
 from homeassistant.helpers.entity import DeviceInfo
 
-from .const import DOMAIN, CONF_HIDE_DEVICE_SET_BULBS, PLATFORM
+from .const import DOMAIN, CONF_HIDE_DEVICE_SET_BULBS, PLATFORM, DISCOVERY_COORDINATOR
 from .hub_event_listener import hub_event_listener, registry_entry
+from .device_discovery import get_discovery_coordinator
 
 logger = logging.getLogger("custom_components.dirigera_platform")
 
@@ -75,6 +76,15 @@ async def async_setup_entry(
     async_add_entities([ikea_bulb_device_set(hub, device_sets[key], device_sets[key].get_lights()[0] ) for key in device_sets])
 
     async_add_entities(lights)
+
+    # Register callback and known devices with discovery coordinator
+    discovery = hass.data[DOMAIN].get(DISCOVERY_COORDINATOR)
+    if discovery:
+        discovery.register_platform_callback("light", async_add_entities)
+        for light in all_lights:
+            discovery.register_known_device(light._json_data.id)
+        logger.debug(f"Registered {len(all_lights)} lights with discovery coordinator")
+
     logger.debug("LIGHT Complete async_setup_entry")
 
 class device_set_model:
@@ -220,14 +230,18 @@ class ikea_bulb(LightEntity):
 
     @property
     def max_color_temp_kelvin(self):
+        # Dirigera API returns Kelvin values directly
+        # colorTemperatureMin = coldest = highest Kelvin (e.g. 4000K)
         return self._json_data.attributes.color_temperature_min
 
     @property
     def min_color_temp_kelvin(self):
+        # colorTemperatureMax = warmest = lowest Kelvin (e.g. 2202K)
         return self._json_data.attributes.color_temperature_max
 
     @property
     def color_temp_kelvin(self):
+        # Current color temperature in Kelvin
         return self._json_data.attributes.color_temperature
 
     @property
@@ -248,7 +262,7 @@ class ikea_bulb(LightEntity):
     
     @color_hue.setter
     def color_hue(self, value) :
-        self.json_data.attributes.color_hue = value 
+        self._json_data.attributes.color_hue = value
     
     @property
     def color_saturation(self):
@@ -304,12 +318,18 @@ class ikea_bulb(LightEntity):
 
             if ATTR_COLOR_TEMP_KELVIN in kwargs:
                 # color temp requested
-                # If request is white then brightness is passed
                 logger.debug("Request to set color temp...")
                 ct = kwargs[ATTR_COLOR_TEMP_KELVIN]
-                logger.debug("Set CT : {}".format(ct))
-                await self.hass.async_add_executor_job(self._json_data.set_color_temperature,ct)
-                self._ignore_update = True 
+                logger.debug("Set CT (Kelvin): {}".format(ct))
+                # Use direct API patch to bypass library validation issues
+                # The hub expects Kelvin values directly
+                await self.hass.async_add_executor_job(
+                    self._hub.patch,
+                    f"/devices/{self._json_data.id}",
+                    [{"attributes": {"colorTemperature": ct}}]
+                )
+                self._color_mode = ColorMode.COLOR_TEMP
+                self._ignore_update = True
 
             if ATTR_HS_COLOR in kwargs:
                 logger.debug("Request to set color HS")
@@ -317,9 +337,10 @@ class ikea_bulb(LightEntity):
                 self._color_hue = hs_tuple[0]
                 self._color_saturation = hs_tuple[1] / 100
                 # Saturation is 0 - 1 at IKEA
-               
+
                 await self.hass.async_add_executor_job(self._json_data.set_light_color,self._color_hue, self._color_saturation)
-                self._ignore_update = True 
+                self._color_mode = ColorMode.HS
+                self._ignore_update = True
             self.async_schedule_update_ha_state(False)
         except Exception as ex:
             logger.error("error encountered turning on : {}".format(self.name))

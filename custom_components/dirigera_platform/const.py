@@ -1,3 +1,4 @@
 DOMAIN = "dirigera_platform"
-PLATFORM="dirigera_platform"
-CONF_HIDE_DEVICE_SET_BULBS="hide_device_set_bulbs"
+PLATFORM = "dirigera_platform"
+CONF_HIDE_DEVICE_SET_BULBS = "hide_device_set_bulbs"
+DISCOVERY_COORDINATOR = "discovery_coordinator"

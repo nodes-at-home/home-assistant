@@ -137,12 +137,8 @@ class dirigera_platform_config_flow(config_entries.ConfigFlow, domain=DOMAIN):
         return OptionsFlowHandler(config_entry)
 
 
-class OptionsFlowHandler(config_entries.OptionsFlow):
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        logger.debug("OPTIONS flow handler init...")
-        logger.debug(config_entry.data)
-
-        self.config_entry = config_entry
+class OptionsFlowHandler(config_entries.OptionsFlowWithConfigEntry):
+    """Options flow handler - config_entry is provided by parent class."""
 
     async def async_step_init(
         self, user_input: Dict[str, Any] = None

@@ -3,6 +3,7 @@ import logging
 from datetime import datetime, timezone
 from json import JSONDecodeError
 from numbers import Number
+from time import time
 from typing import Callable
 
 import aiohttp
@@ -19,7 +20,7 @@ from custom_components.evcc_intg.pyevcc_ha.const import (
     SESSIONS_KEY_RAW,
     SESSIONS_KEY_TOTAL,
     SESSIONS_KEY_VEHICLES,
-    SESSIONS_KEY_LOADPOINTS
+    SESSIONS_KEY_LOADPOINTS,
 )
 from custom_components.evcc_intg.pyevcc_ha.keys import EP_TYPE, Tag, IS_TRIGGER
 
@@ -95,17 +96,26 @@ def calculate_session_sums(sessions_resp, json_resp: dict):
                     charge_duration = 0
             else:
                 charge_duration = a_session_entry.get("chargeDuration", 0)
-                if charge_duration is None or not isinstance(charge_duration, Number):
+                if charge_duration is None:
                     charge_duration = 0
+                elif not isinstance(charge_duration, Number):
+                    charge_duration = 0
+                    # de-noisify logs since None is a valid value for 'charge_duration' and we don't want to spam the logs with this
                     _LOGGER.info(f"calculate_session_sums(): invalid 'charge_duration' in session entry: {a_session_entry}")
 
             charged_energy = a_session_entry.get("chargedEnergy", 0)
-            if charged_energy is None or not isinstance(charged_energy, Number):
+            if charged_energy is None:
+                charged_energy = 0
+            elif not isinstance(charged_energy, Number):
+                # de-noisify logs since None is a valid value for 'charged_energy' and we don't want to spam the logs with this
                 charged_energy = 0
                 _LOGGER.info(f"calculate_session_sums(): invalid 'charged_energy' in session entry: {a_session_entry}")
 
             cost = a_session_entry.get("price", 0)
-            if cost is None or not isinstance(cost, Number):
+            if cost is None:
+                cost = 0
+            elif not isinstance(cost, Number):
+                # de-noisify logs since None is a valid value for 'cost' and we don't want to spam the logs with this
                 cost = 0
                 _LOGGER.info(f"calculate_session_sums(): invalid 'costs' in session entry: {a_session_entry}")
 
@@ -141,6 +151,7 @@ class EvccApiBridge:
             self.web_socket_url = f"ws://{host[7:]}/ws"
 
         self.ws_connected = False
+        self._ws_LAST_UPDATE = -1
         self.coordinator = coordinator
         self._debounced_update_task = None
 
@@ -189,27 +200,44 @@ class EvccApiBridge:
     def clear_data(self):
         self._TARIFF_LAST_UPDATE_HOUR = -1
         self._SESSIONS_LAST_UPDATE_HOUR = -1
+        self._ws_LAST_UPDATE = -1
         self._data = {}
+
+    def do_ws_update_tariffs(self):
+        return self.request_tariff_endpoints and self._TARIFF_LAST_UPDATE_HOUR != datetime.now(timezone.utc).hour
 
     async def ws_update_tariffs_if_required(self):
         """if we are in websocket mode, then we must (at least once each hour) update the tariff-data - we call
         this method in the watchdog to make sure that we have the latest data available!
         """
-        if self.request_tariff_endpoints and self._TARIFF_LAST_UPDATE_HOUR != datetime.now(timezone.utc).hour:
+        if self.do_ws_update_tariffs():
             await self.read_all_data(request_all=False, request_tariffs=True)
+
+    def do_ws_update_sessions(self):
+        return self._SESSIONS_LAST_UPDATE_HOUR != datetime.now(timezone.utc).hour
 
     async def ws_update_sessions_if_required(self):
         """if we are in websocket mode, then we must (at least once each hour) update the sessions-data - we call
         this method in the watchdog to make sure that we have the latest data available!
         """
-        if self._SESSIONS_LAST_UPDATE_HOUR != datetime.now(timezone.utc).hour:
+        if self.do_ws_update_sessions():
             await self.read_all_data(request_all=False, request_sessions=True)
+
+    def ws_check_last_update(self) -> bool:
+        if self._ws_LAST_UPDATE + 50 > time():
+            _LOGGER.debug(f"ws_check_last_update(): all good! [last update: {int(time()-self._ws_LAST_UPDATE)} sec ago]")
+            return True
+        else:
+            _LOGGER.info(f"ws_check_last_update(): force reconnect...")
+            return False
 
     async def connect_ws(self):
         try:
             async with self.web_session.ws_connect(self.web_socket_url) as ws:
                 self.ws_connected = True
+                self._ws_LAST_UPDATE = time()  # Set a grace period so the watchdog doesn't immediately kill connection
                 _LOGGER.info(f"connected to websocket: {self.web_socket_url}")
+
                 async for msg in ws:
                     if msg.type == aiohttp.WSMsgType.TEXT:
                         try:
@@ -220,7 +248,6 @@ class EvccApiBridge:
                         except:
                             _LOGGER.info(f"could not read initial data from evcc@{self.host} - ignoring")
                             self._data = {}
-
                         try:
                             ws_data = msg.json()
                             if self._data is None:
@@ -271,17 +298,16 @@ class EvccApiBridge:
                                         else:
                                             if key != "releaseNotes":
                                                 self._data[key] = value
-                                                _LOGGER.info(f"'added {key}' to self._data and assign: {value}")
-
+                                                _LOGGER.info(f"added '{key}' to self._data and assign: {value}")
 
                                 # END of for loop
                                 # _LOGGER.debug(f"key: {key} value: {value}")
-                                if self._debounced_update_task is not None:
-                                    self._debounced_update_task.cancel()
-                                self._debounced_update_task = asyncio.create_task(self._debounce_coordinator_update())
+                                self._ws_update_data_debounced()
 
                         except Exception as e:
                             _LOGGER.info(f"Could not read JSON from: {msg} - caused {e}")
+                            # Ensure we still update the coordinator even if processing failed
+                            self._ws_update_data_debounced()
 
                     elif msg.type in (aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR):
                         _LOGGER.debug(f"received: {msg}")
@@ -298,10 +324,22 @@ class EvccApiBridge:
 
         self.ws_connected = False
 
+    def _ws_update_data_debounced(self):
+        if self._debounced_update_task is not None:
+            self._debounced_update_task.cancel()
+        self._debounced_update_task = asyncio.create_task(self._debounce_coordinator_update())
+        self._ws_LAST_UPDATE = time()
+
     async def _debounce_coordinator_update(self):
-        await asyncio.sleep(0.3)
-        if self.coordinator is not None:
-            self.coordinator.async_set_updated_data(self._data)
+        try:
+            await asyncio.sleep(0.3)
+            if self.coordinator is not None:
+                self.coordinator.async_set_updated_data(self._data)
+        except asyncio.CancelledError:
+            #_LOGGER.debug("_debounce_coordinator_update(): task was cancelled (normal during reconnect)")
+            pass
+        except Exception as e:
+            _LOGGER.info(f"_debounce_coordinator_update(): ERROR: {type(e).__name__}: {e}", exc_info=True)
 
     async def read_all_data(self, request_all:bool=True, request_tariffs:bool=False, request_sessions:bool=False) -> dict:
         if request_all:
@@ -514,7 +552,7 @@ class EvccApiBridge:
             return {"err": "no response from evcc"}
 
     async def write_loadpoint_key(self, lp_idx_str, write_key, value) -> dict:
-        # idx will start with 1!
+        # lp_idx_str will start with 1!
         if isinstance(value, (bool, int, float)):
             value = str(value).lower()
         elif value is not None:
@@ -523,15 +561,55 @@ class EvccApiBridge:
         _LOGGER.info(f"going to write '{value}' for key '{write_key}' to evcc-loadpoint{lp_idx_str}@{self.host}")
         r_json = None
         if value is None:
+            # DELETE...
             req = f"{self.host}/api/{EP_TYPE.LOADPOINTS.value}/{lp_idx_str}/{write_key}"
             _LOGGER.debug(f"DELETE request: {req}")
             r_json = await _do_request(method=self.web_session.delete(url=req, ssl=False))
         else:
-            req = f"{self.host}/api/{EP_TYPE.LOADPOINTS.value}/{lp_idx_str}/{write_key}/{value}"
-            _LOGGER.debug(f"POST request: {req}")
-            r_json = await _do_request(method=self.web_session.post(url=req, ssl=False))
 
-        if r_json is not None and ((hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str))):
+            if not write_key.startswith("plan/strategy"):
+                # default handling for all other keys...
+                req = f"{self.host}/api/{EP_TYPE.LOADPOINTS.value}/{lp_idx_str}/{write_key}/{value}"
+                _LOGGER.debug(f"POST request: {req}")
+                r_json = await _do_request(method=self.web_session.post(url=req, ssl=False))
+
+            else:
+                # VERY SPECIAL HANDLING for 'plan/strategy' write process... [this is still quite a HACK!]
+                if self._data is not None and len(self._data) > 0 and JSONKEY_LOADPOINTS in self._data:
+                    try:
+                        array_idx = int(lp_idx_str) - 1
+                        lp_object = self._data[JSONKEY_LOADPOINTS][array_idx]
+                        if "effectivePlanStrategy" in lp_object:
+
+                            # 1'st we must create the payload...
+                            payload_json = lp_object["effectivePlanStrategy"].copy()
+                            if write_key == "plan/strategy/continuous":
+                                # the switch code will give us "1" or "0"... (and we need to convert it to a boolean)
+                                payload_json["continuous"] = value == "1"
+                            else:
+                                # make sure that the precondition is an integer...
+                                payload_json["precondition"] = int(value)
+
+                            # setting the final write_key to 'plan/strategy'...
+                            # -> this is the only way to write the 'plan/strategy' to the 'vehicle' or to the 'loadpoint'!
+                            write_key = "plan/strategy"
+
+                            # 2'nd we must check if we need to write the 'plan/strategy' to the 'vehicle' or to the 'loadpoint'!
+                            vehicle_id = lp_object[Tag.LP_VEHICLENAME.json_key]
+                            if vehicle_id is not None:
+                                req = f"{self.host}/api/{EP_TYPE.VEHICLES.value}/{vehicle_id}/{write_key}"
+                            else:
+                                req = f"{self.host}/api/{EP_TYPE.LOADPOINTS.value}/{lp_idx_str}/{write_key}"
+
+                            _LOGGER.debug(f"POST request: {req} - sending payload: {payload_json}")
+                            r_json = await _do_request(method=self.web_session.post(url=req, json=payload_json, ssl=False))
+                        else:
+                            _LOGGER.info(f"no previous 'effectivePlanStrategy' object found for loadpoint: {lp_idx_str} - {lp_object}")
+
+                    except Exception as err:
+                        _LOGGER.info(f"could not find a connected vehicle at loadpoint: {lp_idx_str}")
+
+        if r_json is not None and ((hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str, dict))):
             return r_json
         else:
             return {"err": "no response from evcc"}
