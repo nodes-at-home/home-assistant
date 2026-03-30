@@ -68,6 +68,15 @@ views:
             - binary_sensor.prod_mode
             - binary_sensor.dev_mode
       - type: entities
+        title: Home Assistant
+        show_header_toggle: false
+        entities:
+            - sensor.current_version
+            - sensor.home_assistant_website
+            - binary_sensor.home_assistant_website_update_available
+            - sensor.docker_hub
+            - binary_sensor.docker_hub_update_available
+      - type: entities
         title: Server
         show_header_toggle: false
         entities:
@@ -84,30 +93,22 @@ views:
             - sensor.system_monitor_letzter_systemstart
             - sensor.system_monitor_pwmfan_lufterdrehzahl
       - type: entities
-        title: Home Assistant
+        title: TrueNAS
         show_header_toggle: false
         entities:
-            - sensor.current_version
-            - sensor.home_assistant_website
-            - binary_sensor.home_assistant_website_update_available
-            - sensor.docker_hub
-            - binary_sensor.docker_hub_update_available
-      # - type: entities
-      #   title: DSL
-      #   show_header_toggle: false
-      #   entities:
-      #       - sensor.speedtest_ping
-      #       - sensor.speedtest_download
-      #       - sensor.speedtest_upload
-      - type: entities
-        title: Fritz!Box
-        show_header_toggle: false
-        entities:
-            - binary_sensor.fritz_box_7590_verbindung
-            - binary_sensor.fritz_box_7590_verbinden
-            - sensor.fritz_box_7590_externe_ip
-            - sensor.fritz_box_7590_letzter_neustart
-            - sensor.fritz_box_7590_verbindungsverfugbarkeit
+            - sensor.truenas_system_cpu_usage
+            - sensor.truenas_system_memory_usage
+            - sensor.truenas_system_temperature
+            - sensor.truenas_system_uptime
+            - type: divider
+            - binary_sensor.truenas_system_boot_pool_healthy
+            - binary_sensor.truenas_system_volume_healthy
+            - type: divider
+            - sensor.truenas_disks_nvme0n1
+            - sensor.truenas_disks_nvme1n1
+            - sensor.truenas_disks_nvme2n1
+            - sensor.truenas_disks_nvme3n1
+            - sensor.truenas_disks_nvme4n1
       - type: entities
         title: UniFi
         show_header_toggle: false
@@ -134,6 +135,15 @@ views:
             - entity: sensor.ups_batterielaufzeit_mmss
               name: Batterielaufzeit
             # - sensor.ups_statusdaten
+      - type: entities
+        title: Fritz!Box
+        show_header_toggle: false
+        entities:
+            - binary_sensor.fritz_box_7590_verbindung
+            - binary_sensor.fritz_box_7590_verbinden
+            - sensor.fritz_box_7590_externe_ip
+            - sensor.fritz_box_7590_letzter_neustart
+            - sensor.fritz_box_7590_verbindungsverfugbarkeit
 
   - title: Geräte
     path: nodes
