@@ -86,13 +86,21 @@
       - platform: state
         entity_id: person.andreas
         to: 'home'
+      - platform: state
+        entity_id: group.kids
+        to: 'home'
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-      - condition: state
-        entity_id: person.andreas
-        state: 'home'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: person.andreas
+            state: 'home'
+          - condition: state
+            entity_id: group.kids
+            state: 'home'
       - condition: or
         conditions:
           - condition: and
@@ -125,11 +133,24 @@
         to: 'not_home'
         for:
             minutes: 1
+      - trigger: state
+        entity_id: group.kids
+        to: 'not_home'
+        for:
+            minutes: 1
     conditions:
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
         state: "on"
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: person.andreas
+            state: 'not_home'
+          - condition: state
+            entity_id: group.kids
+            state: 'not_home'
     actions:
       - service: switch.turn_off
         target:
@@ -146,13 +167,21 @@
       - platform: state
         entity_id: person.undine
         to: 'home'
+      - platform: state
+        entity_id: group.kids
+        to: 'home'
     conditions:
       - condition: state
         entity_id: binary_sensor.prod_mode
         state: 'on'
-      - condition: state
-        entity_id: person.undine
-        state: 'home'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: person.undine
+            state: 'home'
+          - condition: state
+            entity_id: group.kids
+            state: 'home'
       - condition: or
         conditions:
           - condition: and
@@ -185,11 +214,24 @@
         to: 'not_home'
         for:
             minutes: 1
+      - trigger: state
+        entity_id: group.kids
+        to: 'not_home'
+        for:
+            minutes: 1
     conditions:
       - condition: state
         alias: process only on production server
         entity_id: binary_sensor.prod_mode
         state: "on"
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: person.undine
+            state: 'not_home'
+          - condition: state
+            entity_id: group.kids
+            state: 'not_home'
     actions:
       - service: switch.turn_off
         target:
