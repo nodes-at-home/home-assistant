@@ -27,7 +27,7 @@
     actions:
       - action: switch.turn_on
         target:
-            entity_id: switch.tapo_c520ws_5d82_privacy
+            entity_id: switch.tapo_c520ws_privacy
 
   - alias: tapocam_set_day_mode
     id: tapocam_set_day_mode
@@ -50,14 +50,14 @@
     actions:
       - action: switch.turn_off
         target:
-          entity_id: switch.tapo_c520ws_5d82_privacy
+          entity_id: switch.tapo_c520ws_privacy
       - delay:
             seconds: 15
       - action: select.select_option
         target:
-            entity_id: select.tapo_c520ws_5d82_move_to_preset
+            entity_id: select.tapo_c520ws_move_to_preset
         data:
-            option: "{{ state_attr ( 'select.tapo_c520ws_5d82_move_to_preset', 'options' ) [1] }}"
+            option: "{{ state_attr ( 'select.tapo_c520ws_move_to_preset', 'options' ) [1] }}"
 
   - alias: tapocam_set_night_mode
     id: tapocam_set_night_mode
@@ -68,7 +68,7 @@
         to: 'home'
       - trigger: sun
         event: sunset
-        offset: "+00:01:00"
+        offset: "+00:05:00"
     conditions:
       - condition: state
         alias: process only on production server
@@ -83,14 +83,14 @@
     actions:
       - action: switch.turn_off
         target:
-            entity_id: switch.tapo_c520ws_5d82_privacy
+            entity_id: switch.tapo_c520ws_privacy
       - delay:
             seconds: 15
       - action: select.select_option
         target:
-            entity_id: select.tapo_c520ws_5d82_move_to_preset
+            entity_id: select.tapo_c520ws_move_to_preset
         data:
-            option: "{{ state_attr ( 'select.tapo_c520ws_5d82_move_to_preset', 'options' ) [0] }}"
+            option: "{{ state_attr ( 'select.tapo_c520ws_move_to_preset', 'options' ) [0] }}"
 
   - alias: tapocam_set_notification
     id: tapocam_set_notification
@@ -114,9 +114,9 @@
     actions:
       - action: switch.turn_{{ mode }}
         target:
-            entity_id: switch.tapo_c520ws_5d82_notifications
+            entity_id: switch.tapo_c520ws_notifications
       - delay:
               seconds: 15
       - action: switch.turn_{{ mode }}
         target:
-            entity_id: switch.tapo_c520ws_5d82_rich_notifications
+            entity_id: switch.tapo_c520ws_rich_notifications

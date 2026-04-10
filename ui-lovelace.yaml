@@ -257,8 +257,8 @@ views:
                     %}
                     {%
                             if
-                                states ( 'camera.tapo_c520ws_5d82_hd_stream' ) in ( 'unavailable', 'unknown' )
-                                or is_state ( 'switch.tapo_c520ws_5d82_privacy', 'on' )
+                                states ( 'camera.tapo_c520ws_hd_stream' ) in ( 'unavailable', 'unknown' )
+                                or is_state ( 'switch.tapo_c520ws_privacy', 'on' )
                     %}
                         nostream
                     {%      else %}
@@ -271,10 +271,8 @@ views:
                 states:
                   "stream":
                       type: picture-entity
-                      entity: camera.tapo_c520ws_5d82_hd_stream
-                      double_tap_action:
-                          action: url
-                          url_path: http://c520ws.fritz.box/api/camera_proxy/camera.tapo_c520ws_5d82_hd_stream?token=13565e4c1c8028fd86e5ddf1045144bf4ff295e36aba2dbfa9c6fca92b7475b1
+                      entity: camera.tapo_c520ws_hd_stream
+                      camera_view: live
                   "nostream":
                       type: button
                       name: Garten
