@@ -1,0 +1,14 @@
+###
+### 11.04.2026
+###
+
+  - binary_sensor:
+
+      - name: nodestate_irrigation_valves
+        unique_id: nodestate_irrigation_valves
+        state: "{{ 
+                   states ( 'input_boolean.irrigation_activated' ) == 'off'
+                   or 
+                   states ( 'binary_sensor.nodestate_relay_garden' ) == 'on' 
+                   and states ( 'binary_sensor.nodestate_relay_garden2' ) == 'on'
+                }}"
