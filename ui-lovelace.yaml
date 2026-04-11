@@ -1952,9 +1952,9 @@ views:
                 name: jährlich
               - type: section
                 label: Strombörse
-              - entity: sensor.epex_spot_data_price
+              - entity: sensor.epex_spot_data_market_price
                 name: EPEX
-              - entity: sensor.epex_spot_data_net_price
+              - entity: sensor.epex_spot_data_total_price
                 name: ostrom (SimplyDynamic)
           - type: energy-distribution
           - type: statistics-graph
@@ -2624,7 +2624,7 @@ views:
           show_states: true
           colorize_states: true
         series:
-          - entity: sensor.epex_spot_data_price
+          - entity: sensor.epex_spot_data_market_price
             yaxis_id: left
             type: line
             float_precision: 5
