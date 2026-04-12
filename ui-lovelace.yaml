@@ -2609,12 +2609,12 @@ views:
       - type: custom:apexcharts-card
         # experimental:
         #   hidden_by_default: true
-        graph_span: 45h
+        graph_span: 48h
         all_series_config:
-          stroke_width: 2
+          stroke_width: 1
         span:
           start: hour
-          offset: '-25h'
+          offset: '-24h'
         now:
           show: true
         update_interval: 5min
@@ -2690,7 +2690,7 @@ views:
         yaxis:
           - id: left
             decimals: 2
-            min: 0
+            min: -0.10
           - id: right
             opposite: true
             decimals: 2
