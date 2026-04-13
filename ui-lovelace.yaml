@@ -1956,7 +1956,75 @@ views:
                 name: EPEX
               - entity: sensor.epex_spot_data_total_price
                 name: ostrom (SimplyDynamic)
-          - type: energy-distribution
+          - type: custom:apexcharts-card
+            # experimental:
+            #   hidden_by_default: true
+            graph_span: 48h
+            all_series_config:
+              stroke_width: 1
+            span:
+              start: hour
+              offset: '-24h'
+            now:
+              show: true
+            update_interval: 5min
+            header:
+              show: true
+              title: Spotmarktpreis (€/kWh)
+              show_states: true
+              colorize_states: true
+            series:
+              - entity: sensor.epex_spot_data_market_price
+                yaxis_id: left
+                type: line
+                float_precision: 5
+                name: Spot Markt
+                curve: stepline
+                unit: €/kWh
+                show:
+                  in_header: false
+                  extremas: true
+                  legend_value: false
+                data_generator: |
+                  return entity.attributes.data.map((entry) => {
+                          return [new Date(entry.start_time).getTime (), entry.price_per_kwh];
+                        });
+              - entity: sensor.epex_spot_data_total_price
+                yaxis_id: left
+                type: line
+                float_precision: 5
+                name: ostrom (SimplyDynamic)
+                curve: stepline
+                unit: €/kWh
+                show:
+                  in_header: false
+                  extremas: true
+                  legend_value: false
+                data_generator: |
+                  return entity.attributes.data.map((entry) => {
+                          return [new Date(entry.start_time).getTime (), entry.price_per_kwh];
+                        });
+              - entity: input_number.electricity_price_in
+                yaxis_id: left
+                type: line
+                float_precision: 5
+                name: ostrom (SimplyFair)
+                curve: stepline
+                unit: €/kWh
+                show:
+                  in_header: false
+                  extremas: true
+                  legend_value: false
+            yaxis:
+              - id: left
+                decimals: 2
+                min: -0.10
+              - id: right
+                opposite: true
+                decimals: 2
+                min: 0
+                max: 10
+                show: false
           - type: statistics-graph
             title: Heutiger Verbrauch
             chart_type: bar
@@ -2600,100 +2668,3 @@ views:
                 - action: call-service
                   service: floorplan.text_set
                   service_data: ${ Math.round ( 10 * entity.state ) / 10 + " " + entity.attributes.unit_of_measurement }
-
-  - title: Strompreis
-    path: epex
-    panel: false
-    visible: true
-    cards:
-      - type: custom:apexcharts-card
-        # experimental:
-        #   hidden_by_default: true
-        graph_span: 48h
-        all_series_config:
-          stroke_width: 1
-        span:
-          start: hour
-          offset: '-24h'
-        now:
-          show: true
-        update_interval: 5min
-        header:
-          show: true
-          title: Spotmarktpreis (€/kWh)
-          show_states: true
-          colorize_states: true
-        series:
-          - entity: sensor.epex_spot_data_market_price
-            yaxis_id: left
-            type: line
-            float_precision: 5
-            name: Spot Markt
-            curve: stepline
-            unit: €/kWh
-            show:
-              in_header: false
-              extremas: true
-              legend_value: false
-            data_generator: |
-              return entity.attributes.data.map((entry) => {
-                      return [new Date(entry.start_time).getTime (), entry.price_per_kwh];
-                    });
-          # - entity: sensor.awattar_current
-          #   name: Preis
-          #   yaxis_id: left
-          #   type: line
-          #   float_precision: 5
-          #   unit: €/kWh
-          #   curve: stepline
-          #   extend_to: now
-          #   fill_raw: last
-          #   show:
-          #     hidden_by_default: false
-          #     legend_value: false
-          # - entity: sensor.awattar_median
-          #   yaxis_id: left
-          #   type: line
-          #   curve: stepline
-          #   fill_raw: last
-          #   float_precision: 5
-          #   name: Median
-          #   unit: €/kWh
-          #   show:
-          #     hidden_by_default: true
-          #     legend_value: false
-          # - entity: sensor.awattar_terzil2
-          #   yaxis_id: left
-          #   type: line
-          #   curve: stepline
-          #   fill_raw: last
-          #   float_precision: 5
-          #   name: oberstes Terzil
-          #   unit: €/kWh
-          #   show:
-          #     hidden_by_default: false
-          #     legend_value: false
-          # - entity: sensor.wirkenergie
-          #   curve: stepline
-          #   type: area
-          #   opacity: 0.3
-          #   name: Bezug
-          #   extend_to: now
-          #   show:
-          #     in_header: false
-          #     legend_value: false
-          #   yaxis_id: right
-          #   group_by:
-          #     func: delta
-          #     duration: 1h
-          #     fill: zero
-        yaxis:
-          - id: left
-            decimals: 2
-            min: -0.10
-          - id: right
-            opposite: true
-            decimals: 2
-            min: 0
-            max: 10
-            show: false
