@@ -2,15 +2,8 @@
 ### junand 03.01.2024
 ###
 
-  api_version: 2
-  ssl: false
-  host: !secret influxdb_host
-  port: 8086
-  token: !secret influxdb_token
-  organization: !secret influxdb_organization
-  bucket: home_assistant
   include:
-    entities:
+      entities:
         - sensor.dht22_terrace_temperature
         - sensor.dht22_roof_temperature
         - sensor.dht22_lounge_temperature
@@ -127,17 +120,6 @@
         - sensor.ds18b20_firstfloor_temperature_nursery
         - sensor.ds18b20_firstfloor_temperature_bedroom
         - sensor.ds18b20_firstfloor_temperature_flow
-        - sensor.thermostat_arbeitszimmer_temperature
-        - sensor.thermostat_bad_temperature
-        - sensor.thermostat_dusche_temperature
-        - sensor.thermostat_esszimmer_temperature
-        - sensor.thermostat_flur_temperature
-        - sensor.thermostat_galerie_temperature
-        - sensor.thermostat_hauswirtschaft_temperature
-        - sensor.thermostat_kinderzimmer_temperature
-        - sensor.thermostat_kuche_temperature
-        - sensor.thermostat_schlafziummer_temperature
-        - sensor.thermostat_wohnzimmer_temperature
         - sensor.boiler_current_flow_temperature
         - sensor.boiler_return_temperature
         - sensor.boiler_outside_temperature
