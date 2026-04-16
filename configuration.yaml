@@ -116,7 +116,7 @@ mobile_app:
 # dashboards and ressources
 
 lovelace:
-    mode: yaml
+    resource_mode: yaml
     resources:
       # https://github.com/thomasloven/lovelace-card-mod
       - url: /hacsfiles/lovelace-card-mod/card-mod.js
@@ -152,6 +152,13 @@ lovelace:
       - url: /hacsfiles/apexcharts-card/apexcharts-card.js
         type: module
     dashboards:
+        lovelace:
+            mode: yaml
+            filename: ui-lovelace.yaml
+            title: Lovelace
+            icon: mdi:view-dashboard
+            show_in_sidebar: true
+            require_admin: false
         values-dashboard:
             mode: yaml
             filename: ui-values.yaml
@@ -165,7 +172,7 @@ lovelace:
             title: Einstellungen
             icon: mdi:cog
             show_in_sidebar: true
-            require_admin: false
+            require_admin: true
         system-dashboard:
             mode: yaml
             filename: ui-system.yaml
