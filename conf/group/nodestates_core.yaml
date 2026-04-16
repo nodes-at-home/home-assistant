@@ -17,7 +17,7 @@ entities:
     - binary_sensor.nodestate_sonoff_gallery1
     - binary_sensor.nodestate_sonoff_corridor
     - binary_sensor.nodestate_electricity_utilityroom
-    - binary_sensor.nodestate_pixel_kitchen
+    - binary_sensor.nodestate_pixel_kitchen_corrected
     - binary_sensor.nodestate_ds18b20_groundfloor
     - binary_sensor.nodestate_ds18b20_firstfloor
     - binary_sensor.nodestate_gas_utilityroom
@@ -25,7 +25,7 @@ entities:
     - binary_sensor.nodestate_rain_garden
     - binary_sensor.nodestate_dht11_utilityroom
     - binary_sensor.nodestate_ws2812_x1c
-    - binary_sensor.nodestate_ws2812_office
+    - binary_sensor.nodestate_ws2812_office_corrected
     - binary_sensor.nodestate_lux_dining
     - binary_sensor.nodestate_pitouch_corridor
     - binary_sensor.nodestate_tasmota

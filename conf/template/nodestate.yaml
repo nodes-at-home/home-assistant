@@ -12,3 +12,19 @@
                    states ( 'binary_sensor.nodestate_relay_garden' ) == 'on' 
                    and states ( 'binary_sensor.nodestate_relay_garden2' ) == 'on'
                 }}"
+
+      - name: nodestate_ws2812@office_corrected
+        unique_id: nodestate_ws2812_office_corrected
+        state: "{{ 
+                   states ( 'switch.schreibtisch_arbeitszimmer' ) == 'off'
+                   or 
+                   states ( 'binary_sensor.nodestate_ws2812_office' ) == 'on' 
+                }}"
+
+      - name: nodestate_pixel@kitchen_corrected
+        unique_id: nodestate_pixel_kitchen_corrected
+        state: "{{ 
+                   states ( 'switch.schreibtisch_wohnzimmer' ) == 'off'
+                   or 
+                   states ( 'binary_sensor.nodestate_pixel_kitchen' ) == 'on' 
+                }}"

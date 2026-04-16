@@ -148,7 +148,6 @@
 
   - name: nodestate_electricity@utilityroom
     unique_id: nodestate_electricity_utilityroom
-    #state_topic: nodes@home/display/pixel/kitchen/value/voltage
     state_topic: tele/tasmota_08E112/STATE
     qos: 0
     value_template: "ON"
