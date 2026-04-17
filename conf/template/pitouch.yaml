@@ -1,0 +1,22 @@
+###
+### 17.04.2026
+###
+
+  - sensor:
+
+      - name: tileboard_temperature_template
+        unique_id: tileboard_temperature_template
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state: >-
+            {% if ( states ( 'input_select.pitouch_temp_display' ) == 'Pool' ) %}
+                {{ states ( 'sensor.ds18b20_pool_temperature' ) }}
+            {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Garage' ) %}
+                {{ states ( 'sensor.relay_garage_temperature' ) }}
+            {% elif ( states ( 'input_select.pitouch_temp_display' ) == 'Warmwasser' ) %}
+                {{ states ( 'sensor.boiler_dhw_current_intern_temperature' ) }}
+            {% else %}
+                x
+            {% endif %}
+        attributes:
+            text: "{{ states ( 'input_select.pitouch_temp_display' ) }}"
