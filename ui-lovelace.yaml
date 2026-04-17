@@ -449,12 +449,14 @@ views:
           - type: horizontal-stack
             cards:
               - type: button
-                entity: cover.rooflights
+                entity: group.rooflight_covers
+                name: Dachfenster
+                icon: mdi:window-shutter
                 tap_action:
-                    action: call-service
-                    service: cover.stop_cover
-                    data:
-                        entity_id: cover.rooflights
+                    action: perform-action
+                    perform_action: cover.stop_cover
+                    target:
+                        entity_id: group.rooflight_covers
                 double_tap_action:
                     action: toggle
                 hold_action:

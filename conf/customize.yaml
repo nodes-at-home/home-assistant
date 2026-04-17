@@ -1106,6 +1106,10 @@ sensor.tileboard_temperature_template:
     icon: mdi:thermometer
 
 #------------------------------------------------------------------------------
+group.rooflight_covers:
+    name: Dachfenster
+    device_class: shutter
+
 cover.bedroom:
     friendly_name: Schlafzimmer
     device_class: shutter

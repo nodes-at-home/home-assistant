@@ -1,0 +1,21 @@
+###
+### 16.04.2026
+###
+
+  - cover:
+      - name: Dachfenster
+        unique_id: rooflights
+        device_class: shutter
+        state: "{{ states ( 'cover.group_rooflights' ) }}"
+        open_cover:
+            action: cover.open_cover
+            target:
+                entity_id: cover.group_rooflights
+        close_cover:
+            action: cover.close_cover
+            target:
+                entity_id: cover.group_rooflights
+        stop_cover:
+            action: cover.stop_cover
+            target:
+                entity_id: cover.group_rooflights

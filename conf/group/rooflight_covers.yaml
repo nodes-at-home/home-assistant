@@ -1,0 +1,10 @@
+###
+##ä junand 17.04.2026
+###
+
+name: rooflight_covers
+entities:
+  - cover.bedroom
+  - cover.bath
+  - cover.nursery
+  - cover.office
