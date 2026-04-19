@@ -1074,7 +1074,7 @@ views:
               - entity: light.shelly_arbeitszimmer
                 name: Deckenlampe
                 icon: mdi:ceiling-light
-              - light.sonoff_corridor_lamp
+              - light.shelly_office_lamp
               - light.ws2812_office
               - entity: switch.schreibtisch_arbeitszimmer
                 name: Schreibtisch

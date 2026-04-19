@@ -37,11 +37,12 @@ binary_sensor.prod_mode:
 
 binary_sensor.dev_mode:
     friendly_name: Entwicklungsserver
-    icon: mdi:laptop-code
+    icon: mdi:laptop
 
 #------------------------------------------------------------------------------
 sensor.DHT22_terrace_temperature:
     friendly_name: Terrasse
+    icon: mdi:thermometer
 
 sensor.DHT22_terrace_humidity:
     friendly_name: Luftfeuchtigkeit Terasse
@@ -49,6 +50,7 @@ sensor.DHT22_terrace_humidity:
 
 sensor.DHT22_terrace_tau:
     friendly_name: Taupunkt Terasse
+    icon: mdi:thermometer
 
 sensor.DHT22_terrace_voltage:
     friendly_name: Terrasse
@@ -73,6 +75,7 @@ sensor.DHT22_terrace_temperature_max:
 #------------------------------------------------------------------------------
 sensor.DHT22_lounge_temperature:
     friendly_name: Wohnzimmer
+    icon: mdi:thermometer
 
 sensor.DHT22_lounge_humidity:
     friendly_name: Luftfeuchtigkeit Wohnzimmer
@@ -80,10 +83,11 @@ sensor.DHT22_lounge_humidity:
 
 sensor.DHT22_lounge_tau:
     friendly_name: Taupunkt Wohnzimmer
+    icon: mdi:thermometer
 
 sensor.DHT22_lounge_pressure:
     friendly_name: Luftdruck
-    # entity_picture: /local/images/DHT22.jpg
+    icon: mdi:gauge
 
 sensor.DHT22_lounge_voltage:
     friendly_name: Wohnzimmer
@@ -104,6 +108,7 @@ sensor.DHT22_lounge_version:
 #------------------------------------------------------------------------------
 sensor.DHT22_roof_temperature:
     friendly_name: Dachboden
+    icon: mdi:thermometer
 
 sensor.DHT22_roof_humidity:
     friendly_name: Luftfeuchtigkeit Dachboden
@@ -111,6 +116,7 @@ sensor.DHT22_roof_humidity:
 
 sensor.DHT22_roof_tau:
     friendly_name: Taupunkt Dachboden
+    icon: mdi:thermometer
 
 sensor.DHT22_roof_voltage:
     friendly_name: Dachboden
@@ -129,35 +135,9 @@ sensor.DHT22_roof_version:
     entity_picture: /local/images/nodemcu.jpg
 
 #------------------------------------------------------------------------------
-sensor.DHT22_office_temperature:
-    friendly_name: Büro
-
-sensor.DHT22_office_humidity:
-    friendly_name: Luftfeuchtigkeit Büro
-    icon: mdi:water-percent
-
-sensor.DHT22_office_tau:
-    friendly_name: Taupunkt Büro
-
-sensor.DHT22_office_voltage:
-    friendly_name: Büro
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.DHT22_office_lastvoltage:
-    friendly_name: Büro
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.DHT22_office_lastboot:
-    friendly_name: Büro
-    entity_picture: /local/images/nodemcu.jpg
-
-sensor.DHT22_office_version:
-    friendly_name: Büro
-    entity_picture: /local/images/nodemcu.jpg
-
-#------------------------------------------------------------------------------
 sensor.DHT11_utilityroom_temperature:
     friendly_name: Kammer
+    icon: mdi:thermometer
 
 sensor.DHT11_utilityroom_humidity:
     friendly_name: Luftfeuchtigkeit Kammer
@@ -165,6 +145,7 @@ sensor.DHT11_utilityroom_humidity:
 
 sensor.DHT11_utilityroom_tau:
     friendly_name: Taupunkt Kammer
+    icon: mdi:thermometer
 
 sensor.DHT11_utilityroom_voltage:
     friendly_name: Kammer
@@ -280,6 +261,10 @@ switch.shelly_bambulab_x1c:
     friendly_name: Bambulab X1C
     icon: mdi:printer-3d
 
+light.shelly_office_lamp:
+    friendly_name: Stehlampe
+    icon: mdi:lamp
+
 #------------------------------------------------------------------------------
 light.shelly_hinterhof:
     friendly_name: Hinterhof
@@ -360,6 +345,7 @@ sensor.relay_garage_state:
 
 sensor.relay_garage_temperature:
     friendly_name: Garage
+    icon: mdi:thermometer
 
 sensor.relay_garage_humidity:
     friendly_name: Luftfeuchtigkeit Garage
@@ -367,6 +353,7 @@ sensor.relay_garage_humidity:
 
 sensor.relay_garage_tau:
     friendly_name: Taupunkt Garage
+    icon: mdi:thermometer
 
 sensor.relay_garage_voltage:
     friendly_name: Garagentor
@@ -424,29 +411,6 @@ sensor.pixel_kitchen_lastboot:
 sensor.pixel_kitchen_version:
     friendly_name: Pixeldisplay
     entity_picture: /local/images/nodemcu.jpg
-
-#------------------------------------------------------------------------------
-switch.sonoff_pool_socket:
-    friendly_name: Poolpumpe
-    # entity_picture: /local/images/poolpump.jpg
-    # icon: mdi:water-pump
-    icon: mdi:pump
-
-sensor.sonoff_pool_voltage:
-    friendly_name: 'Steckdose Pool'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_pool_lastvoltage:
-    friendly_name: 'Steckdose Pool'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_pool_lastboot:
-    friendly_name: 'Steckdose Pool'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_pool_version:
-    friendly_name: 'Steckdose Pool'
-    entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
 sensor.lux_dining_ambientlight:
@@ -519,26 +483,6 @@ sensor.sonoff_bedroom_version:
     entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
-light.sonoff_corridor_lamp:
-    friendly_name: Stehlampe
-
-sensor.sonoff_corridor_voltage:
-    friendly_name: 'Stehlampe Flur'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_corridor_lastvoltage:
-    friendly_name: 'Stehlampe Flur'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_corridor_lastboot:
-    friendly_name: 'Stehlampe Flur'
-    entity_picture: /local/images/sonoff.jpg
-
-sensor.sonoff_corridor_version:
-    friendly_name: 'Stehlampe Flur'
-    entity_picture: /local/images/sonoff.jpg
-
-#------------------------------------------------------------------------------
 light.led_kitchen_led:
     friendly_name: Küchenarbeitslicht
     icon: mdi:led-strip
@@ -604,6 +548,7 @@ sensor.led_corridor_version:
 #------------------------------------------------------------------------------
 sensor.ds18b20_pool_temperature:
     friendly_name: Pool
+    icon: mdi:pool-thermometer
 
 sensor.ds18b20_pool_voltage:
     friendly_name: Pool
@@ -1503,14 +1448,6 @@ sensor.pool_pump_period_length:
 switch.waschmaschine:
     friendly_name: Waschmaschine
     icon: mdi:washing-machine
-
-switch.nodesathome1:
-    friendly_name: nodesathome1
-    icon: mdi:server
-
-switch.nodesathome2:
-    friendly_name: nodesathome2
-    icon: mdi:server
 
 #------------------------------------------------------------------------------
 group.ev6_doors:

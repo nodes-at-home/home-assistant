@@ -12,6 +12,6 @@
       - light.shelly_kitchen_longstrip
       - light.shelly_esszimmerschrank1
       - light.shelly_esszimmerschrank2
-      - light.sonoff_corridor_lamp
+      - light.shelly_office_lamp
       - light.sonoff_gallery1_socket
       - light.shelly_dining_xmastree

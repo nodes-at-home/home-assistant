@@ -15,7 +15,6 @@ entities:
     - binary_sensor.nodestate_led_kitchen2
     - binary_sensor.nodestate_gesture_kitchen
     - binary_sensor.nodestate_sonoff_gallery1
-    - binary_sensor.nodestate_sonoff_corridor
     - binary_sensor.nodestate_electricity_utilityroom
     - binary_sensor.nodestate_pixel_kitchen_corrected
     - binary_sensor.nodestate_ds18b20_groundfloor
