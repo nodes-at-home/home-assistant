@@ -6,7 +6,9 @@
     name: lux@dining_ambientlight
     unique_id: lux_dining_ambientlight
     qos: 0
-    unit_of_measurement: "lux"
+    unit_of_measurement: "lx"
+    device_class: illuminance
+    state_class: measurement
     value_template: '{{ value | round ( 0 )}}'
 
   - state_topic: nodes@home/sensor/lux/dining/value/voltage
@@ -14,6 +16,8 @@
     unique_id: lux_dining_voltage
     qos: 0
     unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/lux/dining/value/voltage

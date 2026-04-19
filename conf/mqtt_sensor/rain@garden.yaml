@@ -19,6 +19,8 @@
     unique_id: rain_garden_voltage
     qos: 0
     unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
 
   - state_topic: nodes@home/sensor/rain/garden/value/voltage
@@ -33,11 +35,12 @@
     qos: 0
     force_update: true
     unit_of_measurement: "mm"
+    device_class: precipitation
+    state_class: measurement
     value_template: '{{ value_json.rain }}'
 
   - state_topic: nodes@home/sensor/rain/garden/value/rain
     name: rain@garden_ticks
     unique_id: rain_garden_ticks
     qos: 0
-    unit_of_measurement: "mm"
     value_template: '{{ value_json.ticks }}'

@@ -7,9 +7,9 @@
     unique_id: ttp223_bedroom_voltage
     qos: 0
     unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
-    # unit_of_measurement: "mV"
-    # value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/sensor/ttp223/bedroom/value/voltage
     name: ttp223@bedroom_lastvoltage

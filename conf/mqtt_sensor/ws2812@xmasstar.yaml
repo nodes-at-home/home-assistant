@@ -7,9 +7,9 @@
     unique_id: ws2812_xmasstar_voltage
     qos: 0
     unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
     value_template: '{{ value_json.value | multiply  ( 0.001 ) | round ( 1 ) }}'
-    # unit_of_measurement: "mV"
-    # value_template: '{{ value_json.value }}'
 
   - state_topic: nodes@home/light/ws2812/xmasstar/value/voltage
     name: ws2812@xmasstar_lastvoltage
