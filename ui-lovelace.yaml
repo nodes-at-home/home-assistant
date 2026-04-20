@@ -1499,7 +1499,6 @@ views:
               - light.shelly_garage1
               - light.shelly_garage2
               - cover.relay_garage
-              - sensor.relay_garage_state
               - binary_sensor.garagentor
               - binary_sensor.garagentur
               - entity: switch.aussenkuhlschrank

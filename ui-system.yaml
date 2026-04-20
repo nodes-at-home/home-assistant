@@ -839,22 +839,22 @@ views:
             - sensor.wasserpumpe_energy
             - sensor.wasserpumpe_power
             - type: divider
-            # refrigerator
             - switch.kuhlschrank
             - sensor.kuhlschrank_energy
             - sensor.kuhlschrank_power
             - type: divider
-            # washing machine
+            - switch.aussenkuhlschrank
+            - sensor.aussenkuhlschrank_energy
+            - sensor.aussenkuhlschrank_power
+            - type: divider
             - switch.waschmaschine
             - sensor.waschmaschine_energy
             - sensor.waschmaschine_power
             - type: divider
-            # dishwasher
             - switch.geschirrspuler
             - sensor.geschirrspuler_energy
             - sensor.geschirrspuler_power
             - type: divider
-            # accu loader station
             - switch.bosch_ladestation
             - sensor.bosch_ladestation_energy
             - sensor.bosch_ladestation_power
