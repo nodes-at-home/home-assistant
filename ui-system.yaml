@@ -847,6 +847,14 @@ views:
             - sensor.aussenkuhlschrank_energy
             - sensor.aussenkuhlschrank_power
             - type: divider
+            - switch.getrankekuhlschrank
+            - sensor.getrankekuhlschrank_energy
+            - sensor.getrankekuhlschrank_power
+            - type: divider
+            - switch.mikrowelle
+            - sensor.mikrowelle_energy
+            - sensor.mikrowelle_power
+            - type: divider
             - switch.waschmaschine
             - sensor.waschmaschine_energy
             - sensor.waschmaschine_power
@@ -1127,6 +1135,19 @@ views:
           - entity: sensor.shelly_gartentor_power
           - entity: update.shelly_gartentor_firmware
           - entity: button.shelly_gartentor_reboot
+      - type: entities
+        title: Strommesser
+        show_header_toggle: false
+        entities:
+          - entity: sensor.shelly_carport_energy
+          - entity: sensor.shelly_carport_power
+          - entity: update.shelly_carport_firmware
+          - entity: button.shelly_carport_reboot
+          - type: divider
+          - entity: sensor.shelly_backofen_energy
+          - entity: sensor.shelly_backofen_power
+          - entity: update.shelly_backofen_firmware
+          - entity: button.shelly_backofen_reboot
 
   - title: Shelly 2
     path: shelly2

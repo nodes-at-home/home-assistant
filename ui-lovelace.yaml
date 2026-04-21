@@ -713,6 +713,12 @@ views:
                 name: Kühlschrank
               - entity: switch.kuhlschrank
                 icon: mdi:fridge-industrial-outline
+              - entity: sensor.neff_306030427030003650_001_bsh_common_status_operationstate
+                name: Backofen
+              - entity: sensor.neff_306030427030003650_001_cooking_oven_status_currentcavitytemperature
+                name: Backofen
+              - entity: binary_sensor.neff_306030427030003650_001_bsh_common_status_doorstate
+                name: Backofen
               - switch.shelly_kitchen_coffeemaker
               - switch.shelly_kitchen_icemaker
               - entity: binary_sensor.terassentur_kuche
