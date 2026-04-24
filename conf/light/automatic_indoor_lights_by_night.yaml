@@ -6,12 +6,11 @@
     name: automatic_indoor_lights_by_night
     unique_id: automatic_indoor_lights_by_night
     entities:
-      - light.sonoff_gallery_lamp
       - light.shelly_esszimmerschrank1
       - light.shelly_esszimmerschrank2
       - light.led_kitchen_led
-      - light.sonoff_corridor_lamp
-      - light.sonoff_gallery1_socket
+      - light.shelly_office_lamp
+      - light.shelly_gallery_ledchain
       - light.shelly_treppe
       - light.shelly_flur
       - light.shelly_corridor_studypillar

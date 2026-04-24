@@ -151,6 +151,9 @@ lovelace:
       # https://github.com/RomRider/apexcharts-card
       - url: /hacsfiles/apexcharts-card/apexcharts-card.js
         type: module
+      # https://github.com/Giorgio866/lumina-energy-card
+      - url: /hacsfiles/lumina-energy-card/lumina-energy-card.js
+        type: module
     dashboards:
         lovelace:
             mode: yaml

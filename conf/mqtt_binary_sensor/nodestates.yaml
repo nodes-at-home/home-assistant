@@ -34,62 +34,6 @@
     force_update: true
     off_delay: 1200
 
-  - name: nodestate_sonoff@utilityroom
-    unique_id: nodestate_sonoff_utilityroom
-    state_topic: nodes@home/switch/sonoff/utilityroom/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_sonoff@garage
-    unique_id: nodestate_sonoff_garage
-    state_topic: nodes@home/switch/sonoff/garage/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_shelly@terrace
-    unique_id: nodestate_shelly_terrace
-    state_topic: nodes@home/switch/shelly/terrace/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_sonoff@yardgate
-    unique_id: nodestate_sonoff_yardgate
-    state_topic: nodes@home/switch/sonoff/yardgate/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_relay@dining1
-    unique_id: nodestate_relay_dining1
-    state_topic: nodes@home/switch/relay/dining1/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_relay@dining2
-    unique_id: nodestate_relay_dining2
-    state_topic: nodes@home/switch/relay/dining2/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_sonoff@bedroom
-    unique_id: nodestate_sonoff_bedroom
-    state_topic: nodes@home/switch/sonoff/bedroom/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
   - name: nodestate_ttp223@bedroom
     unique_id: nodestate_ttp223_bedroom
     state_topic: nodes@home/sensor/ttp223/bedroom/value/voltage
@@ -117,30 +61,6 @@
   - name: nodestate_gesture@kitchen
     unique_id: nodestate_gesture_kitchen
     state_topic: nodes@home/sensor/gesture/kitchen/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_sonoff@k8200
-    unique_id: nodestate_sonoff_k8200
-    state_topic: nodes@home/switch/sonoff/k8200/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_sonoff@gallery1
-    unique_id: nodestate_sonoff_gallery1
-    state_topic: nodes@home/switch/sonoff/gallery1/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_sonoff@corridor
-    unique_id: nodestate_sonoff_corridor
-    state_topic: nodes@home/light/sonoff/corridor/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true
@@ -178,30 +98,6 @@
     force_update: true
     off_delay: 1200
 
-  - name: nodestate_shelly@roof
-    unique_id: nodestate_shelly_roof
-    state_topic: nodes@home/switch/shelly/roof/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_shelly@bath
-    unique_id: nodestate_shelly_bath
-    state_topic: nodes@home/switch/shelly/bath/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_shelly@shower
-    unique_id: nodestate_shelly_shower
-    state_topic: nodes@home/switch/shelly/shower/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
   - name: nodestate_gas@utilityroom
     unique_id: nodestate_gas_utilityroom
     state_topic: nodes@home/sensor/gas/utilityroom/value/voltage
@@ -213,14 +109,6 @@
   - name: nodestate_led@corridor
     unique_id: nodestate_led_corridor
     state_topic: nodes@home/light/led/corridor/value/voltage
-    qos: 0
-    value_template: "ON"
-    force_update: true
-    off_delay: 1200
-
-  - name: nodestate_soil@garden
-    unique_id: nodestate_soil_garden
-    state_topic: nodes@home/sensor/soil/garden/value/voltage
     qos: 0
     value_template: "ON"
     force_update: true

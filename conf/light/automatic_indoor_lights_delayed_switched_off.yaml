@@ -6,8 +6,8 @@
     name: automatic_indoor_lights_delayed_switched_off
     unique_id: automatic_indoor_lights_delayed_switched_off
     entities:
-      - light.sonoff_corridor_lamp
-      - light.sonoff_gallery1_socket
+      - light.shelly_office_lamp
+      - light.shelly_gallery_ledchain
       - light.led_corridor_led
       - light.led_kitchen2_led
       - light.shelly_treppe

@@ -13,5 +13,5 @@
       - light.shelly_esszimmerschrank1
       - light.shelly_esszimmerschrank2
       - light.shelly_office_lamp
-      - light.sonoff_gallery1_socket
+      - light.shelly_gallery_ledchain
       - light.shelly_dining_xmastree

@@ -394,7 +394,7 @@
       - action: light.toggle
         target:
             entity_id:
-              - light.sonoff_bedroom_socket
+              - light.shelly_bedroom_closet
 
   - alias: lights_kitchen_desk_toggle
     id: lights_kitchen_desk_toggle

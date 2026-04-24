@@ -267,6 +267,14 @@ light.shelly_office_lamp:
     friendly_name: Stehlampe
     icon: mdi:lamp
 
+light.shelly_gallery_ledchain:
+    friendly_name: Lichterkette
+    icon: mdi:string-lights
+
+light.shelly_bedroom_closet:
+    friendly_name: Schrankbeleuchtung
+    icon: mdi:wall-sconce-flat
+
 #------------------------------------------------------------------------------
 # shelly lights
 
@@ -486,26 +494,6 @@ sensor.ttp223_bedroom_lastboot:
 sensor.ttp223_bedroom_version:
     friendly_name: 'Touchsensor Schlafzimmer'
     entity_picture: /local/images/wemos_mini.jpg
-
-#-------------------------------------------------------------------------  -----
-light.sonoff_bedroom_socket:
-    friendly_name: Schrankbeleuchtung
-
-sensor.sonoff_bedroom_voltage:
-    friendly_name: 'Steckdose Schlafzimmerschrank'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_bedroom_lastvoltage:
-    friendly_name: 'Steckdose Schlafzimmerschrank'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_bedroom_lastboot:
-    friendly_name: 'Steckdose Schlafzimmerschrank'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_bedroom_version:
-    friendly_name: 'Steckdose Schlafzimmerschrank'
-    entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
 light.led_kitchen_led:
@@ -735,27 +723,6 @@ sensor.ws2812_office_lastboot:
 sensor.ws2812_office_version:
     friendly_name: Tischlampe
     entity_picture: /local/images/wemos_mini.jpg
-
-#-------------------------------------------------------------------------  -----
-light.sonoff_gallery1_socket:
-    friendly_name: Lichterkette
-    icon: mdi:lightbulb
-
-sensor.sonoff_gallery1_voltage:
-    friendly_name: 'Steckdose Lichterkette'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_gallery1_lastvoltage:
-    friendly_name: 'Steckdose Lichterkette'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_gallery1_lastboot:
-    friendly_name: 'Steckdose Lichterkette'
-    entity_picture: /local/images/sonoff_s20.jpg
-
-sensor.sonoff_gallery1_version:
-    friendly_name: 'Steckdose Lichterkette'
-    entity_picture: /local/images/sonoff_s20.jpg
 
 #------------------------------------------------------------------------------
 switch.relay_garden_valve1:

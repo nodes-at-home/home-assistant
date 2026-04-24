@@ -972,7 +972,7 @@ views:
               - entity: light.shelly_galerie
                 name: Deckenlampe
                 icon: mdi:ceiling-light
-              - light.sonoff_gallery1_socket
+              - light.shelly_gallery_ledchain
               - entity: light.shelly_treppe
                 name: Treppe
               - entity: binary_sensor.dachfenster_galerie
@@ -1003,7 +1003,7 @@ views:
               - entity: light.shelly_schlafzimmer
                 name: Deckenlampe
                 icon: mdi:ceiling-light
-              - light.sonoff_bedroom_socket
+              - light.shelly_bedroom_closet
               - type: thermostat
                 entity: climate.bedroom
                 name: Klimaanlage
