@@ -221,7 +221,7 @@ views:
               - entity: input_boolean.notify_flood_whatsapp_u
                 name: undine
           - type: section
-            label: Rasenmäher
+            label: Rasenmäher und Gardena Hub
           - type: buttons
             entities:
               - entity: input_boolean.notify_mower_tv

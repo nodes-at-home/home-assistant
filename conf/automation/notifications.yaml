@@ -165,3 +165,16 @@
         data:
             domain: "kia_ev6"
             message: "Kia EV6 Warnung: {{ warning }}"
+
+  - alias: notifications_gardena_lost_connection
+    id: notifications_gardena_lost_connection
+    triggers:
+      - trigger: state
+        entity_id: binary_sensor.gardena_smart_system_connection
+        to: "off"
+    conditions:
+    actions:
+      - action: script.notify
+        data:
+            domain: "mower"
+            message: "Gardena Hub Verbindung verloren: {{ trigger.to_state.state }}"            
