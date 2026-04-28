@@ -250,6 +250,16 @@ views:
                 name: andreas
               - entity: input_boolean.notify_kia_ev6_whatsapp_u
                 name: undine
+          - type: section
+            label: Unifi Geräte
+          - type: buttons
+            entities:
+              - entity: input_boolean.notify_unifi_tv
+                name: tv
+              - entity: input_boolean.notify_unifi_whatsapp_a
+                name: andreas
+              - entity: input_boolean.notify_unifi_whatsapp_u
+                name: undine
 
   - title: Außenbereich
     path: outdoor

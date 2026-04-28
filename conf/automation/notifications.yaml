@@ -178,3 +178,28 @@
         data:
             domain: "mower"
             message: "Gardena Hub Verbindung verloren: {{ trigger.to_state.state }}"            
+
+  - alias: notifications_unifi_devices_offline
+    id: notifications_unifi_devices_offline
+    triggers:
+      - trigger: state
+        entity_id: group.unifi_devices
+        to: "not_home"
+    conditions:
+    actions:
+      - variables:
+            warning: "{{ expand ( 'group.unifi_devices' ) | selectattr ( 'state', 'eq', 'not_home' ) | map ( attribute = 'attributes.friendly_name' ) | map('regex_replace', '^(.+) \\\\1$', '\\\\1') | list | join ( ', ' ) }}"
+      - action: script.notify
+        data:
+            domain: "unifi"
+            message: "Unifi Geräte offline: {{ warning }}"            
+
+    # Die Regex ^(.+) \1$ (nach allen Escape-Ebenen) matched folgendermaßen:
+    # ^(.+) erfasst greedy so viel wie möglich, backtrackt dann sobald Gruppe 1 = AC Mesh Carport ist, prüft \1 ob danach  AC Mesh Carport folgt → trifft zu ✓
+    # Ergebnis: AC Mesh Carport
+    # Die Escape-Kette funktioniert so:
+    # Ebene	Wert
+    # YAML double-quoted	\\\\1
+    # nach YAML-Parsing	\\1
+    # nach Jinja2 single-quoted	\1
+    # Python-Regex	Rückreferenz auf Gruppe 1 ✓

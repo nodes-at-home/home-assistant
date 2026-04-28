@@ -85,3 +85,12 @@ notify_kia_ev6_whatsapp_a:
 
 notify_kia_ev6_whatsapp_u:
     name: whatsapp
+
+notify_unifi_tv:
+    name: tv
+
+notify_unifi_whatsapp_a:
+    name: whatsapp
+
+notify_unifi_whatsapp_u:
+    name: whatsapp

@@ -1,0 +1,18 @@
+###
+### 28.04.2026
+###
+
+name: 'Unifi Geräte'
+all: true
+entities:
+  - device_tracker.zapdos
+  - device_tracker.usw_ultra_rack_oben
+  - device_tracker.usw_ultra_rack_unten
+  - device_tracker.usw_ultra_arbeitszimmer
+  - device_tracker.usw_ultra_bibliothek
+  - device_tracker.usw_ultra_dachboden
+  - device_tracker.usw_flex_mini
+  - device_tracker.u6_pro_bibliothek
+  - device_tracker.u6_pro_dachboden
+  - device_tracker.u6_pro_hauswirtschaftsraum
+  - device_tracker.ac_mesh_carport

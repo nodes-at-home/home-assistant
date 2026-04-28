@@ -150,6 +150,13 @@ views:
         color: "{{ 'limegreen' if is_state ( entity, 'off' ) else 'red' }}"
         tap_action:
             action: more-info
+      - type: custom:mushroom-template-badge
+        entity: group.unifi_devices
+        content: Unifi
+        icon: "{{ 'mdi:router-wireless' if is_state ( entity, 'home' ) else 'mdi:router-wireless-off' }}"
+        color: "{{ 'limegreen' if is_state ( entity, 'home' ) else 'red' }}"
+        tap_action:
+            action: more-info
 
     cards:
       - type: vertical-stack
