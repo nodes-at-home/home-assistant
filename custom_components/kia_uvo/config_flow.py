@@ -52,20 +52,28 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
-STEP_USER_DATA_SCHEMA = vol.Schema(
-    {
-        vol.Required(CONF_USERNAME): str,
-        vol.Required(CONF_PASSWORD): str,
-        vol.Optional(CONF_PIN, default=DEFAULT_PIN): str,
-        vol.Required(CONF_REGION): vol.In(REGIONS),
-        vol.Required(CONF_BRAND): vol.In(BRANDS),
-    }
-)
-
 STEP_REGION_DATA_SCHEMA = vol.Schema(
     {
-        vol.Required(CONF_REGION): vol.In(REGIONS),
-        vol.Required(CONF_BRAND): vol.In(BRANDS),
+        vol.Required(CONF_REGION): selector(
+            {
+                "select": {
+                    "options": [
+                        {"value": str(k), "label": v} for k, v in REGIONS.items()
+                    ],
+                    "mode": "dropdown",
+                }
+            }
+        ),
+        vol.Required(CONF_BRAND): selector(
+            {
+                "select": {
+                    "options": [
+                        {"value": str(k), "label": v} for k, v in BRANDS.items()
+                    ],
+                    "mode": "dropdown",
+                }
+            }
+        ),
     }
 )
 
@@ -196,6 +204,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
 
         self._region_data = user_input
+        self._region_data[CONF_REGION] = int(self._region_data[CONF_REGION])
+        self._region_data[CONF_BRAND] = int(self._region_data[CONF_BRAND])
         if REGIONS[self._region_data[CONF_REGION]] == REGION_EUROPE and (
             BRANDS[self._region_data[CONF_BRAND]] == BRAND_KIA
             or BRANDS[self._region_data[CONF_BRAND]] == BRAND_HYUNDAI
@@ -398,9 +408,16 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Allow the user to set or change the PIN without full re-authentication."""
         if user_input is not None:
+            new_pin = user_input[CONF_PIN]
+            data_updates = {CONF_PIN: new_pin}
+            entry = self._get_reconfigure_entry()
+            token_data = entry.data.get(CONF_TOKEN)
+            if token_data is not None:
+                updated_token = {**token_data, CONF_PIN: new_pin}
+                data_updates[CONF_TOKEN] = updated_token
             return self.async_update_reload_and_abort(
-                self._get_reconfigure_entry(),
-                data_updates={CONF_PIN: user_input[CONF_PIN]},
+                entry,
+                data_updates=data_updates,
             )
 
         return self.async_show_form(
