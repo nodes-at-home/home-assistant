@@ -29,3 +29,4 @@ entities:
     - binary_sensor.nodestate_ems_esp
     - binary_sensor.nodestate_watermeter
     - binary_sensor.nodestate_irrigation_valves
+    - binary_sensor.nodestate_relay_hydrotower_corrected

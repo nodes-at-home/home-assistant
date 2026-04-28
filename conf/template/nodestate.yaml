@@ -28,3 +28,11 @@
                    or 
                    states ( 'binary_sensor.nodestate_pixel_kitchen' ) == 'on' 
                 }}"
+
+      - name: nodestate_relay@hydrotower_corrected
+        unique_id: nodestate_relay_hydrotower_corrected
+        state: "{{ 
+                   states ( 'input_boolean.hydrotower_activated' ) == 'off'
+                   or 
+                   states ( 'binary_sensor.nodestate_relay_hydrotower' ) == 'on' 
+                }}"
