@@ -82,6 +82,7 @@
             {% set n = valve_no | string %}
             {% set day = now().weekday() %}
             {{
+                states ( 'input_boolean.irrigation_activated_valve' + n ) == 'on' and
                 states ( 'input_boolean.irrigation_scheduled_valve' + n ) == 'on' and
                 (
                     day == 0 and states ( 'input_boolean.irrigation_valve' + n + '_at_monday' )    == 'on' or
@@ -165,6 +166,8 @@
         entity_id: sensor.dht22_terrace_temperature_max
       - trigger: state
         entity_id: input_number.irrigation_temperature_threshold_low
+      - trigger: state
+        entity_id: binary_sensor.wasserampel
     actions:
       - variables:
             mode: >
@@ -180,9 +183,17 @@
       - repeat:
             count: 6
             sequence:
-              - action: "input_boolean.turn_{{ mode }}"
-                target:
-                    entity_id: "input_boolean.irrigation_scheduled_valve{{ repeat.index }}"
+              - if:
+                  - condition: template
+                    value_template: "{{ repeat.index == 6 and states('binary_sensor.wasserampel') == 'off' }}"
+                then:
+                  - action: input_boolean.turn_off
+                    target:
+                        entity_id: "input_boolean.irrigation_scheduled_valve{{ repeat.index }}"
+                else:
+                  - action: "input_boolean.turn_{{ mode }}"
+                    target:
+                        entity_id: "input_boolean.irrigation_scheduled_valve{{ repeat.index }}"
 
   - alias: garden_irrigation_set_temperature_thresholds_by_low
     id: garden_irrigation_set_temperature_thresholds_by_low

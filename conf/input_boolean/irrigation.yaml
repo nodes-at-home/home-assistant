@@ -2,10 +2,10 @@
 ### 22.04.2021
 ###
 
+irrigation_activated_valve1:
+    name: Bewässerung Hecke aktiv
 irrigation_scheduled_valve1:
     name: Bewässerung Hecke geplant
-    # initial: 'off'
-
 irrigation_valve1_at_monday:
     name: Bewässerung Hecke montags
 irrigation_valve1_at_tuesday:
@@ -21,10 +21,10 @@ irrigation_valve1_at_saturday:
 irrigation_valve1_at_sunday:
     name: Bewässerung Hecke sonntags
 
+irrigation_activated_valve2:
+    name: Bewässerung Hochbeete aktiv
 irrigation_scheduled_valve2:
     name: Bewässerung Hochbeete geplant
-    # initial: 'off'
-
 irrigation_valve2_at_monday:
     name: Bewässerung Hochbeete montags
 irrigation_valve2_at_tuesday:
@@ -40,10 +40,10 @@ irrigation_valve2_at_saturday:
 irrigation_valve2_at_sunday:
     name: Bewässerung Hochbeete sonntags
 
+irrigation_activated_valve3:
+    name: Bewässerung Rosengarten aktiv
 irrigation_scheduled_valve3:
     name: Bewässerung Rosengarten geplant
-    # initial: 'off'
-
 irrigation_valve3_at_monday:
     name: Bewässerung Rosengarten montags
 irrigation_valve3_at_tuesday:
@@ -59,10 +59,10 @@ irrigation_valve3_at_saturday:
 irrigation_valve3_at_sunday:
     name: Bewässerung Rosengarten sonntags
 
+irrigation_activated_valve4:
+    name: Bewässerung Gemüsebeet aktiv
 irrigation_scheduled_valve4:
-    name: Bewässerung Rosengarten geplant
-    # initial: 'off'
-
+    name: Bewässerung Gemüsebeet geplant
 irrigation_valve4_at_monday:
     name: Bewässerung Gemüsebeet montags
 irrigation_valve4_at_tuesday:
@@ -78,10 +78,10 @@ irrigation_valve4_at_saturday:
 irrigation_valve4_at_sunday:
     name: Bewässerung Gemüsebeet sonntags
 
+irrigation_activated_valve5:
+    name: Bewässerung <undefined> aktiv
 irrigation_scheduled_valve5:
-    name: Bewässerung Rosengarten geplant
-    # initial: 'off'
-
+    name: Bewässerung <undefined> geplant
 irrigation_valve5_at_monday:
     name: Bewässerung <undefined> montags
 irrigation_valve5_at_tuesday:
@@ -97,10 +97,10 @@ irrigation_valve5_at_saturday:
 irrigation_valve5_at_sunday:
     name: Bewässerung <undefined> sonntags
 
+irrigation_activated_valve6:
+    name: Bewässerung Rasen aktiv
 irrigation_scheduled_valve6:
-    name: Bewässerung Rosengarten geplant
-    # initial: 'off'
-
+    name: Bewässerung Rasen geplant
 irrigation_valve6_at_monday:
     name: Bewässerung Rasen montags
 irrigation_valve6_at_tuesday:
