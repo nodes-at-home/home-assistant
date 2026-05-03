@@ -69,7 +69,7 @@
                 entity_id: input_boolean.debug_notifications
                 state: 'on'
           - choose:
-              - conditions: "{{ channel == 'tv' }}"
+              - conditions: "{{ channel == 'tv' and states ( 'remote.sony_kd_55ag9' ) == 'on' }}"
                 sequence:
                   - action: notify.tv_lounge
                     data:
