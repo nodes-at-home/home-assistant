@@ -60,6 +60,12 @@ shell_command:
     request_shutdown: cat shutdown > /var/tmp/shutdown_signal
 
 # -------------------------------------------------------------------------------
+# ssdp - Simple Service Discovery Protocol
+# change with ha 2026.05 https://github.com/home-assistant/core/commit/7ba4b92fa8be1fc83217ead4fc4a0a88630a840
+# needds explicite ssdp setup for bravia tv
+ssdp:
+
+# -------------------------------------------------------------------------------
 # influxdb
 # https://home-assistant.io/blog/2015/12/07/influxdb-and-grafana/
 
