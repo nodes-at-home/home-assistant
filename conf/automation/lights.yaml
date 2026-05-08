@@ -118,11 +118,11 @@
       - trigger: sun
         event: sunrise
         offset: "+00:00:00"
-      - trigger: event
-        event_type:  bosch_shc.event
-        event_data:
-            event_type: SCENARIO
-            event_subtype: 'Licht aus'
+      # - trigger: event
+      #   event_type:  bosch_shc.event
+      #   event_data:
+      #       event_type: SCENARIO
+      #       event_subtype: 'Licht aus'
     conditions:
       - condition: state
         alias: process only on production server
@@ -144,12 +144,17 @@
   - alias: lights_indoor_off_when_tv_switched_off
     id: lights_indoor_off_when_tv_switched_off
     triggers:
-        trigger: state
+      - trigger: state
         entity_id: remote.sony_kd_55ag9
         from: "on"
         to: "off"
         for:
             minutes: 1
+      - trigger: event
+        event_type:  bosch_shc.event
+        event_data:
+            event_type: SCENARIO
+            event_subtype: 'Licht aus'
     conditions:
       - condition: state
         alias: process only on production server
