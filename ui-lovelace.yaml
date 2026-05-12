@@ -123,10 +123,10 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
-        entity: binary_sensor.gardena_smart_system_connection
+        entity: sensor.websocket_status_gardena
         content: Gardena
         icon: mdi:flower
-        color: "{{ iif ( is_state ( entity, 'on' ), 'limegreen', 'red' ) }}"
+        color: "{{ iif ( is_state ( entity, 'connected' ), 'limegreen', 'red' ) }}"
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
@@ -1237,10 +1237,10 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
-        entity: binary_sensor.gardena_smart_system_connection
+        entity: sensor.websocket_status_gardena
         content: Gardena
         icon: mdi:flower
-        color: "{{ iif ( is_state ( entity, 'on' ), 'limegreen', 'red' ) }}"
+        color: "{{ iif ( is_state ( entity, 'connected' ), 'limegreen', 'red' ) }}"
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
@@ -1377,7 +1377,7 @@ views:
                       - type: state-label
                         entity: lawn_mower.sileno
                         attribute: activity
-                        prefix: "Status: "
+                        prefix: "Aktivität: "
                         style:
                           top: 40%
                           left: 1%
@@ -1405,8 +1405,8 @@ views:
                           border-color: rgb(34, 154, 210)
                       - type: state-label
                         entity: lawn_mower.sileno
-                        attribute: error
-                        prefix: "Fehler: "
+                        attribute: state
+                        prefix: "Status: "
                         style:
                           top: 60%
                           left: 1%
@@ -1420,7 +1420,7 @@ views:
                           border-color: rgb(34, 154, 210)
                       - type: state-label
                         entity: lawn_mower.sileno
-                        attribute: last_error
+                        attribute: last_error_code
                         prefix: "Meldung: "
                         style:
                           top: 70%
