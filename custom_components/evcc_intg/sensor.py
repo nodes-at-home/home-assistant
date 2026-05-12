@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from dataclasses import replace
 from datetime import datetime, timezone
@@ -7,10 +8,25 @@ from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfTemperature, Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 
-from custom_components.evcc_intg.pyevcc_ha.keys import Tag, EP_TYPE, FORECAST_CONTENT
+from custom_components.evcc_intg.pyevcc_ha.const import (
+    JSONKEY_EVOPT_RES_BATTERIES_AINDEX_CHARGED_TOTAL,
+    JSONKEY_EVOPT_RES_BATTERIES_AINDEX_CHARGING_POWER,
+    JSONKEY_EVOPT_RES_BATTERIES_AINDEX_DISCHARGING_POWER,
+    JSONKEY_EVOPT_DETAILS_BATTERYDETAILS,
+    JSONKEY_EVOPT_DETAILS_TIMESTAMP,
+    ADDITIONAL_ENDPOINTS_DATA_EVCCCONF,
+    EP_TYPE,
+    FORECAST_CONTENT,
+    SESSIONS_KEY_TOTAL,
+    EVCCCONF_KEY_CONFIG,
+    EVCCCONF_DEVICE_TYPES,
+    EVCCCONF_KEY_DATA
+)
+from custom_components.evcc_intg.pyevcc_ha.keys import Tag, camel_to_snake
 from . import EvccDataUpdateCoordinator, EvccBaseEntity
 from .const import (
     DOMAIN,
@@ -22,54 +38,59 @@ from .const import (
     SENSOR_ENTITIES_PER_LOADPOINT,
     SENSOR_ENTITIES_PER_VEHICLE,
     SENSOR_ENTITIES_PER_CIRCUIT,
+    SENSOR_ENTITIES_PER_METER,
     TAG_TO_CONTENT_KEY,
     ExtSensorEntityDescription
-)
-from .pyevcc_ha import SESSIONS_KEY_TOTAL
-from .pyevcc_ha.const import (
-    JSONKEY_EVOPT_RES_BATTERIES_AINDEX_CHARGED_TOTAL,
-    JSONKEY_EVOPT_RES_BATTERIES_AINDEX_CHARGING_POWER,
-    JSONKEY_EVOPT_RES_BATTERIES_AINDEX_DISCHARGING_POWER,
-    JSONKEY_EVOPT_DETAILS_BATTERYDETAILS,
-    JSONKEY_EVOPT_DETAILS_TIMESTAMP
 )
 
 _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_entity_cb: AddEntitiesCallback):
-    _LOGGER.debug("SENSOR async_setup_entry")
+    _LOGGER.debug("SENSOR async_setup_entry()")
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
-    entities = []
 
+    configuration_data_available = False
+    if len(coordinator.data.get(ADDITIONAL_ENDPOINTS_DATA_EVCCCONF, {})) > 0:
+        configuration_data_available = True
+
+    entities = []
+    entries_to_check = {}
     the_sensors_list = SENSOR_ENTITIES
 
-    # we need to check if the grid data (power & currents) is available as separate object...
+    # we need to check if the grid data (power & currents) is available as a separate object...
     # or if it's still part of the main/site object (as gridPower, gridCurrents)
     if coordinator.grid_data_as_object:
-        _LOGGER.debug("evcc 'grid' data is available in separate object")
+        _LOGGER.debug("SENSOR async_setup_entry(): evcc 'grid' data is available in separate object")
         the_sensors_list = the_sensors_list + SENSOR_ENTITIES_GRID_AS_OBJECT
     else:
-        _LOGGER.debug("evcc 'grid' as prefix")
+        _LOGGER.debug("SENSOR async_setup_entry(): evcc 'grid' as prefix")
         the_sensors_list = the_sensors_list + SENSOR_ENTITIES_GRID_AS_PREFIX
 
     # additionally, the battery sensors can be either with prefix (at least till
     # evcc 0.209.7), or as a separate 'battery' object
     if coordinator.battery_data_as_object:
-        _LOGGER.debug("evcc 'battery' data is available in separate object")
+        _LOGGER.debug("SENSOR async_setup_entry(): evcc 'battery' data is available in separate object")
         the_sensors_list = the_sensors_list + SENSOR_ENTITIES_BATTERY_AS_OBJECT
     else:
-        _LOGGER.debug("evcc 'battery' as prefix")
+        _LOGGER.debug("SENSOR async_setup_entry(): evcc 'battery' as prefix")
         the_sensors_list = the_sensors_list + SENSOR_ENTITIES_BATTERY_AS_PREFIX
 
     # finally creating all the Sensors, based on the descriptions
     for description in the_sensors_list:
+        # enable all CONFIGURATION entities if config-data is available
+        if configuration_data_available and description.tag.type == EP_TYPE.EVCCCONF:
+            if not description.entity_registry_enabled_default:
+                description = replace(
+                    description,
+                    entity_registry_enabled_default = True
+                )
+
         entity = EvccSensor(coordinator, description)
         entities.append(entity)
 
-    multi_loadpoint_config = len(coordinator._loadpoint) > 1 #or len(coordinator._vehicle) > 1
-
     # loadpoint sensors...
+    multi_loadpoint_config = len(coordinator._loadpoint) > 1
     for a_lp_key in coordinator._loadpoint:
         load_point_config = coordinator._loadpoint[a_lp_key]
         lp_api_index = int(a_lp_key)
@@ -81,6 +102,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
 
         for a_stub in SENSOR_ENTITIES_PER_LOADPOINT:
             if not lp_is_integrated or a_stub.integrated_supported:
+                force_enable_by_default = configuration_data_available and a_stub.tag.type == EP_TYPE.EVCCCONF
                 # well - a hack to show any heating related loadpoints with temperature units...
                 # note: this will not change the label (that still show 'SOC')
                 force_celsius = lp_is_heating  and (
@@ -102,11 +124,12 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                     key=f"{lp_id_addon}_{the_key}" if not patch_keys else f"{lp_id_addon}_{the_key}_{a_stub.json_idx[0]}",
                     translation_key=the_key if not patch_keys else f"{the_key}_{a_stub.json_idx[0]}",
                     name_addon=lp_name_addon if multi_loadpoint_config else None,
+                    evcc_config_id=a_lp_key,
                     icon=a_stub.icon,
                     device_class=SensorDeviceClass.TEMPERATURE if force_celsius else a_stub.device_class,
                     unit_of_measurement=UnitOfTemperature.CELSIUS if force_celsius else a_stub.unit_of_measurement,
                     entity_category=a_stub.entity_category,
-                    entity_registry_enabled_default=a_stub.entity_registry_enabled_default,
+                    entity_registry_enabled_default=True if force_enable_by_default else a_stub.entity_registry_enabled_default,
                     is_lp_integrated_device=lp_is_integrated,
 
                     # the entity type specific values...
@@ -141,13 +164,19 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                 entities.append(entity)
 
     # vehicle sensors...
+    multi_vehicle_config = multi_loadpoint_config or len(coordinator._vehicle) > 1
     for a_vehicle_key in coordinator._vehicle:
         a_vehicle_obj = coordinator._vehicle[a_vehicle_key]
         veh_id_addon = a_vehicle_obj["id"]
         veh_name_addon = a_vehicle_obj["name"]
 
         for a_stub in SENSOR_ENTITIES_PER_VEHICLE:
-            # only when the json_idx has a length of 1 we must patch our key & translation_key
+            if configuration_data_available and a_stub.tag.type == EP_TYPE.EVCCCONF and not coordinator._request_ext_vehicle_data:
+                _LOGGER.debug(f"Skipping EVCCCONF sensor {a_stub.tag} for vehicle {veh_name_addon} due to _request_ext_vehicle_data = FALSE")
+                continue
+
+            force_enable_by_default = configuration_data_available and a_stub.tag.type == EP_TYPE.EVCCCONF
+            # only when the json_idx has a length of 1, we must patch our key & translation_key
             patch_keys = a_stub.json_idx is not None and len(a_stub.json_idx) == 1
             the_key = a_stub.tag.entity_key if a_stub.tag.entity_key is not None else a_stub.tag.json_key
 
@@ -155,12 +184,13 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                 tag=a_stub.tag,
                 key=f"{veh_id_addon}_{the_key}" if not patch_keys else f"{veh_id_addon}_{the_key}_{a_stub.json_idx[0]}",
                 translation_key=the_key if not patch_keys else f"{the_key}_{a_stub.json_idx[0]}",
-                name_addon=veh_name_addon if multi_loadpoint_config else None,
+                evcc_config_id=a_vehicle_key,
+                name_addon=veh_name_addon if multi_vehicle_config else None,
                 icon=a_stub.icon,
                 device_class=a_stub.device_class,
                 unit_of_measurement=a_stub.unit_of_measurement,
                 entity_category=a_stub.entity_category,
-                entity_registry_enabled_default=a_stub.entity_registry_enabled_default,
+                entity_registry_enabled_default=True if force_enable_by_default else a_stub.entity_registry_enabled_default,
 
                 # the entity type specific values...
                 state_class=a_stub.state_class,
@@ -199,6 +229,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
             # a_circuit_config = coordinator._circuit[a_circuit_key]
             for a_stub in SENSOR_ENTITIES_PER_CIRCUIT:
                 if a_stub.integrated_supported:
+                    force_enable_by_default = configuration_data_available and a_stub.tag.type == EP_TYPE.EVCCCONF
                     the_key = a_stub.tag.entity_key if a_stub.tag.entity_key is not None else a_stub.tag.json_key
                     description = ExtSensorEntityDescription(
                         tag=a_stub.tag,
@@ -208,7 +239,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                         name_addon=f"'{a_circuit_key.upper()}'",
                         icon=a_stub.icon,
                         entity_category=a_stub.entity_category,
-                        entity_registry_enabled_default=a_stub.entity_registry_enabled_default,
+                        entity_registry_enabled_default=True if force_enable_by_default else a_stub.entity_registry_enabled_default,
 
                         # the entity type specific values...
                         state_class=a_stub.state_class,
@@ -223,7 +254,117 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                     entity = EvccSensor(coordinator, description)
                     entities.append(entity)
 
+    # the additional meter entities (from the configuration)
+    if configuration_data_available and coordinator._request_ext_meter_data:
+        meter_data = coordinator.data.get(ADDITIONAL_ENDPOINTS_DATA_EVCCCONF, {}).get(EVCCCONF_KEY_CONFIG, {}).get(EVCCCONF_DEVICE_TYPES.METER.value, {})
+        for a_meter_key in meter_data:
+            # we MUST ensure that the meter_id_addon is a valid HA entity-id
+            # (at least 'meter_id_addon' will become part of an entity-id)
+            meter_id_addon = camel_to_snake(a_meter_key).replace(".", "_")
+            meter_name_addon = a_meter_key
+
+            for a_stub in SENSOR_ENTITIES_PER_METER:
+                #value = coordinator.read_tag_configuration(a_stub.tag, a_meter_key)
+                #if value is not None:
+                    # _LOGGER.debug(f"{a_stub.tag.entity_key} for meter '{a_meter_key}' -> {value}")
+                patch_keys = a_stub.json_idx is not None and len(a_stub.json_idx) == 1
+                the_key = a_stub.tag.entity_key if a_stub.tag.entity_key is not None else a_stub.tag.json_key
+
+                description = ExtSensorEntityDescription(
+                    tag=a_stub.tag,
+                    key=f"{meter_id_addon}_{the_key}" if not patch_keys else f"{meter_id_addon}_{the_key}_{a_stub.json_idx[0]}",
+                    translation_key=the_key if not patch_keys else f"{the_key}_{a_stub.json_idx[0]}",
+                    evcc_config_id=a_meter_key,
+                    name_addon=meter_name_addon,
+                    icon=a_stub.icon,
+                    device_class=a_stub.device_class,
+                    unit_of_measurement=a_stub.unit_of_measurement,
+                    entity_category=a_stub.entity_category,
+                    entity_registry_enabled_default=True,
+
+                    # the entity type specific values...
+                    state_class=a_stub.state_class,
+                    native_unit_of_measurement=a_stub.native_unit_of_measurement,
+                    suggested_display_precision=a_stub.suggested_display_precision,
+                    json_idx=a_stub.json_idx,
+                    factor=a_stub.factor,
+                    lookup=a_stub.lookup,
+                    ignore_zero=a_stub.ignore_zero
+                )
+                entity = EvccSensor(coordinator, description)
+                entities.append(entity)
+                entries_to_check[entity.entity_id] = {
+                    "tag": description.tag,
+                    "evcc_config_id": description.evcc_config_id,
+                    "description_key": description.key
+                }
+
     add_entity_cb(entities)
+
+    async def _check_for_entities_to_enabled():
+        if len(entries_to_check) == 0:
+            _LOGGER.debug(f"SENSOR _check_for_entities_to_enabled(): no entries to check - exiting")
+            return
+
+        _LOGGER.debug(f"SENSOR _check_for_entities_to_enabled(): Launched... (pause now for 2 minutes)")
+        try:
+            await asyncio.sleep(120)
+            _LOGGER.debug(f"SENSOR _check_for_entities_to_enabled(): Wakeup (after 2 minutes) - reset CONFIG_LAST_UPDATE")
+            await coordinator.bridge.force_config_update()
+
+            need_to_wait = True
+            check_run_counter = 0
+            while check_run_counter < 11 and need_to_wait:
+                check_run_counter += 1
+                meter_devices_data = coordinator.data.get(ADDITIONAL_ENDPOINTS_DATA_EVCCCONF, {}).get(EVCCCONF_KEY_DATA, {}).get(EVCCCONF_DEVICE_TYPES.METER.value)
+                if meter_devices_data is not None:
+                    avail_data_count = 0
+                    for a_meter_device_id, a_meter_object in meter_devices_data.items():
+                        a_meter_device_has_error = False
+                        for a_key, a_value in a_meter_object.items():
+                            if "error" in a_value and a_value["error"] is not None and len(a_value["error"]) > 0:
+                                a_meter_device_has_error = True
+                                break
+                        if not a_meter_device_has_error:
+                            avail_data_count +=1
+
+                    if avail_data_count == len(meter_devices_data):
+                        need_to_wait = False
+
+                if need_to_wait:
+                    _LOGGER.debug(f"SENSOR _check_for_entities_to_enabled(): No meters data found (or they are marked with 'errors'), waiting another 30 seconds... {meter_devices_data}")
+                    await coordinator.bridge.force_config_update()
+                    await asyncio.sleep(30)
+
+            _LOGGER.debug(f"SENSOR _check_for_entities_to_enabled(): Will finally start now... {meter_devices_data}")
+            registry = er.async_get(hass)
+            if registry is not None:
+                for a_entity_id in entries_to_check:
+                    a_entity_data = entries_to_check[a_entity_id]
+                    value = coordinator.read_tag_configuration(a_entity_data["tag"], a_entity_data["evcc_config_id"])
+                    #_LOGGER.debug(f"_check_for_entities_to_enabled(): {a_entity_data["description_key"]}: {value}")
+                    entry = registry.async_get(a_entity_id)
+                    if entry is not None:
+                        if value is None:
+                            if entry.disabled_by is None:
+                                _LOGGER.debug(f"SENSOR _check_for_entities_to_enabled(): DISABLING entity {a_entity_id} due to missing data from evcc")
+                                registry.async_update_entity(
+                                    a_entity_id,
+                                    disabled_by=er.RegistryEntryDisabler.INTEGRATION
+                                )
+                        else:
+                            if entry.disabled_by == er.RegistryEntryDisabler.INTEGRATION:
+                                _LOGGER.debug(f"SENSOR _check_for_entities_to_enabled(): ENABLE entity {a_entity_id} due since data is available")
+                                registry.async_update_entity(
+                                    a_entity_id,
+                                    disabled_by=None
+                                )
+                _LOGGER.debug(f"SENSOR _check_for_entities_to_enabled(): init is COMPLETED")
+
+        except BaseException as err:
+            _LOGGER.warning(f"SENSOR _check_for_entities_to_enabled(): Error: {type(err).__name__} {err}")
+
+    asyncio.create_task(_check_for_entities_to_enabled())
 
 def compress_data(data):
     return compress_general(data, "start", "value")
@@ -421,8 +562,8 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                     elif "ts" in a_entry:
                         timestamp_dt = datetime.fromisoformat(a_entry["ts"]).astimezone(timezone.utc)
                         if (timestamp_dt.day == current_time.day and
-                            timestamp_dt.hour == current_time.hour and
-                            int(timestamp_dt.minute // 15) == int(current_time.minute // 15)
+                                timestamp_dt.hour == current_time.hour and
+                                int(timestamp_dt.minute // 15) == int(current_time.minute // 15)
                         ):
                             if "val" in a_entry:
                                 self._last_calculated_value = a_entry["val"]
@@ -463,6 +604,44 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                     return None
             else:
                 _LOGGER.debug(f"no tariff data found for {self.tag}")
+                return None
+
+        if self.tag.type == EP_TYPE.EVCCCONF:
+            # for the entities that read the data from the CONFIGURATION, we need
+            # some special handling...
+            if self.entity_description.evcc_config_id is None:
+                return None
+            try:
+                value_from_config = self.coordinator.read_tag_configuration(self.tag, self.entity_description.evcc_config_id)
+                if value_from_config is not None:
+                    if hasattr(self.entity_description, "json_idx") and self.entity_description.json_idx is not None:
+                        for idx, key in enumerate(self.entity_description.json_idx):
+                            if isinstance(value_from_config, (list, dict)):
+                                if isinstance(key, int) and len(value_from_config) > key:
+                                    value_from_config = value_from_config[key]
+                                elif key in value_from_config:
+                                    value_from_config = value_from_config[key]
+                            else:
+                                try:
+                                    value_from_config = value_from_config[key]
+                                except (IndexError, KeyError, TypeError):
+                                    _LOGGER.info(f"native_value(): index {idx+1} ({key}) not found in {value_from_config}")
+                                    value_from_config = None
+                                    break
+
+                    # special handling for odometers...
+                    if self.entity_description.ignore_zero:
+                        isZeroVal = value_from_config is None or value_from_config == "unknown" or value_from_config <= 0.1
+
+                        if isZeroVal and self._previous_float_value is not None and self._previous_float_value > 0:
+                            value_from_config = self._previous_float_value
+                        elif not isZeroVal and value_from_config > 0:
+                            self._previous_float_value = value_from_config
+
+                return value_from_config
+
+            except BaseException as exc:
+                _LOGGER.error(f"Error reading CONFIGURATION tag for {self.entity_id}: {type(exc).__name__} - {exc}")
                 return None
 
         try:
@@ -545,7 +724,7 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
 
             if isZeroVal and self._previous_float_value is not None and self._previous_float_value > 0:
                 value = self._previous_float_value
-            elif value > 0:
+            elif not isZeroVal and value > 0:
                 self._previous_float_value = value
 
         # final return statement...

@@ -32,5 +32,34 @@
         "title": "Gardena Smart System - Alternativer"
       }
     }
+  },
+  "services": {
+    "start_override": {
+      "name": "Start overstyring",
+      "description": "Start klipperen umiddelbart for en bestemt varighet og overstyr timeplanen.",
+      "icon": "mdi:mower-on",
+      "fields": {
+        "duration": {
+          "name": "Varighet",
+          "description": "Varigheten i sekunder."
+        }
+      }
+    },
+    "start_automatic": {
+      "name": "Start automatisk",
+      "description": "Start klipperen med den automatiske timeplanen."
+    },
+    "park_until_next_task": {
+      "name": "Parker til neste oppgave",
+      "description": "Parker klipperen til neste planlagte oppgave."
+    },
+    "park_until_further_notice": {
+      "name": "Parker til videre",
+      "description": "Parker klipperen til videre."
+    },
+    "reconnect_websocket": {
+      "name": "Koble til WebSocket på nytt",
+      "description": "Tving WebSocket-tilkobling for Gardena Smart System-integrasjonen."
+    }
   }
 }

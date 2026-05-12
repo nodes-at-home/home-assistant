@@ -1,17 +1,54 @@
 {
+  "entity": {
+    "sensor": {
+      "mower_error": {
+        "name": "Error code",
+        "state": {
+          "no_message": "No error",
+          "outside_working_area": "Outside working area",
+          "no_loop_signal": "No loop signal",
+          "wrong_loop_signal": "Wrong loop signal",
+          "loop_sensor_problem_front": "Front loop sensor defect",
+          "loop_sensor_problem_rear": "Rear loop sensor defect",
+          "trapped": "Trapped",
+          "upside_down": "Upside down",
+          "low_battery": "Low battery",
+          "empty_battery": "Empty battery",
+          "no_drive": "No drive",
+          "lifted": "Lifted",
+          "stuck_in_charging_station": "Stuck in charging station",
+          "charging_station_blocked": "Charging station blocked",
+          "collision_sensor_problem_rear": "Rear collision sensor defect",
+          "collision_sensor_problem_front": "Front collision sensor defect",
+          "wheel_motor_blocked_right": "Right wheel motor blocked",
+          "wheel_motor_blocked_left": "Left wheel motor blocked",
+          "cutting_system_blocked": "Cutting system blocked",
+          "steep_slope": "Too steep slope",
+          "parked_daily_limit_reached": "Daily limit reached",
+          "unknown": "Unknown error"
+        }
+      }
+    }
+  },
   "config": {
     "abort": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_account%]"
     },
     "error": {
       "cannot_connect": "Failed to connect, please try again.",
-      "invalid_auth": "Invalid authentication.",
+      "invalid_auth": "Invalid authentication credentials. Please check your Client ID and Client Secret.",
+      "insufficient_permissions": "Insufficient permissions. Please check your API key and permissions.",
+      "no_locations": "No locations found. Please set up your Gardena smart Gateway in the official Gardena app first, then retry.",
+      "server_error": "Server error occurred. Please try again later.",
+      "auth_error": "Authentication error occurred. Please check your credentials.",
+      "unknown_error": "An unexpected error occurred. Please try again.",
       "too_many_requests": "Too many requests, retry later.",
+      "api_error": "Failed to connect to the Gardena API. Please verify your credentials and try again.",
       "unknown": "Unexpected error."
     },
     "step": {
       "user": {
-        "description": "Please enter your credentials.",
+        "description": "Please enter your Gardena Smart System API credentials. You can obtain these from the Gardena Developer Portal.",
         "data": {
           "client_id": "Application Key / Client ID",
           "client_secret": "Application secret / Client secret"
@@ -40,6 +77,32 @@
         "duration": {
           "name": "Duration",
           "description": "The duration in seconds."
+        }
+      }
+    },
+    "start_automatic": {
+      "name": "Start automatic",
+      "description": "Start the mower with automatic schedule."
+    },
+    "park_until_next_task": {
+      "name": "Park until next task",
+      "description": "Park the mower until the next scheduled task."
+    },
+    "park_until_further_notice": {
+      "name": "Park until further notice",
+      "description": "Park the mower until further notice."
+    },
+    "reconnect_websocket": {
+      "name": "Reconnect WebSocket",
+      "description": "Force WebSocket reconnection for the Gardena Smart System integration."
+    },
+    "websocket_diagnostics": {
+      "name": "WebSocket Diagnostics",
+      "description": "Get WebSocket connection diagnostics and status information.",
+      "fields": {
+        "detailed": {
+          "name": "Detailed",
+          "description": "Include detailed connection information."
         }
       }
     }

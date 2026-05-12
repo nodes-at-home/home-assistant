@@ -1,21 +1,57 @@
 {
+  "entity": {
+    "sensor": {
+      "mower_error": {
+        "name": "Code d'erreur",
+        "state": {
+          "no_message": "Aucune erreur",
+          "outside_working_area": "Hors de la zone de travail",
+          "no_loop_signal": "Pas de signal de boucle",
+          "wrong_loop_signal": "Mauvais signal de boucle",
+          "loop_sensor_problem_front": "Capteur de boucle avant défectueux",
+          "loop_sensor_problem_rear": "Capteur de boucle arrière défectueux",
+          "trapped": "Bloquée",
+          "upside_down": "Retournée",
+          "low_battery": "Batterie faible",
+          "empty_battery": "Batterie vide",
+          "no_drive": "Pas de traction",
+          "lifted": "Soulevée",
+          "stuck_in_charging_station": "Bloquée dans la station de charge",
+          "charging_station_blocked": "Station de charge bloquée",
+          "collision_sensor_problem_rear": "Capteur de collision arrière défectueux",
+          "collision_sensor_problem_front": "Capteur de collision avant défectueux",
+          "wheel_motor_blocked_right": "Moteur de roue droite bloqué",
+          "wheel_motor_blocked_left": "Moteur de roue gauche bloqué",
+          "cutting_system_blocked": "Système de coupe bloqué",
+          "steep_slope": "Pente trop raide",
+          "parked_daily_limit_reached": "Limite quotidienne atteinte",
+          "unknown": "Erreur inconnue"
+        }
+      }
+    }
+  },
   "config": {
     "abort": {
-      "already_configured": "La localisation est déjà configurée"
+      "already_configured": "[%key:common::config_flow::abort::already_configured_account%]"
     },
     "error": {
       "cannot_connect": "Impossible de se connecter, veuillez ré-essayer.",
-      "invalid_auth": "Authentification invalide.",
-      "too_many_requests": "Trop de requêtes, veuillez ré-essayer plus tard.",
-      "unknown": "Erreur innatendue."
+      "invalid_auth": "Identifiants d'authentification invalides. Veuillez vérifier votre Client ID et Client Secret.",
+      "insufficient_permissions": "Permissions insuffisantes. Veuillez vérifier votre clé API et vos permissions.",
+      "no_locations": "Aucun emplacement trouvé. Veuillez d'abord configurer votre passerelle Gardena smart dans l'application officielle Gardena, puis réessayez.",
+      "server_error": "Erreur serveur survenue. Veuillez ré-essayer plus tard.",
+      "auth_error": "Erreur d'authentification survenue. Veuillez vérifier vos identifiants.",
+      "unknown_error": "Une erreur inattendue s'est produite. Veuillez ré-essayer.",
+      "too_many_requests": "Trop de requêtes, ré-essayez plus tard.",
+      "api_error": "Impossible de se connecter à l'API Gardena. Veuillez vérifier vos identifiants et réessayer.",
+      "unknown": "Erreur inattendue."
     },
     "step": {
       "user": {
-        "description": "Veuillez renseigner vos identifiants.",
+        "description": "Veuillez saisir vos identifiants API Gardena Smart System. Vous pouvez les obtenir depuis le Portail Développeur Gardena.",
         "data": {
-          "email": "E-mail",
-          "password": "Mot de passe",
-          "client_id": "Application Key / Client ID"
+          "client_id": "Clé d'application / Client ID",
+          "client_secret": "Secret d'application / Client secret"
         },
         "title": "Gardena Smart System"
       }
@@ -30,6 +66,44 @@
           "smart_watering_duration": "Durée de Smart Watering (minutes)"
         },
         "title": "Gardena Smart System - Options"
+      }
+    }
+  },
+  "services": {
+    "start_override": {
+      "name": "Démarrer la substitution",
+      "description": "Démarrer la tondeuse immédiatement pour une durée spécifique et remplacer le planning.",
+      "fields": {
+        "duration": {
+          "name": "Durée",
+          "description": "La durée en secondes."
+        }
+      }
+    },
+    "start_automatic": {
+      "name": "Démarrer automatique",
+      "description": "Démarrer la tondeuse avec le planning automatique."
+    },
+    "park_until_next_task": {
+      "name": "Ranger jusqu'à la prochaine tâche",
+      "description": "Ranger la tondeuse jusqu'à la prochaine tâche programmée."
+    },
+    "park_until_further_notice": {
+      "name": "Ranger jusqu'à nouvel ordre",
+      "description": "Ranger la tondeuse jusqu'à nouvel ordre."
+    },
+    "reconnect_websocket": {
+      "name": "Reconnecter WebSocket",
+      "description": "Forcer la reconnexion WebSocket pour l'intégration Gardena Smart System."
+    },
+    "websocket_diagnostics": {
+      "name": "Diagnostics WebSocket",
+      "description": "Obtenir les diagnostics et le statut de la connexion WebSocket.",
+      "fields": {
+        "detailed": {
+          "name": "Détaillé",
+          "description": "Inclure les informations détaillées de connexion."
+        }
       }
     }
   }

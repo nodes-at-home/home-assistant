@@ -41,8 +41,8 @@ system_health:
 
 logger:
   # default: debug
-  # default: info
-  default: warn
+  default: info
+  # default: warn
   # logs:
     # homeassistant.components.automation: debug
     #boschshcpy: debug

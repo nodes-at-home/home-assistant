@@ -1,19 +1,22 @@
 import logging
 from typing import Any
 
+import aiohttp
 import voluptuous as vol
+from homeassistant import config_entries
+from homeassistant.config_entries import ConfigFlowResult, SOURCE_RECONFIGURE
+from homeassistant.const import CONF_HOST, CONF_SCAN_INTERVAL, ATTR_SW_VERSION, CONF_NAME, CONF_PASSWORD
+from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 from custom_components.evcc_intg.pyevcc_ha import EvccApiBridge
 from custom_components.evcc_intg.pyevcc_ha.keys import Tag
-from homeassistant import config_entries
-from homeassistant.config_entries import ConfigFlowResult, SOURCE_RECONFIGURE
-from homeassistant.const import CONF_HOST, CONF_SCAN_INTERVAL, ATTR_SW_VERSION, CONF_NAME
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from .const import (
     DOMAIN,
     CONF_INCLUDE_EVCC,
     CONF_USE_WS,
     CONF_PURGE_ALL,
+    CONF_EXTENDED_VEHICLE_DATA,
+    CONF_EXTENDED_METER_DATA,
     CONFIG_VERSION, CONFIG_MINOR_VERSION
 )
 
@@ -24,6 +27,8 @@ DEFAULT_HOST = "http://your-evcc-ip:7070"
 DEFAULT_SCAN_INTERVAL = 15
 DEFAULT_USE_WS = True
 DEFAULT_INCLUDE_EVCC = False
+DEFAULT_EXTENDED_VEHICLE_DATA = True
+DEFAULT_EXTENDED_METER_DATA = True
 
 class EvccFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Config flow for evcc_intg."""
@@ -37,18 +42,25 @@ class EvccFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         self._version = ""
         self._default_name = DEFAULT_NAME
         self._default_host = DEFAULT_HOST
+        self._default_password = ""
         self._default_scan_interval = DEFAULT_SCAN_INTERVAL
         self._default_use_ws = DEFAULT_USE_WS
         self._default_include_evcc = DEFAULT_INCLUDE_EVCC
+        self._default_extended_vehicle_data = DEFAULT_EXTENDED_VEHICLE_DATA
+        self._default_extended_meter_data = DEFAULT_EXTENDED_METER_DATA
+        self._need_purge_all_list = None
 
     async def async_step_reconfigure(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         entry_data = self._get_reconfigure_entry().data
         self._default_name = entry_data.get(CONF_NAME, DEFAULT_NAME)
         self._default_host = entry_data.get(CONF_HOST, DEFAULT_HOST)
+        self._default_password = entry_data.get(CONF_PASSWORD, None)
         self._default_scan_interval = entry_data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
         self._default_use_ws = entry_data.get(CONF_USE_WS, DEFAULT_USE_WS)
         self._default_include_evcc = entry_data.get(CONF_INCLUDE_EVCC, DEFAULT_INCLUDE_EVCC)
-
+        self._default_extended_vehicle_data = entry_data.get(CONF_EXTENDED_VEHICLE_DATA, DEFAULT_EXTENDED_VEHICLE_DATA)
+        self._default_extended_meter_data = entry_data.get(CONF_EXTENDED_METER_DATA, DEFAULT_EXTENDED_METER_DATA)
+        self._need_purge_all_list = [self._default_extended_vehicle_data, self._default_extended_meter_data]
         return await self.async_step_user()
 
     async def async_step_user(self, user_input=None):
@@ -67,28 +79,50 @@ class EvccFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             while user_input[CONF_HOST].endswith(("/", " ")):
                 user_input[CONF_HOST] = user_input[CONF_HOST][:-1]
 
-            valid = await self._test_host(host=user_input[CONF_HOST])
-            if valid:
+            valid_server, valid_pwd = await self._test_host_and_optional_pwd(host=user_input[CONF_HOST], adm_pwd=user_input.get(CONF_PASSWORD, None))
+            if valid_server and valid_pwd:
+                # check, if another config does not already exist
+                self._abort_if_unique_id_configured()
+
                 user_input[ATTR_SW_VERSION] = self._version
                 user_input[CONF_SCAN_INTERVAL] = max(5, user_input[CONF_SCAN_INTERVAL])
-                self._abort_if_unique_id_configured()
+
+                # make sure that we have either a stipped pwd (with len > 0) in our config or NONE
+                if user_input.get(CONF_PASSWORD, None) is not None:
+                    user_input[CONF_PASSWORD] = user_input.get(CONF_PASSWORD, "").strip()
+                    if len(user_input[CONF_PASSWORD]) == 0:
+                        user_input.pop(CONF_PASSWORD)
+                else:
+                    user_input.pop(CONF_PASSWORD)
+
                 if self.source == SOURCE_RECONFIGURE:
-                    # when the hostname has changed, the device_entries must be purged (since they will include
-                    # the hostname)
-                    if self._default_host != user_input[CONF_HOST]:
-                        user_input[CONF_PURGE_ALL] = True
+                    if not user_input[CONF_PURGE_ALL]:
+                        # when the hostname has changed, the device_entries must be purged (since they will include
+                        # the hostname)
+                        if self._default_host != user_input[CONF_HOST]:
+                            user_input[CONF_PURGE_ALL] = True
+                        elif self._need_purge_all_list is not None:
+                            # when one of the ext. vehicle or meter properties has changed, the device_entries must be purged
+                            user_input[CONF_PURGE_ALL] = self._need_purge_all_list[0] != user_input[CONF_EXTENDED_VEHICLE_DATA] or self._need_purge_all_list[1] != user_input[CONF_EXTENDED_METER_DATA]
+
                     return self.async_update_reload_and_abort(entry=self._get_reconfigure_entry(), data=user_input)
                 else:
                     return self.async_create_entry(title=user_input[CONF_NAME], data=user_input)
             else:
-                self._errors[CONF_HOST] = "auth"
+                if not valid_server:
+                    self._errors[CONF_HOST] = "auth"
+                else:
+                    self._errors[CONF_PASSWORD] = "pwd"
         else:
             user_input = {}
             user_input[CONF_NAME] = self._default_name
             user_input[CONF_HOST] = self._default_host
+            user_input[CONF_PASSWORD] = self._default_password if self._default_password else ""
             user_input[CONF_SCAN_INTERVAL] = self._default_scan_interval
             user_input[CONF_USE_WS] = self._default_use_ws
             user_input[CONF_INCLUDE_EVCC] = self._default_include_evcc
+            user_input[CONF_EXTENDED_VEHICLE_DATA] = self._default_extended_vehicle_data
+            user_input[CONF_EXTENDED_METER_DATA] = self._default_extended_meter_data
             user_input[CONF_PURGE_ALL] = False
 
         return self.async_show_form(
@@ -98,6 +132,9 @@ class EvccFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_HOST, default=user_input.get(CONF_HOST)): str,
                 vol.Required(CONF_USE_WS, default=user_input.get(CONF_USE_WS)): bool,
                 vol.Required(CONF_SCAN_INTERVAL, default=user_input.get(CONF_SCAN_INTERVAL)): int,
+                vol.Optional(CONF_PASSWORD, default=user_input.get(CONF_PASSWORD, "")): str,
+                vol.Optional(CONF_EXTENDED_VEHICLE_DATA, default=user_input.get(CONF_EXTENDED_VEHICLE_DATA, DEFAULT_EXTENDED_VEHICLE_DATA)): bool,
+                vol.Optional(CONF_EXTENDED_METER_DATA, default=user_input.get(CONF_EXTENDED_METER_DATA, DEFAULT_EXTENDED_METER_DATA)): bool,
                 vol.Required(CONF_INCLUDE_EVCC, default=user_input.get(CONF_INCLUDE_EVCC)): bool,
                 vol.Optional(CONF_PURGE_ALL, default=user_input.get(CONF_PURGE_ALL)): bool,
             }),
@@ -106,26 +143,50 @@ class EvccFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             errors=self._errors
         )
 
-    async def _test_host(self, host):
+    async def _test_host_and_optional_pwd(self, host, adm_pwd:str=None):
         try:
-            session = async_create_clientsession(self.hass)
-            client = EvccApiBridge(host=host, web_session=session, coordinator=None, lang=self.hass.config.language.lower())
+            _LOGGER.debug(f"test_host_and_optional_pwd(): starting")
 
-            ret = await client.read_all_data()
-            if ret is not None and len(ret) > 0:
+            # for the test we must still ensure that our adm_pwd is stripped...
+            if adm_pwd is not None:
+                adm_pwd = adm_pwd.strip()
+
+            if len(adm_pwd) == 0:
+                adm_pwd = None
+
+            session = async_create_clientsession(self.hass, verify_ssl=False, cookie_jar=aiohttp.CookieJar(unsafe=True))
+            client = EvccApiBridge(host=host, web_session=session, coordinator=None,
+                                   lang=self.hass.config.language.lower(), opt_password=adm_pwd)
+
+            server_is_valid = False
+            pwd_is_valid = True if adm_pwd is None else False
+
+            ret = await client.read_state_data()
+            _LOGGER.debug(f"_test_host_and_optional_pwd(): read data from evcc@{host} - result-size: {len(ret.keys()) if ret is not None else 'None'}")
+
+            if ret is not None and isinstance(ret, dict) and len(ret) > 0:
                 if Tag.VERSION.json_key in ret:
                     self._version = ret[Tag.VERSION.json_key]
                 elif Tag.AVAILABLEVERSION.json_key in ret:
                     self._version = ret[Tag.AVAILABLEVERSION.json_key]
                 else:
-                    _LOGGER.warning("No Version could be detected - ignore for now")
+                    _LOGGER.warning("_test_host_and_optional_pwd(): No Version could be detected - ignore for now")
 
-                _LOGGER.info(f"successfully validated host -> result: {ret}")
-                return True
+                _LOGGER.info(f"_test_host_and_optional_pwd(): successfully validated host -> result: {list(ret.keys())}")
+                server_is_valid = True
+                if not pwd_is_valid:
+                    pwd_is_valid = await client.ensure_session_is_authorized()
+
+            if adm_pwd is not None:
+                _LOGGER.debug(f"test_host_and_optional_pwd(): for HOST-AND-PWD ended with result: server_is_valid={server_is_valid}, pwd_is_valid={pwd_is_valid}")
+            else:
+                _LOGGER.debug(f"test_host_and_optional_pwd(): for HOST ended with result: server_is_valid={server_is_valid}")
+            return server_is_valid, pwd_is_valid
 
         except Exception as exc:
-            _LOGGER.error(f"Exception while test credentials: {exc}")
-        return False
+            _LOGGER.error(f"_test_host_and_optional_pwd(): Exception while test host/credentials: {exc}")
+
+        return False, False
 
     # @staticmethod
     # @callback

@@ -5,17 +5,22 @@
     },
     "error": {
       "cannot_connect": "Nepodarilo sa pripojiť, skúste to znova.",
-      "invalid_auth": "Neplatné overenie.",
+      "invalid_auth": "Neplatné overovacie údaje. Skontrolujte si Client ID a Client Secret.",
+      "insufficient_permissions": "Nedostatočné povolenia. Skontrolujte si kľúč API a povolenia.",
+      "no_locations": "Nenašli sa žiadne lokality. Najprv nastavte svoju bránu Gardena smart v oficiálnej aplikácii Gardena a skúste to znova.",
+      "server_error": "Vyskytla sa chyba servera. Skúste to znova neskôr.",
+      "auth_error": "Vyskytla sa chyba overenia. Skontrolujte si svoje údaje.",
+      "unknown_error": "Vyskytla sa neočakávaná chyba. Skúste to znova.",
       "too_many_requests": "Príliš veľa žiadostí, skúste to neskôr.",
+      "api_error": "Nepodarilo sa pripojiť k rozhraniu Gardena API. Overte si svoje údaje a skúste to znova.",
       "unknown": "Neočakávaná chyba."
     },
     "step": {
       "user": {
-        "description": "Zadajte svoje poverenia.",
+        "description": "Zadajte svoje prihlasovacie údaje k rozhraniu Gardena Smart System API. Získať ich môžete na portáli Gardena Developer.",
         "data": {
-          "email": "E-mail",
-          "password": "Heslo",
-          "client_id": "Aplikačný kľúč / ID klienta"
+          "client_id": "Aplikačný kľúč / ID klienta",
+          "client_secret": "Tajomstvo aplikácie / Tajomstvo klienta"
         },
         "title": "Gardena Smart System"
       }
@@ -30,6 +35,44 @@
           "smart_watering_duration": "Trvanie inteligentného zavlažovania (minúty)"
         },
         "title": "Gardena Smart System - Možnosti"
+      }
+    }
+  },
+  "services": {
+    "start_override": {
+      "name": "Spustiť prepísanie",
+      "description": "Okamžite spustite kosačku na určitý čas a prepíšte harmonogram.",
+      "fields": {
+        "duration": {
+          "name": "Trvanie",
+          "description": "Trvanie v sekundách."
+        }
+      }
+    },
+    "start_automatic": {
+      "name": "Spustiť automaticky",
+      "description": "Spustite kosačku s automatickým harmonogramom."
+    },
+    "park_until_next_task": {
+      "name": "Zaparkovať do ďalšej úlohy",
+      "description": "Zaparkujte kosačku do ďalšej plánovanej úlohy."
+    },
+    "park_until_further_notice": {
+      "name": "Zaparkovať do ďalšieho upozornenia",
+      "description": "Zaparkujte kosačku do ďalšieho upozornenia."
+    },
+    "reconnect_websocket": {
+      "name": "Znovu pripojiť WebSocket",
+      "description": "Vynútiť WebSocket pripojenie pre integráciu Gardena Smart System."
+    },
+    "websocket_diagnostics": {
+      "name": "Diagnostika WebSocket",
+      "description": "Získať diagnostiku a informácie o stave pripojenia WebSocket.",
+      "fields": {
+        "detailed": {
+          "name": "Podrobné",
+          "description": "Zahrnúť podrobné informácie o pripojení."
+        }
       }
     }
   }

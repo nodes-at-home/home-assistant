@@ -1680,7 +1680,7 @@ const $589840a8bffad2e2$export$43835e9acf248a15 = (node, type, detail, options)=
 });
 
 parcelRegister("6c3D1", function(module, exports) {
-module.exports = import("./problem-dialog.d101ffa9.js").then(()=>parcelRequire('gIkwD'));
+module.exports = import("./problem-dialog.15fb8175.js").then(()=>parcelRequire('gIkwD'));
 
 });
 
@@ -1816,24 +1816,11 @@ $parcel$export(module.exports, "stateDisplay", function () { return $a6dfaa78520
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 let $a6dfaa78520799c6$var$_ = (t)=>t, $a6dfaa78520799c6$var$t;
-const $a6dfaa78520799c6$export$c18c768bbe3223b7 = (hass, entity, className = '')=>(0, $ci0wX.html)($a6dfaa78520799c6$var$t || ($a6dfaa78520799c6$var$t = $a6dfaa78520799c6$var$_`<state-display
+const $a6dfaa78520799c6$export$c18c768bbe3223b7 = (hass, entity, content)=>(0, $ci0wX.html)($a6dfaa78520799c6$var$t || ($a6dfaa78520799c6$var$t = $a6dfaa78520799c6$var$_`<state-display
     .hass=${0}
     .stateObj=${0}
-    class=${0}
-  ></state-display>`), hass, entity, className);
-
-});
-
-parcelRegister("dTmXl", function(module, exports) {
-
-$parcel$export(module.exports, "d", function () { return $86dc711946e77b66$export$4368d992c4eafac0; });
-const $86dc711946e77b66$export$4368d992c4eafac0 = (config, component, category, ...args)=>{
-    if (!(config === null || config === void 0 ? void 0 : config.debug)) return;
-    const { scope: scope, categories: categories } = config.debug;
-    if ((scope === null || scope === void 0 ? void 0 : scope.length) && !scope.includes(component)) return;
-    if ((categories === null || categories === void 0 ? void 0 : categories.length) && !categories.includes(category)) return;
-    console.debug(`[${component}] ${category}`, ...args);
-};
+    .content=${0}
+  ></state-display>`), hass, entity, content);
 
 });
 
@@ -1856,11 +1843,41 @@ const $4aaac1c384d75a93$export$19efda5681568302 = (superClass)=>{
         }
         connectedCallback() {
             super.connectedCallback();
-            globalThis.addEventListener('hass-update', this._boundHassUpdateHandler);
+            this._bindHassUpdateListener();
         }
         disconnectedCallback() {
             super.disconnectedCallback();
-            globalThis.removeEventListener('hass-update', this._boundHassUpdateHandler);
+            this._unbindHassUpdateListener();
+        }
+        /**
+     * Attaches the listener to the closest scope: an explicit `_host`'s
+     * shadow root if set (for portalled descendants), otherwise the
+     * component's own root node (the parent shadow tree). Each card has a
+     * distinct shadow root, so this naturally isolates events per card.
+     *
+     * Exposed so portalled descendants can re-bind after `_host` is supplied,
+     * since their `connectedCallback` runs before the property is set.
+     */ _bindHassUpdateListener() {
+            if (this._listenerTarget) return;
+            const target = this._resolveListenerTarget();
+            if (target) {
+                this._listenerTarget = target;
+                target.addEventListener('hass-update', this._boundHassUpdateHandler);
+            }
+        }
+        _unbindHassUpdateListener() {
+            if (this._listenerTarget) {
+                this._listenerTarget.removeEventListener('hass-update', this._boundHassUpdateHandler);
+                this._listenerTarget = undefined;
+            }
+        }
+        _resolveListenerTarget() {
+            var _this__host;
+            if ((_this__host = this._host) === null || _this__host === void 0 ? void 0 : _this__host.shadowRoot) return this._host.shadowRoot;
+            const getRootNode = this.getRootNode;
+            if (typeof getRootNode !== 'function') return undefined;
+            const root = getRootNode.call(this);
+            return root && root !== this ? root : undefined;
         }
         _handleHassUpdate(event) {
             const { detail: { hass: hass } } = event;
@@ -1961,6 +1978,8 @@ $parcel$export(module.exports, "getEntitySubscriptionManager", function () { ret
  *
  * @see https://developers.home-assistant.io/docs/api/websocket#subscribe_entities
  */ 
+var $7AhDs = parcelRequire("7AhDs");
+
 var $dTmXl = parcelRequire("dTmXl");
 
 var $ahi97 = parcelRequire("ahi97");
@@ -1988,6 +2007,7 @@ class $56a4fb7ab615f3dd$export$76a51d3d85415e4c {
         const entityWasNew = set.size === 1;
         if (entityWasNew) this._scheduleResubscribe(config);
         (0, $dTmXl.d)(config, 'entity-subscription-manager', 'subscribe', entityId, 'listeners', set.size);
+        this._deliverInitialState(entityId, onChange);
         return ()=>{
             const s = this._listeners.get(entityId);
             if (!s) return;
@@ -2029,6 +2049,19 @@ class $56a4fb7ab615f3dd$export$76a51d3d85415e4c {
     _handleEvent(ev, config) {
         this._eventHandler.handle(ev, config);
     }
+    /**
+   * Push current known state to a listener immediately. Required when multiple
+   * components subscribe to the same entity: only the first subscription
+   * triggers subscribe_entities; later listeners would otherwise stay empty
+   * until the next websocket change.
+   */ _deliverInitialState(entityId, onChange) {
+        let state = this._state.get(entityId);
+        if (!state) {
+            state = (0, $7AhDs.getState)(this._hass.states, entityId);
+            if (state) this._state.set(entityId, state);
+        }
+        onChange(state);
+    }
     constructor(hass){
         this._listeners = new Map();
         this._state = new Map();
@@ -2040,6 +2073,92 @@ class $56a4fb7ab615f3dd$export$76a51d3d85415e4c {
 }
 
 });
+parcelRegister("7AhDs", function(module, exports) {
+
+$parcel$export(module.exports, "getState", function () { return $6d9b59681496f671$export$50fdfeece43146fd; });
+
+var $jyxIy = parcelRequire("jyxIy");
+
+var $l3TbZ = parcelRequire("l3TbZ");
+const $6d9b59681496f671$export$50fdfeece43146fd = (0, $l3TbZ.default)((states, entityId, fakeState = false)=>{
+    if (!entityId) return undefined;
+    var _states_entityId;
+    const state = (_states_entityId = states[entityId]) !== null && _states_entityId !== void 0 ? _states_entityId : fakeState ? {
+        entity_id: entityId,
+        state: 'off',
+        // Set friendly_name to an empty string so the label is blank
+        attributes: {
+            friendly_name: ''
+        }
+    } : undefined;
+    if (!state) return undefined;
+    const domain = (0, $jyxIy.computeDomain)(state.entity_id);
+    return {
+        state: state.state,
+        attributes: state.attributes,
+        entity_id: state.entity_id,
+        last_changed: state.last_changed,
+        last_updated: state.last_updated,
+        domain: domain
+    };
+});
+
+});
+parcelRegister("l3TbZ", function(module, exports) {
+
+$parcel$export(module.exports, "default", function () { return $f554b0d97be25fc9$export$2e2bcd8739ae039; });
+var $f554b0d97be25fc9$var$safeIsNaN = Number.isNaN || function ponyfill(value) {
+    return typeof value === 'number' && value !== value;
+};
+function $f554b0d97be25fc9$var$isEqual(first, second) {
+    if (first === second) return true;
+    if ($f554b0d97be25fc9$var$safeIsNaN(first) && $f554b0d97be25fc9$var$safeIsNaN(second)) return true;
+    return false;
+}
+function $f554b0d97be25fc9$var$areInputsEqual(newInputs, lastInputs) {
+    if (newInputs.length !== lastInputs.length) return false;
+    for(var i = 0; i < newInputs.length; i++){
+        if (!$f554b0d97be25fc9$var$isEqual(newInputs[i], lastInputs[i])) return false;
+    }
+    return true;
+}
+function $f554b0d97be25fc9$export$2e2bcd8739ae039(resultFn, isEqual) {
+    if (isEqual === void 0) isEqual = $f554b0d97be25fc9$var$areInputsEqual;
+    var cache = null;
+    function memoized() {
+        var newArgs = [];
+        for(var _i = 0; _i < arguments.length; _i++)newArgs[_i] = arguments[_i];
+        if (cache && cache.lastThis === this && isEqual(newArgs, cache.lastArgs)) return cache.lastResult;
+        var lastResult = resultFn.apply(this, newArgs);
+        cache = {
+            lastResult: lastResult,
+            lastArgs: newArgs,
+            lastThis: this
+        };
+        return lastResult;
+    }
+    memoized.clear = function clear() {
+        cache = null;
+    };
+    return memoized;
+}
+
+});
+
+
+parcelRegister("dTmXl", function(module, exports) {
+
+$parcel$export(module.exports, "d", function () { return $86dc711946e77b66$export$4368d992c4eafac0; });
+const $86dc711946e77b66$export$4368d992c4eafac0 = (config, component, category, ...args)=>{
+    if (!(config === null || config === void 0 ? void 0 : config.debug)) return;
+    const { scope: scope, categories: categories } = config.debug;
+    if ((scope === null || scope === void 0 ? void 0 : scope.length) && !scope.includes(component)) return;
+    if ((categories === null || categories === void 0 ? void 0 : categories.length) && !categories.includes(category)) return;
+    console.debug(`[${component}] ${category}`, ...args);
+};
+
+});
+
 parcelRegister("ahi97", function(module, exports) {
 
 $parcel$export(module.exports, "ResubscribeScheduler", function () { return $c735bfb9187791c0$export$746d7d6f368b83b1; });
@@ -2123,77 +2242,6 @@ class $a65c367d6d102e05$export$fa096be87fabe7d3 {
 }
 
 });
-parcelRegister("7AhDs", function(module, exports) {
-
-$parcel$export(module.exports, "getState", function () { return $6d9b59681496f671$export$50fdfeece43146fd; });
-
-var $jyxIy = parcelRequire("jyxIy");
-
-var $l3TbZ = parcelRequire("l3TbZ");
-const $6d9b59681496f671$export$50fdfeece43146fd = (0, $l3TbZ.default)((states, entityId, fakeState = false)=>{
-    if (!entityId) return undefined;
-    var _states_entityId;
-    const state = (_states_entityId = states[entityId]) !== null && _states_entityId !== void 0 ? _states_entityId : fakeState ? {
-        entity_id: entityId,
-        state: 'off',
-        // Set friendly_name to an empty string so the label is blank
-        attributes: {
-            friendly_name: ''
-        }
-    } : undefined;
-    if (!state) return undefined;
-    const domain = (0, $jyxIy.computeDomain)(state.entity_id);
-    return {
-        state: state.state,
-        attributes: state.attributes,
-        entity_id: state.entity_id,
-        domain: domain
-    };
-});
-
-});
-parcelRegister("l3TbZ", function(module, exports) {
-
-$parcel$export(module.exports, "default", function () { return $f554b0d97be25fc9$export$2e2bcd8739ae039; });
-var $f554b0d97be25fc9$var$safeIsNaN = Number.isNaN || function ponyfill(value) {
-    return typeof value === 'number' && value !== value;
-};
-function $f554b0d97be25fc9$var$isEqual(first, second) {
-    if (first === second) return true;
-    if ($f554b0d97be25fc9$var$safeIsNaN(first) && $f554b0d97be25fc9$var$safeIsNaN(second)) return true;
-    return false;
-}
-function $f554b0d97be25fc9$var$areInputsEqual(newInputs, lastInputs) {
-    if (newInputs.length !== lastInputs.length) return false;
-    for(var i = 0; i < newInputs.length; i++){
-        if (!$f554b0d97be25fc9$var$isEqual(newInputs[i], lastInputs[i])) return false;
-    }
-    return true;
-}
-function $f554b0d97be25fc9$export$2e2bcd8739ae039(resultFn, isEqual) {
-    if (isEqual === void 0) isEqual = $f554b0d97be25fc9$var$areInputsEqual;
-    var cache = null;
-    function memoized() {
-        var newArgs = [];
-        for(var _i = 0; _i < arguments.length; _i++)newArgs[_i] = arguments[_i];
-        if (cache && cache.lastThis === this && isEqual(newArgs, cache.lastArgs)) return cache.lastResult;
-        var lastResult = resultFn.apply(this, newArgs);
-        cache = {
-            lastResult: lastResult,
-            lastArgs: newArgs,
-            lastThis: this
-        };
-        return lastResult;
-    }
-    memoized.clear = function clear() {
-        cache = null;
-    };
-    return memoized;
-}
-
-});
-
-
 parcelRegister("2WuTi", function(module, exports) {
 
 $parcel$export(module.exports, "compressedToEntityState", function () { return $f6cab4e006e6bc92$export$1e451bf8ffd1807c; });
@@ -2211,12 +2259,15 @@ var $jyxIy = parcelRequire("jyxIy");
 const $f6cab4e006e6bc92$var$COMPRESSED_STATE = 's';
 const $f6cab4e006e6bc92$var$COMPRESSED_ATTRIBUTES = 'a';
 function $f6cab4e006e6bc92$export$1e451bf8ffd1807c(entityId, comp) {
+    let last_changed = new Date(comp.lc * 1000).toISOString();
     var _comp_a;
     return {
         entity_id: entityId,
         state: comp.s,
         attributes: (_comp_a = comp.a) !== null && _comp_a !== void 0 ? _comp_a : {},
-        domain: (0, $jyxIy.computeDomain)(entityId)
+        domain: (0, $jyxIy.computeDomain)(entityId),
+        last_changed: last_changed,
+        last_updated: comp.lu ? new Date(comp.lu * 1000).toISOString() : last_changed
     };
 }
 function $f6cab4e006e6bc92$export$212c94ae4aa31760(diff) {
@@ -2232,6 +2283,8 @@ function $f6cab4e006e6bc92$export$ef16b89ca36598f4(current, entityId, diff) {
     let attributes = (0, $kJycS._)({}, current.attributes);
     if (add) {
         if (add.s !== undefined) state = add.s;
+        if (add.lc) current.last_updated = current.last_changed = new Date(add.lc * 1000).toISOString();
+        else if (add.lu) current.last_updated = new Date(add.lu * 1000).toISOString();
         if (add.a) Object.assign(attributes, add.a);
     }
     if (remove === null || remove === void 0 ? void 0 : remove.a) for (const key of remove.a)delete attributes[key];
@@ -2239,7 +2292,9 @@ function $f6cab4e006e6bc92$export$ef16b89ca36598f4(current, entityId, diff) {
         entity_id: entityId,
         state: state,
         attributes: attributes,
-        domain: (0, $jyxIy.computeDomain)(entityId)
+        domain: (0, $jyxIy.computeDomain)(entityId),
+        last_changed: current.last_changed,
+        last_updated: current.last_updated
     };
 }
 
@@ -2281,7 +2336,7 @@ function $026d47447e611f6a$var$getNestedTranslation(obj, path) {
 
 });
 parcelRegister("1MmPK", function(module, exports) {
-module.exports = JSON.parse('{"card":{"component":{"problem":{"dialog_title":"Problem Entities","no_problems":"No problem entities found","active":"Active","inactive":"Inactive"}}},"editor":{"area":{"area":"Area","area_name":"Area name","area_side_entities":"Area side entities","room_entity":"Room entity"},"background":{"background":"Background","background_image":"Background Image","background_image_entity":"Background Image Entity","background_opacity":"Background Opacity","disable_background_image":"Disable Background Image","multi_light_background":"Multi-Light Background","light_entities":"Light Entities","multi_light_background_info":"Configure which light entities should be tracked for the multi-light background feature. When enabled, the card background and room icon will light up when any of these lights are on. The card automatically discovers all lights in the area if no entities are specified."},"entity":{"entity_id":"Entity","entity_label":"Label","entity_attribute":"Attribute","entity_icon":"Icon","entity_on_color":"On Color","entity_off_color":"Off Color","ignore_entity":"Ignore Entity","show_entity_labels":"Show Entity Labels","use_entity_icon":"Use Entity Icon","show_state":"Show State","hide_zero_attribute_domains":"Hide State for Zero Attribute Domains","styles":"Styles","states":"States","add_state":"Add State","thresholds":"Thresholds","add_threshold":"Add Threshold","state":{"state":"State","operator":"Operator","icon_color":"Icon Color","title_color":"Title Color","icon":"Icon","label":"Label","attribute":"Attribute","styles":"Styles"},"threshold":{"threshold":"Threshold","icon_color":"Icon Color","title_color":"Title Color","icon":"Icon","label":"Label","attribute":"Attribute","styles":"Styles","operator":"Operator"},"badges":"Badges","add_badge":"Add Badge"},"badge":{"position":{"top_right":"Top Right","top_left":"Top Left","bottom_right":"Bottom Right","bottom_left":"Bottom Left"},"position_label":"Position","mode":{"show_always":"Show Always","if_match":"If Match","homeassistant":"Home Assistant"},"mode_label":"Mode","max_badges":"Maximum 4 badges allowed"},"entities":{"entities_info":"These options are for setting up the right side entities."},"icon":{"disable_icon_animations":"Disable Icon Animations","disable_icon_color":"Disable Icon Color","icon_background":"Icon Background","icon_background_color_occupied":"Icon Background Color (Occupied)","icon_background_color_smoke":"Icon Background Color (Smoke Detected)","icon_background_color_gas":"Icon Background Color (Gas Detected)","icon_background_color_water":"Icon Background Color (Water Detected)","hide_icon_only":"Hide Icon Only","hide_room_icon":"Hide Room Icon"},"card":{"card_border_color_occupied":"Card Border Color (Occupied)","card_border_color_smoke":"Card Border Color (Smoke Detected)","card_border_color_gas":"Card Border Color (Gas Detected)","card_border_color_water":"Card Border Color (Water Detected)","disable_card_border":"Disable Card Border","disable_card_border_animations":"Disable Card Border Animations","skip_card_background_styles":"Skip Card Background Styles"},"sensor":{"sensor_classes":"Sensor classes","hide_sensor_icons":"Hide Sensor icons","hide_sensor_labels":"Hide Sensor labels","hide_sensors":"Hide Sensors","individual_sensor_entities":"Individual sensor entities","sensors_info":"Sensors appear on the top row below the card title. They can be clicked for more info.","features_info":"Configure sensor display features:","hide_sensors_desc":"Hide the climate/sensor information","hide_sensor_icons_desc":"Hide the icons next to sensor values","hide_sensor_labels_desc":"Hide the labels next to sensor icons"},"threshold":{"thresholds":"Thresholds","temperature_threshold":"Temperature threshold","temperature_thresholds":"Temperature Thresholds","add_temperature_threshold":"Add Temperature Threshold","temperature_operator":"Temperature Operator","temperature_entity":"Temperature Entity","temperature_color":"Temperature Border Color","humidity_threshold":"Humidity threshold","humidity_thresholds":"Humidity Thresholds","add_humidity_threshold":"Add Humidity Threshold","humidity_operator":"Humidity Operator","humidity_entity":"Humidity Entity","humidity_color":"Humidity Border Color","mold_threshold":"Mold threshold","operator":{"equal":"Equal (=)","greater_than":"Greater than (>)","greater_than_or_equal":"Greater than or equal (\u2265)","less_than":"Less than (<)","less_than_or_equal":"Less than or equal (\u2264)","not_equal":"Not equal (\u2260)"}},"interactions":{"interactions":"Interactions","tap_action":"Tap Action","double_tap_action":"Double Tap Action","hold_action":"Hold Action","navigate_path":"Navigate path when card tapped"},"occupancy":{"occupancy_presence_detection":"Occupancy & Presence Detection","motion_occupancy_presence_sensors":"Motion/Occupancy/Presence Sensors","occupancy_options":"Options","occupancy_info":"Configure motion, occupancy, and presence detection sensors. When any sensor detects activity, the card border and room icon can change color to indicate the room is occupied."},"alarm":{"alarm_info":"Configure alarm detection sensors. Occupancy sensors detect motion/presence, smoke detectors detect smoke, gas sensors detect gas, and water sensors detect water. Priority: Smoke > Gas > Water > Occupancy.","occupancy_detection":"Occupancy Detection","smoke_detection":"Smoke Detection","gas_detection":"Gas Detection","water_detection":"Water Detection","motion_occupancy_presence_sensors":"Motion/Occupancy/Presence Sensors","smoke_detectors":"Smoke Detectors","gas_sensors":"Gas Sensors","water_sensors":"Water Sensors","alarm_options":"Options"},"problem":{"problem":"Problem Indicator","problem_display":"Display","problem_display_always":"Always","problem_display_active_only":"Active Problems Only","problem_display_never":"Never"},"styles":{"styles":"Styles","css_styles":"Your CSS Styles","card_styles":"Card Styles","entities_container_styles":"Entities Container Styles","entity_icon_styles":"Entity Icon Styles","room_entity_icon_styles":"Main Room Entity Icon Styles","sensor_styles":"Sensor Styles","stats_styles":"Stats Styles","title_styles":"Title Styles","skip_climate_styles":"Skip Climate Styles","icon_opacity_preset":"Icon Opacity Preset","icon_opacity_default":"Default","icon_opacity_medium":"Medium","icon_opacity_high_visibility":"High Visibility"},"layout":{"content":"Content","sensor_layout":"Sensor Layout","default_in_label_area":"Default (in label area)","bottom":"Bottom","vertical_stack":"Vertical Stack"},"stats":{"hide_area_stats":"Hide Area Stats"},"slider":{"slider_style":"Slider Style","minimalist":"Minimalist","track":"Track","line":"Line","filled":"Filled/Progress","gradient":"Gradient","dual_rail":"Dual Rail","dots":"Dots/Ticks","notched":"Notched","grid":"Grid","glow":"Glow","shadow_trail":"Shadow Trail","outlined":"Outlined Track","bar":"Bar (No Icon)","bar_filled":"Bar Filled (Proportional)"},"features":{"features":"Features","exclude_default_entities":"Exclude Default Entities","sticky_entities":"Sticky Entities","slider":"Slider","full_card_actions":"Full Card Actions","hide_hidden_entities":"Hide Hidden Entities","sticky_entities_info":"Keep entity positions stable even when their state is unavailable. This prevents UI layout shifts and makes it easier to tap entities on touch dashboards.","features_info":"Configure global features that affect how entities are displayed and handled:","show_entity_labels_desc":"Show entity labels under each entity icon","exclude_default_entities_desc":"Don\'t include default light/fan entities","ignore_entity_desc":"Ignore the entity property in the configuration","sticky_entities_desc":"Keep entity positions even when state is unavailable","slider_desc":"Display a single entity in a slider layout instead of the entity collection","full_card_actions_desc":"Make the entire card clickable using the room entity\'s tap/hold/double-tap actions","hide_hidden_entities_desc":"Skip entities that are marked as hidden in Home Assistant","options":"Options"},"light":{"type":"Type","ambient":"Ambient"}}}');
+module.exports = JSON.parse('{"card":{"component":{"problem":{"dialog_title":"Problem Entities","no_problems":"No problem entities found","active":"Active","inactive":"Inactive"}}},"editor":{"area":{"area":"Area","area_name":"Area name","area_side_entities":"Area side entities","room_entity":"Room entity"},"background":{"background":"Background","background_image":"Background Image","background_image_entity":"Background Image Entity","background_opacity":"Background Opacity","disable_background_image":"Disable Background Image","multi_light_background":"Multi-Light Background","light_entities":"Light Entities","multi_light_background_info":"Configure which light entities should be tracked for the multi-light background feature. When enabled, the card background and room icon will light up when any of these lights are on. The card automatically discovers all lights in the area if no entities are specified."},"entity":{"entity_id":"Entity","entity_label":"Label","entity_attribute":"Attribute","entity_icon":"Icon","entity_on_color":"On Color","entity_off_color":"Off Color","ignore_entity":"Ignore Entity","show_entity_labels":"Show Entity Labels","use_entity_icon":"Use Entity Icon","show_state":"Show State","hide_zero_attribute_domains":"Hide State for Zero Attribute Domains","styles":"Styles","states":"States","add_state":"Add State","thresholds":"Thresholds","add_threshold":"Add Threshold","state":{"state":"State","operator":"Operator","icon_color":"Icon Color","title_color":"Title Color","icon":"Icon","label":"Label","attribute":"Attribute","styles":"Styles"},"threshold":{"threshold":"Threshold","icon_color":"Icon Color","title_color":"Title Color","icon":"Icon","label":"Label","attribute":"Attribute","styles":"Styles","operator":"Operator"},"badges":"Badges","add_badge":"Add Badge","slider":"Slider","slider_style":"Slider Style","slider_style_bar":"Bar (full-width strip)","slider_style_ha":"Standard HA Slider","slider_hide_icon":"Hide Icon (entity is shown only as the slider)"},"badge":{"position":{"top_right":"Top Right","top_left":"Top Left","bottom_right":"Bottom Right","bottom_left":"Bottom Left"},"position_label":"Position","mode":{"show_always":"Show Always","if_match":"If Match","homeassistant":"Home Assistant"},"mode_label":"Mode","max_badges":"Maximum 4 badges allowed"},"entities":{"entities_info":"These options are for setting up the right side entities."},"icon":{"disable_icon_animations":"Disable Icon Animations","disable_icon_color":"Disable Icon Color","icon_background":"Icon Background","icon_background_color_occupied":"Icon Background Color (Occupied)","icon_background_color_smoke":"Icon Background Color (Smoke Detected)","icon_background_color_gas":"Icon Background Color (Gas Detected)","icon_background_color_water":"Icon Background Color (Water Detected)","hide_icon_only":"Hide Icon Only","hide_room_icon":"Hide Room Icon"},"card":{"card_border_color_occupied":"Card Border Color (Occupied)","card_border_color_smoke":"Card Border Color (Smoke Detected)","card_border_color_gas":"Card Border Color (Gas Detected)","card_border_color_water":"Card Border Color (Water Detected)","disable_card_border":"Disable Card Border","disable_card_border_animations":"Disable Card Border Animations","skip_card_background_styles":"Skip Card Background Styles"},"sensor":{"sensor_classes":"Sensor classes","hide_sensor_icons":"Hide Sensor icons","hide_sensor_labels":"Hide Sensor labels","hide_sensors":"Hide Sensors","individual_sensor_entities":"Individual sensor entities","sensors_info":"Sensors appear on the top row below the card title. They can be clicked for more info.","features_info":"Configure sensor display features:","hide_sensors_desc":"Hide the climate/sensor information","hide_sensor_icons_desc":"Hide the icons next to sensor values","hide_sensor_labels_desc":"Hide the labels next to sensor icons"},"threshold":{"thresholds":"Thresholds","temperature_threshold":"Temperature threshold","temperature_thresholds":"Temperature Thresholds","add_temperature_threshold":"Add Temperature Threshold","temperature_operator":"Temperature Operator","temperature_entity":"Temperature Entity","temperature_color":"Temperature Border Color","humidity_threshold":"Humidity threshold","humidity_thresholds":"Humidity Thresholds","add_humidity_threshold":"Add Humidity Threshold","humidity_operator":"Humidity Operator","humidity_entity":"Humidity Entity","humidity_color":"Humidity Border Color","mold_threshold":"Mold threshold","operator":{"equal":"Equal (=)","greater_than":"Greater than (>)","greater_than_or_equal":"Greater than or equal (\u2265)","less_than":"Less than (<)","less_than_or_equal":"Less than or equal (\u2264)","not_equal":"Not equal (\u2260)"}},"interactions":{"interactions":"Interactions","tap_action":"Tap Action","double_tap_action":"Double Tap Action","hold_action":"Hold Action"},"occupancy":{"occupancy_presence_detection":"Occupancy & Presence Detection","motion_occupancy_presence_sensors":"Motion/Occupancy/Presence Sensors","occupancy_options":"Options","occupancy_info":"Configure motion, occupancy, and presence detection sensors. When any sensor detects activity, the card border and room icon can change color to indicate the room is occupied."},"alarm":{"alarm_info":"Configure alarm detection sensors. Occupancy sensors detect motion/presence, smoke detectors detect smoke, gas sensors detect gas, and water sensors detect water. Priority: Smoke > Gas > Water > Occupancy.","occupancy_detection":"Occupancy Detection","smoke_detection":"Smoke Detection","gas_detection":"Gas Detection","water_detection":"Water Detection","motion_occupancy_presence_sensors":"Motion/Occupancy/Presence Sensors","smoke_detectors":"Smoke Detectors","gas_sensors":"Gas Sensors","water_sensors":"Water Sensors","alarm_options":"Options"},"problem":{"problem":"Problem Indicator","problem_display":"Display","problem_display_always":"Always","problem_display_active_only":"Active Problems Only","problem_display_never":"Never"},"styles":{"styles":"Styles","css_styles":"Your CSS Styles","card_styles":"Card Styles","entities_container_styles":"Entities Container Styles","entity_icon_styles":"Entity Icon Styles","room_entity_icon_styles":"Main Room Entity Icon Styles","sensor_styles":"Sensor Styles","stats_styles":"Stats Styles","title_styles":"Title Styles","skip_climate_styles":"Skip Climate Styles","skip_mold_styles":"Skip Mold Styles","icon_opacity_preset":"Icon Opacity Preset","icon_opacity_default":"Default","icon_opacity_medium":"Medium","icon_opacity_high_visibility":"High Visibility"},"layout":{"content":"Content","sensor_layout":"Sensor Layout","default_in_label_area":"Default (in label area)","bottom":"Bottom","vertical_stack":"Vertical Stack"},"stats":{"hide_area_stats":"Hide Area Stats"},"slider":{"slider_style":"Slider Style","minimalist":"Minimalist","track":"Track","line":"Line","filled":"Filled/Progress","gradient":"Gradient","dual_rail":"Dual Rail","dots":"Dots/Ticks","notched":"Notched","grid":"Grid","glow":"Glow","shadow_trail":"Shadow Trail","outlined":"Outlined Track","bar":"Bar (No Icon)","bar_filled":"Bar Filled (Proportional)"},"features":{"features":"Features","exclude_default_entities":"Exclude Default Entities","sticky_entities":"Sticky Entities","slider":"Slider","full_card_actions":"Full Card Actions","hide_hidden_entities":"Hide Hidden Entities","sticky_entities_info":"Keep entity positions stable even when their state is unavailable. This prevents UI layout shifts and makes it easier to tap entities on touch dashboards.","features_info":"Configure global features that affect how entities are displayed and handled:","show_entity_labels_desc":"Show entity labels under each entity icon","exclude_default_entities_desc":"Don\'t include default light/fan entities","ignore_entity_desc":"Ignore the entity property in the configuration","sticky_entities_desc":"Keep entity positions even when state is unavailable","slider_desc":"Display a single entity in a slider layout instead of the entity collection","full_card_actions_desc":"Make the entire card clickable using the room entity\'s tap/hold/double-tap actions","hide_hidden_entities_desc":"Skip entities that are marked as hidden in Home Assistant","options":"Options"},"light":{"type":"Type","ambient":"Ambient"}}}');
 
 });
 
@@ -2587,6 +2642,10 @@ const $3d00a5da4019d727$var$hasUpperCase = (str)=>str.toLowerCase() !== str;
  *
  * @version See package.json
  */ 
+var $kJycS = parcelRequire("kJycS");
+
+var $1izJ2 = parcelRequire("1izJ2");
+
 var $evAes = parcelRequire("evAes");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
@@ -2652,7 +2711,8 @@ const $d71beedfb309b5b1$export$8093665c9ba8ead9 = (hass, config, sensors, elemen
           >${0}</span
         >`), problemExists, ()=>(0, $7d7b3d36776b9b07$export$dcf8bd1e24f4d8e9)(element, {
             entities: ids,
-            config: config
+            config: config,
+            ownerHost: element
         }), problemSensors.length) : (0, $ci0wX.nothing), sensors.mold && (0, $93ab8e068532bba3$export$4bb1c5099bd99a57)(sensors.mold, config) ? (0, $ci0wX.html)($d71beedfb309b5b1$var$t1 || ($d71beedfb309b5b1$var$t1 = $d71beedfb309b5b1$var$_`<div class="mold-indicator">
           <ha-state-icon
             .hass=${0}
@@ -2682,6 +2742,299 @@ const $d71beedfb309b5b1$export$6697a659ce63852 = (hass, entity, config, options 
     .hass=${0}
   ></room-state-icon>`), isMainRoomEntity, isActive, hasImage, alarm, entity, config, hass);
 };
+
+
+/**
+ * Horizontal Slider Component
+ *
+ * Renders a horizontal slider strip flush with the bottom edge of the
+ * room-summary-card. The component decides on its own whether to render:
+ * if no entity in the card config has a `slider` config block, it renders
+ * `nothing`, so the parent card can unconditionally place it in its
+ * template.
+ *
+ * Always renders Home Assistant's <ha-slider>. The visual variant is
+ * controlled per-entity via `entity.slider.style`:
+ *  - `'ha'`           : the standard HA slider look (thin track + thumb).
+ *  - `'bar'` (default): ha-slider re-styled as a chunky full-height bar.
+ *
+ * Entity wiring
+ * -------------
+ * Extends `SubscribeEntityStateMixin(HassUpdateMixin(LitElement))`, so
+ * `hass`, `config`, and the live `state` of the slider entity are managed
+ * by the mixins. The bound entity is the first one (scanning `entity`
+ * then `entities`) with a `slider` config block. `min` / `max` / `step`
+ * are read from `state.attributes` and the current `value` from
+ * `state.state` —
+ * same pattern used by `hui-input-number-entity-row` /
+ * `hui-number-entity-row` upstream (`setValue`).
+ *
+ * Domain specials:
+ *  - `media_player` : slider exposes 0–100; reads `volume_level` (0–1)
+ *                     and writes via `setMediaPlayerVolume`.
+ *  - `light`        : slider exposes 0–255; reads `brightness` and
+ *                     writes via `setBrightness` (which itself turns
+ *                     the light off when value is 0).
+ *
+ * @see https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/entity-rows/hui-input-number-entity-row.ts
+ *
+ * @version See package.json
+ */ 
+var $evAes = parcelRequire("evAes");
+
+var $1LdRn = parcelRequire("1LdRn");
+
+var $wgzUt = parcelRequire("wgzUt");
+const $d3a1c41917263588$export$bfd42fd87279097a = async (hass, entityId, brightness)=>{
+    if (!entityId) return;
+    // Ensure brightness is within valid range
+    const clampedBrightness = Math.max(0, Math.min(255, Math.round(brightness)));
+    // If brightness is 0, turn off the light
+    if (clampedBrightness === 0) {
+        await hass.callService('light', 'turn_off', {
+            entity_id: entityId
+        });
+        return;
+    }
+    // Otherwise, turn on the light with the specified brightness
+    await hass.callService('light', 'turn_on', {
+        entity_id: entityId,
+        brightness: clampedBrightness
+    });
+};
+
+
+/**
+ * @file Slider entity discovery
+ * @description Finds the first config entity that declares a `slider`
+ * config block. Scans the main `entity` first, then `entities` in order.
+ * Plain string entries are skipped (no metadata to inspect).
+ *
+ * Returns the full `EntityConfig` (rather than just the id) so callers
+ * can read both `entity_id` and the per-entity `slider` block.
+ */ const $c37a9757c368f9bd$export$3719c033b804f0ea = (config)=>{
+    if (!config) return undefined;
+    var _config_entities;
+    const candidates = [
+        config.entity,
+        ...(_config_entities = config.entities) !== null && _config_entities !== void 0 ? _config_entities : []
+    ];
+    for (const c of candidates){
+        if (c && typeof c === 'object' && c.slider !== undefined) return c;
+    }
+    return undefined;
+};
+
+
+/**
+ * Ported from Home Assistant frontend (`setValue` only).
+ *
+ * @see https://github.com/home-assistant/frontend/blob/dev/src/data/input_text.ts
+ */ const $3bd8b313a70a1912$export$80746c6bc6142fc8 = (hass, entity, value)=>{
+    var _entity_split_;
+    return hass.callService((_entity_split_ = entity.split('.', 1)[0]) !== null && _entity_split_ !== void 0 ? _entity_split_ : '', 'set_value', {
+        value: value,
+        entity_id: entity
+    });
+};
+
+
+/**
+ * Ported from Home Assistant frontend (`setMediaPlayerVolume` only).
+ *
+ * @see https://github.com/home-assistant/frontend/blob/dev/src/data/media-player.ts
+ */ const $97ba5c7dd715a424$export$fadfd3eadd6082cd = (hass, entity_id, volume_level)=>hass.callService('media_player', 'volume_set', {
+        entity_id: entity_id,
+        volume_level: volume_level
+    });
+
+
+
+var $dTmXl = parcelRequire("dTmXl");
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+var $2r9I1 = parcelRequire("2r9I1");
+parcelRequire("jcMWt");
+var $yv2EM = parcelRequire("yv2EM");
+var $aaQtJ = parcelRequire("aaQtJ");
+parcelRequire("fPVm8");
+var $2SS2a = parcelRequire("2SS2a");
+let $a106693bf2929cda$var$_ = (t)=>t, $a106693bf2929cda$var$t;
+const $a106693bf2929cda$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($a106693bf2929cda$var$t || ($a106693bf2929cda$var$t = $a106693bf2929cda$var$_`
+  :host {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  ha-slider {
+    width: 100%;
+
+    /* Active fill is exposed cleanly by ha-slider — no specificity
+       fight. See
+       https://github.com/home-assistant/frontend/blob/dev/src/components/ha-slider.ts */
+    --ha-slider-indicator-color: var(
+      --user-slider-bar-color,
+      var(--primary-color)
+    );
+  }
+
+  ha-slider::part(track),
+  ha-slider::part(indicator) {
+    border-radius: 0;
+  }
+
+  /* The inactive track paints from \`#track { background: var(--wa-color-neutral-fill-normal) }\`
+     inside the slider's shadow DOM. The id selector beats ::part() on
+     specificity, so we need !important to win — but only on background,
+     scoped to ha-slider's track, which keeps the override from leaking
+     into other webawesome components. */
+  ha-slider::part(track) {
+    background: var(
+      --user-slider-track-color,
+      var(--disabled-color)
+    ) !important;
+  }
+
+  /* ---------------------------------------------------------------------
+     'bar' style — re-style ha-slider so it visually IS the bottom strip.
+     Track is forced tall enough to fill the host, thumb is hidden, and
+     the indicator becomes the moving fill.
+     --------------------------------------------------------------------- */
+  :host([variant='bar']) ha-slider {
+    --ha-slider-track-size: var(--user-slider-height, 25px);
+    --ha-slider-thumb-color: transparent;
+  }
+
+  /* ---------------------------------------------------------------------
+     'ha' style — the standard HA slider, slightly thickened and themed.
+     --------------------------------------------------------------------- */
+  :host([variant='ha']) {
+    height: var(--user-slider-height, 3.5%);
+  }
+`));
+
+
+let $9d1851378e34030f$var$_ = (t)=>t, $9d1851378e34030f$var$t;
+var $ee3d06fe83a6a770$exports = {};
+'use strict';
+// do not edit .js files directly - edit src/index.jst
+$ee3d06fe83a6a770$exports = function equal(a, b) {
+    if (a === b) return true;
+    if (a && b && typeof a == 'object' && typeof b == 'object') {
+        if (a.constructor !== b.constructor) return false;
+        var length, i, keys;
+        if (Array.isArray(a)) {
+            length = a.length;
+            if (length != b.length) return false;
+            for(i = length; i-- !== 0;)if (!equal(a[i], b[i])) return false;
+            return true;
+        }
+        if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
+        if (a.valueOf !== Object.prototype.valueOf) return a.valueOf() === b.valueOf();
+        if (a.toString !== Object.prototype.toString) return a.toString() === b.toString();
+        keys = Object.keys(a);
+        length = keys.length;
+        if (length !== Object.keys(b).length) return false;
+        for(i = length; i-- !== 0;)if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+        for(i = length; i-- !== 0;){
+            var key = keys[i];
+            if (!equal(a[key], b[key])) return false;
+        }
+        return true;
+    }
+    // true if both NaN, false otherwise
+    return a !== a && b !== b;
+};
+
+
+class $9d1851378e34030f$export$226f91755c79436a extends (0, $wgzUt.SubscribeEntityStateMixin)((0, $1LdRn.HassUpdateMixin)((0, $2r9I1.LitElement))) {
+    /**
+   * Returns the component's styles
+   */ static get styles() {
+        return 0, $a106693bf2929cda$export$9dd6ff9ea0189349;
+    }
+    set config(value) {
+        var _slider_slider;
+        if ($ee3d06fe83a6a770$exports(value, this.config)) return;
+        super.config = value;
+        const slider = (0, $c37a9757c368f9bd$export$3719c033b804f0ea)(this.config);
+        this.entity = slider === null || slider === void 0 ? void 0 : slider.entity_id;
+        var _slider_slider_style;
+        // only set style if slider is defined as to not affect other components
+        this._style = slider ? (_slider_slider_style = (_slider_slider = slider.slider) === null || _slider_slider === void 0 ? void 0 : _slider_slider.style) !== null && _slider_slider_style !== void 0 ? _slider_slider_style : 'bar' : undefined;
+    }
+    get config() {
+        return super.config;
+    }
+    render() {
+        (0, $dTmXl.d)(this.config, 'horizontal-slider', 'render');
+        const s = this.state;
+        if (!s) return 0, $ci0wX.nothing;
+        const rawValue = s ? Number(s.state) : Number.NaN;
+        let value = 0;
+        var _s_attributes_min;
+        let min = Number((_s_attributes_min = s === null || s === void 0 ? void 0 : s.attributes.min) !== null && _s_attributes_min !== void 0 ? _s_attributes_min : 0);
+        var _s_attributes_max;
+        let max = Number((_s_attributes_max = s === null || s === void 0 ? void 0 : s.attributes.max) !== null && _s_attributes_max !== void 0 ? _s_attributes_max : 100);
+        var _s_attributes_step;
+        let step = Number((_s_attributes_step = s === null || s === void 0 ? void 0 : s.attributes.step) !== null && _s_attributes_step !== void 0 ? _s_attributes_step : 1);
+        if (s.domain === 'media_player') {
+            const vol = s.attributes.volume_level;
+            value = vol == null ? 0 : Math.max(0, Math.min(100, Math.round(Number(vol) * 100)));
+        } else if (s.domain === 'light') {
+            var _s_attributes_brightness;
+            // Slider operates on raw brightness (0–255); attributes.brightness
+            // is null when the light is off.
+            value = Number((_s_attributes_brightness = s.attributes.brightness) !== null && _s_attributes_brightness !== void 0 ? _s_attributes_brightness : 0);
+            min = 0;
+            max = 255;
+            step = 1;
+        } else if (Number.isFinite(rawValue)) value = rawValue;
+        return (0, $ci0wX.html)($9d1851378e34030f$var$t || ($9d1851378e34030f$var$t = $9d1851378e34030f$var$_`
+      <ha-slider
+        labeled
+        .min=${0}
+        .max=${0}
+        .step=${0}
+        .value=${0}
+        .disabled=${0}
+        @change=${0}
+      ></ha-slider>
+    `), min, max, step, value, !s, this._handleChange);
+    }
+    constructor(...args){
+        super(...args), /**
+   * `media_player` → `volume_set`, `light` → `setBrightness`,
+   * everything else → `{domain}.set_value`.
+   */ this._handleChange = (ev)=>{
+            const hass = this.hass;
+            const state = this.state;
+            if (!hass || !state) return;
+            const target = ev.target;
+            if (state.domain === 'media_player') {
+                (0, $97ba5c7dd715a424$export$fadfd3eadd6082cd)(hass, state.entity_id, Number(target.value) / 100);
+                return;
+            }
+            if (state.domain === 'light') {
+                (0, $d3a1c41917263588$export$bfd42fd87279097a)(hass, state.entity_id, Number(target.value));
+                return;
+            }
+            (0, $3bd8b313a70a1912$export$80746c6bc6142fc8)(hass, state.entity_id, target.value);
+        };
+    }
+}
+(0, $evAes.__decorate)([
+    (0, $aaQtJ.property)({
+        type: String,
+        reflect: true,
+        attribute: 'variant'
+    })
+], $9d1851378e34030f$export$226f91755c79436a.prototype, "_style", void 0);
+$9d1851378e34030f$export$226f91755c79436a = (0, $evAes.__decorate)([
+    (0, $yv2EM.customElement)('horizontal-slider')
+], $9d1851378e34030f$export$226f91755c79436a);
 
 
 
@@ -3181,30 +3534,44 @@ const $7359f6b91fb77fd2$export$9dd734c640ccb658 = async (hass, config)=>{
 };
 
 
-const $7a9953f15579a0c2$export$f3dc7c019524f0e9 = (element, hass)=>{
-    var _hass_themes, _hass_themes1;
-    // If no element provided, fall back to global theme
-    if (!element) return (_hass_themes = hass.themes) === null || _hass_themes === void 0 ? void 0 : _hass_themes.theme;
-    // Traverse up the DOM to find hui-view-container
-    let currentElement = element;
-    while(currentElement && currentElement !== document.body){
-        // Check if this is the hui-view-container
-        if (currentElement.tagName === 'HUI-VIEW-CONTAINER') {
-            var _hass_themes2;
-            const viewContainer = currentElement;
-            // Return the view theme if set, otherwise fall back to global theme
-            return viewContainer.theme || ((_hass_themes2 = hass.themes) === null || _hass_themes2 === void 0 ? void 0 : _hass_themes2.theme);
-        }
-        // Move up the DOM tree, handling shadow DOM boundaries
-        if (currentElement.parentElement) currentElement = currentElement.parentElement;
-        else if (typeof currentElement.getRootNode === 'function' && typeof ShadowRoot !== 'undefined') {
-            const root = currentElement.getRootNode();
-            currentElement = root instanceof ShadowRoot ? root.host : null;
-        } else // No parent and can't traverse shadow DOM, stop here
-        currentElement = null;
+/**
+ * Module-level cache mapping a calling element to its resolved
+ * `hui-view-container`. Keyed weakly so entries vanish when cards are GC'd.
+ * On a stale entry (container detached), we fall back to a fresh walk.
+ */ const $7a9953f15579a0c2$var$containerCache = new WeakMap();
+/**
+ * Walks one step up the DOM, crossing shadow root boundaries via `host`.
+ */ const $7a9953f15579a0c2$var$stepUp = (element)=>{
+    if (element.parentElement) return element.parentElement;
+    if (typeof element.getRootNode === 'function' && typeof ShadowRoot !== 'undefined') {
+        const root = element.getRootNode();
+        return root instanceof ShadowRoot ? root.host : null;
     }
-    // Fallback to global theme if view container not found
-    return (_hass_themes1 = hass.themes) === null || _hass_themes1 === void 0 ? void 0 : _hass_themes1.theme;
+    return null;
+};
+/**
+ * Walks up from `element` until a `hui-view-container` is found, or the walk
+ * runs off the top of the document.
+ */ const $7a9953f15579a0c2$var$findViewContainer = (element)=>{
+    let current = element;
+    while(current && current !== document.body){
+        if (current.tagName === 'HUI-VIEW-CONTAINER') return current;
+        current = $7a9953f15579a0c2$var$stepUp(current);
+    }
+    return null;
+};
+const $7a9953f15579a0c2$export$f3dc7c019524f0e9 = (element, hass)=>{
+    var _hass_themes, _hass_themes1, _hass_themes2;
+    if (!element) return (_hass_themes = hass.themes) === null || _hass_themes === void 0 ? void 0 : _hass_themes.theme;
+    let container = $7a9953f15579a0c2$var$containerCache.get(element);
+    if (!(container === null || container === void 0 ? void 0 : container.isConnected)) {
+        var _findViewContainer;
+        container = (_findViewContainer = $7a9953f15579a0c2$var$findViewContainer(element)) !== null && _findViewContainer !== void 0 ? _findViewContainer : undefined;
+        if (container) $7a9953f15579a0c2$var$containerCache.set(element, container);
+        else $7a9953f15579a0c2$var$containerCache.delete(element);
+    }
+    if (!container) return (_hass_themes1 = hass.themes) === null || _hass_themes1 === void 0 ? void 0 : _hass_themes1.theme;
+    return container.theme || ((_hass_themes2 = hass.themes) === null || _hass_themes2 === void 0 ? void 0 : _hass_themes2.theme);
 };
 
 
@@ -3533,10 +3900,23 @@ const $c4ab0a640e168730$export$df764ae7d62abece = (hass, config, element)=>{
 
 
 
-var $fKMMF = parcelRequire("fKMMF");
-
-
 var $kJycS = parcelRequire("kJycS");
+
+var $1izJ2 = parcelRequire("1izJ2");
+
+var $evAes = parcelRequire("evAes");
+const $06cd5aba58e27145$export$66a0a6f05155b9e9 = (superClass)=>{
+    class HassConfigClass extends superClass {
+    }
+    return HassConfigClass;
+};
+
+
+
+
+
+var $l3TbZ = parcelRequire("l3TbZ");
+const $370eb512b0573832$export$fcf7c33d7fd02301 = (0, $l3TbZ.default)((entities, entityId)=>entities[entityId]);
 
 
 parcelRequire("fPVm8");
@@ -3576,6 +3956,111 @@ var $lnb0z = parcelRequire("lnb0z");
     }
 });
 
+
+
+
+
+var $l3TbZ = parcelRequire("l3TbZ");
+let $6f5f72559a4d178c$var$_ = (t)=>t, $6f5f72559a4d178c$var$t;
+const $6f5f72559a4d178c$export$3703ea65b0ac4726 = (0, $l3TbZ.default)((styles)=>{
+    if (!styles || Object.keys(styles).length === 0) return 0, $ci0wX.nothing;
+    // Separate keyframes from regular styles
+    const keyframesEntries = [];
+    const regularStyles = [];
+    for (const [key, value] of Object.entries(styles))if (key === 'keyframes') // Handle keyframes specially
+    keyframesEntries.push(`@keyframes ${value}`);
+    else // Regular CSS property
+    regularStyles.push(`${key}: ${value};`);
+    const cssString = regularStyles.join(' ');
+    const keyframesString = keyframesEntries.join('\n');
+    return (0, $ci0wX.html)($6f5f72559a4d178c$var$t || ($6f5f72559a4d178c$var$t = $6f5f72559a4d178c$var$_`
+      <style>
+        ${0}
+        :host {
+          ${0}
+        }
+      </style>
+    `), keyframesString, cssString);
+});
+const $6f5f72559a4d178c$export$94e56d1d743c1f9b = (0, $l3TbZ.default)((styles)=>{
+    if (!styles || Object.keys(styles).length === 0) return 0, $ci0wX.nothing;
+    return (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)(styles);
+});
+
+
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+var $2r9I1 = parcelRequire("2r9I1");
+parcelRequire("jcMWt");
+var $yv2EM = parcelRequire("yv2EM");
+parcelRequire("fPVm8");
+var $2SS2a = parcelRequire("2SS2a");
+let $e595363dd98d321d$var$_ = (t)=>t, $e595363dd98d321d$var$t;
+const $e595363dd98d321d$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($e595363dd98d321d$var$t || ($e595363dd98d321d$var$t = $e595363dd98d321d$var$_`
+  :host {
+    display: contents;
+  }
+
+  .stats {
+    font-size: 0.8em;
+    opacity: var(--text-opacity-theme, 0.4);
+  }
+
+  .text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: fit-content;
+  }
+`));
+
+
+let $2146d91279a85b43$var$_ = (t)=>t, $2146d91279a85b43$var$t;
+class $2146d91279a85b43$export$fad092f8692706c7 extends (0, $06cd5aba58e27145$export$66a0a6f05155b9e9)((0, $2r9I1.LitElement)) {
+    /**
+   * Returns the component's styles
+   */ static get styles() {
+        return 0, $e595363dd98d321d$export$9dd6ff9ea0189349;
+    }
+    /**
+   * Render the badge
+   */ render() {
+        var _config_styles;
+        const hass = this.hass;
+        const config = this.config;
+        if (!hass || !config || (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_area_stats')) return 0, $ci0wX.nothing;
+        const devices = Object.keys(hass.devices).filter((k)=>(0, $62a596c6a9bc2e04$export$30c823bc834d6ab4)(hass.devices, k).area_id === config.area);
+        const entities = Object.keys(hass.entities).filter((k)=>{
+            const entity = (0, $370eb512b0573832$export$fcf7c33d7fd02301)(hass.entities, k);
+            return entity.area_id === config.area || devices.includes(entity.device_id);
+        });
+        const rows = [
+            [
+                devices.length,
+                'devices'
+            ],
+            [
+                entities.length,
+                'entities'
+            ]
+        ];
+        const summary = rows.filter(([n])=>n > 0).map(([count, type])=>`${count} ${type}`).join(' ');
+        const style = (0, $6f5f72559a4d178c$export$94e56d1d743c1f9b)((_config_styles = config.styles) === null || _config_styles === void 0 ? void 0 : _config_styles.stats);
+        return (0, $ci0wX.html)($2146d91279a85b43$var$t || ($2146d91279a85b43$var$t = $2146d91279a85b43$var$_`<span style="${0}" class="stats text">${0}</span>`), style, summary);
+    }
+}
+$2146d91279a85b43$export$fad092f8692706c7 = (0, $evAes.__decorate)([
+    (0, $yv2EM.customElement)('area-statistics')
+], $2146d91279a85b43$export$fad092f8692706c7);
+
+
+
+
+var $kJycS = parcelRequire("kJycS");
+
+
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
 
 
 var $cmVfz = parcelRequire("cmVfz");
@@ -3903,90 +4388,28 @@ const $58c246fbddf82f4c$export$43aa80132b9e21fa = (hass, config, entity, isActiv
 
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
-
-
-
-var $l3TbZ = parcelRequire("l3TbZ");
-const $370eb512b0573832$export$fcf7c33d7fd02301 = (0, $l3TbZ.default)((entities, entityId)=>entities[entityId]);
-
-
-parcelRequire("fPVm8");
-var $ci0wX = parcelRequire("ci0wX");
-
-
-var $l3TbZ = parcelRequire("l3TbZ");
-let $6f5f72559a4d178c$var$_ = (t)=>t, $6f5f72559a4d178c$var$t;
-const $6f5f72559a4d178c$export$3703ea65b0ac4726 = (0, $l3TbZ.default)((styles)=>{
-    if (!styles || Object.keys(styles).length === 0) return 0, $ci0wX.nothing;
-    // Separate keyframes from regular styles
-    const keyframesEntries = [];
-    const regularStyles = [];
-    for (const [key, value] of Object.entries(styles))if (key === 'keyframes') // Handle keyframes specially
-    keyframesEntries.push(`@keyframes ${value}`);
-    else // Regular CSS property
-    regularStyles.push(`${key}: ${value};`);
-    const cssString = regularStyles.join(' ');
-    const keyframesString = keyframesEntries.join('\n');
-    return (0, $ci0wX.html)($6f5f72559a4d178c$var$t || ($6f5f72559a4d178c$var$t = $6f5f72559a4d178c$var$_`
-      <style>
-        ${0}
-        :host {
-          ${0}
-        }
-      </style>
-    `), keyframesString, cssString);
-});
-const $6f5f72559a4d178c$export$94e56d1d743c1f9b = (0, $l3TbZ.default)((styles)=>{
-    if (!styles || Object.keys(styles).length === 0) return 0, $ci0wX.nothing;
-    return (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)(styles);
-});
-
-
-parcelRequire("fPVm8");
-var $ci0wX = parcelRequire("ci0wX");
-let $2ad98ee9ff0934fc$var$_ = (t)=>t, $2ad98ee9ff0934fc$var$t;
-const $2ad98ee9ff0934fc$export$91d43c07a591098e = (hass, config)=>{
-    var _config_styles;
-    if (!hass || (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_area_stats')) return 0, $ci0wX.nothing;
-    const devices = Object.keys(hass.devices).filter((k)=>(0, $62a596c6a9bc2e04$export$30c823bc834d6ab4)(hass.devices, k).area_id === config.area);
-    const entities = Object.keys(hass.entities).filter((k)=>{
-        const entity = (0, $370eb512b0573832$export$fcf7c33d7fd02301)(hass.entities, k);
-        return entity.area_id === config.area || devices.includes(entity.device_id);
-    });
-    const e = [
-        [
-            devices.length,
-            'devices'
-        ],
-        [
-            entities.length,
-            'entities'
-        ]
-    ].filter((count)=>count.length > 0).map(([count, type])=>`${count} ${type}`).join(' ');
-    const s = (0, $6f5f72559a4d178c$export$94e56d1d743c1f9b)((_config_styles = config.styles) === null || _config_styles === void 0 ? void 0 : _config_styles.stats);
-    return (0, $ci0wX.html)($2ad98ee9ff0934fc$var$t || ($2ad98ee9ff0934fc$var$t = $2ad98ee9ff0934fc$var$_`<span style="${0}" class="stats text">${0}</span>`), s, e);
-};
-
-
 let $52a5e6cbabf7b8e2$var$_ = (t)=>t, $52a5e6cbabf7b8e2$var$t;
 const $52a5e6cbabf7b8e2$export$a80b3bd66acc52ff = (element, hass, roomInformation, roomEntity, config, sensors, isActive)=>{
     const textStyle = (0, $58c246fbddf82f4c$export$43aa80132b9e21fa)(hass, config, roomEntity, isActive);
-    const stats = (0, $2ad98ee9ff0934fc$export$91d43c07a591098e)(hass, config);
-    const handler = (0, $b96673d7637fba33$export$8a44987212de21b)(roomEntity);
-    const action = (0, $b96673d7637fba33$export$3d3654ce4577c53d)(element, roomEntity);
+    // Override the room entity config with the user's actions config
+    const actionEntity = (0, $1izJ2._)((0, $kJycS._)({}, roomEntity), {
+        config: (0, $kJycS._)({}, roomEntity.config, config.actions)
+    });
+    const handler = (0, $b96673d7637fba33$export$8a44987212de21b)(actionEntity);
+    const action = (0, $b96673d7637fba33$export$3d3654ce4577c53d)(element, actionEntity);
     return (0, $ci0wX.html)($52a5e6cbabf7b8e2$var$t || ($52a5e6cbabf7b8e2$var$t = $52a5e6cbabf7b8e2$var$_`<div class="info">
     <div class="text" @action=${0} .actionHandler=${0}>
       <div class="name text" style=${0}>
         ${0}
       </div>
-      ${0}
+      <area-statistics .hass=${0} .config=${0}></area-statistics>
     </div>
     <sensor-collection
       .config=${0}
       .sensors=${0}
       .hass=${0}
     ></sensor-collection>
-  </div>`), action, handler, textStyle, roomInformation.area_name, stats, config, sensors, hass);
+  </div>`), action, handler, textStyle, roomInformation.area_name, hass, config, config, sensors, hass);
 };
 
 
@@ -4000,15 +4423,18 @@ var $cmVfz = parcelRequire("cmVfz");
 
 
 
-const $8f71a348c8e54f2c$export$abc50289182506e4 = (config, active)=>{
-    var _config_background_options, _config_background, _config_background1;
+const $8f71a348c8e54f2c$export$abc50289182506e4 = (config, active, state)=>{
+    var _config_background;
     const skipStyles = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_entity_styles');
-    var _config_background_options_includes;
-    const isIconBackground = (_config_background_options_includes = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('icon_background')) !== null && _config_background_options_includes !== void 0 ? _config_background_options_includes : false;
-    // Only apply opacity to card if icon_background is NOT set
-    const opacity = !isIconBackground && ((_config_background1 = config.background) === null || _config_background1 === void 0 ? void 0 : _config_background1.opacity) ? config.background.opacity / 100 : undefined;
+    const raw = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : _config_background.opacity;
+    let opacity;
+    if (typeof raw === 'number' && raw) opacity = raw / 100;
+    else if (typeof raw === 'string' && state) {
+        const parsed = Number.parseFloat(state.state);
+        if (Number.isFinite(parsed)) opacity = Math.max(0, Math.min(1, parsed));
+    }
     return {
-        '--opacity-theme': opacity,
+        '--user-opacity': opacity,
         '--background-opacity-card': `var(--opacity-background-${active && !skipStyles ? 'active' : 'inactive'})`
     };
 };
@@ -4016,7 +4442,7 @@ const $8f71a348c8e54f2c$export$abc50289182506e4 = (config, active)=>{
 
 
 
-const $5e4701340181d3da$export$6675fe814017d7b1 = (hass, config, entity, alarm, image, isActive = false, thresholds, ambientLightEntities)=>{
+const $5e4701340181d3da$export$6675fe814017d7b1 = (hass, config, entity, alarm, image, isActive = false, thresholds, ambientLightEntities, opacityState)=>{
     var _config_styles;
     const { state: state } = entity;
     const thresholdResult = (0, $3eeea5b8a350985f$export$76969a794fd1f893)(entity);
@@ -4029,7 +4455,7 @@ const $5e4701340181d3da$export$6675fe814017d7b1 = (hass, config, entity, alarm, 
     // Fall back to entity's theme color if no ambient light color
     if (!themeOverride) themeOverride = (0, $273edb1bb8e481ef$export$de96a622725f4284)(hass, entity, thresholdResult, isActive);
     const skipStyles = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_entity_styles');
-    const opacity = (0, $8f71a348c8e54f2c$export$abc50289182506e4)(config, isActive);
+    const opacity = (0, $8f71a348c8e54f2c$export$abc50289182506e4)(config, isActive, opacityState);
     // Get alarm CSS vars based on current alarm state
     let alarmVars = {};
     if (alarm === 'smoke') alarmVars = (0, $82ec124af523e08e$export$2b84bc3470ef94ef)(true, config.smoke);
@@ -4198,6 +4624,19 @@ const $9a549ca08a876898$export$e8f30ede68e93366 = (0, $2SS2a.css)($9a549ca08a876
     animation: mold-glow 1s ease-in-out infinite;
   }
 
+  /* Skip mold styles (disables animations for performance) */
+  :host([skip-mold-styles]) .mold-indicator,
+  :host([skip-mold-styles]) .mold-indicator ha-state-icon,
+  :host([skip-mold-styles]) .mold-indicator .mold-text,
+  :host([skip-mold-styles]) .mold-indicator::before,
+  :host([skip-mold-styles]) .mold-indicator::after {
+    animation: none !important;
+  }
+  :host([skip-mold-styles]) .mold-indicator:hover,
+  :host([skip-mold-styles]) .mold-indicator:hover::before {
+    animation: none !important;
+  }
+
   /* Dark theme adjustments */
   :host([dark]) .mold-indicator {
     background: linear-gradient(135deg, #d32f2f, #c62828);
@@ -4355,6 +4794,21 @@ let $4fafc8f75bfc202b$var$_ = (t)=>t, $4fafc8f75bfc202b$var$t, $4fafc8f75bfc202b
     );
   }
 
+  /* When the main icon owns the background, suppress card-level image effects
+     and prevent the user-configured opacity from applying to the card.
+     --user-opacity still inherits down to room-state-icon, where its
+     own CSS routes it to the icon background instead. */
+  :host:has(room-state-icon[room][icon-bg]) ha-card {
+    --opacity-theme: unset;
+    --text-opacity-theme: unset;
+    --opacity-icon-fill-inactive: unset;
+    --user-opacity: unset;
+  }
+
+  :host:has(room-state-icon[room][icon-bg]) {
+    --user-background-image-overlay: unset;
+  }
+
   :host([icon-opacity-preset='medium']) {
     --opacity-icon-inactive: 0.6;
     --opacity-icon-fill-inactive: 0.15;
@@ -4397,7 +4851,7 @@ let $4fafc8f75bfc202b$var$_ = (t)=>t, $4fafc8f75bfc202b$var$t, $4fafc8f75bfc202b
     background-size: cover;
   }
 
-  :host([image][icon-bg]) ha-card::before {
+  :host:has(room-state-icon[room][icon-bg]) ha-card::before {
     background-image: none;
   }
 
@@ -4407,7 +4861,10 @@ let $4fafc8f75bfc202b$var$_ = (t)=>t, $4fafc8f75bfc202b$var$t, $4fafc8f75bfc202b
     width: 100%;
     height: 100%;
     background-color: var(--background-color-card);
-    opacity: var(--opacity-theme, var(--background-opacity-card));
+    opacity: var(
+      --user-opacity,
+      var(--opacity-theme, var(--background-opacity-card))
+    );
     filter: var(--background-filter, none);
   }
 
@@ -4472,12 +4929,6 @@ let $4fafc8f75bfc202b$var$_ = (t)=>t, $4fafc8f75bfc202b$var$t, $4fafc8f75bfc202b
 /**
  * Entity and component area styles
  */ const $4fafc8f75bfc202b$var$entityAreaStyles = (0, $2SS2a.css)($4fafc8f75bfc202b$var$t4 || ($4fafc8f75bfc202b$var$t4 = $4fafc8f75bfc202b$var$_`
-  /* Statistics text */
-  .stats {
-    font-size: 0.8em;
-    opacity: var(--text-opacity-theme, 0.4);
-  }
-
   /* Common text styles */
   .text {
     text-overflow: ellipsis;
@@ -4498,6 +4949,16 @@ let $4fafc8f75bfc202b$var$_ = (t)=>t, $4fafc8f75bfc202b$var$t, $4fafc8f75bfc202b
     display: flex;
     gap: 5px;
     align-items: center;
+  }
+
+  /* scooty on upwards is slider */
+  :host:has(horizontal-slider[variant='bar']) .problems {
+    margin-bottom: calc(10% + var(--horizontal-slider-height, 6%) + 20px);
+  }
+
+  /* scooty on upwards is slider */
+  :host:has(horizontal-slider[variant='ha']) .problems {
+    margin-bottom: calc(10% + var(--horizontal-slider-height, 6%) + 10px);
   }
 
   /* Status entities indicator */
@@ -4598,40 +5059,11 @@ const $4fafc8f75bfc202b$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($4fafc8f75bfc2
 
 
 var $dTmXl = parcelRequire("dTmXl");
+
+var $wgzUt = parcelRequire("wgzUt");
 let $01f4c5d41a54ca3c$var$_ = (t)=>t, $01f4c5d41a54ca3c$var$t, $01f4c5d41a54ca3c$var$t1, $01f4c5d41a54ca3c$var$t2, $01f4c5d41a54ca3c$var$t3;
-var $ee3d06fe83a6a770$exports = {};
-'use strict';
-// do not edit .js files directly - edit src/index.jst
-$ee3d06fe83a6a770$exports = function equal(a, b) {
-    if (a === b) return true;
-    if (a && b && typeof a == 'object' && typeof b == 'object') {
-        if (a.constructor !== b.constructor) return false;
-        var length, i, keys;
-        if (Array.isArray(a)) {
-            length = a.length;
-            if (length != b.length) return false;
-            for(i = length; i-- !== 0;)if (!equal(a[i], b[i])) return false;
-            return true;
-        }
-        if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
-        if (a.valueOf !== Object.prototype.valueOf) return a.valueOf() === b.valueOf();
-        if (a.toString !== Object.prototype.toString) return a.toString() === b.toString();
-        keys = Object.keys(a);
-        length = keys.length;
-        if (length !== Object.keys(b).length) return false;
-        for(i = length; i-- !== 0;)if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
-        for(i = length; i-- !== 0;){
-            var key = keys[i];
-            if (!equal(a[key], b[key])) return false;
-        }
-        return true;
-    }
-    // true if both NaN, false otherwise
-    return a !== a && b !== b;
-};
 
-
-class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
+class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $wgzUt.SubscribeEntityStateMixin)((0, $2r9I1.LitElement)) {
     /**
    * Returns the component's styles
    */ static get styles() {
@@ -4642,17 +5074,32 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
    * @param {Config} config - The card configuration
    */ setConfig(config) {
         if (!$ee3d06fe83a6a770$exports(config, this._config)) {
-            var _config_background_options, _config_background;
-            var _config_background_options_includes;
-            this.iconBackground = (_config_background_options_includes = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('icon_background')) !== null && _config_background_options_includes !== void 0 ? _config_background_options_includes : false;
+            var _config_background;
+            this.skipMoldStyles = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_mold_styles');
             this._config = config;
+            // When background.opacity is configured as an entity_id, ask the
+            // SubscribeEntityStateMixin to track it so changes re-render the card.
+            const opacity = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : _config_background.opacity;
+            this.entity = typeof opacity === 'string' ? opacity : undefined;
         }
+    }
+    /**
+   * Expose `_hass` / `_config` to mixins that read `this.hass` / `this.config`
+   * (e.g. SubscribeEntityStateMixin).
+   */ get hass() {
+        return this._hass;
+    }
+    get config() {
+        return this._config;
     }
     /**
    * Updates the card's state when Home Assistant state changes
    * @param {HomeAssistant} hass - The Home Assistant instance
    */ set hass(hass) {
-        var _this__hass;
+        var _this__hass, // Dispatch on our own shadow root so only descendants in *this* card's
+        // shadow tree receive it. Each card has a distinct shadow root, so this
+        // isolates events between sibling cards on the dashboard.
+        _this_shadowRoot;
         (0, $dTmXl.d)(this._config, 'room-summary-card', 'set hass');
         const { roomInfo: roomInfo, roomEntity: roomEntity, sensors: sensors, image: image, isActive: isActive, isIconActive: isIconActive, thresholds: thresholds, flags: { alarm: alarm, dark: dark, frostedGlass: frostedGlass } } = (0, $c4ab0a640e168730$export$df764ae7d62abece)(hass, this._config, this);
         this.alarm = alarm;
@@ -4661,11 +5108,8 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
         this._isActive = isActive;
         this._isIconActive = isIconActive;
         this.iconOpacityPreset = this._config.icon_opacity_preset;
-        // Handle async image resolution
         image.then((resolvedImage)=>{
-            // Don't set image attribute on card if icon_background is set
-            // (background should only apply to icon, not card)
-            this.image = !this.iconBackground && !!resolvedImage;
+            this.image = !!resolvedImage;
             this._image = resolvedImage;
         });
         // Update states only if they've changed
@@ -4694,10 +5138,11 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
         // this is a workaround and prevents the need to re-render the card many times
         // https://github.com/home-assistant/frontend/issues/25648
         this._hass = hass;
-        else // update children who are subscribed
-        (0, $fKMMF.fireEvent)(this, 'hass-update', {
-            hass: hass
-        });
+        else (_this_shadowRoot = this.shadowRoot) === null || _this_shadowRoot === void 0 ? void 0 : _this_shadowRoot.dispatchEvent(new CustomEvent('hass-update', {
+            detail: {
+                hass: hass
+            }
+        }));
     }
     // card configuration
     static getConfigElement() {
@@ -4733,8 +5178,11 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
             hasImage: !!this._image,
             alarm: this.alarm
         });
-        const cardStyle = (0, $5e4701340181d3da$export$6675fe814017d7b1)(this._hass, this._config, this._roomEntity, this.alarm, this._image, this._isActive, this._thresholds, (_this__sensors = this._sensors) === null || _this__sensors === void 0 ? void 0 : _this__sensors.ambientLightEntities);
+        const cardStyle = (0, $5e4701340181d3da$export$6675fe814017d7b1)(this._hass, this._config, this._roomEntity, this.alarm, this._image, this._isActive, this._thresholds, (_this__sensors = this._sensors) === null || _this__sensors === void 0 ? void 0 : _this__sensors.ambientLightEntities, this.state);
         const problems = (0, $d71beedfb309b5b1$export$8093665c9ba8ead9)(this._hass, this._config, this._sensors, this);
+        const actions = (0, $1izJ2._)((0, $kJycS._)({}, this._roomEntity), {
+            config: (0, $kJycS._)({}, this._roomEntity.config, this._config.actions)
+        });
         return (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t3 || ($01f4c5d41a54ca3c$var$t3 = $01f4c5d41a54ca3c$var$_`
       <ha-card style="${0}">
         <div class="grid">
@@ -4750,10 +5198,15 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
           ${0}
         </div>
 
+        <horizontal-slider
+          .config=${0}
+          .hass=${0}
+        ></horizontal-slider>
+
         <!-- Full Card Action Overlay -->
         ${0}
       </ha-card>
-    `), cardStyle, (0, $52a5e6cbabf7b8e2$export$a80b3bd66acc52ff)(this, this._hass, this._roomInformation, this._roomEntity, this._config, this._sensors, this._isIconActive), roomEntity, (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this._config, 'slider') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t || ($01f4c5d41a54ca3c$var$t = $01f4c5d41a54ca3c$var$_`
+    `), cardStyle, (0, $52a5e6cbabf7b8e2$export$a80b3bd66acc52ff)(this, this._hass, this._roomInformation, actions, this._config, this._sensors, this._isIconActive), roomEntity, (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this._config, 'slider') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t || ($01f4c5d41a54ca3c$var$t = $01f4c5d41a54ca3c$var$_`
                 <entity-slider
                   .config=${0}
                   .hass=${0}
@@ -4763,13 +5216,13 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
                   .config=${0}
                   .hass=${0}
                 ></entity-collection>
-              `), this._config, this._hass), problems, (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this._config, 'full_card_actions') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t2 || ($01f4c5d41a54ca3c$var$t2 = $01f4c5d41a54ca3c$var$_`
+              `), this._config, this._hass), problems, this._config, this._hass, (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this._config, 'full_card_actions') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t2 || ($01f4c5d41a54ca3c$var$t2 = $01f4c5d41a54ca3c$var$_`
               <div
                 class="card-overlay"
                 @action=${0}
                 .actionHandler=${0}
               ></div>
-            `), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, this._roomEntity), (0, $b96673d7637fba33$export$8a44987212de21b)(this._roomEntity)) : (0, $ci0wX.nothing));
+            `), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, actions), (0, $b96673d7637fba33$export$8a44987212de21b)(actions)) : (0, $ci0wX.nothing));
     }
     constructor(...args){
         super(...args), /**
@@ -4837,9 +5290,9 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $2r9I1.LitElement) {
     (0, $aaQtJ.property)({
         type: Boolean,
         reflect: true,
-        attribute: 'icon-bg'
+        attribute: 'skip-mold-styles'
     })
-], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "iconBackground", void 0);
+], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "skipMoldStyles", void 0);
 (0, $evAes.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean,
@@ -4888,8 +5341,6 @@ var $jyxIy = parcelRequire("jyxIy");
 var $jf6NF = parcelRequire("jf6NF");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
-
-
 
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/cards/tile/badges/tile-badge-climate.ts
@@ -6644,15 +7095,6 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                             }
                         },
                         {
-                            name: 'attribute',
-                            label: 'editor.entity.entity_attribute',
-                            selector: {
-                                attribute: {
-                                    entity_id: entity_id
-                                }
-                            }
-                        },
-                        {
                             name: 'icon',
                             label: 'editor.entity.entity_icon',
                             selector: {
@@ -6660,6 +7102,18 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                             }
                         }
                     ]
+                },
+                {
+                    name: 'attribute',
+                    label: 'editor.entity.entity_attribute',
+                    selector: {
+                        ui_state_content: {
+                            allow_context: true
+                        }
+                    },
+                    context: {
+                        filter_entity: 'entity_id'
+                    }
                 },
                 {
                     type: 'grid',
@@ -6762,6 +7216,42 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                             }
                         }
                     ]
+                },
+                {
+                    name: 'slider',
+                    label: 'editor.entity.slider',
+                    type: 'expandable',
+                    icon: 'mdi:gauge',
+                    schema: [
+                        {
+                            name: 'style',
+                            label: 'editor.entity.slider_style',
+                            required: false,
+                            selector: {
+                                select: {
+                                    mode: 'dropdown',
+                                    options: [
+                                        {
+                                            label: (0, $cfP8R.localize)(hass, 'editor.entity.slider_style_bar'),
+                                            value: 'bar'
+                                        },
+                                        {
+                                            label: (0, $cfP8R.localize)(hass, 'editor.entity.slider_style_ha'),
+                                            value: 'ha'
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            name: 'hide_icon',
+                            label: 'editor.entity.slider_hide_icon',
+                            required: false,
+                            selector: {
+                                boolean: {}
+                            }
+                        }
+                    ]
                 }
             ];
         }), this._sensorsSchema = (0, $l3TbZ.default)((entity_id, hass)=>{
@@ -6787,15 +7277,6 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                             }
                         },
                         {
-                            name: 'attribute',
-                            label: 'editor.entity.entity_attribute',
-                            selector: {
-                                attribute: {
-                                    entity_id: entity_id
-                                }
-                            }
-                        },
-                        {
                             name: 'icon',
                             label: 'editor.entity.entity_icon',
                             selector: {
@@ -6803,6 +7284,18 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                             }
                         }
                     ]
+                },
+                {
+                    name: 'attribute',
+                    label: 'editor.entity.entity_attribute',
+                    selector: {
+                        ui_state_content: {
+                            allow_context: true
+                        }
+                    },
+                    context: {
+                        filter_entity: 'entity_id'
+                    }
                 },
                 {
                     name: 'interactions',
@@ -7377,13 +7870,17 @@ const $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20 = (hass, config)=>{
     const hideHiddenEntities = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_hidden_entities');
     // Process and transform entities
     const states = entities.map((entity)=>{
-        var _hass_entities_entity_entity_id;
+        var _hass_entities_entity_entity_id, _entity_slider;
         // Transform string format to entity config for convenience
         if (typeof entity === 'string') entity = {
             entity_id: entity
         };
         // Skip hidden entities if the feature is enabled
         if (hideHiddenEntities && ((_hass_entities_entity_entity_id = hass.entities[entity.entity_id]) === null || _hass_entities_entity_entity_id === void 0 ? void 0 : _hass_entities_entity_entity_id.hidden)) return undefined;
+        // Skip entities rendered as the horizontal slider with hide_icon set
+        // — they're represented by the bottom bar and shouldn't also occupy
+        // an icon slot.
+        if ((_entity_slider = entity.slider) === null || _entity_slider === void 0 ? void 0 : _entity_slider.hide_icon) return undefined;
         const state = (0, $7AhDs.getState)(hass.states, entity.entity_id);
         const isBaseEntity = baseEntities.includes(entity.entity_id);
         // If state is not found:
@@ -7432,8 +7929,8 @@ const $97576b6c0b409321$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($97576b6c0b409
   :host {
     height: 100%;
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-template-columns: 1fr;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(var(--user-entities-wrap, 4), 1fr);
     justify-items: center;
     align-items: center;
     gap: 8px;
@@ -7487,24 +7984,6 @@ var $evAes = parcelRequire("evAes");
 
 
 var $1LdRn = parcelRequire("1LdRn");
-const $d3a1c41917263588$export$bfd42fd87279097a = async (hass, entityId, brightness)=>{
-    if (!entityId) return;
-    // Ensure brightness is within valid range
-    const clampedBrightness = Math.max(0, Math.min(255, Math.round(brightness)));
-    // If brightness is 0, turn off the light
-    if (clampedBrightness === 0) {
-        await hass.callService('light', 'turn_off', {
-            entity_id: entityId
-        });
-        return;
-    }
-    // Otherwise, turn on the light with the specified brightness
-    await hass.callService('light', 'turn_on', {
-        entity_id: entityId,
-        brightness: clampedBrightness
-    });
-};
-
 
 
 
@@ -8095,18 +8574,6 @@ var $1LdRn = parcelRequire("1LdRn");
 
 
 var $el4XD = parcelRequire("el4XD");
-parcelRequire("fPVm8");
-var $ci0wX = parcelRequire("ci0wX");
-let $c9151a6b7cddd826$var$_ = (t)=>t, $c9151a6b7cddd826$var$t;
-const $c9151a6b7cddd826$export$f11d5335cd202cec = (hass, entity, attribute, className = '')=>(0, $ci0wX.html)($c9151a6b7cddd826$var$t || ($c9151a6b7cddd826$var$t = $c9151a6b7cddd826$var$_`<ha-attribute-value
-    hide-unit
-    .hass=${0}
-    .stateObj=${0}
-    .attribute=${0}
-    class=${0}
-  ></ha-attribute-value>`), hass, entity, attribute, className);
-
-
 
 var $kJycS = parcelRequire("kJycS");
 
@@ -8230,22 +8697,18 @@ function $64ed32997eb866dd$export$25d11e1ce3afd7f7(hass, entity, hideIconContent
 
 
 
+var $8jUVR = parcelRequire("8jUVR");
+
 
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 
-const $591072dd54c0e5bc$export$5edf3a158822b217 = (hass, entity, isActive, image, isMainRoomEntity, config)=>{
-    var _config_background_options, _config_background, _config_background1;
+const $591072dd54c0e5bc$export$5edf3a158822b217 = (hass, entity, isActive, image)=>{
     const { state: state } = entity;
     const filter = (0, $d41ad01236652ab5$export$65bcdaf7f2807be8)(state);
     const styleData = (0, $07e9954134d2b2af$export$de2836153ec9a0b1)(hass, 'icon', entity, isActive);
     if (!styleData) return 0, $ci0wX.nothing;
-    var _config_background_options_includes;
-    // Calculate opacity for image backgrounds
-    // Apply opacity to icon only if icon_background option is set
-    const isIconBackground = (_config_background_options_includes = config === null || config === void 0 ? void 0 : (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('icon_background')) !== null && _config_background_options_includes !== void 0 ? _config_background_options_includes : false;
-    const userOpacity = (config === null || config === void 0 ? void 0 : (_config_background1 = config.background) === null || _config_background1 === void 0 ? void 0 : _config_background1.opacity) && isIconBackground && isMainRoomEntity ? config.background.opacity / 100 : undefined;
-    const opacity = userOpacity !== null && userOpacity !== void 0 ? userOpacity : image && styleData.active ? '1' : `var(--opacity-icon-fill-${styleData.activeClass})`;
+    const opacity = image && styleData.active ? '1' : `var(--opacity-icon-fill-${styleData.activeClass})`;
     return (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)({
         '--icon-color': styleData.cssColor,
         '--icon-opacity': `var(--opacity-icon-${styleData.activeClass})`,
@@ -8306,7 +8769,7 @@ const $3221e0e6382742ce$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($3221e0e638274
     width: var(--user-entity-icon-size, 100%);
   }
 
-  :host([image][icon-bg]) {
+  :host([image]) {
     --user-background-image-overlay: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.4),
@@ -8340,8 +8803,14 @@ const $3221e0e6382742ce$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($3221e0e638274
     filter: var(--icon-filter, none);
   }
 
+  /* When this icon is the main room icon AND owns the background,
+     route the card-level --user-opacity here instead of to the card. */
+  :host([room][icon-bg]) .icon::before {
+    opacity: var(--user-opacity, var(--background-opacity-icon));
+  }
+
   /* Icon background image styling */
-  :host([image][icon-bg]) .icon::before {
+  :host([image]) .icon::before {
     background-image:
       var(--user-background-image-overlay), var(--background-image);
     background-repeat: no-repeat;
@@ -8469,7 +8938,6 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
         this._image = (0, $b02f37b9ae80224f$export$47f3d980c4d9b226)(this.entity, 'use_entity_icon') ? undefined : (_this_entity = this.entity) === null || _this_entity === void 0 ? void 0 : (_this_entity_state = _this_entity.state) === null || _this_entity_state === void 0 ? void 0 : (_this_entity_state_attributes = _this_entity_state.attributes) === null || _this_entity_state_attributes === void 0 ? void 0 : _this_entity_state_attributes.entity_picture;
         if (this._image) {
             this.image = true;
-            this.iconBackground = true;
             this._hideIconContent = true;
         } else {
             var _this__config_background_options, _this__config_background, _this__config, _this__config_background_options1, _this__config_background1, _this__config1;
@@ -8496,7 +8964,7 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
         .actionHandler=${0}
       ></div>`), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, this.entity), (0, $b96673d7637fba33$export$8a44987212de21b)(this.entity));
         const thresholdResult = (0, $3eeea5b8a350985f$export$76969a794fd1f893)(this.entity);
-        const iconStyle = (0, $591072dd54c0e5bc$export$5edf3a158822b217)(this._hass, this.entity, this.isActive, this._image, this.isMainRoomEntity, this._config);
+        const iconStyle = (0, $591072dd54c0e5bc$export$5edf3a158822b217)(this._hass, this.entity, this.isActive, this._image);
         const iconStyles = (0, $kJycS._)({}, (_this__config = this._config) === null || _this__config === void 0 ? void 0 : (_this__config_styles = _this__config.styles) === null || _this__config_styles === void 0 ? void 0 : _this__config_styles.entity_icon, this.isMainRoomEntity ? (_this__config1 = this._config) === null || _this__config1 === void 0 ? void 0 : (_this__config_styles1 = _this__config1.styles) === null || _this__config_styles1 === void 0 ? void 0 : _this__config_styles1.room_entity_icon : undefined, this.entity.config.styles, thresholdResult === null || thresholdResult === void 0 ? void 0 : thresholdResult.styles);
         // Get label (priority: state/threshold label > config label > attribute value > entity name)
         let label;
@@ -8507,7 +8975,7 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
             else if (this.entity.config.label) // Second priority: configured label
             label = this.entity.config.label;
             else if (this.entity.config.attribute) // Third priority: attribute value if attribute is configured
-            label = (0, $c9151a6b7cddd826$export$f11d5335cd202cec)(this._hass, state, this.entity.config.attribute);
+            label = (0, $8jUVR.stateDisplay)(this._hass, state, this.entity.config.attribute);
             else // Fallback: entity name
             label = (0, $el4XD.computeEntityName)(state, this._hass);
         }
@@ -8704,7 +9172,6 @@ const $23d9b52a9a7ecac4$export$6b5316c1eb8ef7e7 = (averagedSensor)=>`${$23d9b52a
     weather: 'mdi:weather-partly-cloudy',
     zone: 'mdi:map-marker-radius'
 };
-
 
 
 
@@ -9065,9 +9532,7 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
    */ renderSensorLabel(state, label, sensorConfig) {
         if (this._hideLabels) return 0, $ci0wX.nothing;
         if (label) return (0, $ci0wX.html)($0a8df7eca34388c3$var$t3 || ($0a8df7eca34388c3$var$t3 = $0a8df7eca34388c3$var$_`${0}`), label);
-        // If attribute is specified, display the attribute value instead of state
-        if (sensorConfig === null || sensorConfig === void 0 ? void 0 : sensorConfig.attribute) return (0, $c9151a6b7cddd826$export$f11d5335cd202cec)(this._hass, state, sensorConfig.attribute);
-        return (0, $8jUVR.stateDisplay)(this._hass, state);
+        return (0, $8jUVR.stateDisplay)(this._hass, state, sensorConfig === null || sensorConfig === void 0 ? void 0 : sensorConfig.attribute);
     }
     /**
    * Gets the sensor configuration for a given entity ID
@@ -9145,18 +9610,39 @@ const $2c30722c058d3347$export$932b0589381997d6 = async (hass)=>{
 
 var $cfP8R = parcelRequire("cfP8R");
 const $cf084a38eb33c4f3$export$76fcdb2ea14db822 = {
-    name: 'interactions',
+    name: 'actions',
     label: 'editor.interactions.interactions',
     type: 'expandable',
-    flatten: true,
     icon: 'mdi:gesture-tap',
     schema: [
         {
-            name: 'navigate',
-            label: 'editor.interactions.navigate_path',
+            name: 'tap_action',
+            label: 'editor.interactions.tap_action',
             required: false,
             selector: {
-                navigation: {}
+                ui_action: {
+                    default_action: 'navigate'
+                }
+            }
+        },
+        {
+            name: 'double_tap_action',
+            label: 'editor.interactions.double_tap_action',
+            required: false,
+            selector: {
+                ui_action: {
+                    default_action: 'more-info'
+                }
+            }
+        },
+        {
+            name: 'hold_action',
+            label: 'editor.interactions.hold_action',
+            required: false,
+            selector: {
+                ui_action: {
+                    default_action: 'none'
+                }
             }
         }
     ]
@@ -9782,6 +10268,10 @@ const $ebeb8808033cc92f$var$featuresSchema = (hass)=>{
                             {
                                 label: (0, $cfP8R.localize)(hass, 'editor.card.skip_card_background_styles'),
                                 value: 'skip_entity_styles'
+                            },
+                            {
+                                label: (0, $cfP8R.localize)(hass, 'editor.styles.skip_mold_styles'),
+                                value: 'skip_mold_styles'
                             },
                             {
                                 label: (0, $cfP8R.localize)(hass, 'editor.features.full_card_actions'),
@@ -11090,7 +11580,7 @@ class $0f35678ae26800e3$export$be1ca41262ce011e extends (0, $2r9I1.LitElement) {
 
 
 var $649c526c16197344$exports = {};
-$649c526c16197344$exports = JSON.parse("{\"name\":\"room-summary-card\",\"version\":\"0.64.0\",\"author\":\"Patrick Masters\",\"license\":\"ISC\",\"description\":\"Custom card Home Assistant which can show a summary of room entities.\",\"source\":\"src/index.ts\",\"module\":\"dist/room-summary-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"format\":\"prettier --write .\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc npm run test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"update\":\"npx npm-check-updates -u && yarn install\"},\"devDependencies\":{\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.16.4\",\"@testing-library/dom\":\"^10.4.1\",\"@trivago/prettier-plugin-sort-imports\":\"^6.0.2\",\"@types/chai\":\"^5.2.3\",\"@types/jsdom\":\"^27.0.0\",\"@types/mocha\":\"^10.0.10\",\"@types/sinon\":\"^21.0.0\",\"chai\":\"^6.2.2\",\"jsdom\":\"^29.0.0\",\"mocha\":\"^11.7.5\",\"nyc\":\"^17.1.0\",\"parcel\":\"^2.16.4\",\"prettier\":\"3.8.1\",\"prettier-plugin-organize-imports\":\"^4.3.0\",\"proxyquire\":\"^2.1.3\",\"sinon\":\"^21.0.2\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^5.9.3\"},\"dependencies\":{\"@lit/task\":\"^1.0.3\",\"async-memoize-one\":\"^1.2.0\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.3.2\",\"memoize-one\":\"^6.0.0\"}}");
+$649c526c16197344$exports = JSON.parse("{\"name\":\"room-summary-card\",\"version\":\"0.66.0\",\"author\":\"Patrick Masters\",\"license\":\"ISC\",\"description\":\"Custom card Home Assistant which can show a summary of room entities.\",\"source\":\"src/index.ts\",\"module\":\"dist/room-summary-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"format\":\"prettier --write .\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc npm run test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"test:e2e\":\"playwright test\",\"test:e2e:auth\":\"source .env && npx playwright codegen --save-storage=$PLAYWRIGHT_HA_STORAGE_STATE $PLAYWRIGHT_HA_ORIGIN\",\"update\":\"npx npm-check-updates -u && yarn install\"},\"devDependencies\":{\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.16.4\",\"@playwright/test\":\"^1.51.0\",\"@testing-library/dom\":\"^10.4.1\",\"@trivago/prettier-plugin-sort-imports\":\"^6.0.2\",\"@types/chai\":\"^5.2.3\",\"@types/jsdom\":\"^28.0.1\",\"@types/mocha\":\"^10.0.10\",\"@types/sinon\":\"^21.0.1\",\"chai\":\"^6.2.2\",\"jsdom\":\"^29.1.1\",\"mocha\":\"^11.7.5\",\"nyc\":\"^17.1.0\",\"parcel\":\"^2.16.4\",\"prettier\":\"3.8.3\",\"prettier-plugin-organize-imports\":\"^4.3.0\",\"sinon\":\"^21.1.2\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^6.0.3\"},\"dependencies\":{\"@lit/task\":\"^1.0.3\",\"async-memoize-one\":\"^1.2.1\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.3.2\",\"memoize-one\":\"^6.0.0\"}}");
 
 
 // Register the custom element with the browser

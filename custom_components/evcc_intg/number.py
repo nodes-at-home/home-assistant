@@ -51,7 +51,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                     key=f"{lp_id_addon}_{the_key}",
                     translation_key=the_key,
                     name_addon=lp_name_addon if multi_loadpoint_config else None,
-                    icon=a_stub.icon,
+                    icon="mdi:thermometer" if force_celsius else a_stub.icon,
                     device_class=SensorDeviceClass.TEMPERATURE if force_celsius else a_stub.device_class,
                     unit_of_measurement=UnitOfTemperature.CELSIUS if force_celsius else a_stub.unit_of_measurement,
                     entity_category=a_stub.entity_category,
@@ -64,12 +64,12 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                     mode=a_stub.mode,
                     native_max_value=a_stub.native_max_value,
                     native_min_value=a_stub.native_min_value,
-                    native_step=a_stub.native_step,
+                    native_step=1 if force_celsius else a_stub.native_step,
                     native_unit_of_measurement=UnitOfTemperature.CELSIUS if force_celsius else a_stub.native_unit_of_measurement,
                     step=a_stub.step,
                 )
 
-                if a_stub.tag == Tag.SMARTCOSTLIMIT or a_stub.tag == Tag.BATTERYGRIDCHARGELIMIT:
+                if a_stub.tag in [Tag.SMARTCOSTLIMIT, Tag.SMARTFEEDINPRIORITYLIMIT, Tag.BATTERYGRIDCHARGELIMIT]:
                     if coordinator._cost_type == "co2":
                         description = replace(
                             description,
@@ -106,7 +106,7 @@ class EvccNumber(EvccBaseEntity, NumberEntity):
             if value is None or value == "":
                 return "unknown"
             else:
-                if self.tag == Tag.SMARTCOSTLIMIT or self.tag == Tag.BATTERYGRIDCHARGELIMIT:
+                if self.tag in [Tag.SMARTCOSTLIMIT, Tag.SMARTFEEDINPRIORITYLIMIT, Tag.BATTERYGRIDCHARGELIMIT]:
                     value = round(float(value), 3)
                 else:
                     value = int(value)
@@ -126,7 +126,7 @@ class EvccNumber(EvccBaseEntity, NumberEntity):
 
     async def async_set_native_value(self, value) -> None:
         try:
-            if self.tag == Tag.SMARTCOSTLIMIT or self.tag == Tag.BATTERYGRIDCHARGELIMIT:
+            if self.tag in [Tag.SMARTCOSTLIMIT, Tag.SMARTFEEDINPRIORITYLIMIT, Tag.BATTERYGRIDCHARGELIMIT]:
                 await self.coordinator.async_write_tag(self.tag, round(float(value), 3), self.lp_idx, self)
             else:
                 await self.coordinator.async_write_tag(self.tag, int(value), self.lp_idx, self)

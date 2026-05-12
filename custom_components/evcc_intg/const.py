@@ -15,6 +15,7 @@ from homeassistant.const import (
     UnitOfLength,
     UnitOfTime,
     UnitOfElectricPotential,
+    UnitOfTemperature,
     PERCENTAGE,
     Platform
 )
@@ -26,8 +27,12 @@ from custom_components.evcc_intg.pyevcc_ha.const import (
     JSONKEY_EVOPT_RES_BATTERIES_AINDEX_CHARGED_TOTAL,
     JSONKEY_EVOPT_REQ_TIME_SERIES,
     JSONKEY_EVOPT_REQ_TIME_SERIES_DT,
+    GRID_CONTENT,
+    PV_CONTENT,
+    FORECAST_CONTENT,
+    BATTERY_CONTENT
 )
-from custom_components.evcc_intg.pyevcc_ha.keys import Tag, GRID_CONTENT, PV_CONTENT, FORECAST_CONTENT, BATTERY_CONTENT
+from custom_components.evcc_intg.pyevcc_ha.keys import Tag, IS_TRIGGER
 
 # Base component constants
 MANUFACTURER: Final = "marq24"
@@ -51,6 +56,8 @@ If you have any issues with this you need to open an issue here:
 CONF_INCLUDE_EVCC: Final = "include_evcc"
 CONF_PURGE_ALL: Final = "purge_all_devices"
 CONF_USE_WS= "use_websocket"
+CONF_EXTENDED_VEHICLE_DATA: Final = "extended_vehicle_data"
+CONF_EXTENDED_METER_DATA: Final = "extended_meter_data"
 
 EVCC_JSON_KEY_NAME: Final = "evccName"
 EVCC_JSON_ORIGIN_OBJECT = "originObject"
@@ -150,6 +157,7 @@ class ExtSensorEntityDescription(SensorEntityDescription):
     tag: Tag = None
     lp_idx: int | str | None = None
     name_addon: str | None = None
+    evcc_config_id: str | None = None
     is_lp_integrated_device: bool | None = None
 
     json_idx: list[str|int] | None = None
@@ -224,6 +232,13 @@ BINARY_ENTITIES_PER_LOADPOINT = [
         icon_off=None
     ),
     ExtBinarySensorEntityDescriptionStub(
+        tag=Tag.SMARTFEEDINPRIORITYACTIVE,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        icon=None,
+        icon_off=None,
+        entity_registry_enabled_default=False
+    ),
+    ExtBinarySensorEntityDescriptionStub(
         tag=Tag.LP_VEHICLEDETECTIONACTIVE,
         entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:car-search",
@@ -261,7 +276,16 @@ BINARY_ENTITIES_PER_LOADPOINT = [
     )
 ]
 
-BUTTONS_ENTITIES = []
+BUTTONS_ENTITIES = [
+    ExtButtonEntityDescription(
+        tag=Tag.EVCC_SHUTDOWN,
+        key=Tag.EVCC_SHUTDOWN.entity_key,
+        payload=IS_TRIGGER,
+        entity_category=EntityCategory.CONFIG,
+        icon="mdi:server-off",
+        entity_registry_enabled_default=False,
+    )
+]
 BUTTONS_ENTITIES_PER_LOADPOINT = [
     ExtButtonEntityDescriptionStub(
         tag=Tag.VEHICLEPLANSDELETE,
@@ -289,8 +313,14 @@ BUTTONS_ENTITIES_PER_LOADPOINT = [
         entity_category=EntityCategory.CONFIG,
         device_class=None,
         icon = "mdi:cash-off",
-        entity_registry_enabled_default=False,
-        integrated_supported = False
+        entity_registry_enabled_default=False
+    ),
+    ExtButtonEntityDescriptionStub(
+        tag=Tag.SMARTFEEDINPRIORITYLIMIT,
+        entity_category=EntityCategory.CONFIG,
+        device_class=None,
+        icon = "mdi:cash-off",
+        entity_registry_enabled_default=False
     )
 ]
 
@@ -373,6 +403,17 @@ NUMBER_ENTITIES_PER_LOADPOINT = [
         native_min_value=-0.50,
         native_step=0.005,
         native_unit_of_measurement="@@@/kWh",
+    ),
+    ExtNumberEntityDescriptionStub(
+        tag=Tag.SMARTFEEDINPRIORITYLIMIT,
+        entity_category=EntityCategory.CONFIG,
+        icon = "mdi:cash-multiple",
+        mode = NumberMode.BOX,
+        native_max_value=2.50,
+        native_min_value=-0.50,
+        native_step=0.005,
+        native_unit_of_measurement="@@@/kWh",
+        entity_registry_enabled_default=False
     ),
     ExtNumberEntityDescriptionStub(
         tag=Tag.ENABLEDELAY,
@@ -1876,7 +1917,137 @@ SENSOR_ENTITIES_PER_VEHICLE = [
         suggested_display_precision=1,
         entity_registry_enabled_default=True
     ),
+
+    # the VEHICLE CONFIGURATION Sensors...
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_VEHICLERANGE,
+        icon="mdi:ev-station",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfLength.KILOMETERS,
+        suggested_display_precision=0,
+        entity_registry_enabled_default=False,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_VEHICLEODOMETER,
+        icon="mdi:counter",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfLength.KILOMETERS,
+        device_class=None,
+        suggested_display_precision=0,
+        ignore_zero=True,
+        entity_registry_enabled_default=False,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_VEHICLESOC,
+        icon="mdi:car-electric-outline",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=None,
+        suggested_display_precision=0,
+        entity_registry_enabled_default=False,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_VEHICLELIMITSOC,
+        icon="mdi:battery-charging",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=None,
+        suggested_display_precision=0,
+        entity_registry_enabled_default=False,
+    )
 ]
+# the meters are coming from the evcc configuration endpoints (and require the evcc-admin pwd)
+# there is no entity_registry_enabled_default=True/False here, since the sensor code will
+# check, if there is a value (from the configuration) before adding the sensors...
+SENSOR_ENTITIES_PER_METER = [
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERPOWER,
+        icon="mdi:transmission-tower",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        suggested_display_precision=2,
+        device_class=SensorDeviceClass.POWER,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERENERGY,
+        icon="mdi:transmission-tower",
+        state_class=SensorStateClass.TOTAL,
+        native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
+        device_class=SensorDeviceClass.ENERGY,
+        suggested_display_precision=2,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERSOC,
+        icon="mdi:battery-charging",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=None,
+        suggested_display_precision=0,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERTEMP,
+        icon="mdi:thermometer",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        device_class=None,
+        suggested_display_precision=1,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERPHASECURRENTS,
+        json_idx=[0],
+        icon="mdi:current-ac",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
+        suggested_display_precision=2,
+        device_class=SensorDeviceClass.CURRENT,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERPHASECURRENTS,
+        json_idx=[1],
+        icon="mdi:current-ac",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
+        suggested_display_precision=2,
+        device_class=SensorDeviceClass.CURRENT,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERPHASECURRENTS,
+        json_idx=[2],
+        icon="mdi:current-ac",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
+        suggested_display_precision=2,
+        device_class=SensorDeviceClass.CURRENT,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERPHASEVOLTAGES,
+        json_idx=[0],
+        icon="mdi:lightning-bolt",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        suggested_display_precision=2,
+        device_class=SensorDeviceClass.VOLTAGE,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERPHASEVOLTAGES,
+        json_idx=[1],
+        icon="mdi:lightning-bolt",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        suggested_display_precision=2,
+        device_class=SensorDeviceClass.VOLTAGE,
+    ),
+    ExtSensorEntityDescriptionStub(
+        tag=Tag.EVCCCONF_METERPHASEVOLTAGES,
+        json_idx=[2],
+        icon="mdi:lightning-bolt",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        suggested_display_precision=2,
+        device_class=SensorDeviceClass.VOLTAGE,
+    ),
+]
+
 SENSOR_ENTITIES_PER_CIRCUIT = [
     ExtSensorEntityDescriptionStub(
         tag=Tag.CIRCUITS_POWER,

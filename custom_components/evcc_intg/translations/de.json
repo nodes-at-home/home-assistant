@@ -7,22 +7,30 @@
     },
     "step": {
       "user": {
-        "descri_rant": "Wenn Du Hilfe bei der Einrichtung benötigst, findest du sie hier: {repo}.\n-- --\n### Du musst die IP-Addresse & Port Deines EVCC-Servers angeben und nicht die IP & Port von Deinem Home-Assistent Server!\n-- --\nJeder der seine Home-Assistent Addresse einträgt (weil er das vielleicht so auf YouTube gesehen hat) und sich dann bei mir wegen dem *Fehler* meldet, möge bitte wahlweise in die USA oder nach Russland auswandern (Nordkorea wäre auch noch 'ne Option)!\n-- --\nAn alle anderen: bitte entschuldigt diesen Rant \uD83E\uDD2E - Seit **Monaten** bekomme ich immer wieder die gleiche Support-Anfrage von der Generation TikTok.",
+        "descri_rant": "Wenn Du Hilfe bei der Einrichtung benötigst, findest du sie hier: {repo}.\n-- --\n### Du musst die IP-Addresse & Port Deines evcc-Servers angeben und nicht die IP & Port von Deinem Home-Assistent Server!\n-- --\nJeder der seine Home-Assistent Addresse einträgt (weil er das vielleicht so auf YouTube gesehen hat) und sich dann bei mir wegen dem *Fehler* meldet, möge bitte wahlweise in die USA oder nach Russland auswandern (Nordkorea wäre auch noch 'ne Option)!\n-- --\nAn alle anderen: bitte entschuldigt diesen Rant \uD83E\uDD2E - Seit **Monaten** bekomme ich immer wieder die gleiche Support-Anfrage von der Generation TikTok.",
         "description": "Wenn Du Hilfe bei der Einrichtung benötigst, findest du sie hier: {repo}.\n-- --\n### Es wird eine evcc Server Installation benötigt\n-- --\nBevor Du diese Integration einrichten und verwenden kannst, musst Du __zuvor__ evcc selbst installiert haben!\nDies geht z.B. über die Installation des HA _evcc AddOn's_ oder aber die Installation von evcc in einen separaten Docker Container oder auf einem anderen Server in Deinem Netzwerk.\nBitte installiere die Integration nur dann, wenn Du die URL Deines evcc Servers kennst – also die URL die Du in Deinem Browser angibst, um das evcc Weboberfläche direkt zu erreichen.\n-- --\nDu musst hier also die IP-Addresse & Port Deines evcc Servers angeben (und nicht die IP & Port von Deinem Home-Assistent Server)!",
         "data": {
-          "host": "Deine lokale EVCC-Server Addresse (einschließlich des Ports)",
-          "use_websocket": "Websocket verwenden - Aktualisierungsintervall wird ignoriert",
+          "host": "Deine lokale evcc-Server Addresse (einschließlich des Ports)",
+          "password": "Admin Passwort für den evcc-Server (optional)",
+          "use_websocket": "WebSocket Verbindung verwenden",
           "scan_interval": "Aktualisierungsintervall in Sekunden [min: 5sek]",
           "include_evcc": "Allen Namen der Sensoren den Präfix '[evcc]' voranstellen",
+          "extended_vehicle_data": "Erweiterte Fahrzeugdaten von der evcc Konfiguration abrufen",
+          "extended_meter_data": "Zählerdaten von der evcc Konfiguration abrufen",
           "purge_all_devices": "Alle Geräte (Devices) Löschen und neu Erstellen"
         },
         "data_description": {
+          "scan_interval": "Wenn Du die WebSocket Verbindung aktiviert hast, ist das Aktualisierungsintervall nur für die Zugriffe auf die _optionale_ evcc Konfigurations-API relevant.",
+          "password": "Die Angabe Deines evcc Admin-Passwort ist __optional__ und nur für erweiterte Features der Integration notwendig. Wenn Du Dir unsicher bist, lass dieses Feld bitte leer.\nDu kannst das Passwort auch jederzeit nachträglich hinzufügen, wenn Du feststellst, dass Du die erweiterten Funktionen der Integration verwendne möchtest (z.B. Neustart des evcc-Servers via HA).\n\nWenn Du Dein aktuelles Passwort __entfernen__ möchtest, dann mußt Du ein __LEERZEICHEN__ eingeben (sonst erkennt HA keine Änderung)!",
+          "extended_vehicle_data": "Erfordert Zugriff auf die evcc Konfigurations-API (Admin Passwort notwendig). Wenn aktiviert, sammelt die Integration zusätzliche Fahrzeugdaten wie Ladestatus, Reichweite, Kilometerstand oder Ladestand für jedes konfigurierte Fahrzeug.",
+          "extended_meter_data": "Erfordert Zugriff auf die evcc Konfigurations-API (Admin Passwort notwendig). Wenn aktiviert, sammelt die Integration zusätzliche Zählerdaten wie Leistung, Energie, Phasenströme, Phasenspannungen oder Ladestand/Temperaturen für jeden konfigurierten Zähler.",
           "purge_all_devices": "Dies kann notwendig werden, wenn Du verwaiste Geräte (Einträge) bei Dir in HA hast. Diese Einstellung wird automatisch zurückgesetzt."
         }
       }
     },
     "error": {
-      "auth": "Unter dieser URL konnte Deine HA Instanz keinen EVCC-Server erreichen. **Bitte ließ doch noch einmal die Anleitung oben** Das Schwarze ist die Schrift!"
+      "auth": "Unter dieser URL konnte Deine HA Instanz keinen evcc-Server erreichen. **Bitte ließ doch noch einmal die Anleitung oben** Das Schwarze ist die Schrift!",
+      "pwd": "Das Admin-Passwort für den evcc-Server scheint nicht korrekt. Bitte überprüfe Deine Eingabe (oder lass dieses Feld leer, wenn Du Dir unsicher bist)."
     }
   },
   "services": {
@@ -66,6 +74,7 @@
       "connected": {"name": "Verbunden"},
       "enabled": {"name": "Aktiviert"},
       "smartcostactive": {"name": "Smartes Netzladen"},
+      "smartfeedinpriorityactive": {"name": "Smarte Einspeisegrenze"},
       "vehicledetectionactive": {"name": "Fahrzeugerkennung"},
       "batterygridchargeactive": {"name": "Hausbatterie: Netzladen"},
       "vehicleclimateractive": {"name": "Fahrzeug Klimatisierung"},
@@ -76,10 +85,12 @@
       "circuits_curtailed": {"name": "Lastmanagement 'gekürzt'"}
     },
     "button": {
+      "evcc_shutdown": {"name": "Server stoppen"},
       "vehicleplansdelete": {"name": "Ladeplanung: Abfahrt löschen (Fahrzeug/SOC)"},
       "plandelete": {"name": "Ladeplanung: Abfahrt löschen (Ladepunkt/Energie)"},
       "detectvehicle": {"name": "Fahrzeugerkennung starten"},
-      "smartcostlimit": {"name": "@@@ Limit entfernen"}
+      "smartcostlimit": {"name": "@@@ Limit entfernen"},
+      "smartfeedinprioritylimit": {"name": "@@@ Einspeisegrenze entfernen"}
     },
     "number": {
       "limitsoc": {"name": "Standard Ladelimit (SOC)"},
@@ -89,6 +100,8 @@
       "residualpower": {"name": "Restleistung"},
       "smartcostlimit_co2": {"name": "CO₂ Limit ≤"},
       "smartcostlimit": {"name": "@@@ Limit ≤"},
+      "smartfeedinprioritylimit_co2": {"name": "CO₂ Einspeisegrenze ≤"},
+      "smartfeedinprioritylimit": {"name": "@@@ Einspeisegrenze ≤"},
       "batterygridchargelimit": {"name": "Hausbatterie: Netzladen @@@ Limit ≤"},
       "enabledelay": {"name": "Verzögerung Aktivierung"},
       "disabledelay": {"name": "Verzögerung Deaktivierung"},
@@ -389,7 +402,26 @@
       "charging_sessions_loadpoint_chargeduration": {"name": "Ladevorgänge: Dauer [LP]"},
 
       "circuits_power": {"name": "Lastmanagement Leistung"},
-      "circuits_current": {"name": "Lastmanagement Strom"}
+      "circuits_current": {"name": "Lastmanagement Strom"},
+
+      "configvehicle_soc": {"name": "Ladestand"},
+      "configvehicle_limitsoc": {"name": "Ladelimit"},
+      "configvehicle_odometer": {"name": "Kilometerstand"},
+      "configvehicle_range": {"name": "Reichweite"},
+
+      "configmeter_power": {"name": "Leistung"},
+      "configmeter_energy": {"name": "Energie"},
+      "configmeter_soc": {"name": "Ladestand"},
+      "configmeter_temp": {"name": "Temperatur"},
+      "configmeter_phasecurrents_0": {"name": "Strom P1"},
+      "configmeter_phasecurrents_1": {"name": "Strom P2"},
+      "configmeter_phasecurrents_2": {"name": "Strom P3"},
+      "configmeter_phasevoltages_0": {"name": "Spannung P1"},
+      "configmeter_phasevoltages_1": {"name": "Spannung P2"},
+      "configmeter_phasevoltages_2": {"name": "Spannung P3"},
+      "configmeter_phasepowers_0": {"name": "Leistung P1"},
+      "configmeter_phasepowers_1": {"name": "Leistung P2"},
+      "configmeter_phasepowers_2": {"name": "Leistung P3"}
     },
     "switch": {
       "batterydischargecontrol": {"name": "Hausbatterie: Entladesperre"},

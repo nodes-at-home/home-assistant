@@ -32,5 +32,34 @@
         "title": "Gardena Smart System - Opties"
       }
     }
+  },
+  "services": {
+    "start_override": {
+      "name": "Start overschrijving",
+      "description": "Start de maaier onmiddellijk voor een specifieke duur en overschrijf het schema.",
+      "icon": "mdi:mower-on",
+      "fields": {
+        "duration": {
+          "name": "Duur",
+          "description": "De duur in seconden."
+        }
+      }
+    },
+    "start_automatic": {
+      "name": "Start automatisch",
+      "description": "Start de maaier met het automatische schema."
+    },
+    "park_until_next_task": {
+      "name": "Parkeren tot volgende taak",
+      "description": "Parkeer de maaier tot de volgende geplande taak."
+    },
+    "park_until_further_notice": {
+      "name": "Parkeren tot nader order",
+      "description": "Parkeer de maaier tot nader order."
+    },
+    "reconnect_websocket": {
+      "name": "WebSocket opnieuw verbinden",
+      "description": "WebSocket-verbinding forceren voor de Gardena Smart System-integratie."
+    }
   }
 }

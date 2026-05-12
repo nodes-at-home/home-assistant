@@ -8,14 +8,9 @@ from typing import (
 from custom_components.evcc_intg.pyevcc_ha.const import (
     MIN_CURRENT_LIST,
     MAX_CURRENT_LIST,
-    JSONKEY_CIRCUITS,
-    JSONKEY_LOADPOINTS,
-    JSONKEY_VEHICLES,
-    JSONKEY_EVOPT,
     JSONKEY_EVOPT_REQ,
     JSONKEY_EVOPT_RES,
     JSONKEY_EVOPT_DETAILS,
-    JSONKEY_STATISTICS,
     JSONKEY_STATISTICS_TOTAL,
     JSONKEY_STATISTICS_THISYEAR,
     JSONKEY_STATISTICS_365D,
@@ -26,6 +21,8 @@ from custom_components.evcc_intg.pyevcc_ha.const import (
     BATTERY_LIST,
     SESSIONS_KEY_VEHICLES,
     SESSIONS_KEY_LOADPOINTS,
+    EVCCCONF_DEVICE_TYPES,
+    EP_TYPE,
 )
 
 # from aenum import Enum, extend_enum
@@ -33,6 +30,7 @@ from custom_components.evcc_intg.pyevcc_ha.const import (
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 IS_TRIGGER: Final = "TRIGGER"
+INTERNAL_ONLY: Final = "intg_internal"
 
 CC_P1: Final = re.compile(r"(.)([A-Z][a-z]+)")
 CC_P2: Final = re.compile(r"([a-z0-9])([A-Z])")
@@ -43,33 +41,6 @@ def camel_to_snake(a_key: str):
     a_key = re.sub(CC_P1, r'\1_\2', a_key)
     return re.sub(CC_P2, r'\1_\2', a_key).lower()
 
-class EP_TYPE(Enum):
-    CIRCUITS = JSONKEY_CIRCUITS
-    LOADPOINTS = JSONKEY_LOADPOINTS
-    VEHICLES = JSONKEY_VEHICLES
-    STATISTICS = JSONKEY_STATISTICS
-    EVOPT = JSONKEY_EVOPT
-    SITE = "site"
-    TARIFF = "tariff"
-    SESSIONS = "sessions"
-
-class BATTERY_CONTENT(Enum):
-    SOC = "soc"
-    POWER = "power"
-
-class GRID_CONTENT(Enum):
-    CURRENTS = "currents"
-    POWER = "power"
-
-class PV_CONTENT(Enum):
-    ENERGY = "energy"
-    POWER = "power"
-
-class FORECAST_CONTENT(Enum):
-    GRID = "grid"
-    SOLAR = "solar"
-    FEEDIN = "feedin"
-    PLANNER = "planner"
 
 class ApiKey(NamedTuple):
     type: str
@@ -82,6 +53,10 @@ class ApiKey(NamedTuple):
     write_type: str = None
     options: list[str] = None
     writeable: bool = False
+
+    # when we have the need to check for a specific http status code...
+    # e.g. the shutdown endpoint returns status: 204
+    expected_http_status_response: int = None
 
     @property
     def snake_case(self) -> str:
@@ -347,6 +322,13 @@ class Tag(ApiKey, Enum):
     # "smartCostLimit": 0.22,
     SMARTCOSTLIMIT = ApiKey(json_key="smartCostLimit", type=EP_TYPE.LOADPOINTS, writeable=True, write_key="smartcostlimit")
 
+    # "smartFeedInPriorityActive": false,
+    SMARTFEEDINPRIORITYACTIVE = ApiKey(json_key="smartFeedInPriorityActive", type=EP_TYPE.LOADPOINTS)
+
+    # "smartFeedInPriorityLimit": null,
+    SMARTFEEDINPRIORITYLIMIT = ApiKey(json_key="smartFeedInPriorityLimit", type=EP_TYPE.LOADPOINTS, writeable=True, write_key="smartfeedinprioritylimit")
+
+
     # "title": "HH-7",
     # -> USED during startup phase
 
@@ -496,3 +478,42 @@ class Tag(ApiKey, Enum):
     EVOPT_REQUEST_OBJECT = ApiKey(json_key=JSONKEY_EVOPT_REQ, type=EP_TYPE.EVOPT)
     EVOPT_RESULT_OBJECT = ApiKey(json_key=JSONKEY_EVOPT_RES, type=EP_TYPE.EVOPT)
     EVOPT_DETAILS_OBJECT = ApiKey(json_key=JSONKEY_EVOPT_DETAILS, type=EP_TYPE.EVOPT)
+
+    ###################################
+    # CONFIGURATION
+    ###################################
+    # a SHUTDOWN Button for the evcc Server (that requires admin password)
+    EVCC_SHUTDOWN = ApiKey(entity_key="evcc_shutdown", json_key=f"{INTERNAL_ONLY}_shutdown", type=EP_TYPE.EVCCCONF, write_key ="system/shutdown", expected_http_status_response=204)
+
+    # request: http://{host}/api/config/devices/vehicle/ford_mach_e/status
+    # response: {'capacity': {'value': 91.4, 'error': ''}, 'chargeStatus': {'value': 'A', 'error': ''}, 'icon': {'value': 'ford-mustang-mach-e', 'error': ''}, 'odometer': {'value': 19017, 'error': ''}, 'range': {'value': 516, 'error': ''}, 'soc': {'value': 100, 'error': ''}, 'vehicleLimitSoc': {'value': 100, 'error': ''}}
+    EVCCCONF_VEHICLECAPACITY    = ApiKey(entity_key="configvehicle_capacity", json_key="capacity", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.VEHICLE.value)
+    EVCCCONF_VEHICLESOC         = ApiKey(entity_key="configvehicle_soc", json_key="soc", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.VEHICLE.value)
+    EVCCCONF_VEHICLELIMITSOC    = ApiKey(entity_key="configvehicle_limitsoc", json_key="vehicleLimitSoc", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.VEHICLE.value)
+    EVCCCONF_VEHICLEODOMETER    = ApiKey(entity_key="configvehicle_odometer", json_key="odometer", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.VEHICLE.value)
+    EVCCCONF_VEHICLERANGE       = ApiKey(entity_key="configvehicle_range", json_key="range", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.VEHICLE.value)
+
+    #EVCCCONF_CHARGER = ApiKey(entity_key="configcharger_", json_key="", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.CHARGER.value)
+    # request: http://{host}/api/config/devices/charger/go-e/status
+    # response: {'chargeStatus': {'value': 'A', 'error': ''}, 'enabled': {'value': False, 'error': ''}, 'energy': {'value': 3844.383, 'error': ''}, 'identifier': {'value': '', 'error': ''}, 'phaseCurrents': {'value': [0, 0, 0], 'error': ''}, 'phaseVoltages': {'value': [233.7400055, 235.2899933, 233.7400055], 'error': ''}, 'phases1p3p': {'value': True, 'error': ''}, 'power': {'value': 0, 'error': ''}}
+    # request: http://{host}/api/config/devices/charger/heatpump-water_ha_switch/status
+    # response: {'chargeStatus': {'value': 'C', 'error': ''}, 'enabled': {'value': True, 'error': ''}, 'heating': {'value': True, 'error': ''}, 'icon': {'value': 'waterheater', 'error': ''}, 'integratedDevice': {'value': True, 'error': ''}, 'power': {'value': 19.051, 'error': ''}, 'singlePhase': {'value': True, 'error': ''}}
+
+    # https://github.com/evcc-io/evcc/blob/master/server/http_config_helper.go -> func testInstance(instance any) map[string]testResult
+    EVCCCONF_METERPOWER         = ApiKey(entity_key="configmeter_power", json_key="power", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
+    EVCCCONF_METERENERGY        = ApiKey(entity_key="configmeter_energy", json_key="energy", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
+    EVCCCONF_METERSOC           = ApiKey(entity_key="configmeter_soc", json_key="soc", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
+    EVCCCONF_METERTEMP          = ApiKey(entity_key="configmeter_temp", json_key="temp", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
+    EVCCCONF_METERPHASECURRENTS = ApiKey(entity_key="configmeter_phasecurrents", json_key="phaseCurrents", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
+    EVCCCONF_METERPHASEVOLTAGES = ApiKey(entity_key="configmeter_phasevoltages", json_key="phaseVoltages", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
+    EVCCCONF_METERPHASEPOWERS   = ApiKey(entity_key="configmeter_phasepowers", json_key="phasePowers", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
+
+    # request: http://{host}/api/config/devices/meter/SENEC.bat/status
+    # response: {'capacity': {'value': 12, 'error': ''}, 'power': {'value': 0, 'error': ''}, 'soc': {'value': 100, 'error': ''}}
+    # request: http://{host}/api/config/devices/meter/SENEC.grid/status
+    # response: {'phaseCurrents': {'value': [18.3899993896484, 5.38000011444092, 1.54999995231628], 'error': ''}, 'phaseVoltages': {'value': [238.800003051758, 237.900009155273, 236.199996948242], 'error': ''}, 'power': {'value': -5623.3798828125, 'error': ''}}
+    # request: http://{host}/api/config/devices/meter/SENEC.pv/status
+    # response: {'power': {'value': 7152.0888671875, 'error': ''}}
+
+    # request: http://{host}/api/config/devices/circuit/main/status
+    # response: {}
