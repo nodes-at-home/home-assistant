@@ -401,7 +401,7 @@
         <use id="light.shelly_lounge_blackbowl" x="1100" y="470" href="#lightbulb" />
         <use id="light.shelly_lounge_readinglamp" x="1070" y="500" href="#lightbulb" />
         <use id="light.shelly_lounge_whiteball" x="1100" y="940" href="#lightbulb" />
-        <use id="light.led_corridor_led" x="330" y="470" href="#lightbulb" />
+        <use id="light.shelly_corridor_studypillar" x="330" y="470" href="#lightbulb" />
         <use id="light.led_kitchen_led" x="30" y="330" href="#lightbulb" />
         <use id="light.shelly_esszimmerschrank1" x="700" y="440" href="#lightbulb" />
         <use id="light.shelly_esszimmerschrank2" x="700" y="685" href="#lightbulb" />
@@ -524,9 +524,9 @@
         <g id="room.gallery" > <rect x="442" y="350" width="310" height="355" /> </g>
         <g id="room.stairs_firstfloor" > <rect x="442" y="708" width="310" height="159" /> </g>
 
-        <use id="light.sonoff_gallery1_socket" x="440" y="540" href="#lightbulb" />
-        <use id="light.sonoff_corridor_lamp" x="40" y="460" href="#lightbulb" />
-        <use id="light.sonoff_bedroom_socket" x="940" y="550" href="#lightbulb" />
+        <use id="light.shelly_gallery_ledchain" x="440" y="540" href="#lightbulb" />
+        <use id="light.shelly_office_lamp" x="40" y="460" href="#lightbulb" />
+        <use id="light.shelly_bedroom_closet" x="940" y="550" href="#lightbulb" />
 
         <use id="light.shelly_treppe_firstfloor" x="445" y="790" href="#walllight_right" />
 

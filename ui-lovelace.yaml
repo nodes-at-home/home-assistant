@@ -2576,10 +2576,11 @@ views:
               - light.shelly_esszimmerschrank1
               - light.shelly_esszimmerschrank2
               - light.deckenlicht_dusche
-              - light.sonoff_corridor_lamp
-              - light.sonoff_gallery1_socket
+              - light.shelly_office_lamp
+              - light.shelly_gallery_ledchain
               - light.deckenlicht_bad
-              - light.sonoff_bedroom_socket
+              - light.shelly_bedroom_closet
+              - light.shelly_corridor_studypillar
               - entity: light.shelly_treppe
                 element: light.shelly_treppe_groundfloor
               - entity: light.shelly_treppe
