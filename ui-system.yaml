@@ -1127,6 +1127,21 @@ views:
           - entity: sensor.shelly_backofen_power
           - entity: update.shelly_backofen_firmware
           - entity: button.shelly_backofen_reboot
+          - type: divider
+          - entity: sensor.shelly_kochfeld1_energy
+          - entity: sensor.shelly_kochfeld1_power
+          - entity: update.shelly_kochfeld1_firmware
+          - entity: button.shelly_kochfeld1_reboot
+          - type: divider
+          - entity: sensor.shelly_kochfeld2_energy
+          - entity: sensor.shelly_kochfeld2_power
+          - entity: update.shelly_kochfeld2_firmware
+          - entity: button.shelly_kochfeld2_reboot
+          - type: divider
+          - entity: sensor.shelly_garage_energy
+          - entity: sensor.shelly_garage_power
+          - entity: update.shelly_garage_firmware
+          - entity: button.shelly_garage_reboot
 
   - title: Shelly 2
     path: shelly2
