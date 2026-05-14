@@ -453,12 +453,10 @@
                day == 6 and states ( 'input_boolean.mowing_at_sunday' )    == 'on'
             }}
     actions:
-      - action: gardena_smart_system.start_override
-        target:
-            entity_id: lawn_mower.sileno
+      - action: gardena_smart_system.mower_start_manual
         data:
+            device_id: "{{ device_id ( 'SILENO' ) }}"
             duration: "{{ ( as_timestamp ( today_at ( states ( 'input_datetime.mowing_end' ) ) ) - as_timestamp ( today_at ( states ( 'input_datetime.mowing_start' ) ) ) ) | int }}"
-
   - alias: garden_mower_end
     id: garden_mower_end
     triggers:
@@ -470,6 +468,6 @@
         entity_id: binary_sensor.prod_mode
         state: 'on'
     action:
-      - action: lawn_mower.pause
+      - action: lawn_mower.mower_park_until_notice
         target:
             entity_id: lawn_mower.sileno

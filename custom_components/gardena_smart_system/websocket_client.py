@@ -212,7 +212,7 @@ class GardenaWebSocketClient:
                     _LOGGER.error(f"Error processing WebSocket message: {e}")
                     
         except ConnectionClosed:
-            _LOGGER.warning("WebSocket connection closed")
+            _LOGGER.info("WebSocket connection closed, will reconnect")
         except WebSocketException as e:
             _LOGGER.error(f"WebSocket error: {e}")
         except Exception as e:
@@ -326,10 +326,13 @@ class GardenaWebSocketClient:
                 pass
         
         self.reconnect_attempts += 1
-        
+
         if self.reconnect_attempts > WEBSOCKET_MAX_RECONNECT_ATTEMPTS:
-            _LOGGER.error("Max reconnection attempts reached")
+            _LOGGER.error("Max reconnection attempts reached, giving up")
             return
+
+        if self.reconnect_attempts == 4:
+            _LOGGER.warning("WebSocket reconnection taking longer than expected (attempt %d)", self.reconnect_attempts)
         
         # Use shorter delays for the first few attempts (likely token renewal)
         # Then longer delays for potential network issues

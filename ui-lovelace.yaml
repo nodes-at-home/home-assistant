@@ -123,10 +123,10 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
-        entity: sensor.websocket_status_gardena
+        entity: binary_sensor.gardena_websocket_connected
         content: Gardena
         icon: mdi:flower
-        color: "{{ iif ( is_state ( entity, 'connected' ), 'limegreen', 'red' ) }}"
+        color: "{{ iif ( is_state ( entity, 'on' ), 'limegreen', 'red' ) }}"
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
@@ -1237,10 +1237,10 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
-        entity: sensor.websocket_status_gardena
+        entity: binary_sensor.gardena_websocket_connected
         content: Gardena
         icon: mdi:flower
-        color: "{{ iif ( is_state ( entity, 'connected' ), 'limegreen', 'red' ) }}"
+        color: "{{ iif ( is_state ( entity, 'on' ), 'limegreen', 'red' ) }}"
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
@@ -1419,8 +1419,9 @@ views:
                           border-left-style: solid
                           border-color: rgb(34, 154, 210)
                       - type: state-label
-                        entity: lawn_mower.sileno
-                        attribute: last_error_code
+                        # entity: lawn_mower.sileno
+                        # attribute: last_error_code
+                        entity: sensor.sileno
                         prefix: "Meldung: "
                         style:
                           top: 70%

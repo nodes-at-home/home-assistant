@@ -170,7 +170,7 @@
     id: notifications_gardena_lost_connection
     triggers:
       - trigger: state
-        entity_id: binary_sensor.gardena_smart_system_connection
+        entity_id: binary_sensor.gardena_websocket_connection
         to: "off"
         for:
             minutes: 1

@@ -1,21 +1,182 @@
 {
+  "entity": {
+    "sensor": {
+      "mower_error": {
+        "name": "Fehlercode",
+        "state": {
+          "uninitialised": "Nicht initialisiert",
+          "no_message": "Kein Fehler",
+          "outside_working_area": "Außerhalb der Arbeitszone",
+          "no_loop_signal": "Kein Schleifensignal",
+          "no_charging_station_signal": "Kein Ladesignal",
+          "wrong_loop_signal": "Falsches Schleifensignal",
+          "loop_sensor_problem_front": "Schleifensensor vorn defekt",
+          "loop_sensor_problem_rear": "Schleifensensor hinten defekt",
+          "trapped": "Festgefahren",
+          "upside_down": "Umgedreht",
+          "low_battery": "Schwache Batterie",
+          "empty_battery": "Batterie leer",
+          "no_drive": "Kein Antrieb",
+          "lifted": "Angehoben",
+          "stuck_in_charging_station": "Steckt in der Ladestation fest",
+          "charging_station_blocked": "Ladestation blockiert",
+          "collision_sensor_problem_rear": "Hinterer Kollisionssensor defekt",
+          "collision_sensor_problem_front": "Vorderer Kollisionssensor defekt",
+          "wheel_motor_blocked_right": "Rechter Radmotor blockiert",
+          "wheel_motor_blocked_left": "Linker Radmotor blockiert",
+          "wheel_drive_problem_right": "Rechter Radantrieb Problem",
+          "wheel_drive_problem_left": "Linker Radantrieb Problem",
+          "cutting_system_blocked": "Schneidesystem blockiert",
+          "invalid_sub_device_combination": "Ungültige Subgerätekombination",
+          "settings_restored": "Einstellungen auf Standard zurückgesetzt",
+          "charging_system_problem": "Ladesystem Problem",
+          "tilt_sensor_problem": "Neigungssensor Problem",
+          "mower_tilted": "Mäher geneigt",
+          "wheel_motor_overloaded_right": "Rechter Radmotor überlastet",
+          "wheel_motor_overloaded_left": "Linker Radmotor überlastet",
+          "charging_current_too_high": "Ladestrom zu hoch",
+          "electronic_problem": "Elektronisches Problem",
+          "cutting_height_blocked": "Schnitthöhe blockiert",
+          "cutting_height_problem": "Schnitthöhe Problem",
+          "temporary_problem": "Vorübergehendes Problem",
+          "guide_1_not_found": "Leitdraht 1 nicht gefunden",
+          "guide_2_not_found": "Leitdraht 2 nicht gefunden",
+          "guide_3_not_found": "Leitdraht 3 nicht gefunden",
+          "gps_tracker_module_error": "GPS-Tracker-Modul Fehler",
+          "weak_gps_signal": "Schwaches GPS-Signal",
+          "guide_calibration_failed": "Leitdraht-Kalibrierung fehlgeschlagen",
+          "temporary_battery_problem": "Vorübergehendes Batterieproblem",
+          "battery_problem": "Batterieproblem",
+          "alarm_mower_switched_off": "Alarm: Mäher ausgeschaltet",
+          "alarm_mower_stopped": "Alarm: Mäher gestoppt",
+          "alarm_mower_lifted": "Alarm: Mäher angehoben",
+          "alarm_mower_tilted": "Alarm: Mäher gekippt",
+          "com_board_not_available": "Kommunikationsplatine nicht verfügbar",
+          "slipped": "Abgerutscht",
+          "invalid_battery_combination": "Ungültige Batteriekombination",
+          "safety_function_faulty": "Sicherheitsfunktion defekt",
+          "invalid_system_conf": "Ungültige Systemkonfiguration",
+          "lift_sensor_defect": "Hebesensor defekt",
+          "mobile_loop_defect": "Mobile Schleife defekt",
+          "left_loop_sensor": "Linker Schleifensensor defekt",
+          "right_loop_sensor": "Rechter Schleifensensor defekt",
+          "wrong_pin": "Falsche PIN",
+          "temporary_lift": "Vorübergehend angehoben",
+          "cutting_drive": "Schneideantrieb defekt",
+          "steep_slope": "Zu steiler Hang",
+          "stop_button_fail": "Stopp-Taste defekt",
+          "angle_cutting_means_off": "Schneidwerk am Hang abgeschaltet",
+          "slave_mcu_lost": "Verbindung zum sekundären MCU verloren",
+          "cutting_overload": "Schneidwerk überlastet",
+          "cutting_height_range": "Schnitthöhenbereich Fehler",
+          "cutting_height_drift": "Schnitthöhe Drift",
+          "cutting_height_limited": "Schnitthöhe begrenzt",
+          "cutting_height_drive": "Schnitthöhenantrieb Problem",
+          "cutting_height_current": "Schnitthöhe Strom zu hoch",
+          "cutting_height_direction": "Schnitthöhe falsche Richtung",
+          "mower_to_cs_com": "Kommunikation mit Ladestation fehlgeschlagen",
+          "ultrasonic_error": "Ultraschallsensor Fehler",
+          "high_low_bat_temp_a": "Batterie A Temperatur außerhalb des Bereichs",
+          "high_low_bat_temp_b": "Batterie B Temperatur außerhalb des Bereichs",
+          "too_low_voltage_bat_a": "Batterie A Spannung zu niedrig",
+          "too_low_voltage_bat_b": "Batterie B Spannung zu niedrig",
+          "alarm_motion": "Alarm: Bewegung erkannt",
+          "alarm_geofence": "Alarm: Außerhalb des Geofence",
+          "rr_wheel_blocked": "Hinteres rechtes Rad blockiert",
+          "rl_wheel_blocked": "Hinteres linkes Rad blockiert",
+          "rr_wheel_drive": "Hinterer rechter Radantrieb Problem",
+          "rl_wheel_drive": "Hinterer linker Radantrieb Problem",
+          "rear_right_wheel_overloaded": "Hinteres rechtes Rad überlastet",
+          "rear_left_wheel_overloaded": "Hinteres linkes Rad überlastet",
+          "angular_sensor_defect": "Winkelsensor defekt",
+          "no_power_in_cs": "Kein Strom in der Ladestation",
+          "switch_cord_sensor_defect": "Schaltkabelsensor defekt",
+          "map_not_valid": "Karte ungültig",
+          "no_position": "Keine Position verfügbar",
+          "no_rs_communication": "Referenzstation Kommunikation verloren",
+          "folding_sensor_activated": "Klappsensor aktiviert",
+          "ultrasonic_sensor_1_defect": "Ultraschallsensor 1 defekt",
+          "ultrasonic_sensor_2_defect": "Ultraschallsensor 2 defekt",
+          "ultrasonic_sensor_3_defect": "Ultraschallsensor 3 defekt",
+          "ultrasonic_sensor_4_defect": "Ultraschallsensor 4 defekt",
+          "cutting_drive_motor_1_defect": "Schneidemotor 1 defekt",
+          "cutting_drive_motor_2_defect": "Schneidemotor 2 defekt",
+          "cutting_drive_motor_3_defect": "Schneidemotor 3 defekt",
+          "collision_sensor_defect": "Kollisionssensor defekt",
+          "docking_sensor_defect": "Andocksensor defekt",
+          "folding_cutting_deck_sensor_defect": "Klapp-Mähdeck-Sensor defekt",
+          "loop_sensor_defect": "Schleifensensor defekt",
+          "collision_sensor_error": "Kollisionssensor Fehler",
+          "no_confirmed_position": "Keine bestätigte Position",
+          "major_cutting_disk_imbalance": "Starke Unwucht der Schneidscheibe",
+          "complex_working_area": "Arbeitsbereich zu komplex",
+          "invalid_sw_configuration": "Ungültige Softwarekonfiguration",
+          "radar_error": "Radar Fehler",
+          "work_area_tampered": "Arbeitsbereich manipuliert",
+          "destination_not_reachable": "Ziel nicht erreichbar",
+          "wait_stop_pressed": "Stopp-Taste gedrückt",
+          "wait_for_safety_pin": "Warten auf Sicherheits-PIN",
+          "destination_not_reachable_warning": "Ziel nicht erreichbar (Warnung)",
+          "battery_near_end_of_life": "Batterie nahe Lebensende",
+          "edgemotor_blocked": "Kantenmotor blockiert",
+          "no_correction_data": "Keine Korrekturdaten verfügbar",
+          "invalid_correction_data": "Ungültige Korrekturdaten",
+          "wait_updating": "Firmware wird aktualisiert",
+          "wait_power_up": "Wird hochgefahren",
+          "off_disabled": "Über Hauptschalter deaktiviert",
+          "off_hatch_open": "Klappe offen",
+          "off_hatch_closed": "Klappe geschlossen",
+          "parked_daily_limit_reached": "Tageslimit erreicht",
+          "vision_system_malfunction": "Kamerasystem Fehler",
+          "poor_vision_system_performance": "Schlechte Kamerasystemleistung",
+          "vision_processing_failed": "Bildverarbeitung fehlgeschlagen",
+          "loop_sensor_problem_left": "Linker Schleifensensor Problem",
+          "loop_sensor_problem_right": "Rechter Schleifensensor Problem",
+          "wrong_pin_code": "Falscher PIN-Code",
+          "lost_wheel_brush": "Radbürste verloren",
+          "accessory_power_anomaly": "Zubehör Stromversorgung Anomalie",
+          "loop_wire_broken": "Begrenzungsdraht gebrochen",
+          "battery_fet_error": "Batterie-FET Fehler",
+          "imbalanced_cutting_disc": "Unwucht der Schneidscheibe",
+          "cutting_motor_problem": "Schneidemotor Problem",
+          "limited_cutting_height_range": "Begrenzter Schnitthöhenbereich",
+          "cutting_motor_drive_defect": "Schneidemotor-Antrieb defekt",
+          "memory_circuit_problem": "Speicherschaltung Problem",
+          "stop_button_problem": "Stopp-Taste Problem",
+          "difficult_finding_home": "Schwierigkeiten bei der Heimfahrt",
+          "guide_calibration_accomplished": "Leitdraht-Kalibrierung erfolgreich",
+          "too_many_batteries": "Zu viele Batterien",
+          "alarm_mower_in_motion": "Alarm: Mäher in Bewegung",
+          "alarm_outside_geofence": "Alarm: Außerhalb des Geofence",
+          "connection_changed": "Verbindung geändert",
+          "connection_not_changed": "Verbindung nicht geändert",
+          "unknown": "Unbekannter Fehler"
+        }
+      }
+    }
+  },
   "config": {
     "abort": {
       "already_configured": "Der Standort ist bereits konfiguriert"
     },
     "error": {
-      "cannot_connect": "Verbindung fehlgeschlagen, versuchen Sie es erneut.",
-      "invalid_auth": "Ungültige Authentifizierung.",
-      "too_many_requests": "Zu viele Anfragen, versuchen Sie es später erneut.",
+      "cannot_connect": "Verbindung fehlgeschlagen, bitte erneut versuchen.",
+      "invalid_auth": "Ungültige Anmeldedaten. Bitte überprüfen Sie Ihre Client-ID und Ihr Client-Secret.",
+      "insufficient_permissions": "Unzureichende Berechtigungen. Bitte überprüfen Sie Ihren API-Schlüssel und die Berechtigungen.",
+      "no_locations": "Keine Standorte gefunden. Bitte richten Sie zuerst Ihr Gardena Smart Gateway in der offiziellen Gardena-App ein.",
+      "server_error": "Serverfehler aufgetreten. Bitte später erneut versuchen.",
+      "auth_error": "Authentifizierungsfehler aufgetreten. Bitte überprüfen Sie Ihre Anmeldedaten.",
+      "unknown_error": "Ein unerwarteter Fehler ist aufgetreten. Bitte erneut versuchen.",
+      "too_many_requests": "Zu viele Anfragen, bitte später erneut versuchen.",
+      "api_error": "Verbindung zur Gardena-API fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten.",
       "unknown": "Unerwarteter Fehler."
     },
     "step": {
       "user": {
-        "description": "Bitte geben Sie Ihre Anmeldeinformationen ein.",
+        "description": "Bitte geben Sie Ihre Gardena Smart System API-Anmeldedaten ein. Sie erhalten diese über das Gardena Developer Portal.",
         "data": {
-          "email": "E-Mail",
-          "password": "Passwort",
-          "client_id": "Application Key / Client ID"
+          "client_id": "Application Key / Client ID",
+          "client_secret": "Application Secret / Client Secret"
         },
         "title": "Gardena Smart System"
       }
@@ -27,7 +188,7 @@
         "data": {
           "mower_duration": "Mäherdauer (Minuten)",
           "smart_irrigation_control_duration": "Smart Irrigation Control Dauer (Minuten)",
-          "smart_watering_duration": "Smarte Bewässerungs Dauer (Minuten)"
+          "smart_watering_duration": "Smarte Bewässerungsdauer (Minuten)"
         },
         "title": "Gardena Smart System - Optionen"
       }
@@ -37,7 +198,6 @@
     "start_override": {
       "name": "Überschreibung starten",
       "description": "Starten Sie den Mäher sofort für eine bestimmte Dauer und überschreiben Sie den Zeitplan.",
-      "icon": "mdi:mower-on",
       "fields": {
         "duration": {
           "name": "Dauer",
@@ -54,12 +214,22 @@
       "description": "Parken Sie den Mäher bis zur nächsten geplanten Aufgabe."
     },
     "park_until_further_notice": {
-      "name": "Bis auf weiteres parken",
-      "description": "Parken Sie den Mäher bis auf weiteres."
+      "name": "Bis auf Weiteres parken",
+      "description": "Parken Sie den Mäher bis auf Weiteres."
     },
     "reconnect_websocket": {
       "name": "WebSocket neu verbinden",
-      "description": "WebSocket-Verbindung für die Gardena Smart System-Integration erzwungen."
+      "description": "WebSocket-Verbindung für die Gardena Smart System-Integration erzwingen."
+    },
+    "websocket_diagnostics": {
+      "name": "WebSocket-Diagnose",
+      "description": "WebSocket-Verbindungsdiagnose und Statusinformationen abrufen.",
+      "fields": {
+        "detailed": {
+          "name": "Detailliert",
+          "description": "Detaillierte Verbindungsinformationen einbeziehen."
+        }
+      }
     }
   }
 }

@@ -99,8 +99,6 @@ async def async_setup_entry(
                     if sensor_service.light_intensity is not None:
                         entities.append(GardenaLightSensor(coordinator, device, sensor_service))
 
-    # Add WebSocket status sensor
-    entities.append(GardenaWebSocketStatusSensor(coordinator, entry.entry_id))
 
     _LOGGER.debug(f"Created {len(entities)} sensor entities")
     async_add_entities(entities)
@@ -424,7 +422,7 @@ class GardenaLightSensor(GardenaEntity, SensorEntity):
         self._device_id = device.id
         self._attr_name = f"{device.name} Light Intensity"
         self._attr_unique_id = f"{device.id}_{sensor_service.id}_light_intensity"
-        self._attr_native_unit_of_measurement = "lux"
+        self._attr_native_unit_of_measurement = "lx"
         self._attr_device_class = SensorDeviceClass.ILLUMINANCE
         self._attr_icon = "mdi:white-balance-sunny"
 
@@ -487,58 +485,3 @@ class GardenaValveRemainingTimeSensor(GardenaEntity, SensorEntity):
         return None
 
 
-class GardenaWebSocketStatusSensor(GardenaEntity, SensorEntity):
-    """Representation of a Gardena WebSocket status sensor."""
-
-    def __init__(self, coordinator: GardenaSmartSystemCoordinator, entry_id: str) -> None:
-        """Initialize the WebSocket status sensor."""
-        # Create a dummy device for the base entity
-        from .models import GardenaDevice
-        dummy_device = GardenaDevice(
-            id=f"websocket_status_{entry_id}",
-            name="WebSocket Status",
-            model_type="WebSocket Client",
-            serial="websocket",
-            services={},
-            location_id=""
-        )
-
-        super().__init__(coordinator, dummy_device, "WEBSOCKET")
-        self._attr_name = "Gardena WebSocket Status"
-        self._attr_unique_id = f"gardena_websocket_status_{entry_id}"
-        self._attr_icon = "mdi:connection"
-
-    @property
-    def available(self) -> bool:
-        """Return True if entity is available."""
-        # WebSocket status sensor is always available
-        return True
-
-    @property
-    def native_value(self) -> str:
-        """Return the WebSocket connection status."""
-        if self.coordinator.websocket_client:
-            status = self.coordinator.websocket_client.connection_status
-            _LOGGER.debug(f"WebSocket status sensor: client available, status={status}")
-            return status
-        _LOGGER.debug("WebSocket status sensor: client not available")
-        return "disconnected"
-
-    @property
-    def extra_state_attributes(self) -> dict[str, Any]:
-        """Return entity specific state attributes."""
-        attrs = super().extra_state_attributes
-        
-        # Add reconnect button when disconnected
-        if self.native_value == "disconnected":
-            attrs["reconnect_button"] = True
-            attrs["reconnect_service"] = "gardena_smart_system.reconnect_websocket"
-        
-        if self.coordinator.websocket_client:
-            attrs.update({
-                "reconnect_attempts": self.coordinator.websocket_client.reconnect_attempts,
-                "is_connected": self.coordinator.websocket_client.is_connected,
-                "is_connecting": self.coordinator.websocket_client.is_connecting,
-            })
-        
-        return attrs
