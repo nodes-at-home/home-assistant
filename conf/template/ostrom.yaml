@@ -1,0 +1,33 @@
+###
+### 19.01.2025
+###
+
+  - sensor:
+
+      - name: ostrom_credential
+        variables:
+            credential_sandbox: !secret ostrom_credential_sandbox
+            credential_production: !secret ostrom_credential_production
+        state: >-
+            {% if states ( 'input_select.ostrom_api' ) == 'sandbox' %}
+                {{ credential_sandbox }}
+            {% elif states ( 'input_select.ostrom_api' ) == 'sandbox' %}
+                {{ credential_production }}
+            {% endif %}
+
+      - name: ostrom_base_url
+        state: >-
+            {% if states ( 'input_select.ostrom_api' ) == 'sandbox' %}
+                sandbox.ostrom-api.io
+            {% elif states ( 'input_select.ostrom_api' ) == 'sandbox' %}
+                production.ostrom-api.io
+            {% endif %}
+
+      - name: ostrom_auth_url
+        state: "https://auth.{{ states ( 'sensor.ostrom_base_url' ) }}/oauth2/token"
+
+      - name: ostrom_dynamic_prices_24h_url
+        state: >-
+            {% set start = ( today_at ( states ( 'input_datetime.ostrom_data_fetch' ) ) | as_timestamp |  timestamp_utc )  [:-6] + ".000Z" %}
+            {% set end = ( ( today_at ( states ( 'input_datetime.ostrom_data_fetch' ) ) + timedelta ( hours = 23 ) ) | as_timestamp |  timestamp_utc )  [:-6] + ".000Z" %}
+            https://{{ states ( 'sensor.ostrom_base_url' ) }}/spot-prices?startDate={{ start }}&endDate={{ end }}&resolution=HOUR&zip=16341
