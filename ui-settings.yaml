@@ -708,6 +708,13 @@ views:
           - number.evcc_wallbox_enable_delay
           - number.evcc_wallbox_disable_threshold
           - number.evcc_wallbox_disable_delay
+      - type: entities
+        title: ostrom
+        show_header_toggle: false
+        entities:
+            - input_datetime.ostrom_data_fetch
+            - input_select.ostrom_api
+
   - title: Klimatisierung
     path: climate
     panel: false

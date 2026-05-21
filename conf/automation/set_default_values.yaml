@@ -331,6 +331,10 @@
             entity_id: input_datetime.climate_startperiode_end
         data:
             time: '12:00:00'
+      - service: input_datetime.set_datetime
+        data:
+            entity_id: input_datetime.ostrom_data_fetch
+            time: '14:00:00'
 
       #--------------------------------------------------------------------------
       - action: input_number.set_value

@@ -1,0 +1,25 @@
+###
+### 19.01.2025
+###
+
+  - alias: ostrom_update_token
+    id: ostrom_update_token
+    triggers:
+      - platform: time
+        at: input_datetime.ostrom_data_fetch
+    conditions:
+    actions:
+      - action: homeassistant.update_entity
+        target:
+            entity_id: sensor.ostrom_token
+
+  - alias: ostrom_update_data
+    id: ostrom_update_data
+    triggers:
+      - platform: state
+        entity_id: sensor.ostrom_token
+    conditions:
+    actions:
+      - action: homeassistant.update_entity
+        target:
+            entity_id: sensor.ostrom_dynamic_price_24h_0
