@@ -2887,99 +2887,378 @@ views:
                   service: floorplan.text_set
                   service_data: ${ Math.round ( 10 * entity.state ) / 10 + " " + entity.attributes.unit_of_measurement }
 
-  - title: Strompreis
-    path: epex
+    # Default values: 80°F (26.7°C) for temperature, 60% for humidity
+  - title: Räume
+    path: rooms
     panel: false
-    visible: true
     cards:
-      - type: custom:apexcharts-card
-        # experimental:
-        #   hidden_by_default: true
-        graph_span: 45h
-        all_series_config:
-          stroke_width: 2
-        span:
-          start: hour
-          offset: '-25h'
-        now:
-          show: true
-        update_interval: 5min
-        header:
-          show: true
-          title: Spotmarktpreis (€/kWh)
-          show_states: true
-          colorize_states: true
-        series:
-          - entity: sensor.epex_spot_data_price
-            yaxis_id: left
-            type: line
-            float_precision: 5
-            name: Spot Markt
-            curve: stepline
-            unit: €/kWh
-            show:
-              in_header: false
-              extremas: true
-              legend_value: false
-            data_generator: |
-              return entity.attributes.data.map((entry) => {
-                      return [new Date(entry.start_time).getTime (), entry.price_per_kwh];
-                    });
-          # - entity: sensor.awattar_current
-          #   name: Preis
-          #   yaxis_id: left
-          #   type: line
-          #   float_precision: 5
-          #   unit: €/kWh
-          #   curve: stepline
-          #   extend_to: now
-          #   fill_raw: last
-          #   show:
-          #     hidden_by_default: false
-          #     legend_value: false
-          # - entity: sensor.awattar_median
-          #   yaxis_id: left
-          #   type: line
-          #   curve: stepline
-          #   fill_raw: last
-          #   float_precision: 5
-          #   name: Median
-          #   unit: €/kWh
-          #   show:
-          #     hidden_by_default: true
-          #     legend_value: false
-          # - entity: sensor.awattar_terzil2
-          #   yaxis_id: left
-          #   type: line
-          #   curve: stepline
-          #   fill_raw: last
-          #   float_precision: 5
-          #   name: oberstes Terzil
-          #   unit: €/kWh
-          #   show:
-          #     hidden_by_default: false
-          #     legend_value: false
-          # - entity: sensor.wirkenergie
-          #   curve: stepline
-          #   type: area
-          #   opacity: 0.3
-          #   name: Bezug
-          #   extend_to: now
-          #   show:
-          #     in_header: false
-          #     legend_value: false
-          #   yaxis_id: right
-          #   group_by:
-          #     func: delta
-          #     duration: 1h
-          #     fill: zero
-        yaxis:
-          - id: left
-            decimals: 2
-            min: 0
-          - id: right
-            opposite: true
-            decimals: 2
-            min: 0
-            max: 10
-            show: false
+      - type: grid
+        title: Erdgeschoss
+        columns: 2
+        square: true
+        cards:
+          - type: custom:room-summary-card
+            area: dusche
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_dusche_temperature
+              - sensor.thermostat_dusche_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_dusche
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_dusche
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.deckenlicht_dusche
+                tap_action:
+                    action: more-info
+            styles:
+                card:
+                    aspect-ratio: '16/9'
+          - type: custom:room-summary-card
+            area: flur
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_flur_temperature
+              - sensor.thermostat_flur_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_flur
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_flur
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_flur
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: korridor
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            entities:
+              - entity_id: light.shelly_korridor
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_corridor_studypillar
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: kuche
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_kuche_temperature
+              - sensor.thermostat_kuche_humidity
+            entities:
+              - entity_id: binary_sensor.terassentur_kuche
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_kuche
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_kitchen_longstrip
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_kitchen_shortstrip
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: esszimmer
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_esszimmer_temperature
+              - sensor.thermostat_esszimmer_humidity
+            entities:
+              - entity_id: binary_sensor.terassentur_esszimmer
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_esszimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: 
+                  - light.shelly_esszimmer1 # TODO create light group including shelly_esszimmer2
+                  - light.shelly_esszimmer2
+                tap_action:
+                    action: more-info
+              - entity_id: vacuum.erdgeschoss
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: wohnzimmer
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_wohnzimmer_temperature
+              - sensor.thermostat_wohnzimmer_humidity
+            entities:
+              - entity_id: binary_sensor.terassentur_wohnzimmer # create group
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_wohnzimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_wohnzimmer_switch_0 # TODO create light group including shelly_wohnzimmer_switch_1
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: hauswirtschaftsraum
+            area_name: HWraum
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_hauswirtschaft_temperature
+              - sensor.thermostat_hauswirtschaft_humidity
+            entities:
+              - entity_id: binary_sensor.nebentur
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_hauswirtschaftsraum
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+      - type: grid
+        title: Obergeschoss
+        columns: 2
+        square: true
+        cards:
+          - type: custom:room-summary-card
+            area: bad
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_bad_temperature
+              - sensor.thermostat_bad_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_bad
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_bad
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.deckenlicht_bad
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: arbeitszimmer
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_arbeitszimmer_temperature
+              - sensor.thermostat_arbeitszimmer_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_arbeitszimmer
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_arbeitszimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_arbeitszimmer
+                tap_action:
+                    action: more-info
+              - entity_id: climate.office
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: kinderzimmer
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_kinderzimmer_temperature
+              - sensor.thermostat_kinderzimmer_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_kinderzimmer
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_kinderzimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_kinderzimmer
+                tap_action:
+                    action: more-info
+              - entity_id: climate.nursery
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: schlafzimmer
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_schlafzimmer_temperature
+              - sensor.thermostat_schlafzimmer_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_schlafzimmer
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_schlafzimmer
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_schlafzimmer
+                tap_action:
+                    action: more-info
+              - entity_id: climate.bedroom
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: galerie
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.thermostat_galerie_temperature
+              - sensor.thermostat_galerie_humidity
+            entities:
+              - entity_id: binary_sensor.dachfenster_galerie
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: climate.room_climate_galerie
+                icon: mdi:heating-coil
+                tap_action:
+                    action: more-info
+              - entity_id: light.shelly_galerie
+                tap_action:
+                    action: more-info
+              - entity_id: vacuum.obergeschoss
+                tap_action:
+                    action: more-info
+          - type: custom:room-summary-card
+            area: dachboden
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+            sensors:
+              - sensor.dht22_roof_temperature
+              - sensor.dht22_roof_humidity
+            entities:
+              - entity_id: binary_sensor.fenster_dachboden
+                tap_action:
+                    action: more-info
+                on_color: blue
+                off_color: grey
+              - entity_id: light.shelly_dachboden
+                tap_action:
+                    action: more-info
+      - type: grid
+        title: Sonstige Bereiche
+        columns: 2
+        square: true
+        cards:
+          - type: custom:room-summary-card
+            area: eingang
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+          - type: custom:room-summary-card
+            area: garage
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+          - type: custom:room-summary-card
+            area: garten
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+          - type: custom:room-summary-card
+            area: system
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+          - type: custom:room-summary-card
+            area: solar
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+          - type: custom:room-summary-card
+            area: heizung
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never
+          - type: custom:room-summary-card
+            area: klimaanlagen
+            icon_opacity_preset: medium
+            features: [exclude_default_entities, hide_area_stats, multi_light_background]
+            sensor_classes: []
+            problem:
+                display: active_only # Options: always, active_only, never

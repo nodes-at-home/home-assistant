@@ -154,6 +154,9 @@ lovelace:
       # https://github.com/homeassistant-extras/room-summary-card
       - url: /hacsfiles/room-summary-card/room-summary-card.js
         type: module
+      # https://github.com/homeassistant-extras/room-summary-card
+      - url: /hacsfiles/room-summary-card/room-summary-card.js
+        type: module
     dashboards:
         values-dashboard:
             mode: yaml
