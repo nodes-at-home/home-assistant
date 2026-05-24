@@ -73,9 +73,6 @@
         - sensor.battery_quarterhourly_out
         - sensor.solar_quarterhourly
         - sensor.load_quarterhourly
-        - sensor.epex_spot_data_market_price
-        - sensor.epex_spot_data_total_price
-        - sensor.electricity_price
         - sensor.thermostat_kuche_temperature
         - sensor.thermostat_kuche_humidity
         - sensor.thermostat_esszimmer_temperature
@@ -148,6 +145,9 @@
         - sensor.thermostat_hc1_min_flow_temperature
         - sensor.thermostat_hc1_max_flow_temperature
         - sensor.thermostat_hc1_rf_room_temperature_sensor
+        - sensor.epex_spot_data_market_price
+        - sensor.epex_spot_data_total_price
+        - sensor.ostrom_dynamic_price
         - input_number.electricity_price_in
         - input_number.electricity_price_out
         - input_number.gas_price
@@ -183,4 +183,5 @@
     - max
     - step
     - mode_str
+    - data
 

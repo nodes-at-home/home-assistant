@@ -9,12 +9,13 @@
     headers:
         Accept: "application/json"
         Content-type: "application/json"
-        Authorization: "Basic {{ states ( 'sensor.ostrom_credential' ) }}"
+        Authorization: "Basic {{ states ( 'sensor.ostrom_authorization' ) }}"
         User-Agent: "Home Assistant"
     method: POST
     payload: '{"grant_type":"client_credentials"}'
     sensor:
         - name: ostrom_token
+          unique_id: ostrom_token
           value_template: "{{ value_json ['access_token'] }}"
 
   - resource_template: "{{ states ( 'sensor.ostrom_dynamic_prices_24h_url')}}"
@@ -28,6 +29,7 @@
     method: GET
     sensor:
         - name: ostrom_dynamic_price_24h_0
+          unique_id: ostrom_dynamic_price_24h_0
           json_attributes_path: "$.data[0]"
           json_attributes:
               - date
@@ -35,12 +37,14 @@
               - netKwhPrice
               - grossKwhPrice
               - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
               - netMonthlyOstromBaseFee
               - grossMonthlyOstromBaseFee
               - netMonthlyGridFees
               - grossMonthlyGridFees
-          value_template: "{{ value_json.data [0].date }}"
+          value_template: "{{ ( value_json.data [0].grossKwhPrice | float + value_json.data [0].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
         - name: ostrom_dynamic_price_24h_1
+          unique_id: ostrom_dynamic_price_24h_1
           json_attributes_path: "$.data[1]"
           json_attributes:
               - date
@@ -48,8 +52,247 @@
               - netKwhPrice
               - grossKwhPrice
               - netKwhTaxAndLevies
-              - netMonthlyOstromBaseFee
-              - grossMonthlyOstromBaseFee
-              - netMonthlyGridFees
-              - grossMonthlyGridFees
-          value_template: "{{ value_json.data [1].date }}"
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [1].grossKwhPrice | float + value_json.data [1].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_2
+          unique_id: ostrom_dynamic_price_24h_2
+          json_attributes_path: "$.data[2]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [2].grossKwhPrice | float + value_json.data [2].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_3
+          unique_id: ostrom_dynamic_price_24h_3
+          json_attributes_path: "$.data[3]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [3].grossKwhPrice | float + value_json.data [3].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_4
+          unique_id: ostrom_dynamic_price_24h_4
+          json_attributes_path: "$.data[4]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [4].grossKwhPrice | float + value_json.data [4].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_5
+          unique_id: ostrom_dynamic_price_24h_5
+          json_attributes_path: "$.data[5]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [5].grossKwhPrice | float + value_json.data [5].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_6
+          unique_id: ostrom_dynamic_price_24h_6
+          json_attributes_path: "$.data[6]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [6].grossKwhPrice | float + value_json.data [6].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_7
+          unique_id: ostrom_dynamic_price_24h_7
+          json_attributes_path: "$.data[7]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [7].grossKwhPrice | float + value_json.data [7].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_8
+          unique_id: ostrom_dynamic_price_24h_8
+          json_attributes_path: "$.data[8]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [8].grossKwhPrice | float + value_json.data [8].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_9
+          unique_id: ostrom_dynamic_price_24h_9
+          json_attributes_path: "$.data[9]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [9].grossKwhPrice | float + value_json.data [9].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_10
+          unique_id: ostrom_dynamic_price_24h_10
+          json_attributes_path: "$.data[10]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [10].grossKwhPrice | float + value_json.data [10].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_11
+          unique_id: ostrom_dynamic_price_24h_11
+          json_attributes_path: "$.data[11]"
+          json_attributes:  
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [11].grossKwhPrice | float + value_json.data [11].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_12
+          unique_id: ostrom_dynamic_price_24h_12
+          json_attributes_path: "$.data[12]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [12].grossKwhPrice | float + value_json.data [12].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_13
+          unique_id: ostrom_dynamic_price_24h_13
+          json_attributes_path: "$.data[13]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [13].grossKwhPrice | float + value_json.data [13].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_14
+          unique_id: ostrom_dynamic_price_24h_14
+          json_attributes_path: "$.data[14]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [14].grossKwhPrice | float + value_json.data [14].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_15
+          unique_id: ostrom_dynamic_price_24h_15
+          json_attributes_path: "$.data[15]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [15].grossKwhPrice | float + value_json.data [15].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_16
+          unique_id: ostrom_dynamic_price_24h_16
+          json_attributes_path: "$.data[16]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [16].grossKwhPrice | float + value_json.data [16].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_17
+          unique_id: ostrom_dynamic_price_24h_17
+          json_attributes_path: "$.data[17]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [17].grossKwhPrice | float + value_json.data [17].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_18
+          unique_id: ostrom_dynamic_price_24h_18
+          json_attributes_path: "$.data[18]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [18].grossKwhPrice | float + value_json.data [18].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_19
+          unique_id: ostrom_dynamic_price_24h_19
+          json_attributes_path: "$.data[19]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [19].grossKwhPrice | float + value_json.data [19].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_20
+          unique_id: ostrom_dynamic_price_24h_20
+          json_attributes_path: "$.data[20]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [20].grossKwhPrice | float + value_json.data [20].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_21
+          unique_id: ostrom_dynamic_price_24h_21
+          json_attributes_path: "$.data[21]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [21].grossKwhPrice | float + value_json.data [21].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_22
+          unique_id: ostrom_dynamic_price_24h_22
+          json_attributes_path: "$.data[22]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [22].grossKwhPrice | float + value_json.data [22].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"
+        - name: ostrom_dynamic_price_24h_23
+          unique_id: ostrom_dynamic_price_24h_23
+          json_attributes_path: "$.data[23]"
+          json_attributes:
+              - date
+              - netMwhPrice
+              - netKwhPrice
+              - grossKwhPrice
+              - netKwhTaxAndLevies
+              - grossKwhTaxAndLevies
+          value_template: "{{ ( value_json.data [23].grossKwhPrice | float + value_json.data [23].grossKwhTaxAndLevies | float ) | round ( 2 ) }}"

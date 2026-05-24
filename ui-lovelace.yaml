@@ -1970,6 +1970,8 @@ views:
               - entity: sensor.epex_spot_data_market_price
                 name: EPEX
               - entity: sensor.epex_spot_data_total_price
+                name: ostrom (epex)
+              - entity: sensor.ostrom_dynamic_price
                 name: ostrom (SimplyDynamic)
           - type: custom:apexcharts-card
             # experimental:
@@ -2008,6 +2010,21 @@ views:
                 yaxis_id: left
                 type: line
                 float_precision: 5
+                name: ostrom (epex)
+                curve: stepline
+                unit: €/kWh
+                show:
+                  in_header: false
+                  extremas: true
+                  legend_value: false
+                data_generator: |
+                  return entity.attributes.data.map((entry) => {
+                          return [new Date(entry.start_time).getTime (), entry.price_per_kwh];
+                        });
+              - entity: sensor.ostrom_dynamic_price
+                yaxis_id: left
+                type: line
+                float_precision: 4
                 name: ostrom (SimplyDynamic)
                 curve: stepline
                 unit: €/kWh

@@ -4,30 +4,91 @@
 
   - sensor:
 
-      - name: ostrom_credential
+      - name: ostrom_authorization
+        unique_id: ostrom_authorization
         variables:
-            credential_sandbox: !secret ostrom_credential_sandbox
-            credential_production: !secret ostrom_credential_production
+            authorization_sandbox: !secret ostrom_authorization_sandbox
+            authorization_production: !secret ostrom_authorization_production
         state: >-
             {% if states ( 'input_select.ostrom_api' ) == 'sandbox' %}
-                {{ credential_sandbox }}
-            {% elif states ( 'input_select.ostrom_api' ) == 'sandbox' %}
-                {{ credential_production }}
+                {{ authorization_sandbox }}
+            {% elif states ( 'input_select.ostrom_api' ) == 'production' %}
+                {{ authorization_production }}
             {% endif %}
 
       - name: ostrom_base_url
+        unique_id: ostrom_base_url
         state: >-
             {% if states ( 'input_select.ostrom_api' ) == 'sandbox' %}
                 sandbox.ostrom-api.io
-            {% elif states ( 'input_select.ostrom_api' ) == 'sandbox' %}
+            {% elif states ( 'input_select.ostrom_api' ) == 'production' %}
                 production.ostrom-api.io
             {% endif %}
 
       - name: ostrom_auth_url
+        unique_id: ostrom_auth_url
         state: "https://auth.{{ states ( 'sensor.ostrom_base_url' ) }}/oauth2/token"
 
       - name: ostrom_dynamic_prices_24h_url
+        unique_id: ostrom_dynamic_prices_24h_url
         state: >-
             {% set start = ( today_at ( states ( 'input_datetime.ostrom_data_fetch' ) ) | as_timestamp |  timestamp_utc )  [:-6] + ".000Z" %}
-            {% set end = ( ( today_at ( states ( 'input_datetime.ostrom_data_fetch' ) ) + timedelta ( hours = 23 ) ) | as_timestamp |  timestamp_utc )  [:-6] + ".000Z" %}
+            {% set end = ( ( today_at ( states ( 'input_datetime.ostrom_data_fetch' ) ) + timedelta ( hours = 24 ) ) | as_timestamp |  timestamp_utc )  [:-6] + ".000Z" %}
             https://{{ states ( 'sensor.ostrom_base_url' ) }}/spot-prices?startDate={{ start }}&endDate={{ end }}&resolution=HOUR&zip=16341
+
+  - trigger:
+      - platform: time_pattern
+        minutes: "0"
+      - platform: state
+        entity_id:
+          - sensor.ostrom_dynamic_price_24h_0
+        for:
+          seconds: 10
+    sensor:
+      - name: ostrom_dynamic_price
+        # friendly_name: "Ostrom Dynamischer Strompreis"
+        unique_id: ostrom_dynamic_price
+        unit_of_measurement: "€/kWh"
+        state_class: measurement
+        icon: mdi:currency-eur
+        state: >-
+            {% set now_ts = as_timestamp ( now () ) %}
+            {% set ns = namespace ( price = none, best_ts = none ) %}
+            {% for i in range ( 24 ) %}
+                {% set entity_id = 'sensor.ostrom_dynamic_price_24h_' ~ i %}
+                {% set start_time_utc = state_attr ( entity_id, 'date' ) %}
+                {% if start_time_utc %}
+                    {% set start_ts = as_timestamp ( as_datetime ( start_time_utc ) | as_local ) %}
+                    {% if start_ts <= now_ts and ( ns.best_ts is none or start_ts > ns.best_ts ) %}
+                        {% set ns.best_ts = start_ts %}
+                        {% set ns.price = ( states ( entity_id ) | float ( 0 ) / 100 ) | round ( 5 ) %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {{ ns.price if ns.price is not none else 0 }}
+        attributes:
+            price_per_kwh: >-
+                {% set now_ts = as_timestamp ( now () ) %}
+                {% set ns = namespace ( price = none, best_ts = none ) %}
+                {% for i in range ( 24 ) %}
+                    {% set entity_id = 'sensor.ostrom_dynamic_price_24h_' ~ i %}
+                    {% set start_time_utc = state_attr ( entity_id, 'date' ) %}
+                    {% if start_time_utc %}
+                        {% set start_ts = as_timestamp ( as_datetime ( start_time_utc ) | as_local ) %}
+                        {% if start_ts <= now_ts and ( ns.best_ts is none or start_ts > ns.best_ts ) %}
+                            {% set ns.best_ts = start_ts %}
+                            {% set ns.price = ( states ( entity_id ) | float ( 0 ) / 100 ) | round ( 5 ) %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {{ ns.price if ns.price is not none else 0 }}
+            data: >-
+                {% set ns = namespace ( items = [] ) %}
+                {% for i in range ( 24 ) %}
+                    {% set entity_id = 'sensor.ostrom_dynamic_price_24h_' ~ i %}
+                    {% set start_time_utc = state_attr ( entity_id, 'date' ) %}
+                    {% set start_time = ( as_datetime ( start_time_utc ) | as_local ).isoformat () if start_time_utc else none %}
+                    {% set price_per_kwh = ( states ( entity_id ) | float ( 0 ) / 100 ) | round ( 5 ) %}
+                    {% set ns.items = ns.items + [ { 'start_time': start_time, 'price_per_kwh': price_per_kwh } ] %}
+                {% endfor %}
+                {{ ns.items }}

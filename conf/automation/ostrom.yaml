@@ -7,6 +7,8 @@
     triggers:
       - platform: time
         at: input_datetime.ostrom_data_fetch
+      - trigger: homeassistant
+        event: start
     conditions:
     actions:
       - action: homeassistant.update_entity
