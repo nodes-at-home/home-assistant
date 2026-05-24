@@ -4,4 +4,4 @@ from datetime import timedelta
 
 DOMAIN = "innova"
 MANUFACTURER = "Innova"
-DEFAULT_SCAN_INTERVAL = 600
+DEFAULT_SCAN_INTERVAL = 60
