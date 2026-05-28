@@ -24,6 +24,27 @@ views:
         tap_action:
             action: more-info
       - type: custom:mushroom-template-badge
+        entity: binary_sensor.gardena_websocket_connected
+        content: Gardena
+        icon: mdi:flower
+        color: "{{ iif ( is_state ( entity, 'on' ), 'limegreen', 'red' ) }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: device_tracker.bsh_controller
+        content: Bsh
+        icon: mdi:home-automation
+        color: "{{ 'limegreen' if is_state ( entity, 'home' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: device_tracker.dirigera_hub
+        content: Ikea
+        icon: mdi:home-automation
+        color: "{{ 'limegreen' if is_state ( entity, 'home' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
         entity: group.batteries_bsh
         content: Bosch
         icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
@@ -669,6 +690,13 @@ views:
     path: bsh
     panel: false
     badges:
+      - type: custom:mushroom-template-badge
+        entity: device_tracker.bsh_controller
+        content: Bsh
+        icon: mdi:home-automation
+        color: "{{ 'limegreen' if is_state ( entity, 'home' ) else 'red' }}"
+        tap_action:
+            action: more-info
       - type: custom:mushroom-template-badge
         entity: group.batteries_bsh
         content: Batterien
@@ -1355,6 +1383,13 @@ views:
     panel: false
     badges:
       - type: custom:mushroom-template-badge
+        entity: binary_sensor.gardena_websocket_connected
+        content: Gardena
+        icon: mdi:flower
+        color: "{{ iif ( is_state ( entity, 'on' ), 'limegreen', 'red' ) }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
         entity: group.batteries_gardena
         content: Batterien
         icon: "{{ 'mdi:battery-check' if is_state ( entity, 'off' ) else 'mdi:battery-alert' }}"
@@ -1386,6 +1421,13 @@ views:
     path: ikea
     panel: false
     badges:
+      - type: custom:mushroom-template-badge
+        entity: device_tracker.dirigera_hub
+        content: Ikea
+        icon: mdi:home-automation
+        color: "{{ 'limegreen' if is_state ( entity, 'home' ) else 'red' }}"
+        tap_action:
+            action: more-info
       - type: custom:mushroom-template-badge
         entity: group.batteries_ikea
         content: Batterien

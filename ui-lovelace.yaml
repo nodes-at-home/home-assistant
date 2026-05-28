@@ -157,6 +157,20 @@ views:
         color: "{{ 'limegreen' if is_state ( entity, 'home' ) else 'red' }}"
         tap_action:
             action: more-info
+      - type: custom:mushroom-template-badge
+        entity: device_tracker.bsh_controller
+        content: Bsh
+        icon: mdi:home-automation
+        color: "{{ 'limegreen' if is_state ( entity, 'home' ) else 'red' }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: device_tracker.dirigera_hub
+        content: Ikea
+        icon: mdi:home-automation
+        color: "{{ 'limegreen' if is_state ( entity, 'home' ) else 'red' }}"
+        tap_action:
+            action: more-info
 
     cards:
       - type: vertical-stack

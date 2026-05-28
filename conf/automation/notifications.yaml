@@ -207,3 +207,33 @@
     # nach YAML-Parsing	\\1
     # nach Jinja2 single-quoted	\1
     # Python-Regex	Rückreferenz auf Gruppe 1 ✓
+
+  - alias: notifications_bsh_controller_offline
+    id: notifications_bsh_controller_offline
+    triggers:
+      - trigger: state
+        entity_id: device_tracker.bsh_controller
+        to: "not_home"
+        for:
+            minutes: 1
+    conditions:
+    actions:
+      - action: script.notify
+        data:
+            domain: "bsh"
+            message: "BSH Controller: {{ trigger.to_state.state }}"            
+
+  - alias: notifications_dirigera_hub_offline
+    id: notifications_dirigera_hub_offline
+    triggers:
+      - trigger: state
+        entity_id: device_tracker.dirigera_hub
+        to: "not_home"
+        for:
+            minutes: 1
+    conditions:
+    actions:
+      - action: script.notify
+        data:
+            domain: "dirigera"
+            message: "Dirigera Hub: {{ trigger.to_state.state }}"            

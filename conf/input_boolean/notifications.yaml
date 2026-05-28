@@ -94,3 +94,21 @@ notify_unifi_whatsapp_a:
 
 notify_unifi_whatsapp_u:
     name: whatsapp
+
+notify_bsh_tv:
+    name: tv
+
+notify_bsh_whatsapp_a:
+    name: whatsapp
+
+notify_bsh_whatsapp_u:
+    name: whatsapp
+
+notify_dirigera_tv:
+    name: tv
+
+notify_dirigera_whatsapp_a:
+    name: whatsapp
+
+notify_dirigera_whatsapp_u:
+    name: whatsapp
