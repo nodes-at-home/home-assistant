@@ -827,6 +827,8 @@ views:
           - sensor.poolpumpe_power
           - sensor.wasserpumpe_power
           - sensor.ds18b20_pool_temperature
+          - switch.relay_hydrotower_pump
+          - sensor.relay_hydrotower_temperature
 
   - title: MPPT
     path: mpptgraph
