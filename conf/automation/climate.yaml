@@ -37,9 +37,13 @@
       - condition: time
         after: input_datetime.climate_startperiode_begin
         before: input_datetime.climate_startperiode_end
-      - condition: state
-        entity_id: group.family
-        state: "home"
+      - or:
+          - condition: state
+            entity_id: group.family
+            state: "home"
+          - condition: state
+            entity_id: input_boolean.climate_absence_goon
+            state: "on"
       - condition: numeric_state
         entity_id: sensor.sh10rt_master_battery_level
         above: input_number.climate_min_battery_level
@@ -299,7 +303,8 @@
                             and (
                                 immediate_turn_off
                                 or (
-                                    not window_turn_off and
+                                    not window_turn_off and 
+                                    states ( 'input_boolean.climate_absence_goon') != 'on' and
                                     states ( 'input_boolean.climate_' + repeat.item.climate + '_scheduled' ) == 'on'
                                     and states ( 'input_boolean.climate_stop_' + repeat.item.climate ) == 'on'
                                 ) 
@@ -422,6 +427,9 @@
     triggers:
       - trigger: time
         at: "23:59:00"
+      - trigger: state
+        entity_id: group.family
+        to: "home"
     actions:
       - action: input_boolean.turn_off
         data:
