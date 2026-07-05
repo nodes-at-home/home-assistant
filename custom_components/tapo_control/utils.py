@@ -26,6 +26,7 @@ from homeassistant.helpers.network import NoURLAvailableError, get_url
 
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.components.ffmpeg import DATA_FFMPEG
+
 try:
     # Home Assistant moved EventManager from `event` to `event_manager` in 2026.5.
     from homeassistant.components.onvif.event_manager import EventManager
@@ -64,6 +65,7 @@ from .const import (
 )
 
 UUID = uuid.uuid4().hex
+ALARM_CONFIG_TYPES = ("getAlarm", "getAlarmConfig", "getAlertConfig")
 
 
 def _is_used_by_tplink(hass: HomeAssistant, host: str) -> bool:
@@ -86,6 +88,24 @@ def isUsingHTTPS(hass):
             return True
     LOGGER.debug("Detected base_url schema: " + URL(base_url).scheme)
     return URL(base_url).scheme == "https"
+
+
+def mark_entry_data_for_refresh(hass: HomeAssistant, entry: dict) -> None:
+    config_entry = entry.get("entry")
+    root_entry = (
+        hass.data.get(DOMAIN, {}).get(config_entry.entry_id) if config_entry else None
+    )
+    if root_entry is None:
+        root_entry = entry
+
+    root_entry["lastUpdate"] = 0
+    for child in root_entry.get("childDevices", []):
+        child["lastUpdate"] = 0
+
+
+async def async_force_entry_refresh(hass: HomeAssistant, entry: dict) -> None:
+    mark_entry_data_for_refresh(hass, entry)
+    await entry["coordinator"].async_request_refresh()
 
 
 def getStreamSource(entry, stream):
@@ -984,6 +1004,7 @@ async def getCamData(hass, controller, chInfo=None):
     data = await hass.async_add_executor_job(controller.getMost, [], chn_id)
     LOGGER.debug("Raw update data:")
     LOGGER.debug(data)
+
     camData = {}
 
     camData["raw"] = data
@@ -1484,16 +1505,18 @@ async def getCamData(hass, controller, chInfo=None):
 
     if controller.isKLAP is False:
         try:
-            if (
-                alarmConfig is None
-                and "msg_alarm" in data["getLastAlarmInfo"][0]
-                and "chn1_msg_alarm_info" in data["getLastAlarmInfo"][0]["msg_alarm"]
-                and data["getLastAlarmInfo"][0]["msg_alarm"]["chn1_msg_alarm_info"]
-                is not False
-            ):
-                alarmData = data["getLastAlarmInfo"][0]["msg_alarm"][
-                    "chn1_msg_alarm_info"
-                ]
+            lastAlarmInfo = data["getLastAlarmInfo"][0]
+            lastAlarmInfoMsgAlarm = (
+                lastAlarmInfo.get("msg_alarm")
+                if isinstance(lastAlarmInfo, dict)
+                else None
+            )
+            alarmData = (
+                lastAlarmInfoMsgAlarm.get("chn1_msg_alarm_info")
+                if isinstance(lastAlarmInfoMsgAlarm, dict)
+                else None
+            )
+            if alarmConfig is None and isinstance(alarmData, dict):
                 alarmConfig = {
                     "typeOfAlarm": "getAlarm",
                     "mode": alarmData["alarm_mode"],
@@ -1515,6 +1538,44 @@ async def getCamData(hass, controller, chInfo=None):
                     alarmConfig["alarm_volume"] = alarmData["alarm_volume"]
         except Exception as err:
             LOGGER.error(f"getLastAlarmInfo unexpected error {err=}, {type(err)=}")
+
+    if controller.isKLAP is False:
+        try:
+            for alertConfig in data["getAlertConfig"]:
+                alertConfigMsgAlarm = (
+                    alertConfig.get("msg_alarm")
+                    if isinstance(alertConfig, dict)
+                    else None
+                )
+                alarmData = (
+                    alertConfigMsgAlarm.get("chn1_msg_alarm_info")
+                    if isinstance(alertConfigMsgAlarm, dict)
+                    else None
+                )
+                if alarmConfig is None and isinstance(alarmData, dict):
+                    alarmConfig = {
+                        "typeOfAlarm": "getAlertConfig",
+                        "mode": alarmData["alarm_mode"],
+                        "automatic": alarmData["enabled"],
+                        "alert_config": alarmData,
+                    }
+                    if "light_type" in alarmData:
+                        alarmConfig["light_type"] = alarmData["light_type"]
+                    if "siren_type" in alarmData:
+                        alarmConfig["siren_type"] = alarmData["siren_type"]
+                    if "alarm_type" in alarmData:
+                        alarmConfig["siren_type"] = alarmData["alarm_type"]
+                    if "siren_duration" in alarmData:
+                        alarmConfig["siren_duration"] = alarmData["siren_duration"]
+                    if "alarm_duration" in alarmData:
+                        alarmConfig["alarm_duration"] = alarmData["alarm_duration"]
+                    if "siren_volume" in alarmData:
+                        alarmConfig["siren_volume"] = alarmData["siren_volume"]
+                    if "alarm_volume" in alarmData:
+                        alarmConfig["alarm_volume"] = alarmData["alarm_volume"]
+                    break
+        except Exception as err:
+            LOGGER.error(f"getAlertConfig unexpected error {err=}, {type(err)=}")
 
     if controller.isKLAP is False:
         try:
@@ -1634,6 +1695,12 @@ async def getCamData(hass, controller, chInfo=None):
         camData["presets"] = {}
 
     try:
+        patrolStatus = data["getPatrolAction"][0]["patrol"]["patrol"]["action"]
+    except Exception:
+        patrolStatus = None
+    camData["patrol_status"] = patrolStatus
+
+    try:
         firmwareUpdateStatus = data["getFirmwareUpdateStatus"][0]["cloud_config"]
     except Exception:
         firmwareUpdateStatus = None
@@ -1724,6 +1791,24 @@ async def getCamData(hass, controller, chInfo=None):
     except Exception:
         autoUpgradeEnabled = None
     camData["autoUpgradeEnabled"] = autoUpgradeEnabled
+
+    try:
+        rebootConfig = data["getReboot"][0]["timing_reboot"]["reboot"]
+    except Exception:
+        rebootConfig = None
+    camData["rebootConfig"] = rebootConfig
+    if isinstance(rebootConfig, dict):
+        camData["rebootEnabled"] = rebootConfig.get("enabled")
+        camData["rebootTime"] = rebootConfig.get("time")
+        camData["rebootDay"] = rebootConfig.get("day")
+        camData["rebootRandomRange"] = rebootConfig.get("random_range")
+        camData["rebootLastTime"] = rebootConfig.get("last_reboot_time")
+    else:
+        camData["rebootEnabled"] = None
+        camData["rebootTime"] = None
+        camData["rebootDay"] = None
+        camData["rebootRandomRange"] = None
+        camData["rebootLastTime"] = None
 
     try:
         connectionInformation = data["getConnectionType"][0]
@@ -2115,6 +2200,8 @@ def pytapoFunctionMap(pytapoFunctionName):
         return ["getTargetTrackConfig"]
     elif pytapoFunctionName == "getPresets":
         return ["getPresetConfig"]
+    elif pytapoFunctionName == "getCruise":
+        return ["getPatrolAction"]
     elif pytapoFunctionName == "getLightFrequencyMode":
         return ["getLightFrequencyInfo", "getLightFrequencyCapability"]
     elif pytapoFunctionName == "getChildDevices":
@@ -2223,6 +2310,17 @@ async def scheduleAll(hass, device, entry, mediaSync):
 
 async def check_functionality(entry, hass, cls, check_function):
     try:
+        if check_function == "getAlarm":
+            alarm_config = entry.get("camData", {}).get("alarm_config")
+            if (
+                isinstance(alarm_config, dict)
+                and alarm_config.get("typeOfAlarm") in ALARM_CONFIG_TYPES
+            ):
+                LOGGER.debug(
+                    f"Found parsed alarm config, creating {cls.__name__}"
+                )
+                return True
+
         if isCacheSupported(check_function, entry["camData"]["raw"]):
             LOGGER.debug(
                 f"Found cached capability {check_function}, creating {cls.__name__}"

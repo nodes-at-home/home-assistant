@@ -8,6 +8,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .const import DOMAIN, LOGGER, ENABLE_MEDIA_SYNC, MEDIA_SYNC_HOURS
 from .tapo.entities import TapoSwitchEntity
 from .utils import (
+    async_force_entry_refresh,
     check_and_create,
     check_functionality,
     getColdDirPathForEntry,
@@ -175,6 +176,13 @@ async def async_setup_entry(
             LOGGER.debug("Adding tapoAutoTrackSwitch...")
             switches.append(tapoAutoTrackSwitch)
 
+        tapoPatrolModeSwitch = await check_and_create(
+            entry, hass, TapoPatrolModeSwitch, "getCruise", config_entry
+        )
+        if tapoPatrolModeSwitch:
+            LOGGER.debug("Adding tapoPatrolModeSwitch...")
+            switches.append(tapoPatrolModeSwitch)
+
         tapoNotificationsSwitch = await check_and_create(
             entry,
             hass,
@@ -207,6 +215,21 @@ async def async_setup_entry(
         if tapoAutoUpgradeSwitch:
             LOGGER.debug("Adding tapoAutoUpgradeSwitch...")
             switches.append(tapoAutoUpgradeSwitch)
+
+        if (
+            "rebootEnabled" in entry["camData"]
+            and entry["camData"]["rebootEnabled"] is not None
+        ):
+            tapoAutomaticRebootSwitch = await check_and_create(
+                entry,
+                hass,
+                TapoAutomaticRebootSwitch,
+                "getReboot",
+                config_entry,
+            )
+            if tapoAutomaticRebootSwitch:
+                LOGGER.debug("Adding tapoAutomaticRebootSwitch...")
+                switches.append(tapoAutomaticRebootSwitch)
 
         tapoRecordingPlanSwitch = await check_and_create(
             entry,
@@ -729,6 +752,58 @@ class TapoAutoUpgradeSwitch(TapoSwitchEntity):
             self._attr_state = "on" if self._attr_is_on else "off"
 
 
+class TapoAutomaticRebootSwitch(TapoSwitchEntity):
+    def __init__(self, entry: dict, hass: HomeAssistant, config_entry):
+        TapoSwitchEntity.__init__(
+            self,
+            "Automatic Reboot",
+            entry,
+            hass,
+            config_entry,
+            "mdi:restart-alert",
+        )
+
+    async def async_update(self) -> None:
+        await self._coordinator.async_request_refresh()
+
+    async def async_turn_on(self) -> None:
+        result = await self._hass.async_add_executor_job(
+            self._controller.setReboot,
+            True,
+            None,
+            None,
+            30,
+        )
+        if "error_code" not in result or result["error_code"] == 0:
+            self._attr_state = "on"
+        self.async_write_ha_state()
+        await self._coordinator.async_request_refresh()
+
+    async def async_turn_off(self) -> None:
+        result = await self._hass.async_add_executor_job(
+            self._controller.setReboot,
+            False,
+            None,
+            None,
+            30,
+        )
+        if "error_code" not in result or result["error_code"] == 0:
+            self._attr_state = "off"
+        self.async_write_ha_state()
+        await self._coordinator.async_request_refresh()
+
+    def updateTapo(self, camData):
+        if (
+            not camData
+            or "rebootEnabled" not in camData
+            or camData["rebootEnabled"] is None
+        ):
+            self._attr_state = STATE_UNAVAILABLE
+        else:
+            self._attr_is_on = camData["rebootEnabled"] == "on"
+            self._attr_state = "on" if self._attr_is_on else "off"
+
+
 class TapoRichNotificationsSwitch(TapoSwitchEntity):
     def __init__(self, entry: dict, hass: HomeAssistant, config_entry):
         TapoSwitchEntity.__init__(
@@ -892,7 +967,7 @@ class TapoPrivacySwitch(TapoSwitchEntity):
         if "error_code" not in result or result["error_code"] == 0:
             self._attr_state = "on"
         self.async_write_ha_state()
-        await self._coordinator.async_request_refresh()
+        await async_force_entry_refresh(self._hass, self._entry)
 
     async def async_turn_off(self) -> None:
         result = await self._hass.async_add_executor_job(
@@ -902,7 +977,7 @@ class TapoPrivacySwitch(TapoSwitchEntity):
         if "error_code" not in result or result["error_code"] == 0:
             self._attr_state = "off"
         self.async_write_ha_state()
-        await self._coordinator.async_request_refresh()
+        await async_force_entry_refresh(self._hass, self._entry)
 
     def updateTapo(self, camData):
         if not camData:
@@ -1217,3 +1292,55 @@ class TapoAutoTrackSwitch(TapoSwitchEntity):
         else:
             self._attr_is_on = camData["auto_track"] == "on"
             self._attr_state = "on" if self._attr_is_on else "off"
+
+
+class TapoPatrolModeSwitch(TapoSwitchEntity):
+    def __init__(self, entry: dict, hass: HomeAssistant, config_entry):
+        TapoSwitchEntity.__init__(
+            self,
+            "Preset Patrol Mode",
+            entry,
+            hass,
+            config_entry,
+            "mdi:map-marker-path",
+        )
+
+    async def async_update(self) -> None:
+        await self._coordinator.async_request_refresh()
+
+    async def async_turn_on(self) -> None:
+        result = await self._hass.async_add_executor_job(
+            self._controller.setPatrolStatus,
+            True,
+        )
+        if "error_code" not in result or result["error_code"] == 0:
+            self._attr_is_on = True
+            self._attr_state = "on"
+        self.async_write_ha_state()
+        await self._coordinator.async_request_refresh()
+
+    async def async_turn_off(self) -> None:
+        result = await self._hass.async_add_executor_job(
+            self._controller.setPatrolStatus,
+            False,
+        )
+        if "error_code" not in result or result["error_code"] == 0:
+            self._attr_is_on = False
+            self._attr_state = "off"
+        self.async_write_ha_state()
+        await self._coordinator.async_request_refresh()
+
+    def updateTapo(self, camData):
+        if (
+            not camData
+            or camData.get("privacy_mode") == "on"
+            or camData.get("patrol_status") is None
+        ):
+            self._attr_state = STATE_UNAVAILABLE
+        else:
+            self._attr_is_on = camData["patrol_status"] != "idle"
+            self._attr_state = "on" if self._attr_is_on else "off"
+
+    @property
+    def entity_category(self):
+        return None

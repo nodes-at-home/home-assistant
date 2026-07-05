@@ -38,7 +38,49 @@ from .const import (
     CONF_CUSTOM_STREAM_6,
     CONF_CUSTOM_STREAM_7,
 )
-from .utils import build_device_info, getStreamSource
+from .utils import (
+    async_force_entry_refresh,
+    build_device_info,
+    getStreamSource,
+)
+
+
+def _clear_location_coordinates(attributes: dict) -> None:
+    attributes.pop("longitude", None)
+    attributes.pop("latitude", None)
+
+
+def _normalize_tapo_coordinate(value, max_abs: int):
+    if value is None or isinstance(value, bool):
+        return None
+
+    if isinstance(value, int):
+        value = value / 10000
+
+    try:
+        coordinate = float(value)
+    except (TypeError, ValueError):
+        return None
+
+    if -max_abs <= coordinate <= max_abs:
+        return coordinate
+    return None
+
+
+def _update_location_attributes(attributes: dict) -> None:
+    if attributes.get("has_set_location_info") != 1:
+        _clear_location_coordinates(attributes)
+        return
+
+    longitude = _normalize_tapo_coordinate(attributes.get("longitude"), 180)
+    latitude = _normalize_tapo_coordinate(attributes.get("latitude"), 90)
+
+    if longitude is None or latitude is None:
+        _clear_location_coordinates(attributes)
+        return
+
+    attributes["longitude"] = longitude
+    attributes["latitude"] = latitude
 
 
 async def async_setup_entry(
@@ -319,10 +361,7 @@ class TapoCamEntity(Camera):
                 ]
             if "user" in camData:
                 self._attr_extra_state_attributes["user"] = camData["user"]
-            # Disable incorrect location report by camera
-            self._attr_extra_state_attributes["longitude"] = 0
-            self._attr_extra_state_attributes["latitude"] = 0
-            self._attr_extra_state_attributes["has_set_location_info"] = 0
+            _update_location_attributes(self._attr_extra_state_attributes)
             # lists below
             self._attr_extra_state_attributes["presets"] = camData["presets"]
             if camData["recordPlan"]:
@@ -390,7 +429,7 @@ class TapoCamEntity(Camera):
             self._controller.setPrivacyMode,
             False,
         )
-        await self._coordinator.async_request_refresh()
+        await async_force_entry_refresh(self._hass, self._entry)
 
     async def async_turn_off(self):
         LOGGER.debug("async_turn_off - camera")
@@ -398,7 +437,7 @@ class TapoCamEntity(Camera):
             self._controller.setPrivacyMode,
             True,
         )
-        await self._coordinator.async_request_refresh()
+        await async_force_entry_refresh(self._hass, self._entry)
 
     async def save_preset(self, name):
         LOGGER.debug("save_preset - camera")
@@ -561,14 +600,18 @@ class TapoDirectCamEntity(TapoCamEntity):
 
         LOGGER.debug("Direct MJPEG: ffmpeg PID %s", proc.pid)
 
-        jpeg = await proc.stdout.read()
-        await proc.wait()
-
-        LOGGER.debug("async_camera_image - Stopping streamer")
-        await streamer.stop()
-        info["streamProcess"].cancel()
-        LOGGER.debug("async_camera_image - Returning jpeg")
-        return jpeg
+        try:
+            jpeg = await proc.stdout.read()
+            await proc.wait()
+            LOGGER.debug("async_camera_image - Returning jpeg")
+            return jpeg
+        finally:
+            LOGGER.debug("async_camera_image - Stopping streamer")
+            if proc.returncode is None:
+                proc.kill()
+                await proc.wait()
+            await streamer.stop()
+            info["streamProcess"].cancel()
 
     async def handle_async_mjpeg_stream(self, request):
         LOGGER.debug("Direct MJPEG: request")
