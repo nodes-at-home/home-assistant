@@ -1,49 +1,58 @@
-"""Platform for binarysensor integration."""
+"""Platform for button integration."""
 
-import asyncio
+from __future__ import annotations
+
+from typing import Any
 
 from boschshcpy import (
-    SHCBatteryDevice,
     SHCDevice,
-    SHCSession,
     SHCMicromoduleRelay,
+    SHCMotionDetector2,
+    SHCOutdoorSiren,
+    SHCSession,
+    SHCShutterControl,
+    SHCSmartPlug,
+    SHCSmartPlugCompact,
+    SHCSmokeDetector,
+    SHCTwinguard,
 )
-
-from collections.abc import Callable
-from dataclasses import dataclass
-from typing import Final
-
+from boschshcpy.exceptions import SHCException
+from boschshcpy.services_impl import DetectionTestService, WalkTestService
 from homeassistant.components.button import (
     ButtonEntity,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    ATTR_DEVICE_ID,
-    ATTR_ID,
-    ATTR_NAME,
-    EVENT_HOMEASSISTANT_STOP,
-)
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.device_registry import DeviceEntry, DeviceInfo
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-
 from .const import (
-    DATA_SESSION,
     DOMAIN,
+    LOGGER,
+    OPT_AUTOMATION_RULES_AS_ENTITIES,
+    OPT_SCENARIOS_AS_BUTTONS,
+    OPT_SCENARIOS_FILTER,
 )
-from .entity import SHCEntity
+from .entity import SHCEntity, device_excluded
+
+PARALLEL_UPDATES = 1
 
 
-async def async_setup_entry(
+async def async_setup_entry(  # noqa: C901
     hass: HomeAssistant,
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the SHC binary sensor platform."""
-    entities = []
-    session: SHCSession = hass.data[DOMAIN][config_entry.entry_id][DATA_SESSION]
+    entities: list[ButtonEntity] = []
+    session: SHCSession = config_entry.runtime_data.session
 
-    for button in session.device_helper.micromodule_impulse_relays:
+    for button in getattr(session.device_helper, "micromodule_impulse_relays", []):
+        if device_excluded(button, config_entry.options):
+            continue
         entities.append(
             SHCRelayButton(
                 device=button,
@@ -51,11 +60,196 @@ async def async_setup_entry(
             )
         )
 
+    for button in getattr(session.device_helper, "smoke_detectors", []):
+        if device_excluded(button, config_entry.options):
+            continue
+        entities.append(
+            SHCSmokeTestButton(
+                device=button,
+                entry_id=config_entry.entry_id,
+            )
+        )
+
+    for button in getattr(session.device_helper, "twinguards", []):
+        if device_excluded(button, config_entry.options):
+            continue
+        entities.append(
+            SHCSmokeTestButton(
+                device=button,
+                entry_id=config_entry.entry_id,
+            )
+        )
+
+    # WalkTest start + stop buttons for Motion Detector II (guarded — optional service).
+    for button in getattr(session.device_helper, "motion_detectors2", []):
+        if device_excluded(button, config_entry.options):
+            continue
+        if not getattr(button, "supports_walk_test", False):
+            continue
+        if button.walk_state is None:
+            # WalkTest service not present on this device
+            continue
+        entities.append(
+            SHCWalkTestButton(
+                device=button,
+                entry_id=config_entry.entry_id,
+            )
+        )
+        entities.append(
+            SHCWalkTestStopButton(
+                device=button,
+                entry_id=config_entry.entry_id,
+            )
+        )
+
+    # DetectionTest start/stop + tamper reset for Motion Detector II.
+    # The local API exposes the walk test through the DetectionTest service
+    # (vs the APK-derived WalkTest service above); a given MD2 carries one or
+    # the other, so both are wired and each is guarded by its own service.
+    for button in getattr(session.device_helper, "motion_detectors2", []):
+        if device_excluded(button, config_entry.options):
+            continue
+        if getattr(button, "supports_detection_test", False):
+            entities.append(
+                SHCDetectionTestButton(
+                    device=button,
+                    entry_id=config_entry.entry_id,
+                )
+            )
+            entities.append(
+                SHCDetectionTestStopButton(
+                    device=button,
+                    entry_id=config_entry.entry_id,
+                )
+            )
+        # resetTamperedState — reset_tampered_state()/async_reset_tampered_state()
+        # are defined unconditionally on the class, so a plain hasattr() check
+        # would never actually detect a device missing the LatestTamper
+        # service; supports_tamper_reset checks the real service presence.
+        if getattr(button, "supports_tamper_reset", False):
+            entities.append(
+                SHCTamperResetButton(
+                    device=button,
+                    entry_id=config_entry.entry_id,
+                )
+            )
+
+    if config_entry.options.get(OPT_SCENARIOS_AS_BUTTONS, False):
+        entry_unique_id = config_entry.unique_id
+        entry_id = config_entry.entry_id
+        shc_device: DeviceEntry = config_entry.runtime_data.shc_device
+        scenario_filter = config_entry.options.get(OPT_SCENARIOS_FILTER) or []
+
+        def _make_scenario_button(scenario: Any) -> SHCScenarioButton | None:
+            """Build a SHCScenarioButton, returning None on malformed payload."""
+            try:
+                return SHCScenarioButton(
+                    scenario=scenario,
+                    entry_unique_id=entry_unique_id,
+                    entry_id=entry_id,
+                    shc_device=shc_device,
+                )
+            except (KeyError, AttributeError) as err:
+                # A malformed scenario payload must not take out the whole
+                # button platform — skip just that scenario.
+                LOGGER.warning("Skipping scenario button (bad payload): %s", err)
+                return None
+
+        entities.extend(
+            btn
+            for scenario in session.scenarios
+            if not scenario_filter or scenario.id in scenario_filter
+            if (btn := _make_scenario_button(scenario)) is not None
+        )
+
+    if config_entry.options.get(OPT_AUTOMATION_RULES_AS_ENTITIES, False):
+        shc_device_for_rules: DeviceEntry = config_entry.runtime_data.shc_device
+        entities.extend(
+            SHCAutomationRuleTriggerButton(
+                rule=rule,
+                entry_id=config_entry.entry_id,
+                shc_device=shc_device_for_rules,
+            )
+            for rule in session.automation_rules
+        )
+
+    # async_mute() existed but was unreachable (no HA mute hook/service) --
+    # maps to the Bosch app's alarm-triggered "Stummschalten" option.
+    intrusion_system = session.intrusion_system
+    if intrusion_system is not None:
+        entities.append(
+            SHCIntrusionAlarmMuteButton(
+                device=intrusion_system, entry_id=config_entry.entry_id
+            )
+        )
+
+    water_alarm_system = session.water_alarm_system
+    if water_alarm_system is not None:
+        entities.append(
+            SHCWaterAlarmMuteButton(
+                device=water_alarm_system, entry_id=config_entry.entry_id
+            )
+        )
+
+    for siren in getattr(session.device_helper, "outdoor_sirens", []):
+        if device_excluded(siren, config_entry.options):
+            continue
+        entities.append(
+            SHCSirenTestAlarmButton(device=siren, entry_id=config_entry.entry_id)
+        )
+
+    # Reset accumulated energy counter (hass#120 audit): fully modeled in
+    # boschshcpy but never wired into an HA entity.
+    for device in getattr(session.device_helper, "smart_plugs", []) + getattr(
+        session.device_helper, "smart_plugs_compact", []
+    ):
+        if device_excluded(device, config_entry.options):
+            continue
+        entities.append(
+            ResetEnergySummationButton(device=device, entry_id=config_entry.entry_id)
+        )
+
+    # Shutter Control II recalibration (hass audit): confirmed genuinely called
+    # in reachable app code (unlike muteWarning/incrementOpenLevel/
+    # decrementOpenLevel, which are declared-but-never-called).
+    for device in (
+        list(getattr(session.device_helper, "shutter_controls", []))
+        + list(getattr(session.device_helper, "micromodule_shutter_controls", []))
+        + list(getattr(session.device_helper, "micromodule_blinds", []))
+    ):
+        if device_excluded(device, config_entry.options):
+            continue
+        entities.append(
+            ShutterRecalibrateButton(device=device, entry_id=config_entry.entry_id)
+        )
+
+    # DimmerConfiguration preview buttons: flash at max/min for calibration (#123).
+    for device in getattr(session.device_helper, "micromodule_dimmers", []):
+        if device_excluded(device, config_entry.options):
+            continue
+        if getattr(device, "supports_dimmer_configuration", False):
+            entities.append(
+                DimmerPreviewMaxButton(device=device, entry_id=config_entry.entry_id)
+            )
+            entities.append(
+                DimmerPreviewMinButton(device=device, entry_id=config_entry.entry_id)
+            )
+
+    # Always created (not opt-in): lets a user enable every disabled-by-default
+    # diagnostic entity for this SHC in one click instead of opening each one.
+    entities.append(
+        SHCEnableAllDiagnosticsButton(
+            entry_unique_id=config_entry.unique_id,
+            entry_id=config_entry.entry_id,
+            shc_device=config_entry.runtime_data.shc_device,
+        )
+    )
+
     if entities:
         async_add_entities(entities)
 
 
-class SHCRelayButton(SHCEntity, ButtonEntity):
+class SHCRelayButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
     """Representation of a SHC button."""
 
     def __init__(
@@ -66,15 +260,572 @@ class SHCRelayButton(SHCEntity, ButtonEntity):
     ) -> None:
         """Initialize a SHC switch."""
         super().__init__(device, entry_id)
-        self._attr_name = (
-            f"{device.name}" if attr_name is None else f"{device.name} {attr_name}"
-        )
+        self._attr_name = attr_name  # type: ignore[assignment]
         self._attr_unique_id = (
             f"{device.root_device_id}_{device.id}"
             if attr_name is None
             else f"{device.root_device_id}_{device.id}_{attr_name.lower()}"
         )
+        self._device: SHCMicromoduleRelay = device  # type: ignore[assignment]
 
-    def press(self) -> None:
-        """Triggers impulse."""
-        self._device.trigger_impulse_state()
+    async def async_press(self) -> None:
+        """Trigger the relay impulse (awaited — the session is async; #336)."""
+        try:
+            await self._device.async_trigger_impulse_state()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Impulse trigger failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class SHCSmokeTestButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button entity that requests a smoke detector self-test."""
+
+    _attr_translation_key = "smoke_test"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the smoke-test button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_smoke_test"
+        # Wired to both smoke_detectors and twinguards (async_setup_entry) —
+        # unrelated sibling classes that each independently implement this
+        # method, not a shared mixin, hence the union narrowing.
+        self._device: SHCSmokeDetector | SHCTwinguard = device  # type: ignore[assignment]
+
+    async def async_press(self) -> None:
+        """Trigger the device self-test (awaited — the session is async; #336)."""
+        try:
+            await self._device.async_smoketest_requested()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Smoke test failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="smoke_test_failed",
+            ) from err
+
+
+class SHCSirenTestAlarmButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button that fires a short Outdoor Siren test alarm (#120)."""
+
+    _attr_translation_key = "siren_test_alarm"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the siren test-alarm button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_test_alarm"
+        self._device: SHCOutdoorSiren = device  # type: ignore[assignment]
+
+    async def async_press(self) -> None:
+        """Trigger a short test alarm at the configured sound level."""
+        try:
+            await self._device.async_trigger_test_alarm()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Siren test alarm failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class ResetEnergySummationButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button that resets a smart plug's accumulated energy counter (hass#120 audit).
+
+    Fully modeled in boschshcpy (PowerMeterService.async_reset_energy_summation
+    / _PowerMeter.async_reset_energy_summation) but never wired into an HA
+    entity. Confirmed via APK decompile (PowerSwitchAndMeterInteractor.
+    RESET_COMMAND) that the operation takes no params.
+    """
+
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_translation_key = "reset_energy_summation"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the reset-energy-summation button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = (
+            f"{device.root_device_id}_{device.id}_reset_energy_summation"
+        )
+        # Wired to both smart_plugs and smart_plugs_compact (async_setup_entry);
+        # both share the (private, unexported) _PowerMeter mixin that defines
+        # this method, hence the union narrowing over the two public classes.
+        self._device: SHCSmartPlug | SHCSmartPlugCompact = device  # type: ignore[assignment]
+
+    async def async_press(self) -> None:
+        """Reset the accumulated energy counter."""
+        try:
+            await self._device.async_reset_energy_summation()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Reset energy summation failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class ShutterRecalibrateButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button that triggers a Shutter Control II end-position (re)calibration run.
+
+    Fully modeled in boschshcpy (ShutterControlService.
+    async_reset_calibration_and_open / SHCShutterControl.
+    async_reset_calibration_and_open) but never wired into an HA entity.
+    Confirmed via APK decompile (ShutterControlInteractor.
+    RESET_CALIBRATION_AND_OPEN_COMMAND) that the operation takes no params.
+    """
+
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_translation_key = "shutter_recalibrate"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the shutter-recalibrate button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_recalibrate"
+        # Wired to shutter_controls, micromodule_shutter_controls and
+        # micromodule_blinds (async_setup_entry) — all subclass
+        # SHCShutterControl, which defines this method directly.
+        self._device: SHCShutterControl = device  # type: ignore[assignment]
+
+    async def async_press(self) -> None:
+        """Trigger the end-position (re)calibration run."""
+        try:
+            await self._device.async_reset_calibration_and_open()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Shutter recalibration failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class SHCScenarioButton(ButtonEntity):  # type: ignore[misc]
+    """Button entity that triggers a single Bosch SHC scenario.
+
+    Scenarios are not SHC devices, so this entity does NOT inherit SHCEntity.
+    unique_id is scoped to the config entry so each SHC controller gets its
+    own set of scenario buttons even when multiple controllers are present.
+    """
+
+    _attr_has_entity_name = True
+    _attr_translation_key = "scenario"
+    _attr_should_poll = False
+
+    def __init__(
+        self,
+        scenario: Any,
+        entry_unique_id: str | None,
+        entry_id: str,
+        shc_device: DeviceEntry | None = None,
+    ) -> None:
+        """Initialize a scenario button."""
+        self._scenario = scenario
+        self._shc_device = shc_device
+        prefix = entry_unique_id or entry_id
+        self._attr_unique_id = f"{prefix}_scenario_{scenario.id}"
+        self._attr_name = scenario.name
+
+    @property
+    def device_info(self) -> DeviceInfo | None:
+        """Return the device info (links this button to the SHC controller device)."""
+        if self._shc_device is None:
+            return None
+        return DeviceInfo(
+            identifiers=self._shc_device.identifiers,
+            name=self._shc_device.name,
+            manufacturer=self._shc_device.manufacturer,
+            model=self._shc_device.model,
+        )
+
+    async def async_press(self) -> None:
+        """Trigger the scenario (awaited — the session is async; #336)."""
+        try:
+            await self._scenario.async_trigger()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Scenario trigger failed for {self._scenario.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class SHCWalkTestButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button entity that starts a WalkTest on a Motion Detector II.
+
+    The WalkTest service is optional on MD2 hardware; this entity is only
+    created when walk_state is not None (i.e. the service is present).
+    Pressing starts the test; a separate stop button is also created.
+    """
+
+    _attr_translation_key = "walk_test"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the walk-test start button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_walk_test"
+        self._device: SHCMotionDetector2 = device  # type: ignore[assignment]
+
+    async def async_press(self) -> None:
+        """Send WALK_STATE_START request to the WalkTest service."""
+        try:
+            await self._device.async_set_walk_state_request(
+                WalkTestService.WalkStateRequest.WALK_STATE_START
+            )
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Walk test start failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class SHCWalkTestStopButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button entity that stops a WalkTest on a Motion Detector II.
+
+    Stops an in-progress walk test by sending WALK_STATE_STOP to the
+    WalkTest service.  Only created when the WalkTest service is present.
+    """
+
+    _attr_translation_key = "walk_test_stop"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the walk-test stop button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_walk_test_stop"
+        self._device: SHCMotionDetector2 = device  # type: ignore[assignment]
+
+    async def async_press(self) -> None:
+        """Send WALK_STATE_STOP request to the WalkTest service."""
+        try:
+            await self._device.async_set_walk_state_request(
+                WalkTestService.WalkStateRequest.WALK_STATE_STOP
+            )
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Walk test stop failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class SHCDetectionTestButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button that starts a detection (walk) test via the DetectionTest service.
+
+    The local Bosch API exposes the walk test through DetectionTest; only
+    created when the device carries that service (supports_detection_test).
+    """
+
+    _attr_translation_key = "detection_test"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the detection-test start button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_detection_test"
+        self._device: SHCMotionDetector2 = device  # type: ignore[assignment]
+
+    async def async_press(self) -> None:
+        """Send DETECTION_STATE_START to the DetectionTest service."""
+        try:
+            await self._device.async_set_detection_state_request(
+                DetectionTestService.DetectionStateRequest.DETECTION_STATE_START
+            )
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Detection test start failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class SHCDetectionTestStopButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button that stops an in-progress detection (walk) test."""
+
+    _attr_translation_key = "detection_test_stop"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the detection-test stop button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = (
+            f"{device.root_device_id}_{device.id}_detection_test_stop"
+        )
+        self._device: SHCMotionDetector2 = device  # type: ignore[assignment]
+
+    async def async_press(self) -> None:
+        """Send DETECTION_STATE_STOP to the DetectionTest service."""
+        try:
+            await self._device.async_set_detection_state_request(
+                DetectionTestService.DetectionStateRequest.DETECTION_STATE_STOP
+            )
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Detection test stop failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class SHCTamperResetButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button that resets an active tamper condition (LatestTamper service)."""
+
+    _attr_translation_key = "reset_tamper"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the tamper-reset button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_reset_tamper"
+        self._device: SHCMotionDetector2 = device  # type: ignore[assignment]
+
+    async def async_press(self) -> None:
+        """POST resetTamperedState to confirm the device is back in place."""
+        try:
+            await self._device.async_reset_tampered_state()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Tamper reset failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class DimmerPreviewMaxButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button that flashes the dimmer at max brightness for load calibration (#123)."""
+
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_translation_key = "preview_max_brightness"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the dimmer preview-max brightness button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_dimmer_preview_max"
+
+    async def async_press(self) -> None:
+        """Flash the dimmer at maximum brightness for load calibration."""
+        svc = getattr(self._device, "dimmer_configuration", None)
+        if svc is not None:
+            try:
+                await svc.async_preview_max_brightness()
+            except SHCException as err:
+                raise HomeAssistantError(
+                    f"Preview max brightness failed for {self._device.name}: {err}",
+                    translation_domain=DOMAIN,
+                    translation_key="button_press_failed",
+                ) from err
+
+
+class DimmerPreviewMinButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
+    """Button that flashes the dimmer at min brightness for load calibration (#123)."""
+
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_translation_key = "preview_min_brightness"
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the dimmer preview-min brightness button."""
+        super().__init__(device, entry_id)
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_dimmer_preview_min"
+
+    async def async_press(self) -> None:
+        """Flash the dimmer at minimum brightness for load calibration."""
+        svc = getattr(self._device, "dimmer_configuration", None)
+        if svc is not None:
+            try:
+                await svc.async_preview_min_brightness()
+            except SHCException as err:
+                raise HomeAssistantError(
+                    f"Preview min brightness failed for {self._device.name}: {err}",
+                    translation_domain=DOMAIN,
+                    translation_key="button_press_failed",
+                ) from err
+
+
+class SHCEnableAllDiagnosticsButton(ButtonEntity):  # type: ignore[misc]
+    """Button that enables every disabled-by-default diagnostic entity for this SHC.
+
+    Diagnostic entities (Zigbee routing quality, communication quality,
+    etc.) ship with entity_registry_enabled_default=False, HA's convention
+    for advanced/noisy sensors. Not an SHC device, so this does not inherit
+    SHCEntity — scoped to the config entry like SHCScenarioButton.
+    """
+
+    _attr_has_entity_name = True
+    _attr_translation_key = "enable_all_diagnostics"
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_should_poll = False
+
+    def __init__(
+        self,
+        entry_unique_id: str | None,
+        entry_id: str,
+        shc_device: DeviceEntry | None = None,
+    ) -> None:
+        """Initialize the enable-all-diagnostics button."""
+        self._entry_id = entry_id
+        self._shc_device = shc_device
+        prefix = entry_unique_id or entry_id
+        self._attr_unique_id = f"{prefix}_enable_all_diagnostics"
+        self._reload_in_progress = False
+
+    @property
+    def device_info(self) -> DeviceInfo | None:
+        """Return the device info (links this button to the SHC controller device)."""
+        if self._shc_device is None:
+            return None
+        return DeviceInfo(
+            identifiers=self._shc_device.identifiers,
+            name=self._shc_device.name,
+            manufacturer=self._shc_device.manufacturer,
+            model=self._shc_device.model,
+        )
+
+    async def async_press(self) -> None:
+        """Clear disabled_by=INTEGRATION on every diagnostic entity of this entry."""
+        if self._reload_in_progress:
+            return
+        registry = er.async_get(self.hass)
+        to_enable = [
+            entity_entry.entity_id
+            for entity_entry in er.async_entries_for_config_entry(
+                registry, self._entry_id
+            )
+            if entity_entry.entity_category == EntityCategory.DIAGNOSTIC
+            and entity_entry.disabled_by == er.RegistryEntryDisabler.INTEGRATION
+        ]
+        for entity_id in to_enable:
+            registry.async_update_entity(entity_id, disabled_by=None)
+        if to_enable:
+            # Newly-enabled entities only actually start after a reload.
+            # Guarded above against overlapping reloads from a rapid double-press.
+            self._reload_in_progress = True
+            try:
+                await self.hass.config_entries.async_reload(self._entry_id)
+            finally:
+                self._reload_in_progress = False
+
+
+class SHCAutomationRuleTriggerButton(ButtonEntity):  # type: ignore[misc]
+    """Manually fire a single Bosch automation rule (system/automation).
+
+    Not an SHC device -- mirrors SHCScenarioButton's pattern for the same
+    reason (Bosch's local rule engine is entirely separate from HA's own
+    automations). Gated by OPT_AUTOMATION_RULES_AS_ENTITIES.
+    """
+
+    _attr_has_entity_name = True
+    _attr_translation_key = "automation_rule_trigger"
+    _attr_should_poll = False
+
+    def __init__(
+        self,
+        rule: Any,
+        entry_id: str,
+        shc_device: DeviceEntry | None = None,
+    ) -> None:
+        """Initialize an automation rule trigger button."""
+        self._rule = rule
+        self._shc_device = shc_device
+        self._attr_unique_id = f"{entry_id}_automation_rule_{rule.id}_trigger"
+        self._attr_name = rule.name
+
+    @property
+    def device_info(self) -> DeviceInfo | None:
+        """Return the device info (links this button to the SHC controller device)."""
+        if self._shc_device is None:
+            return None
+        return DeviceInfo(
+            identifiers=self._shc_device.identifiers,
+            name=self._shc_device.name,
+            manufacturer=self._shc_device.manufacturer,
+            model=self._shc_device.model,
+        )
+
+    async def async_press(self) -> None:
+        """Manually fire this automation rule now."""
+        try:
+            await self._rule.async_trigger()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to trigger automation rule {self._rule.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class SHCIntrusionAlarmMuteButton(ButtonEntity):  # type: ignore[misc]
+    """Mute the currently-triggered intrusion alarm.
+
+    Maps to the Bosch app's alarm-triggered "Stummschalten" option (the
+    other being "Notruf" / emergency call, which this integration does not
+    offer). Shares the intrusion system's own virtual device.
+    """
+
+    _attr_has_entity_name = True
+    _attr_translation_key = "intrusion_alarm_mute"
+    _attr_should_poll = False
+
+    def __init__(self, device: Any, entry_id: str) -> None:
+        """Initialize the intrusion alarm mute button."""
+        self._device = device
+        self._entry_id = entry_id
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_mute"
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return the device info (shares the intrusion system's device)."""
+        info = DeviceInfo(
+            identifiers={(DOMAIN, self._device.id)},
+            name=self._device.name,
+            manufacturer=self._device.manufacturer,
+            model=self._device.device_model,
+        )
+        root_device_id = self._device.root_device_id
+        if root_device_id is not None:
+            info["via_device"] = (DOMAIN, root_device_id)
+        return info
+
+    async def async_press(self) -> None:
+        """Mute the active intrusion alarm."""
+        try:
+            await self._device.async_mute()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to mute the intrusion alarm: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+
+
+class SHCWaterAlarmMuteButton(ButtonEntity):  # type: ignore[misc]
+    """Mute the currently-triggered water-leak alarm system."""
+
+    _attr_has_entity_name = True
+    _attr_translation_key = "water_alarm_mute"
+    _attr_should_poll = False
+
+    def __init__(self, device: Any, entry_id: str) -> None:
+        """Initialize the water alarm mute button."""
+        self._device = device
+        self._entry_id = entry_id
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_mute"
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return the device info (its own virtual device, linked to the SHC)."""
+        info = DeviceInfo(
+            identifiers={(DOMAIN, self._device.id)},
+            name=self._device.name,
+            manufacturer=self._device.manufacturer,
+            model=self._device.device_model,
+        )
+        root_device_id = self._device.root_device_id
+        if root_device_id is not None:
+            info["via_device"] = (DOMAIN, root_device_id)
+        return info
+
+    async def async_press(self) -> None:
+        """Mute the active water alarm."""
+        try:
+            await self._device.async_mute()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to mute the water alarm: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err

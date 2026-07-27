@@ -1,246 +1,552 @@
 """Platform for climate integration."""
 
-from boschshcpy import SHCClimateControl, SHCSession
-from enum import IntFlag
+from __future__ import annotations
+
+from typing import Any
+
+from boschshcpy import (
+    HeatingCircuitService,
+    RoomClimateControlService,
+    SHCClimateControl,
+    SHCHeatingCircuit,
+    SHCSession,
+)
+from boschshcpy.exceptions import JSONRPCError, SHCException
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
     ATTR_HVAC_MODE,
-    HVACMode,
     ClimateEntityFeature,
-    PRESET_BOOST,
-    PRESET_ECO,
-    PRESET_NONE,
+    HVACAction,
+    HVACMode,
 )
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DATA_SESSION, DOMAIN, LOGGER
-from .entity import SHCEntity
+from .const import LOGGER
+from .entity import SHCEntity, device_excluded
+
+PARALLEL_UPDATES = 1
+
+# Preset mode strings — transient override states only.
+# #334: AUTOMATIC is back as HVACMode.AUTO (green card color).
+# AUTO and MANUAL are no longer presets — they are expressed via hvac_mode.
+# Only boost and eco remain as presets (override states on top of the hvac_mode axis).
+PRESET_BOOST = "boost"
+PRESET_ECO = "eco"
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
     """Set up the SHC climate platform."""
-    entities = []
-    session: SHCSession = hass.data[DOMAIN][config_entry.entry_id][DATA_SESSION]
+    entities: list[Any] = []
+    session: SHCSession = config_entry.runtime_data.session
 
     for climate in session.device_helper.climate_controls:
+        if device_excluded(climate, config_entry.options):
+            continue
         room_id = climate.room_id
+        try:
+            room_name = session.room(room_id).name
+        except KeyError:
+            room_name = climate.name
         entities.append(
             ClimateControl(
                 device=climate,
                 entry_id=config_entry.entry_id,
-                name=f"Room Climate {session.room(room_id).name}",
+                name=room_name,
             )
         )
+
+    for heating_circuit in session.device_helper.heating_circuits:
+        if device_excluded(heating_circuit, config_entry.options):
+            continue
+        entities.append(
+            HeatingCircuit(
+                device=heating_circuit,
+                entry_id=config_entry.entry_id,
+                name=heating_circuit.name,
+            )
+        )
+
+    # DEFERRED (#253, #242): TRV I (model "TRV") and TRV_GEN2 (SHCThermostat)
+    # are not added as climate entities here.  Both devices lack a direct
+    # setpoint-write API; temperature is controlled at room level via the
+    # RoomClimateControl virtual device above.  Adding per-TRV climate entities
+    # requires an architectural decision (one entity per TRV vs. room-level only)
+    # and possibly a lib change to expose the room association.  Tracked in #253
+    # and #242 — do not implement without that design decision.
 
     if entities:
         async_add_entities(entities)
 
 
-class ClimateControl(SHCEntity, ClimateEntity):
-    """Representation of a SHC room climate control."""
+class ClimateControl(SHCEntity, ClimateEntity):  # type: ignore[misc]
+    """Representation of a SHC room climate control.
+
+    hvac_mode: OFF if summer_mode; COOL if supports_cooling+cooling_mode;
+    AUTO if operation_mode==AUTOMATIC; otherwise HEAT (MANUAL). preset_mode
+    is override-only ("boost" if supportsBoostMode, "eco" if supports_low);
+    COOL/boost/eco are only advertised when the device reports that flag.
+    """
 
     _attr_target_temperature_step = 0.5
-    _attr_supported_features = (
-        ClimateEntityFeature.TARGET_TEMPERATURE 
-        | ClimateEntityFeature.PRESET_MODE
-        | ClimateEntityFeature.TURN_OFF
-        | ClimateEntityFeature.TURN_ON
-    )
     _enable_turn_on_off_backwards_compatibility = False
+    _attr_translation_key = "room_climate_control"
 
     def __init__(
         self,
         device: SHCClimateControl,
         name: str,
         entry_id: str,
-    ):
+    ) -> None:
         """Initialize the SHC device."""
         super().__init__(device=device, entry_id=entry_id)
-        self._name = name
+        # Device name = room name (e.g. "Arbeitszimmer"); _attr_name = None
+        # means the entity's friendly name IS the bare room name, no suffix
+        # (HA's Entity._name_internal returns _attr_name before ever
+        # consulting translation_key, once _attr_name is set at all -- even
+        # to None). translation_key stays set below purely to resolve the
+        # boost/eco preset_mode state + icon translations in
+        # strings.json/icons.json, which is a separate lookup unaffected by
+        # _attr_name.
+        self._room_label = name
+        self._attr_name = None
         self._attr_unique_id = f"{device.root_device_id}_{device.id}"
+        self._device: SHCClimateControl = device  # type: ignore[assignment]
 
     @property
-    def name(self):
-        """Name of the entity."""
-        return self._name
-
-    @property
-    def device_name(self):
+    def device_name(self) -> str:
         """Name of the device."""
-        return self._name
+        return self._room_label
 
     @property
-    def temperature_unit(self):
+    def temperature_unit(self) -> str:
         """Return the temperature unit."""
-        return UnitOfTemperature.CELSIUS
+        return UnitOfTemperature.CELSIUS  # type: ignore[no-any-return]
 
     @property
-    def current_temperature(self):
+    def current_temperature(self) -> float | None:
         """Return the current temperature."""
-        return self._device.temperature
+        return self._device.temperature  # type: ignore[no-any-return]
 
     @property
-    def max_temp(self):
+    def max_temp(self) -> float:
         """Return the maximum temperature allowed."""
         return 30.0
 
     @property
-    def min_temp(self):
+    def min_temp(self) -> float:
         """Return the minimum temperature allowed."""
         return 5.0
 
     @property
-    def target_temperature(self):
+    def target_temperature(self) -> float | None:
         """Return the target temperature setpoint."""
-        return self._device.setpoint_temperature
+        return self._device.setpoint_temperature  # type: ignore[no-any-return]
 
     @property
-    def target_temperature_step(self):
+    def target_temperature_step(self) -> float:
         """Return the temperature step."""
         return 0.5
 
     @property
-    def hvac_mode(self):
-        """Return the hvac mode."""
+    def hvac_mode(self) -> HVACMode:
+        """Return the hvac mode.
+
+        Maps the Bosch state fields onto HA hvac_mode:
+          summer_mode=True                              → OFF
+          supports_cooling=True + cooling_mode=True    → COOL
+          operation_mode=AUTOMATIC                      → AUTO  (#334)
+          otherwise (MANUAL)                            → HEAT
+        """
         if self._device.summer_mode:
             return HVACMode.OFF
 
+        if self._device.supports_cooling and self._device.cooling_mode:
+            return HVACMode.COOL
+
         if (
             self._device.operation_mode
-            == SHCClimateControl.RoomClimateControlService.OperationMode.AUTOMATIC
+            == RoomClimateControlService.OperationMode.AUTOMATIC
         ):
             return HVACMode.AUTO
 
         return HVACMode.HEAT
 
     @property
-    def hvac_modes(self):
-        """Return available hvac modes."""
-        return [HVACMode.AUTO, HVACMode.HEAT, HVACMode.OFF]
+    def hvac_modes(self) -> list[HVACMode]:
+        """Return available hvac modes.
 
-    # @property
-    # def hvac_action(self):
-    #     if self.valve_tappet_position > 5:
-    #         return CURRENT_HVAC_HEAT
-    #     else:
-    #         return CURRENT_HVAC_IDLE
+        AUTO is always present (RoomClimateControl always supports AUTOMATIC).
+        COOL only when supports_cooling — gated on the room's
+        ThermostatSupportedControlMode capability (#334), with the
+        roomControlMode field-presence heuristic as the firmware fallback.
+        """
+        modes = [HVACMode.AUTO, HVACMode.HEAT]
+        if self._device.supports_cooling:
+            modes.append(HVACMode.COOL)
+        modes.append(HVACMode.OFF)
+        return modes
 
     @property
-    def preset_mode(self):
-        """Return preset mode."""
-        if self._device.supports_boost_mode:
-            if self._device.boost_mode:
-                return PRESET_BOOST
+    def hvac_action(self) -> HVACAction:
+        """Return the current HVAC action."""
+        if self.hvac_mode == HVACMode.OFF:
+            return HVACAction.OFF
+        if (
+            self._device.supports_cooling
+            and self._device.cooling_mode
+            and self.hvac_mode == HVACMode.COOL
+        ):
+            return HVACAction.COOLING
+        # getattr guard: has_demand needs boschshcpy >= 0.2.120; tolerate older libs
+        return (
+            HVACAction.HEATING
+            if getattr(self._device, "has_demand", False)
+            else HVACAction.IDLE
+        )
 
-        if self._device.low:
+    @property
+    def preset_mode(self) -> str | None:
+        """Return the current preset mode (transient overrides only).
+
+        boost_mode=True  → "boost"  (only if device supports boost)
+        low=True         → "eco"    (only if supports_eco)
+        otherwise        → None
+        """
+        if self._device.supports_boost_mode and self._device.boost_mode:
+            return PRESET_BOOST
+
+        # #334 / jumlu #68: gate eco on supports_eco (presence of the eco
+        # SETPOINT field), NOT supports_low. SHC-II floor-heating rooms carry
+        # low=False without an eco model, so supports_low wrongly reports eco
+        # there; supports_eco keys off setpointTemperatureForLevelEco — the only
+        # reliable signal the ECO/COMFORT level model is implemented.
+        if getattr(self._device, "supports_eco", False) and getattr(
+            self._device, "low", False
+        ):
             return PRESET_ECO
 
-        return PRESET_NONE
+        return None
 
     @property
-    def preset_modes(self):
-        """Return available preset modes."""
-        presets = [PRESET_NONE, PRESET_ECO]
+    def preset_modes(self) -> list[str] | None:
+        """Return available preset modes.
+
+        #334: auto/manual removed — they are hvac_modes now.
+        Only transient overrides remain: boost (if supported) and eco (if supported).
+        Returns None when no presets are available (PRESET_MODE feature not set).
+        """
+        presets = []
         if self._device.supports_boost_mode:
-            presets += [PRESET_BOOST]
-        return presets
+            presets.append(PRESET_BOOST)
+        # #334 / jumlu #68: eco only when the eco-setpoint model exists
+        # (supports_eco), not merely when the "low" field is present.
+        if getattr(self._device, "supports_eco", False):
+            presets.append(PRESET_ECO)
+        return presets or None
 
     @property
     def supported_features(self) -> ClimateEntityFeature:
-        """Return supported features."""
-        return (
-            ClimateEntityFeature.TARGET_TEMPERATURE 
-            | ClimateEntityFeature.PRESET_MODE
-            | ClimateEntityFeature.TURN_OFF 
+        """Return supported features.
+
+        PRESET_MODE is only advertised when the device actually has presets.
+        """
+        features = (
+            ClimateEntityFeature.TARGET_TEMPERATURE
+            | ClimateEntityFeature.TURN_OFF
             | ClimateEntityFeature.TURN_ON
         )
+        if self.preset_modes:
+            features |= ClimateEntityFeature.PRESET_MODE
+        return features
 
-    def set_temperature(self, **kwargs):
+    async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set the temperature."""
         temperature = kwargs.get(ATTR_TEMPERATURE)
         if temperature is None:
             return
 
-        self.async_set_hvac_mode(
-            kwargs.get(ATTR_HVAC_MODE)
-        )  # set_temperature args may provide HVAC mode as well
+        # P2-B: call async_set_hvac_mode BEFORE the OFF guard so that a
+        # combined temperature+mode call can change the mode first.
+        requested_hvac_mode = kwargs.get(ATTR_HVAC_MODE)  # type: ignore[assignment]
+        # set_temperature args may provide HVAC mode as well
+        hvac_mode_write_succeeded = await self._async_apply_hvac_mode(
+            requested_hvac_mode  # type: ignore[arg-type]
+        )
 
-        if self.hvac_mode == HVACMode.OFF or self.preset_mode == PRESET_ECO:
+        # boschshcpy's async_put_state_element() only awaits the HTTP PUT — it
+        # never updates the local device cache, which only refreshes on the
+        # next long-poll notification. So self.hvac_mode right after the
+        # await above can still read the PRE-write value. When the caller
+        # explicitly requested a mode AND that write actually succeeded (e.g.
+        # set_temperature(hvac_mode="heat", temperature=21) on a device that
+        # was OFF), trust the requested mode instead of re-reading the stale
+        # cache — otherwise the OFF guard below fires on stale
+        # summer_mode=True and silently drops the temperature write even
+        # though async_set_hvac_mode just turned heating back on. If the
+        # write FAILED (caught JSONRPCError/SHCException, logged inside
+        # _async_apply_hvac_mode), fall back to the real cached state rather
+        # than trusting a mode change that never actually applied — otherwise
+        # a failed mode write masks itself behind a second, more confusing
+        # "failed to set temperature" warning from the setpoint write below.
+        effective_hvac_mode = (
+            requested_hvac_mode
+            if requested_hvac_mode is not None and hvac_mode_write_succeeded
+            else self.hvac_mode
+        )
+
+        if effective_hvac_mode == HVACMode.OFF:
             LOGGER.debug(
-                "Skipping setting temperature as device %s is off or in low_mode.",
+                "Skipping setting temperature as device %s is off.",
+                self.device_name,
+            )
+            return
+
+        if self.preset_mode == PRESET_BOOST:
+            LOGGER.warning(
+                "Cannot set temperature on device %s while in BOOST mode "
+                "(SHC rejects setpoint writes in this state).",
                 self.device_name,
             )
             return
 
         if self.min_temp <= temperature <= self.max_temp:
-            self._device.setpoint_temperature = float(round(temperature * 2.0) / 2.0)
+            try:
+                # SHC also rejects a setpoint write while the room is in
+                # eco/reduced ("low") state — independent of operationMode,
+                # e.g. triggered by an open window — with the same
+                # WRONG_THERMOSTAT_GROUP_MODE error. Clear it first, same as
+                # _async_apply_hvac_mode already does for HVAC mode changes.
+                # Keyed on the raw `low` field rather than
+                # preset_mode/supports_eco: floor-heating rooms can have
+                # low=True without exposing a distinct eco preset. #73
+                if getattr(self._device, "low", False):
+                    await self._device.async_set_low(False)
 
-    async def async_set_hvac_mode(self, hvac_mode: str):
-        """Set hvac mode."""
+                # #180's MANUAL-first switch for a bare call; #369 showed the
+                # app itself never does this for an explicit hvac_mode=auto.
+                if (
+                    kwargs.get(ATTR_HVAC_MODE) is None
+                    and self._device.operation_mode
+                    == RoomClimateControlService.OperationMode.AUTOMATIC
+                ):
+                    await self._device.async_set_operation_mode(
+                        RoomClimateControlService.OperationMode.MANUAL
+                    )
+                await self._device.async_set_setpoint_temperature(
+                    float(round(temperature * 2.0) / 2.0)
+                )
+            except (JSONRPCError, SHCException) as err:
+                LOGGER.warning(
+                    "Failed to set temperature on device %s: %s",
+                    self.device_name,
+                    err,
+                )
+
+    async def async_set_hvac_mode(self, hvac_mode: str) -> None:
+        """Set hvac mode.
+
+        #334: AUTO sets operationMode=AUTOMATIC; HEAT sets MANUAL (+ clears cooling).
+        COOL sets cooling_mode=True; OFF sets summer_mode=True.
+        ECO (low) is cleared first when active so HVAC writes are never blocked. #196
+        """
+        await self._async_apply_hvac_mode(hvac_mode)
+
+    async def _async_apply_hvac_mode(self, hvac_mode: str | None) -> bool:
+        """Write hvac_mode to the device; return whether it actually applied.
+
+        Split out from async_set_hvac_mode so async_set_temperature can tell
+        a successful mode change apart from a silently-caught write failure
+        (JSONRPCError/SHCException) or a no-op (mode not in hvac_modes) —
+        trusting a mode that was never actually applied would mask the real
+        failure behind a second, more confusing setpoint-write error.
+
+        Returns True when hvac_mode is None (nothing requested — not a
+        failure), False when hvac_mode isn't a supported mode (no-op) or a
+        write raised, True when all writes succeeded.
+        """
+        if hvac_mode is None:
+            return True
         if hvac_mode not in self.hvac_modes:
+            return False
+
+        try:
+            # Exit ECO (low) before applying any HVAC mode change so that
+            # turn_off / mode changes are never silently no-oped. #196
+            if self.preset_mode == PRESET_ECO:
+                await self._device.async_set_low(False)
+
+            if hvac_mode == HVACMode.AUTO:
+                await self._device.async_set_summer_mode(False)
+                if self._device.supports_cooling:
+                    await self._device.async_set_cooling_mode(False)
+                await self._device.async_set_operation_mode(
+                    RoomClimateControlService.OperationMode.AUTOMATIC
+                )
+            elif hvac_mode == HVACMode.HEAT:
+                await self._device.async_set_summer_mode(False)
+                if self._device.supports_cooling:
+                    await self._device.async_set_cooling_mode(False)
+                await self._device.async_set_operation_mode(
+                    RoomClimateControlService.OperationMode.MANUAL
+                )
+            elif hvac_mode == HVACMode.COOL:
+                await self._device.async_set_summer_mode(False)
+                await self._device.async_set_cooling_mode(True)
+            elif hvac_mode == HVACMode.OFF:
+                if self._device.supports_cooling:
+                    await self._device.async_set_cooling_mode(False)
+                await self._device.async_set_summer_mode(True)
+        except (JSONRPCError, SHCException) as err:
+            LOGGER.warning(
+                "Failed to set HVAC mode on device %s: %s",
+                self.device_name,
+                err,
+            )
+            return False
+        return True
+
+    async def async_set_preset_mode(self, preset_mode: str) -> None:
+        """Set preset mode (transient override states only).
+
+        "boost"  → boost_mode=True
+        "eco"    → low=True  (only if device exposes `low`)
+        """
+        available = self.preset_modes or []
+        if preset_mode not in available:
             return
-        if self.preset_mode == PRESET_ECO:
-            return
 
-        if hvac_mode == HVACMode.AUTO:
-            await self.hass.async_add_executor_job(
-                setattr, self._device, "summer_mode", False
+        try:
+            if preset_mode == PRESET_BOOST:
+                await self._device.async_set_boost_mode(True)
+
+            elif preset_mode == PRESET_ECO:
+                if hasattr(self._device, "low"):
+                    # Clear boost first so states don't stack
+                    if self._device.supports_boost_mode and self._device.boost_mode:
+                        await self._device.async_set_boost_mode(False)
+                    await self._device.async_set_low(True)
+
+        except (JSONRPCError, SHCException) as err:
+            LOGGER.warning(
+                "Failed to set preset mode on device %s: %s",
+                self.device_name,
+                err,
             )
-            await self.hass.async_add_executor_job(
-                setattr, 
-                self._device,
-                "operation_mode",
-                SHCClimateControl.RoomClimateControlService.OperationMode.AUTOMATIC
-            )
-        if hvac_mode == HVACMode.HEAT:
-            await self.hass.async_add_executor_job(
-                setattr, self._device, "summer_mode", False
-            )
-            await self.hass.async_add_executor_job(
-                setattr,
-                self._device,
-                "operation_mode",
-                SHCClimateControl.RoomClimateControlService.OperationMode.MANUAL
-            )
-        if hvac_mode == HVACMode.OFF:
-            await self.hass.async_add_executor_job(
-                setattr, self._device, "summer_mode", True
-            )
-
-    def set_preset_mode(self, preset_mode: str):
-        """Set preset mode."""
-        if preset_mode not in self.preset_modes:
-            return
-
-        if preset_mode == PRESET_NONE:
-            if self._device.supports_boost_mode:
-                if self._device.boost_mode:
-                    self._device.boost_mode = False
-
-            if self._device.low:
-                self._device.low = False
-
-        elif preset_mode == PRESET_BOOST:
-            if not self._device.boost_mode:
-                self._device.boost_mode = True
-
-            if self._device.low:
-                self._device.low = False
-
-        elif preset_mode == PRESET_ECO:
-            if self._device.supports_boost_mode:
-                if self._device.boost_mode:
-                    self._device.boost_mode = False
-
-            if not self._device.low:
-                self._device.low = True
 
     async def async_turn_on(self) -> None:
         """Turn the climate device on."""
         if self.hvac_mode == HVACMode.OFF:
-            await self.async_set_hvac_mode(HVACMode.HEAT)
+            await self.async_set_hvac_mode(HVACMode.AUTO)
 
     async def async_turn_off(self) -> None:
         """Turn the climate device off."""
         if self.hvac_mode != HVACMode.OFF:
             await self.async_set_hvac_mode(HVACMode.OFF)
+
+
+class HeatingCircuit(SHCEntity, ClimateEntity):  # type: ignore[misc]
+    """Representation of a SHC heating circuit.
+
+    The HeatingCircuit service exposes a setpoint temperature and an operation
+    mode (AUTOMATIC/MANUAL); there is no measured room temperature and the on
+    state is read-only, so this maps to a HEAT/AUTO climate entity with a
+    heating/idle action and no OFF mode.
+    """
+
+    _attr_target_temperature_step = 0.5
+    _enable_turn_on_off_backwards_compatibility = False
+    _attr_temperature_unit = UnitOfTemperature.CELSIUS
+    _attr_hvac_modes = [HVACMode.AUTO, HVACMode.HEAT]
+    _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
+
+    # hass#120 audit: the app reads a per-device setpoint range
+    # (HeatingCircuitVerticalSliderFragment.setMinMax) rather than a fixed
+    # constant — a floor-heating circuit commonly reports a raised minimum.
+    # Fall back to the previous 5-30°C constant until the SHC has reported it.
+    @property
+    def min_temp(self) -> float:
+        """Return the minimum settable temperature."""
+        rng = getattr(self._device, "setpoint_temperature_range", None)
+        return rng[0] if rng is not None else 5.0
+
+    @property
+    def max_temp(self) -> float:
+        """Return the maximum settable temperature."""
+        rng = getattr(self._device, "setpoint_temperature_range", None)
+        return rng[1] if rng is not None else 30.0
+
+    def __init__(
+        self,
+        device: SHCHeatingCircuit,
+        name: str,
+        entry_id: str,
+    ) -> None:
+        """Initialize the SHC heating circuit."""
+        super().__init__(device=device, entry_id=entry_id)
+        self._attr_name: str | None = name  # type: ignore[assignment]
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}"
+        self._device: SHCHeatingCircuit = device  # type: ignore[assignment]
+
+    @property
+    def current_temperature(self) -> float | None:
+        """Heating circuits expose no measured temperature."""
+        return None
+
+    @property
+    def target_temperature(self) -> float | None:
+        """Return the setpoint temperature."""
+        return self._device.setpoint_temperature  # type: ignore[no-any-return]
+
+    @property
+    def hvac_mode(self) -> HVACMode:
+        """Return the hvac mode derived from the operation mode."""
+        if self._device.operation_mode == HeatingCircuitService.OperationMode.AUTOMATIC:
+            return HVACMode.AUTO
+        return HVACMode.HEAT
+
+    @property
+    def hvac_action(self) -> HVACAction:
+        """Return whether the circuit is currently heating."""
+        return HVACAction.HEATING if self._device.on else HVACAction.IDLE
+
+    async def async_set_temperature(self, **kwargs: Any) -> None:
+        """Set a new setpoint temperature."""
+        temperature = kwargs.get(ATTR_TEMPERATURE)
+        if temperature is None:
+            return
+        if self.min_temp <= temperature <= self.max_temp:
+            try:
+                await self._device.async_set_setpoint_temperature(
+                    float(round(temperature * 2.0) / 2.0)
+                )
+            except (JSONRPCError, SHCException) as err:
+                LOGGER.warning(
+                    "Failed to set temperature on HeatingCircuit %s: %s",
+                    self._attr_unique_id,
+                    err,
+                )
+
+    async def async_set_hvac_mode(self, hvac_mode: str) -> None:
+        """Set the operation mode."""
+        if hvac_mode not in self.hvac_modes:
+            return
+        mode = (
+            HeatingCircuitService.OperationMode.AUTOMATIC
+            if hvac_mode == HVACMode.AUTO
+            else HeatingCircuitService.OperationMode.MANUAL
+        )
+        try:
+            await self._device.async_set_operation_mode(mode)
+        except (JSONRPCError, SHCException) as err:
+            LOGGER.warning(
+                "Failed to set HVAC mode on HeatingCircuit %s: %s",
+                self._attr_unique_id,
+                err,
+            )

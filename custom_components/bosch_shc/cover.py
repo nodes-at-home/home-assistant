@@ -1,28 +1,35 @@
 """Platform for cover integration."""
 
+from __future__ import annotations
+
 from typing import Any
+
 from boschshcpy import (
-    SHCSession,
-    SHCShutterControl,
-    SHCMicromoduleShutterControl,
+    KeypadService,
     SHCMicromoduleBlinds,
+    SHCMicromoduleShutterControl,
+    SHCSession,
+    ShutterControlService,
 )
 from boschshcpy.device import SHCDevice
-
+from boschshcpy.exceptions import SHCException
 from homeassistant.components.cover import (
     ATTR_POSITION,
     ATTR_TILT_POSITION,
-    CoverEntityFeature,
     CoverDeviceClass,
     CoverEntity,
+    CoverEntityFeature,
 )
-from homeassistant.const import Platform
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DATA_SESSION, DOMAIN
-from .entity import SHCEntity, async_migrate_to_new_unique_id
+from .const import DOMAIN, LOGGER
+from .entity import SHCEntity, async_migrate_to_new_unique_id, device_excluded
+
+PARALLEL_UPDATES = 1
 
 
 async def async_setup_entry(
@@ -32,12 +39,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up the SHC cover platform."""
     entities = []
-    session: SHCSession = hass.data[DOMAIN][config_entry.entry_id][DATA_SESSION]
+    session: SHCSession = config_entry.runtime_data.session
 
-    for cover in (
-        session.device_helper.shutter_controls
-        + session.device_helper.micromodule_shutter_controls
+    for cover in list(session.device_helper.shutter_controls) + list(
+        session.device_helper.micromodule_shutter_controls
     ):
+        if device_excluded(cover, config_entry.options):
+            continue
         await async_migrate_to_new_unique_id(hass, Platform.COVER, device=cover)
         entities.append(
             ShutterControlCover(
@@ -47,6 +55,8 @@ async def async_setup_entry(
         )
 
     for blind in session.device_helper.micromodule_blinds:
+        if device_excluded(blind, config_entry.options):
+            continue
         await async_migrate_to_new_unique_id(hass, Platform.COVER, device=blind)
         entities.append(
             BlindsControlCover(
@@ -59,7 +69,7 @@ async def async_setup_entry(
         async_add_entities(entities)
 
 
-class ShutterControlCover(SHCEntity, CoverEntity):
+class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
     """Representation of a SHC shutter control device."""
 
     _attr_supported_features = (
@@ -69,8 +79,159 @@ class ShutterControlCover(SHCEntity, CoverEntity):
         | CoverEntityFeature.SET_POSITION
     )
 
+    _current_operation_state = None
+    _target_position = None
+    _last_position = None
+    _skip_update = False
+    _app_command = False
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the shutter control cover.
+
+        This entity class is shared by two device buckets: the plain
+        `shutter_controls` (e.g. BBL, `SHCShutterControl`) and the
+        `micromodule_shutter_controls` (`SHCMicromoduleShutterControl`, which
+        also exposes the Keypad-derived `eventtype`/`keycode` used by the
+        MICROMODULE_SHUTTER branches below). Narrowing to the richer
+        micromodule subtype here — the same one-line-redeclaration pattern
+        used elsewhere in this codebase (see valve.py's `SHCValve`) — covers
+        every attribute this class touches; the `device_model` checks already
+        guard runtime access to the micromodule-only attributes for plain
+        `SHCShutterControl` instances.
+        """
+        super().__init__(device, entry_id)
+        self._device: SHCMicromoduleShutterControl = device  # type: ignore[assignment]
+
+    def _micromodule_keypad_switch_off(self) -> None:
+        if self._device.device_model == "MICROMODULE_SHUTTER":
+            # Some MICROMODULE_SHUTTER devices expose no Keypad service (no
+            # physical wall switch wired). On the released lib the eventtype
+            # setter then dereferences a None keypad service and open/close/
+            # stop crash with "'NoneType' object has no attribute 'eventType'"
+            # (issue #318). eventType is only local bookkeeping for the
+            # physical-switch direction logic, so skipping it is safe.
+            if getattr(self._device, "_keypad_service", None) is None:
+                return
+            # Stopping a micromodule shutter requires setting the eventtype to SWITCH_OFF, in case the manual switch was not put to off position
+            self._device.eventtype = KeypadService.KeyEvent.SWITCH_OFF
+
+    def _update_attr(self) -> None:
+        """Recomputes the attributes values either at init or when the device state changes."""
+        self._attr_current_cover_position = self.current_cover_position
+        self._current_operation_state = self._device.operation_state
+
+        if self._current_operation_state is ShutterControlService.State.CALIBRATING:
+            # A real, separate operationState (APK ground-truth) entered during
+            # an end-position auto-detect run. There is no meaningful open/close
+            # direction during calibration, and without this branch the flags
+            # simply freeze at whatever they held before calibration started,
+            # since none of the other branches below match this state.
+            self._attr_is_closing = False
+            self._attr_is_opening = False
+
+        if self._current_operation_state is ShutterControlService.State.STOPPED:
+            self._attr_is_closing = False
+            self._attr_is_opening = False
+            if not self._skip_update:
+                # Refresh the reference position on every rest for level-based
+                # devices, so the next movement's direction is computed against the
+                # actual resting position. This must include physical-switch moves
+                # of MICROMODULE shutters/blinds: their Keypad events arrive as
+                # PRESS_SHORT (not SWITCH_ON), so they never hit the keycode
+                # direction branch below and rely on this reference (issue #294).
+                if (
+                    self._device.device_model
+                    in ("BBL", "MICROMODULE_SHUTTER", "MICROMODULE_BLINDS")
+                    or self._app_command
+                ):
+                    self._last_position = self.current_cover_position
+                    self._app_command = False
+            else:
+                # In case of HA commands, the first STOPPED state is not reliable, so we skip it and reset the flag for the next update
+                self._skip_update = False
+
+            # Initialize the last position for MM at start
+            if self._last_position is None:
+                self._last_position = self.current_cover_position
+
+        if self._current_operation_state is ShutterControlService.State.MOVING:
+            if self._device.device_model == "BBL":
+                self._target_position = round(self._device.level * 100.0)
+                if self._last_position is not None:
+                    if self._target_position > self._last_position:
+                        self._attr_is_closing = False
+                        self._attr_is_opening = True
+                    elif self._target_position < self._last_position:
+                        self._attr_is_closing = True
+                        self._attr_is_opening = False
+            elif self._device.device_model == "MICROMODULE_SHUTTER":
+                if (
+                    self._device.eventtype == KeypadService.KeyEvent.SWITCH_ON
+                    and self._device.keycode == 1
+                ):
+                    # When the event is triggered by the physical switch, we can determine the movement direction based on the keycode (1 for open, 2 for close), as the level attribute is not reliable during movement
+                    self._last_position = round(self._device.level * 100.0)
+                    self._attr_is_closing = False
+                    self._attr_is_opening = True
+                    self._target_position = 100
+                elif (
+                    self._device.eventtype == KeypadService.KeyEvent.SWITCH_ON
+                    and self._device.keycode == 2
+                ):
+                    self._last_position = round(self._device.level * 100.0)
+                    self._attr_is_closing = True
+                    self._attr_is_opening = False
+                    self._target_position = 0
+                else:
+                    self._target_position = round(self._device.level * 100.0)
+                    if self._last_position is not None:
+                        if self._target_position > self._last_position:
+                            self._attr_is_closing = False
+                            self._attr_is_opening = True
+                        elif self._target_position < self._last_position:
+                            self._attr_is_closing = True
+                            self._attr_is_opening = False
+
+            elif self._device.device_model == "MICROMODULE_BLINDS":
+                self._target_position = round(self._device.level * 100.0)
+                if self._last_position is not None:
+                    if self._target_position > self._last_position:
+                        self._attr_is_closing = False
+                        self._attr_is_opening = True
+                    elif self._target_position < self._last_position:
+                        self._attr_is_closing = True
+                        self._attr_is_opening = False
+
+            else:
+                # for other devices, we cannot determine the movement direction, so we set both to None
+                LOGGER.debug(
+                    "Cannot determine movement direction for %s", self._device.name
+                )
+                self._attr_is_closing = None  # type: ignore[assignment]
+                self._attr_is_opening = None  # type: ignore[assignment]
+
+        # Shutter Control II devices (MICROMODULE_BLINDS / MICROMODULE_SHUTTER)
+        # report the movement direction DIRECTLY via operationState — the Bosch
+        # spec enum is [STOPPED, OPENING, CLOSING] and they never emit MOVING
+        # (Shutter-II-local-openapi-v3.yml). The STOPPED/MOVING branches above
+        # therefore never matched these states, so physical-switch and Bosch-app
+        # moves left is_opening/is_closing unset while HA-initiated moves (which
+        # set the flags directly in open_cover/close_cover) looked correct — the
+        # exact direction symptom in issue #100. We set ONLY the direction flags
+        # here: it is purely additive (handles states that previously fell
+        # through) and deliberately does not touch _target_position, so the
+        # position-during-move display is unchanged for all models.
+        if self._current_operation_state is ShutterControlService.State.OPENING:
+            self._attr_is_opening = True
+            self._attr_is_closing = False
+
+        if self._current_operation_state is ShutterControlService.State.CLOSING:
+            self._attr_is_closing = True
+            self._attr_is_opening = False
+
     @property
     def device_class(self) -> CoverDeviceClass | None:
+        """Return the device class (awning or shutter)."""
         return (
             CoverDeviceClass.AWNING
             if self._device.device_model == "MICROMODULE_AWNING"
@@ -78,41 +239,105 @@ class ShutterControlCover(SHCEntity, CoverEntity):
         )
 
     @property
-    def current_cover_position(self):
-        """Return the current cover position."""
-        return round(self._device.level * 100.0)
+    def current_cover_position(self) -> int:
+        """Return the current or target cover position."""
+        if self._device.device_model == "MICROMODULE_SHUTTER":
+            if self._device.operation_state is ShutterControlService.State.STOPPED:
+                return round(float(self._device.level) * 100.0)
+            # Shutter-II reports OPENING/CLOSING directly, never MOVING, so a
+            # move started via the Bosch app or a physical switch (_app_command
+            # unset) must use the live level, not a stale HA-side target.
+            if self._app_command and self._target_position is not None:
+                return self._target_position
+            return round(float(self._device.level) * 100.0)
+        # for BBL devices, we can rely on the level attribute to determine the current position, even when moving
+        return round(float(self._device.level) * 100.0)
 
-    def stop_cover(self, **kwargs):
+    async def async_stop_cover(self, **kwargs: Any) -> None:
         """Stop the cover."""
-        self._device.stop()
+        self._micromodule_keypad_switch_off()
+        try:
+            await self._device.async_stop()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to stop {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
+        self._attr_is_opening = False
+        self._attr_is_closing = False
+        self._skip_update = True
+        self._app_command = True
 
     @property
-    def is_closed(self):
+    def is_closed(self) -> bool:
         """Return if the cover is closed or not."""
-        return self.current_cover_position == 0
+        return bool(
+            self._device.operation_state is ShutterControlService.State.STOPPED
+            and self._device.level == 0.0
+        )
 
-    def open_cover(self, **kwargs):
+    async def async_open_cover(self, **kwargs: Any) -> None:
         """Open the cover."""
-        self._device.level = 1.0
+        self._micromodule_keypad_switch_off()
+        try:
+            await self._device.async_set_level(1.0)
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to open {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
+        self._attr_is_opening = True
+        self._attr_is_closing = False
+        self._target_position = 100
+        self._skip_update = True
+        self._app_command = True
 
-    def close_cover(self, **kwargs):
+    async def async_close_cover(self, **kwargs: Any) -> None:
         """Close cover."""
-        self._device.level = 0.0
+        self._micromodule_keypad_switch_off()
+        try:
+            await self._device.async_set_level(0.0)
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to close {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
+        self._attr_is_closing = True
+        self._attr_is_opening = False
+        self._target_position = 0
+        self._skip_update = True
+        self._app_command = True
 
-    def set_cover_position(self, **kwargs):
+    async def async_set_cover_position(self, **kwargs: Any) -> None:
         """Move the cover to a specific position."""
+        if self._device.device_model == "MICROMODULE_SHUTTER":
+            self._micromodule_keypad_switch_off()
+            self._last_position = self.current_cover_position
         position = kwargs[ATTR_POSITION]
-        self._device.level = position / 100.0
+        try:
+            await self._device.async_set_level(position / 100.0)
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to set position for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
+        self._target_position = position
+        self._skip_update = True
+        self._app_command = True
 
     @property
-    def extra_state_attributes(self):
+    def extra_state_attributes(self) -> dict[str, Any]:
         """Return the state attributes."""
         return {
             "operation_state": self._device.operation_state,
         }
 
 
-class BlindsControlCover(ShutterControlCover, CoverEntity):
+class BlindsControlCover(ShutterControlCover, CoverEntity):  # type: ignore[misc]
     """Representation of a SHC blinds cover device."""
 
     _attr_device_class = CoverDeviceClass.BLIND
@@ -127,36 +352,152 @@ class BlindsControlCover(ShutterControlCover, CoverEntity):
         | CoverEntityFeature.STOP_TILT
     )
 
-    def open_cover(self, **kwargs):
-        """Open the cover."""
-        self._device.blinds_level = 1.0
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Initialize the blinds control cover, narrowed to SHCMicromoduleBlinds.
 
-    def close_cover(self, **kwargs):
-        """Close cover."""
-        self._device.blinds_level = 0.0
+        Adds `current_angle`/`async_set_target_angle`/`async_stop_blinds` on
+        top of the parent's `SHCMicromoduleShutterControl` narrowing.
+        """
+        super().__init__(device, entry_id)
+        self._device: SHCMicromoduleBlinds = device  # type: ignore[assignment]
 
-    def set_cover_position(self, **kwargs):
-        """Move the cover to a specific position."""
+    async def async_open_cover(self, **kwargs: Any) -> None:
+        """Open the cover (lift) via ShutterControl.level."""
+        try:
+            await self._device.async_set_level(1.0)
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to open {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
+        self._attr_is_opening = True
+        self._attr_is_closing = False
+        self._target_position = 100
+        self._skip_update = True
+        self._app_command = True
+
+    async def async_close_cover(self, **kwargs: Any) -> None:
+        """Close cover (lift) via ShutterControl.level."""
+        try:
+            await self._device.async_set_level(0.0)
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to close {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
+        self._attr_is_closing = True
+        self._attr_is_opening = False
+        self._target_position = 0
+        self._skip_update = True
+        self._app_command = True
+
+    async def async_set_cover_position(self, **kwargs: Any) -> None:
+        """Move the cover (lift) to a specific position via ShutterControl.level."""
         position = kwargs[ATTR_POSITION]
-        self._device.blinds_level = position / 100.0
-
-    def stop_cover_tilt(self, **kwargs: Any) -> None:
-        self._device.stop_blinds()
+        try:
+            await self._device.async_set_level(position / 100.0)
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to set position for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
+        self._target_position = position
+        self._skip_update = True
+        self._app_command = True
 
     @property
-    def current_cover_tilt_position(self):
+    def current_cover_position(self) -> int:
+        """Return the current cover (lift) position from ShutterControl.level.
+
+        Issue #100 ("fully up shows 0%", reporter-confirmed on a DEGREE_180
+        MICROMODULE_BLINDS, dev 6c5cb1…): venetian blinds expose THREE services
+        - ShutterControl (level = the live lift, 1=up/open .. 0=down/closed),
+          operationState only ever STOPPED/MOVING (never directional);
+        - BlindsControl (currentAngle = slat tilt); and
+        - BlindsSceneControl (level/angle = the last *scene* values, not the
+          live lift).
+        The previous code read the lift from blinds_level
+        (BlindsSceneControl.level), which on this device sat at 0.0 while the
+        blind was fully up -> HA showed 0% for a fully-open blind. The authori-
+        tative lift is ShutterControl.level (inherited self._device.level), the
+        same source the parent ShutterControlCover uses for non-
+        MICROMODULE_SHUTTER models, so this also matches the BBL mapping. Tilt
+        stays on BlindsControl (see current_cover_tilt_position).
+        """
+        return round(float(self._device.level) * 100.0)
+
+    async def async_stop_cover(self, **kwargs: Any) -> None:
+        """Stop the cover using the blind-specific stop endpoint."""
+        try:
+            await self._device.async_stop_blinds()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to stop {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
+        self._attr_is_opening = False
+        self._attr_is_closing = False
+        self._skip_update = True
+        self._app_command = True
+
+    async def async_stop_cover_tilt(self, **kwargs: Any) -> None:
+        """Stop the cover tilt.
+
+        Same physical endpoint as async_stop_cover() (halts the lift, not
+        just the tilt motor), so it clears is_opening/is_closing the same way.
+        """
+        try:
+            await self._device.async_stop_blinds()
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to stop {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
+        self._attr_is_opening = False
+        self._attr_is_closing = False
+        self._skip_update = True
+        self._app_command = True
+
+    @property
+    def current_cover_tilt_position(self) -> int:
         """Return the current cover tilt position."""
-        return round((1.0 - self._device.current_angle) * 100.0)
+        return round((1.0 - float(self._device.current_angle)) * 100.0)
 
-    def open_cover_tilt(self, **kwargs):
+    async def async_open_cover_tilt(self, **kwargs: Any) -> None:
         """Open the cover tilt."""
-        self._device.target_angle = 1.0 - 1.0
+        try:
+            await self._device.async_set_target_angle(1.0 - 1.0)
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to open tilt for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
 
-    def close_cover_tilt(self, **kwargs):
+    async def async_close_cover_tilt(self, **kwargs: Any) -> None:
         """Close cover tilt."""
-        self._device.target_angle = 1.0 - 0.0
+        try:
+            await self._device.async_set_target_angle(1.0 - 0.0)
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to close tilt for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err
 
-    def set_cover_tilt_position(self, **kwargs):
+    async def async_set_cover_tilt_position(self, **kwargs: Any) -> None:
         """Move the cover tilt to a specific position."""
         tilt_position = kwargs[ATTR_TILT_POSITION]
-        self._device.target_angle = 1.0 - (tilt_position / 100.0)
+        try:
+            await self._device.async_set_target_angle(1.0 - (tilt_position / 100.0))
+        except SHCException as err:
+            raise HomeAssistantError(
+                f"Failed to set tilt position for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="cover_action_failed",
+            ) from err

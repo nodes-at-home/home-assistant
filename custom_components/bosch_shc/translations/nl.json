@@ -1,37 +1,707 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Apparaat is al geconfigureerd",
-            "reauth_successful": "Herauthenticatie geslaagd"
+  "config": {
+    "abort": {
+      "already_configured": "Apparaat is al geconfigureerd",
+      "reauth_successful": "Herauthenticatie geslaagd",
+      "reconfigure_successful": "Herconfiguratie geslaagd",
+      "wrong_shc": "De ingevoerde host behoort tot een andere Bosch SHC controller. Voer de juiste host in voor dit item."
+    },
+    "error": {
+      "cannot_connect": "Kan geen verbinding maken",
+      "invalid_auth": "Ongeldige authenticatie",
+      "pairing_failed": "Koppelen mislukt; controleer of de Bosch Smart Home Controller in de koppelingsmodus staat (LED knippert) en of uw wachtwoord correct is.",
+      "session_error": "Sessiefout: API retourneert niet-OK resultaat.",
+      "unknown": "Onverwachte fout"
+    },
+    "flow_title": "Bosch SHC: {name}",
+    "step": {
+      "confirm_discovery": {
+        "description": "Smart Home Controller I: Houd de frontknop ingedrukt totdat de LED begint te knipperen.\nSmart Home Controller II: Druk kort op de functieknop. Cloud- en netwerklampen beginnen oranje te knipperen.\nHet apparaat is klaar om te koppelen.\n\nKlaar om {model} @ {host} in te stellen met Home Assistant?"
+      },
+      "credentials": {
+        "data": {
+          "name": "Clientnaam voor certificaat",
+          "password": "Wachtwoord van de Smart Home Controller"
         },
-        "error": {
-            "cannot_connect": "Kan geen verbinding maken",
-            "invalid_auth": "Ongeldige authenticatie",
-            "pairing_failed": "Koppelen mislukt; Controleer of de Bosch Smart Home Controller zich in de koppelingsmodus bevindt (LED knippert) en of uw wachtwoord correct is.",
-            "session_error": "Sessiefout: API retourneert niet-OK resultaat.",
-            "unknown": "Onverwachte fout"
-        },
-        "flow_title": "Bosch SHC: {name}",
-        "step": {
-            "confirm_discovery": {
-                "description": "Druk op de knop aan de voorzijde van de Bosch Smart Home Controller totdat de LED begint te knipperen.\nKlaar om verder te gaan met het instellen van {model} @ {host} met Home Assistant?"
-            },
-            "credentials": {
-                "data": {
-                    "password": "Wachtwoord van de Smart Home Controller"
-                }
-            },
-            "reauth_confirm": {
-                "description": "De bosch_shc integratie moet uw account herauthenticeren",
-                "title": "Integratie herauthenticeren"
-            },
-            "user": {
-                "data": {
-                    "host": "Host"
-                },
-                "description": "Stel uw Bosch Smart Home Controller in om monitoring en bediening met Home Assistant mogelijk te maken.",
-                "title": "SHC-authenticatieparameters"
-            }
+        "data_description": {
+          "name": "Naam weergegeven in de SHC-app onder verbonden clients.",
+          "password": "Het wachtwoord ingesteld in de Bosch Smart Home-app."
         }
+      },
+      "reauth_confirm": {
+        "description": "De Bosch SHC integratie moet uw account herauthenticeren.",
+        "title": "Integratie herauthenticeren",
+        "data": {
+          "host": "Host"
+        },
+        "data_description": {
+          "host": "IP-adres of hostnaam van de SHC controller (bijv. 192.168.x.y)."
+        }
+      },
+      "reconfigure": {
+        "title": "Bosch SHC herconfigureren",
+        "description": "Werk het IP-adres of de hostnaam van uw Bosch Smart Home Controller bij. Uw certificaten en inloggegevens blijven bewaard.",
+        "menu_options": {
+          "reconfigure_host": "Alleen host / IP-adres wijzigen",
+          "repair_credentials": "Opnieuw koppelen (clientcertificaat opnieuw genereren)"
+        }
+      },
+      "reconfigure_host": {
+        "title": "Host / IP-adres wijzigen",
+        "description": "Werk het IP-adres of de hostnaam van uw Bosch Smart Home Controller bij. Uw certificaten en inloggegevens blijven behouden.",
+        "data": {
+          "host": "Host"
+        },
+        "data_description": {
+          "host": "Nieuw IP-adres of hostnaam van de SHC-controller (bijv. 192.168.x.y)."
+        }
+      },
+      "repair_credentials": {
+        "title": "Opnieuw koppelen — clientcertificaat opnieuw genereren",
+        "description": "Druk op de koppelknop op de SHC (SHC I: voorknop ingedrukt houden totdat de LED knippert; SHC II: functieknop kort indrukken) en vul vervolgens het onderstaande formulier in.",
+        "data": {
+          "host": "Host",
+          "password": "Wachtwoord van de Smart Home Controller",
+          "name": "Clientnaam voor certificaat"
+        },
+        "data_description": {
+          "host": "IP-adres of hostnaam van de SHC-controller (bijv. 192.168.x.y).",
+          "password": "Het wachtwoord dat is ingesteld in de Bosch Smart Home-app.",
+          "name": "Naam die wordt weergegeven in de SHC-app onder verbonden clients."
+        }
+      },
+      "user": {
+        "data": {
+          "host": "Host"
+        },
+        "data_description": {
+          "host": "IP-adres of hostnaam van de SHC controller (bijv. 192.168.x.y)."
+        },
+        "description": "Stel uw Bosch Smart Home Controller in om bewaking en bediening met Home Assistant mogelijk te maken.",
+        "title": "SHC-authenticatieparameters"
+      }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Bosch SHC — Instellingen",
+        "description": "Configureer welke entiteiten en automatiseringen de Bosch Smart Home Controller integratie aanmaakt en beheert.{camera_tool}",
+        "sections": {
+          "features": {
+            "name": "Functies",
+            "description": "Schakel de entiteitstypes in of uit die de integratie aanmaakt.",
+            "data": {
+              "scenarios_as_buttons": "Scenario's blootstellen als knopentiteiten",
+              "diagnostic_entities": "Diagnostische sensoren aanmaken",
+              "enable_rawscan_service": "Diagnostische rawscan-service inschakelen",
+              "all_light_switches_as_light": "ALLE Light/Shutter Control II als lichten weergeven",
+              "light_switches_as_light": "Light/Shutter Control II weergeven als lampen",
+              "suppress_hue_lights": "Hue-lampen van Bosch SHC onderdrukken",
+              "suppress_power_sensors": "Vermogen- en energiesensoren onderdrukken",
+              "scenarios_filter": "Scenarioknoppen filter",
+              "suppress_ledvance_lights": "LEDVANCE-lampen van Bosch SHC onderdrukken",
+              "suppress_motion_indicator_light": "Statusindicator bewegingsdetector onderdrukken",
+              "suppress_camera_switches": "Bosch-cameraschakelaar onderdrukken",
+              "room_light_groups": "Lichtgroepen per kamer inschakelen",
+              "automation_rules_as_entities": "Bosch-automatiseringsregels als entiteiten weergeven",
+              "temperature_drop_entities": "Temperatuurdaling-entiteiten inschakelen"
+            },
+            "data_description": {
+              "scenarios_as_buttons": "Wanneer AAN: elk Bosch SHC-scenario verschijnt ook als knopentiteit in Home Assistant (naast de `trigger_scenario` service). Handig voor dashboardtegels en automatiseringen die scenario's direct activeren. Standaard: uit.",
+              "diagnostic_entities": "Wanneer AAN (standaard): diagnostische sensorentiteiten worden aangemaakt voor elk ondersteund apparaat — kleppenpositie (thermostaten) en communicatiekwaliteit (slimme stekkers). Zet UIT om het aantal entiteiten te verminderen als u deze sensoren niet nodig heeft.",
+              "enable_rawscan_service": "Wanneer AAN: registreert de bosch_shc.trigger_rawscan service voor ruwe API-foutopsporing. Zet UIT om deze te verbergen. Standaard: aan.",
+              "all_light_switches_as_light": "Schakel in om elk Light Control II / inbouw-lichtschakelaar-apparaat tegelijk als `light`-entiteit te presenteren — vervangt de apparaatspecifieke selectie hieronder. Uit (standaard) behoudt de keuze per apparaat. Dezelfde kanttekening: dit wisselt het entiteitsdomein om (`switch.*` ↔ `light.*`), dus werk automatiseringen en dashboards bij die naar de oude entiteiten verwijzen.",
+              "light_switches_as_light": "Selecteer de Light Control II / inbouw lichtschakelaar-apparaten die als `light`-entiteiten moeten verschijnen in plaats van `switch`-entiteiten. De schakelaar van elk geselecteerd apparaat wordt vervangen door een aan/uit-lamp. Laat leeg (standaard) om ze als switches te houden. Dit wijzigen verwisselt het entiteitsdomein (`switch.*` ↔ `light.*`), werk dus eventuele automatiseringen of dashboards bij die naar de oude entiteit verwijzen.",
+              "suppress_hue_lights": "Wanneer AAN: Hue-lampen gekoppeld aan de SHC worden niet meer als entiteiten beschikbaar gesteld. Gebruik dit om duplicaten met de Hue-integratie te vermijden. Standaard: uit.",
+              "suppress_power_sensors": "Wanneer AAN: vermogen- en energiesensoren (watt / kWh) worden niet aangemaakt voor slimme stekkers, BSM-schakelaars, micromodules en de EMMA energiemanager. Standaard: uit.",
+              "scenarios_filter": "Laat leeg om knoppen voor ALLE scenario's te maken (standaard). Selecteer één of meer om knoppen te beperken. Geldt alleen wanneer 'Scenario's als knoppen tonen' is ingeschakeld.",
+              "suppress_ledvance_lights": "Wanneer AAN: LEDVANCE-lampen gekoppeld aan de SHC worden niet meer als entiteiten beschikbaar gesteld. Gebruik dit om duplicaten met de LEDVANCE- of Zigbee-integratie te vermijden. Standaard: uit.",
+              "suppress_motion_indicator_light": "Wanneer AAN: de entiteit voor de statusindicator van bewegingsdetectoren II wordt niet aangemaakt. Standaard: uit.",
+              "suppress_camera_switches": "Wanneer AAN: privacy-, licht- en meldingsschakelaar voor Bosch-camera's (Eyes / 360 / Outdoor Gen2) worden niet aangemaakt. Gebruik dit met Bosch Camera Tool. Standaard: uit.",
+              "room_light_groups": "Wanneer AAN: er wordt per SHC-kamer met 2 of meer dimbare/kleurenlampen (LEDVANCE, Hue, Light/Shutter Control II-dimmers) één gecombineerde `light`-entiteit aangemaakt, waarmee u alle lampen van een kamer met één entiteit aan/uit kunt zetten — vergelijkbaar met de kamergebonden regeling die verwarming al heeft via Kamerklimaat regeling. Alleen aan/uit, geen samenvoeging van helderheid/kleur. Standaard: uit (geen nieuwe entiteiten).",
+              "automation_rules_as_entities": "Indien AAN: er wordt een schakelaar (in-/uitschakelen) en een knop (handmatig activeren) aangemaakt voor elke automatiseringsregel die in de Bosch-app is geconfigureerd — Bosch's eigen lokale regel-engine, volledig los van de automatiseringen van Home Assistant zelf. Standaard: uit (geen nieuwe entiteiten).",
+              "temperature_drop_entities": "Indien AAN: creëert een schakelaar (in-/uitschakelen) en een getal (dalingswaarde) voor de temperatuurdaling-service (vorstbescherming/open raam) van elke kamer. De meeste installaties gebruiken deze functie niet. Standaard: uit (geen nieuwe entiteiten)."
+            }
+          },
+          "presence": {
+            "name": "Aanwezigheidsgebaseerde kindvergrendeling",
+            "description": "Vergrendel automatisch alle SHC-thermostaten en -schakelaars wanneer iemand thuis is, en ontgrendel ze wanneer iedereen weg is.",
+            "data": {
+              "child_lock_enabled": "Aanwezigheidsgebaseerde kindvergrendeling inschakelen",
+              "child_lock_presence_entity": "Aanwezigheidsentiteiten",
+              "silent_mode_enabled": "Aanwezigheids- en tijdvenster stille modus inschakelen",
+              "silent_mode_start": "Begintijd stille modus",
+              "silent_mode_end": "Eindtijd stille modus"
+            },
+            "data_description": {
+              "child_lock_enabled": "Hoofdschakelaar. Wanneer AAN volgt de kindvergrendeling op alle SHC-thermostaten en schakelaarapparaten de aanwezigheidsentiteiten hieronder — vergrendeld wanneer iemand thuis is, ontgrendeld wanneer iedereen weg is. Wanneer UIT raakt de integratie de kindvergrendeling nooit aan.",
+              "child_lock_presence_entity": "De personen/apparaten die de kindvergrendeling bepalen. Deze gaat AAN zodra ENIGE van hen thuis is, en UIT alleen wanneer ALLE weg zijn. Kies bijvoorbeeld de Person-entiteiten van uw huishouden. 'Thuis' wordt automatisch gedetecteerd (home voor person/device_tracker/zone/group, on voor binary_sensor/input_boolean).",
+              "silent_mode_enabled": "Wanneer AAN wordt elke SHC-thermostaat die stille modus ondersteunt, overgeschakeld naar stille modus zolang iemand thuis is (op basis van de bovenstaande aanwezigheidsentiteiten) EN de huidige tijd binnen het onderstaande venster valt; anders wordt teruggeschakeld naar normaal. Standaard: uit.",
+              "silent_mode_start": "Begintijd van het dagelijkse stille-modusvenster (lokale tijd). Vensters kunnen middernacht overschrijden (bijv. 22:00 → 06:00).",
+              "silent_mode_end": "Eindtijd van het dagelijkse stille-modusvenster (lokale tijd)."
+            }
+          },
+          "advanced": {
+            "name": "Geavanceerd",
+            "description": "Verbindingsparameters op laag niveau. Wijzigingen helpen zelden — raadpleeg de documentatie voordat u ze aanpast.",
+            "data": {
+              "ssl_verify_hostname": "SSL-hostnaam verifiëren",
+              "long_poll_timeout": "Long-poll timeout (seconden)",
+              "excluded_devices": "Uitgesloten apparaten",
+              "excluded_rooms": "Uitgesloten kamers",
+              "ssl_skip_verify": "SHC-certificaatverificatie overslaan"
+            },
+            "data_description": {
+              "ssl_verify_hostname": "Wanneer AAN: de boschshcpy-bibliotheek controleert of de SSL-certificaat hostnaam van de SHC controller overeenkomt met zijn IP/hostnaam. Heeft momenteel geen effect — een toekomstige boschshcpy-update is vereist. Standaard: uit.",
+              "long_poll_timeout": "Hoe lang (in seconden) het long-poll-verzoek aan de SHC controller wacht op push-gebeurtenissen voor het opnieuw verbinden. Bereik: 5–300. Standaard: 30. Verhoog bij frequente herverbindingen op een traag netwerk; verlaag als uw router inactieve verbindingen verbreekt. Vereist een toekomstige boschshcpy-update.",
+              "excluded_devices": "Apparaten om te verbergen — er worden geen entiteiten voor aangemaakt. Leeg laten om alles op te nemen. Bestaande entiteiten voor nieuw uitgesloten apparaten blijven tot ze handmatig zijn verwijderd.",
+              "excluded_rooms": "Verberg alle apparaten in deze Bosch-kamers. Leeg laten om alles op te nemen.",
+              "ssl_skip_verify": "Expert / alleen lokale LAN-netwerken: wanneer AAN wordt het SHC-servercertificaat niet meer geverifieerd — handig als het certificaat van uw offline controller is verlopen. De versleutelde clientcertificaat-aanmelding wordt niet beïnvloed. Schakel dit alleen in op een vertrouwd lokaal netwerk. Standaard: uit."
+            }
+          }
+        }
+      }
+    }
+  },
+  "entity": {
+    "climate": {
+      "room_climate_control": {
+        "name": "Kamerklimaat regeling",
+        "state_attributes": {
+          "preset_mode": {
+            "state": {
+              "boost": "Boost",
+              "eco": "Eco"
+            }
+          }
+        }
+      }
+    },
+    "button": {
+      "smoke_test": {
+        "name": "Rooktest"
+      },
+      "walk_test": {
+        "name": "Walk Test"
+      },
+      "walk_test_stop": {
+        "name": "Walk Test stoppen"
+      },
+      "detection_test": {
+        "name": "Detectietest"
+      },
+      "detection_test_stop": {
+        "name": "Detectietest stoppen"
+      },
+      "reset_tamper": {
+        "name": "Sabotage resetten"
+      },
+      "siren_test_alarm": {
+        "name": "Testalarm"
+      },
+      "preview_max_brightness": {
+        "name": "Voorbeeld maximale helderheid"
+      },
+      "preview_min_brightness": {
+        "name": "Voorbeeld minimale helderheid"
+      },
+      "reset_energy_summation": {
+        "name": "Energieteller resetten"
+      },
+      "shutter_recalibrate": {
+        "name": "Opnieuw kalibreren"
+      },
+      "enable_all_diagnostics": {
+        "name": "Alle diagnostiek inschakelen"
+      },
+      "intrusion_alarm_mute": {
+        "name": "Alarm dempen"
+      },
+      "water_alarm_mute": {
+        "name": "Waterlarm dempen"
+      },
+      "automation_rule_trigger": {
+        "name": "Activeren"
+      }
+    },
+    "number": {
+      "impulse_length": {
+        "name": "Impulslengte"
+      },
+      "temperature_drop_value": {
+        "name": "Temperatuurverlagingswaarde"
+      },
+      "energy_saving_power_threshold": {
+        "name": "Energiebesparingsdrempel vermogen"
+      },
+      "energy_saving_enter_duration": {
+        "name": "Duur activering energiebesparing"
+      },
+      "led_brightness": {
+        "name": "LED-helderheid"
+      },
+      "display_brightness": {
+        "name": "Schermhelderheid"
+      },
+      "display_on_time": {
+        "name": "Scherm aan-tijd"
+      },
+      "siren_alarm_duration": {
+        "name": "Alarmduur"
+      },
+      "siren_flash_duration": {
+        "name": "Flitsduur"
+      },
+      "siren_alarm_delay": {
+        "name": "Alarmvertraging"
+      },
+      "siren_flash_delay": {
+        "name": "Flitsvertraging"
+      },
+      "bypass_timeout": {
+        "name": "Overbruggingstime-out"
+      }
+    },
+    "select": {
+      "motion_sensitivity": {
+        "name": "Bewegingsgevoeligheid"
+      },
+      "vibration_sensitivity": {
+        "name": "Trillingsgevoeligheid"
+      },
+      "state_after_power_outage": {
+        "name": "Toestand na stroomuitval"
+      },
+      "smoke_sensitivity": {
+        "name": "Rookgevoeligheid"
+      },
+      "display_direction": {
+        "name": "Schermrichting"
+      },
+      "displayed_temperature": {
+        "name": "Weergegeven temperatuur"
+      },
+      "terminal_type": {
+        "name": "Aansluitingstype"
+      },
+      "valve_type": {
+        "name": "Kleppetype"
+      },
+      "heater_type": {
+        "name": "Verwarmingstype"
+      },
+      "switch_type": {
+        "name": "Schakelaartype"
+      },
+      "actuator_type": {
+        "name": "Actuatortype"
+      },
+      "output_mode": {
+        "name": "Uitvoermodus"
+      },
+      "siren_sound_level": {
+        "name": "Geluidsniveau",
+        "state": {
+          "low": "Laag",
+          "medium": "Gemiddeld",
+          "high": "Hoog"
+        }
+      },
+      "orientation_light_response_time": {
+        "name": "Reactietijd oriëntatielicht"
+      },
+      "smart_sensitivity_security_level": {
+        "name": "Smart Sensitivity beveiligingsniveau"
+      },
+      "smart_sensitivity_comfort_level": {
+        "name": "Smart Sensitivity comfortniveau"
+      },
+      "dimmer_phase_control": {
+        "name": "Dimmer faseregeling"
+      },
+      "installation_profile": {
+        "name": "Installatieprofiel",
+        "state": {
+          "generic": "Binnen (Algemeen)",
+          "outdoor": "Buiten",
+          "light": "Licht",
+          "heating_rcc": "Verwarming (RCC)",
+          "boiler": "Boiler",
+          "mini_pv": "Mini-zonnepaneel"
+        }
+      },
+      "thermostat_regulation_algorithm": {
+        "name": "Regelalgoritme",
+        "state": {
+          "internal": "Intern",
+          "custom": "Aangepast"
+        }
+      }
+    },
+    "sensor": {
+      "open_windows_doors": {
+        "name": "Open deuren/ramen"
+      },
+      "walk_test_state": {
+        "name": "Walk Test-status"
+      },
+      "battery_level": {
+        "name": "Batterijniveau"
+      },
+      "combined_rating": {
+        "name": "Gecombineerde beoordeling"
+      },
+      "air_quality_description": {
+        "name": "Luchtkwaliteitsbeschrijving"
+      },
+      "communication_quality": {
+        "name": "Communicatiekwaliteit",
+        "state": {
+          "good": "Goed",
+          "normal": "Normaal",
+          "not_supported": "Niet ondersteund",
+          "bad": "Slecht",
+          "unknown": "Onbekend",
+          "fetching": "Ophalen"
+        }
+      },
+      "siren_battery": {
+        "name": "Batterij"
+      },
+      "siren_main_power": {
+        "name": "Stroombron",
+        "state": {
+          "battery": "Batterij",
+          "solar": "Zonne-energie",
+          "v12": "12 V",
+          "v230": "230 V",
+          "unknown": "Onbekend"
+        }
+      },
+      "siren_solar_charging": {
+        "name": "Zonneladen",
+        "state": {
+          "bad": "Slecht",
+          "medium": "Gemiddeld",
+          "good": "Goed",
+          "unknown": "Onbekend"
+        }
+      },
+      "keypad_trigger": {
+        "name": "Knoptoewijzing"
+      },
+      "floor_temperature": {
+        "name": "Vloertemperatuur"
+      },
+      "purity": {
+        "name": "Zuiverheid"
+      },
+      "air_quality": {
+        "name": "Luchtkwaliteit"
+      },
+      "temperature_rating": {
+        "name": "Temperatuurbeoordeling"
+      },
+      "humidity_rating": {
+        "name": "Vochtigheidsbeoordeling"
+      },
+      "purity_rating": {
+        "name": "Zuiverheidsbeoordeling"
+      },
+      "energy_yield": {
+        "name": "Energieopbrengst"
+      },
+      "power_yield": {
+        "name": "Vermogensopbrengst"
+      },
+      "valve_tappet": {
+        "name": "Ventielstoterstang"
+      },
+      "detection_test_state": {
+        "name": "Detectietest status"
+      },
+      "next_setpoint_temperature": {
+        "name": "Volgende ingestelde temperatuur"
+      },
+      "presence_simulation_running_end": {
+        "name": "Simulatie actief tot"
+      },
+      "presence_simulation_running_start": {
+        "name": "Simulatie actief sinds"
+      },
+      "reference_moving_time_bottom_to_top": {
+        "name": "Referentie beweegtijd (onder naar boven)"
+      },
+      "reference_moving_time_top_to_bottom": {
+        "name": "Referentie beweegtijd (boven naar onder)"
+      },
+      "zigbee_routing_quality": {
+        "name": "Zigbee-routeringskwaliteit",
+        "state": {
+          "good": "Goed",
+          "medium": "Gemiddeld",
+          "bad": "Slecht",
+          "no_connection": "Geen verbinding",
+          "device_not_initialized": "Apparaat niet geïnitialiseerd",
+          "not_supported": "Niet ondersteund",
+          "unknown": "Onbekend"
+        }
+      }
+    },
+    "binary_sensor": {
+      "siren_acoustic_alarm": {
+        "name": "Akoestisch alarm"
+      },
+      "siren_visual_alarm": {
+        "name": "Visueel alarm"
+      },
+      "siren_tamper": {
+        "name": "Sabotage"
+      },
+      "siren_ac_dc_error": {
+        "name": "AC/DC-fout"
+      },
+      "siren_battery_defect": {
+        "name": "Batterijdefect"
+      },
+      "siren_battery_temperature_abnormal": {
+        "name": "Batterijtemperatuur abnormaal"
+      },
+      "siren_primary_power_supply_outage": {
+        "name": "Stroomuitval"
+      },
+      "call_for_heat": {
+        "name": "Warmtevraag"
+      },
+      "vibration": {
+        "name": "Vibratie"
+      },
+      "smoke": {
+        "name": "Rook"
+      },
+      "occupancy": {
+        "name": "Aanwezigheid"
+      },
+      "tamper": {
+        "name": "Sabotage"
+      },
+      "schedule_override_active": {
+        "name": "Schema-overschrijving actief"
+      },
+      "shutter_calibration_required": {
+        "name": "Kalibratie vereist"
+      }
+    },
+    "update": {
+      "controller_update": {
+        "name": "Software-update"
+      },
+      "device_firmware": {
+        "name": "Firmware"
+      }
+    },
+    "switch": {
+      "bypass": {
+        "name": "Alarm overbruggen"
+      },
+      "bypass_infinite": {
+        "name": "Overbrugging verloopt nooit"
+      },
+      "temperature_drop_enabled": {
+        "name": "Temperatuurverlaging"
+      },
+      "automation_rule": {
+        "name": "Ingeschakeld"
+      }
+    },
+    "light": {
+      "motion_light": {
+        "name": "Bewegingslamp"
+      },
+      "room_light_group": {
+        "name": "Lamp"
+      }
+    }
+  },
+  "device_automation": {
+    "trigger_subtype": {
+      "LOWER_BUTTON": "Onderste knop",
+      "UPPER_BUTTON": "Bovenste knop",
+      "LOWER_LEFT_BUTTON": "Onderste linkerknop",
+      "UPPER_LEFT_BUTTON": "Bovenste linkerknop",
+      "LOWER_RIGHT_BUTTON": "Onderste rechterknop",
+      "UPPER_RIGHT_BUTTON": "Bovenste rechterknop",
+      "IDLE_OFF": "Alarm uit",
+      "INTRUSION_ALARM": "Inbraakalarm",
+      "SECONDARY_ALARM": "Secundair alarm",
+      "PRIMARY_ALARM": "Primair alarm",
+      "INTRUSION_ALARM_ON_REQUESTED": "Inbraakalarm",
+      "INTRUSION_ALARM_OFF_REQUESTED": "Inbraakalarm gewist",
+      "ALARM_OFF": "Alarm uit",
+      "ALARM_ON": "Alarm aan",
+      "ALARM_MUTED": "Alarm gedempt"
+    },
+    "trigger_type": {
+      "PRESS_SHORT": "{subtype} kort ingedrukt",
+      "PRESS_LONG": "{subtype} lang ingedrukt",
+      "MOTION": "Beweging gedetecteerd",
+      "SCENARIO": "Scenario {subtype} geactiveerd",
+      "ALARM": "{subtype} geactiveerd"
+    }
+  },
+  "services": {
+    "smokedetector_check": {
+      "name": "Rookmelder test",
+      "description": "Start de testroutine van een rookmelder.",
+      "fields": {
+        "entity_id": {
+          "name": "Entiteit-ID",
+          "description": "Naam van de rookmelderentiteit."
+        }
+      }
+    },
+    "trigger_scenario": {
+      "name": "Scenario activeren",
+      "description": "Activeert een scenario op Bosch SHC.",
+      "fields": {
+        "title": {
+          "name": "SHC-naam",
+          "description": "Titel van het SHC"
+        },
+        "name": {
+          "name": "Scenarionaam",
+          "description": "Naam van het te activeren scenario"
+        }
+      }
+    },
+    "trigger_rawscan": {
+      "name": "Rawscan activeren",
+      "description": "Activeert een rawscan op Bosch SHC om apparaten te ontdekken. Resultaat wordt gestreamd naar het informatielogboek.",
+      "fields": {
+        "title": {
+          "name": "SHC-naam",
+          "description": "Titel van het SHC"
+        },
+        "command": {
+          "name": "Rawscan opdracht",
+          "description": "Mogelijke opdrachten: 'devices', 'device', 'services', 'device_services', 'device_service', 'rooms', 'scenarios', 'info', 'information', 'public_information', 'intrusion_detection'"
+        },
+        "device_id": {
+          "name": "Apparaat-ID",
+          "description": "Apparaat-ID voor opdrachten 'device', 'device_services' of 'device_service'"
+        },
+        "service_id": {
+          "name": "Service-ID",
+          "description": "Service-ID voor opdracht 'device_service'"
+        }
+      }
+    },
+    "smokedetector_alarmstate": {
+      "name": "Rookmelder alarmstatus",
+      "description": "Stuurt een aangepaste opdracht naar een rookmelder.",
+      "fields": {
+        "entity_id": {
+          "name": "Entiteit-ID",
+          "description": "Naam van de rookmelderentiteit."
+        },
+        "command": {
+          "name": "Aangepaste opdracht",
+          "description": "Opdrachtstring te sturen naar de rookmelder."
+        }
+      }
+    },
+    "export_zigbee_topology": {
+      "name": "Zigbee-topologie exporteren",
+      "description": "Bouwt een Zigbee-meshtopologiegrafiek (linkkwaliteit per hop) op basis van de laatste routeringspolling en schrijft deze als JSON en een bekijkbare HTML-pagina onder www/bosch_shc/. Geeft de grafiek ook terug als JSON en als Mermaid-diagramtekst in het serviceantwoord.",
+      "fields": {
+        "title": {
+          "name": "SHC-naam",
+          "description": "Titel van de SHC. Laat leeg om de eerst geconfigureerde SHC te gebruiken."
+        }
+      }
+    },
+    "refresh_zigbee_routing": {
+      "name": "Zigbee-routering vernieuwen",
+      "description": "Haalt nu direct een actuele Zigbee-routeringsmeting op. Routeringsgegevens worden anders slechts één keer bij het opstarten opgehaald, niet volgens een terugkerend schema, om onnodige batterijafname bij Zigbee-apparaten te voorkomen — gebruik dit vóór Zigbee-topologie exporteren voor een actuele kaart.",
+      "fields": {
+        "title": {
+          "name": "SHC-naam",
+          "description": "Titel van de SHC. Laat leeg om de eerst geconfigureerde SHC te gebruiken."
+        }
+      }
+    }
+  },
+  "issues": {
+    "camera_tool_available": {
+      "title": "Meer voor uw Bosch-camera's",
+      "description": "Bosch-camera's zijn gedetecteerd. Deze integratie biedt de basisfuncties; de speciale **Bosch Smart Home Camera Tool** doet veel meer (snapshots, beweging / FCM-push, verlichting, streams). Open \"Meer informatie\" voor het project en sluit daarna deze melding."
+    },
+    "cert_expiring": {
+      "title": "Bosch SHC-clientcertificaat verloopt binnenkort",
+      "description": "Het Bosch SHC-clientcertificaat voor **{title}** verloopt over {days} dag(en) (op {expiry}). Om het te vernieuwen: zet de controller in koppelingsmodus (druk op de voorknop totdat de LED's knipperen) en ga naar **Instellingen → Apparaten & diensten → Bosch Smart Home Controller** en selecteer **Opnieuw configureren**."
+    }
+  },
+  "exceptions": {
+    "cert_cryptography_missing": {
+      "message": "De cryptografiebibliotheek is niet beschikbaar. Zorg ervoor dat deze is geïnstalleerd."
+    },
+    "cert_file_missing": {
+      "message": "Certificaatbestand ontbreekt: {path}"
+    },
+    "cert_invalid": {
+      "message": "Ongeldig certificaat: {path}"
+    },
+    "rawscan_type_unknown": {
+      "message": "Rawscan-type niet gevonden."
+    },
+    "rawscan_entry_not_found": {
+      "message": "Geen geladen Bosch SHC-vermelding met die titel gevonden."
+    },
+    "scenario_not_found": {
+      "message": "Scenario niet gevonden."
+    },
+    "smoke_test_failed": {
+      "message": "Rooktest mislukt."
+    },
+    "alarm_state_failed": {
+      "message": "Wijziging van alarmstatus mislukt."
+    },
+    "button_press_failed": {
+      "message": "Knopdruk mislukt."
+    },
+    "automation_rule_update_failed": {
+      "message": "Bijwerken van de automatiseringsregel is mislukt."
+    },
+    "switch_action_failed": {
+      "message": "Wijziging van schakelaarstatus mislukt."
+    },
+    "light_action_failed": {
+      "message": "Wijziging van lichtstatus mislukt."
+    },
+    "cover_action_failed": {
+      "message": "Wijziging van rolluikstatus mislukt."
+    },
+    "select_option_failed": {
+      "message": "Instellen van de optie mislukt."
+    },
+    "number_set_failed": {
+      "message": "Instellen van de waarde mislukt."
+    },
+    "update_install_failed": {
+      "message": "Kan de firmware-update voor {name} niet starten: {error}"
+    },
+    "update_not_ready": {
+      "message": "De firmware-update voor {name} kan momenteel niet worden geactiveerd (huidige status: {state})."
+    },
+    "zigbee_topology_no_data": {
+      "message": "Er zijn nog geen Zigbee-routeringsgegevens beschikbaar voor deze SHC-controller (er zijn geen Zigbee-apparaten gekoppeld, of de eerste polling van 5 minuten is nog niet voltooid sinds Home Assistant is gestart)."
+    },
+    "zigbee_topology_entry_not_found": {
+      "message": "Geen geladen Bosch SHC-vermelding met die titel gevonden."
+    },
+    "zigbee_topology_write_failed": {
+      "message": "Kon de Zigbee-topologie-export niet naar www/bosch_shc/ schrijven."
+    }
+  }
 }

@@ -1,10 +1,12 @@
 """Provides device triggers for Bosch Smart Home Controller integration."""
 
-from typing import List, Tuple
+from __future__ import annotations
+
+from collections.abc import Iterable
+from typing import Any
 
 import voluptuous as vol
-from boschshcpy import SHCDevice, SHCSession
-from homeassistant.helpers.trigger import TriggerActionType
+from boschshcpy import SHCSession
 from homeassistant.components.device_automation import DEVICE_TRIGGER_BASE_SCHEMA
 from homeassistant.components.device_automation.exceptions import (
     InvalidDeviceAutomationConfig,
@@ -20,19 +22,20 @@ from homeassistant.const import (
 )
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant
 from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers.trigger import TriggerActionType, TriggerInfo
 from homeassistant.helpers.typing import ConfigType
 
 from .const import (
     ALARM_EVENTS_SUBTYPES_SD,
+    ALARM_EVENTS_SUBTYPES_SD2,
     ALARM_EVENTS_SUBTYPES_SDS,
     ATTR_EVENT_SUBTYPE,
     ATTR_EVENT_TYPE,
     CONF_SUBTYPE,
-    DATA_SESSION,
     DOMAIN,
     EVENT_BOSCH_SHC,
-    INPUTS_EVENTS_SUBTYPES_WRC2,
     INPUTS_EVENTS_SUBTYPES_SWITCH2,
+    INPUTS_EVENTS_SUBTYPES_WRC2,
     LOGGER,
     SUPPORTED_INPUTS_EVENTS_TYPES,
 )
@@ -44,12 +47,23 @@ TRIGGER_SCHEMA = DEVICE_TRIGGER_BASE_SCHEMA.extend(
     }
 )
 
+# dev_type -> static (CONF_TYPE, subtypes). WRC2/SWITCH2/SHC don't fit this shape.
+DEVICE_TRIGGER_TABLE: dict[str, tuple[str, Iterable[str]]] = {
+    "MD": ("MOTION", ("",)),
+    "MD2": ("MOTION", ("",)),
+    "SD": ("ALARM", ALARM_EVENTS_SUBTYPES_SD),
+    "SMOKE_DETECTOR2": ("ALARM", ALARM_EVENTS_SUBTYPES_SD2),
+    "SMOKE_DETECTION_SYSTEM": ("ALARM", ALARM_EVENTS_SUBTYPES_SDS),
+}
 
-async def get_device_from_id(hass, device_id) -> Tuple[SHCDevice, str]:
+
+async def get_device_from_id(hass: HomeAssistant, device_id: str) -> tuple[Any, str]:
     """Get the device for the given device id."""
     dev_registry = dr.async_get(hass)
-    for config_entry in hass.data[DOMAIN]:
-        session: SHCSession = hass.data[DOMAIN][config_entry][DATA_SESSION]
+    for entry in hass.config_entries.async_entries(DOMAIN):
+        if not hasattr(entry, "runtime_data"):
+            continue
+        session: SHCSession = entry.runtime_data.session
 
         for shc_device in session.devices:
             device = dev_registry.async_get_device(
@@ -64,19 +78,29 @@ async def get_device_from_id(hass, device_id) -> Tuple[SHCDevice, str]:
             device = dev_registry.async_get_device(
                 identifiers={(DOMAIN, ids.id)}, connections=set()
             )
-            if device.id == device_id:
+            if device is not None and device.id == device_id:
                 return ids, "IDS"
 
         device = dev_registry.async_get_device(
-            identifiers={(DOMAIN, session.information.unique_id)}, connections=set()
+            identifiers={
+                (
+                    DOMAIN,
+                    (session.information.unique_id or "")
+                    if session.information
+                    else "",
+                )
+            },
+            connections=set(),
         )
-        if device.id == device_id:
+        if device is not None and device.id == device_id:
             return session, "SHC"
 
     return None, ""
 
 
-async def async_get_triggers(hass: HomeAssistant, device_id: str) -> List[dict]:
+async def async_get_triggers(
+    hass: HomeAssistant, device_id: str
+) -> list[dict[str, Any]]:
     """List device triggers for SHC devices."""
     triggers = []
 
@@ -84,18 +108,22 @@ async def async_get_triggers(hass: HomeAssistant, device_id: str) -> List[dict]:
     if not device:
         raise InvalidDeviceAutomationConfig(f"Device not found: {device_id}")
 
-    if dev_type == "WRC2" or dev_type == "SWITCH2":
-        input_triggers = []
+    if dev_type in {"WRC2", "SWITCH2"}:
+        input_triggers: list[tuple[str, str]] = []
         for trigger in SUPPORTED_INPUTS_EVENTS_TYPES:
             if trigger in ("PRESS_SHORT", "PRESS_LONG", "PRESS_LONG_RELEASED"):
                 match dev_type:
                     case "WRC2":
-                        for subtype in INPUTS_EVENTS_SUBTYPES_WRC2:
-                            input_triggers.append((trigger, subtype))
+                        input_triggers.extend(
+                            (trigger, subtype)
+                            for subtype in INPUTS_EVENTS_SUBTYPES_WRC2
+                        )
                     case "SWITCH2":
-                        for subtype in INPUTS_EVENTS_SUBTYPES_SWITCH2:
-                            input_triggers.append((trigger, subtype))
-                    case _:
+                        input_triggers.extend(
+                            (trigger, subtype)
+                            for subtype in INPUTS_EVENTS_SUBTYPES_SWITCH2
+                        )
+                    case _:  # pragma: no cover — unreachable: outer guard checks WRC2/SWITCH2
                         LOGGER.debug(
                             "Device type %s unknown, no triggers added.", dev_type
                         )
@@ -111,52 +139,30 @@ async def async_get_triggers(hass: HomeAssistant, device_id: str) -> List[dict]:
                 }
             )
 
-    if dev_type == "MD":
-        triggers.append(
+    if dev_type in DEVICE_TRIGGER_TABLE:
+        trigger_type, subtypes = DEVICE_TRIGGER_TABLE[dev_type]
+        triggers.extend(
             {
                 CONF_PLATFORM: "device",
                 CONF_DEVICE_ID: device_id,
                 CONF_DOMAIN: DOMAIN,
-                CONF_TYPE: "MOTION",
-                CONF_SUBTYPE: "",
+                CONF_TYPE: trigger_type,
+                CONF_SUBTYPE: subtype,
             }
+            for subtype in subtypes
         )
 
-    if dev_type == "SD":
-        for subtype in ALARM_EVENTS_SUBTYPES_SD:
-            triggers.append(
-                {
-                    CONF_PLATFORM: "device",
-                    CONF_DEVICE_ID: device_id,
-                    CONF_DOMAIN: DOMAIN,
-                    CONF_TYPE: "ALARM",
-                    CONF_SUBTYPE: subtype,
-                }
-            )
-
-    if dev_type == "SMOKE_DETECTION_SYSTEM":
-        for subtype in ALARM_EVENTS_SUBTYPES_SDS:
-            triggers.append(
-                {
-                    CONF_PLATFORM: "device",
-                    CONF_DEVICE_ID: device_id,
-                    CONF_DOMAIN: DOMAIN,
-                    CONF_TYPE: "ALARM",
-                    CONF_SUBTYPE: subtype,
-                }
-            )
-
     if dev_type == "SHC":
-        for subtype in device.scenario_names:
-            triggers.append(
-                {
-                    CONF_PLATFORM: "device",
-                    CONF_DEVICE_ID: device_id,
-                    CONF_DOMAIN: DOMAIN,
-                    CONF_TYPE: "SCENARIO",
-                    CONF_SUBTYPE: subtype,
-                }
-            )
+        triggers.extend(
+            {
+                CONF_PLATFORM: "device",
+                CONF_DEVICE_ID: device_id,
+                CONF_DOMAIN: DOMAIN,
+                CONF_TYPE: "SCENARIO",
+                CONF_SUBTYPE: subtype,
+            }
+            for subtype in device.scenario_names
+        )
 
     return triggers
 
@@ -165,7 +171,7 @@ async def async_attach_trigger(
     hass: HomeAssistant,
     config: ConfigType,
     action: TriggerActionType,
-    automation_info: dict,
+    automation_info: TriggerInfo,
 ) -> CALLBACK_TYPE:
     """Attach a trigger."""
     event_config = None

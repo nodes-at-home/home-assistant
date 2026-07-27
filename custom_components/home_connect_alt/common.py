@@ -13,6 +13,20 @@ from .const import CONF_NAME_TEMPLATE, CONF_NAME_TEMPLATE_DEFAULT, DOMAIN, DEFAU
 
 _LOGGER = logging.getLogger(__name__)
 
+def find_delayed_operation_option(appliance:Appliance, conf:"Configuration"):
+    """ Return the first option marked as 'DelayedOperation' found on the appliance, looking first in the available program options and falling back to the currently selected program's options. Returns None if no such option exists. """
+    if appliance.available_programs:
+        for program in appliance.available_programs.values():
+            if program.options:
+                for option in program.options.values():
+                    if conf.get_entity_setting(option.key, "type") == "DelayedOperation":
+                        return option
+    if appliance.selected_program and appliance.selected_program.options:
+        for option in appliance.selected_program.options.values():
+            if conf.get_entity_setting(option.key, "type") == "DelayedOperation":
+                return option
+    return None
+
 def is_boolean_enum(values:list[str]) -> bool:
     """ Check if the list of enum values represents a boolean on/off option"""
     if not values or len(values) != 2:
@@ -41,8 +55,16 @@ class EntityBase(ABC):
         self._haid:str = ""
         self._safe_haid: str = ""
         self._unique_id:str = ""
-        self.entity_id = f'home_connect.{self.unique_id}'
+        self.entity_id = f'{self._platform_domain()}.{self.unique_id}'
         self._hc_obj = hc_obj
+
+    def _platform_domain(self) -> str:
+        """Return the HA platform domain (sensor, switch, ...) derived from the MRO."""
+        for cls in type(self).__mro__:
+            mod = getattr(cls, "__module__", "")
+            if mod.startswith("homeassistant.components."):
+                return mod.split(".")[2]
+        return DOMAIN
 
 
     def get_entity_setting(self, option, default=None):
@@ -241,12 +263,20 @@ class Configuration(dict):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.update(self.__merge(self, DEFAULT_SETTINGS, overwrite=False))
+        # __merge mutates self in place and returns self; no further .update needed.
+        self.__merge(self, DEFAULT_SETTINGS, overwrite=False)
         if Configuration._global_config:
-            self.update(self.__merge(self, Configuration._global_config, overwrite=False))
+            self.__merge(self, Configuration._global_config, overwrite=False)
 
     def __merge(self, destination:dict, source:dict, overwrite:bool=True ):
         for key, value in source.items():
+            # Configuration instances are per-entry runtime storage, not config
+            # to be merged. Skipping them keeps __merge robust even if a future
+            # change re-introduces aliasing between _global_config and the
+            # integration's hass.data[DOMAIN] (the original source of the
+            # RecursionError that this guard defends against).
+            if isinstance(value, Configuration):
+                continue
             if isinstance(value, dict):
                 # get node or create one
                 node = destination.setdefault(key, {})

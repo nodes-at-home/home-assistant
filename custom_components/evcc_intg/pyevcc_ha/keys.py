@@ -85,10 +85,10 @@ class Tag(ApiKey, Enum):
     # "auxPower": 1116.8,
     AUXPOWER = ApiKey(json_key="auxPower", type=EP_TYPE.SITE)
 
-    # "batteryMode": unknown|normal|hold|charge
-    # POST /api/batterymode/<mode>: set battery mode (unknown/normal/hold/charge)
+    # "batteryMode": unknown|normal|hold|charge|holdcharge
+    # POST /api/batterymode/<mode>: set battery mode (unknown/normal/hold/charge/holdcharge)
     # Directly controls the mode of all controllable batteries. evcc behavior like 'price limit' or 'prevent discharge while fast charging' is overruled. External mode resets after 60s. The external system has to call this endpoint regularly.
-    BATTERYMODE = ApiKey(json_key="batteryMode", type=EP_TYPE.SITE, writeable=True, write_key="batterymode", options=["null", "unknown", "normal", "hold", "charge"])
+    BATTERYMODE = ApiKey(json_key="batteryMode", type=EP_TYPE.SITE, writeable=True, write_key="batterymode", options=["null", "unknown", "normal", "hold", "charge", "holdcharge"])
 
     # "battery":[{"power":0,"capacity":12,"soc":81,"controllable":false}], -> we must access this attribute via json_idx
     BATTERY = ApiKey(json_key="battery", type=EP_TYPE.SITE)
@@ -427,6 +427,19 @@ class Tag(ApiKey, Enum):
     VEHICLEPLANTIME = ApiKey(json_key="vehiclePlansTime", type=EP_TYPE.VEHICLES)
     # delete plan button
     VEHICLEPLANSDELETE= ApiKey(json_key="vehiclePlansDelete", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/soc")
+
+    # repeatingPlans (simple support just a switch to turn it on/off)
+    # "repeatingPlans":[{"weekdays":[1,2,3,4,5,6,0],"time":"07:00","tz":"Europe/Berlin","soc":80,"active":false},{"weekdays":[1,2,3,4,5],"time":"08:45","tz":"Europe/Berlin","soc":80,"active":false}]
+    # to access the index, we will use the json_idx[] of the EntityDescriptions!
+    VEHICLEREPEATINGPLAN002 = ApiKey(json_key="active", entity_key="repeating_plan_2", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/repeating")
+    VEHICLEREPEATINGPLAN003 = ApiKey(json_key="active", entity_key="repeating_plan_3", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/repeating")
+    VEHICLEREPEATINGPLAN004 = ApiKey(json_key="active", entity_key="repeating_plan_4", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/repeating")
+    VEHICLEREPEATINGPLAN005 = ApiKey(json_key="active", entity_key="repeating_plan_5", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/repeating")
+    VEHICLEREPEATINGPLAN006 = ApiKey(json_key="active", entity_key="repeating_plan_6", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/repeating")
+    VEHICLEREPEATINGPLAN007 = ApiKey(json_key="active", entity_key="repeating_plan_7", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/repeating")
+    VEHICLEREPEATINGPLAN008 = ApiKey(json_key="active", entity_key="repeating_plan_8", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/repeating")
+    VEHICLEREPEATINGPLAN009 = ApiKey(json_key="active", entity_key="repeating_plan_9", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/repeating")
+    VEHICLEREPEATINGPLAN010 = ApiKey(json_key="active", entity_key="repeating_plan_10", type=EP_TYPE.VEHICLES, writeable=True, write_key="plan/repeating")
 
     ###################################
     # STATISTICS

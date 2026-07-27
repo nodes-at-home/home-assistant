@@ -49,9 +49,9 @@ if (parcelRequire == null) {
 }
 
 var parcelRegister = parcelRequire.register;
-parcelRegister("evAes", function(module, exports) {
+parcelRegister("2QgUB", function(module, exports) {
 
-$parcel$export(module.exports, "__decorate", function () { return $a90010e54f817fa8$export$29e00dfd3077644b; });
+$parcel$export(module.exports, "__decorate", function () { return $5278c494edee6226$export$29e00dfd3077644b; });
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -65,35 +65,35 @@ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
 LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */ /* global Reflect, Promise, SuppressedError, Symbol, Iterator */ var $a90010e54f817fa8$var$extendStatics = function(d, b) {
-    $a90010e54f817fa8$var$extendStatics = Object.setPrototypeOf || ({
+***************************************************************************** */ /* global Reflect, Promise, SuppressedError, Symbol, Iterator */ var $5278c494edee6226$var$extendStatics = function(d, b) {
+    $5278c494edee6226$var$extendStatics = Object.setPrototypeOf || ({
         __proto__: []
     }) instanceof Array && function(d, b) {
         d.__proto__ = b;
     } || function(d, b) {
         for(var p in b)if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
     };
-    return $a90010e54f817fa8$var$extendStatics(d, b);
+    return $5278c494edee6226$var$extendStatics(d, b);
 };
-function $a90010e54f817fa8$export$a8ba968b8961cb8a(d, b) {
+function $5278c494edee6226$export$a8ba968b8961cb8a(d, b) {
     if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-    $a90010e54f817fa8$var$extendStatics(d, b);
+    $5278c494edee6226$var$extendStatics(d, b);
     function __() {
         this.constructor = d;
     }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
-var $a90010e54f817fa8$export$18ce0697a983be9b = function() {
-    $a90010e54f817fa8$export$18ce0697a983be9b = Object.assign || function __assign(t) {
+var $5278c494edee6226$export$18ce0697a983be9b = function() {
+    $5278c494edee6226$export$18ce0697a983be9b = Object.assign || function __assign(t) {
         for(var s, i = 1, n = arguments.length; i < n; i++){
             s = arguments[i];
             for(var p in s)if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
         }
         return t;
     };
-    return $a90010e54f817fa8$export$18ce0697a983be9b.apply(this, arguments);
+    return $5278c494edee6226$export$18ce0697a983be9b.apply(this, arguments);
 };
-function $a90010e54f817fa8$export$3c9a16f847548506(s, e) {
+function $5278c494edee6226$export$3c9a16f847548506(s, e) {
     var t = {};
     for(var p in s)if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function") {
@@ -101,18 +101,18 @@ function $a90010e54f817fa8$export$3c9a16f847548506(s, e) {
     }
     return t;
 }
-function $a90010e54f817fa8$export$29e00dfd3077644b(decorators, target, key, desc) {
+function $5278c494edee6226$export$29e00dfd3077644b(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 }
-function $a90010e54f817fa8$export$d5ad3fd78186038f(paramIndex, decorator) {
+function $5278c494edee6226$export$d5ad3fd78186038f(paramIndex, decorator) {
     return function(target, key) {
         decorator(target, key, paramIndex);
     };
 }
-function $a90010e54f817fa8$export$3a84e1ae4e97e9b0(ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
+function $5278c494edee6226$export$3a84e1ae4e97e9b0(ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
     function accept(f) {
         if (f !== void 0 && typeof f !== "function") throw new TypeError("Function expected");
         return f;
@@ -147,25 +147,25 @@ function $a90010e54f817fa8$export$3a84e1ae4e97e9b0(ctor, descriptorIn, decorator
     if (target) Object.defineProperty(target, contextIn.name, descriptor);
     done = true;
 }
-function $a90010e54f817fa8$export$d831c04e792af3d(thisArg, initializers, value) {
+function $5278c494edee6226$export$d831c04e792af3d(thisArg, initializers, value) {
     var useValue = arguments.length > 2;
     for(var i = 0; i < initializers.length; i++)value = useValue ? initializers[i].call(thisArg, value) : initializers[i].call(thisArg);
     return useValue ? value : void 0;
 }
-function $a90010e54f817fa8$export$6a2a36740a146cb8(x) {
+function $5278c494edee6226$export$6a2a36740a146cb8(x) {
     return typeof x === "symbol" ? x : "".concat(x);
 }
-function $a90010e54f817fa8$export$d1a06452d3489bc7(f, name, prefix) {
+function $5278c494edee6226$export$d1a06452d3489bc7(f, name, prefix) {
     if (typeof name === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
     return Object.defineProperty(f, "name", {
         configurable: true,
         value: prefix ? "".concat(prefix, " ", name) : name
     });
 }
-function $a90010e54f817fa8$export$f1db080c865becb9(metadataKey, metadataValue) {
+function $5278c494edee6226$export$f1db080c865becb9(metadataKey, metadataValue) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
 }
-function $a90010e54f817fa8$export$1050f835b63b671e(thisArg, _arguments, P, generator) {
+function $5278c494edee6226$export$1050f835b63b671e(thisArg, _arguments, P, generator) {
     function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
             resolve(value);
@@ -192,7 +192,7 @@ function $a90010e54f817fa8$export$1050f835b63b671e(thisArg, _arguments, P, gener
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 }
-function $a90010e54f817fa8$export$67ebef60e6f28a6(thisArg, body) {
+function $5278c494edee6226$export$67ebef60e6f28a6(thisArg, body) {
     var _ = {
         label: 0,
         sent: function() {
@@ -283,7 +283,7 @@ function $a90010e54f817fa8$export$67ebef60e6f28a6(thisArg, body) {
         };
     }
 }
-var $a90010e54f817fa8$export$45d3717a4c69092e = Object.create ? function(o, m, k, k2) {
+var $5278c494edee6226$export$45d3717a4c69092e = Object.create ? function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
@@ -297,10 +297,10 @@ var $a90010e54f817fa8$export$45d3717a4c69092e = Object.create ? function(o, m, k
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 };
-function $a90010e54f817fa8$export$f33643c0debef087(m, o) {
-    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p)) $a90010e54f817fa8$export$45d3717a4c69092e(o, m, p);
+function $5278c494edee6226$export$f33643c0debef087(m, o) {
+    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p)) $5278c494edee6226$export$45d3717a4c69092e(o, m, p);
 }
-function $a90010e54f817fa8$export$19a8beecd37a4c45(o) {
+function $5278c494edee6226$export$19a8beecd37a4c45(o) {
     var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
     if (m) return m.call(o);
     if (o && typeof o.length === "number") return {
@@ -314,7 +314,7 @@ function $a90010e54f817fa8$export$19a8beecd37a4c45(o) {
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 }
-function $a90010e54f817fa8$export$8d051b38c9118094(o, n) {
+function $5278c494edee6226$export$8d051b38c9118094(o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
     if (!m) return o;
     var i = m.call(o), r, ar = [], e;
@@ -333,16 +333,16 @@ function $a90010e54f817fa8$export$8d051b38c9118094(o, n) {
     }
     return ar;
 }
-function $a90010e54f817fa8$export$afc72e2116322959() {
-    for(var ar = [], i = 0; i < arguments.length; i++)ar = ar.concat($a90010e54f817fa8$export$8d051b38c9118094(arguments[i]));
+function $5278c494edee6226$export$afc72e2116322959() {
+    for(var ar = [], i = 0; i < arguments.length; i++)ar = ar.concat($5278c494edee6226$export$8d051b38c9118094(arguments[i]));
     return ar;
 }
-function $a90010e54f817fa8$export$6388937ca91ccae8() {
+function $5278c494edee6226$export$6388937ca91ccae8() {
     for(var s = 0, i = 0, il = arguments.length; i < il; i++)s += arguments[i].length;
     for(var r = Array(s), k = 0, i = 0; i < il; i++)for(var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)r[k] = a[j];
     return r;
 }
-function $a90010e54f817fa8$export$1216008129fb82ed(to, from, pack) {
+function $5278c494edee6226$export$1216008129fb82ed(to, from, pack) {
     if (pack || arguments.length === 2) {
         for(var i = 0, l = from.length, ar; i < l; i++)if (ar || !(i in from)) {
             if (!ar) ar = Array.prototype.slice.call(from, 0, i);
@@ -351,10 +351,10 @@ function $a90010e54f817fa8$export$1216008129fb82ed(to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 }
-function $a90010e54f817fa8$export$10c90e4f7922046c(v) {
-    return this instanceof $a90010e54f817fa8$export$10c90e4f7922046c ? (this.v = v, this) : new $a90010e54f817fa8$export$10c90e4f7922046c(v);
+function $5278c494edee6226$export$10c90e4f7922046c(v) {
+    return this instanceof $5278c494edee6226$export$10c90e4f7922046c ? (this.v = v, this) : new $5278c494edee6226$export$10c90e4f7922046c(v);
 }
-function $a90010e54f817fa8$export$e427f37a30a4de9b(thisArg, _arguments, generator) {
+function $5278c494edee6226$export$e427f37a30a4de9b(thisArg, _arguments, generator) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var g = generator.apply(thisArg, _arguments || []), i, q = [];
     return i = Object.create((typeof AsyncIterator === "function" ? AsyncIterator : Object).prototype), verb("next"), verb("throw"), verb("return", awaitReturn), i[Symbol.asyncIterator] = function() {
@@ -388,7 +388,7 @@ function $a90010e54f817fa8$export$e427f37a30a4de9b(thisArg, _arguments, generato
         }
     }
     function step(r) {
-        r.value instanceof $a90010e54f817fa8$export$10c90e4f7922046c ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);
+        r.value instanceof $5278c494edee6226$export$10c90e4f7922046c ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);
     }
     function fulfill(value) {
         resume("next", value);
@@ -400,7 +400,7 @@ function $a90010e54f817fa8$export$e427f37a30a4de9b(thisArg, _arguments, generato
         if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]);
     }
 }
-function $a90010e54f817fa8$export$bbd80228419bb833(o) {
+function $5278c494edee6226$export$bbd80228419bb833(o) {
     var i, p;
     return i = {}, verb("next"), verb("throw", function(e) {
         throw e;
@@ -410,16 +410,16 @@ function $a90010e54f817fa8$export$bbd80228419bb833(o) {
     function verb(n, f) {
         i[n] = o[n] ? function(v) {
             return (p = !p) ? {
-                value: $a90010e54f817fa8$export$10c90e4f7922046c(o[n](v)),
+                value: $5278c494edee6226$export$10c90e4f7922046c(o[n](v)),
                 done: false
             } : f ? f(v) : v;
         } : f;
     }
 }
-function $a90010e54f817fa8$export$e3b29a3d6162315f(o) {
+function $5278c494edee6226$export$e3b29a3d6162315f(o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof $a90010e54f817fa8$export$19a8beecd37a4c45 === "function" ? $a90010e54f817fa8$export$19a8beecd37a4c45(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
+    return m ? m.call(o) : (o = typeof $5278c494edee6226$export$19a8beecd37a4c45 === "function" ? $5278c494edee6226$export$19a8beecd37a4c45(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
         return this;
     }, i);
     function verb(n) {
@@ -438,14 +438,14 @@ function $a90010e54f817fa8$export$e3b29a3d6162315f(o) {
         }, reject);
     }
 }
-function $a90010e54f817fa8$export$4fb47efe1390b86f(cooked, raw) {
+function $5278c494edee6226$export$4fb47efe1390b86f(cooked, raw) {
     if (Object.defineProperty) Object.defineProperty(cooked, "raw", {
         value: raw
     });
     else cooked.raw = raw;
     return cooked;
 }
-var $a90010e54f817fa8$var$__setModuleDefault = Object.create ? function(o, v) {
+var $5278c494edee6226$var$__setModuleDefault = Object.create ? function(o, v) {
     Object.defineProperty(o, "default", {
         enumerable: true,
         value: v
@@ -453,44 +453,44 @@ var $a90010e54f817fa8$var$__setModuleDefault = Object.create ? function(o, v) {
 } : function(o, v) {
     o["default"] = v;
 };
-var $a90010e54f817fa8$var$ownKeys = function(o) {
-    $a90010e54f817fa8$var$ownKeys = Object.getOwnPropertyNames || function(o) {
+var $5278c494edee6226$var$ownKeys = function(o) {
+    $5278c494edee6226$var$ownKeys = Object.getOwnPropertyNames || function(o) {
         var ar = [];
         for(var k in o)if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
         return ar;
     };
-    return $a90010e54f817fa8$var$ownKeys(o);
+    return $5278c494edee6226$var$ownKeys(o);
 };
-function $a90010e54f817fa8$export$c21735bcef00d192(mod) {
+function $5278c494edee6226$export$c21735bcef00d192(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
-        for(var k = $a90010e54f817fa8$var$ownKeys(mod), i = 0; i < k.length; i++)if (k[i] !== "default") $a90010e54f817fa8$export$45d3717a4c69092e(result, mod, k[i]);
+        for(var k = $5278c494edee6226$var$ownKeys(mod), i = 0; i < k.length; i++)if (k[i] !== "default") $5278c494edee6226$export$45d3717a4c69092e(result, mod, k[i]);
     }
-    $a90010e54f817fa8$var$__setModuleDefault(result, mod);
+    $5278c494edee6226$var$__setModuleDefault(result, mod);
     return result;
 }
-function $a90010e54f817fa8$export$da59b14a69baef04(mod) {
+function $5278c494edee6226$export$da59b14a69baef04(mod) {
     return mod && mod.__esModule ? mod : {
         default: mod
     };
 }
-function $a90010e54f817fa8$export$d5dcaf168c640c35(receiver, state, kind, f) {
+function $5278c494edee6226$export$d5dcaf168c640c35(receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 }
-function $a90010e54f817fa8$export$d40a35129aaff81f(receiver, state, value, kind, f) {
+function $5278c494edee6226$export$d40a35129aaff81f(receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 }
-function $a90010e54f817fa8$export$81fdc39f203e4e04(state, receiver) {
+function $5278c494edee6226$export$81fdc39f203e4e04(state, receiver) {
     if (receiver === null || typeof receiver !== "object" && typeof receiver !== "function") throw new TypeError("Cannot use 'in' operator on non-object");
     return typeof state === "function" ? receiver === state : state.has(receiver);
 }
-function $a90010e54f817fa8$export$88ac25d8e944e405(env, value, async) {
+function $5278c494edee6226$export$88ac25d8e944e405(env, value, async) {
     if (value !== null && value !== void 0) {
         if (typeof value !== "object" && typeof value !== "function") throw new TypeError("Object expected.");
         var dispose, inner;
@@ -521,13 +521,13 @@ function $a90010e54f817fa8$export$88ac25d8e944e405(env, value, async) {
     });
     return value;
 }
-var $a90010e54f817fa8$var$_SuppressedError = typeof SuppressedError === "function" ? SuppressedError : function(error, suppressed, message) {
+var $5278c494edee6226$var$_SuppressedError = typeof SuppressedError === "function" ? SuppressedError : function(error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
-function $a90010e54f817fa8$export$8f076105dc360e92(env) {
+function $5278c494edee6226$export$8f076105dc360e92(env) {
     function fail(e) {
-        env.error = env.hasError ? new $a90010e54f817fa8$var$_SuppressedError(e, env.error, "An error was suppressed during disposal.") : e;
+        env.error = env.hasError ? new $5278c494edee6226$var$_SuppressedError(e, env.error, "An error was suppressed during disposal.") : e;
         env.hasError = true;
     }
     var r, s = 0;
@@ -549,45 +549,45 @@ function $a90010e54f817fa8$export$8f076105dc360e92(env) {
     }
     return next();
 }
-function $a90010e54f817fa8$export$889dfb5d17574b0b(path, preserveJsx) {
+function $5278c494edee6226$export$889dfb5d17574b0b(path, preserveJsx) {
     if (typeof path === "string" && /^\.\.?\//.test(path)) return path.replace(/\.(tsx)$|((?:\.d)?)((?:\.[^./]+?)?)\.([cm]?)ts$/i, function(m, tsx, d, ext, cm) {
         return tsx ? preserveJsx ? ".jsx" : ".js" : d && (!ext || !cm) ? m : d + ext + "." + cm.toLowerCase() + "js";
     });
     return path;
 }
-var $a90010e54f817fa8$export$2e2bcd8739ae039 = {
-    __extends: $a90010e54f817fa8$export$a8ba968b8961cb8a,
-    __assign: $a90010e54f817fa8$export$18ce0697a983be9b,
-    __rest: $a90010e54f817fa8$export$3c9a16f847548506,
-    __decorate: $a90010e54f817fa8$export$29e00dfd3077644b,
-    __param: $a90010e54f817fa8$export$d5ad3fd78186038f,
-    __esDecorate: $a90010e54f817fa8$export$3a84e1ae4e97e9b0,
-    __runInitializers: $a90010e54f817fa8$export$d831c04e792af3d,
-    __propKey: $a90010e54f817fa8$export$6a2a36740a146cb8,
-    __setFunctionName: $a90010e54f817fa8$export$d1a06452d3489bc7,
-    __metadata: $a90010e54f817fa8$export$f1db080c865becb9,
-    __awaiter: $a90010e54f817fa8$export$1050f835b63b671e,
-    __generator: $a90010e54f817fa8$export$67ebef60e6f28a6,
-    __createBinding: $a90010e54f817fa8$export$45d3717a4c69092e,
-    __exportStar: $a90010e54f817fa8$export$f33643c0debef087,
-    __values: $a90010e54f817fa8$export$19a8beecd37a4c45,
-    __read: $a90010e54f817fa8$export$8d051b38c9118094,
-    __spread: $a90010e54f817fa8$export$afc72e2116322959,
-    __spreadArrays: $a90010e54f817fa8$export$6388937ca91ccae8,
-    __spreadArray: $a90010e54f817fa8$export$1216008129fb82ed,
-    __await: $a90010e54f817fa8$export$10c90e4f7922046c,
-    __asyncGenerator: $a90010e54f817fa8$export$e427f37a30a4de9b,
-    __asyncDelegator: $a90010e54f817fa8$export$bbd80228419bb833,
-    __asyncValues: $a90010e54f817fa8$export$e3b29a3d6162315f,
-    __makeTemplateObject: $a90010e54f817fa8$export$4fb47efe1390b86f,
-    __importStar: $a90010e54f817fa8$export$c21735bcef00d192,
-    __importDefault: $a90010e54f817fa8$export$da59b14a69baef04,
-    __classPrivateFieldGet: $a90010e54f817fa8$export$d5dcaf168c640c35,
-    __classPrivateFieldSet: $a90010e54f817fa8$export$d40a35129aaff81f,
-    __classPrivateFieldIn: $a90010e54f817fa8$export$81fdc39f203e4e04,
-    __addDisposableResource: $a90010e54f817fa8$export$88ac25d8e944e405,
-    __disposeResources: $a90010e54f817fa8$export$8f076105dc360e92,
-    __rewriteRelativeImportExtension: $a90010e54f817fa8$export$889dfb5d17574b0b
+var $5278c494edee6226$export$2e2bcd8739ae039 = {
+    __extends: $5278c494edee6226$export$a8ba968b8961cb8a,
+    __assign: $5278c494edee6226$export$18ce0697a983be9b,
+    __rest: $5278c494edee6226$export$3c9a16f847548506,
+    __decorate: $5278c494edee6226$export$29e00dfd3077644b,
+    __param: $5278c494edee6226$export$d5ad3fd78186038f,
+    __esDecorate: $5278c494edee6226$export$3a84e1ae4e97e9b0,
+    __runInitializers: $5278c494edee6226$export$d831c04e792af3d,
+    __propKey: $5278c494edee6226$export$6a2a36740a146cb8,
+    __setFunctionName: $5278c494edee6226$export$d1a06452d3489bc7,
+    __metadata: $5278c494edee6226$export$f1db080c865becb9,
+    __awaiter: $5278c494edee6226$export$1050f835b63b671e,
+    __generator: $5278c494edee6226$export$67ebef60e6f28a6,
+    __createBinding: $5278c494edee6226$export$45d3717a4c69092e,
+    __exportStar: $5278c494edee6226$export$f33643c0debef087,
+    __values: $5278c494edee6226$export$19a8beecd37a4c45,
+    __read: $5278c494edee6226$export$8d051b38c9118094,
+    __spread: $5278c494edee6226$export$afc72e2116322959,
+    __spreadArrays: $5278c494edee6226$export$6388937ca91ccae8,
+    __spreadArray: $5278c494edee6226$export$1216008129fb82ed,
+    __await: $5278c494edee6226$export$10c90e4f7922046c,
+    __asyncGenerator: $5278c494edee6226$export$e427f37a30a4de9b,
+    __asyncDelegator: $5278c494edee6226$export$bbd80228419bb833,
+    __asyncValues: $5278c494edee6226$export$e3b29a3d6162315f,
+    __makeTemplateObject: $5278c494edee6226$export$4fb47efe1390b86f,
+    __importStar: $5278c494edee6226$export$c21735bcef00d192,
+    __importDefault: $5278c494edee6226$export$da59b14a69baef04,
+    __classPrivateFieldGet: $5278c494edee6226$export$d5dcaf168c640c35,
+    __classPrivateFieldSet: $5278c494edee6226$export$d40a35129aaff81f,
+    __classPrivateFieldIn: $5278c494edee6226$export$81fdc39f203e4e04,
+    __addDisposableResource: $5278c494edee6226$export$88ac25d8e944e405,
+    __disposeResources: $5278c494edee6226$export$8f076105dc360e92,
+    __rewriteRelativeImportExtension: $5278c494edee6226$export$889dfb5d17574b0b
 };
 
 });
@@ -1629,42 +1629,30 @@ var $dFoGf = parcelRequire("dFoGf");
 });
 
 
-parcelRegister("fKMMF", function(module, exports) {
-
-$parcel$export(module.exports, "fireEvent", function () { return $589840a8bffad2e2$export$43835e9acf248a15; });
+parcelRegister("5R2d0", function(module, exports) {
+"use strict";
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.fireEvent = void 0;
+parcelRequire("7zDNa");
 /**
- * https://github.com/home-assistant/frontend/blob/dev/src/common/dom/fire_event.ts
- */ // Polymer legacy event helpers used courtesy of the Polymer project.
-//
-// Copyright (c) 2017 The Polymer Authors. All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//    * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//    * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//    * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-const $589840a8bffad2e2$export$43835e9acf248a15 = (node, type, detail, options)=>{
+ * Dispatches a custom event with an optional detail value.
+ *
+ * @param {string} type Name of event type.
+ * @param {*=} detail Detail value containing event-specific
+ *   payload.
+ * @param {{ bubbles: (boolean|undefined),
+ *           cancelable: (boolean|undefined),
+ *           composed: (boolean|undefined) }=}
+ *  options Object specifying options.  These may include:
+ *  `bubbles` (boolean, defaults to `true`),
+ *  `cancelable` (boolean, defaults to false), and
+ *  `node` on which to fire the event (HTMLElement, defaults to `this`).
+ * @return {Event} The new event that was fired.
+ */ const $44339d9693669cbe$var$fireEvent = (node, type, detail, options)=>{
     options = options || {};
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- upstream HA
     // @ts-ignore
     detail = detail === null || detail === undefined ? {} : detail;
     const event = new Event(type, {
@@ -1672,42 +1660,57 @@ const $589840a8bffad2e2$export$43835e9acf248a15 = (node, type, detail, options)=
         cancelable: Boolean(options.cancelable),
         composed: options.composed === undefined ? true : options.composed
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- upstream HA Event detail
     event.detail = detail;
     node.dispatchEvent(event);
     return event;
 };
+module.exports.fireEvent = $44339d9693669cbe$var$fireEvent;
 
 });
+parcelRegister("7zDNa", function(module, exports) {
+"use strict";
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+
+});
+
 
 parcelRegister("6c3D1", function(module, exports) {
-module.exports = import("./problem-dialog.15fb8175.js").then(()=>parcelRequire('gIkwD'));
+module.exports = import("./problem-dialog.386b9567.js").then(()=>parcelRequire('gIkwD'));
 
 });
 
-parcelRegister("cmVfz", function(module, exports) {
-
-$parcel$export(module.exports, "stateActive", function () { return $d460d16f74269a4e$export$c0e85c3982a3daa6; });
+parcelRegister("gp9lG", function(module, exports) {
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/state_active.ts
- */ 
-var $jf6NF = parcelRequire("jf6NF");
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.stateActive = $bf163b97d55f035c$var$stateActive;
 
-var $jyxIy = parcelRequire("jyxIy");
-function $d460d16f74269a4e$export$c0e85c3982a3daa6(stateObj, state) {
-    const domain = (0, $jyxIy.computeDomain)(stateObj.entity_id);
-    const compareState = state === undefined ? stateObj === null || stateObj === void 0 ? void 0 : stateObj.state : state;
+var $7zhir = parcelRequire("7zhir");
+
+var $h7W3o = parcelRequire("h7W3o");
+function $bf163b97d55f035c$var$stateActive(stateObj, state) {
+    const domain = (0, $h7W3o.computeDomain)(stateObj.entity_id);
+    const compareState = state !== null && state !== void 0 ? state : stateObj === null || stateObj === void 0 ? void 0 : stateObj.state;
     if ([
         'button',
         'event',
+        'infrared',
         'input_button',
+        'radio_frequency',
         'scene'
-    ].includes(domain)) return compareState !== (0, $jf6NF.UNAVAILABLE);
-    if ((0, $jf6NF.isUnavailableState)(compareState)) return false;
+    ].includes(domain)) return compareState !== $7zhir.UNAVAILABLE;
+    if (compareState === $7zhir.UNAVAILABLE || compareState === $7zhir.UNKNOWN) return false;
     // The "off" check is relevant for most domains, but there are exceptions
     // such as "alert" where "off" is still a somewhat active state and
     // therefore gets a custom color and "idle" is instead the state that
     // matches what most other domains consider inactive.
-    if (compareState === (0, $jf6NF.OFF) && domain !== 'alert') return false;
+    if (compareState === $7zhir.OFF && domain !== 'alert') return false;
     // Custom cases
     switch(domain){
         case 'alarm_control_panel':
@@ -1721,13 +1724,14 @@ function $d460d16f74269a4e$export$c0e85c3982a3daa6(stateObj, state) {
         case 'person':
             return compareState !== 'not_home';
         case 'lawn_mower':
-            return [
-                'mowing',
-                'error'
+            return ![
+                'docked',
+                'paused'
             ].includes(compareState);
         case 'lock':
             return compareState !== 'locked';
         case 'media_player':
+            // Upstream treats paused as active; cards treat paused like standby (inactive).
             return ![
                 'standby',
                 'paused'
@@ -1759,53 +1763,61 @@ function $d460d16f74269a4e$export$c0e85c3982a3daa6(stateObj, state) {
 }
 
 });
-parcelRegister("jf6NF", function(module, exports) {
-
-$parcel$export(module.exports, "UNAVAILABLE", function () { return $a7bee5b3ec27c408$export$f2d101b977a134fd; });
-$parcel$export(module.exports, "UNKNOWN", function () { return $a7bee5b3ec27c408$export$78244dbb77cfa6b6; });
-$parcel$export(module.exports, "OFF", function () { return $a7bee5b3ec27c408$export$173de64b5ad0d5b4; });
-$parcel$export(module.exports, "isUnavailableState", function () { return $a7bee5b3ec27c408$export$dea4173a348a2153; });
+parcelRegister("7zhir", function(module, exports) {
+"use strict";
 /**
- * https://github.com/home-assistant/frontend/blob/dev/src/data/entity.ts
- */ 
-var $hxXCx = parcelRequire("hxXCx");
-const $a7bee5b3ec27c408$export$f2d101b977a134fd = 'unavailable';
-const $a7bee5b3ec27c408$export$78244dbb77cfa6b6 = 'unknown';
-const $a7bee5b3ec27c408$export$8a4b4288adcd729e = 'on';
-const $a7bee5b3ec27c408$export$173de64b5ad0d5b4 = 'off';
-const $a7bee5b3ec27c408$export$565a86226f245f0b = [
-    $a7bee5b3ec27c408$export$f2d101b977a134fd,
-    $a7bee5b3ec27c408$export$78244dbb77cfa6b6
+ * https://github.com/home-assistant/frontend/blob/dev/src/data/entity/entity.ts
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.isOffState = module.exports.isUnavailableState = module.exports.OFF_STATES = module.exports.UNAVAILABLE_STATES = module.exports.OFF = module.exports.ON = module.exports.UNKNOWN = module.exports.UNAVAILABLE = void 0;
+
+var $8bx5C = parcelRequire("8bx5C");
+module.exports.UNAVAILABLE = 'unavailable';
+module.exports.UNKNOWN = 'unknown';
+module.exports.ON = 'on';
+module.exports.OFF = 'off';
+module.exports.UNAVAILABLE_STATES = [
+    module.exports.UNAVAILABLE,
+    module.exports.UNKNOWN
 ];
-const $a7bee5b3ec27c408$export$8ccd97e727a09c65 = [
-    $a7bee5b3ec27c408$export$f2d101b977a134fd,
-    $a7bee5b3ec27c408$export$78244dbb77cfa6b6,
-    $a7bee5b3ec27c408$export$173de64b5ad0d5b4
+module.exports.OFF_STATES = [
+    module.exports.UNAVAILABLE,
+    module.exports.UNKNOWN,
+    module.exports.OFF
 ];
-const $a7bee5b3ec27c408$export$dea4173a348a2153 = (0, $hxXCx.arrayLiteralIncludes)($a7bee5b3ec27c408$export$565a86226f245f0b);
-const $a7bee5b3ec27c408$export$3473ff6928139ced = (0, $hxXCx.arrayLiteralIncludes)($a7bee5b3ec27c408$export$8ccd97e727a09c65);
+module.exports.isUnavailableState = (0, $8bx5C.arrayLiteralIncludes)(module.exports.UNAVAILABLE_STATES);
+module.exports.isOffState = (0, $8bx5C.arrayLiteralIncludes)(module.exports.OFF_STATES);
 
 });
-parcelRegister("hxXCx", function(module, exports) {
-
-$parcel$export(module.exports, "arrayLiteralIncludes", function () { return $f7a86b27aed09785$export$2fff862a498eed4d; });
+parcelRegister("8bx5C", function(module, exports) {
+"use strict";
 /**
- * https://github.com/home-assistant/frontend/blob/dev/src/common/array/literal-includes.ts#L6
- */ /**
+ * https://github.com/home-assistant/frontend/blob/dev/src/common/array/literal-includes.ts
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.arrayLiteralIncludes = void 0;
+/**
  * Creates a type predicate function for determining if an array literal includes a given value
  * @param array - The array to check
  * @returns A type predicate function
- */ const $f7a86b27aed09785$export$2fff862a498eed4d = (array)=>(searchElement, fromIndex)=>array.includes(searchElement, fromIndex);
+ */ const $5f5904b359c2f306$var$arrayLiteralIncludes = (array)=>(searchElement, fromIndex)=>array.includes(searchElement, fromIndex);
+module.exports.arrayLiteralIncludes = $5f5904b359c2f306$var$arrayLiteralIncludes;
 
 });
 
 
-parcelRegister("jyxIy", function(module, exports) {
-
-$parcel$export(module.exports, "computeDomain", function () { return $676762a3bf0095a1$export$2044bdc9670769ab; });
+parcelRegister("h7W3o", function(module, exports) {
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/compute_domain.ts
- */ const $676762a3bf0095a1$export$2044bdc9670769ab = (entityId)=>entityId.substring(0, entityId.indexOf('.'));
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.computeDomain = void 0;
+const $c7801f5d251c198a$var$computeDomain = (entityId)=>entityId.substring(0, entityId.indexOf('.'));
+module.exports.computeDomain = $c7801f5d251c198a$var$computeDomain;
 
 });
 
@@ -1824,23 +1836,507 @@ const $a6dfaa78520799c6$export$c18c768bbe3223b7 = (hass, entity, content)=>(0, $
 
 });
 
-parcelRegister("1LdRn", function(module, exports) {
+parcelRegister("g28NR", function(module, exports) {
+"use strict";
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.HassConfigMixin = void 0;
+/**
+ * Provides non-decorated `hass` and `config` fields.
+ *
+ * These are intentionally NOT `@property()` to avoid Lit reactive property
+ * plumbing/attribute semantics.
+ */ const $bac3a96534ef5b24$var$HassConfigMixin = (superClass)=>{
+    class HassConfigClass extends superClass {
+    }
+    return HassConfigClass;
+};
+module.exports.HassConfigMixin = $bac3a96534ef5b24$var$HassConfigMixin;
 
-$parcel$export(module.exports, "HassUpdateMixin", function () { return $4aaac1c384d75a93$export$19efda5681568302; });
-const $4aaac1c384d75a93$export$19efda5681568302 = (superClass)=>{
+});
+
+parcelRegister("jc0SV", function(module, exports) {
+
+var $kJycS = parcelRequire("kJycS");
+
+var $1izJ2 = parcelRequire("1izJ2");
+"use strict";
+var $df8fd303fc05ef66$var$__decorate = undefined && undefined.__decorate || function(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.SubscribeEntityStateMixin = void 0;
+parcelRequire("jcMWt");
+var $lYE5o = parcelRequire("lYE5o");
+
+var $fAhtX = parcelRequire("fAhtX");
+/**
+ * Mixin that subscribes to entity state changes via subscribe_entities.
+ * Only notifies on meaningful changes (state/attributes), not context/last_updated.
+ *
+ * Set `entities` to the list of entity_ids to watch; read `states[entityId]`
+ * for the current state of each (undefined when not yet received). For the
+ * common single-entity case, set `entity` and read `state` instead — e.g.
+ * `<foo-element entity="light.bedroom">`.
+ *
+ * The underlying manager consolidates every entity into a single
+ * subscribe_entities call per connection, so subscribing to N entities here is
+ * cheap — it just registers N listeners.
+ */ const $df8fd303fc05ef66$var$SubscribeEntityStateMixin = (superClass)=>{
+    class SubscribeEntityStateClass extends superClass {
+        /**
+         * Convenience accessor for the single-entity case. Derived from the
+         * reactive `states` map, so it updates and re-renders automatically.
+         */ get state() {
+            return this.entity ? this.states[this.entity] : undefined;
+        }
+        /**
+         * Setup the entity subscriptions.
+         */ connectedCallback() {
+            super.connectedCallback();
+            this._setupEntitySubscriptions();
+        }
+        /**
+         * Teardown all entity subscriptions.
+         */ disconnectedCallback() {
+            this._teardownEntitySubscriptions();
+            super.disconnectedCallback();
+        }
+        /**
+         * Unsubscribe from everything and reset state. Used on disconnect and when
+         * there is nothing valid to subscribe to.
+         */ _teardownEntitySubscriptions() {
+            for (const unsubscribe of this._unsubscribes.values())unsubscribe();
+            this._unsubscribes.clear();
+            this.states = {};
+        }
+        /**
+         * Reconcile active subscriptions against the desired `entities` list:
+         * unsubscribe from entities that were dropped, subscribe to new ones, and
+         * leave already-subscribed entities untouched (no churn).
+         */ _setupEntitySubscriptions() {
+            const hass = this.hass;
+            var _this_entities;
+            // Combine the single-entity convenience with the array, de-duping so a
+            // repeated id doesn't subscribe twice.
+            const desired = new Set([
+                ...this.entity ? [
+                    this.entity
+                ] : [],
+                ...(_this_entities = this.entities) !== null && _this_entities !== void 0 ? _this_entities : []
+            ]);
+            // Nothing to subscribe to — tear everything down.
+            if (!hass || desired.size === 0) {
+                this._teardownEntitySubscriptions();
+                return;
+            }
+            // Remove subscriptions no longer desired, dropping their state keys.
+            for (const [entityId, unsubscribe] of this._unsubscribes)if (!desired.has(entityId)) {
+                unsubscribe();
+                this._unsubscribes.delete(entityId);
+                // Reassign without the removed key so Lit picks up the change.
+                const next = (0, $kJycS._)({}, this.states);
+                delete next[entityId];
+                this.states = next;
+            }
+            // Add subscriptions for newly desired entities.
+            const manager = (0, $fAhtX.getEntitySubscriptionManager)(hass);
+            for (const entityId of desired){
+                if (this._unsubscribes.has(entityId)) continue;
+                const unsubscribe = manager.subscribe(entityId, (state)=>this._onState(entityId, state));
+                this._unsubscribes.set(entityId, unsubscribe);
+            }
+        }
+        /**
+         * Handle a state update for a single entity. Reassign `states` with a new
+         * object reference so Lit detects the change and re-renders.
+         */ _onState(entityId, state) {
+            this.states = (0, $1izJ2._)((0, $kJycS._)({}, this.states), {
+                [entityId]: state
+            });
+        }
+        constructor(){
+            super(...arguments);
+            /**
+             * Active subscriptions, keyed by entity_id. The keys of this map are the
+             * set of entities we are currently subscribed to.
+             */ this._unsubscribes = new Map();
+            /**
+             * The current state of each subscribed entity, keyed by entity_id.
+             * Reactive: reassigned (never mutated in place) so Lit re-renders.
+             */ this.states = {};
+        }
+    }
+    $df8fd303fc05ef66$var$__decorate([
+        (0, $lYE5o.state)()
+    ], SubscribeEntityStateClass.prototype, "states", void 0);
+    return SubscribeEntityStateClass;
+};
+module.exports.SubscribeEntityStateMixin = $df8fd303fc05ef66$var$SubscribeEntityStateMixin;
+
+});
+parcelRegister("fAhtX", function(module, exports) {
+"use strict";
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.StatesEventHandler = module.exports.ResubscribeScheduler = module.exports.getEntitySubscriptionManager = module.exports.EntitySubscriptionManager = void 0;
+
+var $cMOUV = parcelRequire("cMOUV");
+Object.defineProperty(module.exports, "EntitySubscriptionManager", {
+    enumerable: true,
+    get: function() {
+        return $cMOUV.EntitySubscriptionManager;
+    }
+});
+Object.defineProperty(module.exports, "getEntitySubscriptionManager", {
+    enumerable: true,
+    get: function() {
+        return $cMOUV.getEntitySubscriptionManager;
+    }
+});
+
+var $gmnsX = parcelRequire("gmnsX");
+Object.defineProperty(module.exports, "ResubscribeScheduler", {
+    enumerable: true,
+    get: function() {
+        return $gmnsX.ResubscribeScheduler;
+    }
+});
+
+var $l8KlY = parcelRequire("l8KlY");
+Object.defineProperty(module.exports, "StatesEventHandler", {
+    enumerable: true,
+    get: function() {
+        return $l8KlY.StatesEventHandler;
+    }
+});
+
+});
+parcelRegister("cMOUV", function(module, exports) {
+"use strict";
+/**
+ * Per-connection singleton that consolidates entity subscriptions.
+ * Multiple elements across cards share one subscribe_entities call.
+ *
+ * @see https://developers.home-assistant.io/docs/api/websocket#subscribe_entities
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.EntitySubscriptionManager = void 0;
+module.exports.getEntitySubscriptionManager = $94f176d58d02dce8$var$getEntitySubscriptionManager;
+
+var $hKCRN = parcelRequire("hKCRN");
+
+var $gmnsX = parcelRequire("gmnsX");
+
+var $l8KlY = parcelRequire("l8KlY");
+const $94f176d58d02dce8$var$managers = new Map();
+function $94f176d58d02dce8$var$getEntitySubscriptionManager(hass) {
+    const conn = hass.connection;
+    let manager = $94f176d58d02dce8$var$managers.get(conn);
+    if (!manager) {
+        manager = new $94f176d58d02dce8$var$EntitySubscriptionManager(hass);
+        $94f176d58d02dce8$var$managers.set(conn, manager);
+    }
+    return manager;
+}
+/** One manager per connection; tracks listeners per entity and maintains a single subscribe_entities call. */ class $94f176d58d02dce8$var$EntitySubscriptionManager {
+    /** Subscribe to entity; returns unsubscribe fn. Batches resubscribe when entity set changes. */ subscribe(entityId, onChange) {
+        let set = this._listeners.get(entityId);
+        if (!set) {
+            set = new Set();
+            this._listeners.set(entityId, set);
+        }
+        set.add(onChange);
+        const entityWasNew = set.size === 1;
+        if (entityWasNew) this._scheduleResubscribe();
+        this._deliverInitialState(entityId, onChange);
+        return ()=>{
+            const s = this._listeners.get(entityId);
+            if (!s) return;
+            s.delete(onChange);
+            if (s.size === 0) {
+                this._listeners.delete(entityId);
+                this._state.delete(entityId);
+                this._scheduleResubscribe();
+            }
+        };
+    }
+    _scheduleResubscribe() {
+        this._scheduler.schedule(()=>this._resubscribe());
+    }
+    _resubscribe() {
+        if (this._unsubscribe) {
+            this._unsubscribe();
+            this._unsubscribe = undefined;
+        }
+        const entityIds = [
+            ...this._listeners.keys()
+        ];
+        if (entityIds.length === 0) return;
+        const connection = this._hass.connection;
+        if (!(connection === null || connection === void 0 ? void 0 : connection.subscribeMessage)) return;
+        const version = ++this._resubscribeVersion;
+        connection.subscribeMessage((ev)=>this._handleEvent(ev), {
+            type: 'subscribe_entities',
+            entity_ids: entityIds
+        }).then((unsub)=>{
+            if (version !== this._resubscribeVersion) {
+                unsub();
+                return;
+            }
+            this._unsubscribe = unsub;
+        });
+    }
+    _handleEvent(ev) {
+        this._eventHandler.handle(ev);
+    }
+    /**
+     * Push current known state to a listener immediately. Required when multiple
+     * elements subscribe to the same entity: only the first subscription
+     * triggers subscribe_entities, so later listeners would otherwise stay empty
+     * until the next websocket change. Falls back to the `hass.states` snapshot
+     * so even the first listener gets a value without waiting for the debounced
+     * resubscribe round-trip.
+     */ _deliverInitialState(entityId, onChange) {
+        let state = this._state.get(entityId);
+        if (!state) {
+            state = (0, $hKCRN.getState)(this._hass, entityId);
+            if (state) this._state.set(entityId, state);
+        }
+        onChange(state);
+    }
+    constructor(hass){
+        this._listeners = new Map();
+        this._state = new Map();
+        this._scheduler = new $gmnsX.ResubscribeScheduler();
+        this._resubscribeVersion = 0;
+        this._hass = hass;
+        this._eventHandler = new $l8KlY.StatesEventHandler(this._listeners, this._state, this._hass);
+    }
+}
+module.exports.EntitySubscriptionManager = $94f176d58d02dce8$var$EntitySubscriptionManager;
+
+});
+parcelRegister("hKCRN", function(module, exports) {
+"use strict";
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.getState = void 0;
+/**
+ * Retrieves the state of an entity from `hass.states`.
+ */ const $cec4e1aa10b6ed35$var$getState = (hass, entityId)=>{
+    if (!entityId) return undefined;
+    const state = hass.states[entityId];
+    if (!state) return undefined;
+    return {
+        entity_id: state.entity_id,
+        state: state.state,
+        attributes: state.attributes,
+        last_changed: state.last_changed,
+        last_updated: state.last_updated
+    };
+};
+module.exports.getState = $cec4e1aa10b6ed35$var$getState;
+
+});
+
+parcelRegister("gmnsX", function(module, exports) {
+"use strict";
+/**
+ * Debounces resubscribe to batch rapid entity add/remove during dashboard load.
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.ResubscribeScheduler = void 0;
+const $be90e74af7706a71$var$RESUBSCRIBE_DEBOUNCE_MS = 50;
+/** Debounces a callback; call schedule() to run fn after a short delay, reset on each call. */ class $be90e74af7706a71$var$ResubscribeScheduler {
+    /** Run fn after debounce delay; resets timer if called again before firing. */ schedule(fn) {
+        if (this._timer) clearTimeout(this._timer);
+        this._timer = setTimeout(()=>{
+            this._timer = undefined;
+            fn();
+        }, $be90e74af7706a71$var$RESUBSCRIBE_DEBOUNCE_MS);
+    }
+    /** Cancel any pending scheduled run. */ cancel() {
+        if (this._timer) {
+            clearTimeout(this._timer);
+            this._timer = undefined;
+        }
+    }
+}
+module.exports.ResubscribeScheduler = $be90e74af7706a71$var$ResubscribeScheduler;
+
+});
+
+parcelRegister("l8KlY", function(module, exports) {
+"use strict";
+/**
+ * Handles subscribe_entities WebSocket events (add, remove, change).
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.StatesEventHandler = void 0;
+
+var $hKCRN = parcelRequire("hKCRN");
+
+var $16Z9S = parcelRequire("16Z9S");
+/** Processes ev.a (add), ev.r (remove), ev.c (change) from subscribe_entities; updates state map and notifies listeners. */ class $f63e4d233b51a6c9$var$StatesEventHandler {
+    /** Process one WebSocket event; only notifies entities we're subscribed to. */ handle(ev) {
+        if (ev.a) this._handleAdd(ev.a);
+        if (ev.r) this._handleRemove(ev.r);
+        if (ev.c) this._handleChange(ev.c);
+    }
+    _handleAdd(added) {
+        for (const [entityId, comp] of Object.entries(added)){
+            if (!this._listeners.has(entityId)) continue;
+            const state = (0, $16Z9S.compressedToEntityState)(entityId, comp);
+            this._state.set(entityId, state);
+            this._notify(entityId, state);
+        }
+    }
+    _handleRemove(removed) {
+        for (const entityId of removed){
+            if (!this._listeners.has(entityId)) continue;
+            this._state.delete(entityId);
+            this._notify(entityId, undefined);
+        }
+    }
+    _handleChange(changes) {
+        for (const [entityId, diff] of Object.entries(changes)){
+            if (!this._listeners.has(entityId)) continue;
+            if (!(0, $16Z9S.isMeaningfulChange)(diff)) continue;
+            var _this__state_get;
+            const base = (_this__state_get = this._state.get(entityId)) !== null && _this__state_get !== void 0 ? _this__state_get : (0, $hKCRN.getState)(this._hass, entityId);
+            if (!base) continue;
+            const state = (0, $16Z9S.applyDiff)(base, entityId, diff);
+            this._state.set(entityId, state);
+            this._notify(entityId, state);
+        }
+    }
+    _notify(entityId, state) {
+        const set = this._listeners.get(entityId);
+        if (!set) return;
+        for (const fn of set)fn(state);
+    }
+    constructor(_listeners, _state, _hass){
+        this._listeners = _listeners;
+        this._state = _state;
+        this._hass = _hass;
+    }
+}
+module.exports.StatesEventHandler = $f63e4d233b51a6c9$var$StatesEventHandler;
+
+});
+parcelRegister("16Z9S", function(module, exports) {
+
+var $kJycS = parcelRequire("kJycS");
+"use strict";
+/**
+ * Shared helpers for processing subscribe_entities state diff format.
+ * Used by entity-subscription-manager.
+ *
+ * @see https://developers.home-assistant.io/docs/api/websocket#subscribe_entities
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.compressedToEntityState = $0cf5cac5f0fe3383$var$compressedToEntityState;
+module.exports.isMeaningfulChange = $0cf5cac5f0fe3383$var$isMeaningfulChange;
+module.exports.applyDiff = $0cf5cac5f0fe3383$var$applyDiff;
+const $0cf5cac5f0fe3383$var$COMPRESSED_STATE = 's';
+const $0cf5cac5f0fe3383$var$COMPRESSED_ATTRIBUTES = 'a';
+function $0cf5cac5f0fe3383$var$compressedToEntityState(entityId, comp) {
+    const last_changed = new Date(comp.lc * 1000).toISOString();
+    var _comp_a;
+    return {
+        entity_id: entityId,
+        state: comp.s,
+        attributes: (_comp_a = comp.a) !== null && _comp_a !== void 0 ? _comp_a : {},
+        last_changed: last_changed,
+        last_updated: comp.lu ? new Date(comp.lu * 1000).toISOString() : last_changed
+    };
+}
+function $0cf5cac5f0fe3383$var$isMeaningfulChange(diff) {
+    var _remove_a;
+    const add = diff['+'];
+    const remove = diff['-'];
+    return (add === null || add === void 0 ? void 0 : add[$0cf5cac5f0fe3383$var$COMPRESSED_STATE]) !== undefined || (add === null || add === void 0 ? void 0 : add[$0cf5cac5f0fe3383$var$COMPRESSED_ATTRIBUTES]) !== undefined || (remove === null || remove === void 0 ? void 0 : (_remove_a = remove.a) === null || _remove_a === void 0 ? void 0 : _remove_a.length) !== undefined && remove.a.length > 0;
+}
+function $0cf5cac5f0fe3383$var$applyDiff(current, entityId, diff) {
+    const add = diff['+'];
+    const remove = diff['-'];
+    let state = current.state;
+    let last_changed = current.last_changed;
+    let last_updated = current.last_updated;
+    const attributes = (0, $kJycS._)({}, current.attributes);
+    if (add) {
+        if (add.s !== undefined) state = add.s;
+        if (add.a) Object.assign(attributes, add.a);
+        if (add.lc) last_changed = new Date(add.lc * 1000).toISOString();
+        if (add.lu) last_updated = new Date(add.lu * 1000).toISOString();
+    }
+    if (remove === null || remove === void 0 ? void 0 : remove.a) for (const key of remove.a)delete attributes[key];
+    return {
+        entity_id: entityId,
+        state: state,
+        attributes: attributes,
+        last_changed: last_changed,
+        last_updated: last_updated
+    };
+}
+
+});
+
+
+
+
+
+parcelRegister("dTmXl", function(module, exports) {
+
+$parcel$export(module.exports, "d", function () { return $86dc711946e77b66$export$4368d992c4eafac0; });
+const $86dc711946e77b66$export$4368d992c4eafac0 = (config, component, category, ...args)=>{
+    if (!(config === null || config === void 0 ? void 0 : config.debug)) return;
+    const { scope: scope, categories: categories } = config.debug;
+    if ((scope === null || scope === void 0 ? void 0 : scope.length) && !scope.includes(component)) return;
+    if ((categories === null || categories === void 0 ? void 0 : categories.length) && !categories.includes(category)) return;
+    // eslint-disable-next-line no-console -- intentional debug logging
+    console.debug(`[${component}] ${category}`, ...args);
+};
+
+});
+
+parcelRegister("htQni", function(module, exports) {
+"use strict";
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.HassUpdateMixin = void 0;
+/**
+ * Mixin that keeps `hass` in sync with a scoped `hass-update` event.
+ *
+ * Stacks on `HassConfigMixin`, so the superclass already provides the `hass`
+ * and `config` fields; this mixin just reassigns `hass` whenever a
+ * `hass-update` event is fired on its scope. Use it on children whose parent
+ * skips full Lit updates, so they can react to `hass` changes themselves.
+ *
+ * The listener is attached to the element's own root node (the parent card's
+ * shadow tree) rather than `globalThis`, so each card's events stay isolated
+ * from sibling cards on the same dashboard. The owning card should dispatch
+ * `hass-update` on its own `shadowRoot`. A `_host` escape hatch handles
+ * portalled descendants (e.g. dialogs HA's dialog manager moves out of the
+ * tree).
+ *
+ * @param superClass - The base class to mixin
+ */ const $cb9dc5a371e35fc4$var$HassUpdateMixin = (superClass)=>{
     class HassUpdateClass extends superClass {
-        get hass() {
-            return this.__hassValue;
-        }
-        set hass(value) {
-            this.__hassValue = value;
-        }
-        get config() {
-            return this.__configValue;
-        }
-        set config(value) {
-            this.__configValue = value;
-        }
         connectedCallback() {
             super.connectedCallback();
             this._bindHassUpdateListener();
@@ -1850,14 +2346,14 @@ const $4aaac1c384d75a93$export$19efda5681568302 = (superClass)=>{
             this._unbindHassUpdateListener();
         }
         /**
-     * Attaches the listener to the closest scope: an explicit `_host`'s
-     * shadow root if set (for portalled descendants), otherwise the
-     * component's own root node (the parent shadow tree). Each card has a
-     * distinct shadow root, so this naturally isolates events per card.
-     *
-     * Exposed so portalled descendants can re-bind after `_host` is supplied,
-     * since their `connectedCallback` runs before the property is set.
-     */ _bindHassUpdateListener() {
+         * Attaches the listener to the closest scope: an explicit `_host`'s
+         * shadow root if set (for portalled descendants), otherwise the
+         * component's own root node (the parent shadow tree). Each card has a
+         * distinct shadow root, so this naturally isolates events per card.
+         *
+         * Exposed so portalled descendants can re-bind after `_host` is supplied,
+         * since their `connectedCallback` runs before the property is set.
+         */ _bindHassUpdateListener() {
             if (this._listenerTarget) return;
             const target = this._resolveListenerTarget();
             if (target) {
@@ -1883,447 +2379,49 @@ const $4aaac1c384d75a93$export$19efda5681568302 = (superClass)=>{
             const { detail: { hass: hass } } = event;
             this.hass = hass;
         }
-        constructor(...args){
-            super(...args), this._boundHassUpdateHandler = this._handleHassUpdate.bind(this);
+        constructor(){
+            super(...arguments);
+            this._boundHassUpdateHandler = this._handleHassUpdate.bind(this);
         }
     }
     return HassUpdateClass;
 };
+module.exports.HassUpdateMixin = $cb9dc5a371e35fc4$var$HassUpdateMixin;
 
 });
-
-parcelRegister("wgzUt", function(module, exports) {
-
-$parcel$export(module.exports, "SubscribeEntityStateMixin", function () { return $776fb9ea2d5ddf20$export$961c110c9b2142da; });
-
-var $evAes = parcelRequire("evAes");
-parcelRequire("3NUqv");
-var $knRyT = parcelRequire("knRyT");
-
-var $dTmXl = parcelRequire("dTmXl");
-parcelRequire("jcMWt");
-var $lYE5o = parcelRequire("lYE5o");
-const $776fb9ea2d5ddf20$export$961c110c9b2142da = (superClass)=>{
-    class SubscribeEntityStateClass extends superClass {
-        /**
-     * Setup the entity subscription.
-     */ connectedCallback() {
-            super.connectedCallback();
-            this._setupEntitySubscription();
-        }
-        /**
-     * Teardown the entity subscription.
-     */ disconnectedCallback() {
-            this._teardownEntitySubscription();
-            super.disconnectedCallback();
-        }
-        /**
-     * Teardown the entity subscription.
-     */ _teardownEntitySubscription() {
-            if (!this._unsubscribe) return;
-            (0, $dTmXl.d)(this.config, 'subscribe-entity-state-mixin', 'unsubscribe');
-            this._unsubscribe();
-            this._unsubscribe = undefined;
-            this._subscribedEntityId = undefined;
-        }
-        /**
-     * Setup the entity subscription.
-     */ _setupEntitySubscription() {
-            const id = this.entity;
-            const hass = this.hass;
-            const config = this.config;
-            (0, $dTmXl.d)(config, 'subscribe-entity-state-mixin', 'setupEntitySubscription', id);
-            if (!id || !hass) {
-                (0, $dTmXl.d)(config, 'subscribe-entity-state-mixin', 'setupEntitySubscription', 'missing id or hass');
-                this._teardownEntitySubscription();
-                this.state = undefined;
-                return;
-            }
-            if (this._subscribedEntityId === id) {
-                (0, $dTmXl.d)(config, 'subscribe-entity-state-mixin', 'setupEntitySubscription', "already subscribed.. \uD83D\uDE15");
-                return;
-            }
-            this._teardownEntitySubscription();
-            this._subscribedEntityId = id;
-            const manager = (0, $knRyT.getEntitySubscriptionManager)(hass, config);
-            this._unsubscribe = manager.subscribe(id, (state)=>{
-                this.state = state;
-            }, config);
-        }
-    }
-    (0, $evAes.__decorate)([
-        (0, $lYE5o.state)()
-    ], SubscribeEntityStateClass.prototype, "state", void 0);
-    return SubscribeEntityStateClass;
-};
-
-});
-parcelRegister("3NUqv", function(module, exports) {
-
-$parcel$export(module.exports, "getEntitySubscriptionManager", function () { return (parcelRequire("knRyT")).getEntitySubscriptionManager; });
-
-var $knRyT = parcelRequire("knRyT");
-
-var $ahi97 = parcelRequire("ahi97");
-
-var $3xhFF = parcelRequire("3xhFF");
-
-});
-parcelRegister("knRyT", function(module, exports) {
-
-$parcel$export(module.exports, "getEntitySubscriptionManager", function () { return $56a4fb7ab615f3dd$export$f1d189590eee6c91; });
-/**
- * Per-connection singleton that consolidates entity subscriptions.
- * Multiple badges across cards share one subscribe_entities call.
- *
- * @see https://developers.home-assistant.io/docs/api/websocket#subscribe_entities
- */ 
-var $7AhDs = parcelRequire("7AhDs");
-
-var $dTmXl = parcelRequire("dTmXl");
-
-var $ahi97 = parcelRequire("ahi97");
-
-var $3xhFF = parcelRequire("3xhFF");
-const $56a4fb7ab615f3dd$var$managers = new Map();
-function $56a4fb7ab615f3dd$export$f1d189590eee6c91(hass, config) {
-    const conn = hass.connection;
-    let manager = $56a4fb7ab615f3dd$var$managers.get(conn);
-    if (!manager) {
-        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'initial creation');
-        manager = new $56a4fb7ab615f3dd$export$76a51d3d85415e4c(hass);
-        $56a4fb7ab615f3dd$var$managers.set(conn, manager);
-    }
-    return manager;
-}
-class $56a4fb7ab615f3dd$export$76a51d3d85415e4c {
-    /** Subscribe to entity; returns unsubscribe fn. Batches resubscribe when entity set changes. */ subscribe(entityId, onChange, config) {
-        let set = this._listeners.get(entityId);
-        if (!set) {
-            set = new Set();
-            this._listeners.set(entityId, set);
-        }
-        set.add(onChange);
-        const entityWasNew = set.size === 1;
-        if (entityWasNew) this._scheduleResubscribe(config);
-        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'subscribe', entityId, 'listeners', set.size);
-        this._deliverInitialState(entityId, onChange);
-        return ()=>{
-            const s = this._listeners.get(entityId);
-            if (!s) return;
-            s.delete(onChange);
-            if (s.size === 0) {
-                this._listeners.delete(entityId);
-                this._state.delete(entityId);
-                this._scheduleResubscribe(config);
-            }
-        };
-    }
-    _scheduleResubscribe(config) {
-        this._scheduler.schedule(()=>this._resubscribe(config));
-    }
-    _resubscribe(config) {
-        if (this._unsubscribe) {
-            this._unsubscribe();
-            this._unsubscribe = undefined;
-        }
-        const entityIds = [
-            ...this._listeners.keys()
-        ];
-        if (entityIds.length === 0) return;
-        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'subscribe_entities', entityIds, "\nThis shouldn't happen alot.. \uD83E\uDD14");
-        const version = ++this._resubscribeVersion;
-        this._hass.connection.subscribeMessage((ev)=>this._handleEvent(ev, config), {
-            type: 'subscribe_entities',
-            entity_ids: entityIds
-        }).then((unsub)=>{
-            if (version !== this._resubscribeVersion) {
-                (0, $dTmXl.d)(config, 'entity-subscription-manager', 'resubscribe', 'stale', version, this._resubscribeVersion);
-                unsub();
-                return;
-            }
-            (0, $dTmXl.d)(config, 'entity-subscription-manager', 'resubscribe', 'active');
-            this._unsubscribe = unsub;
-        });
-    }
-    _handleEvent(ev, config) {
-        this._eventHandler.handle(ev, config);
-    }
-    /**
-   * Push current known state to a listener immediately. Required when multiple
-   * components subscribe to the same entity: only the first subscription
-   * triggers subscribe_entities; later listeners would otherwise stay empty
-   * until the next websocket change.
-   */ _deliverInitialState(entityId, onChange) {
-        let state = this._state.get(entityId);
-        if (!state) {
-            state = (0, $7AhDs.getState)(this._hass.states, entityId);
-            if (state) this._state.set(entityId, state);
-        }
-        onChange(state);
-    }
-    constructor(hass){
-        this._listeners = new Map();
-        this._state = new Map();
-        this._scheduler = new (0, $ahi97.ResubscribeScheduler)();
-        this._resubscribeVersion = 0;
-        this._hass = hass;
-        this._eventHandler = new (0, $3xhFF.StatesEventHandler)(this._listeners, this._state, this._hass);
-    }
-}
-
-});
-parcelRegister("7AhDs", function(module, exports) {
-
-$parcel$export(module.exports, "getState", function () { return $6d9b59681496f671$export$50fdfeece43146fd; });
-
-var $jyxIy = parcelRequire("jyxIy");
-
-var $l3TbZ = parcelRequire("l3TbZ");
-const $6d9b59681496f671$export$50fdfeece43146fd = (0, $l3TbZ.default)((states, entityId, fakeState = false)=>{
-    if (!entityId) return undefined;
-    var _states_entityId;
-    const state = (_states_entityId = states[entityId]) !== null && _states_entityId !== void 0 ? _states_entityId : fakeState ? {
-        entity_id: entityId,
-        state: 'off',
-        // Set friendly_name to an empty string so the label is blank
-        attributes: {
-            friendly_name: ''
-        }
-    } : undefined;
-    if (!state) return undefined;
-    const domain = (0, $jyxIy.computeDomain)(state.entity_id);
-    return {
-        state: state.state,
-        attributes: state.attributes,
-        entity_id: state.entity_id,
-        last_changed: state.last_changed,
-        last_updated: state.last_updated,
-        domain: domain
-    };
-});
-
-});
-parcelRegister("l3TbZ", function(module, exports) {
-
-$parcel$export(module.exports, "default", function () { return $f554b0d97be25fc9$export$2e2bcd8739ae039; });
-var $f554b0d97be25fc9$var$safeIsNaN = Number.isNaN || function ponyfill(value) {
-    return typeof value === 'number' && value !== value;
-};
-function $f554b0d97be25fc9$var$isEqual(first, second) {
-    if (first === second) return true;
-    if ($f554b0d97be25fc9$var$safeIsNaN(first) && $f554b0d97be25fc9$var$safeIsNaN(second)) return true;
-    return false;
-}
-function $f554b0d97be25fc9$var$areInputsEqual(newInputs, lastInputs) {
-    if (newInputs.length !== lastInputs.length) return false;
-    for(var i = 0; i < newInputs.length; i++){
-        if (!$f554b0d97be25fc9$var$isEqual(newInputs[i], lastInputs[i])) return false;
-    }
-    return true;
-}
-function $f554b0d97be25fc9$export$2e2bcd8739ae039(resultFn, isEqual) {
-    if (isEqual === void 0) isEqual = $f554b0d97be25fc9$var$areInputsEqual;
-    var cache = null;
-    function memoized() {
-        var newArgs = [];
-        for(var _i = 0; _i < arguments.length; _i++)newArgs[_i] = arguments[_i];
-        if (cache && cache.lastThis === this && isEqual(newArgs, cache.lastArgs)) return cache.lastResult;
-        var lastResult = resultFn.apply(this, newArgs);
-        cache = {
-            lastResult: lastResult,
-            lastArgs: newArgs,
-            lastThis: this
-        };
-        return lastResult;
-    }
-    memoized.clear = function clear() {
-        cache = null;
-    };
-    return memoized;
-}
-
-});
-
-
-parcelRegister("dTmXl", function(module, exports) {
-
-$parcel$export(module.exports, "d", function () { return $86dc711946e77b66$export$4368d992c4eafac0; });
-const $86dc711946e77b66$export$4368d992c4eafac0 = (config, component, category, ...args)=>{
-    if (!(config === null || config === void 0 ? void 0 : config.debug)) return;
-    const { scope: scope, categories: categories } = config.debug;
-    if ((scope === null || scope === void 0 ? void 0 : scope.length) && !scope.includes(component)) return;
-    if ((categories === null || categories === void 0 ? void 0 : categories.length) && !categories.includes(category)) return;
-    console.debug(`[${component}] ${category}`, ...args);
-};
-
-});
-
-parcelRegister("ahi97", function(module, exports) {
-
-$parcel$export(module.exports, "ResubscribeScheduler", function () { return $c735bfb9187791c0$export$746d7d6f368b83b1; });
-/**
- * Debounces resubscribe to batch rapid entity add/remove during dashboard load.
- */ const $c735bfb9187791c0$var$RESUBSCRIBE_DEBOUNCE_MS = 50;
-class $c735bfb9187791c0$export$746d7d6f368b83b1 {
-    /** Run fn after debounce delay; resets timer if called again before firing. */ schedule(fn) {
-        if (this._timer) clearTimeout(this._timer);
-        this._timer = setTimeout(()=>{
-            this._timer = undefined;
-            fn();
-        }, $c735bfb9187791c0$var$RESUBSCRIBE_DEBOUNCE_MS);
-    }
-    /** Cancel any pending scheduled run. */ cancel() {
-        if (this._timer) {
-            clearTimeout(this._timer);
-            this._timer = undefined;
-        }
-    }
-}
-
-});
-
-parcelRegister("3xhFF", function(module, exports) {
-
-$parcel$export(module.exports, "StatesEventHandler", function () { return $a65c367d6d102e05$export$fa096be87fabe7d3; });
-/**
- * Handles subscribe_entities WebSocket events (add, remove, change).
- */ 
-var $7AhDs = parcelRequire("7AhDs");
-
-var $dTmXl = parcelRequire("dTmXl");
-
-var $2WuTi = parcelRequire("2WuTi");
-class $a65c367d6d102e05$export$fa096be87fabe7d3 {
-    /** Process one WebSocket event; only notifies entities we're subscribed to. */ handle(ev, config) {
-        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'handleEvent', 'ev', ev);
-        if (ev.a) this._handleAdd(ev.a);
-        if (ev.r) this._handleRemove(ev.r);
-        if (ev.c) this._handleChange(ev.c, config);
-    }
-    _handleAdd(added) {
-        for (const [entityId, comp] of Object.entries(added)){
-            if (!this._listeners.has(entityId)) continue;
-            const state = (0, $2WuTi.compressedToEntityState)(entityId, comp);
-            this._state.set(entityId, state);
-            this._notify(entityId, state);
-        }
-    }
-    _handleRemove(removed) {
-        for (const entityId of removed){
-            if (!this._listeners.has(entityId)) continue;
-            this._state.delete(entityId);
-            this._notify(entityId, undefined);
-        }
-    }
-    _handleChange(changes, config) {
-        (0, $dTmXl.d)(config, 'entity-subscription-manager', 'handleEvent', 'change', Object.keys(changes));
-        for (const [entityId, diff] of Object.entries(changes)){
-            if (!this._listeners.has(entityId)) continue;
-            if (!(0, $2WuTi.isMeaningfulChange)(diff)) continue;
-            var _this__state_get;
-            const base = (_this__state_get = this._state.get(entityId)) !== null && _this__state_get !== void 0 ? _this__state_get : (0, $7AhDs.getState)(this._hass.states, entityId);
-            if (!base) continue;
-            const state = (0, $2WuTi.applyDiff)(base, entityId, diff);
-            this._state.set(entityId, state);
-            this._notify(entityId, state);
-        }
-    }
-    _notify(entityId, state) {
-        const set = this._listeners.get(entityId);
-        if (!set) return;
-        for (const fn of set)fn(state);
-    }
-    constructor(_listeners, _state, _hass){
-        this._listeners = _listeners;
-        this._state = _state;
-        this._hass = _hass;
-    }
-}
-
-});
-parcelRegister("2WuTi", function(module, exports) {
-
-$parcel$export(module.exports, "compressedToEntityState", function () { return $f6cab4e006e6bc92$export$1e451bf8ffd1807c; });
-$parcel$export(module.exports, "isMeaningfulChange", function () { return $f6cab4e006e6bc92$export$212c94ae4aa31760; });
-$parcel$export(module.exports, "applyDiff", function () { return $f6cab4e006e6bc92$export$ef16b89ca36598f4; });
-/**
- * Shared helpers for processing subscribe_entities state diff format.
- * Used by entity-subscription-manager.
- *
- * @see https://developers.home-assistant.io/docs/api/websocket#subscribe_entities
- */ 
-var $kJycS = parcelRequire("kJycS");
-
-var $jyxIy = parcelRequire("jyxIy");
-const $f6cab4e006e6bc92$var$COMPRESSED_STATE = 's';
-const $f6cab4e006e6bc92$var$COMPRESSED_ATTRIBUTES = 'a';
-function $f6cab4e006e6bc92$export$1e451bf8ffd1807c(entityId, comp) {
-    let last_changed = new Date(comp.lc * 1000).toISOString();
-    var _comp_a;
-    return {
-        entity_id: entityId,
-        state: comp.s,
-        attributes: (_comp_a = comp.a) !== null && _comp_a !== void 0 ? _comp_a : {},
-        domain: (0, $jyxIy.computeDomain)(entityId),
-        last_changed: last_changed,
-        last_updated: comp.lu ? new Date(comp.lu * 1000).toISOString() : last_changed
-    };
-}
-function $f6cab4e006e6bc92$export$212c94ae4aa31760(diff) {
-    var _remove_a;
-    const add = diff['+'];
-    const remove = diff['-'];
-    return (add === null || add === void 0 ? void 0 : add[$f6cab4e006e6bc92$var$COMPRESSED_STATE]) !== undefined || (add === null || add === void 0 ? void 0 : add[$f6cab4e006e6bc92$var$COMPRESSED_ATTRIBUTES]) !== undefined || (remove === null || remove === void 0 ? void 0 : (_remove_a = remove.a) === null || _remove_a === void 0 ? void 0 : _remove_a.length) !== undefined && remove.a.length > 0;
-}
-function $f6cab4e006e6bc92$export$ef16b89ca36598f4(current, entityId, diff) {
-    const add = diff['+'];
-    const remove = diff['-'];
-    let state = current.state;
-    let attributes = (0, $kJycS._)({}, current.attributes);
-    if (add) {
-        if (add.s !== undefined) state = add.s;
-        if (add.lc) current.last_updated = current.last_changed = new Date(add.lc * 1000).toISOString();
-        else if (add.lu) current.last_updated = new Date(add.lu * 1000).toISOString();
-        if (add.a) Object.assign(attributes, add.a);
-    }
-    if (remove === null || remove === void 0 ? void 0 : remove.a) for (const key of remove.a)delete attributes[key];
-    return {
-        entity_id: entityId,
-        state: state,
-        attributes: attributes,
-        domain: (0, $jyxIy.computeDomain)(entityId),
-        last_changed: current.last_changed,
-        last_updated: current.last_updated
-    };
-}
-
-});
-
-
-
-
 
 parcelRegister("cfP8R", function(module, exports) {
 
 $parcel$export(module.exports, "localize", function () { return $026d47447e611f6a$export$b3bd0bc58e36cd63; });
 
+var $gt41x = parcelRequire("gt41x");
+
 var $1MmPK = parcelRequire("1MmPK");
-// Import other languages as needed above this line and in order
-// Define supported languages
-const $026d47447e611f6a$var$languages = {
+const $026d47447e611f6a$export$b3bd0bc58e36cd63 = (0, $gt41x.createLocalize)({
     en: $1MmPK
-};
-const $026d47447e611f6a$export$b3bd0bc58e36cd63 = (hass, key, search = '', replace = '')=>{
-    let translated;
-    var _getNestedTranslation, _ref;
-    translated = (_ref = (_getNestedTranslation = $026d47447e611f6a$var$getNestedTranslation($026d47447e611f6a$var$languages[hass.language], key)) !== null && _getNestedTranslation !== void 0 ? _getNestedTranslation : $026d47447e611f6a$var$getNestedTranslation($026d47447e611f6a$var$languages.en, key)) !== null && _ref !== void 0 ? _ref : key;
-    // Replace placeholders
-    if (search !== '' && replace !== '') translated = translated.replace(search, replace);
-    return translated;
-};
-// Helper function to safely navigate nested objects
-function $026d47447e611f6a$var$getNestedTranslation(obj, path) {
+});
+
+});
+parcelRegister("gt41x", function(module, exports) {
+"use strict";
+Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.createLocalize = $bfd279ce4e52902e$var$createLocalize;
+/**
+ * Create a localize function bound to a card's translation files.
+ * It will first check if the string exists in the user's language.
+ * If not, it will fall back to the fallback language (default: English).
+ */ function $bfd279ce4e52902e$var$createLocalize(languages, fallbackLanguage = 'en') {
+    const fallback = languages[fallbackLanguage];
+    return (hass, key, search = '', replace = '')=>{
+        var _getNestedTranslation, _ref;
+        let translated = (_ref = (_getNestedTranslation = $bfd279ce4e52902e$var$getNestedTranslation(languages[hass.language], key)) !== null && _getNestedTranslation !== void 0 ? _getNestedTranslation : $bfd279ce4e52902e$var$getNestedTranslation(fallback, key)) !== null && _ref !== void 0 ? _ref : key;
+        if (search !== '' && replace !== '') translated = translated.replace(search, replace);
+        return translated;
+    };
+}
+function $bfd279ce4e52902e$var$getNestedTranslation(obj, path) {
     if (!obj) return undefined;
     const keys = path.split('.');
     let result = obj;
@@ -2335,8 +2433,9 @@ function $026d47447e611f6a$var$getNestedTranslation(obj, path) {
 }
 
 });
+
 parcelRegister("1MmPK", function(module, exports) {
-module.exports = JSON.parse('{"card":{"component":{"problem":{"dialog_title":"Problem Entities","no_problems":"No problem entities found","active":"Active","inactive":"Inactive"}}},"editor":{"area":{"area":"Area","area_name":"Area name","area_side_entities":"Area side entities","room_entity":"Room entity"},"background":{"background":"Background","background_image":"Background Image","background_image_entity":"Background Image Entity","background_opacity":"Background Opacity","disable_background_image":"Disable Background Image","multi_light_background":"Multi-Light Background","light_entities":"Light Entities","multi_light_background_info":"Configure which light entities should be tracked for the multi-light background feature. When enabled, the card background and room icon will light up when any of these lights are on. The card automatically discovers all lights in the area if no entities are specified."},"entity":{"entity_id":"Entity","entity_label":"Label","entity_attribute":"Attribute","entity_icon":"Icon","entity_on_color":"On Color","entity_off_color":"Off Color","ignore_entity":"Ignore Entity","show_entity_labels":"Show Entity Labels","use_entity_icon":"Use Entity Icon","show_state":"Show State","hide_zero_attribute_domains":"Hide State for Zero Attribute Domains","styles":"Styles","states":"States","add_state":"Add State","thresholds":"Thresholds","add_threshold":"Add Threshold","state":{"state":"State","operator":"Operator","icon_color":"Icon Color","title_color":"Title Color","icon":"Icon","label":"Label","attribute":"Attribute","styles":"Styles"},"threshold":{"threshold":"Threshold","icon_color":"Icon Color","title_color":"Title Color","icon":"Icon","label":"Label","attribute":"Attribute","styles":"Styles","operator":"Operator"},"badges":"Badges","add_badge":"Add Badge","slider":"Slider","slider_style":"Slider Style","slider_style_bar":"Bar (full-width strip)","slider_style_ha":"Standard HA Slider","slider_hide_icon":"Hide Icon (entity is shown only as the slider)"},"badge":{"position":{"top_right":"Top Right","top_left":"Top Left","bottom_right":"Bottom Right","bottom_left":"Bottom Left"},"position_label":"Position","mode":{"show_always":"Show Always","if_match":"If Match","homeassistant":"Home Assistant"},"mode_label":"Mode","max_badges":"Maximum 4 badges allowed"},"entities":{"entities_info":"These options are for setting up the right side entities."},"icon":{"disable_icon_animations":"Disable Icon Animations","disable_icon_color":"Disable Icon Color","icon_background":"Icon Background","icon_background_color_occupied":"Icon Background Color (Occupied)","icon_background_color_smoke":"Icon Background Color (Smoke Detected)","icon_background_color_gas":"Icon Background Color (Gas Detected)","icon_background_color_water":"Icon Background Color (Water Detected)","hide_icon_only":"Hide Icon Only","hide_room_icon":"Hide Room Icon"},"card":{"card_border_color_occupied":"Card Border Color (Occupied)","card_border_color_smoke":"Card Border Color (Smoke Detected)","card_border_color_gas":"Card Border Color (Gas Detected)","card_border_color_water":"Card Border Color (Water Detected)","disable_card_border":"Disable Card Border","disable_card_border_animations":"Disable Card Border Animations","skip_card_background_styles":"Skip Card Background Styles"},"sensor":{"sensor_classes":"Sensor classes","hide_sensor_icons":"Hide Sensor icons","hide_sensor_labels":"Hide Sensor labels","hide_sensors":"Hide Sensors","individual_sensor_entities":"Individual sensor entities","sensors_info":"Sensors appear on the top row below the card title. They can be clicked for more info.","features_info":"Configure sensor display features:","hide_sensors_desc":"Hide the climate/sensor information","hide_sensor_icons_desc":"Hide the icons next to sensor values","hide_sensor_labels_desc":"Hide the labels next to sensor icons"},"threshold":{"thresholds":"Thresholds","temperature_threshold":"Temperature threshold","temperature_thresholds":"Temperature Thresholds","add_temperature_threshold":"Add Temperature Threshold","temperature_operator":"Temperature Operator","temperature_entity":"Temperature Entity","temperature_color":"Temperature Border Color","humidity_threshold":"Humidity threshold","humidity_thresholds":"Humidity Thresholds","add_humidity_threshold":"Add Humidity Threshold","humidity_operator":"Humidity Operator","humidity_entity":"Humidity Entity","humidity_color":"Humidity Border Color","mold_threshold":"Mold threshold","operator":{"equal":"Equal (=)","greater_than":"Greater than (>)","greater_than_or_equal":"Greater than or equal (\u2265)","less_than":"Less than (<)","less_than_or_equal":"Less than or equal (\u2264)","not_equal":"Not equal (\u2260)"}},"interactions":{"interactions":"Interactions","tap_action":"Tap Action","double_tap_action":"Double Tap Action","hold_action":"Hold Action"},"occupancy":{"occupancy_presence_detection":"Occupancy & Presence Detection","motion_occupancy_presence_sensors":"Motion/Occupancy/Presence Sensors","occupancy_options":"Options","occupancy_info":"Configure motion, occupancy, and presence detection sensors. When any sensor detects activity, the card border and room icon can change color to indicate the room is occupied."},"alarm":{"alarm_info":"Configure alarm detection sensors. Occupancy sensors detect motion/presence, smoke detectors detect smoke, gas sensors detect gas, and water sensors detect water. Priority: Smoke > Gas > Water > Occupancy.","occupancy_detection":"Occupancy Detection","smoke_detection":"Smoke Detection","gas_detection":"Gas Detection","water_detection":"Water Detection","motion_occupancy_presence_sensors":"Motion/Occupancy/Presence Sensors","smoke_detectors":"Smoke Detectors","gas_sensors":"Gas Sensors","water_sensors":"Water Sensors","alarm_options":"Options"},"problem":{"problem":"Problem Indicator","problem_display":"Display","problem_display_always":"Always","problem_display_active_only":"Active Problems Only","problem_display_never":"Never"},"styles":{"styles":"Styles","css_styles":"Your CSS Styles","card_styles":"Card Styles","entities_container_styles":"Entities Container Styles","entity_icon_styles":"Entity Icon Styles","room_entity_icon_styles":"Main Room Entity Icon Styles","sensor_styles":"Sensor Styles","stats_styles":"Stats Styles","title_styles":"Title Styles","skip_climate_styles":"Skip Climate Styles","skip_mold_styles":"Skip Mold Styles","icon_opacity_preset":"Icon Opacity Preset","icon_opacity_default":"Default","icon_opacity_medium":"Medium","icon_opacity_high_visibility":"High Visibility"},"layout":{"content":"Content","sensor_layout":"Sensor Layout","default_in_label_area":"Default (in label area)","bottom":"Bottom","vertical_stack":"Vertical Stack"},"stats":{"hide_area_stats":"Hide Area Stats"},"slider":{"slider_style":"Slider Style","minimalist":"Minimalist","track":"Track","line":"Line","filled":"Filled/Progress","gradient":"Gradient","dual_rail":"Dual Rail","dots":"Dots/Ticks","notched":"Notched","grid":"Grid","glow":"Glow","shadow_trail":"Shadow Trail","outlined":"Outlined Track","bar":"Bar (No Icon)","bar_filled":"Bar Filled (Proportional)"},"features":{"features":"Features","exclude_default_entities":"Exclude Default Entities","sticky_entities":"Sticky Entities","slider":"Slider","full_card_actions":"Full Card Actions","hide_hidden_entities":"Hide Hidden Entities","sticky_entities_info":"Keep entity positions stable even when their state is unavailable. This prevents UI layout shifts and makes it easier to tap entities on touch dashboards.","features_info":"Configure global features that affect how entities are displayed and handled:","show_entity_labels_desc":"Show entity labels under each entity icon","exclude_default_entities_desc":"Don\'t include default light/fan entities","ignore_entity_desc":"Ignore the entity property in the configuration","sticky_entities_desc":"Keep entity positions even when state is unavailable","slider_desc":"Display a single entity in a slider layout instead of the entity collection","full_card_actions_desc":"Make the entire card clickable using the room entity\'s tap/hold/double-tap actions","hide_hidden_entities_desc":"Skip entities that are marked as hidden in Home Assistant","options":"Options"},"light":{"type":"Type","ambient":"Ambient"}}}');
+module.exports = JSON.parse('{"card":{"component":{"problem":{"dialog_title":"Problem Entities","no_problems":"No problem entities found","active":"Active","inactive":"Inactive"}}},"editor":{"area":{"area":"Area","area_name":"Area name","area_side_entities":"Area side entities","room_entity":"Room entity"},"background":{"background":"Background","background_image":"Background Image","background_image_entity":"Background Image Entity","background_opacity":"Background Opacity","disable_background_image":"Disable Background Image","hide_gradient":"Hide Background Gradient","multi_light_background":"Multi-Light Background","light_entities":"Light Entities","multi_light_background_info":"Configure which light entities should be tracked for the multi-light background feature. When enabled, the card background and room icon will light up when any of these lights are on. The card automatically discovers all lights in the area if no entities are specified."},"entity":{"entity_id":"Entity","entity_label":"Label","entity_attribute":"Attribute","entity_icon":"Icon","entity_on_color":"On Color","entity_off_color":"Off Color","ignore_entity":"Ignore Entity","show_entity_labels":"Show Entity Labels","use_entity_icon":"Use Entity Icon","show_state":"Show State","hide_zero_attribute_domains":"Hide State for Zero Attribute Domains","styles":"Styles","states":"States","add_state":"Add State","thresholds":"Thresholds","add_threshold":"Add Threshold","state":{"state":"State","operator":"Operator","icon_color":"Icon Color","title_color":"Title Color","icon":"Icon","label":"Label","attribute":"Attribute","styles":"Styles"},"threshold":{"threshold":"Threshold","icon_color":"Icon Color","title_color":"Title Color","icon":"Icon","label":"Label","attribute":"Attribute","styles":"Styles","operator":"Operator"},"badges":"Badges","add_badge":"Add Badge","slider":"Slider","slider_style":"Slider Style","slider_style_bar":"Bar (full-width strip)","slider_style_ha":"Standard HA Slider","slider_hide_icon":"Hide Icon (entity is shown only as the slider)"},"badge":{"position":{"top_right":"Top Right","top_left":"Top Left","bottom_right":"Bottom Right","bottom_left":"Bottom Left"},"position_label":"Position","mode":{"show_always":"Show Always","if_match":"If Match","homeassistant":"Home Assistant"},"mode_label":"Mode","label":"Badge Text","max_badges":"Maximum 4 badges allowed"},"entities":{"entities_info":"These options are for setting up the right side entities."},"icon":{"disable_icon_animations":"Disable Icon Animations","disable_icon_color":"Disable Icon Color","icon_background":"Icon Background","icon_background_color_occupied":"Icon Background Color (Occupied)","icon_background_color_smoke":"Icon Background Color (Smoke Detected)","icon_background_color_gas":"Icon Background Color (Gas Detected)","icon_background_color_water":"Icon Background Color (Water Detected)","hide_icon_only":"Hide Icon Only","hide_room_icon":"Hide Room Icon"},"card":{"card_border_color_occupied":"Card Border Color (Occupied)","card_border_color_smoke":"Card Border Color (Smoke Detected)","card_border_color_gas":"Card Border Color (Gas Detected)","card_border_color_water":"Card Border Color (Water Detected)","disable_card_border":"Disable Card Border","disable_card_border_animations":"Disable Card Border Animations","skip_card_background_styles":"Skip Card Background Styles"},"sensor":{"sensor_classes":"Sensor classes","hide_sensor_icons":"Hide Sensor icons","hide_sensor_labels":"Hide Sensor labels","hide_sensors":"Hide Sensors","individual_sensor_entities":"Individual sensor entities","sensors_info":"Sensors appear on the top row below the card title. They can be clicked for more info.","features_info":"Configure sensor display features:","hide_sensors_desc":"Hide the climate/sensor information","hide_sensor_icons_desc":"Hide the icons next to sensor values","hide_sensor_labels_desc":"Hide the labels next to sensor icons"},"threshold":{"thresholds":"Thresholds","temperature_threshold":"Temperature threshold","temperature_thresholds":"Temperature Thresholds","add_temperature_threshold":"Add Temperature Threshold","temperature_operator":"Temperature Operator","temperature_entity":"Temperature Entity","temperature_color":"Temperature Border Color","humidity_threshold":"Humidity threshold","humidity_thresholds":"Humidity Thresholds","add_humidity_threshold":"Add Humidity Threshold","humidity_operator":"Humidity Operator","humidity_entity":"Humidity Entity","humidity_color":"Humidity Border Color","mold_threshold":"Mold threshold","operator":{"equal":"Equal (=)","greater_than":"Greater than (>)","greater_than_or_equal":"Greater than or equal (\u2265)","less_than":"Less than (<)","less_than_or_equal":"Less than or equal (\u2264)","not_equal":"Not equal (\u2260)"}},"interactions":{"interactions":"Interactions","tap_action":"Tap Action","double_tap_action":"Double Tap Action","hold_action":"Hold Action"},"occupancy":{"occupancy_presence_detection":"Occupancy & Presence Detection","motion_occupancy_presence_sensors":"Motion/Occupancy/Presence Sensors","occupancy_options":"Options","occupancy_info":"Configure motion, occupancy, and presence detection sensors. When any sensor detects activity, the card border and room icon can change color to indicate the room is occupied."},"alarm":{"alarm_info":"Configure alarm detection sensors. Occupancy sensors detect motion/presence, smoke detectors detect smoke, gas sensors detect gas, and water sensors detect water. Priority: Smoke > Gas > Water > Occupancy.","occupancy_detection":"Occupancy Detection","smoke_detection":"Smoke Detection","gas_detection":"Gas Detection","water_detection":"Water Detection","motion_occupancy_presence_sensors":"Motion/Occupancy/Presence Sensors","smoke_detectors":"Smoke Detectors","gas_sensors":"Gas Sensors","water_sensors":"Water Sensors","alarm_options":"Options"},"problem":{"problem":"Problem Indicator","problem_display":"Display","problem_display_always":"Always","problem_display_active_only":"Active Problems Only","problem_display_never":"Never"},"styles":{"styles":"Styles","css_styles":"Your CSS Styles","card_styles":"Card Styles","entities_container_styles":"Entities Container Styles","entity_icon_styles":"Entity Icon Styles","room_entity_icon_styles":"Main Room Entity Icon Styles","sensor_styles":"Sensor Styles","stats_styles":"Stats Styles","title_styles":"Title Styles","skip_climate_styles":"Skip Climate Styles","skip_mold_styles":"Skip Mold Styles","icon_opacity_preset":"Icon Opacity Preset","icon_opacity_default":"Default","icon_opacity_medium":"Medium","icon_opacity_high_visibility":"High Visibility"},"layout":{"content":"Content","sensor_layout":"Sensor Layout","default_in_label_area":"Default (in label area)","bottom":"Bottom","vertical_stack":"Vertical Stack"},"stats":{"hide_area_stats":"Hide Area Stats"},"slider":{"slider_style":"Slider Style","minimalist":"Minimalist","track":"Track","line":"Line","filled":"Filled/Progress","gradient":"Gradient","dual_rail":"Dual Rail","dots":"Dots/Ticks","notched":"Notched","grid":"Grid","glow":"Glow","shadow_trail":"Shadow Trail","outlined":"Outlined Track","bar":"Bar (No Icon)","bar_filled":"Bar Filled (Proportional)"},"features":{"features":"Features","exclude_default_entities":"Exclude Default Entities","sticky_entities":"Sticky Entities","slider":"Slider","full_card_actions":"Full Card Actions","hide_hidden_entities":"Hide Hidden Entities","sticky_entities_info":"Keep entity positions stable even when their state is unavailable. This prevents UI layout shifts and makes it easier to tap entities on touch dashboards.","features_info":"Configure global features that affect how entities are displayed and handled:","show_entity_labels_desc":"Show entity labels under each entity icon","exclude_default_entities_desc":"Don\'t include default light/fan entities","ignore_entity_desc":"Ignore the entity property in the configuration","sticky_entities_desc":"Keep entity positions even when state is unavailable","slider_desc":"Display a single entity in a slider layout instead of the entity collection","full_card_actions_desc":"Make the entire card clickable using the room entity\'s tap/hold/double-tap actions","hide_hidden_entities_desc":"Skip entities that are marked as hidden in Home Assistant","options":"Options"},"light":{"type":"Type","ambient":"Ambient"}}}');
 
 });
 
@@ -2514,97 +2613,123 @@ var $ci0wX = parcelRequire("ci0wX");
 
 
 
-parcelRegister("el4XD", function(module, exports) {
-
-$parcel$export(module.exports, "computeEntityName", function () { return $c79a91fa6515815d$export$9daa015aff969d71; });
+parcelRegister("12mnG", function(module, exports) {
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/compute_entity_name.ts
- */ 
-var $knpWC = parcelRequire("knpWC");
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.computeEntityEntryName = module.exports.computeEntityName = void 0;
 
-var $jrqr4 = parcelRequire("jrqr4");
+var $cQY3S = parcelRequire("cQY3S");
 
-var $u7rO3 = parcelRequire("u7rO3");
-const $c79a91fa6515815d$export$9daa015aff969d71 = (stateObj, hass)=>{
+var $972pa = parcelRequire("972pa");
+
+var $9ncFf = parcelRequire("9ncFf");
+const $0c1756bef8b4eca2$var$computeEntityName = (stateObj, hass)=>{
     const entry = hass.entities[stateObj.entity_id];
     if (!entry) // Fall back to state name if not in the entity registry (friendly name)
-    return (0, $jrqr4.computeStateName)(stateObj);
-    return $c79a91fa6515815d$export$8c1ece05882a2b32(entry, hass);
+    return (0, $972pa.computeStateName)(stateObj);
+    return (0, module.exports.computeEntityEntryName)(entry, hass);
 };
-const $c79a91fa6515815d$export$8c1ece05882a2b32 = (entry, hass)=>{
+module.exports.computeEntityName = $0c1756bef8b4eca2$var$computeEntityName;
+const $0c1756bef8b4eca2$var$computeEntityEntryName = (entry, hass)=>{
     const name = entry.name || ('original_name' in entry ? entry.original_name : undefined);
     const device = entry.device_id ? hass.devices[entry.device_id] : undefined;
     if (!device) {
         if (name) return name;
         const stateObj = hass.states[entry.entity_id];
-        if (stateObj) return (0, $jrqr4.computeStateName)(stateObj);
+        if (stateObj) return (0, $972pa.computeStateName)(stateObj);
         return undefined;
     }
-    const deviceName = (0, $knpWC.computeDeviceName)(device);
-    var _stripPrefixFromEntityName;
+    const deviceName = (0, $cQY3S.computeDeviceName)(device);
+    var _ref;
     // If the device name is the same as the entity name, consider empty entity name
     // this causes blank labels, not sure why HAS does this
     // if (deviceName === name) {
     //   return undefined;
     // }
     // Remove the device name from the entity name if it starts with it
-    if (deviceName && name) return (_stripPrefixFromEntityName = (0, $u7rO3.stripPrefixFromEntityName)(name, deviceName)) !== null && _stripPrefixFromEntityName !== void 0 ? _stripPrefixFromEntityName : name;
+    if (deviceName && name) return (_ref = (0, $9ncFf.stripPrefixFromEntityName)(name, deviceName)) !== null && _ref !== void 0 ? _ref : name;
     // slight fix - not the same in HAS
     return name !== null && name !== void 0 ? name : deviceName;
 };
+module.exports.computeEntityEntryName = $0c1756bef8b4eca2$var$computeEntityEntryName;
 
 });
-parcelRegister("knpWC", function(module, exports) {
-
-$parcel$export(module.exports, "computeDeviceName", function () { return $1f43699295fc468a$export$7cd00372ca4db95e; });
+parcelRegister("cQY3S", function(module, exports) {
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/compute_device_name.ts
- */ const $1f43699295fc468a$export$7cd00372ca4db95e = (device)=>{
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.computeDeviceName = void 0;
+const $95b8ee58d630739a$var$computeDeviceName = (device)=>{
     var _this;
     var _device_name_by_user;
     return (_this = (_device_name_by_user = device.name_by_user) !== null && _device_name_by_user !== void 0 ? _device_name_by_user : device.name) === null || _this === void 0 ? void 0 : _this.trim();
 };
+module.exports.computeDeviceName = $95b8ee58d630739a$var$computeDeviceName;
 
 });
 
-parcelRegister("jrqr4", function(module, exports) {
-
-$parcel$export(module.exports, "computeStateName", function () { return $a7ac2479c70bcfb4$export$9616006ead40a64; });
+parcelRegister("972pa", function(module, exports) {
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/compute_state_name.ts
- */ 
-var $fS6OZ = parcelRequire("fS6OZ");
-const $a7ac2479c70bcfb4$export$9a5b24b7a75b993d = (entityId, attributes)=>{
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.computeStateName = module.exports.computeStateNameFromEntityAttributes = void 0;
+
+var $3L8ue = parcelRequire("3L8ue");
+const $6a26a210b7f6da0f$var$computeStateNameFromEntityAttributes = (entityId, attributes)=>{
     var _attributes_friendly_name;
-    return attributes.friendly_name === undefined ? (0, $fS6OZ.computeObjectId)(entityId).replaceAll('_', ' ') : ((_attributes_friendly_name = attributes.friendly_name) !== null && _attributes_friendly_name !== void 0 ? _attributes_friendly_name : '').toString();
+    return attributes.friendly_name === undefined ? (0, $3L8ue.computeObjectId)(entityId).replace(/_/g, ' ') : ((_attributes_friendly_name = attributes.friendly_name) !== null && _attributes_friendly_name !== void 0 ? _attributes_friendly_name : '').toString();
 };
-const $a7ac2479c70bcfb4$export$9616006ead40a64 = (stateObj)=>$a7ac2479c70bcfb4$export$9a5b24b7a75b993d(stateObj.entity_id, stateObj.attributes);
+module.exports.computeStateNameFromEntityAttributes = $6a26a210b7f6da0f$var$computeStateNameFromEntityAttributes;
+const $6a26a210b7f6da0f$var$computeStateName = (stateObj)=>(0, module.exports.computeStateNameFromEntityAttributes)(stateObj.entity_id, stateObj.attributes);
+module.exports.computeStateName = $6a26a210b7f6da0f$var$computeStateName;
 
 });
-parcelRegister("fS6OZ", function(module, exports) {
-
-$parcel$export(module.exports, "computeObjectId", function () { return $d630bcb47e310226$export$1f42443b32ee681a; });
+parcelRegister("3L8ue", function(module, exports) {
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/compute_object_id.ts
- */ const $d630bcb47e310226$export$1f42443b32ee681a = (entityId)=>entityId.substring(entityId.indexOf('.') + 1);
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.computeObjectId = void 0;
+/** Compute the object ID of a state. */ const $2bcc5829f060ae4a$var$computeObjectId = (entityId)=>entityId.slice(entityId.indexOf('.') + 1);
+module.exports.computeObjectId = $2bcc5829f060ae4a$var$computeObjectId;
 
 });
 
 
-parcelRegister("u7rO3", function(module, exports) {
-
-$parcel$export(module.exports, "stripPrefixFromEntityName", function () { return $3d00a5da4019d727$export$525f917b212a890; });
+parcelRegister("9ncFf", function(module, exports) {
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/strip_prefix_from_entity_name.ts
- */ const $3d00a5da4019d727$var$SUFFIXES = [
+ */ Object.defineProperty(module.exports, "__esModule", {
+    value: true
+});
+module.exports.stripPrefixFromEntityName = void 0;
+const $6d3015ea6fcf30dd$var$SUFFIXES = [
     ' ',
     ': ',
     ' - '
 ];
-const $3d00a5da4019d727$export$525f917b212a890 = (entityName, prefix)=>{
+/**
+ * Strips a device name from an entity name.
+ * @param entityName the entity name
+ * @param prefix the prefix to strip
+ * @returns
+ */ const $6d3015ea6fcf30dd$var$stripPrefixFromEntityName = (entityName, prefix)=>{
     const lowerCasedEntityName = entityName.toLowerCase();
     const lowerCasedPrefix = prefix.toLowerCase();
-    for (const suffix of $3d00a5da4019d727$var$SUFFIXES){
+    for (const suffix of $6d3015ea6fcf30dd$var$SUFFIXES){
         const lowerCasedPrefixWithSuffix = `${lowerCasedPrefix}${suffix}`;
         if (lowerCasedEntityName.startsWith(lowerCasedPrefixWithSuffix)) {
             const newName = entityName.substring(lowerCasedPrefixWithSuffix.length);
@@ -2616,13 +2741,14 @@ const $3d00a5da4019d727$export$525f917b212a890 = (entityName, prefix)=>{
                 // and substr(0, -1) returns an empty string.
                 const spaceIndex = newName.indexOf(' ');
                 const firstWord = spaceIndex === -1 ? '' : newName.substring(0, spaceIndex);
-                return $3d00a5da4019d727$var$hasUpperCase(firstWord) ? newName : ((_newName_ = newName[0]) === null || _newName_ === void 0 ? void 0 : _newName_.toUpperCase()) + newName.slice(1);
+                return $6d3015ea6fcf30dd$var$hasUpperCase(firstWord) ? newName : ((_newName_ = newName[0]) === null || _newName_ === void 0 ? void 0 : _newName_.toUpperCase()) + newName.slice(1);
             }
         }
     }
     return undefined;
 };
-const $3d00a5da4019d727$var$hasUpperCase = (str)=>str.toLowerCase() !== str;
+module.exports.stripPrefixFromEntityName = $6d3015ea6fcf30dd$var$stripPrefixFromEntityName;
+const $6d3015ea6fcf30dd$var$hasUpperCase = (str)=>str.toLowerCase() !== str;
 
 });
 
@@ -2642,11 +2768,7 @@ const $3d00a5da4019d727$var$hasUpperCase = (str)=>str.toLowerCase() !== str;
  *
  * @version See package.json
  */ 
-var $kJycS = parcelRequire("kJycS");
-
-var $1izJ2 = parcelRequire("1izJ2");
-
-var $evAes = parcelRequire("evAes");
+var $2QgUB = parcelRequire("2QgUB");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
@@ -2654,14 +2776,14 @@ parcelRequire("jcMWt");
 var $aaQtJ = parcelRequire("aaQtJ");
 var $lYE5o = parcelRequire("lYE5o");
 
-var $fKMMF = parcelRequire("fKMMF");
+var $5R2d0 = parcelRequire("5R2d0");
 
-const $7d7b3d36776b9b07$export$ae70458d21ee9b55 = ()=>// this creates a new bundle in the dist folder
-    // @ts-ignore - Dynamic import is supported at runtime
+const $7d7b3d36776b9b07$export$ae70458d21ee9b55 = ()=>// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- Parcel dynamic chunk
+    // @ts-ignore
     (parcelRequire("6c3D1"));
 const $7d7b3d36776b9b07$export$dcf8bd1e24f4d8e9 = (element, params)=>{
     if (!(params === null || params === void 0 ? void 0 : params.entities) || params.entities.length === 0) return;
-    (0, $fKMMF.fireEvent)(element, 'show-dialog', {
+    (0, $5R2d0.fireEvent)(element, 'show-dialog', {
         dialogTag: 'problem-dialog',
         dialogImport: $7d7b3d36776b9b07$export$ae70458d21ee9b55,
         dialogParams: params
@@ -2684,7 +2806,7 @@ const $93ab8e068532bba3$export$4bb1c5099bd99a57 = (mold, config)=>{
 
 
 
-var $cmVfz = parcelRequire("cmVfz");
+var $gp9lG = parcelRequire("gp9lG");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 
@@ -2694,7 +2816,7 @@ const $d71beedfb309b5b1$export$8093665c9ba8ead9 = (hass, config, sensors, elemen
     var _config_problem;
     const { problemSensors: problemSensors } = sensors;
     const ids = problemSensors.map((sensor)=>sensor.entity_id);
-    const problemExists = problemSensors.some((sensor)=>(0, $cmVfz.stateActive)(sensor));
+    const problemExists = problemSensors.some((sensor)=>(0, $gp9lG.stateActive)(sensor));
     var _config_problem_display;
     const problemDisplay = (_config_problem_display = (_config_problem = config.problem) === null || _config_problem === void 0 ? void 0 : _config_problem.display) !== null && _config_problem_display !== void 0 ? _config_problem_display : 'always';
     // Determine if we should show the problem indicator
@@ -2725,7 +2847,7 @@ const $d71beedfb309b5b1$export$6697a659ce63852 = (hass, entity, config, options 
     var _config_features;
     const { state: state } = entity;
     const stickyEntitiesEnabled = (_config_features = config.features) === null || _config_features === void 0 ? void 0 : _config_features.includes('sticky_entities');
-    const { isMainRoomEntity: isMainRoomEntity = false, isActive: isActive, hasImage: hasImage, alarm: alarm } = options;
+    const { isMainRoomEntity: isMainRoomEntity = false, isActive: isActive, alarm: alarm } = options;
     // If state is undefined and sticky entities is not enabled, return nothing
     if (!state && !stickyEntitiesEnabled) return 0, $ci0wX.nothing;
     if (!state && stickyEntitiesEnabled) return (0, $ci0wX.html)($d71beedfb309b5b1$var$t3 || ($d71beedfb309b5b1$var$t3 = $d71beedfb309b5b1$var$_`<div class="sticky-entity"></div>`));
@@ -2735,188 +2857,190 @@ const $d71beedfb309b5b1$export$6697a659ce63852 = (hass, entity, config, options 
    */ return (0, $ci0wX.html)($d71beedfb309b5b1$var$t4 || ($d71beedfb309b5b1$var$t4 = $d71beedfb309b5b1$var$_`<room-state-icon
     .isMainRoomEntity=${0}
     .isActive=${0}
-    .image=${0}
     .alarm=${0}
     .entity=${0}
     .config=${0}
     .hass=${0}
-  ></room-state-icon>`), isMainRoomEntity, isActive, hasImage, alarm, entity, config, hass);
+  ></room-state-icon>`), isMainRoomEntity, isActive, alarm, entity, config, hass);
 };
 
 
+
+var $2QgUB = parcelRequire("2QgUB");
+
+var $g28NR = parcelRequire("g28NR");
+
+var $jc0SV = parcelRequire("jc0SV");
+var $1e40c00d469c9d00$exports = {};
+"use strict";
+Object.defineProperty($1e40c00d469c9d00$exports, "__esModule", {
+    value: true
+});
+$1e40c00d469c9d00$exports.hasFeature = void 0;
 /**
- * Horizontal Slider Component
+ * Determines if a specified feature is enabled in the provided configuration.
  *
- * Renders a horizontal slider strip flush with the bottom edge of the
- * room-summary-card. The component decides on its own whether to render:
- * if no entity in the card config has a `slider` config block, it renders
- * `nothing`, so the parent card can unconditionally place it in its
- * template.
- *
- * Always renders Home Assistant's <ha-slider>. The visual variant is
- * controlled per-entity via `entity.slider.style`:
- *  - `'ha'`           : the standard HA slider look (thin track + thumb).
- *  - `'bar'` (default): ha-slider re-styled as a chunky full-height bar.
- *
- * Entity wiring
- * -------------
- * Extends `SubscribeEntityStateMixin(HassUpdateMixin(LitElement))`, so
- * `hass`, `config`, and the live `state` of the slider entity are managed
- * by the mixins. The bound entity is the first one (scanning `entity`
- * then `entities`) with a `slider` config block. `min` / `max` / `step`
- * are read from `state.attributes` and the current `value` from
- * `state.state` —
- * same pattern used by `hui-input-number-entity-row` /
- * `hui-number-entity-row` upstream (`setValue`).
- *
- * Domain specials:
- *  - `media_player` : slider exposes 0–100; reads `volume_level` (0–1)
- *                     and writes via `setMediaPlayerVolume`.
- *  - `light`        : slider exposes 0–255; reads `brightness` and
- *                     writes via `setBrightness` (which itself turns
- *                     the light off when value is 0).
- *
- * @see https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/entity-rows/hui-input-number-entity-row.ts
- *
- * @version See package.json
- */ 
-var $evAes = parcelRequire("evAes");
+ * @param config - The configuration object containing feature flags
+ * @param feature - The specific feature to check for
+ * @returns True if the feature is enabled, false otherwise
+ */ const $1e40c00d469c9d00$var$hasFeature = (config, feature)=>{
+    var _config_features;
+    return !config || ((_config_features = config.features) === null || _config_features === void 0 ? void 0 : _config_features.includes(feature)) || false;
+};
+$1e40c00d469c9d00$exports.hasFeature = $1e40c00d469c9d00$var$hasFeature;
 
-var $1LdRn = parcelRequire("1LdRn");
 
-var $wgzUt = parcelRequire("wgzUt");
-const $d3a1c41917263588$export$bfd42fd87279097a = async (hass, entityId, brightness)=>{
-    if (!entityId) return;
-    // Ensure brightness is within valid range
-    const clampedBrightness = Math.max(0, Math.min(255, Math.round(brightness)));
-    // If brightness is 0, turn off the light
-    if (clampedBrightness === 0) {
-        await hass.callService('light', 'turn_off', {
-            entity_id: entityId
-        });
-        return;
+const $8f71a348c8e54f2c$export$abc50289182506e4 = (config, active, state)=>{
+    var _config_background;
+    const skipStyles = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'skip_entity_styles');
+    const raw = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : _config_background.opacity;
+    let opacity;
+    if (typeof raw === 'number' && raw) opacity = raw / 100;
+    else if (typeof raw === 'string' && state) {
+        const parsed = Number.parseFloat(state.state);
+        if (Number.isFinite(parsed)) {
+            const isPercent = state.attributes.unit_of_measurement === '%' || parsed > 1;
+            opacity = Math.max(0, Math.min(1, isPercent ? parsed / 100 : parsed));
+        }
     }
-    // Otherwise, turn on the light with the specified brightness
-    await hass.callService('light', 'turn_on', {
+    return {
+        '--user-opacity': opacity,
+        '--background-opacity-card': `var(--opacity-background-${active && !skipStyles ? 'active' : 'inactive'})`
+    };
+};
+
+
+var $f554b0d97be25fc9$var$safeIsNaN = Number.isNaN || function ponyfill(value) {
+    return typeof value === 'number' && value !== value;
+};
+function $f554b0d97be25fc9$var$isEqual(first, second) {
+    if (first === second) return true;
+    if ($f554b0d97be25fc9$var$safeIsNaN(first) && $f554b0d97be25fc9$var$safeIsNaN(second)) return true;
+    return false;
+}
+function $f554b0d97be25fc9$var$areInputsEqual(newInputs, lastInputs) {
+    if (newInputs.length !== lastInputs.length) return false;
+    for(var i = 0; i < newInputs.length; i++){
+        if (!$f554b0d97be25fc9$var$isEqual(newInputs[i], lastInputs[i])) return false;
+    }
+    return true;
+}
+function $f554b0d97be25fc9$export$2e2bcd8739ae039(resultFn, isEqual) {
+    if (isEqual === void 0) isEqual = $f554b0d97be25fc9$var$areInputsEqual;
+    var cache = null;
+    function memoized() {
+        var newArgs = [];
+        for(var _i = 0; _i < arguments.length; _i++)newArgs[_i] = arguments[_i];
+        if (cache && cache.lastThis === this && isEqual(newArgs, cache.lastArgs)) return cache.lastResult;
+        var lastResult = resultFn.apply(this, newArgs);
+        cache = {
+            lastResult: lastResult,
+            lastArgs: newArgs,
+            lastThis: this
+        };
+        return lastResult;
+    }
+    memoized.clear = function clear() {
+        cache = null;
+    };
+    return memoized;
+}
+
+
+const $b02f37b9ae80224f$export$47f3d980c4d9b226 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity, feature)=>{
+    var _entity_config_features;
+    return !entity || ((_entity_config_features = entity.config.features) === null || _entity_config_features === void 0 ? void 0 : _entity_config_features.includes(feature)) || false;
+});
+
+
+
+const $7806862517a8ec93$export$520c40045967cb15 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((areas, areaId)=>areas[areaId]);
+
+
+
+var $h7W3o = parcelRequire("h7W3o");
+
+const $6d9b59681496f671$export$50fdfeece43146fd = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((states, entityId, fakeState = false)=>{
+    if (!entityId) return undefined;
+    var _states_entityId;
+    const state = (_states_entityId = states[entityId]) !== null && _states_entityId !== void 0 ? _states_entityId : fakeState ? {
         entity_id: entityId,
-        brightness: clampedBrightness
-    });
+        state: 'off',
+        attributes: {
+            friendly_name: ''
+        },
+        last_changed: '',
+        last_updated: ''
+    } : undefined;
+    if (!state) return undefined;
+    const domain = (0, $h7W3o.computeDomain)(state.entity_id);
+    return {
+        state: state.state,
+        attributes: state.attributes,
+        entity_id: state.entity_id,
+        last_changed: state.last_changed,
+        last_updated: state.last_updated,
+        domain: domain
+    };
+});
+
+
+
+var $h7W3o = parcelRequire("h7W3o");
+const $be1aa69a1c2a424c$export$b372a12fd687417 = (entity)=>{
+    var _entity_state_attributes, _entity_state;
+    if (!entity || (0, $b02f37b9ae80224f$export$47f3d980c4d9b226)(entity, 'use_entity_icon')) return undefined;
+    const picture = (_entity_state = entity.state) === null || _entity_state === void 0 ? void 0 : (_entity_state_attributes = _entity_state.attributes) === null || _entity_state_attributes === void 0 ? void 0 : _entity_state_attributes.entity_picture;
+    return typeof picture === 'string' ? picture : undefined;
 };
-
-
-/**
- * @file Slider entity discovery
- * @description Finds the first config entity that declares a `slider`
- * config block. Scans the main `entity` first, then `entities` in order.
- * Plain string entries are skipped (no metadata to inspect).
- *
- * Returns the full `EntityConfig` (rather than just the id) so callers
- * can read both `entity_id` and the per-entity `slider` block.
- */ const $c37a9757c368f9bd$export$3719c033b804f0ea = (config)=>{
-    if (!config) return undefined;
-    var _config_entities;
-    const candidates = [
-        config.entity,
-        ...(_config_entities = config.entities) !== null && _config_entities !== void 0 ? _config_entities : []
-    ];
-    for (const c of candidates){
-        if (c && typeof c === 'object' && c.slider !== undefined) return c;
+const $be1aa69a1c2a424c$export$5bff4624c0a6c79a = (entity)=>{
+    var _entity_state, _entity_state1;
+    // Gate on the picture so `use_entity_icon` and picture-less entities opt
+    // out here exactly as they do everywhere else that reads this.
+    const picture = $be1aa69a1c2a424c$export$b372a12fd687417(entity);
+    if (!picture) return undefined;
+    const entityId = entity === null || entity === void 0 ? void 0 : (_entity_state = entity.state) === null || _entity_state === void 0 ? void 0 : _entity_state.entity_id;
+    if (entityId && (entity === null || entity === void 0 ? void 0 : (_entity_state1 = entity.state) === null || _entity_state1 === void 0 ? void 0 : _entity_state1.domain) === 'camera') return {
+        camera_image: entityId,
+        camera_view: 'auto'
+    };
+    return {
+        image: picture
+    };
+};
+const $be1aa69a1c2a424c$export$3474b6a6793aedb2 = (config, entity, isMainRoomEntity)=>{
+    var _config_background_options, _config_background;
+    if ($be1aa69a1c2a424c$export$b372a12fd687417(entity)) return true;
+    var _config_background_options_includes;
+    return isMainRoomEntity && ((_config_background_options_includes = config === null || config === void 0 ? void 0 : (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('hide_icon_only')) !== null && _config_background_options_includes !== void 0 ? _config_background_options_includes : false);
+};
+const $be1aa69a1c2a424c$export$1c5d878426377725 = (hass, config)=>{
+    var _config_background_options, _config_background, _config_background1, _config_background2, _getArea;
+    if ((_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('disable')) return undefined;
+    const entityId = (_config_background1 = config.background) === null || _config_background1 === void 0 ? void 0 : _config_background1.image_entity;
+    if (entityId) {
+        var _getState_attributes, _getState;
+        if ((0, $h7W3o.computeDomain)(entityId) === 'camera') return {
+            camera_image: entityId,
+            camera_view: 'auto'
+        };
+        // image.* / person.* / anything with an entity picture
+        const picture = (_getState = (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, entityId)) === null || _getState === void 0 ? void 0 : (_getState_attributes = _getState.attributes) === null || _getState_attributes === void 0 ? void 0 : _getState_attributes.entity_picture;
+        if (typeof picture === 'string') return {
+            image: picture
+        };
     }
-    return undefined;
+    const image = (_config_background2 = config.background) === null || _config_background2 === void 0 ? void 0 : _config_background2.image;
+    if (image) return {
+        image: typeof image === 'string' ? image : image.media_content_id
+    };
+    const areaPicture = (_getArea = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area)) === null || _getArea === void 0 ? void 0 : _getArea.picture;
+    return areaPicture ? {
+        image: areaPicture
+    } : undefined;
 };
 
 
-/**
- * Ported from Home Assistant frontend (`setValue` only).
- *
- * @see https://github.com/home-assistant/frontend/blob/dev/src/data/input_text.ts
- */ const $3bd8b313a70a1912$export$80746c6bc6142fc8 = (hass, entity, value)=>{
-    var _entity_split_;
-    return hass.callService((_entity_split_ = entity.split('.', 1)[0]) !== null && _entity_split_ !== void 0 ? _entity_split_ : '', 'set_value', {
-        value: value,
-        entity_id: entity
-    });
-};
-
-
-/**
- * Ported from Home Assistant frontend (`setMediaPlayerVolume` only).
- *
- * @see https://github.com/home-assistant/frontend/blob/dev/src/data/media-player.ts
- */ const $97ba5c7dd715a424$export$fadfd3eadd6082cd = (hass, entity_id, volume_level)=>hass.callService('media_player', 'volume_set', {
-        entity_id: entity_id,
-        volume_level: volume_level
-    });
-
-
-
-var $dTmXl = parcelRequire("dTmXl");
-parcelRequire("fPVm8");
-var $ci0wX = parcelRequire("ci0wX");
-var $2r9I1 = parcelRequire("2r9I1");
-parcelRequire("jcMWt");
-var $yv2EM = parcelRequire("yv2EM");
-var $aaQtJ = parcelRequire("aaQtJ");
-parcelRequire("fPVm8");
-var $2SS2a = parcelRequire("2SS2a");
-let $a106693bf2929cda$var$_ = (t)=>t, $a106693bf2929cda$var$t;
-const $a106693bf2929cda$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($a106693bf2929cda$var$t || ($a106693bf2929cda$var$t = $a106693bf2929cda$var$_`
-  :host {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  ha-slider {
-    width: 100%;
-
-    /* Active fill is exposed cleanly by ha-slider — no specificity
-       fight. See
-       https://github.com/home-assistant/frontend/blob/dev/src/components/ha-slider.ts */
-    --ha-slider-indicator-color: var(
-      --user-slider-bar-color,
-      var(--primary-color)
-    );
-  }
-
-  ha-slider::part(track),
-  ha-slider::part(indicator) {
-    border-radius: 0;
-  }
-
-  /* The inactive track paints from \`#track { background: var(--wa-color-neutral-fill-normal) }\`
-     inside the slider's shadow DOM. The id selector beats ::part() on
-     specificity, so we need !important to win — but only on background,
-     scoped to ha-slider's track, which keeps the override from leaking
-     into other webawesome components. */
-  ha-slider::part(track) {
-    background: var(
-      --user-slider-track-color,
-      var(--disabled-color)
-    ) !important;
-  }
-
-  /* ---------------------------------------------------------------------
-     'bar' style — re-style ha-slider so it visually IS the bottom strip.
-     Track is forced tall enough to fill the host, thumb is hidden, and
-     the indicator becomes the moving fill.
-     --------------------------------------------------------------------- */
-  :host([variant='bar']) ha-slider {
-    --ha-slider-track-size: var(--user-slider-height, 25px);
-    --ha-slider-thumb-color: transparent;
-  }
-
-  /* ---------------------------------------------------------------------
-     'ha' style — the standard HA slider, slightly thickened and themed.
-     --------------------------------------------------------------------- */
-  :host([variant='ha']) {
-    height: var(--user-slider-height, 3.5%);
-  }
-`));
-
-
-let $9d1851378e34030f$var$_ = (t)=>t, $9d1851378e34030f$var$t;
 var $ee3d06fe83a6a770$exports = {};
 'use strict';
 // do not edit .js files directly - edit src/index.jst
@@ -2949,136 +3073,354 @@ $ee3d06fe83a6a770$exports = function equal(a, b) {
 };
 
 
-class $9d1851378e34030f$export$226f91755c79436a extends (0, $wgzUt.SubscribeEntityStateMixin)((0, $1LdRn.HassUpdateMixin)((0, $2r9I1.LitElement))) {
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+var $2r9I1 = parcelRequire("2r9I1");
+parcelRequire("jcMWt");
+var $yv2EM = parcelRequire("yv2EM");
+var $aaQtJ = parcelRequire("aaQtJ");
+var $lYE5o = parcelRequire("lYE5o");
+parcelRequire("fPVm8");
+var $2SS2a = parcelRequire("2SS2a");
+let $44af7b24ffdbb901$var$_ = (t)=>t, $44af7b24ffdbb901$var$t;
+const $44af7b24ffdbb901$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($44af7b24ffdbb901$var$t || ($44af7b24ffdbb901$var$t = $44af7b24ffdbb901$var$_`
+  :host {
+    --default-overlay: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.8),
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0)
+    );
+  }
+
+  :host([icon]) {
+    --default-overlay: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0)
+    );
+  }
+
+  .color {
+    position: absolute;
+    inset: 0;
+    background-color: var(--background-color-card);
+    opacity: var(
+      --user-opacity,
+      var(--opacity-theme, var(--background-opacity-card))
+    );
+    filter: var(--background-filter, none);
+  }
+
+  /* The image covers the box (object-fit: cover), so it fully occludes the
+     color underneath — exactly as the old single ha-card::before did, where
+     background-image painted over background-color. Keeping both visible
+     would composite the state color through the image as a tint. */
+  :host([image]) .color {
+    display: none;
+  }
+
+  /* icon_background mode: the user-configured opacity belongs to the
+     icon's background (room-state-icon routes it there), so the card
+     color layer falls back to the theme opacity chain. */
+  :host([icon-bg]:not([icon])) .color {
+    opacity: var(--opacity-theme, var(--background-opacity-card));
+  }
+
+  /* Image layer: hui-image fills the box (object-fit: cover inside),
+     with the user gradient composited on top via ::after. Opacity and
+     filter apply to the wrapper so image + gradient fade as one, matching
+     the old single-declaration CSS background. */
+  .image {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: var(
+      --user-opacity,
+      var(--opacity-theme, var(--background-opacity-card))
+    );
+    filter: var(--background-filter, none);
+  }
+
+  /* Backgrounds are decoration: never let the <img> become the event
+     target (or a native drag source) for the card / icon action handlers. */
+  .color,
+  .image {
+    pointer-events: none;
+  }
+
+  .image hui-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(
+      --user-background-image-overlay,
+      var(--default-overlay)
+    );
+  }
+
+  /* 'hide_gradient' option — show the image with no darkening overlay. */
+  :host([hide-gradient]) .image::after {
+    display: none;
+  }
+
+  /* Icon placement: the fill circle. Alarm state is routed in by
+     room-state-icon via the --icon-alarm-* variables.
+
+     The layers round themselves (as the old .icon::before did) rather than
+     room-state-icon clipping its whole host — the host box also holds
+     badges (offset -5% outside the circle) and the state label below it,
+     which a host-level circular clip would cut off. */
+  :host([icon]) .color {
+    border-radius: 50%;
+    background-color: var(--icon-alarm-color, var(--background-color-icon));
+    opacity: var(--icon-color-opacity, var(--background-opacity-icon));
+    filter: var(--icon-filter, none);
+    animation: var(--icon-alarm-animation, none);
+    transition: var(--icon-alarm-transition, none);
+  }
+
+  :host([icon]) .image {
+    border-radius: 50%;
+    opacity: var(--icon-color-opacity, var(--background-opacity-icon));
+    filter: var(--icon-filter, none);
+    animation: var(--icon-alarm-animation, none);
+    transition: var(--icon-alarm-transition, none);
+  }
+
+  /* Same keyframes as room-state-icon; animation names don't resolve
+     across shadow trees, so the color layer needs its own copy. */
+  @keyframes icon-breathe {
+    0% {
+      transform: scale(1);
+      opacity: 0.1;
+    }
+    100% {
+      transform: scale(1.1);
+      opacity: 0.4;
+    }
+  }
+`));
+
+
+let $2ae3348658708615$var$_ = (t)=>t, $2ae3348658708615$var$t, $2ae3348658708615$var$t1;
+class $2ae3348658708615$export$babe2268d47cd6 extends (0, $jc0SV.SubscribeEntityStateMixin)((0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement))) {
+    set config(config) {
+        var _config_background_options, _config_background, _config_background_options1, _config_background1, _config_background2;
+        this._config = config;
+        var _config_background_options_includes;
+        this._iconBackground = (_config_background_options_includes = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('icon_background')) !== null && _config_background_options_includes !== void 0 ? _config_background_options_includes : false;
+        var _config_background_options_includes1;
+        this._hideGradient = (_config_background_options_includes1 = (_config_background1 = config.background) === null || _config_background1 === void 0 ? void 0 : (_config_background_options1 = _config_background1.options) === null || _config_background_options1 === void 0 ? void 0 : _config_background_options1.includes('hide_gradient')) !== null && _config_background_options_includes1 !== void 0 ? _config_background_options_includes1 : false;
+        const mapped = (0, $be1aa69a1c2a424c$export$1c5d878426377725)(this.hass, this._config);
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(mapped, this._huiConfig)) this._huiConfig = mapped;
+        // Subscribe to config.background.opacity when it names an entity_id, so
+        // getBackgroundOpacity picks up its state (see SubscribeEntityStateMixin).
+        // Only the instance that actually consumes --user-opacity subscribes: a
+        // card renders one background layer per entity icon plus one for itself,
+        // and subscribing from all of them would register N duplicate watchers
+        // for the same entity.
+        const opacity = (_config_background2 = config.background) === null || _config_background2 === void 0 ? void 0 : _config_background2.opacity;
+        const wanted = this._ownsUserOpacity && typeof opacity === 'string' ? [
+            opacity
+        ] : [];
+        // Reassign only on a real change — `config` is re-set on every parent
+        // render, and a fresh array each time would schedule a wasted update.
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(wanted, this.entities)) this.entities = wanted;
+    }
+    /**
+   * Whether this layer is the one the user-configured `background.opacity`
+   * applies to. The card owns it normally; in `icon_background` mode it
+   * moves to the main room icon (see the routing rule in
+   * room-state-icon's styles). Every other layer ignores it, so they
+   * neither subscribe to nor emit `--user-opacity`.
+   */ get _ownsUserOpacity() {
+        return this.icon ? this.room && this._iconBackground : !this._iconBackground;
+    }
+    /**
+   * State of the entity referenced by `background.opacity`, when
+   * configured as an entity_id (see `getBackgroundOpacity`).
+   */ get _opacityState() {
+        var _this__config_background, _this__config;
+        const opacity = (_this__config = this._config) === null || _this__config === void 0 ? void 0 : (_this__config_background = _this__config.background) === null || _this__config_background === void 0 ? void 0 : _this__config_background.opacity;
+        return typeof opacity === 'string' ? this.states[opacity] : undefined;
+    }
     /**
    * Returns the component's styles
    */ static get styles() {
-        return 0, $a106693bf2929cda$export$9dd6ff9ea0189349;
+        return 0, $44af7b24ffdbb901$export$9dd6ff9ea0189349;
     }
-    set config(value) {
-        var _slider_slider;
-        if ($ee3d06fe83a6a770$exports(value, this.config)) return;
-        super.config = value;
-        const slider = (0, $c37a9757c368f9bd$export$3719c033b804f0ea)(this.config);
-        this.entity = slider === null || slider === void 0 ? void 0 : slider.entity_id;
-        var _slider_slider_style;
-        // only set style if slider is defined as to not affect other components
-        this._style = slider ? (_slider_slider_style = (_slider_slider = slider.slider) === null || _slider_slider === void 0 ? void 0 : _slider_slider.style) !== null && _slider_slider_style !== void 0 ? _slider_slider_style : 'bar' : undefined;
+    /**
+   * The entity's own image, used only in icon placement. Cameras map to
+   * `camera_image` so the icon refreshes; everything else to its
+   * `entity_picture` (see `getEntityHuiImageConfig`).
+   */ get _entityHuiConfig() {
+        return this.icon ? (0, $be1aa69a1c2a424c$export$5bff4624c0a6c79a)(this.roomEntity) : undefined;
     }
-    get config() {
-        return super.config;
+    /**
+   * Whether the image layer renders in this placement, derived entirely
+   * from config and the entity. Card placement: image configured and not
+   * delegated to the icon. Icon placement: the entity's own picture, or
+   * the mapped background when the main icon owns it (`icon_background`).
+   */ get _showImage() {
+        if (this.icon) // this is rendered in a room-state-icon
+        return !!this._entityHuiConfig || this.room && this._iconBackground && !!this._huiConfig;
+        // this is rendered in a room-summary-card
+        return !!this._huiConfig && !this._iconBackground;
     }
-    render() {
-        (0, $dTmXl.d)(this.config, 'horizontal-slider', 'render');
-        const s = this.state;
-        if (!s) return 0, $ci0wX.nothing;
-        const rawValue = s ? Number(s.state) : Number.NaN;
-        let value = 0;
-        var _s_attributes_min;
-        let min = Number((_s_attributes_min = s === null || s === void 0 ? void 0 : s.attributes.min) !== null && _s_attributes_min !== void 0 ? _s_attributes_min : 0);
-        var _s_attributes_max;
-        let max = Number((_s_attributes_max = s === null || s === void 0 ? void 0 : s.attributes.max) !== null && _s_attributes_max !== void 0 ? _s_attributes_max : 100);
-        var _s_attributes_step;
-        let step = Number((_s_attributes_step = s === null || s === void 0 ? void 0 : s.attributes.step) !== null && _s_attributes_step !== void 0 ? _s_attributes_step : 1);
-        if (s.domain === 'media_player') {
-            const vol = s.attributes.volume_level;
-            value = vol == null ? 0 : Math.max(0, Math.min(100, Math.round(Number(vol) * 100)));
-        } else if (s.domain === 'light') {
-            var _s_attributes_brightness;
-            // Slider operates on raw brightness (0–255); attributes.brightness
-            // is null when the light is off.
-            value = Number((_s_attributes_brightness = s.attributes.brightness) !== null && _s_attributes_brightness !== void 0 ? _s_attributes_brightness : 0);
-            min = 0;
-            max = 255;
-            step = 1;
-        } else if (Number.isFinite(rawValue)) value = rawValue;
-        return (0, $ci0wX.html)($9d1851378e34030f$var$t || ($9d1851378e34030f$var$t = $9d1851378e34030f$var$_`
-      <ha-slider
-        labeled
-        .min=${0}
-        .max=${0}
-        .step=${0}
-        .value=${0}
-        .disabled=${0}
-        @change=${0}
-      ></ha-slider>
-    `), min, max, step, value, !s, this._handleChange);
+    /**
+   * Reflects `image` so outside CSS (e.g. the card's dimming vars) can
+   * key off whether an image is actually rendered here, and `icon-bg` —
+   * on the card layer so its color ignores the user opacity, and on the
+   * main icon's layer so room-state-icon routes that opacity to the
+   * icon fill instead.
+   */ willUpdate() {
+        this.toggleAttribute('image', this._showImage);
+        this.toggleAttribute('icon-bg', this._iconBackground && (!this.icon || this.room));
+        this.toggleAttribute('hide-gradient', this._hideGradient);
+        this._applyOpacity();
+    }
+    /**
+   * Sets the background opacity vars on the host, where both this
+   * component's layers and outside routing rules (room-state-icon's
+   * icon fill) resolve them.
+   */ _applyOpacity() {
+        if (!this._config) return;
+        const vars = (0, $8f71a348c8e54f2c$export$abc50289182506e4)(this._config, this.isActive, this._opacityState);
+        // Layers that don't own the user opacity leave the var unset so their
+        // fill falls through to the theme chain.
+        if (!this._ownsUserOpacity) vars['--user-opacity'] = undefined;
+        for (const [name, value] of Object.entries(vars))if (value === undefined) this.style.removeProperty(name);
+        else this.style.setProperty(name, String(value));
+    }
+    /**
+   * renders the lit element card
+   * @returns The rendered HTML template
+   */ render() {
+        var _this__entityHuiConfig;
+        // The icon's own entity wins over the mapped background config.
+        const hui = (_this__entityHuiConfig = this._entityHuiConfig) !== null && _this__entityHuiConfig !== void 0 ? _this__entityHuiConfig : this._huiConfig;
+        return (0, $ci0wX.html)($2ae3348658708615$var$t1 || ($2ae3348658708615$var$t1 = $2ae3348658708615$var$_`
+      <div class="color"></div>
+      ${0}
+    `), this._showImage && hui ? (0, $ci0wX.html)($2ae3348658708615$var$t || ($2ae3348658708615$var$t = $2ae3348658708615$var$_`
+            <div class="image">
+              <hui-image
+                .hass=${0}
+                .image=${0}
+                .cameraImage=${0}
+                .cameraView=${0}
+                .fitMode=${0}
+              ></hui-image>
+            </div>
+          `), this.hass, hui.image, hui.camera_image, hui.camera_view, 'cover') : (0, $ci0wX.nothing));
     }
     constructor(...args){
         super(...args), /**
-   * `media_player` → `volume_set`, `light` → `setBrightness`,
-   * everything else → `{domain}.set_value`.
-   */ this._handleChange = (ev)=>{
-            const hass = this.hass;
-            const state = this.state;
-            if (!hass || !state) return;
-            const target = ev.target;
-            if (state.domain === 'media_player') {
-                (0, $97ba5c7dd715a424$export$fadfd3eadd6082cd)(hass, state.entity_id, Number(target.value) / 100);
-                return;
-            }
-            if (state.domain === 'light') {
-                (0, $d3a1c41917263588$export$bfd42fd87279097a)(hass, state.entity_id, Number(target.value));
-                return;
-            }
-            (0, $3bd8b313a70a1912$export$80746c6bc6142fc8)(hass, state.entity_id, target.value);
-        };
+   * Render as an icon-circle background instead of the card body
+   */ this.icon = false, /**
+   * Icon placement only: whether this icon is the main room entity.
+   * Only the main icon may take over the card background in
+   * `icon_background` mode; other icons show only their own
+   * `entity_picture`.
+   */ this.room = false, /**
+   * Whether the room is considered active — selects the active/inactive
+   * theme opacity for the color layer. Fed by the card's delegates
+   * (ambient-light-aware room activity is business logic that belongs
+   * there, not in this component).
+   */ this.isActive = false, /**
+   * Whether the background is delegated to the main icon
+   * (`icon_background` option). Tracked as state so toggling the option
+   * re-renders even when the mapped image config is unchanged.
+   */ this._iconBackground = false, /**
+   * Whether the user gradient overlay is suppressed (`hide_gradient`).
+   */ this._hideGradient = false;
     }
 }
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
-        type: String,
-        reflect: true,
-        attribute: 'variant'
+        type: Boolean,
+        reflect: true
     })
-], $9d1851378e34030f$export$226f91755c79436a.prototype, "_style", void 0);
-$9d1851378e34030f$export$226f91755c79436a = (0, $evAes.__decorate)([
-    (0, $yv2EM.customElement)('horizontal-slider')
-], $9d1851378e34030f$export$226f91755c79436a);
-
-
-
-var $l3TbZ = parcelRequire("l3TbZ");
-const $b02f37b9ae80224f$export$805ddaeeece0413e = (0, $l3TbZ.default)((config, feature)=>{
-    var _config_features;
-    return !config || ((_config_features = config.features) === null || _config_features === void 0 ? void 0 : _config_features.includes(feature)) || false;
-});
-const $b02f37b9ae80224f$export$47f3d980c4d9b226 = (0, $l3TbZ.default)((entity, feature)=>{
-    var _entity_config_features;
-    return !entity || ((_entity_config_features = entity.config.features) === null || _entity_config_features === void 0 ? void 0 : _entity_config_features.includes(feature)) || false;
-});
+], $2ae3348658708615$export$babe2268d47cd6.prototype, "icon", void 0);
+(0, $2QgUB.__decorate)([
+    (0, $aaQtJ.property)({
+        type: Boolean
+    })
+], $2ae3348658708615$export$babe2268d47cd6.prototype, "room", void 0);
+(0, $2QgUB.__decorate)([
+    (0, $aaQtJ.property)({
+        attribute: false,
+        hasChanged: (newVal, oldVal)=>!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(newVal, oldVal)
+    })
+], $2ae3348658708615$export$babe2268d47cd6.prototype, "roomEntity", void 0);
+(0, $2QgUB.__decorate)([
+    (0, $aaQtJ.property)({
+        type: Boolean
+    })
+], $2ae3348658708615$export$babe2268d47cd6.prototype, "isActive", void 0);
+(0, $2QgUB.__decorate)([
+    (0, $lYE5o.state)()
+], $2ae3348658708615$export$babe2268d47cd6.prototype, "_huiConfig", void 0);
+(0, $2QgUB.__decorate)([
+    (0, $lYE5o.state)()
+], $2ae3348658708615$export$babe2268d47cd6.prototype, "_iconBackground", void 0);
+(0, $2QgUB.__decorate)([
+    (0, $lYE5o.state)()
+], $2ae3348658708615$export$babe2268d47cd6.prototype, "_hideGradient", void 0);
+$2ae3348658708615$export$babe2268d47cd6 = (0, $2QgUB.__decorate)([
+    (0, $yv2EM.customElement)('room-background-image')
+], $2ae3348658708615$export$babe2268d47cd6);
 
 
 
 var $kJycS = parcelRequire("kJycS");
 
-var $fKMMF = parcelRequire("fKMMF");
+var $5R2d0 = parcelRequire("5R2d0");
+var $aa262bffb44e26da$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/common/directives/action-handler-directive.ts
- */ parcelRequire("fPVm8");
+ */ Object.defineProperty($aa262bffb44e26da$exports, "__esModule", {
+    value: true
+});
+$aa262bffb44e26da$exports.actionHandler = $aa262bffb44e26da$exports.actionHandlerBind = void 0;
+parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 parcelRequire("lnb0z");
 
 
 var $lnb0z = parcelRequire("lnb0z");
-const $093cdf9d6017a838$var$getActionHandler = ()=>{
+const $aa262bffb44e26da$var$getActionHandler = ()=>{
     const body = document.body;
     if (body.querySelector('action-handler')) return body.querySelector('action-handler');
     const actionhandler = document.createElement('action-handler');
     body.appendChild(actionhandler);
     return actionhandler;
 };
-const $093cdf9d6017a838$export$520aee61eb0a2770 = (element, options)=>{
-    const actionhandler = $093cdf9d6017a838$var$getActionHandler();
+const $aa262bffb44e26da$var$actionHandlerBind = (element, options)=>{
+    const actionhandler = $aa262bffb44e26da$var$getActionHandler();
     if (!actionhandler) return;
     actionhandler.bind(element, options);
 };
-const $093cdf9d6017a838$export$8a44987212de21b = (0, $lnb0z.directive)(class extends (0, $lnb0z.Directive) {
+$aa262bffb44e26da$exports.actionHandlerBind = $aa262bffb44e26da$var$actionHandlerBind;
+$aa262bffb44e26da$exports.actionHandler = (0, $lnb0z.directive)(class extends $lnb0z.Directive {
     update(part, [options]) {
-        $093cdf9d6017a838$export$520aee61eb0a2770(part.element, options);
-        return 0, $ci0wX.noChange;
+        (0, $aa262bffb44e26da$exports.actionHandlerBind)(part.element, options);
+        return $ci0wX.noChange;
     }
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render(_options) {}
 });
 
@@ -3086,7 +3428,7 @@ const $093cdf9d6017a838$export$8a44987212de21b = (0, $lnb0z.directive)(class ext
 const $b96673d7637fba33$export$8a44987212de21b = (entity)=>{
     var _entity_config, _entity_config1;
     const isActionEnabled = (actionConfig)=>(actionConfig === null || actionConfig === void 0 ? void 0 : actionConfig.action) !== 'none' && (actionConfig === null || actionConfig === void 0 ? void 0 : actionConfig.action) !== undefined;
-    return (0, $093cdf9d6017a838$export$8a44987212de21b)({
+    return (0, $aa262bffb44e26da$exports.actionHandler)({
         hasDoubleClick: isActionEnabled((_entity_config = entity.config) === null || _entity_config === void 0 ? void 0 : _entity_config.double_tap_action),
         hasHold: isActionEnabled((_entity_config1 = entity.config) === null || _entity_config1 === void 0 ? void 0 : _entity_config1.hold_action)
     });
@@ -3107,8 +3449,7 @@ const $b96673d7637fba33$export$3d3654ce4577c53d = (element, entity)=>{
             const config = (0, $kJycS._)({
                 entity: entity.config.entity_id
             }, entity.config);
-            // @ts-ignore
-            (0, $fKMMF.fireEvent)(element, 'hass-action', {
+            (0, $5R2d0.fireEvent)(element, 'hass-action', {
                 config: config,
                 action: action
             });
@@ -3118,7 +3459,16 @@ const $b96673d7637fba33$export$3d3654ce4577c53d = (element, entity)=>{
 
 
 
-var $cmVfz = parcelRequire("cmVfz");
+var $kJycS = parcelRequire("kJycS");
+
+var $1izJ2 = parcelRequire("1izJ2");
+const $69eb2992476f80e8$export$f4c1e7ce0a330ff4 = (entity, config)=>(0, $1izJ2._)((0, $kJycS._)({}, entity), {
+        config: (0, $kJycS._)({}, entity.config, config.actions)
+    });
+
+
+
+var $gp9lG = parcelRequire("gp9lG");
 /**
  * Maps Home Assistant domains to their conventional active state colors
  * Returns a color name from the standard HA_COLORS list
@@ -3184,7 +3534,7 @@ var $cmVfz = parcelRequire("cmVfz");
  * @description Defines RGB color variables for use in Home Assistant themes and components
  */ parcelRequire("fPVm8");
 var $2SS2a = parcelRequire("2SS2a");
-let $caf1696fa639ec30$var$_ = (t)=>t, $caf1696fa639ec30$var$t, $caf1696fa639ec30$var$t1, $caf1696fa639ec30$var$t2, $caf1696fa639ec30$var$t3, $caf1696fa639ec30$var$t4;
+let $caf1696fa639ec30$var$_ = (t)=>t, $caf1696fa639ec30$var$t, $caf1696fa639ec30$var$t1, $caf1696fa639ec30$var$t2, $caf1696fa639ec30$var$t3, $caf1696fa639ec30$var$t4, $caf1696fa639ec30$var$t5;
 const $caf1696fa639ec30$export$33537d9e76cd536a = [
     'primary',
     'accent',
@@ -3228,15 +3578,21 @@ const $caf1696fa639ec30$export$dec94ffc2d530e03 = (0, $2SS2a.css)($caf1696fa639e
 `));
 const $caf1696fa639ec30$export$7ec899f7a316957e = (0, $2SS2a.css)($caf1696fa639ec30$var$t1 || ($caf1696fa639ec30$var$t1 = $caf1696fa639ec30$var$_`
   /* Glass effect - uses standard HA card variables set by the theme */
-  --theme-box-shadow-frosted: var(--ha-card-box-shadow);
-  --theme-border-color-frosted: var(--ha-card-border-color);
-  --theme-border-width-frosted: var(--ha-card-border-width);
-  --theme-border-radius-frosted: var(--ha-card-border-radius);
+  --theme-box-shadow-frosted: var(
+    --ha-card-box-shadow,
+    0 12px 20px rgba(0, 0, 0, 0.15)
+  );
+  --theme-border-color-frosted: var(
+    --ha-card-border-color,
+    rgba(255, 255, 255, 0.3)
+  );
+  --theme-border-width-frosted: var(--ha-card-border-width, 0.5px);
+  --theme-border-radius-frosted: var(--ha-card-border-radius, 18px);
 
   /* Frosted Glass sets backdrop-filter via card-mod, but we can pick it up if available */
   --theme-backdrop-filter-frosted: var(
     --ha-card-backdrop-filter,
-    var(--app-header-backdrop-filter, none)
+    var(--app-header-backdrop-filter, blur(8px) saturate(1.2))
   );
 
   /* Tint + sheen (these are used as var() knobs in Frosted Glass' card-mod styles) */
@@ -3252,7 +3608,29 @@ const $caf1696fa639ec30$export$7ec899f7a316957e = (0, $2SS2a.css)($caf1696fa639e
     0 0 2px 0 rgba(0, 0, 0, 0.1)
   );
 `));
-const $caf1696fa639ec30$export$4aa0a1b480cdb1b6 = (0, $2SS2a.css)($caf1696fa639ec30$var$t2 || ($caf1696fa639ec30$var$t2 = $caf1696fa639ec30$var$_`
+const $caf1696fa639ec30$export$9462d50bf972df13 = (0, $2SS2a.css)($caf1696fa639ec30$var$t2 || ($caf1696fa639ec30$var$t2 = $caf1696fa639ec30$var$_`
+  --theme-box-shadow-frosted: var(
+    --ha-card-box-shadow,
+    0 12px 20px rgba(0, 0, 0, 0.28)
+  );
+  --theme-border-color-frosted: var(
+    --ha-card-border-color,
+    rgba(234, 235, 238, 0.1)
+  );
+  --theme-backdrop-filter-frosted: var(
+    --ha-card-backdrop-filter,
+    var(--app-header-backdrop-filter, blur(10px) saturate(1.2))
+  );
+  --theme-glass-tint-frosted: var(--ha-card-glass-tint, rgba(28, 29, 33, 0.18));
+  --theme-glass-inset-shadow-frosted: var(
+    --ha-card-glass-inset-shadow,
+    3px 3px 0.5px -3.5px rgba(255, 255, 255, 0.15) inset,
+    -2px -2px 0.5px -2px rgba(255, 255, 255, 0.1) inset,
+    0 0 8px 1px rgba(255, 255, 255, 0.06) inset,
+    0 0 2px 0 rgba(0, 0, 0, 0.18)
+  );
+`));
+const $caf1696fa639ec30$export$4aa0a1b480cdb1b6 = (0, $2SS2a.css)($caf1696fa639ec30$var$t3 || ($caf1696fa639ec30$var$t3 = $caf1696fa639ec30$var$_`
   --theme-background-color-card: var(
     --ha-card-background,
     var(--card-background-color, white)
@@ -3269,14 +3647,14 @@ const $caf1696fa639ec30$export$4aa0a1b480cdb1b6 = (0, $2SS2a.css)($caf1696fa639e
   --opacity-icon-active: 1;
   --opacity-icon-inactive: 0.2;
 `));
-const $caf1696fa639ec30$export$38d2ecc76f0c2959 = (0, $2SS2a.css)($caf1696fa639ec30$var$t3 || ($caf1696fa639ec30$var$t3 = $caf1696fa639ec30$var$_`
+const $caf1696fa639ec30$export$38d2ecc76f0c2959 = (0, $2SS2a.css)($caf1696fa639ec30$var$t4 || ($caf1696fa639ec30$var$t4 = $caf1696fa639ec30$var$_`
   --opacity-background-active: 0.1;
   --opacity-background-inactive: 1;
 
   --opacity-icon-fill-active: 0.2;
   --opacity-icon-fill-inactive: 0.2;
 `));
-const $caf1696fa639ec30$export$eae85ad18a22ab6c = (0, $2SS2a.css)($caf1696fa639ec30$var$t4 || ($caf1696fa639ec30$var$t4 = $caf1696fa639ec30$var$_`
+const $caf1696fa639ec30$export$eae85ad18a22ab6c = (0, $2SS2a.css)($caf1696fa639ec30$var$t5 || ($caf1696fa639ec30$var$t5 = $caf1696fa639ec30$var$_`
   --opacity-background-active: 0.1;
   --opacity-background-inactive: 1;
 
@@ -3307,7 +3685,7 @@ const $2acaa25b6d047245$export$de247ce18e8ed95f = (iconColor, onColor = '', offC
  */ const $82ec124af523e08e$var$isEntityDetected = (hass, entityId)=>{
     const entity = hass.states[entityId];
     if (!entity) return false;
-    return (0, $cmVfz.stateActive)(entity);
+    return (0, $gp9lG.stateActive)(entity);
 };
 /**
  * Gets the current alarm state for a configured alarm sensor
@@ -3385,7 +3763,6 @@ const $82ec124af523e08e$export$e9bc110247b1ae0d = (isWaterDetected, config)=>{
 
 
 
-var $l3TbZ = parcelRequire("l3TbZ");
 /**
  * Gets sensor value - from specific entity in individual sensors, or averaged sensor
  */ const $b45c3666c29a512e$var$getSensorValue = (sensorData, deviceClass, entityId)=>{
@@ -3463,8 +3840,8 @@ var $l3TbZ = parcelRequire("l3TbZ");
             return value > threshold; // Default to 'gt' for backward compatibility
     }
 };
-const $b45c3666c29a512e$export$c1ca802e67721a4 = (0, $l3TbZ.default)((config, sensorData)=>{
-    if ((0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_climate_styles')) return {
+const $b45c3666c29a512e$export$c1ca802e67721a4 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((config, sensorData)=>{
+    if ((0, $1e40c00d469c9d00$exports.hasFeature)(config, 'skip_climate_styles')) return {
         hot: false,
         humid: false,
         hotColor: undefined,
@@ -3483,57 +3860,8 @@ const $b45c3666c29a512e$export$c1ca802e67721a4 = (0, $l3TbZ.default)((config, se
 
 
 
-var $l3TbZ = parcelRequire("l3TbZ");
-const $7806862517a8ec93$export$520c40045967cb15 = (0, $l3TbZ.default)((areas, areaId)=>areas[areaId]);
 
-
-
-var $cmVfz = parcelRequire("cmVfz");
-
-
-var $7AhDs = parcelRequire("7AhDs");
-/**
- * https://github.com/home-assistant/frontend/blob/dev/src/data/media_source.ts
- */ const $1de811e5c0604194$export$82af5f6c9f5dec8 = (mediaId)=>mediaId.startsWith('media-source://');
-const $1de811e5c0604194$export$512e5252162de675 = async (hass, mediaContentId)=>{
-    const result = await hass.callWS({
-        type: 'media_source/resolve_media',
-        media_content_id: mediaContentId
-    });
-    return result.url;
-};
-
-
-/**
- * Resolves a media source content ID or returns it as-is
- */ const $7359f6b91fb77fd2$var$resolveMediaContentId = async (hass, mediaContentId)=>{
-    if ((0, $1de811e5c0604194$export$82af5f6c9f5dec8)(mediaContentId)) return await (0, $1de811e5c0604194$export$512e5252162de675)(hass, mediaContentId);
-    return mediaContentId;
-};
-/**
- * Handles image configuration that can be a string or object
- */ const $7359f6b91fb77fd2$var$handleImageConfig = async (hass, image)=>{
-    if (typeof image === 'string') return await $7359f6b91fb77fd2$var$resolveMediaContentId(hass, image);
-    return await $7359f6b91fb77fd2$var$resolveMediaContentId(hass, image.media_content_id);
-};
-const $7359f6b91fb77fd2$export$9dd734c640ccb658 = async (hass, config)=>{
-    var _config_background_options, _config_background, _config_background1, _config_background2;
-    const disableImage = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('disable');
-    if (disableImage) return undefined;
-    // Check entity picture first
-    if ((_config_background1 = config.background) === null || _config_background1 === void 0 ? void 0 : _config_background1.image_entity) {
-        var _entityState_attributes;
-        const entityState = (0, $7AhDs.getState)(hass.states, config.background.image_entity);
-        if (entityState === null || entityState === void 0 ? void 0 : (_entityState_attributes = entityState.attributes) === null || _entityState_attributes === void 0 ? void 0 : _entityState_attributes.entity_picture) return entityState.attributes.entity_picture;
-    }
-    // Check config image
-    if ((_config_background2 = config.background) === null || _config_background2 === void 0 ? void 0 : _config_background2.image) return await $7359f6b91fb77fd2$var$handleImageConfig(hass, config.background.image);
-    // Fallback to area picture
-    const area = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area);
-    return area === null || area === void 0 ? void 0 : area.picture;
-};
-
-
+var $gp9lG = parcelRequire("gp9lG");
 /**
  * Module-level cache mapping a calling element to its resolved
  * `hui-view-container`. Keyed weakly so entries vanish when cards are GC'd.
@@ -3580,7 +3908,6 @@ var $kJycS = parcelRequire("kJycS");
 
 
 
-var $7AhDs = parcelRequire("7AhDs");
 /**
  * Checks if a string is a URL (starts with http:// or https://)
  * @param {string} str - The string to check
@@ -3612,18 +3939,18 @@ const $d9cd925d0860ec58$export$25fedbc2fd674160 = (hass, config)=>{
         }
     };
     // Handle different entity configuration formats
-    if (config.entity && !(0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'ignore_entity')) {
+    if (config.entity && !(0, $1e40c00d469c9d00$exports.hasFeature)(config, 'ignore_entity')) {
         if (typeof config.entity === 'string') // String format
         return {
             config: (0, $kJycS._)({
                 entity_id: config.entity
             }, actionConfig),
-            state: (0, $7AhDs.getState)(hass.states, config.entity)
+            state: (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, config.entity)
         };
         else // Object format
         return {
             config: (0, $kJycS._)({}, actionConfig, config.entity),
-            state: (0, $7AhDs.getState)(hass.states, config.entity.entity_id)
+            state: (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, config.entity.entity_id)
         };
     }
     // Default room light configuration
@@ -3632,41 +3959,53 @@ const $d9cd925d0860ec58$export$25fedbc2fd674160 = (hass, config)=>{
             entity_id: roomEntityId,
             icon: (_getArea = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area)) === null || _getArea === void 0 ? void 0 : _getArea.icon
         }, actionConfig),
-        state: (0, $7AhDs.getState)(hass.states, roomEntityId, true)
+        state: (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, roomEntityId, true)
     };
 };
 
 
 
 
-
-var $l3TbZ = parcelRequire("l3TbZ");
-const $62a596c6a9bc2e04$export$30c823bc834d6ab4 = (0, $l3TbZ.default)((devices, deviceId)=>devices[deviceId]);
+const $62a596c6a9bc2e04$export$30c823bc834d6ab4 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((devices, deviceId)=>devices[deviceId]);
 
 
 
-var $7AhDs = parcelRequire("7AhDs");
+
+var $ec08780371c7cdf9$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/number/format_number.ts
- */ const $1c9527a6ee3bb670$export$88bfc1035e667f37 = (stateObj)=>$1c9527a6ee3bb670$export$b6c45d0299750e7c(stateObj.attributes);
-const $1c9527a6ee3bb670$export$b6c45d0299750e7c = (attributes, numericDeviceClasses)=>{
+ */ Object.defineProperty($ec08780371c7cdf9$exports, "__esModule", {
+    value: true
+});
+$ec08780371c7cdf9$exports.isNumericFromAttributes = $ec08780371c7cdf9$exports.isNumericState = void 0;
+/**
+ * Returns true if the entity is considered numeric based on the attributes it has
+ * @param stateObj The entity state object
+ */ const $ec08780371c7cdf9$var$isNumericState = (stateObj)=>(0, $ec08780371c7cdf9$exports.isNumericFromAttributes)(stateObj.attributes);
+$ec08780371c7cdf9$exports.isNumericState = $ec08780371c7cdf9$var$isNumericState;
+const $ec08780371c7cdf9$var$isNumericFromAttributes = (attributes, numericDeviceClasses)=>{
     var _attributes_device_class;
     return !!attributes.unit_of_measurement || !!attributes.state_class || (numericDeviceClasses || []).includes((_attributes_device_class = attributes.device_class) !== null && _attributes_device_class !== void 0 ? _attributes_device_class : '');
 };
+$ec08780371c7cdf9$exports.isNumericFromAttributes = $ec08780371c7cdf9$var$isNumericFromAttributes;
 
 
 /**
  * Filters entities by device class and ensures they are numeric
  */ const $0b0bca794600042c$var$getNumericEntitiesByClass = (entities, deviceClass)=>{
-    return entities.filter((entity)=>entity.attributes.device_class === deviceClass && (0, $1c9527a6ee3bb670$export$88bfc1035e667f37)(entity) && entity.state.trim() !== '' && !Number.isNaN(Number(entity.state)));
+    return entities.filter((entity)=>{
+        const entityDeviceClass = entity.attributes.device_class;
+        return typeof entityDeviceClass === 'string' && entityDeviceClass === deviceClass && (0, $ec08780371c7cdf9$exports.isNumericState)(entity) && entity.state.trim() !== '' && !Number.isNaN(Number(entity.state));
+    });
 };
 /**
  * Groups entities by their unit of measurement
  */ const $0b0bca794600042c$var$groupEntitiesByUom = (entities)=>{
     const uomGroups = new Map();
     for (const entity of entities){
-        var _entity_attributes_unit_of_measurement;
-        const uom = (_entity_attributes_unit_of_measurement = entity.attributes.unit_of_measurement) !== null && _entity_attributes_unit_of_measurement !== void 0 ? _entity_attributes_unit_of_measurement : '';
+        const uomAttr = entity.attributes.unit_of_measurement;
+        const uom = typeof uomAttr === 'string' ? uomAttr : '';
         if (!uomGroups.has(uom)) uomGroups.set(uom, []);
         uomGroups.get(uom).push(entity);
     }
@@ -3703,9 +4042,9 @@ const $0b0bca794600042c$export$499e7395a53e0376 = (entities, deviceClasses)=>{
 
 const $400a6578b3135d12$export$f554a0f6d643a046 = (state, config, area, sensorClasses)=>{
     var _state_attributes;
-    if ((0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'exclude_default_entities')) return false;
+    if ((0, $1e40c00d469c9d00$exports.hasFeature)(config, 'exclude_default_entities')) return false;
     const deviceClass = (_state_attributes = state.attributes) === null || _state_attributes === void 0 ? void 0 : _state_attributes.device_class;
-    if (state.domain !== 'sensor' || !deviceClass || !sensorClasses.includes(deviceClass)) return false;
+    if (state.domain !== 'sensor' || typeof deviceClass !== 'string' || !sensorClasses.includes(deviceClass)) return false;
     const areaHasTemp = !!(area === null || area === void 0 ? void 0 : area.temperature_entity_id);
     const areaHasHumidity = !!(area === null || area === void 0 ? void 0 : area.humidity_entity_id);
     const isAreaDefaultTemp = areaHasTemp && state.entity_id === (area === null || area === void 0 ? void 0 : area.temperature_entity_id);
@@ -3730,8 +4069,8 @@ const $400a6578b3135d12$export$f554a0f6d643a046 = (state, config, area, sensorCl
 };
 const $e186e7c110487ed3$export$d4cef0abb1b35d6f = (hass, config)=>{
     var _config_sensors, _config_thresholds, _config_thresholds1;
-    const multiLightEnabled = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'multi_light_background');
-    const hideHiddenEntities = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_hidden_entities');
+    const multiLightEnabled = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'multi_light_background');
+    const hideHiddenEntities = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'hide_hidden_entities');
     // Get area information to check for configured temperature/humidity sensors
     const area = (0, $7806862517a8ec93$export$520c40045967cb15)(hass.areas, config.area);
     // Default sensor classes if not specified
@@ -3792,7 +4131,7 @@ const $e186e7c110487ed3$export$d4cef0abb1b35d6f = (hass, config)=>{
         if (hideHiddenEntities && entity.hidden) return;
         // Check if this sensor is explicitly configured
         const isConfigSensor = configSensorIds.includes(entity.entity_id);
-        const device = (0, $62a596c6a9bc2e04$export$30c823bc834d6ab4)(hass.devices, entity.device_id);
+        const device = entity.device_id ? (0, $62a596c6a9bc2e04$export$30c823bc834d6ab4)(hass.devices, entity.device_id) : undefined;
         const isInArea = [
             entity.area_id,
             device === null || device === void 0 ? void 0 : device.area_id
@@ -3804,7 +4143,7 @@ const $e186e7c110487ed3$export$d4cef0abb1b35d6f = (hass, config)=>{
         // If it's not a config sensor, not in the area, and not a configured light, skip it
         // If it's a config sensor or configured light, always include it since the user has explicitly included it
         if (!shouldProcessEntity(isConfigSensor, isInArea, isConfiguredLight, isThresholdEntity)) return;
-        const state = (0, $7AhDs.getState)(hass.states, entity.entity_id);
+        const state = (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, entity.entity_id);
         if (!state) return;
         // Collect light entities for multi-light background feature
         if (multiLightEnabled) {
@@ -3856,17 +4195,16 @@ const $c4ab0a640e168730$export$df764ae7d62abece = (hass, config, element)=>{
     const roomEntity = (0, $d9cd925d0860ec58$export$25fedbc2fd674160)(hass, config);
     const sensors = (0, $e186e7c110487ed3$export$d4cef0abb1b35d6f)(hass, config);
     const thresholds = (0, $b45c3666c29a512e$export$c1ca802e67721a4)(config, sensors);
-    const image = (0, $7359f6b91fb77fd2$export$9dd734c640ccb658)(hass, config);
     const smokeDetected = (0, $82ec124af523e08e$export$9e738e3e7dcdd507)(hass, config.smoke);
     const gasDetected = (0, $82ec124af523e08e$export$69e97fbcf1121841)(hass, config.gas);
     const waterDetected = (0, $82ec124af523e08e$export$fad91fa3c977dc7)(hass, config.water);
     const occupied = (0, $82ec124af523e08e$export$9df2091f323033b9)(hass, config.occupancy);
     // Calculate if room entity is active
-    const roomEntityActive = roomEntity.state && (0, $cmVfz.stateActive)(roomEntity.state);
+    const roomEntityActive = roomEntity.state && (0, $gp9lG.stateActive)(roomEntity.state);
     // Calculate if any regular (non-ambient) light is active
-    const regularLightActive = sensors.lightEntities.some((entityState)=>(0, $cmVfz.stateActive)(entityState));
+    const regularLightActive = sensors.lightEntities.some((entityState)=>(0, $gp9lG.stateActive)(entityState));
     // Calculate if any ambient light is active
-    const ambientLightActive = sensors.ambientLightEntities.some((entityState)=>(0, $cmVfz.stateActive)(entityState));
+    const ambientLightActive = sensors.ambientLightEntities.some((entityState)=>(0, $gp9lG.stateActive)(entityState));
     // isActive: room entity OR any light (regular or ambient) - used for card background
     const isActive = roomEntityActive || regularLightActive || ambientLightActive;
     // isIconActive: room entity OR any regular light (NOT ambient) - used for icon styling
@@ -3886,7 +4224,6 @@ const $c4ab0a640e168730$export$df764ae7d62abece = (hass, config, element)=>{
         roomInfo: roomInfo,
         roomEntity: roomEntity,
         sensors: sensors,
-        image: image,
         isActive: isActive,
         isIconActive: isIconActive,
         thresholds: thresholds,
@@ -3900,25 +4237,18 @@ const $c4ab0a640e168730$export$df764ae7d62abece = (hass, config, element)=>{
 
 
 
-var $kJycS = parcelRequire("kJycS");
 
-var $1izJ2 = parcelRequire("1izJ2");
+var $g28NR = parcelRequire("g28NR");
 
-var $evAes = parcelRequire("evAes");
-const $06cd5aba58e27145$export$66a0a6f05155b9e9 = (superClass)=>{
-    class HassConfigClass extends superClass {
-    }
-    return HassConfigClass;
-};
+var $2QgUB = parcelRequire("2QgUB");
+
+
+const $370eb512b0573832$export$fcf7c33d7fd02301 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entities, entityId)=>entities[entityId]);
 
 
 
 
-
-var $l3TbZ = parcelRequire("l3TbZ");
-const $370eb512b0573832$export$fcf7c33d7fd02301 = (0, $l3TbZ.default)((entities, entityId)=>entities[entityId]);
-
-
+var $g28NR = parcelRequire("g28NR");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 
@@ -3960,9 +4290,8 @@ var $lnb0z = parcelRequire("lnb0z");
 
 
 
-var $l3TbZ = parcelRequire("l3TbZ");
 let $6f5f72559a4d178c$var$_ = (t)=>t, $6f5f72559a4d178c$var$t;
-const $6f5f72559a4d178c$export$3703ea65b0ac4726 = (0, $l3TbZ.default)((styles)=>{
+const $6f5f72559a4d178c$export$3703ea65b0ac4726 = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((styles)=>{
     if (!styles || Object.keys(styles).length === 0) return 0, $ci0wX.nothing;
     // Separate keyframes from regular styles
     const keyframesEntries = [];
@@ -3982,12 +4311,14 @@ const $6f5f72559a4d178c$export$3703ea65b0ac4726 = (0, $l3TbZ.default)((styles)=>
       </style>
     `), keyframesString, cssString);
 });
-const $6f5f72559a4d178c$export$94e56d1d743c1f9b = (0, $l3TbZ.default)((styles)=>{
+const $6f5f72559a4d178c$export$94e56d1d743c1f9b = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((styles)=>{
     if (!styles || Object.keys(styles).length === 0) return 0, $ci0wX.nothing;
     return (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)(styles);
 });
 
 
+
+var $dTmXl = parcelRequire("dTmXl");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
@@ -4016,7 +4347,7 @@ const $e595363dd98d321d$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($e595363dd98d3
 
 
 let $2146d91279a85b43$var$_ = (t)=>t, $2146d91279a85b43$var$t;
-class $2146d91279a85b43$export$fad092f8692706c7 extends (0, $06cd5aba58e27145$export$66a0a6f05155b9e9)((0, $2r9I1.LitElement)) {
+class $2146d91279a85b43$export$fad092f8692706c7 extends (0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement)) {
     /**
    * Returns the component's styles
    */ static get styles() {
@@ -4028,11 +4359,12 @@ class $2146d91279a85b43$export$fad092f8692706c7 extends (0, $06cd5aba58e27145$ex
         var _config_styles;
         const hass = this.hass;
         const config = this.config;
-        if (!hass || !config || (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_area_stats')) return 0, $ci0wX.nothing;
+        (0, $dTmXl.d)(config, 'area-statistics', 'render');
+        if (!hass || !config || (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'hide_area_stats')) return 0, $ci0wX.nothing;
         const devices = Object.keys(hass.devices).filter((k)=>(0, $62a596c6a9bc2e04$export$30c823bc834d6ab4)(hass.devices, k).area_id === config.area);
         const entities = Object.keys(hass.entities).filter((k)=>{
             const entity = (0, $370eb512b0573832$export$fcf7c33d7fd02301)(hass.entities, k);
-            return entity.area_id === config.area || devices.includes(entity.device_id);
+            return entity.area_id === config.area || entity.device_id != null && devices.includes(entity.device_id);
         });
         const rows = [
             [
@@ -4049,7 +4381,7 @@ class $2146d91279a85b43$export$fad092f8692706c7 extends (0, $06cd5aba58e27145$ex
         return (0, $ci0wX.html)($2146d91279a85b43$var$t || ($2146d91279a85b43$var$t = $2146d91279a85b43$var$_`<span style="${0}" class="stats text">${0}</span>`), style, summary);
     }
 }
-$2146d91279a85b43$export$fad092f8692706c7 = (0, $evAes.__decorate)([
+$2146d91279a85b43$export$fad092f8692706c7 = (0, $2QgUB.__decorate)([
     (0, $yv2EM.customElement)('area-statistics')
 ], $2146d91279a85b43$export$fad092f8692706c7);
 
@@ -4063,30 +4395,89 @@ parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 
 
-var $cmVfz = parcelRequire("cmVfz");
+var $gp9lG = parcelRequire("gp9lG");
+var $138ab67ea0f87e5c$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/state_color.ts
  * This file is modified to allow for light entities to be included in the state color calculation
  * so that the multi-light background feature can work
- */ /**
- * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/color/battery_color.ts
- */ const $0bd50d43cbb3bf44$export$8b81ac7267f802e2 = (state)=>{
-    const value = Number(state);
-    if (Number.isNaN(value)) return undefined;
-    if (value >= 70) return '--state-sensor-battery-high-color';
-    if (value >= 30) return '--state-sensor-battery-medium-color';
-    return '--state-sensor-battery-low-color';
+ */ Object.defineProperty($138ab67ea0f87e5c$exports, "__esModule", {
+    value: true
+});
+$138ab67ea0f87e5c$exports.stateColorBrightness = $138ab67ea0f87e5c$exports.stateColorProperties = $138ab67ea0f87e5c$exports.domainStateColorProperties = $138ab67ea0f87e5c$exports.stateColorCss = void 0;
+var $c216464f2b025d6e$exports = {};
+"use strict";
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/data/entity.ts
+ */ var $c216464f2b025d6e$var$__createBinding = $c216464f2b025d6e$exports && $c216464f2b025d6e$exports.__createBinding || (Object.create ? function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
+        enumerable: true,
+        get: function() {
+            return m[k];
+        }
+    };
+    Object.defineProperty(o, k2, desc);
+} : function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+var $c216464f2b025d6e$var$__exportStar = $c216464f2b025d6e$exports && $c216464f2b025d6e$exports.__exportStar || function(m, exports1) {
+    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports1, p)) $c216464f2b025d6e$var$__createBinding(exports1, m, p);
 };
+Object.defineProperty($c216464f2b025d6e$exports, "__esModule", {
+    value: true
+});
+
+$c216464f2b025d6e$var$__exportStar((parcelRequire("7zhir")), $c216464f2b025d6e$exports);
 
 
+var $f1ff20376307e226$exports = {};
+"use strict";
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/data/group.ts
+ */ Object.defineProperty($f1ff20376307e226$exports, "__esModule", {
+    value: true
+});
+$f1ff20376307e226$exports.computeGroupDomain = void 0;
 
-var $jyxIy = parcelRequire("jyxIy");
+var $h7W3o = parcelRequire("h7W3o");
+const $f1ff20376307e226$var$computeGroupDomain = (stateObj)=>{
+    const entityIds = stateObj.attributes.entity_id || [];
+    const uniqueDomains = [
+        ...new Set(entityIds.map((entityId)=>(0, $h7W3o.computeDomain)(entityId)))
+    ];
+    return uniqueDomains.length === 1 ? uniqueDomains[0] : undefined;
+};
+$f1ff20376307e226$exports.computeGroupDomain = $f1ff20376307e226$var$computeGroupDomain;
 
-var $cmVfz = parcelRequire("cmVfz");
+
+var $07b9c57e5fc7188f$exports = {};
+"use strict";
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/resources/css-variables.ts
+ */ Object.defineProperty($07b9c57e5fc7188f$exports, "__esModule", {
+    value: true
+});
+$07b9c57e5fc7188f$exports.computeCssVariable = $07b9c57e5fc7188f$var$computeCssVariable;
+function $07b9c57e5fc7188f$var$computeCssVariable(props) {
+    if (Array.isArray(props)) return props.reverse().reduce((str, variable)=>`var(${variable}${str ? `, ${str}` : ''})`, undefined);
+    return `var(${props})`;
+}
+
+
+var $8a89387630819b81$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/string/slugify.ts
- */ // https://gist.github.com/hagemann/382adfc57adbd5af078dc93feef01fe1
-const $9e5c6bd7705b1882$export$c383cdd2a518017a = (value, delimiter = '_')=>{
+ */ Object.defineProperty($8a89387630819b81$exports, "__esModule", {
+    value: true
+});
+$8a89387630819b81$exports.slugify = void 0;
+// https://gist.github.com/hagemann/382adfc57adbd5af078dc93feef01fe1
+const $8a89387630819b81$var$slugify = (value, delimiter = '_')=>{
     const a = "\xe0\xe1\xe2\xe4\xe6\xe3\xe5\u0101\u0103\u0105\xe7\u0107\u010D\u0111\u010F\xe8\xe9\xea\xeb\u0113\u0117\u0119\u011B\u011F\u01F5\u1E27\xee\xef\xed\u012B\u012F\xec\u0131\u0130\u0142\u1E3F\xf1\u0144\u01F9\u0148\xf4\xf6\xf2\xf3\u0153\xf8\u014D\xf5\u0151\u1E55\u0155\u0159\xdf\u015B\u0161\u015F\u0219\u0165\u021B\xfb\xfc\xf9\xfa\u016B\u01D8\u016F\u0171\u0173\u1E83\u1E8D\xff\xfd\u017E\u017A\u017C\xb7";
     const b = `aaaaaaaaaacccddeeeeeeeegghiiiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz${delimiter}`;
     const p = new RegExp(a.split('').join('|'), 'g');
@@ -4103,32 +4494,32 @@ const $9e5c6bd7705b1882$export$c383cdd2a518017a = (value, delimiter = '_')=>{
     }
     return slugified;
 };
+$8a89387630819b81$exports.slugify = $8a89387630819b81$var$slugify;
 
 
-
-var $jf6NF = parcelRequire("jf6NF");
+var $c7ade02d3577bd73$exports = {};
+"use strict";
 /**
- * https://github.com/home-assistant/frontend/blob/dev/src/data/group.ts
- */ 
-var $jyxIy = parcelRequire("jyxIy");
-const $b00b2d9b4eb2aaf5$export$995df2070398c848 = (stateObj)=>{
-    const entityIds = stateObj.attributes.entity_id || [];
-    const uniqueDomains = [
-        ...new Set(entityIds.map((entityId)=>(0, $jyxIy.computeDomain)(entityId)))
-    ];
-    return uniqueDomains.length === 1 ? uniqueDomains[0] : undefined;
+ * https://github.com/home-assistant/frontend/blob/dev/src/common/entity/color/battery_color.ts
+ */ Object.defineProperty($c7ade02d3577bd73$exports, "__esModule", {
+    value: true
+});
+$c7ade02d3577bd73$exports.batteryStateColorProperty = void 0;
+const $c7ade02d3577bd73$var$batteryStateColorProperty = (state)=>{
+    const value = Number(state);
+    if (Number.isNaN(value)) return undefined;
+    if (value >= 70) return '--state-sensor-battery-high-color';
+    if (value >= 30) return '--state-sensor-battery-medium-color';
+    return '--state-sensor-battery-low-color';
 };
+$c7ade02d3577bd73$exports.batteryStateColorProperty = $c7ade02d3577bd73$var$batteryStateColorProperty;
 
 
-/**
- * https://github.com/home-assistant/frontend/blob/dev/src/resources/css-variables.ts
- */ function $8d09d9a47fbd924a$export$32531bbdc9316392(props) {
-    if (Array.isArray(props)) return props.reverse().reduce((str, variable)=>`var(${variable}${str ? `, ${str}` : ''})`, undefined);
-    return `var(${props})`;
-}
 
+var $h7W3o = parcelRequire("h7W3o");
 
-const $d41ad01236652ab5$var$STATE_COLORED_DOMAIN = new Set([
+var $gp9lG = parcelRequire("gp9lG");
+const $138ab67ea0f87e5c$var$STATE_COLORED_DOMAIN = new Set([
     'alarm_control_panel',
     'alert',
     'automation',
@@ -4160,37 +4551,43 @@ const $d41ad01236652ab5$var$STATE_COLORED_DOMAIN = new Set([
     'valve',
     'water_heater'
 ]);
-const $d41ad01236652ab5$export$b2779b0e0d1bdfa9 = (stateObj, scope, active, state)=>{
+// slightly modified from frontend/src/common/entity/state_color.ts
+const $138ab67ea0f87e5c$var$stateColorCss = (stateObj, scope, active, state)=>{
     const compareState = state !== null && state !== void 0 ? state : stateObj === null || stateObj === void 0 ? void 0 : stateObj.state;
-    if (compareState === (0, $jf6NF.UNAVAILABLE) && !active) return `var(--state-unavailable-color)`;
-    const properties = $d41ad01236652ab5$export$e4e5839282fc5156(stateObj, scope, active, state);
-    if (properties) return (0, $8d09d9a47fbd924a$export$32531bbdc9316392)(properties);
+    if (compareState === $c216464f2b025d6e$exports.UNAVAILABLE && !active) return `var(--state-unavailable-color)`;
+    const properties = (0, $138ab67ea0f87e5c$exports.stateColorProperties)(stateObj, scope, active, state);
+    if (properties) return (0, $07b9c57e5fc7188f$exports.computeCssVariable)(properties);
     return undefined;
 };
-const $d41ad01236652ab5$export$2b7fdd1a076d6214 = (domain, stateObj, scope, active, state)=>{
+$138ab67ea0f87e5c$exports.stateColorCss = $138ab67ea0f87e5c$var$stateColorCss;
+/**
+ * This method has been modified slightly to account for other themes.
+ */ const $138ab67ea0f87e5c$var$domainStateColorProperties = (domain, stateObj, scope, active, state)=>{
     const compareState = state !== null && state !== void 0 ? state : stateObj.state;
     // active is only passed in for the main room entity
     // so if it's not passed in, we use the stateActive function to determine if the entity is active
     // we don't care about the theme in this context
-    const isActive = active !== null && active !== void 0 ? active : (0, $cmVfz.stateActive)(stateObj, state);
+    const isActive = active !== null && active !== void 0 ? active : (0, $gp9lG.stateActive)(stateObj, state);
     // allow for theme override
     const properties = [
         `--state-color-${scope}-theme`
     ];
-    const stateKey = (0, $9e5c6bd7705b1882$export$c383cdd2a518017a)(compareState, '_');
+    const stateKey = (0, $8a89387630819b81$exports.slugify)(compareState, '_');
     const activeKey = isActive ? 'active' : 'inactive';
     const dc = stateObj.attributes.device_class;
     if (dc) properties.push(`--state-${domain}-${dc}-${stateKey}-color`);
     properties.push(`--state-${domain}-${stateKey}-color`, `--state-${domain}-${activeKey}-color`, `--state-${activeKey}-color`);
     return properties;
 };
-const $d41ad01236652ab5$export$e4e5839282fc5156 = (stateObj, scope, active, state)=>{
+$138ab67ea0f87e5c$exports.domainStateColorProperties = $138ab67ea0f87e5c$var$domainStateColorProperties;
+// slightly modified from frontend/src/common/entity/state_color.ts
+const $138ab67ea0f87e5c$var$stateColorProperties = (stateObj, scope, active, state)=>{
     const compareState = state !== null && state !== void 0 ? state : stateObj === null || stateObj === void 0 ? void 0 : stateObj.state;
-    const domain = (0, $jyxIy.computeDomain)(stateObj.entity_id);
+    const domain = (0, $h7W3o.computeDomain)(stateObj.entity_id);
     const dc = stateObj.attributes.device_class;
     // Special rules for battery coloring
     if (domain === 'sensor' && dc === 'battery') {
-        const property = (0, $0bd50d43cbb3bf44$export$8b81ac7267f802e2)(compareState);
+        const property = (0, $c7ade02d3577bd73$exports.batteryStateColorProperty)(compareState);
         if (property) return [
             `--state-color-${scope}-theme`,
             property
@@ -4198,20 +4595,22 @@ const $d41ad01236652ab5$export$e4e5839282fc5156 = (stateObj, scope, active, stat
     }
     // Special rules for group coloring
     if (domain === 'group') {
-        const groupDomain = (0, $b00b2d9b4eb2aaf5$export$995df2070398c848)(stateObj);
-        if (groupDomain && $d41ad01236652ab5$var$STATE_COLORED_DOMAIN.has(groupDomain)) return $d41ad01236652ab5$export$2b7fdd1a076d6214(groupDomain, stateObj, scope, active, state);
+        const groupDomain = (0, $f1ff20376307e226$exports.computeGroupDomain)(stateObj);
+        if (groupDomain && $138ab67ea0f87e5c$var$STATE_COLORED_DOMAIN.has(groupDomain)) return (0, $138ab67ea0f87e5c$exports.domainStateColorProperties)(groupDomain, stateObj, scope, active, state);
     }
-    if ($d41ad01236652ab5$var$STATE_COLORED_DOMAIN.has(domain)) return $d41ad01236652ab5$export$2b7fdd1a076d6214(domain, stateObj, scope, active, state);
+    if ($138ab67ea0f87e5c$var$STATE_COLORED_DOMAIN.has(domain)) return (0, $138ab67ea0f87e5c$exports.domainStateColorProperties)(domain, stateObj, scope, active, state);
     return undefined;
 };
-const $d41ad01236652ab5$export$65bcdaf7f2807be8 = (stateObj)=>{
-    if (stateObj.attributes.brightness && (0, $jyxIy.computeDomain)(stateObj.entity_id) !== 'plant') {
+$138ab67ea0f87e5c$exports.stateColorProperties = $138ab67ea0f87e5c$var$stateColorProperties;
+const $138ab67ea0f87e5c$var$stateColorBrightness = (stateObj)=>{
+    if (stateObj.attributes.brightness && (0, $h7W3o.computeDomain)(stateObj.entity_id) !== 'plant') {
         // lowest brightness will be around 50% (that's pretty dark)
-        const brightness = stateObj.attributes.brightness;
+        const brightness = Number(stateObj.attributes.brightness);
         return `brightness(${(brightness + 245) / 5}%)`;
     }
     return '';
 };
+$138ab67ea0f87e5c$exports.stateColorBrightness = $138ab67ea0f87e5c$var$stateColorBrightness;
 
 
 
@@ -4238,22 +4637,25 @@ const $273edb1bb8e481ef$export$de96a622725f4284 = (hass, entity, thresholdResult
     if (thresholdResult === null || thresholdResult === void 0 ? void 0 : thresholdResult.color) return (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(thresholdResult.color);
     // icon color is the second priority - hex colors
     const iconColor = (_state_attributes = state.attributes) === null || _state_attributes === void 0 ? void 0 : _state_attributes.icon_color;
-    if (iconColor === null || iconColor === void 0 ? void 0 : iconColor.startsWith('#')) return iconColor;
+    if (typeof iconColor === 'string' && iconColor.startsWith('#')) return iconColor;
+    const onColorAttr = (_state_attributes1 = state.attributes) === null || _state_attributes1 === void 0 ? void 0 : _state_attributes1.on_color;
+    const offColorAttr = (_state_attributes2 = state.attributes) === null || _state_attributes2 === void 0 ? void 0 : _state_attributes2.off_color;
     var _entity_config_on_color;
-    const onColor = (_entity_config_on_color = entity.config.on_color) !== null && _entity_config_on_color !== void 0 ? _entity_config_on_color : (_state_attributes1 = state.attributes) === null || _state_attributes1 === void 0 ? void 0 : _state_attributes1.on_color;
+    const onColor = (_entity_config_on_color = entity.config.on_color) !== null && _entity_config_on_color !== void 0 ? _entity_config_on_color : typeof onColorAttr === 'string' ? onColorAttr : undefined;
     var _entity_config_off_color;
-    const offColor = (_entity_config_off_color = entity.config.off_color) !== null && _entity_config_off_color !== void 0 ? _entity_config_off_color : state === null || state === void 0 ? void 0 : (_state_attributes2 = state.attributes) === null || _state_attributes2 === void 0 ? void 0 : _state_attributes2.off_color;
-    const rgbColor = (0, $78d5b7f684c6d2c0$export$ce6920689b32408c)(state, onColor, offColor, active);
+    const offColor = (_entity_config_off_color = entity.config.off_color) !== null && _entity_config_off_color !== void 0 ? _entity_config_off_color : typeof offColorAttr === 'string' ? offColorAttr : undefined;
+    const rgbColor = (0, $78d5b7f684c6d2c0$export$ce6920689b32408c)(state, onColor !== null && onColor !== void 0 ? onColor : '', offColor !== null && offColor !== void 0 ? offColor : '', active);
     // If the state has a specific RGB color, return it directly
     if (rgbColor) return rgbColor;
     // Try minimalist colors first if minimalist theme
     const theme = (0, $7a9953f15579a0c2$export$f3dc7c019524f0e9)(null, hass);
+    const resolvedIconColor = typeof iconColor === 'string' ? iconColor : '';
     if (theme === null || theme === void 0 ? void 0 : theme.startsWith('minimalist-')) {
-        const minimalistResult = (0, $2acaa25b6d047245$export$2757cc6eb9fa350d)(iconColor, onColor, offColor, state.domain, active);
+        const minimalistResult = (0, $2acaa25b6d047245$export$2757cc6eb9fa350d)(resolvedIconColor, onColor, offColor, state.domain, active);
         if (minimalistResult) return minimalistResult;
     }
     // Fallback to Home Assistant colors
-    return (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(iconColor, onColor, offColor, active);
+    return (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(typeof iconColor === 'string' ? iconColor : undefined, onColor !== null && onColor !== void 0 ? onColor : '', offColor !== null && offColor !== void 0 ? offColor : '', active !== null && active !== void 0 ? active : false);
 };
 
 
@@ -4353,12 +4755,12 @@ const $07e9954134d2b2af$export$de2836153ec9a0b1 = (hass, scope, entity, active)=
     // active is only passed in for the main room entity
     // so if it's not passed in, we use the stateActive function to determine if the entity is active
     // we don't care about the theme in this context
-    const isActive = active !== null && active !== void 0 ? active : (0, $cmVfz.stateActive)(state);
+    const isActive = active !== null && active !== void 0 ? active : (0, $gp9lG.stateActive)(state);
     const activeClass = isActive ? 'active' : 'inactive';
     const thresholdResult = (0, $3eeea5b8a350985f$export$76969a794fd1f893)(entity);
     const themeOverride = (0, $273edb1bb8e481ef$export$de96a622725f4284)(hass, entity, thresholdResult, isActive);
     var _stateColorCss;
-    const cssColor = (_stateColorCss = (0, $d41ad01236652ab5$export$b2779b0e0d1bdfa9)(state, scope, isActive)) !== null && _stateColorCss !== void 0 ? _stateColorCss : themeOverride ? `var(--state-color-${scope}-theme)` : undefined;
+    const cssColor = (_stateColorCss = (0, $138ab67ea0f87e5c$exports.stateColorCss)(state, scope, isActive)) !== null && _stateColorCss !== void 0 ? _stateColorCss : themeOverride ? `var(--state-color-${scope}-theme)` : undefined;
     return {
         active: isActive,
         cssColor: cssColor,
@@ -4371,7 +4773,7 @@ const $07e9954134d2b2af$export$de2836153ec9a0b1 = (hass, scope, entity, active)=
 
 const $58c246fbddf82f4c$export$43aa80132b9e21fa = (hass, config, entity, isActive)=>{
     var _styleData_thresholdResult, _config_styles, _config_styles1;
-    const skipStyles = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_entity_styles');
+    const skipStyles = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'skip_entity_styles');
     if (skipStyles) return 0, $ci0wX.nothing;
     const styleData = (0, $07e9954134d2b2af$export$de2836153ec9a0b1)(hass, 'text', entity, isActive);
     if (!styleData) return 0, $ci0wX.nothing;
@@ -4391,12 +4793,9 @@ var $ci0wX = parcelRequire("ci0wX");
 let $52a5e6cbabf7b8e2$var$_ = (t)=>t, $52a5e6cbabf7b8e2$var$t;
 const $52a5e6cbabf7b8e2$export$a80b3bd66acc52ff = (element, hass, roomInformation, roomEntity, config, sensors, isActive)=>{
     const textStyle = (0, $58c246fbddf82f4c$export$43aa80132b9e21fa)(hass, config, roomEntity, isActive);
-    // Override the room entity config with the user's actions config
-    const actionEntity = (0, $1izJ2._)((0, $kJycS._)({}, roomEntity), {
-        config: (0, $kJycS._)({}, roomEntity.config, config.actions)
-    });
-    const handler = (0, $b96673d7637fba33$export$8a44987212de21b)(actionEntity);
-    const action = (0, $b96673d7637fba33$export$3d3654ce4577c53d)(element, actionEntity);
+    // The caller passes the room entity with `config.actions` already merged
+    const handler = (0, $b96673d7637fba33$export$8a44987212de21b)(roomEntity);
+    const action = (0, $b96673d7637fba33$export$3d3654ce4577c53d)(element, roomEntity);
     return (0, $ci0wX.html)($52a5e6cbabf7b8e2$var$t || ($52a5e6cbabf7b8e2$var$t = $52a5e6cbabf7b8e2$var$_`<div class="info">
     <div class="text" @action=${0} .actionHandler=${0}>
       <div class="name text" style=${0}>
@@ -4413,49 +4812,327 @@ const $52a5e6cbabf7b8e2$export$a80b3bd66acc52ff = (element, hass, roomInformatio
 };
 
 
+/**
+ * Horizontal Slider Component
+ *
+ * Renders a horizontal slider strip flush with the bottom edge of the
+ * room-summary-card. The component decides on its own whether to render:
+ * if no entity in the card config has a `slider` config block, it renders
+ * `nothing`, so the parent card can unconditionally place it in its
+ * template.
+ *
+ * Always renders Home Assistant's <ha-slider>. The visual variant is
+ * controlled per-entity via `entity.slider.style`:
+ *  - `'ha'`           : the standard HA slider look (thin track + thumb).
+ *  - `'bar'` (default): ha-slider re-styled as a chunky full-height bar.
+ *
+ * Entity wiring
+ * -------------
+ * Extends `SubscribeEntityStateMixin(HassUpdateMixin(LitElement))`, so
+ * `hass`, `config`, and the live `state` of the slider entity are managed
+ * by the mixins. The bound entity is the first one (scanning `entity`
+ * then `entities`) with a `slider` config block. `min` / `max` / `step`
+ * are read from `state.attributes` and the current `value` from
+ * `state.state` —
+ * same pattern used by `hui-input-number-entity-row` /
+ * `hui-number-entity-row` upstream (`setValue`).
+ *
+ * Domain specials:
+ *  - `media_player` : slider exposes 0–100; reads `volume_level` (0–1)
+ *                     and writes via `setMediaPlayerVolume`.
+ *  - `light`        : slider exposes 0–255; reads `brightness` and
+ *                     writes via `setBrightness` (which itself turns
+ *                     the light off when value is 0).
+ *
+ * @see https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/entity-rows/hui-input-number-entity-row.ts
+ *
+ * @version See package.json
+ */ 
+var $2QgUB = parcelRequire("2QgUB");
+const $d3a1c41917263588$export$bfd42fd87279097a = async (hass, entityId, brightness)=>{
+    if (!entityId) return;
+    // Ensure brightness is within valid range
+    const clampedBrightness = Math.max(0, Math.min(255, Math.round(brightness)));
+    // If brightness is 0, turn off the light
+    if (clampedBrightness === 0) {
+        await hass.callService('light', 'turn_off', {
+            entity_id: entityId
+        });
+        return;
+    }
+    // Otherwise, turn on the light with the specified brightness
+    await hass.callService('light', 'turn_on', {
+        entity_id: entityId,
+        brightness: clampedBrightness
+    });
+};
+
+
+
+var $h7W3o = parcelRequire("h7W3o");
+var $035fd41573d923e4$exports = {};
+"use strict";
+/**
+ * Ported from Home Assistant frontend (`setValue` only).
+ *
+ * @see https://github.com/home-assistant/frontend/blob/dev/src/data/input_text.ts
+ */ Object.defineProperty($035fd41573d923e4$exports, "__esModule", {
+    value: true
+});
+$035fd41573d923e4$exports.setValue = void 0;
+const $035fd41573d923e4$var$setValue = (hass, entity, value)=>{
+    var _entity_split_;
+    return hass.callService((_entity_split_ = entity.split('.', 1)[0]) !== null && _entity_split_ !== void 0 ? _entity_split_ : '', 'set_value', {
+        value: value,
+        entity_id: entity
+    });
+};
+$035fd41573d923e4$exports.setValue = $035fd41573d923e4$var$setValue;
+
+
+var $715b9f06f948c475$exports = {};
+"use strict";
+/**
+ * Ported from Home Assistant frontend (`setMediaPlayerVolume` only).
+ *
+ * @see https://github.com/home-assistant/frontend/blob/dev/src/data/media-player.ts
+ */ Object.defineProperty($715b9f06f948c475$exports, "__esModule", {
+    value: true
+});
+$715b9f06f948c475$exports.setMediaPlayerVolume = void 0;
+/**
+ * Set volume of a media player entity.
+ * @param hass Home Assistant object
+ * @param entity_id entity ID of media player
+ * @param volume_level number between 0..1
+ */ const $715b9f06f948c475$var$setMediaPlayerVolume = (hass, entity_id, volume_level)=>hass.callService('media_player', 'volume_set', {
+        entity_id: entity_id,
+        volume_level: volume_level
+    });
+$715b9f06f948c475$exports.setMediaPlayerVolume = $715b9f06f948c475$var$setMediaPlayerVolume;
+
+
+
+var $g28NR = parcelRequire("g28NR");
+
+var $htQni = parcelRequire("htQni");
+
+var $jc0SV = parcelRequire("jc0SV");
+
+var $dTmXl = parcelRequire("dTmXl");
+
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+var $2r9I1 = parcelRequire("2r9I1");
+parcelRequire("jcMWt");
+var $yv2EM = parcelRequire("yv2EM");
+var $aaQtJ = parcelRequire("aaQtJ");
+parcelRequire("fPVm8");
+var $2SS2a = parcelRequire("2SS2a");
+let $a106693bf2929cda$var$_ = (t)=>t, $a106693bf2929cda$var$t;
+const $a106693bf2929cda$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($a106693bf2929cda$var$t || ($a106693bf2929cda$var$t = $a106693bf2929cda$var$_`
+  :host {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  ha-slider {
+    width: 100%;
+
+    /* Active fill is exposed cleanly by ha-slider — no specificity
+       fight. See
+       https://github.com/home-assistant/frontend/blob/dev/src/components/ha-slider.ts */
+    --ha-slider-indicator-color: var(
+      --user-slider-bar-color,
+      var(--primary-color)
+    );
+  }
+
+  ha-slider::part(track),
+  ha-slider::part(indicator) {
+    border-radius: 0;
+  }
+
+  /* The inactive track paints from \`#track { background: var(--wa-color-neutral-fill-normal) }\`
+     inside the slider's shadow DOM. The id selector beats ::part() on
+     specificity, so we need !important to win — but only on background,
+     scoped to ha-slider's track, which keeps the override from leaking
+     into other webawesome components. */
+  ha-slider::part(track) {
+    background: var(
+      --user-slider-track-color,
+      var(--disabled-color)
+    ) !important;
+  }
+
+  /* ---------------------------------------------------------------------
+     'bar' style — re-style ha-slider so it visually IS the bottom strip.
+     Track is forced tall enough to fill the host, thumb is hidden, and
+     the indicator becomes the moving fill.
+     --------------------------------------------------------------------- */
+  :host([variant='bar']) ha-slider {
+    --ha-slider-track-size: var(--user-slider-height, 25px);
+    --ha-slider-thumb-color: transparent;
+  }
+
+  /* ---------------------------------------------------------------------
+     'ha' style — the standard HA slider, slightly thickened and themed.
+     --------------------------------------------------------------------- */
+  :host([variant='ha']) {
+    height: var(--user-slider-height, 3.5%);
+  }
+`));
+
+
+let $9d1851378e34030f$var$_ = (t)=>t, $9d1851378e34030f$var$t;
+class $9d1851378e34030f$export$226f91755c79436a extends (0, $jc0SV.SubscribeEntityStateMixin)((0, $htQni.HassUpdateMixin)((0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement)))) {
+    /**
+   * Returns the component's styles
+   */ static get styles() {
+        return 0, $a106693bf2929cda$export$9dd6ff9ea0189349;
+    }
+    set slider(value) {
+        var _value_slider;
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(value, this.slider)) return;
+        this._slider = value;
+        this.entity = value === null || value === void 0 ? void 0 : value.entity_id;
+        var _value_slider_style;
+        // only set style if slider is defined as to not affect other components
+        this._style = value ? (_value_slider_style = (_value_slider = value.slider) === null || _value_slider === void 0 ? void 0 : _value_slider.style) !== null && _value_slider_style !== void 0 ? _value_slider_style : 'bar' : undefined;
+    }
+    render() {
+        (0, $dTmXl.d)(this.config, 'horizontal-slider', 'render');
+        const s = this.state;
+        if (!s) return 0, $ci0wX.nothing;
+        const domain = (0, $h7W3o.computeDomain)(s.entity_id);
+        const rawValue = s ? Number(s.state) : Number.NaN;
+        let value = 0;
+        var _s_attributes_min;
+        let min = Number((_s_attributes_min = s === null || s === void 0 ? void 0 : s.attributes.min) !== null && _s_attributes_min !== void 0 ? _s_attributes_min : 0);
+        var _s_attributes_max;
+        let max = Number((_s_attributes_max = s === null || s === void 0 ? void 0 : s.attributes.max) !== null && _s_attributes_max !== void 0 ? _s_attributes_max : 100);
+        var _s_attributes_step;
+        let step = Number((_s_attributes_step = s === null || s === void 0 ? void 0 : s.attributes.step) !== null && _s_attributes_step !== void 0 ? _s_attributes_step : 1);
+        if (domain === 'media_player') {
+            const vol = s.attributes.volume_level;
+            value = vol == null ? 0 : Math.max(0, Math.min(100, Math.round(Number(vol) * 100)));
+        } else if (domain === 'light') {
+            var _s_attributes_brightness;
+            // Slider operates on raw brightness (0–255); attributes.brightness
+            // is null when the light is off.
+            value = Number((_s_attributes_brightness = s.attributes.brightness) !== null && _s_attributes_brightness !== void 0 ? _s_attributes_brightness : 0);
+            min = 0;
+            max = 255;
+            step = 1;
+        } else if (Number.isFinite(rawValue)) value = rawValue;
+        return (0, $ci0wX.html)($9d1851378e34030f$var$t || ($9d1851378e34030f$var$t = $9d1851378e34030f$var$_`
+      <ha-slider
+        labeled
+        .min=${0}
+        .max=${0}
+        .step=${0}
+        .value=${0}
+        .disabled=${0}
+        @change=${0}
+      ></ha-slider>
+    `), min, max, step, value, !s, this._handleChange);
+    }
+    constructor(...args){
+        super(...args), /**
+   * `media_player` → `volume_set`, `light` → `setBrightness`,
+   * everything else → `{domain}.set_value`.
+   */ this._handleChange = (ev)=>{
+            const hass = this.hass;
+            const state = this.state;
+            if (!hass || !state) return;
+            const target = ev.target;
+            const domain = (0, $h7W3o.computeDomain)(state.entity_id);
+            if (domain === 'media_player') {
+                (0, $715b9f06f948c475$exports.setMediaPlayerVolume)(hass, state.entity_id, Number(target.value) / 100);
+                return;
+            }
+            if (domain === 'light') {
+                (0, $d3a1c41917263588$export$bfd42fd87279097a)(hass, state.entity_id, Number(target.value));
+                return;
+            }
+            (0, $035fd41573d923e4$exports.setValue)(hass, state.entity_id, target.value);
+        };
+    }
+}
+(0, $2QgUB.__decorate)([
+    (0, $aaQtJ.property)({
+        type: String,
+        reflect: true,
+        attribute: 'variant'
+    })
+], $9d1851378e34030f$export$226f91755c79436a.prototype, "_style", void 0);
+$9d1851378e34030f$export$226f91755c79436a = (0, $2QgUB.__decorate)([
+    (0, $yv2EM.customElement)('horizontal-slider')
+], $9d1851378e34030f$export$226f91755c79436a);
+
+
+/**
+ * @file Slider entity discovery
+ * @description Finds the first config entity that declares a `slider`
+ * config block. Scans the main `entity` first, then `entities` in order.
+ * Plain string entries are skipped (no metadata to inspect).
+ *
+ * Returns the full `EntityConfig` (rather than just the id) so callers
+ * can read both `entity_id` and the per-entity `slider` block.
+ */ const $c37a9757c368f9bd$export$3719c033b804f0ea = (config)=>{
+    if (!config) return undefined;
+    var _config_entities;
+    const candidates = [
+        config.entity,
+        ...(_config_entities = config.entities) !== null && _config_entities !== void 0 ? _config_entities : []
+    ];
+    for (const c of candidates){
+        if (c && typeof c === 'object' && c.slider !== undefined) return c;
+    }
+    return undefined;
+};
+
+
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+let $558a5ff0fe4616cd$var$_ = (t)=>t, $558a5ff0fe4616cd$var$t;
+function $558a5ff0fe4616cd$export$cd0a0c83f075ecc7(hass, config) {
+    const slider = (0, $c37a9757c368f9bd$export$3719c033b804f0ea)(config);
+    if (!slider) return 0, $ci0wX.nothing;
+    return (0, $ci0wX.html)($558a5ff0fe4616cd$var$t || ($558a5ff0fe4616cd$var$t = $558a5ff0fe4616cd$var$_`<horizontal-slider
+    .hass=${0}
+    .config=${0}
+    .slider=${0}
+  ></horizontal-slider>`), hass, config, slider);
+}
+
+
 
 var $kJycS = parcelRequire("kJycS");
 
 
 
 
-var $cmVfz = parcelRequire("cmVfz");
-
-
-
-const $8f71a348c8e54f2c$export$abc50289182506e4 = (config, active, state)=>{
-    var _config_background;
-    const skipStyles = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_entity_styles');
-    const raw = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : _config_background.opacity;
-    let opacity;
-    if (typeof raw === 'number' && raw) opacity = raw / 100;
-    else if (typeof raw === 'string' && state) {
-        const parsed = Number.parseFloat(state.state);
-        if (Number.isFinite(parsed)) opacity = Math.max(0, Math.min(1, parsed));
-    }
-    return {
-        '--user-opacity': opacity,
-        '--background-opacity-card': `var(--opacity-background-${active && !skipStyles ? 'active' : 'inactive'})`
-    };
-};
+var $gp9lG = parcelRequire("gp9lG");
 
 
 
 
-const $5e4701340181d3da$export$6675fe814017d7b1 = (hass, config, entity, alarm, image, isActive = false, thresholds, ambientLightEntities, opacityState)=>{
+const $5e4701340181d3da$export$6675fe814017d7b1 = (hass, config, entity, alarm, isActive = false, thresholds, ambientLightEntities)=>{
     var _config_styles;
     const { state: state } = entity;
     const thresholdResult = (0, $3eeea5b8a350985f$export$76969a794fd1f893)(entity);
     // Find the first active ambient light for background color
-    const activeAmbientLight = ambientLightEntities === null || ambientLightEntities === void 0 ? void 0 : ambientLightEntities.find((light)=>(0, $cmVfz.stateActive)(light));
+    const activeAmbientLight = ambientLightEntities === null || ambientLightEntities === void 0 ? void 0 : ambientLightEntities.find((light)=>(0, $gp9lG.stateActive)(light));
     // Get theme override - use ambient light's color if active, otherwise use entity's color
     let themeOverride;
     if (activeAmbientLight) // Extract RGB color from the active ambient light
     themeOverride = (0, $78d5b7f684c6d2c0$export$ce6920689b32408c)(activeAmbientLight, '', '', true);
     // Fall back to entity's theme color if no ambient light color
     if (!themeOverride) themeOverride = (0, $273edb1bb8e481ef$export$de96a622725f4284)(hass, entity, thresholdResult, isActive);
-    const skipStyles = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_entity_styles');
-    const opacity = (0, $8f71a348c8e54f2c$export$abc50289182506e4)(config, isActive, opacityState);
+    const skipStyles = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'skip_entity_styles');
     // Get alarm CSS vars based on current alarm state
     let alarmVars = {};
     if (alarm === 'smoke') alarmVars = (0, $82ec124af523e08e$export$2b84bc3470ef94ef)(true, config.smoke);
@@ -4464,8 +5141,8 @@ const $5e4701340181d3da$export$6675fe814017d7b1 = (hass, config, entity, alarm, 
     else if (alarm === 'occupied') alarmVars = (0, $82ec124af523e08e$export$a44444e2ac55f0e7)(true, config.occupancy);
     // Use ambient light's state for color if active, otherwise use entity's state
     const stateForColor = activeAmbientLight || state;
-    const cssColor = (0, $d41ad01236652ab5$export$b2779b0e0d1bdfa9)(stateForColor, 'card', isActive);
-    const filter = (0, $d41ad01236652ab5$export$65bcdaf7f2807be8)(stateForColor);
+    const cssColor = (0, $138ab67ea0f87e5c$exports.stateColorCss)(stateForColor, 'card', isActive);
+    const filter = (0, $138ab67ea0f87e5c$exports.stateColorBrightness)(stateForColor);
     let backgroundColorCard;
     if (skipStyles) backgroundColorCard = undefined;
     else backgroundColorCard = isActive ? cssColor : undefined;
@@ -4479,9 +5156,8 @@ const $5e4701340181d3da$export$6675fe814017d7b1 = (hass, config, entity, alarm, 
     return (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)((0, $kJycS._)({
         '--background-color-card': backgroundColorCard,
         '--state-color-card-theme': themeOverride,
-        '--background-image': image ? `url(${image})` : undefined,
         '--background-filter': filter
-    }, opacity, alarmVars, thresholdVars, (_config_styles = config.styles) === null || _config_styles === void 0 ? void 0 : _config_styles.card));
+    }, alarmVars, thresholdVars, (_config_styles = config.styles) === null || _config_styles === void 0 ? void 0 : _config_styles.card));
 };
 
 
@@ -4748,6 +5424,7 @@ let $4fafc8f75bfc202b$var$_ = (t)=>t, $4fafc8f75bfc202b$var$t, $4fafc8f75bfc202b
 
   :host([dark]) {
     ${0}
+    ${0}
   }
 
   :host {
@@ -4757,56 +5434,46 @@ let $4fafc8f75bfc202b$var$_ = (t)=>t, $4fafc8f75bfc202b$var$t, $4fafc8f75bfc202b
     --icon-color: var(--theme-color-icon);
     --background-color-icon: var(--theme-background-color-icon);
     --background-opacity-icon: var(--opacity-icon-fill-inactive);
-    --background-image: none;
   }
-`), (0, $caf1696fa639ec30$export$dec94ffc2d530e03), (0, $caf1696fa639ec30$export$7ec899f7a316957e), (0, $caf1696fa639ec30$export$4aa0a1b480cdb1b6), (0, $caf1696fa639ec30$export$38d2ecc76f0c2959), (0, $caf1696fa639ec30$export$eae85ad18a22ab6c));
+`), (0, $caf1696fa639ec30$export$dec94ffc2d530e03), (0, $caf1696fa639ec30$export$7ec899f7a316957e), (0, $caf1696fa639ec30$export$4aa0a1b480cdb1b6), (0, $caf1696fa639ec30$export$38d2ecc76f0c2959), (0, $caf1696fa639ec30$export$9462d50bf972df13), (0, $caf1696fa639ec30$export$eae85ad18a22ab6c));
 /**
  * Base theme and color definitions
  */ const $4fafc8f75bfc202b$var$haCardThemeStyles = (0, $2SS2a.css)($4fafc8f75bfc202b$var$t1 || ($4fafc8f75bfc202b$var$t1 = $4fafc8f75bfc202b$var$_`
+  /* hot owns the top + left edges, humid owns the bottom + right edges.
+     Each state writes only the sides it owns, so when both are set the
+     border splits diagonally with no rule fighting another over the same
+     side -- no !important or source-order tricks needed. A single active
+     state still paints all four sides via the catch-all rules below. */
   :host([hot]) ha-card {
-    border-left: 3px solid var(--threshold-hot-color, var(--error-color)) !important;
-    border-top: 3px solid var(--threshold-hot-color, var(--error-color)) !important;
+    border-top: 3px solid var(--threshold-hot-color, var(--error-color));
+    border-left: 3px solid var(--threshold-hot-color, var(--error-color));
     border-right: 3px solid var(--threshold-hot-color, var(--error-color));
     border-bottom: 3px solid var(--threshold-hot-color, var(--error-color));
   }
 
   :host([humid]) ha-card {
-    border-left: 3px solid var(--threshold-humid-color, var(--info-color));
     border-top: 3px solid var(--threshold-humid-color, var(--info-color));
-    border-right: 3px solid var(--threshold-humid-color, var(--info-color)) !important;
-    border-bottom: 3px solid var(--threshold-humid-color, var(--info-color)) !important;
+    border-left: 3px solid var(--threshold-humid-color, var(--info-color));
+    border-right: 3px solid var(--threshold-humid-color, var(--info-color));
+    border-bottom: 3px solid var(--threshold-humid-color, var(--info-color));
   }
 
-  :host([image]) ha-card {
+  /* Both active: hot keeps top/left, humid keeps bottom/right. */
+  :host([hot][humid]) ha-card {
+    border-top-color: var(--threshold-hot-color, var(--error-color));
+    border-left-color: var(--threshold-hot-color, var(--error-color));
+    border-right-color: var(--threshold-humid-color, var(--info-color));
+    border-bottom-color: var(--threshold-humid-color, var(--info-color));
+  }
+
+  /* Card-level dimming when the background image actually renders.
+     room-background-image reflects [image] itself, so the card no
+     longer tracks an image flag; icon_background mode never sets it on
+     the card-level layer. */
+  ha-card:has(> room-background-image[image]) {
     --opacity-theme: 0.3;
     --text-opacity-theme: 0.8;
     --opacity-icon-fill-inactive: 0.2;
-  }
-
-  :host([image]) {
-    --user-background-image-overlay: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.8),
-      rgba(0, 0, 0, 0.7),
-      rgba(0, 0, 0, 0.3),
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0)
-    );
-  }
-
-  /* When the main icon owns the background, suppress card-level image effects
-     and prevent the user-configured opacity from applying to the card.
-     --user-opacity still inherits down to room-state-icon, where its
-     own CSS routes it to the icon background instead. */
-  :host:has(room-state-icon[room][icon-bg]) ha-card {
-    --opacity-theme: unset;
-    --text-opacity-theme: unset;
-    --opacity-icon-fill-inactive: unset;
-    --user-opacity: unset;
-  }
-
-  :host:has(room-state-icon[room][icon-bg]) {
-    --user-background-image-overlay: unset;
   }
 
   :host([icon-opacity-preset='medium']) {
@@ -4843,33 +5510,17 @@ let $4fafc8f75bfc202b$var$_ = (t)=>t, $4fafc8f75bfc202b$var$t, $4fafc8f75bfc202b
       var(--theme-border-color-frosted);
   }
 
-  :host([image]) ha-card::before {
-    background-image:
-      var(--user-background-image-overlay), var(--background-image);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-  }
-
-  :host:has(room-state-icon[room][icon-bg]) ha-card::before {
-    background-image: none;
-  }
-
-  ha-card::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: var(--background-color-card);
-    opacity: var(
-      --user-opacity,
-      var(--opacity-theme, var(--background-opacity-card))
-    );
-    filter: var(--background-filter, none);
+  :host([frosted-glass]) room-background-image {
+    /* Frosted Glass paints its own tint; hide the theme color layer
+       but keep any background image. */
+    --background-color-card: transparent;
   }
 
   :host([frosted-glass]) ha-card::before {
     /* Mimic Frosted Glass card-mod overlay within our shadow DOM */
+    content: '';
+    position: absolute;
+    inset: 0;
     background-color: var(--theme-glass-tint-frosted);
     opacity: 1;
     filter: none;
@@ -4952,12 +5603,12 @@ let $4fafc8f75bfc202b$var$_ = (t)=>t, $4fafc8f75bfc202b$var$t, $4fafc8f75bfc202b
   }
 
   /* scooty on upwards is slider */
-  :host:has(horizontal-slider[variant='bar']) .problems {
+  ha-card:has(horizontal-slider[variant='bar']) .problems {
     margin-bottom: calc(10% + var(--horizontal-slider-height, 6%) + 20px);
   }
 
   /* scooty on upwards is slider */
-  :host:has(horizontal-slider[variant='ha']) .problems {
+  ha-card:has(horizontal-slider[variant='ha']) .problems {
     margin-bottom: calc(10% + var(--horizontal-slider-height, 6%) + 10px);
   }
 
@@ -5060,10 +5711,8 @@ const $4fafc8f75bfc202b$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($4fafc8f75bfc2
 
 var $dTmXl = parcelRequire("dTmXl");
 
-var $wgzUt = parcelRequire("wgzUt");
 let $01f4c5d41a54ca3c$var$_ = (t)=>t, $01f4c5d41a54ca3c$var$t, $01f4c5d41a54ca3c$var$t1, $01f4c5d41a54ca3c$var$t2, $01f4c5d41a54ca3c$var$t3;
-
-class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $wgzUt.SubscribeEntityStateMixin)((0, $2r9I1.LitElement)) {
+class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement)) {
     /**
    * Returns the component's styles
    */ static get styles() {
@@ -5073,19 +5722,14 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $wgzUt.SubscribeEnti
    * Sets up the card configuration
    * @param {Config} config - The card configuration
    */ setConfig(config) {
-        if (!$ee3d06fe83a6a770$exports(config, this._config)) {
-            var _config_background;
-            this.skipMoldStyles = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_mold_styles');
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(config, this._config)) {
+            this.skipMoldStyles = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'skip_mold_styles');
             this._config = config;
-            // When background.opacity is configured as an entity_id, ask the
-            // SubscribeEntityStateMixin to track it so changes re-render the card.
-            const opacity = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : _config_background.opacity;
-            this.entity = typeof opacity === 'string' ? opacity : undefined;
         }
     }
     /**
-   * Expose `_hass` / `_config` to mixins that read `this.hass` / `this.config`
-   * (e.g. SubscribeEntityStateMixin).
+   * Expose `_hass` / `_config` as `this.hass` / `this.config` for
+   * `HassConfigMixin` and anything else that reads them generically.
    */ get hass() {
         return this._hass;
     }
@@ -5101,32 +5745,28 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $wgzUt.SubscribeEnti
         // isolates events between sibling cards on the dashboard.
         _this_shadowRoot;
         (0, $dTmXl.d)(this._config, 'room-summary-card', 'set hass');
-        const { roomInfo: roomInfo, roomEntity: roomEntity, sensors: sensors, image: image, isActive: isActive, isIconActive: isIconActive, thresholds: thresholds, flags: { alarm: alarm, dark: dark, frostedGlass: frostedGlass } } = (0, $c4ab0a640e168730$export$df764ae7d62abece)(hass, this._config, this);
+        const { roomInfo: roomInfo, roomEntity: roomEntity, sensors: sensors, isActive: isActive, isIconActive: isIconActive, thresholds: thresholds, flags: { alarm: alarm, dark: dark, frostedGlass: frostedGlass } } = (0, $c4ab0a640e168730$export$df764ae7d62abece)(hass, this._config, this);
         this.alarm = alarm;
         this.dark = dark;
         this.frostedGlass = frostedGlass;
         this._isActive = isActive;
         this._isIconActive = isIconActive;
         this.iconOpacityPreset = this._config.icon_opacity_preset;
-        image.then((resolvedImage)=>{
-            this.image = !!resolvedImage;
-            this._image = resolvedImage;
-        });
         // Update states only if they've changed
         let shouldRender = false;
-        if (!$ee3d06fe83a6a770$exports(roomInfo, this._roomInformation)) {
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(roomInfo, this._roomInformation)) {
             this._roomInformation = roomInfo;
             shouldRender = true;
         }
-        if (!$ee3d06fe83a6a770$exports(roomEntity, this._roomEntity)) {
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(roomEntity, this._roomEntity)) {
             this._roomEntity = roomEntity;
             shouldRender = true;
         }
-        if (!$ee3d06fe83a6a770$exports(sensors, this._sensors)) {
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(sensors, this._sensors)) {
             this._sensors = sensors;
             shouldRender = true;
         }
-        if (!$ee3d06fe83a6a770$exports(thresholds, this._thresholds)) {
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(thresholds, this._thresholds)) {
             this._thresholds = thresholds;
             this.hot = thresholds.hot;
             this.humid = thresholds.humid;
@@ -5148,11 +5788,11 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $wgzUt.SubscribeEnti
     static getConfigElement() {
         return document.createElement('room-summary-card-editor');
     }
-    static async getStubConfig(hass) {
+    static getStubConfig(hass) {
         // Get all area IDs and their friendly names
         const areas = Object.entries(hass.areas);
         // Find the first area that has matching entities
-        const matchingArea = areas.find(([areaId, area])=>{
+        const matchingArea = areas.find(([, area])=>{
             const areaName = area.area_id.toLowerCase().replaceAll(/\s+/g, '_');
             // Check if either entity exists for this area
             const hasLight = `light.${areaName}_light` in hass.entities || `light.${areaName}` in hass.entities;
@@ -5175,16 +5815,19 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $wgzUt.SubscribeEnti
         const roomEntity = (0, $d71beedfb309b5b1$export$6697a659ce63852)(this._hass, this._roomEntity, this._config, {
             isMainRoomEntity: true,
             isActive: this._isIconActive,
-            hasImage: !!this._image,
             alarm: this.alarm
         });
-        const cardStyle = (0, $5e4701340181d3da$export$6675fe814017d7b1)(this._hass, this._config, this._roomEntity, this.alarm, this._image, this._isActive, this._thresholds, (_this__sensors = this._sensors) === null || _this__sensors === void 0 ? void 0 : _this__sensors.ambientLightEntities, this.state);
+        const cardStyle = (0, $5e4701340181d3da$export$6675fe814017d7b1)(this._hass, this._config, this._roomEntity, this.alarm, this._isActive, this._thresholds, (_this__sensors = this._sensors) === null || _this__sensors === void 0 ? void 0 : _this__sensors.ambientLightEntities);
         const problems = (0, $d71beedfb309b5b1$export$8093665c9ba8ead9)(this._hass, this._config, this._sensors, this);
-        const actions = (0, $1izJ2._)((0, $kJycS._)({}, this._roomEntity), {
-            config: (0, $kJycS._)({}, this._roomEntity.config, this._config.actions)
-        });
+        const actions = (0, $69eb2992476f80e8$export$f4c1e7ce0a330ff4)(this._roomEntity, this._config);
         return (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t3 || ($01f4c5d41a54ca3c$var$t3 = $01f4c5d41a54ca3c$var$_`
       <ha-card style="${0}">
+        <room-background-image
+          .isActive=${0}
+          .hass=${0}
+          .config=${0}
+        ></room-background-image>
+
         <div class="grid">
           ${0}
 
@@ -5198,15 +5841,12 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $wgzUt.SubscribeEnti
           ${0}
         </div>
 
-        <horizontal-slider
-          .config=${0}
-          .hass=${0}
-        ></horizontal-slider>
+        ${0}
 
         <!-- Full Card Action Overlay -->
         ${0}
       </ha-card>
-    `), cardStyle, (0, $52a5e6cbabf7b8e2$export$a80b3bd66acc52ff)(this, this._hass, this._roomInformation, actions, this._config, this._sensors, this._isIconActive), roomEntity, (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this._config, 'slider') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t || ($01f4c5d41a54ca3c$var$t = $01f4c5d41a54ca3c$var$_`
+    `), cardStyle, this._isActive, this._hass, this._config, (0, $52a5e6cbabf7b8e2$export$a80b3bd66acc52ff)(this, this._hass, this._roomInformation, actions, this._config, this._sensors, this._isIconActive), roomEntity, (0, $1e40c00d469c9d00$exports.hasFeature)(this._config, 'slider') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t || ($01f4c5d41a54ca3c$var$t = $01f4c5d41a54ca3c$var$_`
                 <entity-slider
                   .config=${0}
                   .hass=${0}
@@ -5216,7 +5856,7 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $wgzUt.SubscribeEnti
                   .config=${0}
                   .hass=${0}
                 ></entity-collection>
-              `), this._config, this._hass), problems, this._config, this._hass, (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this._config, 'full_card_actions') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t2 || ($01f4c5d41a54ca3c$var$t2 = $01f4c5d41a54ca3c$var$_`
+              `), this._config, this._hass), problems, (0, $558a5ff0fe4616cd$export$cd0a0c83f075ecc7)(this._hass, this._config), (0, $1e40c00d469c9d00$exports.hasFeature)(this._config, 'full_card_actions') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t2 || ($01f4c5d41a54ca3c$var$t2 = $01f4c5d41a54ca3c$var$_`
               <div
                 class="card-overlay"
                 @action=${0}
@@ -5235,89 +5875,79 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $wgzUt.SubscribeEnti
    */ this.frostedGlass = false;
     }
 }
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "_config", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "_roomInformation", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "_roomEntity", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "_sensors", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "_isActive", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "_isIconActive", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "_thresholds", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean,
         reflect: true
     })
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "dark", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean,
         reflect: true
     })
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "hot", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean,
         reflect: true
     })
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "humid", void 0);
-(0, $evAes.__decorate)([
-    (0, $aaQtJ.property)({
-        type: Boolean,
-        reflect: true
-    })
-], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "image", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: String,
         reflect: true
     })
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "alarm", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean,
         reflect: true,
         attribute: 'skip-mold-styles'
     })
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "skipMoldStyles", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean,
         reflect: true,
         attribute: 'frosted-glass'
     })
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "frostedGlass", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: String,
         reflect: true,
         attribute: 'icon-opacity-preset'
     })
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "iconOpacityPreset", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "_hass", void 0);
 
 
 
-var $evAes = parcelRequire("evAes");
-
-var $1LdRn = parcelRequire("1LdRn");
-
-var $wgzUt = parcelRequire("wgzUt");
+var $2QgUB = parcelRequire("2QgUB");
 
 const $1c79672e60888038$export$7d2846cf165df04b = (state, badge)=>{
     if (!badge.states || !state) return undefined;
@@ -5333,21 +5963,49 @@ const $1c79672e60888038$export$7d2846cf165df04b = (state, badge)=>{
 };
 
 
+
+var $g28NR = parcelRequire("g28NR");
+
+var $htQni = parcelRequire("htQni");
+
+var $jc0SV = parcelRequire("jc0SV");
+var $5abff3d3a915abb3$exports = {};
+"use strict";
+let $5abff3d3a915abb3$var$_ = (t)=>t, $5abff3d3a915abb3$var$t;
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/cards/tile/badges/tile-badge.ts
- */ 
-var $jyxIy = parcelRequire("jyxIy");
-
-var $jf6NF = parcelRequire("jf6NF");
+ */ Object.defineProperty($5abff3d3a915abb3$exports, "__esModule", {
+    value: true
+});
+$5abff3d3a915abb3$exports.renderTileBadge = void 0;
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 
+
+var $h7W3o = parcelRequire("h7W3o");
+
+var $a18fffde1709cd72$exports = {};
+"use strict";
+let $a18fffde1709cd72$var$_ = (t)=>t, $a18fffde1709cd72$var$t;
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/cards/tile/badges/tile-badge-climate.ts
- */ 
+ */ Object.defineProperty($a18fffde1709cd72$exports, "__esModule", {
+    value: true
+});
+$a18fffde1709cd72$exports.renderClimateBadge = void 0;
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+
+
+var $b249f8e80c3f58bd$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/data/climate.ts
- */ const $67bce92c74bef62a$export$5a3bdc18b51b1f73 = [
+ */ Object.defineProperty($b249f8e80c3f58bd$exports, "__esModule", {
+    value: true
+});
+$b249f8e80c3f58bd$exports.climateHvacModeIcon = $b249f8e80c3f58bd$exports.CLIMATE_HVAC_MODE_ICONS = $b249f8e80c3f58bd$exports.CLIMATE_HVAC_ACTION_TO_MODE = $b249f8e80c3f58bd$exports.compareClimateHvacModes = $b249f8e80c3f58bd$exports.ClimateEntityFeature = $b249f8e80c3f58bd$exports.CLIMATE_PRESET_NONE = $b249f8e80c3f58bd$exports.HVAC_MODES = void 0;
+$b249f8e80c3f58bd$exports.HVAC_MODES = [
     'auto',
     'heat_cool',
     'heat',
@@ -5356,8 +6014,9 @@ var $ci0wX = parcelRequire("ci0wX");
     'fan_only',
     'off'
 ];
-const $67bce92c74bef62a$export$10b3de82695bb44d = 'none';
-var $67bce92c74bef62a$export$8cf49678463a8707 = /*#__PURE__*/ function(ClimateEntityFeature) {
+$b249f8e80c3f58bd$exports.CLIMATE_PRESET_NONE = 'none';
+var $b249f8e80c3f58bd$var$ClimateEntityFeature;
+(function(ClimateEntityFeature) {
     ClimateEntityFeature[ClimateEntityFeature["TARGET_TEMPERATURE"] = 1] = "TARGET_TEMPERATURE";
     ClimateEntityFeature[ClimateEntityFeature["TARGET_TEMPERATURE_RANGE"] = 2] = "TARGET_TEMPERATURE_RANGE";
     ClimateEntityFeature[ClimateEntityFeature["TARGET_HUMIDITY"] = 4] = "TARGET_HUMIDITY";
@@ -5368,14 +6027,14 @@ var $67bce92c74bef62a$export$8cf49678463a8707 = /*#__PURE__*/ function(ClimateEn
     ClimateEntityFeature[ClimateEntityFeature["TURN_OFF"] = 128] = "TURN_OFF";
     ClimateEntityFeature[ClimateEntityFeature["TURN_ON"] = 256] = "TURN_ON";
     ClimateEntityFeature[ClimateEntityFeature["SWING_HORIZONTAL_MODE"] = 512] = "SWING_HORIZONTAL_MODE";
-    return ClimateEntityFeature;
-}({});
-const $67bce92c74bef62a$var$hvacModeOrdering = $67bce92c74bef62a$export$5a3bdc18b51b1f73.reduce((order, mode, index)=>{
+})($b249f8e80c3f58bd$var$ClimateEntityFeature || ($b249f8e80c3f58bd$exports.ClimateEntityFeature = $b249f8e80c3f58bd$var$ClimateEntityFeature = {}));
+const $b249f8e80c3f58bd$var$hvacModeOrdering = $b249f8e80c3f58bd$exports.HVAC_MODES.reduce((order, mode, index)=>{
     order[mode] = index;
     return order;
 }, {});
-const $67bce92c74bef62a$export$a954d77a719b0a7a = (mode1, mode2)=>$67bce92c74bef62a$var$hvacModeOrdering[mode1] - $67bce92c74bef62a$var$hvacModeOrdering[mode2];
-const $67bce92c74bef62a$export$583177be824904ff = {
+const $b249f8e80c3f58bd$var$compareClimateHvacModes = (mode1, mode2)=>$b249f8e80c3f58bd$var$hvacModeOrdering[mode1] - $b249f8e80c3f58bd$var$hvacModeOrdering[mode2];
+$b249f8e80c3f58bd$exports.compareClimateHvacModes = $b249f8e80c3f58bd$var$compareClimateHvacModes;
+$b249f8e80c3f58bd$exports.CLIMATE_HVAC_ACTION_TO_MODE = {
     cooling: 'cool',
     defrosting: 'heat',
     drying: 'dry',
@@ -5385,7 +6044,7 @@ const $67bce92c74bef62a$export$583177be824904ff = {
     off: 'off',
     preheating: 'heat'
 };
-const $67bce92c74bef62a$export$9188014139306bef = {
+$b249f8e80c3f58bd$exports.CLIMATE_HVAC_MODE_ICONS = {
     cool: 'mdi:snowflake',
     dry: 'mdi:water-percent',
     fan_only: 'mdi:fan',
@@ -5394,19 +6053,16 @@ const $67bce92c74bef62a$export$9188014139306bef = {
     off: 'mdi:power',
     heat_cool: 'mdi:sun-snowflake-variant'
 };
-const $67bce92c74bef62a$export$944503d279b0b85a = (mode)=>$67bce92c74bef62a$export$9188014139306bef[mode] || 'mdi:thermostat';
+const $b249f8e80c3f58bd$var$climateHvacModeIcon = (mode)=>$b249f8e80c3f58bd$exports.CLIMATE_HVAC_MODE_ICONS[mode] || 'mdi:thermostat';
+$b249f8e80c3f58bd$exports.climateHvacModeIcon = $b249f8e80c3f58bd$var$climateHvacModeIcon;
 
 
-parcelRequire("fPVm8");
-var $ci0wX = parcelRequire("ci0wX");
-
-let $5c89d2fafe7b3bfc$var$_ = (t)=>t, $5c89d2fafe7b3bfc$var$t;
-const $5c89d2fafe7b3bfc$export$ffb65e4e03ab651b = (stateObj, hass)=>{
+const $a18fffde1709cd72$var$renderClimateBadge = (stateObj, hass)=>{
     const hvacAction = stateObj.attributes.hvac_action;
-    if (!hvacAction || hvacAction === 'off') return 0, $ci0wX.nothing;
+    if (!hvacAction || hvacAction === 'off') return $ci0wX.nothing;
     // Adapt stateColorCss call - room-summary-card version has different signature
-    const color = (0, $d41ad01236652ab5$export$b2779b0e0d1bdfa9)(stateObj, 'badge', undefined, (0, $67bce92c74bef62a$export$583177be824904ff)[hvacAction]);
-    return (0, $ci0wX.html)($5c89d2fafe7b3bfc$var$t || ($5c89d2fafe7b3bfc$var$t = $5c89d2fafe7b3bfc$var$_`
+    const color = (0, $138ab67ea0f87e5c$exports.stateColorCss)(stateObj, 'badge', undefined, $b249f8e80c3f58bd$exports.CLIMATE_HVAC_ACTION_TO_MODE[hvacAction]);
+    return (0, $ci0wX.html)($a18fffde1709cd72$var$t || ($a18fffde1709cd72$var$t = $a18fffde1709cd72$var$_`
     <ha-tile-badge
       style=${0}
     >
@@ -5421,23 +6077,40 @@ const $5c89d2fafe7b3bfc$export$ffb65e4e03ab651b = (stateObj, hass)=>{
         '--tile-badge-background-color': color || 'var(--primary-color)'
     }), hass, stateObj);
 };
+$a18fffde1709cd72$exports.renderClimateBadge = $a18fffde1709cd72$var$renderClimateBadge;
 
 
+var $20086370ebd0c44d$exports = {};
+"use strict";
+let $20086370ebd0c44d$var$_ = (t)=>t, $20086370ebd0c44d$var$t;
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/cards/tile/badges/tile-badge-humidifier.ts
- */ 
+ */ Object.defineProperty($20086370ebd0c44d$exports, "__esModule", {
+    value: true
+});
+$20086370ebd0c44d$exports.renderHumidifierBadge = void 0;
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+
+
+var $337114d42ad3e202$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/data/humidifier.ts
- */ var $779a12df1d1be855$export$40802c92c0a38a10 = /*#__PURE__*/ function(HumidifierEntityFeature) {
+ */ Object.defineProperty($337114d42ad3e202$exports, "__esModule", {
+    value: true
+});
+$337114d42ad3e202$exports.HUMIDIFIER_ACTION_MODE = $337114d42ad3e202$exports.HumidifierEntityDeviceClass = $337114d42ad3e202$exports.HumidifierEntityFeature = void 0;
+var $337114d42ad3e202$var$HumidifierEntityFeature;
+(function(HumidifierEntityFeature) {
     HumidifierEntityFeature[HumidifierEntityFeature["MODES"] = 1] = "MODES";
-    return HumidifierEntityFeature;
-}({});
-var $779a12df1d1be855$export$c6a6e7615e107fd8 = /*#__PURE__*/ function(HumidifierEntityDeviceClass) {
+})($337114d42ad3e202$var$HumidifierEntityFeature || ($337114d42ad3e202$exports.HumidifierEntityFeature = $337114d42ad3e202$var$HumidifierEntityFeature = {}));
+var $337114d42ad3e202$var$HumidifierEntityDeviceClass;
+(function(HumidifierEntityDeviceClass) {
     HumidifierEntityDeviceClass["HUMIDIFIER"] = "humidifier";
     HumidifierEntityDeviceClass["DEHUMIDIFIER"] = "dehumidifier";
-    return HumidifierEntityDeviceClass;
-}({});
-const $779a12df1d1be855$export$954064c4ba4a2082 = {
+})($337114d42ad3e202$var$HumidifierEntityDeviceClass || ($337114d42ad3e202$exports.HumidifierEntityDeviceClass = $337114d42ad3e202$var$HumidifierEntityDeviceClass = {}));
+$337114d42ad3e202$exports.HUMIDIFIER_ACTION_MODE = {
     drying: 'on',
     humidifying: 'on',
     idle: 'off',
@@ -5445,16 +6118,12 @@ const $779a12df1d1be855$export$954064c4ba4a2082 = {
 };
 
 
-parcelRequire("fPVm8");
-var $ci0wX = parcelRequire("ci0wX");
-
-let $33fa253c15a9b3b9$var$_ = (t)=>t, $33fa253c15a9b3b9$var$t;
-const $33fa253c15a9b3b9$export$fa216876dbc076b3 = (stateObj, hass)=>{
+const $20086370ebd0c44d$var$renderHumidifierBadge = (stateObj, hass)=>{
     const action = stateObj.attributes.action;
-    if (!action || action === 'off') return 0, $ci0wX.nothing;
+    if (!action || action === 'off') return $ci0wX.nothing;
     // Adapt stateColorCss call - room-summary-card version has different signature
-    const color = (0, $d41ad01236652ab5$export$b2779b0e0d1bdfa9)(stateObj, 'badge', undefined, (0, $779a12df1d1be855$export$954064c4ba4a2082)[action]);
-    return (0, $ci0wX.html)($33fa253c15a9b3b9$var$t || ($33fa253c15a9b3b9$var$t = $33fa253c15a9b3b9$var$_`
+    const color = (0, $138ab67ea0f87e5c$exports.stateColorCss)(stateObj, 'badge', undefined, $337114d42ad3e202$exports.HUMIDIFIER_ACTION_MODE[action]);
+    return (0, $ci0wX.html)($20086370ebd0c44d$var$t || ($20086370ebd0c44d$var$t = $20086370ebd0c44d$var$_`
     <ha-tile-badge
       style=${0}
     >
@@ -5465,26 +6134,33 @@ const $33fa253c15a9b3b9$export$fa216876dbc076b3 = (stateObj, hass)=>{
         '--tile-badge-background-color': color || 'var(--primary-color)'
     }), hass, stateObj);
 };
+$20086370ebd0c44d$exports.renderHumidifierBadge = $20086370ebd0c44d$var$renderHumidifierBadge;
 
 
+var $83f75968260883d3$exports = {};
+"use strict";
+let $83f75968260883d3$var$_ = (t)=>t, $83f75968260883d3$var$t, $83f75968260883d3$var$t1;
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/cards/tile/badges/tile-badge-person.ts
- */ 
+ */ Object.defineProperty($83f75968260883d3$exports, "__esModule", {
+    value: true
+});
+$83f75968260883d3$exports.renderPersonBadge = void 0;
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 
-let $f340a8ae5699b40c$var$_ = (t)=>t, $f340a8ae5699b40c$var$t, $f340a8ae5699b40c$var$t1;
-function $f340a8ae5699b40c$var$getZone(entity, hass) {
+
+function $83f75968260883d3$var$getZone(entity, hass) {
     const state = entity.state;
     if (state === 'home' || state === 'not_home') return undefined;
     const zones = Object.values(hass.states).filter((stateObj)=>stateObj.entity_id.startsWith('zone.'));
     return zones.find((z)=>state === z.attributes.friendly_name);
 }
-const $f340a8ae5699b40c$export$1e7e9d32f6b506f8 = (stateObj, hass)=>{
-    const zone = $f340a8ae5699b40c$var$getZone(stateObj, hass);
+const $83f75968260883d3$var$renderPersonBadge = (stateObj, hass)=>{
+    const zone = $83f75968260883d3$var$getZone(stateObj, hass);
     const zoneIcon = zone === null || zone === void 0 ? void 0 : zone.attributes.icon;
-    const color = (0, $d41ad01236652ab5$export$b2779b0e0d1bdfa9)(stateObj, 'badge');
-    if (zoneIcon) return (0, $ci0wX.html)($f340a8ae5699b40c$var$t || ($f340a8ae5699b40c$var$t = $f340a8ae5699b40c$var$_`
+    const color = (0, $138ab67ea0f87e5c$exports.stateColorCss)(stateObj, 'badge');
+    if (zoneIcon) return (0, $ci0wX.html)($83f75968260883d3$var$t || ($83f75968260883d3$var$t = $83f75968260883d3$var$_`
       <ha-tile-badge
         style=${0}
       >
@@ -5495,7 +6171,7 @@ const $f340a8ae5699b40c$export$1e7e9d32f6b506f8 = (stateObj, hass)=>{
     }), zoneIcon);
     // Use icon strings instead of importing from @mdi/js
     const defaultIcon = stateObj.state === 'not_home' ? 'mdi:home-export-outline' : 'mdi:home';
-    return (0, $ci0wX.html)($f340a8ae5699b40c$var$t1 || ($f340a8ae5699b40c$var$t1 = $f340a8ae5699b40c$var$_`
+    return (0, $ci0wX.html)($83f75968260883d3$var$t1 || ($83f75968260883d3$var$t1 = $83f75968260883d3$var$_`
     <ha-tile-badge
       style=${0}
     >
@@ -5505,12 +6181,12 @@ const $f340a8ae5699b40c$export$1e7e9d32f6b506f8 = (stateObj, hass)=>{
         '--tile-badge-background-color': color || 'var(--primary-color)'
     }), defaultIcon);
 };
+$83f75968260883d3$exports.renderPersonBadge = $83f75968260883d3$var$renderPersonBadge;
 
 
-let $6d8f30ccc91bbc7c$var$_ = (t)=>t, $6d8f30ccc91bbc7c$var$t;
-const $6d8f30ccc91bbc7c$export$d58d00b4a0522baf = (stateObj, hass)=>{
-    if (stateObj.state === (0, $jf6NF.UNKNOWN)) return 0, $ci0wX.nothing;
-    if (stateObj.state === (0, $jf6NF.UNAVAILABLE)) return (0, $ci0wX.html)($6d8f30ccc91bbc7c$var$t || ($6d8f30ccc91bbc7c$var$t = $6d8f30ccc91bbc7c$var$_`
+const $5abff3d3a915abb3$var$renderTileBadge = (stateObj, hass)=>{
+    if (stateObj.state === $c216464f2b025d6e$exports.UNKNOWN) return $ci0wX.nothing;
+    if (stateObj.state === $c216464f2b025d6e$exports.UNAVAILABLE) return (0, $ci0wX.html)($5abff3d3a915abb3$var$t || ($5abff3d3a915abb3$var$t = $5abff3d3a915abb3$var$_`
       <ha-tile-badge
         style=${0}
       >
@@ -5519,30 +6195,169 @@ const $6d8f30ccc91bbc7c$export$d58d00b4a0522baf = (stateObj, hass)=>{
     `), (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)({
         '--tile-badge-background-color': 'var(--orange-color)'
     }));
-    const domain = (0, $jyxIy.computeDomain)(stateObj.entity_id);
+    const domain = (0, $h7W3o.computeDomain)(stateObj.entity_id);
     switch(domain){
         case 'person':
         case 'device_tracker':
-            return (0, $f340a8ae5699b40c$export$1e7e9d32f6b506f8)(stateObj, hass);
+            return (0, $83f75968260883d3$exports.renderPersonBadge)(stateObj, hass);
         case 'climate':
-            return (0, $5c89d2fafe7b3bfc$export$ffb65e4e03ab651b)(stateObj, hass);
+            return (0, $a18fffde1709cd72$exports.renderClimateBadge)(stateObj, hass);
         case 'humidifier':
-            return (0, $33fa253c15a9b3b9$export$fa216876dbc076b3)(stateObj, hass);
+            return (0, $20086370ebd0c44d$exports.renderHumidifierBadge)(stateObj, hass);
         default:
-            return 0, $ci0wX.nothing;
+            return $ci0wX.nothing;
     }
 };
+$5abff3d3a915abb3$exports.renderTileBadge = $5abff3d3a915abb3$var$renderTileBadge;
 
 
 
 
 
 var $dTmXl = parcelRequire("dTmXl");
+
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
 parcelRequire("jcMWt");
 var $aaQtJ = parcelRequire("aaQtJ");
+
+
+var $2QgUB = parcelRequire("2QgUB");
+var $9c76073bf75e1723$exports = {};
+
+var $kJycS = parcelRequire("kJycS");
+"use strict";
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/data/ws-templates.ts
+ */ Object.defineProperty($9c76073bf75e1723$exports, "__esModule", {
+    value: true
+});
+$9c76073bf75e1723$exports.subscribeRenderTemplate = void 0;
+const $9c76073bf75e1723$var$subscribeRenderTemplate = (conn, onChange, params)=>conn.subscribeMessage((msg)=>onChange(msg), (0, $kJycS._)({
+        type: 'render_template'
+    }, params));
+$9c76073bf75e1723$exports.subscribeRenderTemplate = $9c76073bf75e1723$var$subscribeRenderTemplate;
+
+
+class $a8bfdc087294b7f3$export$d201aad20a44ca08 {
+    get displayedText() {
+        return this._displayedText;
+    }
+    sync(hass, entityId, template) {
+        const trimmed = template === null || template === void 0 ? void 0 : template.trim();
+        if (!(hass === null || hass === void 0 ? void 0 : hass.connection) || !trimmed) {
+            this._tearDown();
+            this._displayedText = '';
+            this._subscriptionKey = undefined;
+            this._requestUpdate();
+            return;
+        }
+        const key = `${entityId}\0${trimmed}`;
+        if (this._subscriptionKey === key && this._unsub) return;
+        this._tearDown();
+        this._subscriptionKey = key;
+        this._displayedText = '';
+        this._callbackGen++;
+        const generation = this._callbackGen;
+        this._unsub = (0, $9c76073bf75e1723$exports.subscribeRenderTemplate)(hass.connection, (result)=>{
+            if (generation !== this._callbackGen) return;
+            if ('error' in result) {
+                console.warn('room-summary-card: label template:', result.error, `(${entityId})`);
+                return;
+            }
+            var _result_result;
+            this._displayedText = (_result_result = result.result) !== null && _result_result !== void 0 ? _result_result : '';
+            this._requestUpdate();
+        }, {
+            template: trimmed,
+            entity_ids: entityId,
+            strict: true
+        });
+    }
+    _tearDown() {
+        if (this._unsub) {
+            this._unsub.then((u)=>{
+                u();
+            });
+            this._unsub = undefined;
+        }
+    }
+    disconnect() {
+        this._tearDown();
+        this._subscriptionKey = undefined;
+        this._callbackGen++;
+        this._displayedText = '';
+    }
+    constructor(_requestUpdate){
+        this._requestUpdate = _requestUpdate;
+        this._callbackGen = 0;
+        this._displayedText = '';
+    }
+}
+
+
+var $e1a1e2291c993cc1$exports = {};
+"use strict";
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/common/string/has-template.ts
+ */ Object.defineProperty($e1a1e2291c993cc1$exports, "__esModule", {
+    value: true
+});
+$e1a1e2291c993cc1$exports.isTemplateString = void 0;
+const $e1a1e2291c993cc1$var$TEMPLATE_SYNTAX = /{%|{{/;
+/** True when the string looks like Jinja (e.g. contains `{{` or `{%`). */ const $e1a1e2291c993cc1$var$isTemplateString = (value)=>$e1a1e2291c993cc1$var$TEMPLATE_SYNTAX.test(value);
+$e1a1e2291c993cc1$exports.isTemplateString = $e1a1e2291c993cc1$var$isTemplateString;
+
+
+
+var $g28NR = parcelRequire("g28NR");
+
+var $dTmXl = parcelRequire("dTmXl");
+parcelRequire("fPVm8");
+var $2SS2a = parcelRequire("2SS2a");
+var $ci0wX = parcelRequire("ci0wX");
+var $2r9I1 = parcelRequire("2r9I1");
+parcelRequire("jcMWt");
+var $yv2EM = parcelRequire("yv2EM");
+let $4851f26bdeb7e50a$var$_ = (t)=>t, $4851f26bdeb7e50a$var$t, $4851f26bdeb7e50a$var$t1, $4851f26bdeb7e50a$var$t2;
+class $4851f26bdeb7e50a$export$27ddacf6292c3059 extends (0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement)) {
+    disconnectedCallback() {
+        this._labelTemplateConn.disconnect();
+        super.disconnectedCallback();
+    }
+    render() {
+        (0, $dTmXl.d)(this.config, 'room-badge-label', 'render');
+        if (!this.label) {
+            this._labelTemplateConn.disconnect();
+            return 0, $ci0wX.nothing;
+        }
+        if ((0, $e1a1e2291c993cc1$exports.isTemplateString)(this.label)) {
+            this._labelTemplateConn.sync(this.hass, this.entityId, this.label);
+            return (0, $ci0wX.html)($4851f26bdeb7e50a$var$t || ($4851f26bdeb7e50a$var$t = $4851f26bdeb7e50a$var$_`${0}`), this._labelTemplateConn.displayedText);
+        }
+        this._labelTemplateConn.disconnect();
+        return (0, $ci0wX.html)($4851f26bdeb7e50a$var$t1 || ($4851f26bdeb7e50a$var$t1 = $4851f26bdeb7e50a$var$_`${0}`), this.label);
+    }
+    constructor(...args){
+        super(...args), this._labelTemplateConn = new (0, $a8bfdc087294b7f3$export$d201aad20a44ca08)(()=>this.requestUpdate()), this.entityId = '';
+    }
+}
+$4851f26bdeb7e50a$export$27ddacf6292c3059.styles = (0, $2SS2a.css)($4851f26bdeb7e50a$var$t2 || ($4851f26bdeb7e50a$var$t2 = $4851f26bdeb7e50a$var$_`
+    :host {
+      display: inline-flex;
+      justify-content: center;
+      padding: 0 2px;
+      overflow: hidden;
+      font-size: 0.65rem;
+      line-height: 1;
+      white-space: nowrap;
+    }
+  `));
+$4851f26bdeb7e50a$export$27ddacf6292c3059 = (0, $2QgUB.__decorate)([
+    (0, $yv2EM.customElement)('room-badge-label')
+], $4851f26bdeb7e50a$export$27ddacf6292c3059);
+
 
 parcelRequire("fPVm8");
 var $2SS2a = parcelRequire("2SS2a");
@@ -5579,9 +6394,8 @@ const $aeaea6f5f5e584ed$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($aeaea6f5f5e58
 `));
 
 
-let $7191b93f31a09a17$var$_ = (t)=>t, $7191b93f31a09a17$var$t;
-
-class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $wgzUt.SubscribeEntityStateMixin)((0, $1LdRn.HassUpdateMixin)((0, $2r9I1.LitElement))) {
+let $7191b93f31a09a17$var$_ = (t)=>t, $7191b93f31a09a17$var$t, $7191b93f31a09a17$var$t1, $7191b93f31a09a17$var$t2;
+class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $jc0SV.SubscribeEntityStateMixin)((0, $htQni.HassUpdateMixin)((0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement)))) {
     /**
    * Returns the component's styles
    */ static get styles() {
@@ -5590,7 +6404,7 @@ class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $wgzUt.SubscribeEnti
     /**
    * Badge configuration
    */ set badge(badge) {
-        if ($ee3d06fe83a6a770$exports(badge, this._badge)) return;
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(badge, this._badge)) return;
         var _badge_position;
         // Set position (convert underscores to hyphens for CSS)
         const position = (_badge_position = badge.position) !== null && _badge_position !== void 0 ? _badge_position : 'top_right';
@@ -5599,9 +6413,9 @@ class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $wgzUt.SubscribeEnti
         this._badge = badge;
     }
     /**
-   * Only update if we have a state
+   * Only update if we have a state.
    */ shouldUpdate(changedProperties) {
-        return changedProperties.has('state');
+        return changedProperties.has('states');
     }
     /**
    * Render the badge
@@ -5613,24 +6427,35 @@ class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $wgzUt.SubscribeEnti
         (0, $dTmXl.d)(config, 'badge', 'render', id);
         // For homeassistant mode, use renderTileBadge (HA's native badge helper)
         const badge = this._badge;
-        if (badge.mode === 'homeassistant') return (0, $6d8f30ccc91bbc7c$export$d58d00b4a0522baf)(state, hass);
+        if (badge.mode === 'homeassistant') return (0, $5abff3d3a915abb3$exports.renderTileBadge)(state, hass);
         const matchingState = (0, $1c79672e60888038$export$7d2846cf165df04b)(state, badge);
         // For if_match mode, only render if a state match is found
         if (badge.mode === 'if_match' && !matchingState) return 0, $ci0wX.nothing;
-        return (0, $ci0wX.html)($7191b93f31a09a17$var$t || ($7191b93f31a09a17$var$t = $7191b93f31a09a17$var$_`
+        var _matchingState_label;
+        const label = (_matchingState_label = matchingState === null || matchingState === void 0 ? void 0 : matchingState.label) !== null && _matchingState_label !== void 0 ? _matchingState_label : badge.label;
+        return (0, $ci0wX.html)($7191b93f31a09a17$var$t2 || ($7191b93f31a09a17$var$t2 = $7191b93f31a09a17$var$_`
       ${0}
       <ha-tile-badge
         style=${0}
       >
-        <ha-state-icon
-          .hass=${0}
-          .stateObj=${0}
-          .icon=${0}
-        ></ha-state-icon>
+        ${0}
       </ha-tile-badge>
     `), (matchingState === null || matchingState === void 0 ? void 0 : matchingState.styles) ? (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)(matchingState.styles) : (0, $ci0wX.nothing), (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)({
             '--tile-badge-background-color': (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon_color)
-        }), hass, state, matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon);
+        }), label ? (0, $ci0wX.html)($7191b93f31a09a17$var$t || ($7191b93f31a09a17$var$t = $7191b93f31a09a17$var$_`
+              <room-badge-label
+                .hass=${0}
+                .config=${0}
+                .entityId=${0}
+                .label=${0}
+              ></room-badge-label>
+            `), hass, config, id !== null && id !== void 0 ? id : '', label) : (0, $ci0wX.html)($7191b93f31a09a17$var$t1 || ($7191b93f31a09a17$var$t1 = $7191b93f31a09a17$var$_`
+              <ha-state-icon
+                .hass=${0}
+                .stateObj=${0}
+                .icon=${0}
+              ></ha-state-icon>
+            `), hass, state, matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon));
     }
     constructor(...args){
         super(...args), /**
@@ -5638,7 +6463,7 @@ class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $wgzUt.SubscribeEnti
    */ this.position = 'top-right';
     }
 }
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: String,
         reflect: true,
@@ -5648,10 +6473,37 @@ class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $wgzUt.SubscribeEnti
 
 
 
-var $evAes = parcelRequire("evAes");
+var $2QgUB = parcelRequire("2QgUB");
+var $89c14c69d6c7f6bf$exports = {};
+"use strict";
+Object.defineProperty($89c14c69d6c7f6bf$exports, "__esModule", {
+    value: true
+});
+$89c14c69d6c7f6bf$exports.createComputeLabel = $89c14c69d6c7f6bf$var$createComputeLabel;
+/**
+ * Builds a ha-form `computeLabel` callback with typed translation keys on `schema.label`.
+ */ function $89c14c69d6c7f6bf$var$createComputeLabel(localize) {
+    return (schema, hass)=>{
+        if (!schema.label) return '';
+        return `${localize(hass, schema.label)} ${schema.required ? `(${hass.localize('ui.panel.lovelace.editor.card.config.required')})` : `(${hass.localize('ui.panel.lovelace.editor.card.config.optional')})`}`;
+    };
+}
+
+
+
+var $cfP8R = parcelRequire("cfP8R");
+const $58c2b5810601848d$export$851056343f01ae23 = (0, $89c14c69d6c7f6bf$exports.createComputeLabel)((0, $cfP8R.localize));
+
+
+var $559da9a3c5c02863$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/array/ensure-array.ts
- */ function $e98412ad79b70a32$export$d0c8ecbd4ed8940c(value) {
+ */ Object.defineProperty($559da9a3c5c02863$exports, "__esModule", {
+    value: true
+});
+$559da9a3c5c02863$exports.ensureArray = $559da9a3c5c02863$var$ensureArray;
+function $559da9a3c5c02863$var$ensureArray(value) {
     if (value === undefined || value === null || Array.isArray(value)) return value;
     return [
         value
@@ -5660,7 +6512,7 @@ var $evAes = parcelRequire("evAes");
 
 
 
-var $fKMMF = parcelRequire("fKMMF");
+var $5R2d0 = parcelRequire("5R2d0");
 
 var $cfP8R = parcelRequire("cfP8R");
 parcelRequire("fPVm8");
@@ -5673,10 +6525,12 @@ var $lYE5o = parcelRequire("lYE5o");
 parcelRequire("aAO52");
 var $bvVEG = parcelRequire("bvVEG");
 
-var $evAes = parcelRequire("evAes");
+var $2QgUB = parcelRequire("2QgUB");
 
 
-var $fKMMF = parcelRequire("fKMMF");
+
+var $5R2d0 = parcelRequire("5R2d0");
+
 
 var $cfP8R = parcelRequire("cfP8R");
 parcelRequire("fPVm8");
@@ -5689,7 +6543,6 @@ var $lYE5o = parcelRequire("lYE5o");
 parcelRequire("aAO52");
 var $bvVEG = parcelRequire("bvVEG");
 
-var $l3TbZ = parcelRequire("l3TbZ");
 let $68ce0c44dd114f11$var$_ = (t)=>t, $68ce0c44dd114f11$var$t, $68ce0c44dd114f11$var$t1, $68ce0c44dd114f11$var$t2, $68ce0c44dd114f11$var$t3;
 class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
     _getKey(item, index) {
@@ -5711,7 +6564,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                 ...this._expandedStates,
                 newIndex
             ]);
-            (0, $fKMMF.fireEvent)(this, 'states-value-changed', {
+            (0, $5R2d0.fireEvent)(this, 'states-value-changed', {
                 value: newStates
             });
         } else {
@@ -5727,7 +6580,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                 ...this._expandedStates,
                 newIndex
             ]);
-            (0, $fKMMF.fireEvent)(this, 'thresholds-value-changed', {
+            (0, $5R2d0.fireEvent)(this, 'thresholds-value-changed', {
                 value: newThresholds
             });
         }
@@ -5750,7 +6603,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
         newStates.splice(index, 1);
         this._expandedStates = this._adjustExpandedIndicesAfterRemoval(index);
         // Always ensure we send an array, even if empty
-        (0, $fKMMF.fireEvent)(this, 'states-value-changed', {
+        (0, $5R2d0.fireEvent)(this, 'states-value-changed', {
             value: newStates.length > 0 ? newStates : []
         });
     }
@@ -5761,7 +6614,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
         newThresholds.splice(index, 1);
         this._expandedStates = this._adjustExpandedIndicesAfterRemoval(index);
         // Always ensure we send an array, even if empty
-        (0, $fKMMF.fireEvent)(this, 'thresholds-value-changed', {
+        (0, $5R2d0.fireEvent)(this, 'thresholds-value-changed', {
             value: newThresholds.length > 0 ? newThresholds : []
         });
     }
@@ -5771,8 +6624,10 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
     }
     /**
    * Removes empty string properties from a config object
-   */ _cleanEmptyStrings(obj) {
+   */ // eslint-disable-next-line @typescript-eslint/no-explicit-any -- deep config prune
+    _cleanEmptyStrings(obj) {
         if (!obj || typeof obj !== 'object') return obj;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const cleaned = {};
         for (const [key, value] of Object.entries(obj)){
             // Skip empty strings
@@ -5797,7 +6652,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                 newStates[index] = cleanedState;
             }
             // Always ensure we send an array
-            (0, $fKMMF.fireEvent)(this, 'states-value-changed', {
+            (0, $5R2d0.fireEvent)(this, 'states-value-changed', {
                 value: newStates
             });
         } else {
@@ -5810,7 +6665,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                 newThresholds[index] = cleanedThreshold;
             }
             // Always ensure we send an array
-            (0, $fKMMF.fireEvent)(this, 'thresholds-value-changed', {
+            (0, $5R2d0.fireEvent)(this, 'thresholds-value-changed', {
                 value: newThresholds
             });
         }
@@ -5818,16 +6673,19 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
     _getItemTitle(item) {
         if (this.mode === 'states') {
             const state = item;
-            if (state.label) return `${state.state} (${state.label})`;
+            if (state.label && !(0, $e1a1e2291c993cc1$exports.isTemplateString)(state.label)) return `${state.state} (${state.label})`;
             return state.state || 'New State';
         } else {
             var _threshold_threshold;
             const threshold = item;
-            if (threshold.label) return `${threshold.threshold} (${threshold.label})`;
+            if (threshold.label && !(0, $e1a1e2291c993cc1$exports.isTemplateString)(threshold.label)) return `${threshold.threshold} (${threshold.label})`;
             return ((_threshold_threshold = threshold.threshold) === null || _threshold_threshold === void 0 ? void 0 : _threshold_threshold.toString()) || 'New Threshold';
         }
     }
-    render() {
+    /**
+   * renders the lit element card
+   * @returns {TemplateResult} The rendered HTML template
+   */ render() {
         if (!this.hass) return 0, $ci0wX.nothing;
         const entityId = this.entityId || '';
         const defaultLabel = this.mode === 'states' ? (0, $cfP8R.localize)(this.hass, 'editor.entity.states') : (0, $cfP8R.localize)(this.hass, 'editor.entity.thresholds');
@@ -5835,7 +6693,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
         const renderItems = ()=>{
             if (this.mode === 'states') {
                 var _ensureArray;
-                const states = (_ensureArray = (0, $e98412ad79b70a32$export$d0c8ecbd4ed8940c)(this.states)) !== null && _ensureArray !== void 0 ? _ensureArray : [];
+                const states = (_ensureArray = (0, $559da9a3c5c02863$exports.ensureArray)(this.states)) !== null && _ensureArray !== void 0 ? _ensureArray : [];
                 return (0, $bvVEG.repeat)(states, (item, index)=>this._getKey(item, index), (item, index)=>{
                     const isExpanded = this._expandedStates.has(index);
                     return (0, $ci0wX.html)($68ce0c44dd114f11$var$t || ($68ce0c44dd114f11$var$t = $68ce0c44dd114f11$var$_`
@@ -5877,11 +6735,11 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                     }, this._getItemTitle(item), this.hass.localize('ui.components.entity.entity-picker.clear'), index, (e)=>{
                         e.stopPropagation();
                         this._removeItem(index);
-                    }, this.hass, item, this._getStateSchema(entityId, this.hass, this.isSensor, this.isMainEntity), this._computeLabelCallback, (ev)=>this._itemValueChanged(index, ev));
+                    }, this.hass, item, this._getStateSchema(entityId, this.hass, this.isSensor, this.isMainEntity), (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, this.hass), (ev)=>this._itemValueChanged(index, ev));
                 });
             } else {
                 var _ensureArray1;
-                const thresholds = (_ensureArray1 = (0, $e98412ad79b70a32$export$d0c8ecbd4ed8940c)(this.thresholds)) !== null && _ensureArray1 !== void 0 ? _ensureArray1 : [];
+                const thresholds = (_ensureArray1 = (0, $559da9a3c5c02863$exports.ensureArray)(this.thresholds)) !== null && _ensureArray1 !== void 0 ? _ensureArray1 : [];
                 return (0, $bvVEG.repeat)(thresholds, (item, index)=>this._getKey(item, index), (item, index)=>{
                     const isExpanded = this._expandedStates.has(index);
                     return (0, $ci0wX.html)($68ce0c44dd114f11$var$t1 || ($68ce0c44dd114f11$var$t1 = $68ce0c44dd114f11$var$_`
@@ -5923,7 +6781,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                     }, this._getItemTitle(item), this.hass.localize('ui.components.entity.entity-picker.clear'), index, (e)=>{
                         e.stopPropagation();
                         this._removeItem(index);
-                    }, this.hass, item, this._getThresholdSchema(entityId, this.hass, this.isSensor, this.isMainEntity), this._computeLabelCallback, (ev)=>this._itemValueChanged(index, ev));
+                    }, this.hass, item, this._getThresholdSchema(entityId, this.hass, this.isSensor, this.isMainEntity), (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, this.hass), (ev)=>this._itemValueChanged(index, ev));
                 });
             }
         };
@@ -5940,7 +6798,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
     `), this.label || defaultLabel, this.hass.localize('ui.panel.lovelace.editor.card.config.optional'), renderItems(), this._addItem, addButtonLabel);
     }
     constructor(...args){
-        super(...args), this.mode = 'states', this.isSensor = false, this.isMainEntity = false, this._expandedStates = new Set(), this._getStateSchema = (0, $l3TbZ.default)((entity_id, hass, isSensor, isMainEntity)=>{
+        super(...args), this.mode = 'states', this.isSensor = false, this.isMainEntity = false, this._expandedStates = new Set(), this._getStateSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity_id, hass, isSensor, isMainEntity)=>{
             const schema = [
                 {
                     name: 'state',
@@ -5989,27 +6847,20 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                 }
             });
             schema.push({
-                type: 'grid',
-                name: '',
-                label: 'editor.entity.entity_label',
-                schema: [
-                    {
-                        name: 'icon',
-                        label: 'editor.entity.state.icon',
-                        required: false,
-                        selector: {
-                            icon: {}
-                        }
-                    },
-                    {
-                        name: 'label',
-                        label: 'editor.entity.state.label',
-                        required: false,
-                        selector: {
-                            text: {}
-                        }
+                name: 'icon',
+                label: 'editor.entity.state.icon',
+                required: false,
+                selector: {
+                    icon: {}
+                }
+            }, {
+                name: 'label',
+                label: 'editor.entity.state.label',
+                selector: {
+                    template: {
+                        preview: true
                     }
-                ]
+                }
             }, {
                 name: 'attribute',
                 label: 'editor.entity.state.attribute',
@@ -6028,7 +6879,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                 }
             });
             return schema;
-        }), this._getThresholdSchema = (0, $l3TbZ.default)((entity_id, hass, isSensor, isMainEntity)=>{
+        }), this._getThresholdSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((entity_id, hass, isSensor, isMainEntity)=>{
             const schema = [
                 {
                     name: 'threshold',
@@ -6090,27 +6941,20 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                     }
                 }
             }, {
-                type: 'grid',
-                name: '',
-                label: 'editor.entity.entity_label',
-                schema: [
-                    {
-                        name: 'icon',
-                        label: 'editor.entity.threshold.icon',
-                        required: false,
-                        selector: {
-                            icon: {}
-                        }
-                    },
-                    {
-                        name: 'label',
-                        label: 'editor.entity.threshold.label',
-                        required: false,
-                        selector: {
-                            text: {}
-                        }
+                name: 'icon',
+                label: 'editor.entity.threshold.icon',
+                required: false,
+                selector: {
+                    icon: {}
+                }
+            }, {
+                name: 'label',
+                label: 'editor.entity.threshold.label',
+                selector: {
+                    template: {
+                        preview: true
                     }
-                ]
+                }
             }, {
                 name: 'attribute',
                 label: 'editor.entity.threshold.attribute',
@@ -6129,10 +6973,7 @@ class $68ce0c44dd114f11$export$806f47322f907427 extends (0, $2r9I1.LitElement) {
                 }
             });
             return schema;
-        }), this._computeLabelCallback = (schema)=>{
-            if (!schema.label) return '';
-            return `${(0, $cfP8R.localize)(this.hass, schema.label)} ${schema.required ? `(${this.hass.localize('ui.panel.lovelace.editor.card.config.required')})` : `(${this.hass.localize('ui.panel.lovelace.editor.card.config.optional')})`}`;
-        };
+        });
     }
 }
 $68ce0c44dd114f11$export$806f47322f907427.styles = (0, $2SS2a.css)($68ce0c44dd114f11$var$t3 || ($68ce0c44dd114f11$var$t3 = $68ce0c44dd114f11$var$_`
@@ -6183,52 +7024,54 @@ $68ce0c44dd114f11$export$806f47322f907427.styles = (0, $2SS2a.css)($68ce0c44dd11
       cursor: pointer;
     }
   `));
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $68ce0c44dd114f11$export$806f47322f907427.prototype, "hass", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $68ce0c44dd114f11$export$806f47322f907427.prototype, "states", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $68ce0c44dd114f11$export$806f47322f907427.prototype, "thresholds", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)()
 ], $68ce0c44dd114f11$export$806f47322f907427.prototype, "label", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)()
 ], $68ce0c44dd114f11$export$806f47322f907427.prototype, "entityId", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)()
 ], $68ce0c44dd114f11$export$806f47322f907427.prototype, "mode", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean
     })
 ], $68ce0c44dd114f11$export$806f47322f907427.prototype, "isSensor", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean
     })
 ], $68ce0c44dd114f11$export$806f47322f907427.prototype, "isMainEntity", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $68ce0c44dd114f11$export$806f47322f907427.prototype, "_expandedStates", void 0);
 
 
 
 var $kJycS = parcelRequire("kJycS");
+
 function $a82cc86a625f1a34$export$a47fb462a08de82f(item, index) {
     return `badge-${index}`;
 }
 function $a82cc86a625f1a34$export$987b01ab9952d54f(obj) {
     if (!obj || typeof obj !== 'object') return obj;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cleaned = {};
     for (const [key, value] of Object.entries(obj)){
         // Skip empty strings
@@ -6245,11 +7088,16 @@ function $a82cc86a625f1a34$export$987b01ab9952d54f(obj) {
     return cleaned;
 }
 function $a82cc86a625f1a34$export$4de3ecff88b7fcf(badge) {
-    if (badge.mode === 'show_always') return `Show Always (${badge.position || 'top_right'})`;
-    if (badge.mode === 'if_match') return `If Match (${badge.position || 'top_right'})`;
+    let labelPreview = '';
+    if (badge.label && !(0, $e1a1e2291c993cc1$exports.isTemplateString)(badge.label)) {
+        const shortLabel = badge.label.length > 20 ? badge.label.slice(0, 20) + '...' : badge.label;
+        labelPreview = ` - ${shortLabel}`;
+    }
+    if (badge.mode === 'show_always') return `Show Always (${badge.position || 'top_right'})${labelPreview}`;
+    if (badge.mode === 'if_match') return `If Match (${badge.position || 'top_right'})${labelPreview}`;
     if (badge.mode === 'homeassistant') return `Home Assistant (${badge.position || 'top_right'})`;
-    if (badge.states && badge.states.length > 0) return `States (${badge.states.length}) - ${badge.position || 'top_right'}`;
-    return `Badge ${badge.position || 'top_right'}`;
+    if (badge.states && badge.states.length > 0) return `States (${badge.states.length}) - ${badge.position || 'top_right'}${labelPreview}`;
+    return `Badge ${badge.position || 'top_right'}${labelPreview}`;
 }
 
 
@@ -6306,8 +7154,7 @@ function $3499cf776de5cef0$export$1b2909c9365ec6ff(badges, index) {
 
 var $cfP8R = parcelRequire("cfP8R");
 
-var $l3TbZ = parcelRequire("l3TbZ");
-const $e9b7a98281a80f12$export$7154f02cb7867cee = (0, $l3TbZ.default)((entity_id, hass)=>{
+const $e9b7a98281a80f12$export$7154f02cb7867cee = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((hass)=>{
     return [
         {
             name: 'entity_id',
@@ -6315,6 +7162,16 @@ const $e9b7a98281a80f12$export$7154f02cb7867cee = (0, $l3TbZ.default)((entity_id
             label: 'editor.entity.entity_id',
             selector: {
                 entity: {}
+            }
+        },
+        {
+            name: 'label',
+            required: false,
+            label: 'editor.badge.label',
+            selector: {
+                template: {
+                    preview: true
+                }
             }
         },
         {
@@ -6371,10 +7228,6 @@ const $e9b7a98281a80f12$export$7154f02cb7867cee = (0, $l3TbZ.default)((entity_id
         }
     ];
 });
-function $e9b7a98281a80f12$export$5e2bf56d4468c10f(schema, hass) {
-    if (!schema.label) return '';
-    return `${(0, $cfP8R.localize)(hass, schema.label)} ${schema.required ? `(${hass.localize('ui.panel.lovelace.editor.card.config.required')})` : `(${hass.localize('ui.panel.lovelace.editor.card.config.optional')})`}`;
-}
 
 
 
@@ -6387,34 +7240,37 @@ class $f0a2b09abb3b359a$export$fe6c0dc6457f5df9 extends (0, $2r9I1.LitElement) {
             ...this._expandedBadges,
             newIndex
         ]);
-        (0, $fKMMF.fireEvent)(this, 'badges-value-changed', {
+        (0, $5R2d0.fireEvent)(this, 'badges-value-changed', {
             value: newBadges
         });
     }
     _removeBadgeItem(index) {
         const newBadges = (0, $3499cf776de5cef0$export$1b2909c9365ec6ff)(this.badges, index);
         this._expandedBadges = (0, $3499cf776de5cef0$export$6f52e6fde4635246)(this._expandedBadges, index);
-        (0, $fKMMF.fireEvent)(this, 'badges-value-changed', {
+        (0, $5R2d0.fireEvent)(this, 'badges-value-changed', {
             value: newBadges
         });
     }
     _badgeValueChanged(index, ev) {
         const newBadges = (0, $8f046e6eaf17a10f$export$b8d75e5bff3bf8f1)(this.badges, index, ev.detail.value);
-        (0, $fKMMF.fireEvent)(this, 'badges-value-changed', {
+        (0, $5R2d0.fireEvent)(this, 'badges-value-changed', {
             value: newBadges
         });
     }
     _badgeStatesValueChanged(index, ev) {
         const newBadges = (0, $8f046e6eaf17a10f$export$d34a18b0bcdd9675)(this.badges, index, ev.detail.value);
-        (0, $fKMMF.fireEvent)(this, 'badges-value-changed', {
+        (0, $5R2d0.fireEvent)(this, 'badges-value-changed', {
             value: newBadges
         });
     }
-    render() {
+    /**
+   * renders the lit element card
+   * @returns {TemplateResult} The rendered HTML template
+   */ render() {
         if (!this.hass) return 0, $ci0wX.nothing;
         const entityId = this.entityId || '';
         var _ensureArray;
-        const badges = (_ensureArray = (0, $e98412ad79b70a32$export$d0c8ecbd4ed8940c)(this.badges)) !== null && _ensureArray !== void 0 ? _ensureArray : [];
+        const badges = (_ensureArray = (0, $559da9a3c5c02863$exports.ensureArray)(this.badges)) !== null && _ensureArray !== void 0 ? _ensureArray : [];
         const maxBadges = 4;
         const canAddMore = badges.length < maxBadges;
         const defaultLabel = (0, $cfP8R.localize)(this.hass, 'editor.entity.badges') || 'Badges';
@@ -6473,7 +7329,7 @@ class $f0a2b09abb3b359a$export$fe6c0dc6457f5df9 extends (0, $2r9I1.LitElement) {
                           .computeLabel=${0}
                           @value-changed=${0}
                         ></ha-form>
-                      `), this.hass, item, (0, $e9b7a98281a80f12$export$7154f02cb7867cee)(entityId, this.hass), (schema)=>(0, $e9b7a98281a80f12$export$5e2bf56d4468c10f)(schema, this.hass), (ev)=>this._badgeValueChanged(index, ev)) : (0, $ci0wX.nothing), (()=>{
+                      `), this.hass, item, (0, $e9b7a98281a80f12$export$7154f02cb7867cee)(this.hass), (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, this.hass), (ev)=>this._badgeValueChanged(index, ev)) : (0, $ci0wX.nothing), (()=>{
                 if (!item.mode) {
                     const statesEditor = this.hass ? (0, $ci0wX.html)($f0a2b09abb3b359a$var$t1 || ($f0a2b09abb3b359a$var$t1 = $f0a2b09abb3b359a$var$_`
                             <room-summary-states-row-editor
@@ -6561,23 +7417,23 @@ $f0a2b09abb3b359a$export$fe6c0dc6457f5df9.styles = (0, $2SS2a.css)($f0a2b09abb3b
       text-align: center;
     }
   `));
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $f0a2b09abb3b359a$export$fe6c0dc6457f5df9.prototype, "hass", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $f0a2b09abb3b359a$export$fe6c0dc6457f5df9.prototype, "badges", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)()
 ], $f0a2b09abb3b359a$export$fe6c0dc6457f5df9.prototype, "label", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)()
 ], $f0a2b09abb3b359a$export$fe6c0dc6457f5df9.prototype, "entityId", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $f0a2b09abb3b359a$export$fe6c0dc6457f5df9.prototype, "_expandedBadges", void 0);
 
@@ -6587,9 +7443,9 @@ var $kJycS = parcelRequire("kJycS");
 
 var $1izJ2 = parcelRequire("1izJ2");
 
-var $evAes = parcelRequire("evAes");
+var $2QgUB = parcelRequire("2QgUB");
 
-var $fKMMF = parcelRequire("fKMMF");
+var $5R2d0 = parcelRequire("5R2d0");
 parcelRequire("fPVm8");
 var $2SS2a = parcelRequire("2SS2a");
 var $ci0wX = parcelRequire("ci0wX");
@@ -6609,7 +7465,10 @@ class $8e72cbf99a87388e$export$12e5e4192ee344c7 extends (0, $2r9I1.LitElement) {
         if (typeof item === 'string') return item;
         return item.entity_id;
     }
-    render() {
+    /**
+   * renders the lit element card
+   * @returns {TemplateResult} The rendered HTML template
+   */ render() {
         if (!this.hass) return 0, $ci0wX.nothing;
         const items = this.field === 'entities' ? this.entities || [] : this.lights || [];
         const addEntityClass = `add-entity${this.single ? ' single-mode' : ''}`;
@@ -6700,14 +7559,15 @@ class $8e72cbf99a87388e$export$12e5e4192ee344c7 extends (0, $2r9I1.LitElement) {
             ></ha-entity-picker>
           `), addEntityClass, this.hass, this.availableEntities, this._addEntity));
     }
-    async _addEntity(ev) {
+    _addEntity(ev) {
         ev.stopPropagation(); // Stop the picker's event from bubbling up
         const value = ev.detail.value;
         if (value === '') return;
+        const target = ev.target;
         // In single mode, replace instead of add
         if (this.single) {
-            ev.target.value = '';
-            (0, $fKMMF.fireEvent)(this, 'value-changed', {
+            target.value = '';
+            (0, $5R2d0.fireEvent)(this, 'value-changed', {
                 value: [
                     value
                 ]
@@ -6719,8 +7579,8 @@ class $8e72cbf99a87388e$export$12e5e4192ee344c7 extends (0, $2r9I1.LitElement) {
                 ...this.entities || [],
                 value
             ];
-            ev.target.value = '';
-            (0, $fKMMF.fireEvent)(this, 'value-changed', {
+            target.value = '';
+            (0, $5R2d0.fireEvent)(this, 'value-changed', {
                 value: newConfigEntities
             });
         } else {
@@ -6730,24 +7590,25 @@ class $8e72cbf99a87388e$export$12e5e4192ee344c7 extends (0, $2r9I1.LitElement) {
                 ...this.lights || [],
                 lightValue
             ];
-            ev.target.value = '';
-            (0, $fKMMF.fireEvent)(this, 'value-changed', {
+            target.value = '';
+            (0, $5R2d0.fireEvent)(this, 'value-changed', {
                 value: newConfigLights
             });
         }
     }
     _removeRow(ev) {
         const index = ev.currentTarget.index;
+        if (index === undefined) return;
         if (this.field === 'entities') {
             const newConfigEntities = (this.entities || []).concat();
             newConfigEntities.splice(index, 1);
-            (0, $fKMMF.fireEvent)(this, 'value-changed', {
+            (0, $5R2d0.fireEvent)(this, 'value-changed', {
                 value: newConfigEntities
             });
         } else {
             const newConfigLights = (this.lights || []).concat();
             newConfigLights.splice(index, 1);
-            (0, $fKMMF.fireEvent)(this, 'value-changed', {
+            (0, $5R2d0.fireEvent)(this, 'value-changed', {
                 value: newConfigLights
             });
         }
@@ -6770,26 +7631,28 @@ class $8e72cbf99a87388e$export$12e5e4192ee344c7 extends (0, $2r9I1.LitElement) {
     _valueChanged(ev) {
         const value = ev.detail.value;
         const index = ev.target.index;
+        if (index === undefined) return;
         if (this.field === 'entities') {
             const newConfigEntities = this._updateItemInArray(this.entities || [], index, value);
-            (0, $fKMMF.fireEvent)(this, 'value-changed', {
+            (0, $5R2d0.fireEvent)(this, 'value-changed', {
                 value: newConfigEntities
             });
         } else {
             const newConfigLights = this._updateItemInArray(this.lights || [], index, value);
-            (0, $fKMMF.fireEvent)(this, 'value-changed', {
+            (0, $5R2d0.fireEvent)(this, 'value-changed', {
                 value: newConfigLights
             });
         }
     }
     _editRow(ev) {
         const index = ev.currentTarget.index;
+        if (index === undefined) return;
         const items = this.field === 'entities' ? this.entities || [] : this.lights || [];
         const elementConfig = items[index];
         // Determine the type based on field
         let elementType = 'entity';
         if (this.field === 'lights') elementType = 'light';
-        (0, $fKMMF.fireEvent)(this, 'edit-detail-element', {
+        (0, $5R2d0.fireEvent)(this, 'edit-detail-element', {
             subElementConfig: {
                 index: index,
                 type: elementType,
@@ -6806,7 +7669,7 @@ class $8e72cbf99a87388e$export$12e5e4192ee344c7 extends (0, $2r9I1.LitElement) {
         const [movedItem] = newItems.splice(oldIndex, 1);
         if (movedItem !== undefined) {
             newItems.splice(newIndex, 0, movedItem);
-            (0, $fKMMF.fireEvent)(this, 'value-changed', {
+            (0, $5R2d0.fireEvent)(this, 'value-changed', {
                 value: newItems
             });
         }
@@ -6864,33 +7727,33 @@ $8e72cbf99a87388e$export$12e5e4192ee344c7.styles = (0, $2SS2a.css)($8e72cbf99a87
       color: var(--secondary-text-color);
     }
   `));
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $8e72cbf99a87388e$export$12e5e4192ee344c7.prototype, "hass", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $8e72cbf99a87388e$export$12e5e4192ee344c7.prototype, "entities", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $8e72cbf99a87388e$export$12e5e4192ee344c7.prototype, "lights", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)()
 ], $8e72cbf99a87388e$export$12e5e4192ee344c7.prototype, "label", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)()
 ], $8e72cbf99a87388e$export$12e5e4192ee344c7.prototype, "field", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean
     })
 ], $8e72cbf99a87388e$export$12e5e4192ee344c7.prototype, "single", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
@@ -6900,9 +7763,10 @@ $8e72cbf99a87388e$export$12e5e4192ee344c7.styles = (0, $2SS2a.css)($8e72cbf99a87
 
 var $kJycS = parcelRequire("kJycS");
 
-var $evAes = parcelRequire("evAes");
+var $2QgUB = parcelRequire("2QgUB");
 
-var $fKMMF = parcelRequire("fKMMF");
+
+var $5R2d0 = parcelRequire("5R2d0");
 
 var $cfP8R = parcelRequire("cfP8R");
 parcelRequire("fPVm8");
@@ -6913,7 +7777,6 @@ parcelRequire("jcMWt");
 var $aaQtJ = parcelRequire("aaQtJ");
 var $lYE5o = parcelRequire("lYE5o");
 
-var $l3TbZ = parcelRequire("l3TbZ");
 
 
 let $43564874ab3ed043$var$_ = (t)=>t, $43564874ab3ed043$var$t, $43564874ab3ed043$var$t1, $43564874ab3ed043$var$t2, $43564874ab3ed043$var$t3, $43564874ab3ed043$var$t4;
@@ -6934,12 +7797,15 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
     get value() {
         return this._config;
     }
-    render() {
+    /**
+   * renders the lit element card
+   * @returns {TemplateResult} The rendered HTML template
+   */ render() {
         if (!this.hass || !this._config) return 0, $ci0wX.nothing;
         let schema;
-        if (this.type === 'entity') schema = this._entitiesSchema(this._config.entity_id, this.hass);
-        else if (this.type === 'sensor') schema = this._sensorsSchema(this._config.entity_id, this.hass);
-        else schema = this._lightsSchema(this._config.entity_id, this.hass);
+        if (this.type === 'entity') schema = this._entitiesSchema(this.hass);
+        else if (this.type === 'sensor') schema = this._sensorsSchema;
+        else schema = this._lightsSchema(this.hass);
         // Only access states/thresholds/badges for entity/sensor types, not for lights
         const states = this.type !== 'light' && Array.isArray(this._config.states) ? this._config.states : undefined;
         const thresholds = this.type !== 'light' && Array.isArray(this._config.thresholds) ? this._config.thresholds : undefined;
@@ -6974,7 +7840,7 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
         @value-changed=${0}
       ></ha-form>
       ${0}
-    `), this.hass, this._config, schema, this._computeLabelCallback, this._valueChanged, this._config.entity_id && this.type !== 'light' ? (0, $ci0wX.html)($43564874ab3ed043$var$t2 || ($43564874ab3ed043$var$t2 = $43564874ab3ed043$var$_`
+    `), this.hass, this._config, schema, (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, this.hass), this._valueChanged, this._config.entity_id && this.type !== 'light' ? (0, $ci0wX.html)($43564874ab3ed043$var$t2 || ($43564874ab3ed043$var$t2 = $43564874ab3ed043$var$_`
             <room-summary-states-row-editor
               .hass=${0}
               .states=${0}
@@ -6990,8 +7856,10 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
     }
     /**
    * Removes empty string properties from a config object
-   */ _cleanEmptyStrings(obj) {
+   */ // eslint-disable-next-line @typescript-eslint/no-explicit-any -- deep config prune
+    _cleanEmptyStrings(obj) {
         if (!obj || typeof obj !== 'object') return obj;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const cleaned = {};
         for (const [key, value] of Object.entries(obj)){
             // Skip empty strings
@@ -7020,8 +7888,7 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
         } : {});
         // If states array is empty, ensure we remove the property
         if (cleanedStates.length === 0 && 'states' in newConfig) delete newConfig.states;
-        // @ts-ignore
-        (0, $fKMMF.fireEvent)(this, 'config-changed', {
+        (0, $5R2d0.fireEvent)(this, 'config-changed', {
             config: newConfig
         });
     }
@@ -7040,8 +7907,7 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
         } : {});
         // If thresholds array is empty, ensure we remove the property
         if (cleanedThresholds.length === 0 && 'thresholds' in newConfig) delete newConfig.thresholds;
-        // @ts-ignore
-        (0, $fKMMF.fireEvent)(this, 'config-changed', {
+        (0, $5R2d0.fireEvent)(this, 'config-changed', {
             config: newConfig
         });
     }
@@ -7060,19 +7926,17 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
         } : {});
         // If badges array is empty, ensure we remove the property
         if (cleanedBadges.length === 0 && 'badges' in newConfig) delete newConfig.badges;
-        // @ts-ignore
-        (0, $fKMMF.fireEvent)(this, 'config-changed', {
+        (0, $5R2d0.fireEvent)(this, 'config-changed', {
             config: newConfig
         });
     }
     _valueChanged(ev) {
-        // @ts-ignore
-        (0, $fKMMF.fireEvent)(this, 'config-changed', {
+        (0, $5R2d0.fireEvent)(this, 'config-changed', {
             config: ev.detail.value
         });
     }
     constructor(...args){
-        super(...args), this.type = 'entity', this.isMainEntity = false, this._entitiesSchema = (0, $l3TbZ.default)((entity_id, hass)=>{
+        super(...args), this.type = 'entity', this.isMainEntity = false, this._entitiesSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((hass)=>{
             return [
                 {
                     name: 'entity_id',
@@ -7083,25 +7947,20 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                     }
                 },
                 {
-                    type: 'grid',
-                    name: '',
+                    name: 'icon',
+                    label: 'editor.entity.entity_icon',
+                    selector: {
+                        icon: {}
+                    }
+                },
+                {
+                    name: 'label',
                     label: 'editor.entity.entity_label',
-                    schema: [
-                        {
-                            name: 'label',
-                            label: 'editor.entity.entity_label',
-                            selector: {
-                                text: {}
-                            }
-                        },
-                        {
-                            name: 'icon',
-                            label: 'editor.entity.entity_icon',
-                            selector: {
-                                icon: {}
-                            }
+                    selector: {
+                        template: {
+                            preview: true
                         }
-                    ]
+                    }
                 },
                 {
                     name: 'attribute',
@@ -7254,90 +8113,83 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                     ]
                 }
             ];
-        }), this._sensorsSchema = (0, $l3TbZ.default)((entity_id, hass)=>{
-            return [
-                {
-                    name: 'entity_id',
-                    required: true,
-                    label: 'editor.entity.entity_id',
-                    selector: {
-                        entity: {}
+        }), this._sensorsSchema = [
+            {
+                name: 'entity_id',
+                required: true,
+                label: 'editor.entity.entity_id',
+                selector: {
+                    entity: {}
+                }
+            },
+            {
+                name: 'icon',
+                label: 'editor.entity.entity_icon',
+                selector: {
+                    icon: {}
+                }
+            },
+            {
+                name: 'label',
+                label: 'editor.entity.entity_label',
+                selector: {
+                    template: {
+                        preview: true
+                    }
+                }
+            },
+            {
+                name: 'attribute',
+                label: 'editor.entity.entity_attribute',
+                selector: {
+                    ui_state_content: {
+                        allow_context: true
                     }
                 },
-                {
-                    type: 'grid',
-                    name: '',
-                    label: 'editor.entity.entity_label',
-                    schema: [
-                        {
-                            name: 'label',
-                            label: 'editor.entity.entity_label',
-                            selector: {
-                                text: {}
+                context: {
+                    filter_entity: 'entity_id'
+                }
+            },
+            {
+                name: 'interactions',
+                label: 'editor.interactions.interactions',
+                type: 'expandable',
+                flatten: true,
+                icon: 'mdi:gesture-tap',
+                schema: [
+                    {
+                        name: 'tap_action',
+                        label: 'editor.interactions.tap_action',
+                        required: false,
+                        selector: {
+                            ui_action: {
+                                default_action: 'more-info'
                             }
-                        },
-                        {
-                            name: 'icon',
-                            label: 'editor.entity.entity_icon',
-                            selector: {
-                                icon: {}
-                            }
-                        }
-                    ]
-                },
-                {
-                    name: 'attribute',
-                    label: 'editor.entity.entity_attribute',
-                    selector: {
-                        ui_state_content: {
-                            allow_context: true
                         }
                     },
-                    context: {
-                        filter_entity: 'entity_id'
-                    }
-                },
-                {
-                    name: 'interactions',
-                    label: 'editor.interactions.interactions',
-                    type: 'expandable',
-                    flatten: true,
-                    icon: 'mdi:gesture-tap',
-                    schema: [
-                        {
-                            name: 'tap_action',
-                            label: 'editor.interactions.tap_action',
-                            required: false,
-                            selector: {
-                                ui_action: {
-                                    default_action: 'more-info'
-                                }
-                            }
-                        },
-                        {
-                            name: 'double_tap_action',
-                            label: 'editor.interactions.double_tap_action',
-                            required: false,
-                            selector: {
-                                ui_action: {
-                                    default_action: 'none'
-                                }
-                            }
-                        },
-                        {
-                            name: 'hold_action',
-                            label: 'editor.interactions.hold_action',
-                            required: false,
-                            selector: {
-                                ui_action: {
-                                    default_action: 'none'
-                                }
+                    {
+                        name: 'double_tap_action',
+                        label: 'editor.interactions.double_tap_action',
+                        required: false,
+                        selector: {
+                            ui_action: {
+                                default_action: 'none'
                             }
                         }
-                    ]
-                }
-            ];
-        }), this._lightsSchema = (0, $l3TbZ.default)((entity_id, hass)=>{
+                    },
+                    {
+                        name: 'hold_action',
+                        label: 'editor.interactions.hold_action',
+                        required: false,
+                        selector: {
+                            ui_action: {
+                                default_action: 'none'
+                            }
+                        }
+                    }
+                ]
+            }
+        ], this._lightsSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((hass)=>{
             return [
                 {
                     name: 'entity_id',
@@ -7371,10 +8223,7 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
                     }
                 }
             ];
-        }), this._computeLabelCallback = (schema)=>{
-            if (!schema.label) return '';
-            return `${(0, $cfP8R.localize)(this.hass, schema.label)} ${schema.required ? `(${this.hass.localize('ui.panel.lovelace.editor.card.config.required')})` : `(${this.hass.localize('ui.panel.lovelace.editor.card.config.optional')})`}`;
-        };
+        });
     }
 }
 $43564874ab3ed043$export$5062b3ea8745e421.styles = (0, $2SS2a.css)($43564874ab3ed043$var$t4 || ($43564874ab3ed043$var$t4 = $43564874ab3ed043$var$_`
@@ -7382,25 +8231,25 @@ $43564874ab3ed043$export$5062b3ea8745e421.styles = (0, $2SS2a.css)($43564874ab3e
       padding: 16px;
     }
   `));
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $43564874ab3ed043$export$5062b3ea8745e421.prototype, "hass", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $43564874ab3ed043$export$5062b3ea8745e421.prototype, "_config", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $43564874ab3ed043$export$5062b3ea8745e421.prototype, "type", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean
     })
 ], $43564874ab3ed043$export$5062b3ea8745e421.prototype, "isMainEntity", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
@@ -7409,9 +8258,18 @@ $43564874ab3ed043$export$5062b3ea8745e421.styles = (0, $2SS2a.css)($43564874ab3e
 
 
 
-var $evAes = parcelRequire("evAes");
+var $2QgUB = parcelRequire("2QgUB");
 
-var $fKMMF = parcelRequire("fKMMF");
+var $5R2d0 = parcelRequire("5R2d0");
+var $86955fac4f8f9f66$exports = {};
+"use strict";
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/editor/hui-element-editor.ts
+ */ Object.defineProperty($86955fac4f8f9f66$exports, "__esModule", {
+    value: true
+});
+
+
 parcelRequire("fPVm8");
 var $2SS2a = parcelRequire("2SS2a");
 var $ci0wX = parcelRequire("ci0wX");
@@ -7478,16 +8336,14 @@ class $ffd7d578a1e62621$export$ddca213b44fe1587 extends (0, $2r9I1.LitElement) {
     _handleConfigChanged(ev) {
         ev.stopPropagation();
         const value = ev.detail.config;
-        // @ts-ignore
-        (0, $fKMMF.fireEvent)(this, 'config-changed', {
+        (0, $5R2d0.fireEvent)(this, 'config-changed', {
             config: value
         });
     }
     _handleYAMLChanged(ev) {
         ev.stopPropagation();
         const value = ev.detail.value;
-        // @ts-ignore
-        (0, $fKMMF.fireEvent)(this, 'config-changed', {
+        (0, $5R2d0.fireEvent)(this, 'config-changed', {
             config: value
         });
     }
@@ -7495,7 +8351,7 @@ class $ffd7d578a1e62621$export$ddca213b44fe1587 extends (0, $2r9I1.LitElement) {
         this._guiMode = !this._guiMode;
     }
     _goBack() {
-        (0, $fKMMF.fireEvent)(this, 'go-back');
+        (0, $5R2d0.fireEvent)(this, 'go-back');
     }
     constructor(...args){
         super(...args), this._guiModeAvailable = true, this._guiMode = true;
@@ -7523,24 +8379,25 @@ $ffd7d578a1e62621$export$ddca213b44fe1587.styles = (0, $2SS2a.css)($ffd7d578a1e6
       color: var(--primary-color);
     }
   `));
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $ffd7d578a1e62621$export$ddca213b44fe1587.prototype, "config", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $ffd7d578a1e62621$export$ddca213b44fe1587.prototype, "_guiModeAvailable", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $ffd7d578a1e62621$export$ddca213b44fe1587.prototype, "_guiMode", void 0);
 
 
 
-var $evAes = parcelRequire("evAes");
+var $2QgUB = parcelRequire("2QgUB");
 
 
-var $fKMMF = parcelRequire("fKMMF");
+
+var $5R2d0 = parcelRequire("5R2d0");
 
 var $cfP8R = parcelRequire("cfP8R");
 parcelRequire("fPVm8");
@@ -7553,7 +8410,6 @@ var $lYE5o = parcelRequire("lYE5o");
 parcelRequire("aAO52");
 var $bvVEG = parcelRequire("bvVEG");
 
-var $l3TbZ = parcelRequire("l3TbZ");
 let $460e8ac2e6479550$var$_ = (t)=>t, $460e8ac2e6479550$var$t, $460e8ac2e6479550$var$t1, $460e8ac2e6479550$var$t2;
 class $460e8ac2e6479550$export$b79a6ddbd7dc2198 extends (0, $2r9I1.LitElement) {
     _getKey(item, index) {
@@ -7570,7 +8426,7 @@ class $460e8ac2e6479550$export$b79a6ddbd7dc2198 extends (0, $2r9I1.LitElement) {
             ...this._expandedThresholds,
             newIndex
         ]);
-        (0, $fKMMF.fireEvent)(this, 'threshold-entries-value-changed', {
+        (0, $5R2d0.fireEvent)(this, 'threshold-entries-value-changed', {
             value: newThresholds
         });
     }
@@ -7586,12 +8442,14 @@ class $460e8ac2e6479550$export$b79a6ddbd7dc2198 extends (0, $2r9I1.LitElement) {
         const newThresholds = (this.thresholds || []).concat();
         newThresholds.splice(index, 1);
         this._expandedThresholds = this._adjustExpandedIndicesAfterRemoval(index);
-        (0, $fKMMF.fireEvent)(this, 'threshold-entries-value-changed', {
+        (0, $5R2d0.fireEvent)(this, 'threshold-entries-value-changed', {
             value: newThresholds.length > 0 ? newThresholds : []
         });
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- deep config prune
     _cleanEmptyStrings(obj) {
         if (!obj || typeof obj !== 'object') return obj;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const cleaned = {};
         for (const [key, value] of Object.entries(obj)){
             if (value === '') continue;
@@ -7610,7 +8468,7 @@ class $460e8ac2e6479550$export$b79a6ddbd7dc2198 extends (0, $2r9I1.LitElement) {
             const cleanedThreshold = this._cleanEmptyStrings(updatedThreshold);
             newThresholds[index] = cleanedThreshold;
         }
-        (0, $fKMMF.fireEvent)(this, 'threshold-entries-value-changed', {
+        (0, $5R2d0.fireEvent)(this, 'threshold-entries-value-changed', {
             value: newThresholds
         });
     }
@@ -7625,7 +8483,7 @@ class $460e8ac2e6479550$export$b79a6ddbd7dc2198 extends (0, $2r9I1.LitElement) {
         const defaultLabel = this.thresholdType === 'temperature' ? this.hass.localize('editor.threshold.temperature_thresholds') || 'Temperature Thresholds' : this.hass.localize('editor.threshold.humidity_thresholds') || 'Humidity Thresholds';
         const addButtonLabel = this.thresholdType === 'temperature' ? this.hass.localize('editor.threshold.add_temperature_threshold') || 'Add Temperature Threshold' : this.hass.localize('editor.threshold.add_humidity_threshold') || 'Add Humidity Threshold';
         var _ensureArray;
-        const thresholds = (_ensureArray = (0, $e98412ad79b70a32$export$d0c8ecbd4ed8940c)(this.thresholds)) !== null && _ensureArray !== void 0 ? _ensureArray : [];
+        const thresholds = (_ensureArray = (0, $559da9a3c5c02863$exports.ensureArray)(this.thresholds)) !== null && _ensureArray !== void 0 ? _ensureArray : [];
         return (0, $ci0wX.html)($460e8ac2e6479550$var$t1 || ($460e8ac2e6479550$var$t1 = $460e8ac2e6479550$var$_`
       <label>
         ${0}
@@ -7681,11 +8539,11 @@ class $460e8ac2e6479550$export$b79a6ddbd7dc2198 extends (0, $2r9I1.LitElement) {
             }, this._getThresholdTitle(item), this.hass.localize('ui.components.entity.entity-picker.clear'), index, (e)=>{
                 e.stopPropagation();
                 this._removeThresholdItem(index);
-            }, this.hass, item, this.hass ? this._getThresholdSchema(this.hass, this.thresholdType, this.availableEntities || []) : [], this._computeLabelCallback, (ev)=>this._thresholdValueChanged(index, ev));
+            }, this.hass, item, this.hass ? this._getThresholdSchema(this.hass, this.thresholdType, this.availableEntities || []) : [], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, this.hass), (ev)=>this._thresholdValueChanged(index, ev));
         }), this._addThreshold, addButtonLabel);
     }
     constructor(...args){
-        super(...args), this.thresholdType = 'temperature', this._expandedThresholds = new Set(), this._getThresholdSchema = (0, $l3TbZ.default)((hass, thresholdType, availableEntities)=>{
+        super(...args), this.thresholdType = 'temperature', this._expandedThresholds = new Set(), this._getThresholdSchema = (0, $f554b0d97be25fc9$export$2e2bcd8739ae039)((hass, thresholdType, availableEntities)=>{
             const isTemperature = thresholdType === 'temperature';
             const entityFilter = isTemperature ? {
                 device_class: 'temperature'
@@ -7764,10 +8622,7 @@ class $460e8ac2e6479550$export$b79a6ddbd7dc2198 extends (0, $2r9I1.LitElement) {
                     }
                 }
             ];
-        }), this._computeLabelCallback = (schema)=>{
-            if (!schema.label) return '';
-            return `${(0, $cfP8R.localize)(this.hass, schema.label)} ${schema.required ? `(${this.hass.localize('ui.panel.lovelace.editor.card.config.required')})` : `(${this.hass.localize('ui.panel.lovelace.editor.card.config.optional')})`}`;
-        };
+        });
     }
 }
 $460e8ac2e6479550$export$b79a6ddbd7dc2198.styles = (0, $2SS2a.css)($460e8ac2e6479550$var$t2 || ($460e8ac2e6479550$var$t2 = $460e8ac2e6479550$var$_`
@@ -7818,42 +8673,39 @@ $460e8ac2e6479550$export$b79a6ddbd7dc2198.styles = (0, $2SS2a.css)($460e8ac2e647
       cursor: pointer;
     }
   `));
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $460e8ac2e6479550$export$b79a6ddbd7dc2198.prototype, "hass", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $460e8ac2e6479550$export$b79a6ddbd7dc2198.prototype, "thresholds", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)()
 ], $460e8ac2e6479550$export$b79a6ddbd7dc2198.prototype, "label", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)()
 ], $460e8ac2e6479550$export$b79a6ddbd7dc2198.prototype, "thresholdType", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         attribute: false
     })
 ], $460e8ac2e6479550$export$b79a6ddbd7dc2198.prototype, "availableEntities", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $460e8ac2e6479550$export$b79a6ddbd7dc2198.prototype, "_expandedThresholds", void 0);
 
 
 
-var $evAes = parcelRequire("evAes");
+var $2QgUB = parcelRequire("2QgUB");
 
-
-var $1LdRn = parcelRequire("1LdRn");
 
 var $kJycS = parcelRequire("kJycS");
 
 
-var $7AhDs = parcelRequire("7AhDs");
 const $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20 = (hass, config)=>{
     // Define base entities for the area
     // Support both naming conventions: light.{area}_light / light.{area} and switch.{area}_fan / fan.{area}
@@ -7865,9 +8717,9 @@ const $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20 = (hass, config)=>{
     ];
     const configEntities = config.entities || [];
     // Combine base and config entities unless fan is removed
-    const entities = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'exclude_default_entities') ? configEntities : baseEntities.concat(configEntities);
-    const stickyEntitiesEnabled = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'sticky_entities');
-    const hideHiddenEntities = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_hidden_entities');
+    const entities = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'exclude_default_entities') ? configEntities : baseEntities.concat(configEntities);
+    const stickyEntitiesEnabled = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'sticky_entities');
+    const hideHiddenEntities = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'hide_hidden_entities');
     // Process and transform entities
     const states = entities.map((entity)=>{
         var _hass_entities_entity_entity_id, _entity_slider;
@@ -7881,7 +8733,7 @@ const $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20 = (hass, config)=>{
         // — they're represented by the bottom bar and shouldn't also occupy
         // an icon slot.
         if ((_entity_slider = entity.slider) === null || _entity_slider === void 0 ? void 0 : _entity_slider.hide_icon) return undefined;
-        const state = (0, $7AhDs.getState)(hass.states, entity.entity_id);
+        const state = (0, $6d9b59681496f671$export$50fdfeece43146fd)(hass.states, entity.entity_id);
         const isBaseEntity = baseEntities.includes(entity.entity_id);
         // If state is not found:
         // - For base entities: always return undefined (don't apply sticky entities)
@@ -7915,8 +8767,13 @@ const $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20 = (hass, config)=>{
 
 
 
+var $g28NR = parcelRequire("g28NR");
+
+var $htQni = parcelRequire("htQni");
+
 
 var $dTmXl = parcelRequire("dTmXl");
+
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
@@ -7927,23 +8784,54 @@ var $2SS2a = parcelRequire("2SS2a");
 let $97576b6c0b409321$var$_ = (t)=>t, $97576b6c0b409321$var$t;
 const $97576b6c0b409321$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($97576b6c0b409321$var$t || ($97576b6c0b409321$var$t = $97576b6c0b409321$var$_`
   :host {
+    /* Lanes needed for the current entity count, capped by the user max.
+       --entity-count is set inline by the component; doing the division in
+       CSS keeps --user-entities-wrap overridable from themes/card-mod. */
+    --entity-columns: clamp(
+      1,
+      round(up, calc(var(--entity-count, 1) / var(--user-entities-wrap, 4))),
+      var(--user-entities-max-columns, 99)
+    );
     height: 100%;
     display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat(var(--user-entities-wrap, 4), 1fr);
+    grid-auto-columns: 1fr;
+    justify-self: end;
     justify-items: center;
     align-items: center;
     gap: 8px;
     box-sizing: border-box;
-    aspect-ratio: 0.23 / 1;
+    /* Strip width scales with column count so wrapped icons keep full size;
+       a single column matches the pre-wrap 0.23 strip ratio. */
+    aspect-ratio: calc(0.23 * var(--entity-columns)) / 1;
+    /* Fixed lane width override. Height is definite, so when this resolves
+       it wins over the ratio-derived width; while --user-entity-column-width
+       is unset the declaration is invalid and width falls back to auto. */
+    width: calc(
+      var(--user-entity-column-width) * var(--entity-columns) + 8px *
+        (var(--entity-columns) - 1)
+    );
     padding: 5px 5px 5px 0;
+    /* Overlap the card interior instead of growing the outer grid track,
+       so the room icon keeps its size when the strip widens. Override with
+       min-width: auto under styles.entities to shrink the room icon instead. */
+    min-width: 0;
+    /* Columns fill right-to-left: the first column stays on the card's
+       right edge and wrapped columns appear to its LEFT. Override with
+       direction: ltr under styles.entities to wrap rightward instead. */
+    direction: rtl;
+  }
+
+  /* Keep icon labels/state text left-to-right despite the rtl grid. */
+  :host > * {
+    direction: ltr;
   }
 `));
 
 
 let $b96a40707b142c90$var$_ = (t)=>t, $b96a40707b142c90$var$t;
-
-class $b96a40707b142c90$export$b15c5e7ddecda86e extends (0, $1LdRn.HassUpdateMixin)((0, $2r9I1.LitElement)) {
+class $b96a40707b142c90$export$b15c5e7ddecda86e extends (0, $htQni.HassUpdateMixin)((0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement))) {
     /**
    * Returns the component's styles
    */ static get styles() {
@@ -7952,12 +8840,15 @@ class $b96a40707b142c90$export$b15c5e7ddecda86e extends (0, $1LdRn.HassUpdateMix
     /**
    * Updates the card's state when Home Assistant state changes
    * @param {HomeAssistant} hass - The Home Assistant instance
-   */ // @ts-ignore
-    set hass(hass) {
+   */ set hass(hass) {
         (0, $dTmXl.d)(this.config, 'entity-collection', 'set hass');
         const states = (0, $ec7fd3dcfcac1ba4$export$a2d3d3a06f345f20)(hass, this.config);
         // Update entities only if they've changed
-        if (!$ee3d06fe83a6a770$exports(states, this._entities)) this._entities = states;
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(states, this._entities)) {
+            this._entities = states;
+            // Drives --entity-columns (strip width) in styles.ts
+            this.style.setProperty('--entity-count', `${states.length}`);
+        }
         this._hass = hass;
     }
     render() {
@@ -7970,7 +8861,7 @@ class $b96a40707b142c90$export$b15c5e7ddecda86e extends (0, $1LdRn.HassUpdateMix
     `), (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)((_this_config_styles = this.config.styles) === null || _this_config_styles === void 0 ? void 0 : _this_config_styles.entities), stateIcons);
     }
 }
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $b96a40707b142c90$export$b15c5e7ddecda86e.prototype, "_entities", void 0);
 
@@ -7980,18 +8871,21 @@ var $kJycS = parcelRequire("kJycS");
 
 var $1izJ2 = parcelRequire("1izJ2");
 
-var $evAes = parcelRequire("evAes");
-
-
-var $1LdRn = parcelRequire("1LdRn");
+var $2QgUB = parcelRequire("2QgUB");
 
 
 
-var $cmVfz = parcelRequire("cmVfz");
+
+var $gp9lG = parcelRequire("gp9lG");
+
+var $g28NR = parcelRequire("g28NR");
+
+var $htQni = parcelRequire("htQni");
 
 
 
 var $dTmXl = parcelRequire("dTmXl");
+
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
@@ -8401,8 +9295,7 @@ const $b2acc8a8a7db7b5b$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($b2acc8a8a7db7
 
 
 let $21a9ea85b7e2278b$var$_ = (t)=>t, $21a9ea85b7e2278b$var$t;
-
-class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $1LdRn.HassUpdateMixin)((0, $2r9I1.LitElement)) {
+class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $htQni.HassUpdateMixin)((0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement))) {
     /**
    * Returns the component's styles
    */ static get styles() {
@@ -8411,8 +9304,7 @@ class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $1LdRn.HassUpdateMix
     /**
    * Updates the card's state when Home Assistant state changes
    * @param {HomeAssistant} hass - The Home Assistant instance
-   */ // @ts-ignore
-    set hass(hass) {
+   */ set hass(hass) {
         var _this_config, _states_;
         (0, $dTmXl.d)(this.config, 'entity-slider', 'set hass');
         // Update slider style from config
@@ -8432,7 +9324,7 @@ class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $1LdRn.HassUpdateMix
             })
         });
         // Update entity only if it's changed
-        if (!$ee3d06fe83a6a770$exports(firstEntity, this._entity)) {
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(firstEntity, this._entity)) {
             var _state_attributes;
             this._entity = firstEntity;
             // Update position based on brightness attribute
@@ -8446,7 +9338,7 @@ class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $1LdRn.HassUpdateMix
             } else this._yPosition = 100;
             // For bar and bar-filled styles, get the entity color and set it as a CSS variable
             if ((this.sliderStyle === 'bar' || this.sliderStyle === 'bar-filled') && state) {
-                const isActive = (0, $cmVfz.stateActive)(state);
+                const isActive = (0, $gp9lG.stateActive)(state);
                 const entityColor = (0, $273edb1bb8e481ef$export$de96a622725f4284)(hass, firstEntity, undefined, isActive);
                 // Set color as CSS variable, defaulting to a fallback if no color found
                 if (entityColor) this.style.setProperty('--slider-bar-color', entityColor);
@@ -8546,20 +9438,20 @@ class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $1LdRn.HassUpdateMix
         };
     }
 }
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: String,
         reflect: true,
         attribute: 'slider'
     })
 ], $21a9ea85b7e2278b$export$ec4599f0917a20c8.prototype, "sliderStyle", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $21a9ea85b7e2278b$export$ec4599f0917a20c8.prototype, "_entity", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $21a9ea85b7e2278b$export$ec4599f0917a20c8.prototype, "_isDragging", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $21a9ea85b7e2278b$export$ec4599f0917a20c8.prototype, "_yPosition", void 0);
 
@@ -8567,13 +9459,15 @@ class $21a9ea85b7e2278b$export$ec4599f0917a20c8 extends (0, $1LdRn.HassUpdateMix
 
 var $kJycS = parcelRequire("kJycS");
 
-var $evAes = parcelRequire("evAes");
-
-var $1LdRn = parcelRequire("1LdRn");
+var $2QgUB = parcelRequire("2QgUB");
 
 
 
-var $el4XD = parcelRequire("el4XD");
+
+
+var $g28NR = parcelRequire("g28NR");
+
+var $htQni = parcelRequire("htQni");
 
 var $kJycS = parcelRequire("kJycS");
 
@@ -8600,12 +9494,71 @@ const $042bfa5e9e75bf5a$export$5aaff3aa40310f76 = (entity, hass, config)=>{
 
 
 
+var $12mnG = parcelRequire("12mnG");
+
+
 var $8jUVR = parcelRequire("8jUVR");
 
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+let $48eb237c515e3f80$var$_ = (t)=>t, $48eb237c515e3f80$var$t, $48eb237c515e3f80$var$t1, $48eb237c515e3f80$var$t2, $48eb237c515e3f80$var$t3, $48eb237c515e3f80$var$t4;
+function $48eb237c515e3f80$export$69e61e2a00cc1668(hass, config, entity, isMainRoomEntity) {
+    var _config_background_options, _config_background;
+    const showEntityLabels = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'show_entity_labels');
+    var _config_background_options_includes;
+    const hideForMainRoomIcon = isMainRoomEntity && ((_config_background_options_includes = config === null || config === void 0 ? void 0 : (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('hide_icon_only')) !== null && _config_background_options_includes !== void 0 ? _config_background_options_includes : false);
+    if (!showEntityLabels || hideForMainRoomIcon) return 0, $ci0wX.nothing;
+    return (0, $ci0wX.html)($48eb237c515e3f80$var$t || ($48eb237c515e3f80$var$t = $48eb237c515e3f80$var$_`<room-entity-label
+    .hass=${0}
+    .config=${0}
+    .entity=${0}
+  ></room-entity-label>`), hass, config, entity);
+}
+function $48eb237c515e3f80$export$7550a2852884ab9f(hass, config, props) {
+    if ((0, $1e40c00d469c9d00$exports.hasFeature)(config, 'hide_sensor_labels')) return 0, $ci0wX.nothing;
+    return (0, $ci0wX.html)($48eb237c515e3f80$var$t1 || ($48eb237c515e3f80$var$t1 = $48eb237c515e3f80$var$_`<room-sensor-label
+    .hass=${0}
+    .config=${0}
+    .sensor=${0}
+    .entity=${0}
+  ></room-sensor-label>`), hass, config, props.sensor, props.entity);
+}
+function $48eb237c515e3f80$export$23d92e23bb73dc02(hass, entity, conn, fallback) {
+    // First priority: label from state/threshold result
+    // or a configured label (second priority)
+    const thresholdResult = (0, $3eeea5b8a350985f$export$76969a794fd1f893)(entity);
+    const label = (0, $3eeea5b8a350985f$export$9d7fd66a8622e6b5)(entity, thresholdResult);
+    // check if the label is a template string
+    if (label && (0, $e1a1e2291c993cc1$exports.isTemplateString)(label)) {
+        conn.sync(hass, entity.config.entity_id, label);
+        return (0, $ci0wX.html)($48eb237c515e3f80$var$t2 || ($48eb237c515e3f80$var$t2 = $48eb237c515e3f80$var$_`${0}`), conn.displayedText);
+    }
+    conn.disconnect();
+    // if the label is not a template string, return it
+    if (label) return (0, $ci0wX.html)($48eb237c515e3f80$var$t3 || ($48eb237c515e3f80$var$t3 = $48eb237c515e3f80$var$_`${0}`), label);
+    const state = entity.state;
+    if (!state) return 0, $ci0wX.nothing;
+    // Third priority: attribute value if attribute is configured
+    if (entity.config.attribute || fallback === 'state-display') return (0, $8jUVR.stateDisplay)(hass, state, entity.config.attribute);
+    // Fallback: entity name
+    return (0, $ci0wX.html)($48eb237c515e3f80$var$t4 || ($48eb237c515e3f80$var$t4 = $48eb237c515e3f80$var$_`${0}`), (0, $12mnG.computeEntityName)(state, hass));
+}
+
+
+
+
+var $8jUVR = parcelRequire("8jUVR");
+
+var $b6f5c4f1cc0fefd9$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/state-display/state-display.ts
- */ // Attributes that should not be shown if their value is 0 */
-const $24e917c761eaa8d2$export$2361c942cb1e9851 = {
+ */ Object.defineProperty($b6f5c4f1cc0fefd9$exports, "__esModule", {
+    value: true
+});
+$b6f5c4f1cc0fefd9$exports.DEFAULT_STATE_CONTENT_DOMAINS = $b6f5c4f1cc0fefd9$exports.HIDDEN_ZERO_ATTRIBUTES_DOMAINS = void 0;
+// Attributes that should not be shown if their value is 0 */
+$b6f5c4f1cc0fefd9$exports.HIDDEN_ZERO_ATTRIBUTES_DOMAINS = {
     valve: [
         'current_position'
     ],
@@ -8619,7 +9572,7 @@ const $24e917c761eaa8d2$export$2361c942cb1e9851 = {
         'brightness'
     ]
 };
-const $24e917c761eaa8d2$export$4d29058fe866cff5 = {
+$b6f5c4f1cc0fefd9$exports.DEFAULT_STATE_CONTENT_DOMAINS = {
     climate: [
         'state',
         'current_temperature'
@@ -8646,13 +9599,13 @@ const $24e917c761eaa8d2$export$4d29058fe866cff5 = {
 function $380d0e56e7a53b83$export$ca29d1e2c5c9d7bc(state) {
     const { domain: domain, state: entityState, attributes: attributes } = state;
     // Only apply to domains that have zero-attribute hiding logic
-    const hiddenZeroAttributes = (0, $24e917c761eaa8d2$export$2361c942cb1e9851)[domain];
+    const hiddenZeroAttributes = (0, $b6f5c4f1cc0fefd9$exports.HIDDEN_ZERO_ATTRIBUTES_DOMAINS)[domain];
     if (!hiddenZeroAttributes) return false;
     // Get the default content for this domain
-    const defaultContent = (0, $24e917c761eaa8d2$export$4d29058fe866cff5)[domain];
+    const defaultContent = (0, $b6f5c4f1cc0fefd9$exports.DEFAULT_STATE_CONTENT_DOMAINS)[domain];
     if (!defaultContent) return false;
     // Handle array content (e.g., cover: ["state", "current_position"])
-    const contentArray = (0, $e98412ad79b70a32$export$d0c8ecbd4ed8940c)(defaultContent);
+    const contentArray = (0, $559da9a3c5c02863$exports.ensureArray)(defaultContent);
     // Find all attributes in the content array that are in the hidden zero attributes list
     // These are the attributes that would be filtered out if they're 0/null
     const zeroAttributesInContent = contentArray.filter((attr)=>hiddenZeroAttributes.includes(attr));
@@ -8697,25 +9650,26 @@ function $64ed32997eb866dd$export$25d11e1ce3afd7f7(hass, entity, hideIconContent
 
 
 
-var $8jUVR = parcelRequire("8jUVR");
+
 
 
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 
-const $591072dd54c0e5bc$export$5edf3a158822b217 = (hass, entity, isActive, image)=>{
+const $591072dd54c0e5bc$export$5edf3a158822b217 = (hass, entity, isActive)=>{
     const { state: state } = entity;
-    const filter = (0, $d41ad01236652ab5$export$65bcdaf7f2807be8)(state);
+    const filter = (0, $138ab67ea0f87e5c$exports.stateColorBrightness)(state);
     const styleData = (0, $07e9954134d2b2af$export$de2836153ec9a0b1)(hass, 'icon', entity, isActive);
     if (!styleData) return 0, $ci0wX.nothing;
-    const opacity = image && styleData.active ? '1' : `var(--opacity-icon-fill-${styleData.activeClass})`;
+    // An entity picture paints the icon fill, so show it at full opacity
+    // while the entity is active instead of the dimmed fill.
+    const opacity = (0, $be1aa69a1c2a424c$export$b372a12fd687417)(entity) && styleData.active ? '1' : `var(--opacity-icon-fill-${styleData.activeClass})`;
     return (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)({
         '--icon-color': styleData.cssColor,
         '--icon-opacity': `var(--opacity-icon-${styleData.activeClass})`,
         '--background-color-icon': styleData.cssColor,
         '--background-opacity-icon': opacity,
         '--state-color-icon-theme': styleData.themeOverride,
-        '--background-image': image ? `url(${image})` : undefined,
         '--icon-filter': filter
     });
 };
@@ -8733,18 +9687,18 @@ const $ac519daeba261117$export$d5d9aad110ad14a = (entity, config, options = {})=
     // Priority 2: Configured icon (fallback/default)
     if (entity.config.icon) return entity.config.icon;
     // Priority 3: Climate icon (if applicable)
-    const useClimateIcons = !(0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'skip_climate_styles') && state.domain === 'climate';
+    const useClimateIcons = !(0, $1e40c00d469c9d00$exports.hasFeature)(config, 'skip_climate_styles') && state.domain === 'climate';
     if (useClimateIcons) {
         var _state_attributes;
         // Prefer hvac_action over state for more accurate icon representation
         const hvacAction = (_state_attributes = state.attributes) === null || _state_attributes === void 0 ? void 0 : _state_attributes.hvac_action;
-        if (hvacAction && (0, $67bce92c74bef62a$export$583177be824904ff)[hvacAction]) {
-            const mode = (0, $67bce92c74bef62a$export$583177be824904ff)[hvacAction];
-            return (0, $67bce92c74bef62a$export$9188014139306bef)[mode];
+        if (hvacAction && (0, $b249f8e80c3f58bd$exports.CLIMATE_HVAC_ACTION_TO_MODE)[hvacAction]) {
+            const mode = (0, $b249f8e80c3f58bd$exports.CLIMATE_HVAC_ACTION_TO_MODE)[hvacAction];
+            return (0, $b249f8e80c3f58bd$exports.CLIMATE_HVAC_MODE_ICONS)[mode];
         }
         // Fall back to state.state (which contains the hvac_mode)
         const hvacMode = state.state;
-        if (hvacMode) return (0, $67bce92c74bef62a$export$944503d279b0b85a)(hvacMode);
+        if (hvacMode) return (0, $b249f8e80c3f58bd$exports.climateHvacModeIcon)(hvacMode);
     }
     // Priority 4: Let ha-state-icon use default (undefined)
     return undefined;
@@ -8755,29 +9709,76 @@ const $ac519daeba261117$export$d5d9aad110ad14a = (entity, config, options = {})=
 
 
 var $dTmXl = parcelRequire("dTmXl");
+
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 var $2r9I1 = parcelRequire("2r9I1");
 parcelRequire("jcMWt");
 var $aaQtJ = parcelRequire("aaQtJ");
 var $lYE5o = parcelRequire("lYE5o");
+
+var $2QgUB = parcelRequire("2QgUB");
+
+
+var $g28NR = parcelRequire("g28NR");
+
+
+var $dTmXl = parcelRequire("dTmXl");
+
+parcelRequire("fPVm8");
+var $2SS2a = parcelRequire("2SS2a");
+var $2r9I1 = parcelRequire("2r9I1");
+parcelRequire("jcMWt");
+var $yv2EM = parcelRequire("yv2EM");
+var $aaQtJ = parcelRequire("aaQtJ");
+let $1bb40fdc00566efe$var$_ = (t)=>t, $1bb40fdc00566efe$var$t;
+class $1bb40fdc00566efe$export$ac61db8e407dba59 extends (0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement)) {
+    /**
+   * Returns the component's styles
+   */ static get styles() {
+        return (0, $2SS2a.css)($1bb40fdc00566efe$var$t || ($1bb40fdc00566efe$var$t = $1bb40fdc00566efe$var$_`
+      :host {
+        position: absolute;
+        font-size: 0.7em;
+        text-align: center;
+        overflow: hidden;
+        margin-top: 75%;
+        display: var(--user-entity-label-display, block);
+      }
+    `));
+    }
+    disconnectedCallback() {
+        this._labelTemplateConn.disconnect();
+        super.disconnectedCallback();
+    }
+    /**
+   * renders the lit element card
+   * @returns {TemplateResult} The rendered HTML template
+   */ render() {
+        (0, $dTmXl.d)(this.config, 'room-entity-label', 'render');
+        return (0, $48eb237c515e3f80$export$23d92e23bb73dc02)(this.hass, this.entity, this._labelTemplateConn, 'entity-name');
+    }
+    constructor(...args){
+        super(...args), this._labelTemplateConn = new (0, $a8bfdc087294b7f3$export$d201aad20a44ca08)(()=>this.requestUpdate());
+    }
+}
+(0, $2QgUB.__decorate)([
+    (0, $aaQtJ.property)({
+        type: Object,
+        hasChanged: (a, b)=>!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(a, b)
+    })
+], $1bb40fdc00566efe$export$ac61db8e407dba59.prototype, "entity", void 0);
+$1bb40fdc00566efe$export$ac61db8e407dba59 = (0, $2QgUB.__decorate)([
+    (0, $yv2EM.customElement)('room-entity-label')
+], $1bb40fdc00566efe$export$ac61db8e407dba59);
+
+
 parcelRequire("fPVm8");
 var $2SS2a = parcelRequire("2SS2a");
 let $3221e0e6382742ce$var$_ = (t)=>t, $3221e0e6382742ce$var$t;
 const $3221e0e6382742ce$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($3221e0e6382742ce$var$t || ($3221e0e6382742ce$var$t = $3221e0e6382742ce$var$_`
   :host {
     width: var(--user-entity-icon-size, 100%);
-  }
-
-  :host([image]) {
-    --user-background-image-overlay: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.3),
-      rgba(0, 0, 0, 0.1),
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0)
-    );
   }
 
   /* Icon container styling */
@@ -8790,32 +9791,11 @@ const $3221e0e6382742ce$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($3221e0e638274
     aspect-ratio: 1 / 1;
   }
 
-  .icon::before {
-    content: '';
-    border-radius: 50%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--background-color-icon);
-    opacity: var(--background-opacity-icon);
-    filter: var(--icon-filter, none);
-  }
-
-  /* When this icon is the main room icon AND owns the background,
-     route the card-level --user-opacity here instead of to the card. */
-  :host([room][icon-bg]) .icon::before {
-    opacity: var(--user-opacity, var(--background-opacity-icon));
-  }
-
-  /* Icon background image styling */
-  :host([image]) .icon::before {
-    background-image:
-      var(--user-background-image-overlay), var(--background-image);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
+  /* When the background layer owns the card background (it reflects
+     [icon-bg] only on the main room icon), route the user-configured
+     --user-opacity to the icon fill instead of the card. */
+  .icon room-background-image[icon-bg] {
+    --icon-color-opacity: var(--user-opacity, var(--background-opacity-icon));
   }
 
   /* State icon styling */
@@ -8825,16 +9805,6 @@ const $3221e0e6382742ce$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($3221e0e638274
     opacity: var(--icon-opacity);
     --mdc-icon-size: 100%;
     filter: var(--icon-filter, none);
-  }
-
-  /* Entity label styling */
-  .entity-label {
-    position: absolute;
-    font-size: 0.7em;
-    text-align: center;
-    overflow: hidden;
-    margin-top: 75%;
-    display: var(--user-entity-label-display, block);
   }
 
   /* Entity state styling */
@@ -8858,51 +9828,36 @@ const $3221e0e6382742ce$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($3221e0e638274
     height: 100%;
   }
 
-  /* Smoke styling */
-  :host([room][alarm='smoke']) .icon::before {
-    animation: var(--smoke-icon-animation);
-    background-color: var(--smoke-icon-color, var(--background-color-icon));
-    transition: all 0.3s ease;
+  /* Alarm styling: map the active alarm onto the generic --icon-alarm-*
+     variables consumed by room-background-image's layers. */
+  :host([room][alarm]) .icon {
+    --icon-alarm-transition: all 0.3s ease;
   }
 
-  /* Gas styling */
-  :host([room][alarm='gas']) .icon::before {
-    animation: var(--gas-icon-animation);
-    background-color: var(--gas-icon-color, var(--background-color-icon));
-    transition: all 0.3s ease;
+  :host([room][alarm='smoke']) .icon {
+    --icon-alarm-animation: var(--smoke-icon-animation);
+    --icon-alarm-color: var(--smoke-icon-color);
   }
 
-  /* Water styling */
-  :host([room][alarm='water']) .icon::before {
-    animation: var(--water-icon-animation);
-    background-color: var(--water-icon-color, var(--background-color-icon));
-    transition: all 0.3s ease;
+  :host([room][alarm='gas']) .icon {
+    --icon-alarm-animation: var(--gas-icon-animation);
+    --icon-alarm-color: var(--gas-icon-color);
   }
 
-  /* Occupancy styling */
-  :host([room][alarm='occupied']) .icon::before {
-    animation: var(--occupancy-icon-animation);
-    background-color: var(--occupancy-icon-color, var(--background-color-icon));
-    transition: all 0.3s ease;
+  :host([room][alarm='water']) .icon {
+    --icon-alarm-animation: var(--water-icon-animation);
+    --icon-alarm-color: var(--water-icon-color);
   }
 
-  /* Animation keyframes for occupancy indicator */
-  @keyframes icon-breathe {
-    0% {
-      transform: scale(1);
-      opacity: 0.1;
-    }
-    100% {
-      transform: scale(1.1);
-      opacity: 0.4;
-    }
+  :host([room][alarm='occupied']) .icon {
+    --icon-alarm-animation: var(--occupancy-icon-animation);
+    --icon-alarm-color: var(--occupancy-icon-color);
   }
 `));
 
 
-let $21884f49b48db948$var$_ = (t)=>t, $21884f49b48db948$var$t, $21884f49b48db948$var$t1, $21884f49b48db948$var$t2, $21884f49b48db948$var$t3;
-
-class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMixin)((0, $2r9I1.LitElement)) {
+let $21884f49b48db948$var$_ = (t)=>t, $21884f49b48db948$var$t, $21884f49b48db948$var$t1, $21884f49b48db948$var$t2;
+class $21884f49b48db948$export$8063c4212d705050 extends (0, $htQni.HassUpdateMixin)((0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement))) {
     /**
    * Returns the component's styles
    */ static get styles() {
@@ -8912,79 +9867,46 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
    * Sets up the card configuration
    * @param {Config} config - The card configuration
    */ set config(config) {
-        if (!$ee3d06fe83a6a770$exports(config, this._config)) {
-            var _config_background_options, _config_background, _config_features;
-            var _config_background_options_includes;
-            this.iconBackground = (_config_background_options_includes = (_config_background = config.background) === null || _config_background === void 0 ? void 0 : (_config_background_options = _config_background.options) === null || _config_background_options === void 0 ? void 0 : _config_background_options.includes('icon_background')) !== null && _config_background_options_includes !== void 0 ? _config_background_options_includes : false;
-            var _config_features_includes;
-            this._showLabels = (_config_features_includes = (_config_features = config.features) === null || _config_features === void 0 ? void 0 : _config_features.includes('show_entity_labels')) !== null && _config_features_includes !== void 0 ? _config_features_includes : false;
+        if (!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(config, this._config)) {
             // Calculate hiding logic for main room entity
-            if (this.isMainRoomEntity) {
-                var _config_background_options1, _config_background1;
-                this._hideRoomIcon = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(config, 'hide_room_icon');
-                this._hideIconContent = ((_config_background1 = config.background) === null || _config_background1 === void 0 ? void 0 : (_config_background_options1 = _config_background1.options) === null || _config_background_options1 === void 0 ? void 0 : _config_background_options1.includes('hide_icon_only')) || false;
-            }
+            if (this.isMainRoomEntity) this._hideRoomIcon = (0, $1e40c00d469c9d00$exports.hasFeature)(config, 'hide_room_icon');
             // todo super.config?
             this._config = config;
         }
     }
     /**
-   * Updates the card's state when Home Assistant state changes
-   * @param {HomeAssistant} hass - The Home Assistant instance
-   */ // @ts-ignore
-    set hass(hass) {
-        var _this_entity_state_attributes, _this_entity_state, _this_entity;
-        (0, $dTmXl.d)(this._config, 'room-state-icon', 'set hass');
-        this._image = (0, $b02f37b9ae80224f$export$47f3d980c4d9b226)(this.entity, 'use_entity_icon') ? undefined : (_this_entity = this.entity) === null || _this_entity === void 0 ? void 0 : (_this_entity_state = _this_entity.state) === null || _this_entity_state === void 0 ? void 0 : (_this_entity_state_attributes = _this_entity_state.attributes) === null || _this_entity_state_attributes === void 0 ? void 0 : _this_entity_state_attributes.entity_picture;
-        if (this._image) {
-            this.image = true;
-            this._hideIconContent = true;
-        } else {
-            var _this__config_background_options, _this__config_background, _this__config, _this__config_background_options1, _this__config_background1, _this__config1;
-            // Reset hideIconContent when image goes away
-            // If it's a main room entity, use config value, otherwise false
-            this._hideIconContent = this.isMainRoomEntity ? ((_this__config = this._config) === null || _this__config === void 0 ? void 0 : (_this__config_background = _this__config.background) === null || _this__config_background === void 0 ? void 0 : (_this__config_background_options = _this__config_background.options) === null || _this__config_background_options === void 0 ? void 0 : _this__config_background_options.includes('hide_icon_only')) || false : false;
-            var _this__config_background_options_includes;
-            // regression fix for #383 - in future handle the image logic internally
-            // but this resets the image to false when the entity_picture is removed for #333 still
-            // icon_background should only affect the main room entity - fixes #404
-            this.image = this.isMainRoomEntity && ((_this__config_background_options_includes = (_this__config1 = this._config) === null || _this__config1 === void 0 ? void 0 : (_this__config_background1 = _this__config1.background) === null || _this__config_background1 === void 0 ? void 0 : (_this__config_background_options1 = _this__config_background1.options) === null || _this__config_background_options1 === void 0 ? void 0 : _this__config_background_options1.includes('icon_background')) !== null && _this__config_background_options_includes !== void 0 ? _this__config_background_options_includes : false);
-        }
-        this._hass = hass;
+   * Whether the icon glyph/state text is replaced by an image:
+   * the entity's own picture, or `hide_icon_only` on the main room entity.
+   * The picture/gating rules themselves live in `room-background-image`
+   * (fixes #333, #383, #404).
+   */ get _hideIconContent() {
+        return (0, $be1aa69a1c2a424c$export$3474b6a6793aedb2)(this._config, this.entity, this.isMainRoomEntity);
     }
     render() {
         var _this__config_styles, _this__config, _this__config_styles1, _this__config1;
         (0, $dTmXl.d)(this._config, 'room-state-icon', 'render');
         const { state: state } = this.entity;
         if (!state) return 0, $ci0wX.nothing;
-        // If the icon should be completely hidden, return nothing
-        if (this._hideRoomIcon) return (0, $ci0wX.html)($21884f49b48db948$var$t || ($21884f49b48db948$var$t = $21884f49b48db948$var$_`<div
+        // With the icon hidden the box is just card body, so card-level
+        // `config.actions` win over the entity's own actions
+        if (this._hideRoomIcon) {
+            const boxEntity = (0, $69eb2992476f80e8$export$f4c1e7ce0a330ff4)(this.entity, this._config);
+            return (0, $ci0wX.html)($21884f49b48db948$var$t || ($21884f49b48db948$var$t = $21884f49b48db948$var$_`<div
         class="box"
         @action=${0}
         .actionHandler=${0}
-      ></div>`), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, this.entity), (0, $b96673d7637fba33$export$8a44987212de21b)(this.entity));
-        const thresholdResult = (0, $3eeea5b8a350985f$export$76969a794fd1f893)(this.entity);
-        const iconStyle = (0, $591072dd54c0e5bc$export$5edf3a158822b217)(this._hass, this.entity, this.isActive, this._image);
-        const iconStyles = (0, $kJycS._)({}, (_this__config = this._config) === null || _this__config === void 0 ? void 0 : (_this__config_styles = _this__config.styles) === null || _this__config_styles === void 0 ? void 0 : _this__config_styles.entity_icon, this.isMainRoomEntity ? (_this__config1 = this._config) === null || _this__config1 === void 0 ? void 0 : (_this__config_styles1 = _this__config1.styles) === null || _this__config_styles1 === void 0 ? void 0 : _this__config_styles1.room_entity_icon : undefined, this.entity.config.styles, thresholdResult === null || thresholdResult === void 0 ? void 0 : thresholdResult.styles);
-        // Get label (priority: state/threshold label > config label > attribute value > entity name)
-        let label;
-        if (this._showLabels && !this._hideIconContent) {
-            // First priority: label from state/threshold result
-            const thresholdLabel = (0, $3eeea5b8a350985f$export$9d7fd66a8622e6b5)(this.entity, thresholdResult);
-            if (thresholdLabel) label = thresholdLabel;
-            else if (this.entity.config.label) // Second priority: configured label
-            label = this.entity.config.label;
-            else if (this.entity.config.attribute) // Third priority: attribute value if attribute is configured
-            label = (0, $8jUVR.stateDisplay)(this._hass, state, this.entity.config.attribute);
-            else // Fallback: entity name
-            label = (0, $el4XD.computeEntityName)(state, this._hass);
+      ></div>`), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, boxEntity), (0, $b96673d7637fba33$export$8a44987212de21b)(boxEntity));
         }
+        const thresholdResult = (0, $3eeea5b8a350985f$export$76969a794fd1f893)(this.entity);
+        const iconStyle = (0, $591072dd54c0e5bc$export$5edf3a158822b217)(this.hass, this.entity, this.isActive);
+        const iconStyles = (0, $kJycS._)({}, (_this__config = this._config) === null || _this__config === void 0 ? void 0 : (_this__config_styles = _this__config.styles) === null || _this__config_styles === void 0 ? void 0 : _this__config_styles.entity_icon, this.isMainRoomEntity ? (_this__config1 = this._config) === null || _this__config1 === void 0 ? void 0 : (_this__config_styles1 = _this__config1.styles) === null || _this__config_styles1 === void 0 ? void 0 : _this__config_styles1.room_entity_icon : undefined, this.entity.config.styles, thresholdResult === null || thresholdResult === void 0 ? void 0 : thresholdResult.styles);
         const icon = (0, $ac519daeba261117$export$d5d9aad110ad14a)(this.entity, this._config, {
             thresholdResult: thresholdResult
         });
         // Render badges (max 4)
-        const badgeElements = (0, $042bfa5e9e75bf5a$export$5aaff3aa40310f76)(this.entity, this._hass, this._config);
-        return (0, $ci0wX.html)($21884f49b48db948$var$t3 || ($21884f49b48db948$var$t3 = $21884f49b48db948$var$_`
+        const badgeElements = (0, $042bfa5e9e75bf5a$export$5aaff3aa40310f76)(this.entity, this.hass, this._config);
+        var _this_isActive;
+        return (0, $ci0wX.html)($21884f49b48db948$var$t2 || ($21884f49b48db948$var$t2 = $21884f49b48db948$var$_`
       ${0}
       <div
         class="icon"
@@ -8992,16 +9914,24 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
         @action=${0}
         .actionHandler=${0}
       >
+        <room-background-image
+          icon
+          .room=${0}
+          .roomEntity=${0}
+          .isActive=${0}
+          .hass=${0}
+          .config=${0}
+        ></room-background-image>
         ${0}
         ${0}
         ${0}
         ${0}
       </div>
-    `), (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)(iconStyles), iconStyle, (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, this.entity), (0, $b96673d7637fba33$export$8a44987212de21b)(this.entity), this._hideIconContent ? (0, $ci0wX.nothing) : (0, $ci0wX.html)($21884f49b48db948$var$t1 || ($21884f49b48db948$var$t1 = $21884f49b48db948$var$_`<ha-state-icon
+    `), (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)(iconStyles), iconStyle, (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, this.entity), (0, $b96673d7637fba33$export$8a44987212de21b)(this.entity), this.isMainRoomEntity, this.entity, (_this_isActive = this.isActive) !== null && _this_isActive !== void 0 ? _this_isActive : false, this.hass, this._config, this._hideIconContent ? (0, $ci0wX.nothing) : (0, $ci0wX.html)($21884f49b48db948$var$t1 || ($21884f49b48db948$var$t1 = $21884f49b48db948$var$_`<ha-state-icon
               .hass=${0}
               .stateObj=${0}
               .icon=${0}
-            ></ha-state-icon>`), this._hass, state, icon), badgeElements, label ? (0, $ci0wX.html)($21884f49b48db948$var$t2 || ($21884f49b48db948$var$t2 = $21884f49b48db948$var$_`<div class="entity-label">${0}</div>`), label) : (0, $ci0wX.nothing), (0, $64ed32997eb866dd$export$25d11e1ce3afd7f7)(this._hass, this.entity, this._hideIconContent));
+            ></ha-state-icon>`), this.hass, state, icon), badgeElements, (0, $48eb237c515e3f80$export$69e61e2a00cc1668)(this.hass, this._config, this.entity, this.isMainRoomEntity), (0, $64ed32997eb866dd$export$25d11e1ce3afd7f7)(this.hass, this.entity, this._hideIconContent));
     }
     constructor(...args){
         super(...args), /**
@@ -9009,52 +9939,33 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $1LdRn.HassUpdateMix
    */ this.isMainRoomEntity = false;
     }
 }
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $21884f49b48db948$export$8063c4212d705050.prototype, "_config", void 0);
-(0, $evAes.__decorate)([
-    (0, $lYE5o.state)()
-], $21884f49b48db948$export$8063c4212d705050.prototype, "_showLabels", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $21884f49b48db948$export$8063c4212d705050.prototype, "_hideRoomIcon", void 0);
-(0, $evAes.__decorate)([
-    (0, $lYE5o.state)()
-], $21884f49b48db948$export$8063c4212d705050.prototype, "_hideIconContent", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Object,
         hasChanged: (newVal, oldVal)=>{
-            return !$ee3d06fe83a6a770$exports(newVal, oldVal);
+            return !(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(newVal, oldVal);
         }
     })
 ], $21884f49b48db948$export$8063c4212d705050.prototype, "entity", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean,
         reflect: true,
         attribute: 'room'
     })
 ], $21884f49b48db948$export$8063c4212d705050.prototype, "isMainRoomEntity", void 0);
-(0, $evAes.__decorate)([
-    (0, $aaQtJ.property)({
-        type: Boolean,
-        reflect: true
-    })
-], $21884f49b48db948$export$8063c4212d705050.prototype, "image", void 0);
-(0, $evAes.__decorate)([
-    (0, $aaQtJ.property)({
-        type: Boolean,
-        reflect: true,
-        attribute: 'icon-bg'
-    })
-], $21884f49b48db948$export$8063c4212d705050.prototype, "iconBackground", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean
     })
 ], $21884f49b48db948$export$8063c4212d705050.prototype, "isActive", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: String,
         reflect: true
@@ -9067,10 +9978,7 @@ var $kJycS = parcelRequire("kJycS");
 
 var $1izJ2 = parcelRequire("1izJ2");
 
-var $evAes = parcelRequire("evAes");
-
-var $1LdRn = parcelRequire("1LdRn");
-
+var $2QgUB = parcelRequire("2QgUB");
 
 var $30f636dbed1da0d8$exports = {};
 'use strict';
@@ -9098,28 +10006,16 @@ const $bd80f520e20b7898$export$306d3b376c79075a = (0, (/*@__PURE__*/$parcel$inte
     }), ()=>true);
 
 
-/**
- * Formats a number with appropriate decimal places
- */ const $23d9b52a9a7ecac4$var$formatNumber = (value, maxDecimals = 1)=>{
-    return value.toFixed(maxDecimals).replace(/\.?0+$/, '');
-};
-/**
- * Adds appropriate spacing before unit if needed
- */ const $23d9b52a9a7ecac4$var$blankBeforeUnit = (unit)=>{
-    // Units that don't need a space (like % or °)
-    const noSpaceUnits = [
-        '%',
-        "\xb0C",
-        "\xb0F"
-    ];
-    return noSpaceUnits.some((u)=>unit.includes(u)) ? '' : ' ';
-};
-const $23d9b52a9a7ecac4$export$6b5316c1eb8ef7e7 = (averagedSensor)=>`${$23d9b52a9a7ecac4$var$formatNumber(averagedSensor.average)}${$23d9b52a9a7ecac4$var$blankBeforeUnit(averagedSensor.uom)}${averagedSensor.uom}`;
 
-
+var $00ea4c3dd58344cb$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/data/icon.ts
- */ const $a6e6dfe1c75e2ac8$export$733ca6fe4b07869c = {
+ */ Object.defineProperty($00ea4c3dd58344cb$exports, "__esModule", {
+    value: true
+});
+$00ea4c3dd58344cb$exports.FALLBACK_DOMAIN_ICONS = void 0;
+$00ea4c3dd58344cb$exports.FALLBACK_DOMAIN_ICONS = {
     air_quality: 'mdi:air-filter',
     alert: 'mdi:alert',
     automation: 'mdi:robot',
@@ -9175,7 +10071,10 @@ const $23d9b52a9a7ecac4$export$6b5316c1eb8ef7e7 = (averagedSensor)=>`${$23d9b52a
 
 
 
-var $8jUVR = parcelRequire("8jUVR");
+var $g28NR = parcelRequire("g28NR");
+
+var $htQni = parcelRequire("htQni");
+
 
 
 
@@ -9347,6 +10246,76 @@ const $7b5ce03f476dfece$export$a40009bd2c363351 = (0, $lnb0z.directive)($7b5ce03
 
 
 
+
+var $2QgUB = parcelRequire("2QgUB");
+
+/**
+ * Formats a number with appropriate decimal places
+ */ const $23d9b52a9a7ecac4$var$formatNumber = (value, maxDecimals = 1)=>{
+    return value.toFixed(maxDecimals).replace(/\.?0+$/, '');
+};
+/**
+ * Adds appropriate spacing before unit if needed
+ */ const $23d9b52a9a7ecac4$var$blankBeforeUnit = (unit)=>{
+    // Units that don't need a space (like % or °)
+    const noSpaceUnits = [
+        '%',
+        "\xb0C",
+        "\xb0F"
+    ];
+    return noSpaceUnits.some((u)=>unit.includes(u)) ? '' : ' ';
+};
+const $23d9b52a9a7ecac4$export$6b5316c1eb8ef7e7 = (averagedSensor)=>`${$23d9b52a9a7ecac4$var$formatNumber(averagedSensor.average)}${$23d9b52a9a7ecac4$var$blankBeforeUnit(averagedSensor.uom)}${averagedSensor.uom}`;
+
+
+
+var $g28NR = parcelRequire("g28NR");
+
+
+var $dTmXl = parcelRequire("dTmXl");
+
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+var $2r9I1 = parcelRequire("2r9I1");
+parcelRequire("jcMWt");
+var $yv2EM = parcelRequire("yv2EM");
+var $aaQtJ = parcelRequire("aaQtJ");
+let $3b95f56107a2cba7$var$_ = (t)=>t, $3b95f56107a2cba7$var$t;
+class $3b95f56107a2cba7$export$ef860f80ba8a1734 extends (0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement)) {
+    disconnectedCallback() {
+        this._labelTemplateConn.disconnect();
+        super.disconnectedCallback();
+    }
+    /**
+   * renders the lit element card
+   * @returns {TemplateResult} The rendered HTML template
+   */ render() {
+        (0, $dTmXl.d)(this.config, 'room-sensor-label', 'render');
+        if (this.sensor) return (0, $ci0wX.html)($3b95f56107a2cba7$var$t || ($3b95f56107a2cba7$var$t = $3b95f56107a2cba7$var$_`${0}`), (0, $23d9b52a9a7ecac4$export$6b5316c1eb8ef7e7)(this.sensor));
+        if (!this.entity) return 0, $ci0wX.nothing;
+        return (0, $48eb237c515e3f80$export$23d92e23bb73dc02)(this.hass, this.entity, this._labelTemplateConn, 'state-display');
+    }
+    constructor(...args){
+        super(...args), this._labelTemplateConn = new (0, $a8bfdc087294b7f3$export$d201aad20a44ca08)(()=>this.requestUpdate());
+    }
+}
+(0, $2QgUB.__decorate)([
+    (0, $aaQtJ.property)({
+        type: Object,
+        hasChanged: (a, b)=>!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(a, b)
+    })
+], $3b95f56107a2cba7$export$ef860f80ba8a1734.prototype, "entity", void 0);
+(0, $2QgUB.__decorate)([
+    (0, $aaQtJ.property)({
+        type: Object,
+        hasChanged: (a, b)=>!(0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))(a, b)
+    })
+], $3b95f56107a2cba7$export$ef860f80ba8a1734.prototype, "sensor", void 0);
+$3b95f56107a2cba7$export$ef860f80ba8a1734 = (0, $2QgUB.__decorate)([
+    (0, $yv2EM.customElement)('room-sensor-label')
+], $3b95f56107a2cba7$export$ef860f80ba8a1734);
+
+
 parcelRequire("fPVm8");
 var $2SS2a = parcelRequire("2SS2a");
 let $a2c19dc37818e84b$var$_ = (t)=>t, $a2c19dc37818e84b$var$t;
@@ -9434,8 +10403,8 @@ const $a2c19dc37818e84b$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($a2c19dc37818e
 `));
 
 
-let $0a8df7eca34388c3$var$_ = (t)=>t, $0a8df7eca34388c3$var$t, $0a8df7eca34388c3$var$t1, $0a8df7eca34388c3$var$t2, $0a8df7eca34388c3$var$t3, $0a8df7eca34388c3$var$t4, $0a8df7eca34388c3$var$t5, $0a8df7eca34388c3$var$t6, $0a8df7eca34388c3$var$t7;
-class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMixin)((0, $2r9I1.LitElement)) {
+let $0a8df7eca34388c3$var$_ = (t)=>t, $0a8df7eca34388c3$var$t, $0a8df7eca34388c3$var$t1, $0a8df7eca34388c3$var$t2, $0a8df7eca34388c3$var$t3, $0a8df7eca34388c3$var$t4, $0a8df7eca34388c3$var$t5, $0a8df7eca34388c3$var$t6;
+class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $htQni.HassUpdateMixin)((0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement))) {
     /**
    * Returns the component's styles
    */ static get styles() {
@@ -9444,12 +10413,10 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
     /**
    * Updates the card's state when Home Assistant state changes
    * @param {HomeAssistant} hass - The Home Assistant instance
-   */ // @ts-ignore
-    set hass(hass) {
+   */ set hass(hass) {
         (0, $dTmXl.d)(this.config, 'sensor-collection', 'set hass');
         this._hass = hass;
-        this.hide = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this.config, 'hide_sensor_icons');
-        this._hideLabels = (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this.config, 'hide_sensor_labels');
+        this.hide = (0, $1e40c00d469c9d00$exports.hasFeature)(this.config, 'hide_sensor_icons');
         var _this_config_sensor_layout;
         this.layout = (_this_config_sensor_layout = this.config.sensor_layout) !== null && _this_config_sensor_layout !== void 0 ? _this_config_sensor_layout : 'default';
     }
@@ -9458,7 +10425,7 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
         (0, $dTmXl.d)(this.config, 'sensor-collection', 'render');
         (0, $dTmXl.d)(this.config, 'sensor-collection', 'config', this.config);
         (0, $dTmXl.d)(this.config, 'sensor-collection', 'sensors', this.sensors);
-        if (!this._hass || (0, $b02f37b9ae80224f$export$805ddaeeece0413e)(this.config, 'hide_climate_label')) return 0, $ci0wX.nothing;
+        if (!this._hass || (0, $1e40c00d469c9d00$exports.hasFeature)(this.config, 'hide_climate_label')) return 0, $ci0wX.nothing;
         return (0, $ci0wX.html)($0a8df7eca34388c3$var$t || ($0a8df7eca34388c3$var$t = $0a8df7eca34388c3$var$_`
       ${0}
       ${0}
@@ -9474,7 +10441,9 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
             ${0}
             ${0}
           </div>
-        `), this.renderMultiIcon(s), this._hideLabels ? (0, $ci0wX.nothing) : (0, $23d9b52a9a7ecac4$export$6b5316c1eb8ef7e7)(s));
+        `), this.renderMultiIcon(s), (0, $48eb237c515e3f80$export$7550a2852884ab9f)(this._hass, this.config, {
+                sensor: s
+            }));
             // Use the first state from averaged sensor
             const state = s.states[0];
             return this.renderSingleSensor(state);
@@ -9504,8 +10473,6 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
         };
         // Get state/threshold-based styling result
         const result = (0, $3eeea5b8a350985f$export$76969a794fd1f893)(info);
-        // Get label (priority: state/threshold label > config label)
-        const label = (0, $3eeea5b8a350985f$export$9d7fd66a8622e6b5)(info, result);
         // Icon priority: state/threshold icon > configured icon > default
         // State-based icons override configured icons for dynamic behavior
         const icon = (result === null || result === void 0 ? void 0 : result.icon) || (sensorConfig === null || sensorConfig === void 0 ? void 0 : sensorConfig.icon);
@@ -9521,18 +10488,9 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
       </div>
     `), (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)((0, $kJycS._)({
             '--sensor-icon-color': (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(result === null || result === void 0 ? void 0 : result.color)
-        }, result === null || result === void 0 ? void 0 : result.styles)), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, info), (0, $b96673d7637fba33$export$8a44987212de21b)(info), this.renderStateIcon(state, icon), this.renderSensorLabel(state, label, sensorConfig));
-    }
-    /**
-   * Renders the sensor label with proper fallback logic
-   * @param state - The entity state
-   * @param label - The configured label (if any)
-   * @param sensorConfig - The sensor configuration (if any)
-   * @returns The label content, attribute value, state display, or nothing if labels are hidden
-   */ renderSensorLabel(state, label, sensorConfig) {
-        if (this._hideLabels) return 0, $ci0wX.nothing;
-        if (label) return (0, $ci0wX.html)($0a8df7eca34388c3$var$t3 || ($0a8df7eca34388c3$var$t3 = $0a8df7eca34388c3$var$_`${0}`), label);
-        return (0, $8jUVR.stateDisplay)(this._hass, state, sensorConfig === null || sensorConfig === void 0 ? void 0 : sensorConfig.attribute);
+        }, result === null || result === void 0 ? void 0 : result.styles)), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, info), (0, $b96673d7637fba33$export$8a44987212de21b)(info), this.renderStateIcon(state, icon), (0, $48eb237c515e3f80$export$7550a2852884ab9f)(this._hass, this.config, {
+            entity: info
+        }));
     }
     /**
    * Gets the sensor configuration for a given entity ID
@@ -9553,33 +10511,33 @@ class $0a8df7eca34388c3$export$265e5e10b1eff6c6 extends (0, $1LdRn.HassUpdateMix
         const iconPromise = (0, $bd80f520e20b7898$export$306d3b376c79075a)(this._hass).then((icons)=>{
             var _icons_resources_sensor_domain_sensor_device_class, _icons_resources_sensor_domain, _icons_resources;
             const icon = (_icons_resources = icons.resources) === null || _icons_resources === void 0 ? void 0 : (_icons_resources_sensor_domain = _icons_resources[sensor.domain]) === null || _icons_resources_sensor_domain === void 0 ? void 0 : (_icons_resources_sensor_domain_sensor_device_class = _icons_resources_sensor_domain[sensor.device_class]) === null || _icons_resources_sensor_domain_sensor_device_class === void 0 ? void 0 : _icons_resources_sensor_domain_sensor_device_class.default;
-            if (icon) return (0, $ci0wX.html)($0a8df7eca34388c3$var$t4 || ($0a8df7eca34388c3$var$t4 = $0a8df7eca34388c3$var$_`<ha-icon .icon=${0}></ha-icon>`), icon);
-            const fallback = (0, $a6e6dfe1c75e2ac8$export$733ca6fe4b07869c)[sensor.domain];
-            return fallback ? (0, $ci0wX.html)($0a8df7eca34388c3$var$t5 || ($0a8df7eca34388c3$var$t5 = $0a8df7eca34388c3$var$_`<ha-icon .icon=${0}></ha-icon>`), fallback) : (0, $ci0wX.nothing);
+            if (icon) return (0, $ci0wX.html)($0a8df7eca34388c3$var$t3 || ($0a8df7eca34388c3$var$t3 = $0a8df7eca34388c3$var$_`<ha-icon .icon=${0}></ha-icon>`), icon);
+            const fallback = (0, $00ea4c3dd58344cb$exports.FALLBACK_DOMAIN_ICONS)[sensor.domain];
+            return fallback ? (0, $ci0wX.html)($0a8df7eca34388c3$var$t4 || ($0a8df7eca34388c3$var$t4 = $0a8df7eca34388c3$var$_`<ha-icon .icon=${0}></ha-icon>`), fallback) : (0, $ci0wX.nothing);
         });
-        return (0, $ci0wX.html)($0a8df7eca34388c3$var$t6 || ($0a8df7eca34388c3$var$t6 = $0a8df7eca34388c3$var$_`${0}`), (0, $7b5ce03f476dfece$export$a40009bd2c363351)(iconPromise));
+        return (0, $ci0wX.html)($0a8df7eca34388c3$var$t5 || ($0a8df7eca34388c3$var$t5 = $0a8df7eca34388c3$var$_`${0}`), (0, $7b5ce03f476dfece$export$a40009bd2c363351)(iconPromise));
     }
     renderStateIcon(state, icon) {
         if (this.hide || !state) return 0, $ci0wX.nothing;
-        return (0, $ci0wX.html)($0a8df7eca34388c3$var$t7 || ($0a8df7eca34388c3$var$t7 = $0a8df7eca34388c3$var$_`<ha-state-icon
+        return (0, $ci0wX.html)($0a8df7eca34388c3$var$t6 || ($0a8df7eca34388c3$var$t6 = $0a8df7eca34388c3$var$_`<ha-state-icon
       .hass=${0}
       .stateObj=${0}
       .icon=${0}
     ></ha-state-icon>`), this._hass, state, icon);
     }
 }
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Object
     })
 ], $0a8df7eca34388c3$export$265e5e10b1eff6c6.prototype, "sensors", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: Boolean,
         reflect: true
     })
 ], $0a8df7eca34388c3$export$265e5e10b1eff6c6.prototype, "hide", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $aaQtJ.property)({
         type: String,
         reflect: true
@@ -9592,19 +10550,275 @@ var $kJycS = parcelRequire("kJycS");
 
 var $1izJ2 = parcelRequire("1izJ2");
 
-var $evAes = parcelRequire("evAes");
+var $2QgUB = parcelRequire("2QgUB");
 
-var $jyxIy = parcelRequire("jyxIy");
+var $kJycS = parcelRequire("kJycS");
+const $9ba75f3d2f9df1e6$export$2590a8944915c591 = [
+    'room-summary-card',
+    'room-summary-card-editor',
+    'room-state-icon',
+    'sensor-collection',
+    'entity-collection',
+    'entity-slider',
+    'horizontal-slider',
+    'badge',
+    'room-badge-label',
+    'room-entity-label',
+    'room-sensor-label',
+    'area-statistics',
+    'problem-dialog',
+    'problem-entity-list',
+    'problem-entity-row'
+];
+const $9ba75f3d2f9df1e6$export$8eaae07eebefd324 = [
+    'render',
+    'set hass',
+    'config',
+    'sensors'
+];
+const $9ba75f3d2f9df1e6$export$aec4292bc15b41f9 = [
+    {
+        id: 'off',
+        label: 'Off',
+        description: 'Remove debug from card config',
+        debug: undefined
+    },
+    {
+        id: 'renders',
+        label: 'Renders',
+        description: 'Log every component render',
+        debug: {
+            categories: [
+                'render'
+            ]
+        }
+    },
+    {
+        id: 'all',
+        label: 'Everything',
+        description: 'All components and categories',
+        debug: {}
+    }
+];
+
+
+
+var $kJycS = parcelRequire("kJycS");
+
+
+function $d7d56d0af32e9563$export$2796f5c42b4e627b(debug) {
+    var _debug_scope, _debug_categories;
+    if (!debug) return undefined;
+    var _debug_scope_filter;
+    const scope = (_debug_scope_filter = (_debug_scope = debug.scope) === null || _debug_scope === void 0 ? void 0 : _debug_scope.filter((entry)=>entry.length > 0)) !== null && _debug_scope_filter !== void 0 ? _debug_scope_filter : undefined;
+    var _debug_categories_filter;
+    const categories = (_debug_categories_filter = (_debug_categories = debug.categories) === null || _debug_categories === void 0 ? void 0 : _debug_categories.filter((entry)=>entry.length > 0)) !== null && _debug_categories_filter !== void 0 ? _debug_categories_filter : undefined;
+    if (!(scope === null || scope === void 0 ? void 0 : scope.length) && !(categories === null || categories === void 0 ? void 0 : categories.length)) return {};
+    return (0, $kJycS._)({}, (scope === null || scope === void 0 ? void 0 : scope.length) ? {
+        scope: scope
+    } : {}, (categories === null || categories === void 0 ? void 0 : categories.length) ? {
+        categories: categories
+    } : {});
+}
+function $d7d56d0af32e9563$export$958b05bb4df75a59(config) {
+    const debug = config.debug;
+    var _debug_scope, _debug_categories;
+    return {
+        enabled: debug !== undefined,
+        scope: [
+            ...(_debug_scope = debug === null || debug === void 0 ? void 0 : debug.scope) !== null && _debug_scope !== void 0 ? _debug_scope : []
+        ],
+        categories: [
+            ...(_debug_categories = debug === null || debug === void 0 ? void 0 : debug.categories) !== null && _debug_categories !== void 0 ? _debug_categories : []
+        ]
+    };
+}
+function $d7d56d0af32e9563$export$6c7e32eb6724deff(config, data) {
+    const next = (0, $kJycS._)({}, config);
+    if (!data.enabled) {
+        delete next.debug;
+        return next;
+    }
+    next.debug = $d7d56d0af32e9563$export$2796f5c42b4e627b({
+        scope: data.scope,
+        categories: data.categories
+    });
+    return next;
+}
+function $d7d56d0af32e9563$export$248e45c8fe33617e(config) {
+    const current = config.debug;
+    for (const preset of (0, $9ba75f3d2f9df1e6$export$aec4292bc15b41f9)){
+        if (preset.debug === undefined) {
+            if (current === undefined) return preset.id;
+            continue;
+        }
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($ee3d06fe83a6a770$exports)))($d7d56d0af32e9563$export$2796f5c42b4e627b(preset.debug), $d7d56d0af32e9563$export$2796f5c42b4e627b(current))) return preset.id;
+    }
+    return null;
+}
+function $d7d56d0af32e9563$export$e0fe7c7e0171fed2(debug) {
+    var _debug_scope, _debug_categories, _debug_categories1, _debug_scope1;
+    if (debug === undefined) return '# debug disabled';
+    const lines = [
+        'debug:'
+    ];
+    if (!((_debug_scope = debug.scope) === null || _debug_scope === void 0 ? void 0 : _debug_scope.length) && !((_debug_categories = debug.categories) === null || _debug_categories === void 0 ? void 0 : _debug_categories.length)) {
+        lines.push('  {}  # all components and categories');
+        return lines.join('\n');
+    }
+    if ((_debug_categories1 = debug.categories) === null || _debug_categories1 === void 0 ? void 0 : _debug_categories1.length) {
+        lines.push('  categories:');
+        for (const category of debug.categories)lines.push(`    - ${category}`);
+    }
+    if ((_debug_scope1 = debug.scope) === null || _debug_scope1 === void 0 ? void 0 : _debug_scope1.length) {
+        lines.push('  scope:');
+        for (const component of debug.scope)lines.push(`    - ${component}`);
+    }
+    return lines.join('\n');
+}
+
+
+parcelRequire("fPVm8");
+var $ci0wX = parcelRequire("ci0wX");
+let $adbc1d2930ef985d$var$_ = (t)=>t, $adbc1d2930ef985d$var$t, $adbc1d2930ef985d$var$t1;
+function $adbc1d2930ef985d$var$getDebugFormSchema() {
+    return [
+        {
+            name: 'enabled',
+            label: 'Enable console debug logging',
+            selector: {
+                boolean: {}
+            }
+        },
+        {
+            name: 'categories',
+            label: 'Categories (empty = all)',
+            selector: {
+                select: {
+                    multiple: true,
+                    mode: 'list',
+                    options: (0, $9ba75f3d2f9df1e6$export$8eaae07eebefd324).map((value)=>({
+                            value: value,
+                            label: value
+                        }))
+                }
+            }
+        },
+        {
+            name: 'scope',
+            label: 'Components (empty = all)',
+            selector: {
+                select: {
+                    multiple: true,
+                    mode: 'list',
+                    options: (0, $9ba75f3d2f9df1e6$export$2590a8944915c591).map((value)=>({
+                            value: value,
+                            label: value
+                        }))
+                }
+            }
+        }
+    ];
+}
+function $adbc1d2930ef985d$var$applyPreset(config, presetId) {
+    const preset = (0, $9ba75f3d2f9df1e6$export$aec4292bc15b41f9).find((entry)=>entry.id === presetId);
+    if (!preset) return config;
+    const next = (0, $kJycS._)({}, config);
+    if (preset.debug === undefined) {
+        delete next.debug;
+        return next;
+    }
+    next.debug = (0, $kJycS._)({}, preset.debug);
+    return next;
+}
+function $adbc1d2930ef985d$export$486f5d7e7aec4cd8(params) {
+    const { hass: hass, config: config, onConfigChanged: onConfigChanged, onClose: onClose } = params;
+    const panelData = (0, $d7d56d0af32e9563$export$958b05bb4df75a59)(config);
+    const yamlSnippet = (0, $d7d56d0af32e9563$export$e0fe7c7e0171fed2)(config.debug);
+    const activePresetId = (0, $d7d56d0af32e9563$export$248e45c8fe33617e)(config);
+    const onPanelValueChanged = (ev)=>{
+        const value = ev.detail.value;
+        onConfigChanged((0, $d7d56d0af32e9563$export$6c7e32eb6724deff)(config, value));
+    };
+    const onPresetClick = (presetId)=>{
+        onConfigChanged($adbc1d2930ef985d$var$applyPreset(config, presetId));
+    };
+    const onCopyYaml = async ()=>{
+        try {
+            await navigator.clipboard.writeText(yamlSnippet);
+        } catch (e) {
+        // Clipboard may be unavailable outside a secure context
+        }
+    };
+    return (0, $ci0wX.html)($adbc1d2930ef985d$var$t1 || ($adbc1d2930ef985d$var$t1 = $adbc1d2930ef985d$var$_`
+    <ha-expansion-panel outlined expanded class="debug-panel">
+      <div slot="header" class="debug-panel-header">
+        <ha-icon icon="mdi:bug"></ha-icon>
+        <span>Debug logging</span>
+        <ha-icon-button
+          .label=${0}
+          @click=${0}
+        >
+          <ha-icon icon="mdi:close"></ha-icon>
+        </ha-icon-button>
+      </div>
+      <div class="debug-panel-body">
+        <p class="debug-panel-hint">
+          Logs appear in the browser devtools console.
+        </p>
+        <div class="debug-presets" role="group" aria-label="Debug presets">
+          ${0}
+        </div>
+        <ha-form
+          .hass=${0}
+          .data=${0}
+          .schema=${0}
+          @value-changed=${0}
+        ></ha-form>
+        <div class="debug-yaml">
+          <code>${0}</code>
+          <button type="button" class="debug-copy-yaml" @click=${0}>
+            Copy YAML
+          </button>
+        </div>
+      </div>
+    </ha-expansion-panel>
+  `), 'Hide debug menu', (ev)=>{
+        ev.stopPropagation();
+        onClose();
+    }, (0, $9ba75f3d2f9df1e6$export$aec4292bc15b41f9).map((preset)=>(0, $ci0wX.html)($adbc1d2930ef985d$var$t || ($adbc1d2930ef985d$var$t = $adbc1d2930ef985d$var$_`
+              <button
+                type="button"
+                class="debug-preset ${0}"
+                @click=${0}
+                title=${0}
+                aria-pressed=${0}
+              >
+                ${0}
+              </button>
+            `), activePresetId === preset.id ? 'active' : '', ()=>onPresetClick(preset.id), preset.description, activePresetId === preset.id, preset.label)), hass, panelData, $adbc1d2930ef985d$var$getDebugFormSchema(), onPanelValueChanged, yamlSnippet, onCopyYaml);
+}
+
+
+
+var $h7W3o = parcelRequire("h7W3o");
+var $5904596835f72707$exports = {};
+"use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/data/sensor.ts
- */ let $2c30722c058d3347$var$sensorNumericDeviceClassesCache;
-const $2c30722c058d3347$export$932b0589381997d6 = async (hass)=>{
-    if ($2c30722c058d3347$var$sensorNumericDeviceClassesCache) return $2c30722c058d3347$var$sensorNumericDeviceClassesCache;
-    $2c30722c058d3347$var$sensorNumericDeviceClassesCache = hass.callWS({
+ */ Object.defineProperty($5904596835f72707$exports, "__esModule", {
+    value: true
+});
+$5904596835f72707$exports.getSensorNumericDeviceClasses = void 0;
+let $5904596835f72707$var$sensorNumericDeviceClassesCache;
+const $5904596835f72707$var$getSensorNumericDeviceClasses = async (hass)=>{
+    if ($5904596835f72707$var$sensorNumericDeviceClassesCache) return $5904596835f72707$var$sensorNumericDeviceClassesCache;
+    $5904596835f72707$var$sensorNumericDeviceClassesCache = hass.callWS({
         type: 'sensor/numeric_device_classes'
     });
-    return $2c30722c058d3347$var$sensorNumericDeviceClassesCache;
+    return $5904596835f72707$var$sensorNumericDeviceClassesCache;
 };
+$5904596835f72707$exports.getSensorNumericDeviceClasses = $5904596835f72707$var$getSensorNumericDeviceClasses;
 
 
 
@@ -9658,10 +10872,10 @@ const $ebeb8808033cc92f$export$5c1d9ab613e2f923 = (hass, area)=>{
 const $ebeb8808033cc92f$export$aff8e21126109cb8 = async (hass, area)=>{
     const entities = Object.values(hass.entities).filter((entity)=>{
         var _hass_devices_entity_device_id;
-        const entityDomain = (0, $jyxIy.computeDomain)(entity.entity_id);
+        const entityDomain = (0, $h7W3o.computeDomain)(entity.entity_id);
         return entityDomain === 'sensor' && (entity.area_id === area || entity.device_id && ((_hass_devices_entity_device_id = hass.devices[entity.device_id]) === null || _hass_devices_entity_device_id === void 0 ? void 0 : _hass_devices_entity_device_id.area_id) === area);
     });
-    const numericDeviceClasses = await (0, $2c30722c058d3347$export$932b0589381997d6)(hass);
+    const numericDeviceClasses = await (0, $5904596835f72707$exports.getSensorNumericDeviceClasses)(hass);
     const classes = entities.map((entity)=>{
         var _hass_states_entity_entity_id;
         var _hass_states_entity_entity_id_attributes_device_class;
@@ -9671,7 +10885,7 @@ const $ebeb8808033cc92f$export$aff8e21126109cb8 = async (hass, area)=>{
         ...new Set(classes)
     ];
 };
-const $ebeb8808033cc92f$var$schemeStyles = (hass, entities)=>{
+const $ebeb8808033cc92f$var$schemeStyles = (hass)=>{
     return {
         name: 'styles',
         label: 'editor.styles.styles',
@@ -9701,6 +10915,7 @@ const $ebeb8808033cc92f$var$schemeStyles = (hass, entities)=>{
                             entity: {
                                 filter: {
                                     domain: [
+                                        'camera',
                                         'image',
                                         'person'
                                     ]
@@ -9740,6 +10955,10 @@ const $ebeb8808033cc92f$var$schemeStyles = (hass, entities)=>{
                                     {
                                         label: (0, $cfP8R.localize)(hass, 'editor.icon.hide_icon_only'),
                                         value: 'hide_icon_only'
+                                    },
+                                    {
+                                        label: (0, $cfP8R.localize)(hass, 'editor.background.hide_gradient'),
+                                        value: 'hide_gradient'
                                     }
                                 ]
                             }
@@ -10047,7 +11266,7 @@ const $ebeb8808033cc92f$export$9b953466d2b38742 = ()=>({
             area: {}
         }
     });
-const $ebeb8808033cc92f$export$1b129ae08555a818 = (hass, entities)=>[
+const $ebeb8808033cc92f$export$1b129ae08555a818 = (hass)=>[
         {
             name: 'content',
             label: 'editor.layout.content',
@@ -10098,7 +11317,7 @@ const $ebeb8808033cc92f$export$1b129ae08555a818 = (hass, entities)=>[
             ]
         },
         (0, $cf084a38eb33c4f3$export$76fcdb2ea14db822),
-        $ebeb8808033cc92f$var$schemeStyles(hass, entities),
+        $ebeb8808033cc92f$var$schemeStyles(hass),
         $ebeb8808033cc92f$var$featuresSchema(hass)
     ];
 /**
@@ -10372,12 +11591,6 @@ const $ebeb8808033cc92f$export$e8b24eae43edea4f = (hass)=>{
 
 
 
-var $cfP8R = parcelRequire("cfP8R");
-function $58c2b5810601848d$export$851056343f01ae23(hass, schema) {
-    return `${(0, $cfP8R.localize)(hass, schema.label)} ${schema.required ? `(${hass.localize('ui.panel.lovelace.editor.card.config.required')})` : `(${hass.localize('ui.panel.lovelace.editor.card.config.optional')})`}`;
-}
-
-
 
 var $cfP8R = parcelRequire("cfP8R");
 parcelRequire("fPVm8");
@@ -10426,9 +11639,9 @@ function $b76dc3474f73e549$export$633a60486668629e(params) {
         @value-changed=${0}
       ></ha-form>
     </div>
-  `), (0, $cfP8R.localize)(hass, 'editor.entities.entities_info'), hass, config.entities, entities, hass.localize('ui.panel.lovelace.editor.card.generic.entities') || 'Entities', onEntitiesRowChanged, onEditDetailElement, hass, config, (0, $ebeb8808033cc92f$export$2763e19f10bf2cf8)(hass), (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(hass, schema), onValueChanged, (0, $cfP8R.localize)(hass, 'editor.features.features_info'), (0, $cfP8R.localize)(hass, 'editor.features.show_entity_labels_desc'), (0, $cfP8R.localize)(hass, 'editor.features.exclude_default_entities_desc'), (0, $cfP8R.localize)(hass, 'editor.features.ignore_entity_desc'), (0, $cfP8R.localize)(hass, 'editor.features.sticky_entities_desc'), (0, $cfP8R.localize)(hass, 'editor.features.slider_desc'), hass, config, [
+  `), (0, $cfP8R.localize)(hass, 'editor.entities.entities_info'), hass, config.entities, entities, hass.localize('ui.panel.lovelace.editor.card.generic.entities') || 'Entities', onEntitiesRowChanged, onEditDetailElement, hass, config, (0, $ebeb8808033cc92f$export$2763e19f10bf2cf8)(hass), (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), onValueChanged, (0, $cfP8R.localize)(hass, 'editor.features.features_info'), (0, $cfP8R.localize)(hass, 'editor.features.show_entity_labels_desc'), (0, $cfP8R.localize)(hass, 'editor.features.exclude_default_entities_desc'), (0, $cfP8R.localize)(hass, 'editor.features.ignore_entity_desc'), (0, $cfP8R.localize)(hass, 'editor.features.sticky_entities_desc'), (0, $cfP8R.localize)(hass, 'editor.features.slider_desc'), hass, config, [
         (0, $ebeb8808033cc92f$export$a3234059ca65f80a)(hass)
-    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(hass, schema), onValueChanged);
+    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), onValueChanged);
 }
 
 
@@ -10467,7 +11680,7 @@ function $f2a06477c32045b7$export$eb43fb94789f71b0(params) {
     </div>
   `), infoText ? (0, $ci0wX.html)($f2a06477c32045b7$var$t || ($f2a06477c32045b7$var$t = $f2a06477c32045b7$var$_` <div class="info-header">${0}</div> `), (0, $cfP8R.localize)(hass, infoText)) : (0, $ci0wX.nothing), hass, config.lights, entities, hass.localize('editor.background.light_entities') || 'Light entities', onLightsRowChanged, onEditDetailElement, (0, $cfP8R.localize)(hass, 'editor.features.features_info'), hass, config, [
         (0, $ebeb8808033cc92f$export$7f37e4e3829f238c)(hass)
-    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(hass, schema), onValueChanged);
+    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), onValueChanged);
 }
 
 
@@ -10479,7 +11692,7 @@ let $2753b9fff4eabaa1$var$_ = (t)=>t, $2753b9fff4eabaa1$var$t;
 function $2753b9fff4eabaa1$export$3aced84aff4edb7f(params) {
     const { hass: hass, config: config, entities: entities, onValueChanged: onValueChanged, onEntityRowChanged: onEntityRowChanged, onEditDetailElement: onEditDetailElement } = params;
     const areaSchema = (0, $ebeb8808033cc92f$export$9b953466d2b38742)();
-    const restSchema = (0, $ebeb8808033cc92f$export$1b129ae08555a818)(hass, entities);
+    const restSchema = (0, $ebeb8808033cc92f$export$1b129ae08555a818)(hass);
     // Convert single entity to array for row-editor
     const entityArray = config.entity ? [
         config.entity
@@ -10513,7 +11726,7 @@ function $2753b9fff4eabaa1$export$3aced84aff4edb7f(params) {
     </div>
   `), hass, config, [
         areaSchema
-    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(hass, schema), onValueChanged, hass, entityArray, entities, true, hass.localize('editor.area.room_entity') || 'Room Entity', onEntityRowChanged, onEditDetailElement, hass, config, restSchema, (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(hass, schema), onValueChanged);
+    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), onValueChanged, hass, entityArray, entities, true, hass.localize('editor.area.room_entity') || 'Room Entity', onEntityRowChanged, onEditDetailElement, hass, config, restSchema, (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), onValueChanged);
 }
 
 
@@ -10624,7 +11837,7 @@ function $733e085d0161322d$export$71d9f56309acfb74(params) {
         ></ha-form>
       </div>
     </ha-expansion-panel>
-  `), infoText ? (0, $ci0wX.html)($733e085d0161322d$var$t || ($733e085d0161322d$var$t = $733e085d0161322d$var$_` <div class="info-header">${0}</div> `), (0, $cfP8R.localize)(hass, infoText)) : (0, $ci0wX.nothing), hass, config, schema, (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(hass, schema), onValueChanged, (0, $cfP8R.localize)(hass, 'editor.threshold.thresholds'), hass, ((_config_thresholds = config.thresholds) === null || _config_thresholds === void 0 ? void 0 : _config_thresholds.temperature) || [], 'temperature', entities, hass.localize('editor.threshold.temperature_thresholds'), handleTemperatureThresholdsChanged, hass, ((_config_thresholds1 = config.thresholds) === null || _config_thresholds1 === void 0 ? void 0 : _config_thresholds1.humidity) || [], 'humidity', entities, hass.localize('editor.threshold.humidity_thresholds'), handleHumidityThresholdsChanged, hass, {
+  `), infoText ? (0, $ci0wX.html)($733e085d0161322d$var$t || ($733e085d0161322d$var$t = $733e085d0161322d$var$_` <div class="info-header">${0}</div> `), (0, $cfP8R.localize)(hass, infoText)) : (0, $ci0wX.nothing), hass, config, schema, (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), onValueChanged, (0, $cfP8R.localize)(hass, 'editor.threshold.thresholds'), hass, ((_config_thresholds = config.thresholds) === null || _config_thresholds === void 0 ? void 0 : _config_thresholds.temperature) || [], 'temperature', entities, hass.localize('editor.threshold.temperature_thresholds'), handleTemperatureThresholdsChanged, hass, ((_config_thresholds1 = config.thresholds) === null || _config_thresholds1 === void 0 ? void 0 : _config_thresholds1.humidity) || [], 'humidity', entities, hass.localize('editor.threshold.humidity_thresholds'), handleHumidityThresholdsChanged, hass, {
         mold: (_config_thresholds2 = config.thresholds) === null || _config_thresholds2 === void 0 ? void 0 : _config_thresholds2.mold
     }, [
         {
@@ -10640,7 +11853,7 @@ function $733e085d0161322d$export$71d9f56309acfb74(params) {
                 }
             }
         }
-    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(hass, schema), handleMoldThresholdChanged);
+    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), handleMoldThresholdChanged);
 }
 
 
@@ -10691,9 +11904,9 @@ function $338d9b587813c56d$export$359e193b1547165(params) {
         @value-changed=${0}
       ></ha-form>
     </div>
-  `), (0, $cfP8R.localize)(hass, 'editor.sensor.sensors_info'), hass, config.sensors, entities, hass.localize('editor.sensor.individual_sensor_entities') || 'Individual sensor entities', onSensorsRowChanged, onEditDetailElement, hass, config, restSchema, (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(hass, schema), onValueChanged, (0, $cfP8R.localize)(hass, 'editor.sensor.features_info'), (0, $cfP8R.localize)(hass, 'editor.sensor.hide_sensors_desc'), (0, $cfP8R.localize)(hass, 'editor.sensor.hide_sensor_icons_desc'), (0, $cfP8R.localize)(hass, 'editor.sensor.hide_sensor_labels_desc'), hass, config, [
+  `), (0, $cfP8R.localize)(hass, 'editor.sensor.sensors_info'), hass, config.sensors, entities, hass.localize('editor.sensor.individual_sensor_entities') || 'Individual sensor entities', onSensorsRowChanged, onEditDetailElement, hass, config, restSchema, (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), onValueChanged, (0, $cfP8R.localize)(hass, 'editor.sensor.features_info'), (0, $cfP8R.localize)(hass, 'editor.sensor.hide_sensors_desc'), (0, $cfP8R.localize)(hass, 'editor.sensor.hide_sensor_icons_desc'), (0, $cfP8R.localize)(hass, 'editor.sensor.hide_sensor_labels_desc'), hass, config, [
         (0, $ebeb8808033cc92f$export$e8b24eae43edea4f)(hass)
-    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(hass, schema), onValueChanged);
+    ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), onValueChanged);
 }
 
 
@@ -10746,7 +11959,7 @@ const $94ecd7aeca8c09b3$var$o = new WeakMap, $94ecd7aeca8c09b3$export$eff4d24c3f
 
 let $82f367c6f871e29a$var$_ = (t)=>t, $82f367c6f871e29a$var$t;
 function $82f367c6f871e29a$export$c12c36dfee4d12e2(params) {
-    const { currentTab: currentTab, showLeftScroll: showLeftScroll, showRightScroll: showRightScroll, tabContainerRef: tabContainerRef, onScroll: onScroll, onTabClick: onTabClick, tabContent: tabContent } = params;
+    const { currentTab: currentTab, showLeftScroll: showLeftScroll, showRightScroll: showRightScroll, tabContainerRef: tabContainerRef, onScroll: onScroll, onTabClick: onTabClick, onDebugMenuToggle: onDebugMenuToggle, onAlarmTabSecretClick: onAlarmTabSecretClick, debugPanel: debugPanel, tabContent: tabContent } = params;
     return (0, $ci0wX.html)($82f367c6f871e29a$var$t || ($82f367c6f871e29a$var$t = $82f367c6f871e29a$var$_`
     <div class="card-config">
       <div class="tab-bar-wrapper">
@@ -10807,9 +12020,15 @@ function $82f367c6f871e29a$export$c12c36dfee4d12e2(params) {
           </svg>
         </div>
       </div>
-      ${0}
+      ${0} ${0}
     </div>
-  `), showLeftScroll ? 'visible' : '', (0, $94ecd7aeca8c09b3$export$eff4d24c3ff7876e)(tabContainerRef), onScroll, currentTab === 0 ? 'active' : '', ()=>onTabClick(0), currentTab === 1 ? 'active' : '', ()=>onTabClick(1), currentTab === 2 ? 'active' : '', ()=>onTabClick(2), currentTab === 3 ? 'active' : '', ()=>onTabClick(3), currentTab === 4 ? 'active' : '', ()=>onTabClick(4), showRightScroll ? 'visible' : '', tabContent);
+  `), showLeftScroll ? 'visible' : '', (0, $94ecd7aeca8c09b3$export$eff4d24c3ff7876e)(tabContainerRef), onScroll, currentTab === 0 ? 'active' : '', (ev)=>{
+        onTabClick(0);
+        if (ev.shiftKey) onDebugMenuToggle === null || onDebugMenuToggle === void 0 ? void 0 : onDebugMenuToggle();
+    }, currentTab === 1 ? 'active' : '', ()=>onTabClick(1), currentTab === 2 ? 'active' : '', ()=>onTabClick(2), currentTab === 3 ? 'active' : '', ()=>onTabClick(3), currentTab === 4 ? 'active' : '', ()=>{
+        onTabClick(4);
+        onAlarmTabSecretClick === null || onAlarmTabSecretClick === void 0 ? void 0 : onAlarmTabSecretClick();
+    }, showRightScroll ? 'visible' : '', debugPanel !== null && debugPanel !== void 0 ? debugPanel : (0, $ci0wX.nothing), tabContent);
 }
 
 
@@ -10827,16 +12046,18 @@ function $82f367c6f871e29a$export$c12c36dfee4d12e2(params) {
 function $2294891ef4a556a4$export$4e25f33241712942(config, key) {
     const obj = config[key];
     if (!obj || typeof obj !== 'object') return;
-    for (const k of Object.keys(obj)){
-        !obj[k] && delete obj[k];
-        $2294891ef4a556a4$export$cad94c565c931d44(obj, k);
+    const record = obj;
+    for (const k of Object.keys(record)){
+        if (!record[k]) delete record[k];
+        $2294891ef4a556a4$export$cad94c565c931d44(record, k);
     }
     if (!Object.keys(obj).length) delete config[key];
 }
 
 
 
-var $fKMMF = parcelRequire("fKMMF");
+var $5R2d0 = parcelRequire("5R2d0");
+
 function $0bc175ba06f09633$export$57ed763a527776f2(element, config) {
     if (!config) return;
     // Clean default values
@@ -10860,8 +12081,7 @@ function $0bc175ba06f09633$export$57ed763a527776f2(element, config) {
     (0, $2294891ef4a556a4$export$4e25f33241712942)(config, 'smoke');
     (0, $2294891ef4a556a4$export$4e25f33241712942)(config, 'gas');
     (0, $2294891ef4a556a4$export$4e25f33241712942)(config, 'water');
-    // @ts-ignore
-    (0, $fKMMF.fireEvent)(element, 'config-changed', {
+    (0, $5R2d0.fireEvent)(element, 'config-changed', {
         config: config
     });
 }
@@ -11316,6 +12536,131 @@ const $500688a290281052$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($500688a290281
     flex-direction: column;
     gap: 16px;
   }
+
+  .debug-panel {
+    margin: 8px 0 0;
+    --expansion-panel-summary-padding: 0 12px;
+    --expansion-panel-content-padding: 0 12px;
+    border-color: var(--warning-color, #ff9800);
+  }
+
+  .debug-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    font-weight: 500;
+    color: var(--warning-color, #ff9800);
+  }
+
+  .debug-panel-header ha-icon-button {
+    margin-left: auto;
+  }
+
+  .debug-panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .debug-panel-hint {
+    margin: 0;
+    font-size: 0.85em;
+    line-height: 1.4;
+    color: var(--secondary-text-color);
+  }
+
+  .debug-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .debug-preset {
+    appearance: none;
+    margin: 0;
+    padding: 6px 14px;
+    border: 1px solid var(--divider-color);
+    border-radius: var(--ha-border-radius-sm, 4px);
+    background: var(--card-background-color, var(--primary-background-color));
+    color: var(--primary-color);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .debug-preset:hover {
+    border-color: var(--primary-color);
+    background: rgba(var(--rgb-primary-color), 0.12);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  }
+
+  .debug-preset:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+
+  .debug-preset.active {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: var(--text-primary-color, #fff);
+  }
+
+  .debug-preset.active:hover {
+    filter: brightness(1.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  .debug-yaml {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: var(--code-editor-background-color, rgba(0, 0, 0, 0.05));
+    border-radius: var(--ha-border-radius-sm, 4px);
+  }
+
+  .debug-yaml code {
+    font-family: var(--code-font-family, monospace);
+    font-size: 0.8em;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .debug-copy-yaml {
+    appearance: none;
+    align-self: flex-start;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .debug-copy-yaml:hover {
+    color: var(--light-primary-color, var(--primary-color));
+    filter: brightness(1.15);
+  }
+
+  .debug-copy-yaml:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 `));
 
 
@@ -11355,6 +12700,19 @@ class $0f35678ae26800e3$export$be1ca41262ce011e extends (0, $2r9I1.LitElement) {
             onTabClick: (index)=>{
                 this._currentTab = index;
             },
+            onDebugMenuToggle: ()=>this._toggleDebugMenu(),
+            onAlarmTabSecretClick: ()=>this._handleAlarmTabSecretClick(),
+            debugPanel: this._debugMenuUnlocked ? (0, $adbc1d2930ef985d$export$486f5d7e7aec4cd8)({
+                hass: this.hass,
+                config: this._config,
+                onConfigChanged: (config)=>{
+                    this._config = config;
+                    (0, $0bc175ba06f09633$export$57ed763a527776f2)(this, config);
+                },
+                onClose: ()=>{
+                    this._debugMenuUnlocked = false;
+                }
+            }) : undefined,
             tabContent: this._renderTabContent()
         });
     }
@@ -11454,6 +12812,7 @@ class $0f35678ae26800e3$export$be1ca41262ce011e extends (0, $2r9I1.LitElement) {
    * @param {Config} config - The card configuration
    */ setConfig(config) {
         this._config = (0, $kJycS._)({}, config);
+        if (config.debug !== undefined) this._debugMenuUnlocked = true;
     }
     _valueChanged(ev) {
         const config = ev.detail.value;
@@ -11530,6 +12889,20 @@ class $0f35678ae26800e3$export$be1ca41262ce011e extends (0, $2r9I1.LitElement) {
     _goBack() {
         this._subElementEditorConfig = undefined;
     }
+    _toggleDebugMenu() {
+        this._debugMenuUnlocked = !this._debugMenuUnlocked;
+    }
+    _handleAlarmTabSecretClick() {
+        this._alarmTabClickCount += 1;
+        globalThis.clearTimeout(this._alarmTabClickTimer);
+        this._alarmTabClickTimer = globalThis.setTimeout(()=>{
+            this._alarmTabClickCount = 0;
+        }, 600);
+        if (this._alarmTabClickCount >= 3) {
+            this._alarmTabClickCount = 0;
+            this._toggleDebugMenu();
+        }
+    }
     constructor(...args){
         super(...args), /**
    * Current active tab index
@@ -11537,7 +12910,7 @@ class $0f35678ae26800e3$export$be1ca41262ce011e extends (0, $2r9I1.LitElement) {
    * Scroll state for tab container
    */ this._showLeftScroll = false, this._showRightScroll = false, /**
    * Reference to the tab bar container for scroll detection
-   */ this._tabContainerRef = (0, $94ecd7aeca8c09b3$export$7d1e3a5e95ceca43)(), /**
+   */ this._tabContainerRef = (0, $94ecd7aeca8c09b3$export$7d1e3a5e95ceca43)(), this._debugMenuUnlocked = false, this._alarmTabClickCount = 0, /**
    * Task that fetches the entities asynchronously
    * Uses the Home Assistant web sockets Promise
    */ this._getEntitiesTask = new (0, $d6d54e2212c78dd0$export$2dea7024bcdd7731)(this, {
@@ -11562,25 +12935,70 @@ class $0f35678ae26800e3$export$be1ca41262ce011e extends (0, $2r9I1.LitElement) {
         });
     }
 }
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $0f35678ae26800e3$export$be1ca41262ce011e.prototype, "_config", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $0f35678ae26800e3$export$be1ca41262ce011e.prototype, "_currentTab", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $0f35678ae26800e3$export$be1ca41262ce011e.prototype, "_showLeftScroll", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $0f35678ae26800e3$export$be1ca41262ce011e.prototype, "_showRightScroll", void 0);
-(0, $evAes.__decorate)([
+(0, $2QgUB.__decorate)([
     (0, $lYE5o.state)()
 ], $0f35678ae26800e3$export$be1ca41262ce011e.prototype, "_subElementEditorConfig", void 0);
+(0, $2QgUB.__decorate)([
+    (0, $lYE5o.state)()
+], $0f35678ae26800e3$export$be1ca41262ce011e.prototype, "_debugMenuUnlocked", void 0);
+
+
+
+
+const $e8d2a89e60068f3e$export$eef4717271055433 = (hass, entityId)=>{
+    const entity = (0, $370eb512b0573832$export$fcf7c33d7fd02301)(hass.entities, entityId);
+    if (!entity) return null;
+    const device = entity.device_id ? (0, $62a596c6a9bc2e04$export$30c823bc834d6ab4)(hass.devices, entity.device_id) : undefined;
+    var _entity_area_id;
+    const area = (_entity_area_id = entity.area_id) !== null && _entity_area_id !== void 0 ? _entity_area_id : device === null || device === void 0 ? void 0 : device.area_id;
+    if (!area) return null;
+    return [
+        {
+            label: 'Room summary',
+            config: {
+                type: 'custom:room-summary-card',
+                area: area
+            }
+        },
+        {
+            label: 'Room summary with featured entity',
+            config: {
+                type: 'custom:room-summary-card',
+                area: area,
+                entity: entityId
+            }
+        }
+    ];
+};
+
+
+var $1e8946f92a148373$exports = {};
+"use strict";
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/data/lovelace_custom_cards.ts
+ */ Object.defineProperty($1e8946f92a148373$exports, "__esModule", {
+    value: true
+});
+$1e8946f92a148373$exports.customCards = void 0;
+const $1e8946f92a148373$var$customCardsWindow = globalThis;
+if (!('customCards' in $1e8946f92a148373$var$customCardsWindow)) $1e8946f92a148373$var$customCardsWindow.customCards = [];
+$1e8946f92a148373$exports.customCards = $1e8946f92a148373$var$customCardsWindow.customCards;
 
 
 var $649c526c16197344$exports = {};
-$649c526c16197344$exports = JSON.parse("{\"name\":\"room-summary-card\",\"version\":\"0.66.0\",\"author\":\"Patrick Masters\",\"license\":\"ISC\",\"description\":\"Custom card Home Assistant which can show a summary of room entities.\",\"source\":\"src/index.ts\",\"module\":\"dist/room-summary-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"format\":\"prettier --write .\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc npm run test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"test:e2e\":\"playwright test\",\"test:e2e:auth\":\"source .env && npx playwright codegen --save-storage=$PLAYWRIGHT_HA_STORAGE_STATE $PLAYWRIGHT_HA_ORIGIN\",\"update\":\"npx npm-check-updates -u && yarn install\"},\"devDependencies\":{\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.16.4\",\"@playwright/test\":\"^1.51.0\",\"@testing-library/dom\":\"^10.4.1\",\"@trivago/prettier-plugin-sort-imports\":\"^6.0.2\",\"@types/chai\":\"^5.2.3\",\"@types/jsdom\":\"^28.0.1\",\"@types/mocha\":\"^10.0.10\",\"@types/sinon\":\"^21.0.1\",\"chai\":\"^6.2.2\",\"jsdom\":\"^29.1.1\",\"mocha\":\"^11.7.5\",\"nyc\":\"^17.1.0\",\"parcel\":\"^2.16.4\",\"prettier\":\"3.8.3\",\"prettier-plugin-organize-imports\":\"^4.3.0\",\"sinon\":\"^21.1.2\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^6.0.3\"},\"dependencies\":{\"@lit/task\":\"^1.0.3\",\"async-memoize-one\":\"^1.2.1\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.3.2\",\"memoize-one\":\"^6.0.0\"}}");
+$649c526c16197344$exports = JSON.parse("{\"name\":\"room-summary-card\",\"version\":\"2.0.0\",\"author\":{\"name\":\"Patrick Masters\",\"url\":\"https://curiouscat.consulting/projects/ha-room-summary-card?utm_source=github-room-summary-card&utm_medium=package-metadata&utm_campaign=oss-presence&utm_content=author-url\"},\"license\":\"ISC\",\"prettier\":\"@homeassistant-extras/config/prettier\",\"description\":\"Custom card Home Assistant which can show a summary of room entities.\",\"homepage\":\"https://homeassistant-extras.github.io/room-summary-card/\",\"repository\":{\"type\":\"git\",\"url\":\"https://github.com/homeassistant-extras/room-summary-card.git\"},\"bugs\":{\"url\":\"https://github.com/homeassistant-extras/room-summary-card/issues\"},\"source\":\"src/index.ts\",\"module\":\"dist/room-summary-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"@parcel/resolver-default\":{\"packageExports\":true},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"lint\":\"eslint .\",\"lint:fix\":\"eslint . --fix\",\"format\":\"prettier --write .\",\"pass\":\"yarn format && yarn typecheck && yarn lint && yarn test\",\"typecheck\":\"tsc --noEmit && tsc -p tsconfig.test.json --noEmit\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc yarn test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"test:e2e\":\"playwright test\",\"test:e2e:auth\":\"source .env && npx playwright codegen --save-storage=$PLAYWRIGHT_HA_STORAGE_STATE $PLAYWRIGHT_HA_ORIGIN\",\"update\":\"npx npm-check-updates -u && yarn install\"},\"devDependencies\":{\"@eslint/js\":\"^10.0.1\",\"@homeassistant-extras/config\":\"^0.3.1\",\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.16.4\",\"@playwright/test\":\"^1.61.1\",\"@testing-library/dom\":\"^10.4.1\",\"@trivago/prettier-plugin-sort-imports\":\"^6.0.2\",\"@types/chai\":\"^5.2.3\",\"@types/jsdom\":\"^28.0.3\",\"@types/mocha\":\"^10.0.10\",\"@types/node\":\"^26.1.1\",\"@types/sinon\":\"^22.0.0\",\"chai\":\"^6.2.2\",\"eslint\":\"^10.7.0\",\"eslint-plugin-lit\":\"^2.3.1\",\"eslint-plugin-wc\":\"^3.1.0\",\"globals\":\"^17.7.0\",\"jsdom\":\"^29.1.1\",\"mocha\":\"^11.7.6\",\"nyc\":\"^18.0.0\",\"parcel\":\"^2.16.4\",\"prettier\":\"3.9.5\",\"prettier-plugin-organize-imports\":\"^4.3.0\",\"sinon\":\"^22.0.0\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^6.0.3\",\"typescript-eslint\":\"^8.64.0\"},\"dependencies\":{\"@homeassistant-extras/hass\":\"^0.6.0\",\"@lit/task\":\"^1.0.3\",\"async-memoize-one\":\"^1.2.1\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.3.3\",\"memoize-one\":\"^6.0.0\"}}");
 
 
 // Register the custom element with the browser
@@ -11597,10 +13015,8 @@ customElements.define('room-summary-states-row-editor', (0, $68ce0c44dd114f11$ex
 customElements.define('room-summary-thresholds-row-editor', (0, $460e8ac2e6479550$export$b79a6ddbd7dc2198));
 customElements.define('room-summary-badge-row-editor', (0, $f0a2b09abb3b359a$export$fe6c0dc6457f5df9));
 customElements.define('room-summary-sub-element-editor', (0, $ffd7d578a1e62621$export$ddca213b44fe1587));
-// Ensure the customCards array exists on the window object
-globalThis.customCards = globalThis.customCards || [];
 // Register the card with Home Assistant's custom card registry
-globalThis.customCards.push({
+(0, $1e8946f92a148373$exports.customCards) === null || (0, $1e8946f92a148373$exports.customCards) === void 0 ? void 0 : (0, $1e8946f92a148373$exports.customCards).push({
     // Unique identifier for the card type
     type: 'room-summary-card',
     // Display name in the UI
@@ -11610,7 +13026,9 @@ globalThis.customCards.push({
     // Show a preview of the card in the UI
     preview: true,
     // URL for the card's documentation
-    documentationURL: 'https://github.com/homeassistant-extras/room-summary-card'
+    documentationURL: 'https://github.com/homeassistant-extras/room-summary-card',
+    getEntitySuggestion: // Card-picker entity suggestion hook (Home Assistant 2026.6+)
+    $e8d2a89e60068f3e$export$eef4717271055433
 });
 console.info(`%c\u{1F431} Poat's Tools: room-summary-card - ${(0, $649c526c16197344$exports.version)}`, 'color: #CFC493;');
 

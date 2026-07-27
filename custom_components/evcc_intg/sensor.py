@@ -124,7 +124,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                     key=f"{lp_id_addon}_{the_key}" if not patch_keys else f"{lp_id_addon}_{the_key}_{a_stub.json_idx[0]}",
                     translation_key=the_key if not patch_keys else f"{the_key}_{a_stub.json_idx[0]}",
                     name_addon=lp_name_addon if multi_loadpoint_config else None,
-                    evcc_config_id=a_lp_key,
                     icon=a_stub.icon,
                     device_class=SensorDeviceClass.TEMPERATURE if force_celsius else a_stub.device_class,
                     unit_of_measurement=UnitOfTemperature.CELSIUS if force_celsius else a_stub.unit_of_measurement,
@@ -184,7 +183,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                 tag=a_stub.tag,
                 key=f"{veh_id_addon}_{the_key}" if not patch_keys else f"{veh_id_addon}_{the_key}_{a_stub.json_idx[0]}",
                 translation_key=the_key if not patch_keys else f"{the_key}_{a_stub.json_idx[0]}",
-                evcc_config_id=a_vehicle_key,
+                evcc_internal_id=a_vehicle_key,
                 name_addon=veh_name_addon if multi_vehicle_config else None,
                 icon=a_stub.icon,
                 device_class=a_stub.device_class,
@@ -260,7 +259,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
         for a_meter_key in meter_data:
             # we MUST ensure that the meter_id_addon is a valid HA entity-id
             # (at least 'meter_id_addon' will become part of an entity-id)
-            meter_id_addon = camel_to_snake(a_meter_key).replace(".", "_")
+            meter_id_addon = camel_to_snake(a_meter_key).replace(".", "_").replace(":", "_")
             meter_name_addon = a_meter_key
 
             for a_stub in SENSOR_ENTITIES_PER_METER:
@@ -274,7 +273,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                     tag=a_stub.tag,
                     key=f"{meter_id_addon}_{the_key}" if not patch_keys else f"{meter_id_addon}_{the_key}_{a_stub.json_idx[0]}",
                     translation_key=the_key if not patch_keys else f"{the_key}_{a_stub.json_idx[0]}",
-                    evcc_config_id=a_meter_key,
+                    evcc_internal_id=a_meter_key,
                     name_addon=meter_name_addon,
                     icon=a_stub.icon,
                     device_class=a_stub.device_class,
@@ -295,7 +294,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                 entities.append(entity)
                 entries_to_check[entity.entity_id] = {
                     "tag": description.tag,
-                    "evcc_config_id": description.evcc_config_id,
+                    "evcc_internal_id": description.evcc_internal_id,
                     "description_key": description.key
                 }
 
@@ -341,7 +340,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
             if registry is not None:
                 for a_entity_id in entries_to_check:
                     a_entity_data = entries_to_check[a_entity_id]
-                    value = coordinator.read_tag_configuration(a_entity_data["tag"], a_entity_data["evcc_config_id"])
+                    value = coordinator.read_tag_configuration(a_entity_data["tag"], a_entity_data["evcc_internal_id"])
                     #_LOGGER.debug(f"_check_for_entities_to_enabled(): {a_entity_data["description_key"]}: {value}")
                     entry = registry.async_get(a_entity_id)
                     if entry is not None:
@@ -379,16 +378,27 @@ def compress_general(data, time_key:str, value_key:str):
                 "deltas_in_minutes": [],
                 "values": []}
 
-    # Convert the timestamps to UTC and prepare the output
-    start_timestamp_utc = datetime.fromisoformat(data[0][time_key]).astimezone(timezone.utc).isoformat()
-    values = [round(entry[value_key], 4) if not float(entry[value_key]).is_integer() else entry[value_key] for entry in data]
-    deltas = []
-    for i in range(1, len(data)):
-        # Calculate time difference in minutes
-        ts_current = datetime.fromisoformat(data[i][time_key]).astimezone(timezone.utc)
-        ts_previous = datetime.fromisoformat(data[i - 1][time_key]).astimezone(timezone.utc)
-        delta = int((ts_current - ts_previous).total_seconds() // 60.0)
-        deltas.append(delta)
+    start_value = data[0][time_key]
+    parse_from_RFC3339 = None
+    if isinstance(start_value, (int, float, Number)):
+        parse_from_RFC3339 = False
+    elif isinstance(start_value, str):
+        parse_from_RFC3339 = True
+    else:
+        _LOGGER.debug(f"Unsupported time format: for '{start_value}' {type(start_value).__name__}")
+
+    if parse_from_RFC3339 is not None:
+        # Convert the timestamps to UTC and prepare the output
+        dt_obj = datetime.fromisoformat(start_value).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(start_value, tz=timezone.utc)
+        start_timestamp_utc = dt_obj.isoformat()
+        values = [round(entry[value_key], 4) if not float(entry[value_key]).is_integer() else entry[value_key] for entry in data]
+        deltas = []
+        for i in range(1, len(data)):
+            # Calculate time difference in minutes
+            ts_current = datetime.fromisoformat(data[i][time_key]).astimezone(timezone.utc) if parse_from_RFC3339 else data[i][time_key]
+            ts_previous = datetime.fromisoformat(data[i - 1][time_key]).astimezone(timezone.utc) if parse_from_RFC3339 else data[i - 1][time_key]
+            delta = int((ts_current - ts_previous).total_seconds() // 60.0)
+            deltas.append(delta)
 
     # {%set json_data=state_attr('sensor.evcc_forecast_grid', 'rates')%}
     # {% set total_minutes_since_start = (( now() - strptime(json_data['start_utc'], '%Y-%m-%dT%H:%M:%S%z')).total_seconds() // 60)|int %}
@@ -546,33 +556,55 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                 self._last_calculated_key = a_key
                 for a_entry in data_list:
                     if "start" in a_entry and "end" in a_entry:
-                        start_dt = datetime.fromisoformat(a_entry["start"]).astimezone(timezone.utc)
-                        end_dt = datetime.fromisoformat(a_entry["end"]).astimezone(timezone.utc)
-                        if start_dt < current_time < end_dt:
-                            if "val" in a_entry:
-                                self._last_calculated_value = a_entry["val"]
-                                break
-                            elif "value" in a_entry:
-                                self._last_calculated_value = a_entry["value"]
-                                break
-                            elif "price" in a_entry:
-                                self._last_calculated_value = a_entry["price"]
-                                break
+                        start_entry = a_entry["start"]
+                        end_entry = a_entry["end"]
+
+                        parse_from_RFC3339 = None
+                        if isinstance(start_entry, (int, float, Number)):
+                            parse_from_RFC3339 = False
+                        elif isinstance(start_entry, str):
+                            parse_from_RFC3339 = True
+                        else:
+                            _LOGGER.error(f"Invalid start_entry type {ts_entry} {type(ts_entry).__name__}")
+
+                        if parse_from_RFC3339 is not None:
+                            start_dt = datetime.fromisoformat(start_entry).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(start_entry, tz=timezone.utc)
+                            end_dt = datetime.fromisoformat(end_entry).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(end_entry, tz=timezone.utc)
+                            if start_dt < current_time < end_dt:
+                                if "val" in a_entry:
+                                    self._last_calculated_value = a_entry["val"]
+                                    break
+                                elif "value" in a_entry:
+                                    self._last_calculated_value = a_entry["value"]
+                                    break
+                                elif "price" in a_entry:
+                                    self._last_calculated_value = a_entry["price"]
+                                    break
 
                     elif "ts" in a_entry:
-                        timestamp_dt = datetime.fromisoformat(a_entry["ts"]).astimezone(timezone.utc)
-                        if (timestamp_dt.day == current_time.day and
-                                timestamp_dt.hour == current_time.hour and
-                                int(timestamp_dt.minute // 15) == int(current_time.minute // 15)
-                        ):
-                            if "val" in a_entry:
-                                self._last_calculated_value = a_entry["val"]
-                                break
-                            elif "value" in a_entry:
-                                self._last_calculated_value = a_entry["value"]
-                                break
-                            elif "price" in a_entry:
-                                self._last_calculated_value = a_entry["price"]
+                        ts_entry = a_entry["ts"]
+                        parse_from_RFC3339 = None
+                        if isinstance(ts_entry, (int, float, Number)):
+                            parse_from_RFC3339 = False
+                        elif isinstance(ts_entry, str):
+                            parse_from_RFC3339 = True
+                        else:
+                            _LOGGER.error(f"Invalid ts_entry type {ts_entry} {type(ts_entry).__name__}")
+
+                        if parse_from_RFC3339 is not None:
+                            timestamp_dt = datetime.fromisoformat(ts_entry).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(ts_entry, tz=timezone.utc)
+                            if (timestamp_dt.day == current_time.day and
+                                    timestamp_dt.hour == current_time.hour and
+                                    int(timestamp_dt.minute // 15) == int(current_time.minute // 15)
+                            ):
+                                if "val" in a_entry:
+                                    self._last_calculated_value = a_entry["val"]
+                                    break
+                                elif "value" in a_entry:
+                                    self._last_calculated_value = a_entry["value"]
+                                    break
+                                elif "price" in a_entry:
+                                    self._last_calculated_value = a_entry["price"]
 
             return self._last_calculated_value
         return None
@@ -606,46 +638,21 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                 _LOGGER.debug(f"no tariff data found for {self.tag}")
                 return None
 
-        if self.tag.type == EP_TYPE.EVCCCONF:
-            # for the entities that read the data from the CONFIGURATION, we need
-            # some special handling...
-            if self.entity_description.evcc_config_id is None:
-                return None
-            try:
-                value_from_config = self.coordinator.read_tag_configuration(self.tag, self.entity_description.evcc_config_id)
-                if value_from_config is not None:
-                    if hasattr(self.entity_description, "json_idx") and self.entity_description.json_idx is not None:
-                        for idx, key in enumerate(self.entity_description.json_idx):
-                            if isinstance(value_from_config, (list, dict)):
-                                if isinstance(key, int) and len(value_from_config) > key:
-                                    value_from_config = value_from_config[key]
-                                elif key in value_from_config:
-                                    value_from_config = value_from_config[key]
-                            else:
-                                try:
-                                    value_from_config = value_from_config[key]
-                                except (IndexError, KeyError, TypeError):
-                                    _LOGGER.info(f"native_value(): index {idx+1} ({key}) not found in {value_from_config}")
-                                    value_from_config = None
-                                    break
-
-                    # special handling for odometers...
-                    if self.entity_description.ignore_zero:
-                        isZeroVal = value_from_config is None or value_from_config == "unknown" or value_from_config <= 0.1
-
-                        if isZeroVal and self._previous_float_value is not None and self._previous_float_value > 0:
-                            value_from_config = self._previous_float_value
-                        elif not isZeroVal and value_from_config > 0:
-                            self._previous_float_value = value_from_config
-
-                return value_from_config
-
-            except BaseException as exc:
-                _LOGGER.error(f"Error reading CONFIGURATION tag for {self.entity_id}: {type(exc).__name__} - {exc}")
-                return None
-
         try:
-            value = self.coordinator.read_tag(self.tag, self.lp_idx)
+            value = None
+            if self.tag.type == EP_TYPE.EVCCCONF:
+                # for the entities that read the data from the CONFIGURATION, we need
+                # some special handling (since the tag is not enough to find the data
+                # in the JSON structure...)
+                if self.evcc_internal_id is None:
+                    return None
+                value = self.coordinator.read_tag_configuration(self.tag, self.evcc_internal_id)
+
+            else:
+                # for special vehicle sensors, we already provide a vehicle_id, so the tag reading code
+                # can use the 'evcc_internal_id'
+                value = self.coordinator.read_tag(self.tag, self.lp_idx, self.evcc_internal_id)
+
             if hasattr(self.entity_description, "json_idx") and self.entity_description.json_idx is not None:
                 for idx, key in enumerate(self.entity_description.json_idx):
                     if isinstance(value, (list, dict)):
@@ -693,10 +700,14 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                     # self.entity_description.lookup values are always 'strings' - so there we should not
                     # have an additional 'factor'
                     if self.entity_description.factor is not None:
-                        value = float(value)/self.entity_description.factor
+                        try:
+                            value = float(value)/self.entity_description.factor
+                        except (TypeError, ValueError):
+                            _LOGGER.debug(f"failed to apply factor {self.entity_description.factor} to value '{value}' for {self._attr_translation_key}")
+                            value = None
 
         except (IndexError, ValueError, TypeError, KeyError) as err:
-            _LOGGER.debug(f"tag: {self.tag} (lp_idx: '{self.lp_idx}') (value: '{value}') caused {err}")
+            _LOGGER.debug(f"tag: {self.tag} (lp_idx: '{self.lp_idx}') (value: '{value}') caused {type(err).__name__} - {err}")
             value = None
 
 
@@ -711,12 +722,16 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                 if self._previous_float_value is not None:
                     return self._previous_float_value
             else:
-                a_float_value = float(value)
-                if self._previous_float_value is not None and a_float_value < self._previous_float_value:
-                    _LOGGER.debug(f"prev>new for key {self._attr_translation_key} [prev: '{self._previous_float_value}' new: '{a_float_value}']")
-                    return self._previous_float_value
-                else:
-                    self._previous_float_value = a_float_value
+                try:
+                    a_float_value = float(value)
+                    if self._previous_float_value is not None and a_float_value < self._previous_float_value:
+                        _LOGGER.debug(f"prev>new for key {self._attr_translation_key} [prev: '{self._previous_float_value}' new: '{a_float_value}']")
+                        return self._previous_float_value
+                    else:
+                        self._previous_float_value = a_float_value
+
+                except (TypeError, ValueError):
+                    _LOGGER.debug(f"failed to convert value '{value}' for {self._attr_translation_key} to float in CHARGETOTALIMPORT")
 
         # make sure that we only return values > 0
         if self.entity_description.ignore_zero:

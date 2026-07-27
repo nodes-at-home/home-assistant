@@ -1,10 +1,8 @@
 smokedetector_check:
-  fields:
-    entity_id:
-      example: "binary_sensor.smokedetector_living_room"
-      required: true
-      selector:
-        text:
+  target:
+    entity:
+      integration: bosch_shc
+      domain: binary_sensor
 
 trigger_scenario:
   fields:
@@ -24,6 +22,7 @@ trigger_rawscan:
     title:
       example: "shc012345"
       required: false
+      description: "Optional. The SHC controller name (hostname). Leave empty to use the first configured SHC. Find it in HA under Settings → Devices & Services → Bosch SHC (the entry title), or in the Bosch Smart Home app under Smart Home Controller settings."
       selector:
         text:
     command:
@@ -42,14 +41,31 @@ trigger_rawscan:
 
 
 smokedetector_alarmstate:
+  target:
+    entity:
+      integration: bosch_shc
+      domain: binary_sensor
   fields:
-    entity_id:
-      example: "binary_sensor.smokedetector_living_room"
-      required: true
-      selector:
-        text:
     command:
       example: "CUSTOM_COMMAND"
       required: true
+      selector:
+        text:
+
+export_zigbee_topology:
+  fields:
+    title:
+      example: "shc012345"
+      required: false
+      description: "Optional. The SHC controller name (hostname). Leave empty to use the first configured SHC. Find it in HA under Settings → Devices & Services → Bosch SHC (the entry title), or in the Bosch Smart Home app under Smart Home Controller settings."
+      selector:
+        text:
+
+refresh_zigbee_routing:
+  fields:
+    title:
+      example: "shc012345"
+      required: false
+      description: "Optional. The SHC controller name (hostname). Leave empty to use the first configured SHC. Find it in HA under Settings → Devices & Services → Bosch SHC (the entry title), or in the Bosch Smart Home app under Smart Home Controller settings."
       selector:
         text:

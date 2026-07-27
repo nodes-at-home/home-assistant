@@ -40,6 +40,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 static_5sec_timeout: Final = ClientTimeout(total=5)
 static_30sec_timeout: Final = ClientTimeout(total=30)
 RAW_CLIENT_RESPONSE_KEY = "aiohttp.ClientResponse"
+ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW = f"{ADDITIONAL_ENDPOINTS_DATA_SESSIONS}@@@{SESSIONS_KEY_RAW}"
 
 async def _do_request(method: Callable, return_raw_client_response:bool=False) -> dict:
     try:
@@ -106,10 +107,11 @@ async def _do_request(method: Callable, return_raw_client_response:bool=False) -
             return {}
 
     except ClientError as exception:
-        _LOGGER.warning(f"_do_request() cause of ClientConnectorError: {exception}")
+        _LOGGER.info(f"_do_request() cause of ClientConnectorError: {exception}")
+    except asyncio.TimeoutError as timeout_err:
+        _LOGGER.info(f"_do_request() Timeout!!!: {type(timeout_err).__name__} - {timeout_err}", stack_info=True)
     except Exception as other:
-        _LOGGER.warning(f"_do_request() unexpected: {type(other).__name__} - {other}")
-
+        _LOGGER.warning(f"_do_request() unexpected: {type(other).__name__} - {other}", stack_info=True)
 
 @staticmethod
 def calculate_session_sums(sessions_resp, json_resp: dict):
@@ -229,11 +231,17 @@ class EvccApiBridge:
 
         self._TARIFF_LAST_UPDATE_QUARTER_HOUR = -1
         self._SESSIONS_LAST_UPDATE_HOUR = -1
-        self._CONFIG_LAST_UPDATE = -1
-        if self.coordinator is not None and hasattr(self.coordinator, '_update_interval_in_seconds_from_config_entry'):
-            self._CONFIG_UPDATE_INTERVAL_IN_SECONDS = self.coordinator._update_interval_in_seconds_from_config_entry
+        self._CONFIG_VEHICLE_LAST_UPDATE = -1
+        self._CONFIG_METER_LAST_UPDATE = -1
+        if self.coordinator is not None and hasattr(self.coordinator, '_request_ext_vehicle_data_interval'):
+            self._CONFIG_VEHICLE_UPDATE_INTERVAL_IN_SECONDS = self.coordinator._request_ext_vehicle_data_interval
         else:
-            self._CONFIG_UPDATE_INTERVAL_IN_SECONDS = 60 * 15 # the default update will be every 15 minutes
+            self._CONFIG_VEHICLE_UPDATE_INTERVAL_IN_SECONDS = 60 * 60
+
+        if self.coordinator is not None and hasattr(self.coordinator, '_request_ext_meter_data_interval'):
+            self._CONFIG_METER_UPDATE_INTERVAL_IN_SECONDS = self.coordinator._request_ext_meter_data_interval
+        else:
+            self._CONFIG_METER_UPDATE_INTERVAL_IN_SECONDS = 60 * 60
 
         self._data = {}
 
@@ -270,7 +278,8 @@ class EvccApiBridge:
     def clear_data(self, clear_evcc_data: bool = True):
         self._TARIFF_LAST_UPDATE_QUARTER_HOUR = -1
         self._SESSIONS_LAST_UPDATE_HOUR = -1
-        self._CONFIG_LAST_UPDATE = -1
+        self._CONFIG_VEHICLE_LAST_UPDATE = -1
+        self._CONFIG_METER_LAST_UPDATE = -1
         self._ws_LAST_UPDATE = -1
         self._ws_LAST_NEW_DATA_NOTIFY = -1
         if clear_evcc_data:
@@ -298,7 +307,8 @@ class EvccApiBridge:
                             if self._data is None or len(self._data) == 0:
                                 self._TARIFF_LAST_UPDATE_QUARTER_HOUR = -1
                                 self._SESSIONS_LAST_UPDATE_HOUR = -1
-                                self._CONFIG_LAST_UPDATE = -1
+                                self._CONFIG_VEHICLE_LAST_UPDATE = -1
+                                self._CONFIG_METER_LAST_UPDATE = -1
                                 await self.read_all_data()
                         except:
                             _LOGGER.info(f"could not read initial data from evcc@{self.host} - ignoring")
@@ -319,6 +329,24 @@ class EvccApiBridge:
                                                 if len(self._data[domain]) > idx:
                                                     if not sub_key in self._data[domain][idx]:
                                                         _LOGGER.debug(f"adding '{sub_key}' to {domain}[{idx}]")
+
+                                                    # a loadpoint 'charging' transition true->false means a charging
+                                                    # session has just finished - evcc creates the session record now,
+                                                    # so we invalidate our session update-window: the additional-data
+                                                    # task launched after this loop will then refetch /api/sessions
+                                                    if domain == JSONKEY_LOADPOINTS:
+                                                        # # for integrated devices we must monitor the 'CONNECTED' key...
+                                                        # is_integrated = self._data[domain][idx].get("chargerFeatureIntegratedDevice", False)
+                                                        # is_heating = self._data[domain][idx].get("chargerFeatureHeating", False)
+                                                        # if not is_heating and is_integrated:
+                                                        #     key_to_check = Tag.CONNECTED.json_key
+                                                        # else:
+                                                        #     key_to_check = Tag.CHARGING.json_key
+                                                        if sub_key == Tag.CHARGING.json_key \
+                                                            and self._data[domain][idx].get(sub_key) is True and value is False:
+                                                            _LOGGER.debug(f"loadpoint[{idx}] '{sub_key}' changed from TRUE to FALSE -> force a session refresh")
+                                                            self._SESSIONS_LAST_UPDATE_HOUR = -1
+
                                                     self._data[domain][idx][sub_key] = value
                                                 else:
                                                     # we need to add a new entry to the list... - well
@@ -463,38 +491,37 @@ class EvccApiBridge:
 
         # additional sessions endpoint data
         if request_all or request_sessions:
-            # update session data twice per hour:
-            #   window A → minutes 55–59 (5 minutes before the full hour)
-            #   window B → minutes 00–54 (start of the new hour)
-            if current_minute >= 55:
-                _sessions_slot = current_hour * 100 + 55     # e.g. 1455 at 14:55–14:59
-            else:
-                _sessions_slot = current_hour * 100          # e.g. 1400 at 14:00–14:54
-
-            _sessions_should_fetch = (
-                self._SESSIONS_LAST_UPDATE_HOUR == -1        # first run: fetch immediately
-                or (self._SESSIONS_LAST_UPDATE_HOUR != _sessions_slot)
-            )
-            if _sessions_should_fetch:
+            if self._SESSIONS_LAST_UPDATE_HOUR != current_hour:
                 _LOGGER.debug(f"going to request 'sessions' data from evcc@{self.host}")
                 json_resp, data_was_fetched = await self.read_sessions_data(json_resp)
                 if data_was_fetched:
                     self._data_coordinator_update_needed = True
-                    self._SESSIONS_LAST_UPDATE_HOUR = _sessions_slot
+                    self._SESSIONS_LAST_UPDATE_HOUR = current_hour
             else:
                 # we must copy the previous existing data to the new json_resp!
                 if self._data is not None and ADDITIONAL_ENDPOINTS_DATA_SESSIONS in self._data:
                     json_resp[ADDITIONAL_ENDPOINTS_DATA_SESSIONS] = self._data[ADDITIONAL_ENDPOINTS_DATA_SESSIONS]
+                if self._data is not None and ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW in self._data:
+                    json_resp[ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW] = self._data[ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW]
+
 
         # additional configuration endpoint data
         if request_all or request_config:
             now_time = time()
-            if self._CONFIG_LAST_UPDATE + self._CONFIG_UPDATE_INTERVAL_IN_SECONDS <= time():
-                _LOGGER.debug(f"going to request 'configuration' data from evcc@{self.host}")
-                json_resp, data_was_fetched = await self.read_config_data(json_resp, log_requests=log_config_requests)
+            request_vehicle_data = self._request_ext_vehicle_data and self._CONFIG_VEHICLE_LAST_UPDATE + self._CONFIG_VEHICLE_UPDATE_INTERVAL_IN_SECONDS <= now_time
+            request_meter_data = self._request_ext_meter_data and self._CONFIG_METER_LAST_UPDATE + self._CONFIG_METER_UPDATE_INTERVAL_IN_SECONDS <= now_time
+            if request_vehicle_data or request_meter_data:
+                _LOGGER.debug(f"going to request 'configuration' data vehicle: {request_vehicle_data}, meter: {request_meter_data} from evcc@{self.host}")
+                json_resp, data_was_fetched = await self.read_config_data(json_resp,
+                                                                          request_vehicle_data=request_vehicle_data,
+                                                                          request_meter_data=request_meter_data,
+                                                                          log_requests=log_config_requests)
                 if data_was_fetched:
                     self._data_coordinator_update_needed = True
-                    self._CONFIG_LAST_UPDATE = now_time
+                    if request_vehicle_data:
+                        self._CONFIG_VEHICLE_LAST_UPDATE = now_time
+                    if request_meter_data:
+                        self._CONFIG_METER_LAST_UPDATE = now_time
             else:
                 # we must copy the previous existing data to the new json_resp!
                 if self._data is not None and ADDITIONAL_ENDPOINTS_DATA_EVCCCONF in self._data:
@@ -508,7 +535,7 @@ class EvccApiBridge:
         _LOGGER.debug(f"GET request: {req}")
         r_json = await _do_request(method=self.web_session.get(url=req, ssl=False, timeout=static_5sec_timeout))
 
-        if r_json is not None and ((hasattr(r_json, "len") and len(r_json) > 0) or len(str(r_json).strip()) > 0):
+        if r_json:
             return r_json
         else:
             _LOGGER.warning(f"could not read any json data from evcc@{self.host} - read: '{r_json}' -> will return an empty dict!")
@@ -539,15 +566,19 @@ class EvccApiBridge:
         session_data_was_fetched = False
         if ADDITIONAL_ENDPOINTS_DATA_SESSIONS not in json_resp:
             json_resp[ADDITIONAL_ENDPOINTS_DATA_SESSIONS] = {}
+            json_resp[ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW] = {}
 
         try:
             req = f"{self.host}/api/{EP_TYPE.SESSIONS.value}"
             _LOGGER.debug(f"GET request: {req}")
             sessions_resp = await _do_request(method=self.web_session.get(url=req, ssl=False, timeout=static_5sec_timeout))
             if sessions_resp is not None and len(sessions_resp) > 0:
+                # raw data will exceed maximum size of 16384 bytes - so we can't RETURN THIS to the
+                # integration!!! (but we store it in our data cache)
+                json_resp[ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW] = sessions_resp
+
+                # but for the "charging sessions" sensor we will store the length (number of sessions)
                 json_resp[ADDITIONAL_ENDPOINTS_DATA_SESSIONS][SESSIONS_KEY_TOTAL] = len(sessions_resp)
-                # raw data will exceed maximum size of 16384 bytes - so we can't store this
-                # json_resp[ADDITIONAL_ENDPOINTS_DATA_SESSIONS][SESSIONS_KEY_RAW] = sessions_resp
 
                 # do the math stuff...
                 calculate_session_sums(sessions_resp, json_resp)
@@ -558,7 +589,7 @@ class EvccApiBridge:
 
         return json_resp, session_data_was_fetched
 
-    async def read_config_data(self, json_resp: dict, log_requests:bool=False):
+    async def read_config_data(self, json_resp: dict, request_vehicle_data:bool=False, request_meter_data:bool=False, log_requests:bool=False):
         config_data_was_fetched = False
         if await self.ensure_session_is_authorized():
             if ADDITIONAL_ENDPOINTS_DATA_EVCCCONF not in json_resp:
@@ -571,12 +602,27 @@ class EvccApiBridge:
             a_config = json_resp[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF][EVCCCONF_KEY_CONFIG]
 
             for a_device_type, value_list in a_config.items():
-                if a_device_type == EVCCCONF_DEVICE_TYPES.VEHICLE.value and not self._request_ext_vehicle_data:
-                    _LOGGER.debug(f"skipping vehicle data since 'request_ext_vehicle_data' is set to False")
-                    continue
+                # first we check if we must fetch vehicle or meter data at all... and if not (either cause it's completely
+                # disabled by the user/config, or if the update interval is just not reached yet
+                just_copy_old_data_for_device_type = False
+                if a_device_type == EVCCCONF_DEVICE_TYPES.VEHICLE.value and (not request_vehicle_data or not self._request_ext_vehicle_data):
+                    _LOGGER.debug(f"skipping vehicle data since 'request_ext_vehicle_data' is set to False (or update-interval-not-reached-yet)")
+                    just_copy_old_data_for_device_type = True
 
-                if a_device_type == EVCCCONF_DEVICE_TYPES.METER.value and not self._request_ext_meter_data:
-                    _LOGGER.debug(f"skipping meter data since 'request_ext_meter_data' is set to False")
+                if a_device_type == EVCCCONF_DEVICE_TYPES.METER.value and (not request_meter_data or not self._request_ext_meter_data):
+                    _LOGGER.debug(f"skipping meter data since 'request_ext_meter_data' is set to False (or update-interval-not-reached-yet)")
+                    just_copy_old_data_for_device_type = True
+
+                if just_copy_old_data_for_device_type:
+                    # make sure that the data is initialized (this is requird, when self._data is not set (yet))
+                    if a_device_type not in json_resp[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF][EVCCCONF_KEY_DATA]:
+                        json_resp[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF][EVCCCONF_KEY_DATA][a_device_type] = {}
+
+                    if self._data is not None and ADDITIONAL_ENDPOINTS_DATA_EVCCCONF in self._data:
+                        if EVCCCONF_KEY_DATA in self._data[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF]:
+                            if a_device_type in self._data[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF][EVCCCONF_KEY_DATA]:
+                                object_to_copy = self._data[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF][EVCCCONF_KEY_DATA][a_device_type]
+                                json_resp[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF][EVCCCONF_KEY_DATA][a_device_type] = object_to_copy
                     continue
 
                 for a_device_id in value_list:
@@ -937,7 +983,8 @@ class EvccApiBridge:
 
     async def force_config_update(self):
         _LOGGER.debug(f"force_config_update(): forcing config update")
-        self._CONFIG_LAST_UPDATE = -1
+        self._CONFIG_VEHICLE_LAST_UPDATE = -1
+        self._CONFIG_METER_LAST_UPDATE = -1
         await self.read_all_data(request_all=False, request_config=True)
         if self.coordinator is not None:
             self.coordinator.async_set_updated_data(self._data)
@@ -1088,7 +1135,7 @@ class EvccApiBridge:
             _LOGGER.debug(f"POST request: {req}")
             r_json = await _do_request(method=self.web_session.post(url=req, ssl=False, timeout=static_5sec_timeout))
 
-        if r_json is not None and ((hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str))):
+        if r_json or (r_json is not None and isinstance(r_json, (dict, list))):
             return r_json
         else:
             return {"err": "no response from evcc"}
@@ -1113,14 +1160,14 @@ class EvccApiBridge:
             _LOGGER.debug(f"POST request: {req}")
             r_json = await _do_request(method=self.web_session.post(url=req, ssl=False, timeout=static_5sec_timeout))
 
-        if r_json is not None:
-            if (hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str)):
+        if r_json or (r_json is not None and isinstance(r_json, (dict, list))):
+            if (hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str, dict)):
                 r_json[write_key] = "OK"
             return r_json
         else:
             return {"err": "no response from evcc"}
 
-    async def write_tag(self, tag: Tag, value, idx_str: str = None) -> dict:
+    async def write_tag(self, tag: Tag, value, idx_str: str = None, evcc_internal_id:str = None) -> dict:
         ret = {}
         if hasattr(tag, "write_type") and tag.write_type is not None:
             final_type = tag.write_type
@@ -1134,17 +1181,20 @@ class EvccApiBridge:
             ret[tag.json_key] = await self.write_loadpoint_key(idx_str, tag.write_key, value)
 
         elif final_type == EP_TYPE.VEHICLES:
-            # before we can write something to the vehicle endpoints, we must know the vehicle_id!
-            # -> so we have to grab from the loadpoint the current vehicle!
-            if self._data is not None and len(self._data) > 0 and JSONKEY_LOADPOINTS in self._data:
-                try:
-                    int_idx = int(idx_str) - 1
-                    vehicle_id = self._data[JSONKEY_LOADPOINTS][int_idx][Tag.LP_VEHICLENAME.json_key]
-                    if vehicle_id is not None:
-                        ret[tag.json_key] = await self.write_vehicle_key(vehicle_id, tag.write_key, value)
+            if evcc_internal_id is not None:
+                ret[tag.json_key] = await self.write_vehicle_key(evcc_internal_id, tag.write_key, value)
+            else:
+                # before we can write something to the vehicle endpoints, we must know the vehicle_id!
+                # -> so we have to grab from the loadpoint the current vehicle!
+                if self._data is not None and len(self._data) > 0 and JSONKEY_LOADPOINTS in self._data:
+                    try:
+                        int_idx = int(idx_str) - 1
+                        vehicle_id = self._data[JSONKEY_LOADPOINTS][int_idx][Tag.LP_VEHICLENAME.json_key]
+                        if vehicle_id is not None:
+                            ret[tag.json_key] = await self.write_vehicle_key(vehicle_id, tag.write_key, value)
 
-                except Exception as err:
-                    _LOGGER.info(f"could not find a connected vehicle at loadpoint: {idx_str}")
+                    except Exception as err:
+                        _LOGGER.info(f"could not find a connected vehicle at loadpoint: {idx_str}")
 
         return ret
 
@@ -1165,7 +1215,7 @@ class EvccApiBridge:
             _LOGGER.debug(f"POST request: {req}")
             r_json = await _do_request(method=self.web_session.post(url=req, ssl=False, timeout=static_5sec_timeout))
 
-        if r_json is not None and ((hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str))):
+        if r_json or (r_json is not None and isinstance(r_json, (dict, list))):
             return r_json
         else:
             return {"err": "no response from evcc"}
@@ -1215,7 +1265,7 @@ class EvccApiBridge:
 
                             # 2'nd we must check if we need to write the 'plan/strategy' to the 'vehicle' or to the 'loadpoint'!
                             vehicle_id = lp_object[Tag.LP_VEHICLENAME.json_key]
-                            if vehicle_id is not None:
+                            if vehicle_id is not None and len(vehicle_id) > 0:
                                 req = f"{self.host}/api/{EP_TYPE.VEHICLES.value}/{vehicle_id}/{write_key}"
                             else:
                                 req = f"{self.host}/api/{EP_TYPE.LOADPOINTS.value}/{lp_idx_str}/{write_key}"
@@ -1226,25 +1276,31 @@ class EvccApiBridge:
                             _LOGGER.info(f"no previous 'effectivePlanStrategy' object found for loadpoint: {lp_idx_str} - {lp_object}")
 
                     except Exception as err:
-                        _LOGGER.info(f"could not find a connected vehicle at loadpoint: {lp_idx_str}")
+                        _LOGGER.info(f"could not find a connected vehicle at loadpoint: {lp_idx_str} - {type(err).__name__} - {err}")
 
-        if r_json is not None and ((hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str, dict))):
+        if r_json or (r_json is not None and isinstance(r_json, (dict, list))):
             return r_json
         else:
             return {"err": "no response from evcc"}
 
     async def write_vehicle_key(self, vehicle_id: str, write_key, value) -> dict:
-        if isinstance(value, (bool, int, float)):
-            value = str(value).lower()
+        post_data = None
+        if isinstance(value, (dict, list)):
+            post_data = value
+            _LOGGER.info(f"going to post: '{value}' to '{write_key}' to evcc-vehicle{vehicle_id}@{self.host}")
+            req = f"{self.host}/api/{EP_TYPE.VEHICLES.value}/{vehicle_id}/{write_key}"
         else:
-            value = str(value)
+            if isinstance(value, (bool, int, float)):
+                value = str(value).lower()
+            else:
+                value = str(value)
+            _LOGGER.info(f"going to write '{value}' for key '{write_key}' to evcc-vehicle{vehicle_id}@{self.host}")
+            req = f"{self.host}/api/{EP_TYPE.VEHICLES.value}/{vehicle_id}/{write_key}/{value}"
 
-        _LOGGER.info(f"going to write '{value}' for key '{write_key}' to evcc-vehicle{vehicle_id}@{self.host}")
-        req = f"{self.host}/api/{EP_TYPE.VEHICLES.value}/{vehicle_id}/{write_key}/{value}"
         _LOGGER.debug(f"POST request: {req}")
-        r_json = await _do_request(method=self.web_session.post(url=req, ssl=False, timeout=static_5sec_timeout))
+        r_json = await _do_request(method=self.web_session.post(url=req, json=post_data, ssl=False, timeout=static_5sec_timeout))
 
-        if r_json is not None and ((hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str))):
+        if r_json:
             return r_json
         else:
             return {"err": "no response from evcc"}
@@ -1263,7 +1319,7 @@ class EvccApiBridge:
                 _LOGGER.debug(f"DELETE request: {req}")
                 r_json = await _do_request(method=self.web_session.delete(url=req, ssl=False, timeout=static_5sec_timeout))
 
-            if r_json is not None and ((hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str))):
+            if r_json or (r_json is not None and isinstance(r_json, (dict, list))):
                 return r_json
             else:
                 return {"err": "no response from evcc"}
@@ -1288,7 +1344,7 @@ class EvccApiBridge:
                     _LOGGER.debug(f"DELETE request: {req}")
                     r_json = await _do_request(method=self.web_session.delete(url=req, ssl=False, timeout=static_5sec_timeout))
 
-                if r_json is not None and ((hasattr(r_json, "len") and len(r_json) > 0) or isinstance(r_json, (Number, str))):
+                if r_json or (r_json is not None and isinstance(r_json, (dict, list))):
                     return r_json
                 else:
                     return {"err": "no response from evcc"}
@@ -1296,3 +1352,93 @@ class EvccApiBridge:
             except Exception as err:
                 _LOGGER.error(f"could not write vehicle plan for vehicle: {vehicle_id}, error: {err}")
                 return {"err": f"could not write vehicle plan: {err}"}
+
+
+    ##################################################################################
+    # EVCC CARD ADDON
+    ##################################################################################
+    # the following 'evcc_card_read_*' methods serve the on-demand HA websocket-api commands
+    # (see 'evcc_card_websocket.py') - unlike 'read_tariff_data()'/'read_sessions_data()'
+    # above (which aggregate data for entities and intentionally drop large payloads)
+    # these return the raw evcc response to the caller, since the websocket connection has
+    # no 16384-byte entity-state limit
+    async def evcc_card_read_tariff(self, kind: str) -> dict:
+        # CURRENT-UPDATE-STRATEGY is to fetch the data every 15min from the evcc
+        # backend... -> this will be triggerd by the websocket message handler by
+        # calling _ws_start_async_additional_data_update_task_if_needed()
+
+        # first we check if we already have the tariff data in our storage...
+        r_json = None
+        if self._data is not None:
+            if not ADDITIONAL_ENDPOINTS_DATA_TARIFF in self._data:
+                self._data[ADDITIONAL_ENDPOINTS_DATA_TARIFF] = {}
+
+            if kind in self._data[ADDITIONAL_ENDPOINTS_DATA_TARIFF]:
+                r_json = self._data[ADDITIONAL_ENDPOINTS_DATA_TARIFF][kind]
+
+        if r_json is None:
+            # ok for whatever reason, we have not fetched the tariff data yet... could be
+            # that the `kind` is not part of the `request_tariff_keys` (or we did not
+            # fetch any tariff data yet) - make sure that we update it in our next cycle
+            if kind not in self.request_tariff_keys:
+                if not self.request_tariff_endpoints:
+                    self.request_tariff_endpoints = True
+                self.request_tariff_keys.append(kind)
+
+            # GET /api/tariff/{grid|feedin|solar|planner} -> typically {"rates": [...]}
+            req = f"{self.host}/api/{EP_TYPE.TARIFF.value}/{kind}"
+            _LOGGER.debug(f"GET request: {req}")
+            r_json = await _do_request(method=self.web_session.get(url=req, ssl=False, timeout=static_5sec_timeout))
+            if self._data is not None and r_json is not None and len(r_json) > 0:
+                self._data[ADDITIONAL_ENDPOINTS_DATA_TARIFF][kind] = r_json
+
+        return r_json if isinstance(r_json, dict) else {}
+
+    async def evcc_card_read_sessions_raw(self, year: int = None, month: int = None) -> list:
+        # CURRENT-UPDATE-STRATEGY is to fetch the session data just every hour or when the
+        # loadpoint charging attribute will switch (kudos @ mkshb (Bastian)
+        # -> this will be triggerd by the websocket message handler by
+        # calling _ws_start_async_additional_data_update_task_if_needed()
+
+        # first we check if we already have the sessions in our storage...
+        if self._data is not None and ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW in self._data:
+            r_json = self._data[ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW]
+            session_data_was_fetched = True
+
+        else:
+            if self._data is None:
+                self._data = {}
+            # read_sessions_data() is async and returns (json_resp, was_fetched) - it stores the raw
+            # list under ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW in the passed dict, so read it back
+            self._data, session_data_was_fetched = await self.read_sessions_data(self._data)
+            r_json = self._data.get(ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW)
+
+        if not session_data_was_fetched or not isinstance(r_json, list):
+            return []
+
+        if year is None and month is None:
+            return r_json
+
+        filtered = []
+        for a_session in r_json:
+            created = a_session.get("created", None)
+            if created is not None:
+                try:
+                    created_date = parser.isoparse(created)
+                    if (year is None or created_date.year == year) and (month is None or created_date.month == month):
+                        filtered.append(a_session)
+                except Exception as err:
+                    _LOGGER.info(f"read_sessions_raw(): could not parse 'created' {created} -> {type(err).__name__}: {err}")
+        return filtered
+
+
+    async def evcc_card_read_loadpoint_plan_static_preview(self, lp_idx: str, kind: str, value: str, rfc_date: str) -> dict:
+        # here we have no caching strategy... so we must 'hope' the evcc-card will not hammer
+        # requests to our bridge
+
+        # GET /api/loadpoints/{idx}/plan/static/preview/{soc|energy}/{value}/{rfc_date}
+        # read-only preview - does NOT persist the plan
+        req = f"{self.host}/api/{EP_TYPE.LOADPOINTS.value}/{lp_idx}/plan/static/preview/{kind}/{value}/{rfc_date}"
+        _LOGGER.debug(f"GET request: {req}")
+        r_json = await _do_request(method=self.web_session.get(url=req, ssl=False, timeout=static_5sec_timeout))
+        return r_json if isinstance(r_json, dict) else {}

@@ -2,16 +2,19 @@
 
 from __future__ import annotations
 
+from typing import Any, cast
+
 from boschshcpy import (
-    SHCUniversalSwitch,
+    KeypadService,
+    SHCLightControl,
     SHCMotionDetector,
+    SHCMotionDetector2,
     SHCSession,
     SHCSmokeDetectionSystem,
     SHCSmokeDetector,
+    SHCUniversalSwitch,
 )
-
 from homeassistant.components.event import (
-    ENTITY_ID_FORMAT,
     EventDeviceClass,
     EventEntity,
 )
@@ -21,22 +24,19 @@ from homeassistant.const import (
     ATTR_ID,
     ATTR_NAME,
 )
-
-from homeassistant.helpers.device_registry import DeviceEntry
-
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.device_registry import DeviceEntry, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .entity import SHCEntity
 from .const import (
-    ATTR_LAST_TIME_TRIGGERED,
-    ATTR_EVENT_TYPE,
     ATTR_EVENT_SUBTYPE,
-    DATA_SESSION,
-    DATA_SHC,
-    DOMAIN,
+    ATTR_EVENT_TYPE,
+    ATTR_LAST_TIME_TRIGGERED,
     LOGGER,
 )
+from .entity import SHCEntity, device_excluded
+
+PARALLEL_UPDATES = 1
 
 
 async def async_setup_entry(
@@ -45,11 +45,13 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the BoschSHC event entities."""
-    entities = []
-    session: SHCSession = hass.data[DOMAIN][entry.entry_id][DATA_SESSION]
+    entities: list[Any] = []
+    session: SHCSession = entry.runtime_data.session
 
     entities = []
     for switch_device in session.device_helper.universal_switches:
+        if device_excluded(switch_device, entry.options):
+            continue
         for keystate in switch_device.keystates:
             entities.append(
                 UniversalSwitchEvent(
@@ -59,6 +61,7 @@ async def async_setup_entry(
                 )
             )
 
+    # Scenarios are not room devices — never filtered by device/room exclusion.
     for scenario in session.scenarios:
         entities.append(
             SHCScenarioEvent(
@@ -69,7 +72,28 @@ async def async_setup_entry(
             )
         )
 
-    for motion_detector in session.device_helper.motion_detectors:
+    # #282: Light Control II configured as a non-switching push-button emits
+    # Keypad events the user can react to. Only create the entity when the
+    # device actually exposes a Keypad service.
+    for light_control in getattr(
+        session.device_helper, "micromodule_light_controls", []
+    ):
+        if device_excluded(light_control, entry.options):
+            continue
+        if not getattr(light_control, "has_keypad", False):
+            continue
+        entities.append(
+            LightControlButtonEvent(
+                light_control,
+                entry_id=entry.entry_id,
+            )
+        )
+
+    for motion_detector in list(session.device_helper.motion_detectors) + list(
+        session.device_helper.motion_detectors2
+    ):
+        if device_excluded(motion_detector, entry.options):
+            continue
         entities.append(
             MotionDetectorEvent(
                 device=motion_detector,
@@ -78,7 +102,9 @@ async def async_setup_entry(
         )
 
     smoke_detection_system = session.device_helper.smoke_detection_system
-    if smoke_detection_system:
+    if smoke_detection_system and not device_excluded(
+        smoke_detection_system, entry.options
+    ):
         entities.append(
             SmokeDetectionSystemEvent(
                 device=smoke_detection_system,
@@ -87,6 +113,8 @@ async def async_setup_entry(
         )
 
     for smoke_detector in session.device_helper.smoke_detectors:
+        if device_excluded(smoke_detector, entry.options):
+            continue
         entities.append(
             SmokeDetectorEvent(
                 device=smoke_detector,
@@ -97,7 +125,7 @@ async def async_setup_entry(
     async_add_entities(entities, True)
 
 
-class UniversalSwitchEvent(SHCEntity, EventEntity):
+class UniversalSwitchEvent(SHCEntity, EventEntity):  # type: ignore[misc]
     """Representation of a SHC UniversalSwitch Entity."""
 
     _attr_device_class = EventDeviceClass.BUTTON
@@ -107,11 +135,14 @@ class UniversalSwitchEvent(SHCEntity, EventEntity):
         """Initialize the Universal Switch device."""
         super().__init__(device, entry_id)
 
-        self._device = device
+        self._device: SHCUniversalSwitch = device  # type: ignore[assignment]
         self._key_id = key_id
-        self.entity_id = ENTITY_ID_FORMAT.format(f"{self._device.name}_button_{key_id}")
+        # Guard against phantom events: track the last event timestamp we fired
+        # on so a battery-level long-poll that re-delivers a stale Keypad state
+        # (same keyName, same eventTimestamp) does not trigger a duplicate event.
+        self._last_fired_timestamp: int = -1
 
-        self._attr_name = f"{self._device.name} Button {key_id}"
+        self._attr_name: str | None = f"Button {key_id}"  # type: ignore[assignment]
         self._attr_unique_id = f"{device.root_device_id}_{device.id}_{key_id}"
 
     async def async_added_to_hass(self) -> None:
@@ -122,63 +153,174 @@ class UniversalSwitchEvent(SHCEntity, EventEntity):
             if service.id == "Keypad":
                 service.register_event(self._key_id, self._event_callback)
 
+    async def async_will_remove_from_hass(self) -> None:
+        """Unregister the Keypad event callback (register_event has no public unsubscribe)."""
+        await super().async_will_remove_from_hass()
+        for service in self._device.device_services:
+            if service.id == "Keypad":
+                service._event_callbacks.pop(self._key_id, None)  # noqa: SLF001
+
     def _event_callback(self) -> None:
-        event_type = self._device.eventtype.name
+        # Issue #192: The SHC sometimes delivers a Keypad service update that
+        # piggybacks on a battery-level change, replaying the last stale keyName
+        # and eventTimestamp without a new keypress having occurred.  Guard:
+        # (1) eventtype must be a genuine button press, never None or a
+        #     SWITCH_ON/SWITCH_OFF motor event; (2) eventtimestamp must have
+        #     advanced since the last event we actually fired.
+        event_type_raw = self._device.eventtype
+        if event_type_raw is None:
+            return
+        event_type = event_type_raw.name
+        if event_type not in ["PRESS_SHORT", "PRESS_LONG", "PRESS_LONG_RELEASED"]:
+            return
+        current_ts = self._device.eventtimestamp
+        if current_ts == self._last_fired_timestamp:
+            LOGGER.debug(
+                "Skipping duplicate Keypad event for %s (ts=%s unchanged)",
+                self.entity_id,
+                current_ts,
+            )
+            return
+        self._last_fired_timestamp = current_ts
         event_attributes = {
             ATTR_DEVICE_ID: self.device_id,
             ATTR_EVENT_TYPE: event_type,
             ATTR_ID: self._device.id,
             ATTR_NAME: self._device.name,
-            ATTR_LAST_TIME_TRIGGERED: self._device.eventtimestamp,
+            ATTR_LAST_TIME_TRIGGERED: current_ts,
         }
-        if event_type in ["PRESS_SHORT", "PRESS_LONG", "PRESS_LONG_RELEASED"]:
-            try:
-                self._trigger_event(event_type, event_attributes)
-            except ValueError:
-                LOGGER.warning(
-                    "Invalid event type %s for %s", event_type, self.entity_id
-                )
-                return
+        self._dispatch_event(event_type, event_attributes)
+
+    @callback  # type: ignore[untyped-decorator]
+    def _dispatch_event(
+        self, event_type: str, event_attributes: dict[str, Any]
+    ) -> None:
+        """Dispatch the event on the event loop (thread-safe)."""
+        try:
+            self._trigger_event(event_type, event_attributes)
+        except ValueError:
+            LOGGER.warning("Invalid event type %s for %s", event_type, self.entity_id)
+            return
         self.schedule_update_ha_state()
 
 
-class SHCScenarioEvent(EventEntity):
+class LightControlButtonEvent(SHCEntity, EventEntity):  # type: ignore[misc]
+    """Wall push-button press from a Light Control II (#282)."""
+
+    _attr_device_class = EventDeviceClass.BUTTON
+    _attr_event_types = [
+        "PRESS_SHORT",
+        "PRESS_LONG",
+        "PRESS_LONG_RELEASED",
+        "SWITCH_ON",
+        "SWITCH_OFF",
+    ]
+
+    def __init__(self, device: SHCLightControl, entry_id: str) -> None:
+        """Initialize the Light Control button event entity."""
+        super().__init__(device, entry_id)
+        self._device: SHCLightControl = device  # type: ignore[assignment]
+        # Guard against phantom events: a Keypad update piggybacking on another
+        # state change can replay the last eventTimestamp (cf. #192).
+        self._last_fired_timestamp: int = -1
+        self._attr_unique_id = f"{device.root_device_id}_{device.id}_button"
+
+    async def async_added_to_hass(self) -> None:
+        """Call when entity is added to hass."""
+        await super().async_added_to_hass()
+        for service in self._device.device_services:
+            if service.id == "Keypad":
+                keypad = cast(KeypadService, service)
+                # Single-button Light Control II's keyName is not HW-confirmed,
+                # so register under every KeyState — whichever fires resolves.
+                for key_state in keypad.KeyState:
+                    keypad.register_event(key_state.value, self._event_callback)
+
+    async def async_will_remove_from_hass(self) -> None:
+        """Unregister all Keypad KeyState callbacks (register_event has no public unsubscribe)."""
+        await super().async_will_remove_from_hass()
+        for service in self._device.device_services:
+            if service.id == "Keypad":
+                keypad = cast(KeypadService, service)
+                for key_state in keypad.KeyState:
+                    keypad._event_callbacks.pop(key_state.value, None)  # noqa: SLF001
+
+    def _event_callback(self) -> None:
+        event_type_raw = self._device.eventtype
+        if event_type_raw is None:
+            return
+        event_type = event_type_raw.name
+        if event_type not in self._attr_event_types:
+            return
+        current_ts = self._device.eventtimestamp
+        if current_ts == self._last_fired_timestamp:
+            return
+        self._last_fired_timestamp = current_ts
+        event_attributes = {
+            ATTR_DEVICE_ID: self.device_id,
+            ATTR_EVENT_TYPE: event_type,
+            ATTR_ID: self._device.id,
+            ATTR_NAME: self._device.name,
+            ATTR_LAST_TIME_TRIGGERED: current_ts,
+        }
+        self._dispatch_event(event_type, event_attributes)
+
+    @callback  # type: ignore[untyped-decorator]
+    def _dispatch_event(
+        self, event_type: str, event_attributes: dict[str, Any]
+    ) -> None:
+        """Dispatch the event on the event loop (thread-safe)."""
+        try:
+            self._trigger_event(event_type, event_attributes)
+        except ValueError:
+            LOGGER.warning("Invalid event type %s for %s", event_type, self.entity_id)
+            return
+        self.schedule_update_ha_state()
+
+
+class SHCScenarioEvent(EventEntity):  # type: ignore[misc]
     """Representation of a SHC Scenario Entity."""
 
     _attr_device_class = EventDeviceClass.BUTTON
     _attr_event_types = ["SCENARIO"]
+    _attr_has_entity_name = True
 
-    def __init__(self, scenario, session, hass, entry_id: str) -> None:
+    def __init__(
+        self, scenario: Any, session: SHCSession, hass: HomeAssistant, entry_id: str
+    ) -> None:
         """Initialize the Scenario device."""
 
         self._scenario = scenario
         self._session = session
-        self.entity_id = ENTITY_ID_FORMAT.format(f"scenario_{self._scenario.name}")
 
+        # Scenario name is the feature label; HA prepends the device (controller) name.
         self._attr_name = f"{self._scenario.name} Scenario"
-        self._attr_unique_id = f"{session.information.unique_id}_{self._scenario.id}"
+        info_uid = session.information.unique_id if session.information else ""
+        self._attr_unique_id = f"{info_uid}_{self._scenario.id}"
 
-        self._shc: DeviceEntry = hass.data[DOMAIN][entry_id][DATA_SHC]
+        self._shc: DeviceEntry = hass.config_entries.async_get_entry(
+            entry_id
+        ).runtime_data.shc_device  # type: ignore[union-attr]
 
     @property
-    def device_name(self):
+    def device_name(self) -> str | None:
         """Name of the device."""
-        return self._shc.name
+        return self._shc.name  # type: ignore[no-any-return]
 
     @property
-    def device_id(self):
+    def device_id(self) -> str:
         """Device id of the entity."""
-        return self._shc.id
+        return self._shc.id  # type: ignore[no-any-return]
 
     @property
-    def device_info(self):
+    def device_info(self) -> DeviceInfo:
         """Return the device info."""
-        return {
-            "identifiers": self._shc.identifiers,
-            "name": self._shc.name,
-            "manufacturer": self._shc.manufacturer,
-            "model": self._shc.model,
-        }
+        return DeviceInfo(
+            identifiers=self._shc.identifiers,
+            name=self._shc.name,
+            manufacturer=self._shc.manufacturer,
+            model=self._shc.model,
+        )
 
     async def async_added_to_hass(self) -> None:
         """Call when entity is added to hass."""
@@ -188,7 +330,12 @@ class SHCScenarioEvent(EventEntity):
             self._scenario.id, self._event_callback
         )
 
-    def _event_callback(self, event_data) -> None:
+    async def async_will_remove_from_hass(self) -> None:
+        """Unsubscribe from scenario events."""
+        await super().async_will_remove_from_hass()
+        self._session.unsubscribe_scenario_callback(self._scenario.id)
+
+    def _event_callback(self, event_data: dict[str, Any]) -> None:
         event_type = "SCENARIO"
         event_attributes = {
             ATTR_EVENT_TYPE: event_type,
@@ -196,20 +343,32 @@ class SHCScenarioEvent(EventEntity):
             ATTR_NAME: event_data["name"],
             ATTR_LAST_TIME_TRIGGERED: event_data["lastTimeTriggered"],
         }
+        self._dispatch_event(event_type, event_attributes)
+
+    @callback  # type: ignore[untyped-decorator]
+    def _dispatch_event(
+        self, event_type: str, event_attributes: dict[str, Any]
+    ) -> None:
+        """Dispatch the event on the event loop (thread-safe)."""
         self._trigger_event(event_type, event_attributes)
         self.schedule_update_ha_state()
 
 
-class MotionDetectorEvent(SHCEntity, EventEntity):
+class MotionDetectorEvent(SHCEntity, EventEntity):  # type: ignore[misc]
     """Representation of a SHC MotionDetector Entity."""
 
     _attr_device_class = EventDeviceClass.MOTION
     _attr_event_types = ["MOTION"]
 
-    def __init__(self, device: SHCMotionDetector, entry_id: str) -> None:
+    def __init__(
+        self, device: SHCMotionDetector | SHCMotionDetector2, entry_id: str
+    ) -> None:
         """Initialize the Universal Switch device."""
         super().__init__(device, entry_id)
-        self._device = device
+        self._device: SHCMotionDetector | SHCMotionDetector2 = device  # type: ignore[assignment]
+        # Dedup guard (#192): phantom events replay the last latestmotion
+        # timestamp on unrelated long-poll updates (e.g. battery level).
+        self._last_fired_timestamp: str = ""
 
     async def async_added_to_hass(self) -> None:
         """Call when entity is added to hass."""
@@ -219,20 +378,38 @@ class MotionDetectorEvent(SHCEntity, EventEntity):
             if service.id == "LatestMotion":
                 service.register_event(self._device.id, self._event_callback)
 
+    async def async_will_remove_from_hass(self) -> None:
+        """Unregister the LatestMotion event callback (register_event has no public unsubscribe)."""
+        await super().async_will_remove_from_hass()
+        for service in self._device.device_services:
+            if service.id == "LatestMotion":
+                service._event_callbacks.pop(self._device.id, None)  # noqa: SLF001
+
     def _event_callback(self) -> None:
+        ts = self._device.latestmotion or ""
+        if ts == self._last_fired_timestamp:
+            return
+        self._last_fired_timestamp = ts
         event_type = "MOTION"
         event_attributes = {
             ATTR_DEVICE_ID: self.device_id,
             ATTR_EVENT_TYPE: event_type,
             ATTR_ID: self._device.id,
             ATTR_NAME: self._device.name,
-            ATTR_LAST_TIME_TRIGGERED: self._device.latestmotion,
+            ATTR_LAST_TIME_TRIGGERED: ts,
         }
+        self._dispatch_event(event_type, event_attributes)
+
+    @callback  # type: ignore[untyped-decorator]
+    def _dispatch_event(
+        self, event_type: str, event_attributes: dict[str, Any]
+    ) -> None:
+        """Dispatch the event on the event loop (thread-safe)."""
         self._trigger_event(event_type, event_attributes)
         self.schedule_update_ha_state()
 
 
-class SmokeDetectionSystemEvent(SHCEntity, EventEntity):
+class SmokeDetectionSystemEvent(SHCEntity, EventEntity):  # type: ignore[misc]
     """Representation of a SHC smoke detection system event entity."""
 
     _attr_event_types = ["ALARM"]
@@ -244,6 +421,7 @@ class SmokeDetectionSystemEvent(SHCEntity, EventEntity):
     ):
         """Initialize the smoke detection system device."""
         super().__init__(device=device, entry_id=entry_id)
+        self._device: SHCSmokeDetectionSystem = device  # type: ignore[assignment]
         self._attr_unique_id = f"{device.root_device_id}_{device.id}"
 
     async def async_added_to_hass(self) -> None:
@@ -254,20 +432,39 @@ class SmokeDetectionSystemEvent(SHCEntity, EventEntity):
             if service.id == "SurveillanceAlarm":
                 service.register_event(self._device.id, self._event_callback)
 
+    async def async_will_remove_from_hass(self) -> None:
+        """Unregister the SurveillanceAlarm event callback (register_event has no public unsubscribe)."""
+        await super().async_will_remove_from_hass()
+        for service in self._device.device_services:
+            if service.id == "SurveillanceAlarm":
+                service._event_callbacks.pop(self._device.id, None)  # noqa: SLF001
+
     def _event_callback(self) -> None:
+        try:
+            subtype = self._device.alarm.name
+        except (ValueError, KeyError):
+            LOGGER.warning("Unexpected alarm value for %s", self._device.name)
+            return
         event_type = "ALARM"
         event_attributes = {
             ATTR_DEVICE_ID: self.device_id,
             ATTR_EVENT_TYPE: event_type,
-            ATTR_EVENT_SUBTYPE: self._device.alarm.name,
+            ATTR_EVENT_SUBTYPE: subtype,
             ATTR_ID: self._device.id,
             ATTR_NAME: self._device.name,
         }
+        self._dispatch_event(event_type, event_attributes)
+
+    @callback  # type: ignore[untyped-decorator]
+    def _dispatch_event(
+        self, event_type: str, event_attributes: dict[str, Any]
+    ) -> None:
+        """Dispatch the event on the event loop (thread-safe)."""
         self._trigger_event(event_type, event_attributes)
         self.schedule_update_ha_state()
 
 
-class SmokeDetectorEvent(SHCEntity, EventEntity):
+class SmokeDetectorEvent(SHCEntity, EventEntity):  # type: ignore[misc]
     """Representation of a SHC smoke detector event entity."""
 
     _attr_event_types = ["ALARM"]
@@ -279,6 +476,7 @@ class SmokeDetectorEvent(SHCEntity, EventEntity):
     ):
         """Initialize the smoke detection system device."""
         super().__init__(device=device, entry_id=entry_id)
+        self._device: SHCSmokeDetector = device  # type: ignore[assignment]
         self._attr_unique_id = f"{device.root_device_id}_{device.id}"
 
     async def async_added_to_hass(self) -> None:
@@ -289,14 +487,33 @@ class SmokeDetectorEvent(SHCEntity, EventEntity):
             if service.id == "Alarm":
                 service.register_event(self._device.id, self._event_callback)
 
+    async def async_will_remove_from_hass(self) -> None:
+        """Unregister the Alarm event callback (register_event has no public unsubscribe)."""
+        await super().async_will_remove_from_hass()
+        for service in self._device.device_services:
+            if service.id == "Alarm":
+                service._event_callbacks.pop(self._device.id, None)  # noqa: SLF001
+
     def _event_callback(self) -> None:
+        try:
+            subtype = self._device.alarmstate.name
+        except (ValueError, KeyError):
+            LOGGER.warning("Unexpected alarmstate value for %s", self._device.name)
+            return
         event_type = "ALARM"
         event_attributes = {
             ATTR_DEVICE_ID: self.device_id,
             ATTR_EVENT_TYPE: event_type,
-            ATTR_EVENT_SUBTYPE: self._device.alarmstate.name,
+            ATTR_EVENT_SUBTYPE: subtype,
             ATTR_ID: self._device.id,
             ATTR_NAME: self._device.name,
         }
+        self._dispatch_event(event_type, event_attributes)
+
+    @callback  # type: ignore[untyped-decorator]
+    def _dispatch_event(
+        self, event_type: str, event_attributes: dict[str, Any]
+    ) -> None:
+        """Dispatch the event on the event loop (thread-safe)."""
         self._trigger_event(event_type, event_attributes)
         self.schedule_update_ha_state()

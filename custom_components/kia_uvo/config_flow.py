@@ -45,9 +45,6 @@ from .const import (
     CONF_USE_EMAIL_WITH_GEOCODE_API,
     DEFAULT_ENABLE_GEOLOCATION_ENTITY,
     DEFAULT_USE_EMAIL_WITH_GEOCODE_API,
-    REGION_EUROPE,
-    BRAND_HYUNDAI,
-    BRAND_KIA,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -153,7 +150,7 @@ async def validate_input(
         raise InvalidAuth from err
 
 
-class HyundaiKiaConnectOptionFlowHandler(config_entries.OptionsFlow):
+class HyundaiKiaConnectOptionFlowHandler(config_entries.OptionsFlowWithReload):
     """Handle an option flow for Hyundai / Kia Connect."""
 
     async def async_step_init(
@@ -206,11 +203,12 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._region_data = user_input
         self._region_data[CONF_REGION] = int(self._region_data[CONF_REGION])
         self._region_data[CONF_BRAND] = int(self._region_data[CONF_BRAND])
-        if REGIONS[self._region_data[CONF_REGION]] == REGION_EUROPE and (
-            BRANDS[self._region_data[CONF_BRAND]] == BRAND_KIA
-            or BRANDS[self._region_data[CONF_BRAND]] == BRAND_HYUNDAI
-        ):
-            return await self.async_step_credentials_token()
+        # Unused but keeping the code since I suspect token based will be back!
+        # if REGIONS[self._region_data[CONF_REGION]] == REGION_EUROPE and (
+        #    BRANDS[self._region_data[CONF_BRAND]] == BRAND_KIA
+        #    or BRANDS[self._region_data[CONF_BRAND]] == BRAND_HYUNDAI
+        # ):
+        #    return await self.async_step_credentials_token()
         return await self.async_step_credentials_password()
 
     async def async_step_credentials_password(

@@ -29,7 +29,7 @@ SERVICE_SCHEMA_DURATION = vol.Schema({
 SERVICE_SCHEMA_MOWER = vol.Schema({
     vol.Required("device_id"): cv.string,
     vol.Optional("duration", default=1800): vol.All(
-        cv.positive_int, vol.Range(min=60, max=30000)
+        cv.positive_int, vol.Range(min=60, max=14400)
     ),
 })
 

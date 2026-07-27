@@ -7,6 +7,7 @@ from typing import Final
 from datetime import date
 
 from hyundai_kia_connect_api import Vehicle
+from hyundai_kia_connect_api.const import ENGINE_TYPES
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -16,6 +17,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.const import (
     PERCENTAGE,
+    UnitOfElectricPotential,
     UnitOfEnergy,
     UnitOfPower,
     UnitOfTime,
@@ -69,12 +71,20 @@ SENSOR_DESCRIPTIONS: Final[tuple[SensorEntityDescription, ...]] = (
         translation_key="car_battery_percentage",
         icon="mdi:car-battery",
         native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.BATTERY,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key="last_updated_at",
         translation_key="last_updated_at",
         icon="mdi:update",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="last_scanned_at",
+        translation_key="last_scanned_at",
+        icon="mdi:cloud-search",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
@@ -272,6 +282,162 @@ SENSOR_DESCRIPTIONS: Final[tuple[SensorEntityDescription, ...]] = (
         icon="mdi:identifier",
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
+    SensorEntityDescription(
+        key="_outside_temperature",
+        translation_key="outside_temperature",
+        icon="mdi:thermometer",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="engine_type",
+        translation_key="engine_type",
+        icon="mdi:engine",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_battery_chiller_rpm",
+        translation_key="ev_battery_chiller_rpm",
+        icon="mdi:fan",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="rpm",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_first_departure_days",
+        translation_key="ev_first_departure_days",
+        icon="mdi:calendar-clock",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_second_departure_days",
+        translation_key="ev_second_departure_days",
+        icon="mdi:calendar-clock",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="_ev_first_departure_climate_temperature",
+        translation_key="ev_first_departure_climate_temperature",
+        icon="mdi:thermometer",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="_ev_second_departure_climate_temperature",
+        translation_key="ev_second_departure_climate_temperature",
+        icon="mdi:thermometer",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_battery_pack_voltage",
+        translation_key="ev_battery_pack_voltage",
+        icon="mdi:car-battery",
+        device_class=SensorDeviceClass.VOLTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_battery_temperature_min",
+        translation_key="ev_battery_temperature_min",
+        icon="mdi:thermometer-low",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_battery_temperature_max",
+        translation_key="ev_battery_temperature_max",
+        icon="mdi:thermometer-high",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_battery_water_temperature",
+        translation_key="ev_battery_water_temperature",
+        icon="mdi:thermometer-water",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_power_consumption_air_conditioning",
+        translation_key="ev_power_consumption_air_conditioning",
+        icon="mdi:air-conditioner",
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_power_consumption_battery_cooling",
+        translation_key="ev_power_consumption_battery_cooling",
+        icon="mdi:snowflake",
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ev_power_consumption_battery_heater",
+        translation_key="ev_power_consumption_battery_heater",
+        icon="mdi:radiator",
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="location_last_updated_at",
+        translation_key="location_last_updated_at",
+        icon="mdi:map-clock",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="tire_pressure_front_left",
+        translation_key="tire_pressure_front_left",
+        device_class=SensorDeviceClass.PRESSURE,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="tire_pressure_front_right",
+        translation_key="tire_pressure_front_right",
+        device_class=SensorDeviceClass.PRESSURE,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="tire_pressure_rear_left",
+        translation_key="tire_pressure_rear_left",
+        device_class=SensorDeviceClass.PRESSURE,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="tire_pressure_rear_right",
+        translation_key="tire_pressure_rear_right",
+        device_class=SensorDeviceClass.PRESSURE,
+        native_unit_of_measurement=DYNAMIC_UNIT,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="drive_mode",
+        translation_key="drive_mode",
+        icon="mdi:car-cog",
+    ),
 )
 
 
@@ -286,7 +452,29 @@ async def async_setup_entry(
     for vehicle_id in coordinator.vehicle_manager.vehicles.keys():
         vehicle: Vehicle = coordinator.vehicle_manager.vehicles[vehicle_id]
         for description in SENSOR_DESCRIPTIONS:
-            if getattr(vehicle, description.key, None) is not None:
+            if description.key == "_air_temperature":
+                # The setpoint is transient — it is None while climate is off
+                # (USA returns airTemp.value "OFF"), so don't gate on it. Gate
+                # on climate presence (air_control_is_on, the same signal the
+                # climate entity uses) to avoid creating an unusable sensor on
+                # vehicles that report no climate. A None setpoint -> HA
+                # `unknown`; the real setpoint arrives on the next poll.
+                create = (
+                    vehicle.air_control_is_on is not None
+                    or vehicle._air_temperature is not None
+                )
+            elif description.key == "car_battery_percentage":
+                # The 12V SoC is transient — None while the telematics unit
+                # is asleep, after a 12V reset, or when the status payload
+                # omits it. Don't gate creation on it: a None at setup (e.g.
+                # a version-update reload) means the entity isn't yielded and
+                # HA marks it "no longer provided", with no return until the
+                # next reload. Always create; None -> HA `unknown`, the real
+                # SoC arrives on the next poll. See #1803.
+                create = True
+            else:
+                create = getattr(vehicle, description.key, None) is not None
+            if create:
                 entities.append(
                     HyundaiKiaConnectSensor(coordinator, description, vehicle)
                 )
@@ -327,6 +515,16 @@ class HyundaiKiaConnectSensor(SensorEntity, HyundaiKiaConnectEntity):
         self._attr_device_class = description.device_class
         if description.entity_category:
             self._attr_entity_category = description.entity_category
+        # For electrified vehicles (BEV/PHEV) the traction battery is the
+        # device's primary battery. Drop the battery device_class from the
+        # 12 V auxiliary sensor so Home Assistant's device-page battery picker
+        # (which selects the first sensor with device_class=battery, ignoring
+        # entity_category) shows the EV battery instead of the 12 V level.
+        # HEV/ICE keep the 12 V as their battery. See issue #1749.
+        if description.key == "car_battery_percentage":
+            engine_type = getattr(vehicle, "engine_type", None)
+            if engine_type in (ENGINE_TYPES.EV, ENGINE_TYPES.PHEV):
+                self._attr_device_class = None
 
     @property
     def native_value(self):
@@ -334,6 +532,10 @@ class HyundaiKiaConnectSensor(SensorEntity, HyundaiKiaConnectEntity):
         value = getattr(self.vehicle, self._key)
         if self._key == "ev_charging_current":
             return CHARGING_CURRENTS.get(value, None)
+        if self._key in ("ev_first_departure_days", "ev_second_departure_days"):
+            if isinstance(value, list):
+                return ", ".join(str(d) for d in value)
+            return value
         return value
 
     @property
