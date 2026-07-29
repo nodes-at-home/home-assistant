@@ -21,3 +21,4 @@ tmp_backups/
 git_ssh
 .cache/
 .deleted/
+.ha-mcp/
