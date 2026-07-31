@@ -9,8 +9,9 @@ from homeassistant.const import CONF_HOST, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from innova_controls.innova import Innova
+from innova_controls import network_functions
 
-from .const import DOMAIN, DEFAULT_SCAN_INTERVAL
+from .const import DOMAIN, DEFAULT_REQUEST_TIMEOUT, DEFAULT_SCAN_INTERVAL
 from .coordinator import InnovaCoordinator
 
 PLATFORMS: list[Platform] = [Platform.CLIMATE, Platform.SENSOR, Platform.SWITCH]
@@ -18,9 +19,17 @@ PLATFORMS: list[Platform] = [Platform.CLIMATE, Platform.SENSOR, Platform.SWITCH]
 _LOGGER = logging.getLogger(__name__)
 
 
+def _apply_request_timeout(entry: ConfigEntry) -> None:
+    """Apply request timeout to innova-controls global constant."""
+    timeout_seconds = entry.options.get("request_timeout", DEFAULT_REQUEST_TIMEOUT)
+    network_functions.CONNECTION_TIMEOUT = timeout_seconds
+    _LOGGER.debug("Innova request timeout set to %s seconds", timeout_seconds)
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Innova AC from a config entry."""
     hass.data.setdefault(DOMAIN, {})
+    _apply_request_timeout(entry)
     host = entry.data[CONF_HOST]
     session = async_get_clientsession(hass)
     api = Innova(http_session=session, host=host)
@@ -46,6 +55,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def _async_options_updated(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Handle options update."""
+    _apply_request_timeout(entry)
     host = entry.data[CONF_HOST]
     session = async_get_clientsession(hass)
     api = Innova(http_session=session, host=host)
