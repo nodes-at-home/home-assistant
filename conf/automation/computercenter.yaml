@@ -1,0 +1,35 @@
+###
+### 01.08.2026
+###
+
+  - alias: computercenter_switch_fan
+    id: computercenter_switch_fan
+    triggers:
+      - trigger: numeric_state
+        entity_id: sensor.dht11_utilityroom_temperature
+        above: input_number.computercenter_max_temp
+        id: fan_on
+      - trigger: numeric_state
+        entity_id: sensor.dht11_utilityroom_temperature
+        below: input_number.computercenter_min_temp
+        id: fan_off
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.prod_mode
+        state: "on"
+    actions:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: fan_on
+            sequence:
+              - action: switch.turn_on
+                target:
+                  entity_id: switch.shelly_utilityroom_fan
+          - conditions:
+              - condition: trigger
+                id: fan_off
+            sequence:
+              - action: switch.turn_off
+                target:
+                  entity_id: switch.shelly_utilityroom_fan

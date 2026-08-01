@@ -1352,6 +1352,12 @@ views:
           - entity: sensor.shelly_thor_power
           - entity: update.shelly_thor_firmware
           - entity: button.shelly_thor_reboot
+          - type: divider
+          - switch.shelly_utilityroom_fan
+          - entity: sensor.shelly_utilityroom_fan_energy
+          - entity: sensor.shelly_utilityroom_fan_power
+          - entity: update.shelly_utilityroom_fan_firmware
+          - entity: button.shelly_utilityroom_fan_reboot
 
   - title: Nuki
     path: nuki

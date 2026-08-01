@@ -1,0 +1,11 @@
+###
+### 01.08.2026
+###
+
+name: Mindesttemperatur
+icon: mdi:thermometer-low
+mode: box
+min: 25
+max: 45
+step: 1
+unit_of_measurement: "°C"

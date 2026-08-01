@@ -70,10 +70,16 @@ views:
           - input_number.default_brightness
           - input_number.brightness_delta
       - type: entities
-        title: USV
+        title: Rechenzentrum
         show_header_toggle: false
         entities:
-            - input_number.ups_shutdown_at_battery_runtime
+          - type: section
+            label: Lüftung
+          - input_number.computercenter_max_temp
+          - input_number.computercenter_min_temp
+          - type: section
+            label: USV
+          - input_number.ups_shutdown_at_battery_runtime
       - type: entities
         title: Schalter
         show_header_toggle: true
