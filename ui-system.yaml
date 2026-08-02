@@ -88,6 +88,13 @@ views:
       #   name: zapdos
       #   show_name: true
       #   icon: mdi:router
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
     cards:
       - type: entities
         title: Stage
@@ -105,7 +112,7 @@ views:
             - sensor.docker_hub
             - binary_sensor.docker_hub_update_available
       - type: entities
-        title: Server
+        title: TuringPi
         show_header_toggle: false
         entities:
             - sensor.system_monitor_prozessornutzung
@@ -120,6 +127,25 @@ views:
             - type: divider
             - sensor.system_monitor_letzter_systemstart
             - sensor.system_monitor_pwmfan_lufterdrehzahl
+      - type: entities
+        title: vLLM qwen3.6
+        show_header_toggle: false
+        entities:
+            - sensor.vllm_thor_tokens_prompt_total
+            - sensor.vllm_thor_tokens_generation_total
+            - sensor.vllm_thor_tokens_total
+            - type: divider
+            - sensor.vllm_thor_tps_prompt
+            - sensor.vllm_thor_tps_generation
+            - sensor.vllm_thor_tps_total
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_max24h
+            - sensor.vllm_thor_tps_generation_max24h
+            - type: divider
+            - sensor.vllm_tokens_prompt_daily
+            - sensor.vllm_tokens_prompt_yearly
+            - sensor.vllm_tokens_generation_daily
+            - sensor.vllm_tokens_generation_yearly
       - type: entities
         title: TrueNAS
         show_header_toggle: false

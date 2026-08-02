@@ -1,0 +1,27 @@
+###
+### 02.08.2026
+###
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.vllm_tokens_prompt_quarterhourly
+        attribute: last_reset
+    sensor:
+      - name: vllm_prompt_quarterhourly
+        unique_id: vllm_prompt_quarterhourly
+        unit_of_measurement: tokens
+        state: "{{ state_attr ( 'sensor.vllm_tokens_prompt_quarterhourly', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.vllm_tokens_prompt_quarterhourly", "last_reset" ) }}'
+
+  - trigger:
+      - platform: state
+        entity_id: sensor.vllm_tokens_generation_quarterhourly
+        attribute: last_reset
+    sensor:
+      - name: vllm_generation_quarterhourly
+        unique_id: vllm_generation_quarterhourly
+        unit_of_measurement: tokens
+        state: "{{ state_attr ( 'sensor.vllm_tokens_generation_quarterhourly', 'last_period' ) }}"
+        attributes:
+            last_reset: '{{ state_attr ( "sensor.vllm_tokens_generation_quarterhourly", "last_reset" ) }}'

@@ -1,0 +1,8 @@
+###
+### 02.08.2026
+###
+
+source: sensor.vllm_thor_tokens_generation_total
+cycle: quarter-hourly
+delta_values: false
+unique_id: vllm_tokens_generation_quarterhourly

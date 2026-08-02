@@ -1,0 +1,58 @@
+###
+### 02.08.2026
+### vLLM metrics from thor:8000 (numeric only)
+###
+
+  - platform: prometheus_sensor
+    url: http://prometheus-ui.prometheus-system.svc.turingpi:9090
+    queries:
+      - name: vllm@thor_tokens_prompt_total
+        unique_id: vllm_thor_tokens_prompt_total
+        unit_of_measurement: tokens
+        state_class: total_increasing
+        expr: vllm:prompt_tokens_total{engine="0",model_name="qwen3.6"}
+
+      - name: vllm@thor_tokens_generation_total
+        unique_id: vllm_thor_tokens_generation_total
+        unit_of_measurement: tokens
+        state_class: total_increasing
+        expr: vllm:generation_tokens_total{engine="0",model_name="qwen3.6"}
+
+      - name: vllm@thor_tokens_total
+        unique_id: vllm_thor_tokens_total
+        unit_of_measurement: tokens
+        state_class: total_increasing
+        expr: vllm:prompt_tokens_total{engine="0",model_name="qwen3.6"} + vllm:generation_tokens_total{engine="0",model_name="qwen3.6"}
+
+      - name: vllm@thor_tps_prompt
+        unique_id: vllm_thor_tps_prompt
+        unit_of_measurement: token/s
+        expr: round(irate(vllm:prompt_tokens_total{engine="0",model_name="qwen3.6"}[1m]), 0.01)
+
+      - name: vllm@thor_tps_generation
+        unique_id: vllm_thor_tps_generation
+        unit_of_measurement: token/s
+        expr: round(irate(vllm:generation_tokens_total{engine="0",model_name="qwen3.6"}[1m]), 0.01)
+
+      - name: vllm@thor_tps_total
+        unique_id: vllm_thor_tps_total
+        unit_of_measurement: token/s
+        expr: round(irate(vllm:prompt_tokens_total{engine="0",model_name="qwen3.6"}[1m]), 0.01) + round(irate(vllm:generation_tokens_total{engine="0",model_name="qwen3.6"}[1m]), 0.01)
+
+  - platform: statistics
+    name: vllm@thor_tps_prompt_max24h
+    unique_id: vllm_thor_tps_prompt_max24h
+    entity_id: "sensor.vllm_thor_tps_prompt"
+    state_characteristic: value_max
+    sampling_size: 5760
+    max_age:
+        hours: 24
+
+  - platform: statistics
+    name: vllm@thor_tps_generation_max24h
+    unique_id: vllm_thor_tps_generation_max24h
+    entity_id: "sensor.vllm_thor_tps_generation"
+    state_characteristic: value_max
+    sampling_size: 5760
+    max_age:
+        hours: 24
