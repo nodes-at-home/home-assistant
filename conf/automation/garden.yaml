@@ -159,7 +159,7 @@
       - trigger: state
         entity_id: input_boolean.irrigation_activated
       - trigger: state
-        entity_id: sensor.precipitation_7d_plus_forecast
+        entity_id: sensor.precipitation_plus_forecast
       - trigger: state
         entity_id: input_number.irrigation_precipitation_threshold
       - trigger: state
@@ -171,7 +171,7 @@
     actions:
       - variables:
             mode: >
-                {% set val = states ( 'sensor.precipitation_7d_plus_forecast' ) | float %}
+                {% set val = states ( 'sensor.precipitation_plus_forecast' ) | float %}
                 {% set thr = states ( 'input_number.irrigation_precipitation_threshold' ) | float %}
                 {% set t_max = states ( 'sensor.dht22_terrace_temperature_max' ) | float %}
                 {% set t_thr_low = states ( 'input_number.irrigation_temperature_threshold_low' ) | float %}

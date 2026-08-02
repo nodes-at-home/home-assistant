@@ -314,10 +314,11 @@ views:
             label: Regen
           - sensor.openweathermap_forecast_precipitation
           - sensor.openweathermap_forecast_precipitation_probability
-          - entity: sensor.rain_garden_precipitation_last7d
-            name: letzte 7 Tage
-          - entity: sensor.precipitation_7d_plus_forecast
-            name: letzte 7 Tage zzgl. Erwartungswert
+          - input_select.rain_garden_precipitation_period
+          - entity: sensor.rain_garden_precipitation_selected
+            name: Ausgewahlter Zeitraum
+          - entity: sensor.precipitation_plus_forecast
+            name: Niederschlag zzgl. Erwartungswert
           - input_number.irrigation_precipitation_threshold
           - type: section
             label: Bewässerungsdauer

@@ -29,6 +29,31 @@ views:
                 detail: 2
                 hours_to_show: 24
               - type: sensor
+                entity: sensor.rain_garden_precipitation_last6d
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.rain_garden_precipitation_last5d
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.rain_garden_precipitation_last4d
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.rain_garden_precipitation_last3d
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
+                entity: sensor.rain_garden_precipitation_last2d
+                graph: line
+                detail: 2
+                hours_to_show: 24
+              - type: sensor
                 entity: sensor.rain_garden_precipitation_last24h
                 graph: line
                 detail: 2

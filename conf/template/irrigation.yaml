@@ -4,16 +4,30 @@
 
   - sensor:
 
-      - name: precipitation_7d_plus_forecast
-        unique_id: precipitation_7d_plus_forecast
+      - name: rain_garden_precipitation_selected
+        unique_id: rain_garden_precipitation_selected
         unit_of_measurement: mm
         device_class: precipitation
-        availability: "{{ states ( 'sensor.openweathermap_forecast_precipitation') | is_number and states ( 'sensor.openweathermap_forecast_precipitation_probability' ) | is_number and states ( 'sensor.rain_garden_precipitation_last7d' ) | is_number }}"
+        availability: >
+            {% set sensor_entity = 'sensor.rain_garden_precipitation_' + states ( 'input_select.rain_garden_precipitation_period' ) %}
+            {{ states ( sensor_entity ) | is_number }}
         state: >
-                {% set forecast = states ( 'sensor.openweathermap_forecast_precipitation') | float %}
-                {% set probability = states ( 'sensor.openweathermap_forecast_precipitation_probability' ) | float / 100 %}
-                {% set rain = states ( 'sensor.rain_garden_precipitation_last7d' ) | float %}
-                {{ ( forecast * probability + rain ) | round ( 1 ) }}
+            {% set sensor_entity = 'sensor.rain_garden_precipitation_' + states ( 'input_select.rain_garden_precipitation_period' ) %}
+            {{ states ( sensor_entity ) | float ( 0 ) | round ( 1 ) }}
+        attributes:
+            selected_period: "{{ states ( 'input_select.rain_garden_precipitation_period' ) }}"
+
+      - name: precipitation_plus_forecast
+        unique_id: precipitation_plus_forecast
+        unit_of_measurement: mm
+        device_class: precipitation
+        availability: >
+            {{ states ( 'sensor.openweathermap_forecast_precipitation') | is_number and states ( 'sensor.openweathermap_forecast_precipitation_probability' ) | is_number and states ( 'sensor.rain_garden_precipitation_selected' ) | is_number }}
+        state: >
+            {% set forecast = states ( 'sensor.openweathermap_forecast_precipitation') | float %}
+            {% set probability = states ( 'sensor.openweathermap_forecast_precipitation_probability' ) | float / 100 %}
+            {% set rain = states ( 'sensor.rain_garden_precipitation_selected' ) | float %}
+            {{ ( forecast * probability + rain ) | round ( 1 ) }}
 
       - name: irrigation_duration_effective_valve1
         unique_id: irrigation_duration_effective_valve1

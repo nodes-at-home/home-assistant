@@ -1212,18 +1212,25 @@ views:
     path: outdoor
     panel: false
     badges:
-      - entity: sensor.rain_garden_precipitation_last7d
-        name: 7 Tage
-        display_type: complete
-      - entity: sensor.rain_garden_precipitation_last5d
-        name: 5 Tage
-        display_type: complete
+      - type: custom:mushroom-template-badge
+        entity: sensor.rain_garden_precipitation_selected
+        content: >
+            {{ states ( entity, with_unit = true ) }}
+        label: >
+            {% set period = state_attr ( entity, 'selected_period' ) | default ( 'last24h' ) %}
+            {{ period | replace ( 'last', '' ) }}
+        icon: mdi:weather-pouring
+        color: skyblue
+        tap_action:
+            action: more-info
       - entity: sensor.rain_garden_precipitation_last24h
         name: 24h
         display_type: complete
+        color: skyblue
       - entity: sensor.rain_garden_precipitation
         name: aktuell
         display_type: complete
+        color: skyblue
       - entity: sensor.dht22_terrace_temperature_max
         display_type: complete
       - type: custom:mushroom-template-badge

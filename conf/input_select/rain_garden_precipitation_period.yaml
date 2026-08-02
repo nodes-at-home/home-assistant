@@ -1,0 +1,15 @@
+###
+### 02.08.2026
+###
+
+name: rain_garden_precipitation_period
+icon: mdi:weather-pouring
+options:
+    - last24h
+    - last2d
+    - last3d
+    - last4d
+    - last5d
+    - last6d
+    - last7d
+initial: last7d

@@ -12,6 +12,33 @@
         hours: 24
 
   - platform: statistics
+    name: rain@garden_precipitation_last2d
+    unique_id: rain_garden_precipitation_last2d
+    entity_id: "sensor.rain_garden_precipitation"
+    state_characteristic: total
+    sampling_size: 200
+    max_age:
+        hours: 48
+
+  - platform: statistics
+    name: rain@garden_precipitation_last3d
+    unique_id: rain_garden_precipitation_last3d
+    entity_id: "sensor.rain_garden_precipitation"
+    state_characteristic: total
+    sampling_size: 300
+    max_age:
+        hours: 72
+
+  - platform: statistics
+    name: rain@garden_precipitation_last4d
+    unique_id: rain_garden_precipitation_last4d
+    entity_id: "sensor.rain_garden_precipitation"
+    state_characteristic: total
+    sampling_size: 400
+    max_age:
+        hours: 96
+
+  - platform: statistics
     name: rain@garden_precipitation_last5d
     unique_id: rain_garden_precipitation_last5d
     entity_id: "sensor.rain_garden_precipitation"
@@ -19,6 +46,15 @@
     sampling_size: 500
     max_age:
         hours: 120
+
+  - platform: statistics
+    name: rain@garden_precipitation_last6d
+    unique_id: rain_garden_precipitation_last6d
+    entity_id: "sensor.rain_garden_precipitation"
+    state_characteristic: total
+    sampling_size: 600
+    max_age:
+        hours: 144
 
   - platform: statistics
     name: rain@garden_precipitation_last7d
