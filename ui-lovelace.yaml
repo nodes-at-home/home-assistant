@@ -573,6 +573,22 @@ views:
                     action: toggle
                 hold_action:
                     action: more-info
+          - type: horizontal-stack
+            cards:
+              - type: entity-button
+                entity: switch.shelly_utilityroom_fan
+                name: Rechen- zentrum
+                icon: mdi:fan
+                tap_action:
+                    action: toggle
+                hold_action:
+                    action: more-info
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
 
   - title: Haus
     path: house
