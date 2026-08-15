@@ -5,8 +5,17 @@
   - platform: statistics
     name: DHT22@terrace_temperature_max
     unique_id: dht22_terrace_temperature_max
-    entity_id: "sensor.dht22_terrace_temperature"
+    entity_id: sensor.dht22_terrace_temperature
     state_characteristic: value_max
     sampling_size: 100
+    max_age:
+        hours: 24
+
+  - platform: statistics
+    name: boiler_outside_temperature_max
+    unique_id: sensor.boiler_outside_temperature_max
+    entity_id: sensor.boiler_outside_temperature
+    state_characteristic: value_max
+    sampling_size: 1440
     max_age:
         hours: 24

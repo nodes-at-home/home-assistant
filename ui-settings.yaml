@@ -323,6 +323,8 @@ views:
           - type: section
             label: Bewässerungsdauer
           - sensor.dht22_terrace_temperature_max
+          - entity: sensor.boiler_outside_temperature_max
+            name: Höchsttemperatur Außensensor (Gastherme)
           - input_number.irrigation_temperature_threshold_low
           - input_number.irrigation_temperature_threshold_high
           - input_number.irrigation_duration_uplift_high

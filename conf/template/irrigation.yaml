@@ -34,7 +34,15 @@
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
-            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_max_terrace = states ( 'sensor.dht22_terrace_temperature_max' ) %}
+            {% set temp_max_boiler = states ( 'sensor.boiler_outside_temperature_max' ) %}
+            {% if temp_max_terrace | is_number %}
+                {% set temp_max = temp_max_terrace | int %}
+            {% elif temp_max_boiler | is_number %}
+                {% set temp_max = temp_max_boiler | int %}
+            {% else %}
+                {% set temp_max = 1 %}
+            {% endif %}
             {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
             {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
             {% set duration = states ( 'input_number.irrigation_duration_valve1' ) | float %}
@@ -53,7 +61,15 @@
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
-            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_max_terrace = states ( 'sensor.dht22_terrace_temperature_max' ) %}
+            {% set temp_max_boiler = states ( 'sensor.boiler_outside_temperature_max' ) %}
+            {% if temp_max_terrace | is_number %}
+                {% set temp_max = temp_max_terrace | int %}
+            {% elif temp_max_boiler | is_number %}
+                {% set temp_max = temp_max_boiler | int %}
+            {% else %}
+                {% set temp_max = 1 %}
+            {% endif %}
             {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
             {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
             {% set duration = states ( 'input_number.irrigation_duration_valve2' ) | float %}
@@ -72,7 +88,15 @@
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
-            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_max_terrace = states ( 'sensor.dht22_terrace_temperature_max' ) %}
+            {% set temp_max_boiler = states ( 'sensor.boiler_outside_temperature_max' ) %}
+            {% if temp_max_terrace | is_number %}
+                {% set temp_max = temp_max_terrace | int %}
+            {% elif temp_max_boiler | is_number %}
+                {% set temp_max = temp_max_boiler | int %}
+            {% else %}
+                {% set temp_max = 1 %}
+            {% endif %}
             {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
             {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
             {% set duration = states ( 'input_number.irrigation_duration_valve3' ) | float %}
@@ -91,7 +115,15 @@
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
-            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_max_terrace = states ( 'sensor.dht22_terrace_temperature_max' ) %}
+            {% set temp_max_boiler = states ( 'sensor.boiler_outside_temperature_max' ) %}
+            {% if temp_max_terrace | is_number %}
+                {% set temp_max = temp_max_terrace | int %}
+            {% elif temp_max_boiler | is_number %}
+                {% set temp_max = temp_max_boiler | int %}
+            {% else %}
+                {% set temp_max = 1 %}
+            {% endif %}
             {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
             {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
             {% set duration = states ( 'input_number.irrigation_duration_valve4' ) | float %}
@@ -110,7 +142,15 @@
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
-            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_max_terrace = states ( 'sensor.dht22_terrace_temperature_max' ) %}
+            {% set temp_max_boiler = states ( 'sensor.boiler_outside_temperature_max' ) %}
+            {% if temp_max_terrace | is_number %}
+                {% set temp_max = temp_max_terrace | int %}
+            {% elif temp_max_boiler | is_number %}
+                {% set temp_max = temp_max_boiler | int %}
+            {% else %}
+                {% set temp_max = 1 %}
+            {% endif %}
             {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
             {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
             {% set duration = states ( 'input_number.irrigation_duration_valve5' ) | float %}
@@ -129,7 +169,15 @@
         unit_of_measurement: min
         icon: mdi:timelapse
         state: >
-            {% set temp_max = states ( 'sensor.dht22_terrace_temperature_max' ) | int %}
+            {% set temp_max_terrace = states ( 'sensor.dht22_terrace_temperature_max' ) %}
+            {% set temp_max_boiler = states ( 'sensor.boiler_outside_temperature_max' ) %}
+            {% if temp_max_terrace | is_number %}
+                {% set temp_max = temp_max_terrace | int %}
+            {% elif temp_max_boiler | is_number %}
+                {% set temp_max = temp_max_boiler | int %}
+            {% else %}
+                {% set temp_max = 1 %}
+            {% endif %}
             {% set temp_high = states ( 'input_number.irrigation_temperature_threshold_high' ) | int %}
             {% set temp_hot = states ( 'input_number.irrigation_temperature_threshold_hot' ) | int %}
             {% set duration = states ( 'input_number.irrigation_duration_valve6' ) | float %}
