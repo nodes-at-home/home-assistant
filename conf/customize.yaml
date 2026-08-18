@@ -807,8 +807,24 @@ sensor.rain_garden_precipitation_last24h:
     friendly_name: Regen letzte 24h
     icon: mdi:weather-rainy
 
+sensor.rain_garden_precipitation_last2d:
+    friendly_name: Regen letzte 2d
+    icon: mdi:weather-rainy
+
+sensor.rain_garden_precipitation_last3d:
+    friendly_name: Regen letzte 3d
+    icon: mdi:weather-rainy
+
+sensor.rain_garden_precipitation_last4d:
+    friendly_name: Regen letzte 4d
+    icon: mdi:weather-rainy
+
 sensor.rain_garden_precipitation_last5d:
     friendly_name: Regen letzte 5d
+    icon: mdi:weather-rainy
+
+sensor.rain_garden_precipitation_last6d:
+    friendly_name: Regen letzte 6d
     icon: mdi:weather-rainy
 
 sensor.rain_garden_precipitation_last7d:
