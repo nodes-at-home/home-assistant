@@ -25,3 +25,35 @@
         state: "{{ state_attr ( 'sensor.vllm_tokens_generation_quarterhourly', 'last_period' ) }}"
         attributes:
             last_reset: '{{ state_attr ( "sensor.vllm_tokens_generation_quarterhourly", "last_reset" ) }}'
+
+  - trigger:
+      - platform: state
+        entity_id:
+          - sensor.vllm_thor_tokens_prompt_total_qwen36
+          - sensor.vllm_thor_tokens_prompt_total_qwen25_coder
+          - sensor.vllm_thor_tokens_prompt_total_qwen3_routing_classifier
+    sensor:
+      - name: vllm@thor_tokens_prompt_total
+        unique_id: vllm_thor_tokens_prompt_total
+        unit_of_measurement: tokens
+        state_class: total_increasing
+        state: >-
+          {{ states('sensor.vllm_thor_tokens_prompt_total_qwen36') | float(0)
+             + states('sensor.vllm_thor_tokens_prompt_total_qwen25_coder') | float(0)
+             + states('sensor.vllm_thor_tokens_prompt_total_qwen3_routing_classifier') | float(0) }}
+
+  - trigger:
+      - platform: state
+        entity_id:
+          - sensor.vllm_thor_tokens_generation_total_qwen36
+          - sensor.vllm_thor_tokens_generation_total_qwen25_coder
+          - sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
+    sensor:
+      - name: vllm@thor_tokens_generation_total
+        unique_id: vllm_thor_tokens_generation_total
+        unit_of_measurement: tokens
+        state_class: total_increasing
+        state: >-
+          {{ states('sensor.vllm_thor_tokens_generation_total_qwen36') | float(0)
+             + states('sensor.vllm_thor_tokens_generation_total_qwen25_coder') | float(0)
+             + states('sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier') | float(0) }}

@@ -89,8 +89,22 @@ views:
       #   show_name: true
       #   icon: mdi:router
       - type: custom:mushroom-template-badge
-        entity: sensor.vllm_thor_tps_generation_max24h
-        content: "{{ states ( 'sensor.vllm_thor_tps_generation_max24h', with_unit = true ) }}"
+        entity: sensor.vllm_thor_tps_generation_qwen36_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen36_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_qwen25_coder_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen25_coder_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h', with_unit = true ) }}"
         icon: mdi:memory
         color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
         tap_action:
@@ -128,19 +142,11 @@ views:
             - sensor.system_monitor_letzter_systemstart
             - sensor.system_monitor_pwmfan_lufterdrehzahl
       - type: entities
-        title: vLLM qwen3.6
+        title: vLLM
         show_header_toggle: false
         entities:
             - sensor.vllm_thor_tokens_prompt_total
             - sensor.vllm_thor_tokens_generation_total
-            - sensor.vllm_thor_tokens_total
-            - type: divider
-            - sensor.vllm_thor_tps_prompt
-            - sensor.vllm_thor_tps_generation
-            - sensor.vllm_thor_tps_total
-            - type: divider
-            - sensor.vllm_thor_tps_prompt_max24h
-            - sensor.vllm_thor_tps_generation_max24h
             - type: divider
             - sensor.vllm_tokens_prompt_daily
             - sensor.vllm_tokens_prompt_yearly
@@ -198,6 +204,78 @@ views:
             - sensor.fritz_box_7590_externe_ip
             - sensor.fritz_box_7590_letzter_neustart
             - sensor.fritz_box_7590_verbindungsverfugbarkeit
+
+  - title: vLLM
+    path: vllm
+    panel: false
+    badges:
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_qwen36_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen36_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_qwen25_coder_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen25_coder_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
+    cards:
+      - type: entities
+        title: Summen
+        show_header_toggle: false
+        entities:
+            - sensor.vllm_tokens_prompt_daily
+            - sensor.vllm_tokens_prompt_yearly
+            - type: divider
+            - sensor.vllm_tokens_generation_daily
+            - sensor.vllm_tokens_generation_yearly
+      - type: entities
+        title: qwen3.6-35b-a3b
+        show_header_toggle: false
+        entities:
+            - sensor.vllm_thor_tokens_prompt_total_qwen36
+            - sensor.vllm_thor_tokens_generation_total_qwen36
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_qwen36
+            - sensor.vllm_thor_tps_generation_qwen36
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_qwen36_max24h
+            - sensor.vllm_thor_tps_generation_qwen36_max24h
+      - type: entities
+        title: qwen2.5-coder
+        show_header_toggle: false
+        entities:
+            - sensor.vllm_thor_tokens_prompt_total_qwen25_coder
+            - sensor.vllm_thor_tokens_generation_total_qwen25_coder
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_qwen25_coder
+            - sensor.vllm_thor_tps_generation_qwen25_coder
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_qwen25_coder_max24h
+            - sensor.vllm_thor_tps_generation_qwen25_coder_max24h
+      - type: entities
+        title: qwen3-routing-classifier
+        show_header_toggle: false
+        entities:
+            - sensor.vllm_thor_tokens_prompt_total_qwen3_routing_classifier
+            - sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_qwen3_routing_classifier
+            - sensor.vllm_thor_tps_generation_qwen3_routing_classifier
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_qwen3_routing_classifier_max24h
+            - sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h
 
   - title: Geräte
     path: nodes
