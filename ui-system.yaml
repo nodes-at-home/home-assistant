@@ -95,6 +95,27 @@ views:
         color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
         tap_action:
             action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen36
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen36
+            state_not: unknown
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_qwen38_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen38_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen38
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen38
+            state_not: unknown
       - type: custom:mushroom-template-badge
         entity: sensor.vllm_thor_tps_generation_qwen25_coder_max24h
         content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen25_coder_max24h', with_unit = true ) }}"
@@ -102,6 +123,13 @@ views:
         color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
         tap_action:
             action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen25_coder
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen25_coder
+            state_not: unknown
       - type: custom:mushroom-template-badge
         entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h
         content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h', with_unit = true ) }}"
@@ -109,6 +137,13 @@ views:
         color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
         tap_action:
             action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier
+            state_not: unknown
     cards:
       - type: entities
         title: Stage
@@ -144,6 +179,29 @@ views:
       - type: entities
         title: vLLM
         show_header_toggle: false
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_qwen36
+                state_not:
+                  - unavailable
+                  - unknown
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_qwen38
+                state_not:
+                  - unavailable
+                  - unknown
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_qwen25_coder
+                state_not:
+                  - unavailable
+                  - unknown
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
+                state_not:
+                  - unavailable
+                  - unknown
         entities:
             - sensor.vllm_thor_tokens_prompt_total
             - sensor.vllm_thor_tokens_generation_total
@@ -216,6 +274,27 @@ views:
         color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
         tap_action:
             action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen36
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen36
+            state_not: unknown
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_qwen38_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen38_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen38
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen38
+            state_not: unknown
       - type: custom:mushroom-template-badge
         entity: sensor.vllm_thor_tps_generation_qwen25_coder_max24h
         content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen25_coder_max24h', with_unit = true ) }}"
@@ -223,6 +302,13 @@ views:
         color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
         tap_action:
             action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen25_coder
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen25_coder
+            state_not: unknown
       - type: custom:mushroom-template-badge
         entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h
         content: "{{ states ( 'sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h', with_unit = true ) }}"
@@ -230,10 +316,40 @@ views:
         color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
         tap_action:
             action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier
+            state_not: unknown
     cards:
       - type: entities
         title: Summen
         show_header_toggle: false
+        visibility:
+          - condition: or
+            conditions:
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_qwen36
+                state_not:
+                  - unavailable
+                  - unknown
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_qwen38
+                state_not:
+                  - unavailable
+                  - unknown
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_qwen25_coder
+                state_not:
+                  - unavailable
+                  - unknown
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
+                state_not:
+                  - unavailable
+                  - unknown
         entities:
             - sensor.vllm_tokens_prompt_daily
             - sensor.vllm_tokens_prompt_yearly
@@ -243,6 +359,13 @@ views:
       - type: entities
         title: qwen3.6-35b-a3b
         show_header_toggle: false
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_qwen36
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_qwen36
+            state_not: unknown
         entities:
             - sensor.vllm_thor_tokens_prompt_total_qwen36
             - sensor.vllm_thor_tokens_generation_total_qwen36
@@ -253,8 +376,34 @@ views:
             - sensor.vllm_thor_tps_prompt_qwen36_max24h
             - sensor.vllm_thor_tps_generation_qwen36_max24h
       - type: entities
+        title: qwen3.8-27b
+        show_header_toggle: false
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_qwen38
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_qwen38
+            state_not: unknown
+        entities:
+            - sensor.vllm_thor_tokens_prompt_total_qwen38
+            - sensor.vllm_thor_tokens_generation_total_qwen38
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_qwen38
+            - sensor.vllm_thor_tps_generation_qwen38
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_qwen38_max24h
+            - sensor.vllm_thor_tps_generation_qwen38_max24h
+      - type: entities
         title: qwen2.5-coder
         show_header_toggle: false
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_qwen25_coder
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_qwen25_coder
+            state_not: unknown
         entities:
             - sensor.vllm_thor_tokens_prompt_total_qwen25_coder
             - sensor.vllm_thor_tokens_generation_total_qwen25_coder
@@ -267,6 +416,13 @@ views:
       - type: entities
         title: qwen3-routing-classifier
         show_header_toggle: false
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
+            state_not: unknown
         entities:
             - sensor.vllm_thor_tokens_prompt_total_qwen3_routing_classifier
             - sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
