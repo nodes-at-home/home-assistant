@@ -33,6 +33,7 @@
           - sensor.vllm_thor_tokens_prompt_total_qwen38
           - sensor.vllm_thor_tokens_prompt_total_qwen25_coder
           - sensor.vllm_thor_tokens_prompt_total_qwen3_routing_classifier
+          - sensor.vllm_thor_tokens_prompt_total_nemotron35
     sensor:
       - name: vllm@thor_tokens_prompt_total
         unique_id: vllm_thor_tokens_prompt_total
@@ -42,7 +43,8 @@
           {{ states('sensor.vllm_thor_tokens_prompt_total_qwen36') | float(0)
              + states('sensor.vllm_thor_tokens_prompt_total_qwen38') | float(0)
              + states('sensor.vllm_thor_tokens_prompt_total_qwen25_coder') | float(0)
-             + states('sensor.vllm_thor_tokens_prompt_total_qwen3_routing_classifier') | float(0) }}
+             + states('sensor.vllm_thor_tokens_prompt_total_qwen3_routing_classifier') | float(0)
+             + states('sensor.vllm_thor_tokens_prompt_total_nemotron35') | float(0) }}
 
   - trigger:
       - platform: state
@@ -51,6 +53,7 @@
           - sensor.vllm_thor_tokens_generation_total_qwen38
           - sensor.vllm_thor_tokens_generation_total_qwen25_coder
           - sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
+          - sensor.vllm_thor_tokens_generation_total_nemotron35
     sensor:
       - name: vllm@thor_tokens_generation_total
         unique_id: vllm_thor_tokens_generation_total
@@ -60,4 +63,5 @@
           {{ states('sensor.vllm_thor_tokens_generation_total_qwen36') | float(0)
              + states('sensor.vllm_thor_tokens_generation_total_qwen38') | float(0)
              + states('sensor.vllm_thor_tokens_generation_total_qwen25_coder') | float(0)
-             + states('sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier') | float(0) }}
+             + states('sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier') | float(0)
+             + states('sensor.vllm_thor_tokens_generation_total_nemotron35') | float(0) }}

@@ -30,6 +30,12 @@
         state_class: total_increasing
         expr: vllm:prompt_tokens_total{engine="0",model_name="qwen3-routing-classifier"}
 
+      - name: vllm@thor_tokens_prompt_total_nemotron35
+        unique_id: vllm_thor_tokens_prompt_total_nemotron35
+        unit_of_measurement: tokens
+        state_class: total_increasing
+        expr: vllm:prompt_tokens_total{engine="0",model_name="nemotron35"}
+
       - name: vllm@thor_tokens_generation_total_qwen36
         unique_id: vllm_thor_tokens_generation_total_qwen36
         unit_of_measurement: tokens
@@ -54,6 +60,12 @@
         state_class: total_increasing
         expr: vllm:generation_tokens_total{engine="0",model_name="qwen3-routing-classifier"}
 
+      - name: vllm@thor_tokens_generation_total_nemotron35
+        unique_id: vllm_thor_tokens_generation_total_nemotron35
+        unit_of_measurement: tokens
+        state_class: total_increasing
+        expr: vllm:generation_tokens_total{engine="0",model_name="nemotron35"}
+
       - name: vllm@thor_tps_prompt_qwen36
         unique_id: vllm_thor_tps_prompt_qwen36
         unit_of_measurement: tps
@@ -74,6 +86,11 @@
         unit_of_measurement: tps
         expr: round(irate(vllm:prompt_tokens_total{engine="0",model_name="qwen3-routing-classifier"}[1m]), 0.01)
 
+      - name: vllm@thor_tps_prompt_nemotron35
+        unique_id: vllm_thor_tps_prompt_nemotron35
+        unit_of_measurement: tps
+        expr: round(irate(vllm:prompt_tokens_total{engine="0",model_name="nemotron35"}[1m]), 0.01)
+
       - name: vllm@thor_tps_generation_qwen36
         unique_id: vllm_thor_tps_generation_qwen36
         unit_of_measurement: tps
@@ -93,6 +110,11 @@
         unique_id: vllm_thor_tps_generation_qwen3_routing_classifier
         unit_of_measurement: tps
         expr: round(irate(vllm:generation_tokens_total{engine="0",model_name="qwen3-routing-classifier"}[1m]), 0.01)
+
+      - name: vllm@thor_tps_generation_nemotron35
+        unique_id: vllm_thor_tps_generation_nemotron35
+        unit_of_measurement: tps
+        expr: round(irate(vllm:generation_tokens_total{engine="0",model_name="nemotron35"}[1m]), 0.01)
 
   - platform: statistics
     name: vllm@thor_tps_prompt_qwen36_max24h
@@ -161,6 +183,24 @@
     name: vllm@thor_tps_generation_qwen3_routing_classifier_max24h
     unique_id: vllm_thor_tps_generation_qwen3_routing_classifier_max24h
     entity_id: "sensor.vllm_thor_tps_generation_qwen3_routing_classifier"
+    state_characteristic: value_max
+    sampling_size: 5760
+    max_age:
+        hours: 24
+
+  - platform: statistics
+    name: vllm@thor_tps_prompt_nemotron35_max24h
+    unique_id: vllm_thor_tps_prompt_nemotron35_max24h
+    entity_id: "sensor.vllm_thor_tps_prompt_nemotron35"
+    state_characteristic: value_max
+    sampling_size: 5760
+    max_age:
+        hours: 24
+
+  - platform: statistics
+    name: vllm@thor_tps_generation_nemotron35_max24h
+    unique_id: vllm_thor_tps_generation_nemotron35_max24h
+    entity_id: "sensor.vllm_thor_tps_generation_nemotron35"
     state_characteristic: value_max
     sampling_size: 5760
     max_age:

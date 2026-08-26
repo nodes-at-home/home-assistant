@@ -144,6 +144,20 @@ views:
           - condition: state
             entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier
             state_not: unknown
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_nemotron35_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_nemotron35_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_nemotron35
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_nemotron35
+            state_not: unknown
     cards:
       - type: entities
         title: Stage
@@ -199,6 +213,11 @@ views:
                   - unknown
               - condition: state
                 entity: sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
+                state_not:
+                  - unavailable
+                  - unknown
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_nemotron35
                 state_not:
                   - unavailable
                   - unknown
@@ -323,6 +342,20 @@ views:
           - condition: state
             entity: sensor.vllm_thor_tps_generation_qwen3_routing_classifier
             state_not: unknown
+      - type: custom:mushroom-template-badge
+        entity: sensor.vllm_thor_tps_generation_nemotron35_max24h
+        content: "{{ states ( 'sensor.vllm_thor_tps_generation_nemotron35_max24h', with_unit = true ) }}"
+        icon: mdi:memory
+        color: "{{ iif ( states ( entity ) | float > 20, 'limegreen', 'yellow' ) }}"
+        tap_action:
+            action: more-info
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_nemotron35
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tps_generation_nemotron35
+            state_not: unknown
     cards:
       - type: entities
         title: Summen
@@ -347,6 +380,11 @@ views:
                   - unknown
               - condition: state
                 entity: sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
+                state_not:
+                  - unavailable
+                  - unknown
+              - condition: state
+                entity: sensor.vllm_thor_tokens_generation_total_nemotron35
                 state_not:
                   - unavailable
                   - unknown
@@ -432,6 +470,25 @@ views:
             - type: divider
             - sensor.vllm_thor_tps_prompt_qwen3_routing_classifier_max24h
             - sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h
+      - type: entities
+        title: nemotron35
+        show_header_toggle: false
+        visibility:
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_nemotron35
+            state_not: unavailable
+          - condition: state
+            entity: sensor.vllm_thor_tokens_generation_total_nemotron35
+            state_not: unknown
+        entities:
+            - sensor.vllm_thor_tokens_prompt_total_nemotron35
+            - sensor.vllm_thor_tokens_generation_total_nemotron35
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_nemotron35
+            - sensor.vllm_thor_tps_generation_nemotron35
+            - type: divider
+            - sensor.vllm_thor_tps_prompt_nemotron35_max24h
+            - sensor.vllm_thor_tps_generation_nemotron35_max24h
 
   - title: Geräte
     path: nodes
