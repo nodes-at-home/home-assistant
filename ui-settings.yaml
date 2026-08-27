@@ -16,6 +16,12 @@ views:
           - input_boolean.show_debug_fields
           - input_boolean.debug_notifications
       - type: entities
+        title: vLLM
+        show_header_toggle: false
+        entities:
+          - input_number.vllm_cost_prompt_per_million_tokens
+          - input_number.vllm_cost_generation_per_million_tokens
+      - type: entities
         title: Abwesenheit
         show_header_toggle: false
         entities:

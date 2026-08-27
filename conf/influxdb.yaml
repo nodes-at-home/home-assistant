@@ -166,8 +166,6 @@
         - sensor.lux_dining_ambientlight
         - sensor.vllm_prompt_quarterhourly
         - sensor.vllm_generation_quarterhourly
-        - sensor.vllm_thor_tps_prompt
-        - sensor.vllm_thor_tps_generation
   ignore_attributes:
     - friendly_name
     - icon

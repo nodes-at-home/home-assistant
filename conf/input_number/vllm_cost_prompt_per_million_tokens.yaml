@@ -1,0 +1,10 @@
+###
+### Kalkulatorische vLLM-Kosten fuer Prompt-Tokens
+###
+
+name: vLLM Kosten Prompt
+mode: box
+min: 0
+max: 1000
+step: 0.01
+unit_of_measurement: EUR/Mio Token

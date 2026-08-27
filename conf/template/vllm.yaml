@@ -65,3 +65,22 @@
              + states('sensor.vllm_thor_tokens_generation_total_qwen25_coder') | float(0)
              + states('sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier') | float(0)
              + states('sensor.vllm_thor_tokens_generation_total_nemotron35') | float(0) }}
+
+  - sensor:
+      - name: vllm@thor_tokens_prompt_costs
+        unique_id: vllm_thor_tokens_prompt_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        state: >-
+          {{ ( states('sensor.vllm_tokens_prompt_yearly') | float(0)
+             / 1000000
+             * states('input_number.vllm_cost_prompt_per_million_tokens') | float(0) ) | round(2) }}
+
+      - name: vllm@thor_tokens_generation_costs
+        unique_id: vllm_thor_tokens_generation_costs
+        unit_of_measurement: EUR
+        device_class: monetary
+        state: >-
+          {{ ( states('sensor.vllm_tokens_generation_yearly') | float(0)
+             / 1000000
+             * states('input_number.vllm_cost_generation_per_million_tokens') | float(0) ) | round(2) }}

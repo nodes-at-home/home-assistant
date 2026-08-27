@@ -389,11 +389,13 @@ views:
                   - unavailable
                   - unknown
         entities:
-            - sensor.vllm_tokens_prompt_daily
-            - sensor.vllm_tokens_prompt_yearly
-            - type: divider
-            - sensor.vllm_tokens_generation_daily
-            - sensor.vllm_tokens_generation_yearly
+          - sensor.vllm_tokens_prompt_daily
+          - sensor.vllm_tokens_prompt_yearly
+          - sensor.vllm_thor_tokens_prompt_costs
+          - type: divider
+          - sensor.vllm_tokens_generation_daily
+          - sensor.vllm_tokens_generation_yearly
+          - sensor.vllm_thor_tokens_generation_costs
       - type: entities
         title: qwen3.6-35b-a3b
         show_header_toggle: false
@@ -471,7 +473,7 @@ views:
             - sensor.vllm_thor_tps_prompt_qwen3_routing_classifier_max24h
             - sensor.vllm_thor_tps_generation_qwen3_routing_classifier_max24h
       - type: entities
-        title: nemotron35
+        title: nemotron3.5-30b-a3b
         show_header_toggle: false
         visibility:
           - condition: state
