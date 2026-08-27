@@ -74,7 +74,7 @@ class Prometheus:
             return QueryResult(error=STATE_UNKNOWN)
 
         if not result:
-            _LOGGER.error("Expression '%s' yielded no result", expr)
+            _LOGGER.debug("Expression '%s' yielded no result", expr)
             return QueryResult(error=STATE_PROBLEM)
         if len(result) > 1:
             _LOGGER.error("Expression '%s' yielded multiple metrics", expr)
