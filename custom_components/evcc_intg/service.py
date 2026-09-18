@@ -1,4 +1,5 @@
 import datetime
+import zoneinfo
 import logging
 
 from homeassistant.core import ServiceCall
@@ -44,10 +45,15 @@ class EvccService:
         if input_date_str is not None:
             try:
                 # date is YYYY-MM-DD HH:MM.SSS -> need to convert it to a UTC based RFC3339
+                # 1. Parse naive string
                 start = datetime.datetime.strptime(input_date_str, "%Y-%m-%d %H:%M:%S")
                 start = start.replace(second=0)
-                start = start.astimezone(datetime.timezone.utc)
-                rfc_date = start.isoformat(timespec="milliseconds").replace("+00:00", "Z")
+
+                # 2. Get HA's configured local timezone (e.g., "Europe/Paris" or "America/New_York")
+                # 3. Mark as HA local time, then convert to UTC
+                start_local = start.replace(tzinfo=zoneinfo.ZoneInfo(self._hass.config.time_zone))
+                start_utc = start_local.astimezone(datetime.timezone.utc)
+                rfc_date = start_utc.isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
                 # Vehicle plan
                 if vehicle_name is not None and vehicle_name in available_vehicles and isinstance(soc, int) and soc > 0:
@@ -124,6 +130,70 @@ class EvccService:
 
                 if resp is not None and len(resp) > 0:
                     if call.return_response:
+                        return {
+                            "success": "true",
+                            "date": str(datetime.datetime.now().time()),
+                            "response": resp
+                        }
+                else:
+                    if call.return_response:
+                        return {
+                            "error": "NO or EMPTY response",
+                            "date": str(datetime.datetime.now().time())
+                        }
+            except ValueError as exc:
+                if call.return_response:
+                    return {
+                        "error": str(exc),
+                        "date": str(datetime.datetime.now().time())
+                    }
+        else:
+            if call.return_response:
+                return {
+                    "error": "No date or false data provided",
+                    "date": str(datetime.datetime.now().time())
+                }
+
+
+    async def activate_loadpoint(self, call: ServiceCall):
+        return await self.deactivate_loadpoint_internal(False, call)
+
+    async def deactivate_loadpoint(self, call: ServiceCall):
+        return await self.deactivate_loadpoint_internal(True, call)
+
+    async def deactivate_loadpoint_internal(self, new_state: bool, call: ServiceCall):
+        # loadpoint plan data
+        loadpoint = call.data.get("loadpoint", None)
+
+        # Validate input
+        if loadpoint is not None:
+            try:
+                # Loadpoint plan
+                if loadpoint is not None and isinstance(loadpoint, int):
+                    resp = await self._coordinator.async_deactivate_loadpoint(new_state, int(loadpoint) -1 )
+                else:
+                    resp = None
+
+                if resp is not None and len(resp) > 0:
+                    if call.return_response:
+                        if isinstance(resp, dict):
+                            a_return_msg = resp.get("evcc_intg_message")
+                            a_return_err = resp.get("evcc_intg_error")
+                            if a_return_err and a_return_msg:
+                                return {
+                                    "success": "false",
+                                    "date": str(datetime.datetime.now().time()),
+                                    "response": {"error": a_return_err,
+                                                 "message": a_return_msg}
+                                }
+                            elif a_return_msg:
+                                return {
+                                    "success": "true",
+                                    "date": str(datetime.datetime.now().time()),
+                                    "response": {"message": a_return_msg}
+                                }
+
+                        # our default "OK" response...
                         return {
                             "success": "true",
                             "date": str(datetime.datetime.now().time()),

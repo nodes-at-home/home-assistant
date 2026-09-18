@@ -1,10 +1,10 @@
 import asyncio
 import logging
+import time
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from json import JSONDecodeError
 from numbers import Number
-from time import time
 from typing import Callable, Final
 
 import aiohttp
@@ -14,6 +14,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import dt as dt_util
 
 from custom_components.evcc_intg.pyevcc_ha.const import (
+    MAX_WS_NEW_DATA_NOTIFICATION_DELAY,
     TRANSLATIONS,
     JSONKEY_LOADPOINTS,
     JSONKEY_VEHICLES,
@@ -41,6 +42,57 @@ static_5sec_timeout: Final = ClientTimeout(total=5)
 static_30sec_timeout: Final = ClientTimeout(total=30)
 RAW_CLIENT_RESPONSE_KEY = "aiohttp.ClientResponse"
 ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW = f"{ADDITIONAL_ENDPOINTS_DATA_SESSIONS}@@@{SESSIONS_KEY_RAW}"
+
+import inspect
+from typing import Any
+
+def dump_object(obj: Any, max_depth: int = 3, _seen: set = None) -> Any:
+    """
+    Recursively dumps attributes, properties, and nested structures into a dict.
+
+    :param obj: The object to inspect.
+    :param max_depth: Maximum recursion depth to prevent giant outputs/hangs.
+    :param _seen: Set of visited object IDs to avoid circular loops.
+    """
+    if _seen is None:
+        _seen = set()
+
+    # Handle primitives, None, functions, and modules directly
+    if obj is None or isinstance(obj, (int, float, str, bool, bytes)):
+        return obj
+
+    # Handle circular references or maximum depth
+    obj_id = id(obj)
+    if obj_id in _seen or max_depth < 0:
+        return f"<... {type(obj).__name__} at {hex(obj_id)} ...>"
+    _seen.add(obj_id)
+
+    # Handle standard collections
+    if isinstance(obj, dict):
+        return {str(k): dump_object(v, max_depth - 1, _seen) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple, set)):
+        return [dump_object(item, max_depth - 1, _seen) for item in obj]
+
+    # Inspect custom objects: extract non-callable attributes & @properties
+    result = {"__type__": type(obj).__name__}
+
+    for attr in dir(obj):
+        # Skip dunder/special attributes and standard private methods
+        if attr.startswith("__"):
+            continue
+
+        try:
+            val = getattr(obj, attr)
+            # Skip functions and methods
+            if callable(val):
+                continue
+            result[attr] = dump_object(val, max_depth - 1, _seen)
+        except Exception as e:
+            # Handle dynamic properties that raise exceptions on access
+            result[attr] = f"<Error evaluating attribute: {e}>"
+
+    return result
+
 
 async def _do_request(method: Callable, return_raw_client_response:bool=False) -> dict:
     try:
@@ -214,6 +266,7 @@ class EvccApiBridge:
         self._ws_LAST_NEW_DATA_NOTIFY = -1
         self.coordinator = coordinator
         self._debounced_update_task = None
+        self._ws_ADDITIONAL_DATA_UPDATE_TASK_CHECK_MINUTE = -1
         self._debounced_additional_data_update_task = None
 
         self.host = host
@@ -282,11 +335,12 @@ class EvccApiBridge:
         self._CONFIG_METER_LAST_UPDATE = -1
         self._ws_LAST_UPDATE = -1
         self._ws_LAST_NEW_DATA_NOTIFY = -1
+        self._ws_ADDITIONAL_DATA_UPDATE_TASK_CHECK_MINUTE = -1
         if clear_evcc_data:
             self._data = {}
 
     def ws_check_last_update(self) -> bool:
-        now_time = time()
+        now_time = time.time()
         if self._ws_LAST_UPDATE + 50 > now_time:
             _LOGGER.debug(f"ws_check_last_update(): all good! [last update: {int(now_time - self._ws_LAST_UPDATE)} sec ago]")
             return True
@@ -298,7 +352,7 @@ class EvccApiBridge:
         try:
             async with self.web_session.ws_connect(self.web_socket_url) as ws:
                 self.ws_connected = True
-                self._ws_LAST_UPDATE = time()  # Set a grace period so the watchdog doesn't immediately kill connection
+                self._ws_LAST_UPDATE = time.time()  # Set a grace period so the watchdog doesn't immediately kill connection
                 _LOGGER.info(f"connected to websocket: {self.web_socket_url}")
 
                 async for msg in ws:
@@ -313,79 +367,84 @@ class EvccApiBridge:
                         except:
                             _LOGGER.info(f"could not read initial data from evcc@{self.host} - ignoring")
                             self._data = {}
+
                         try:
                             ws_data = msg.json()
-                            if self._data is None:
-                                _LOGGER.info(f"unhandled {ws_data} - since 'self._data' is NONE")
-                            else:
-                                for key, value in ws_data.items():
-                                    if "." in key:
-                                        key_parts = key.split(".")
-                                        if len(key_parts) > 2:
-                                            domain = key_parts[0]
-                                            idx = int(key_parts[1])
-                                            sub_key = key_parts[2]
-                                            if domain in self._data:
-                                                if len(self._data[domain]) > idx:
-                                                    if not sub_key in self._data[domain][idx]:
-                                                        _LOGGER.debug(f"adding '{sub_key}' to {domain}[{idx}]")
+                            if ws_data:
+                                # ok we have received a valid data-package... so basically we are
+                                # life...
+                                self._ws_LAST_UPDATE = time.time()
 
-                                                    # a loadpoint 'charging' transition true->false means a charging
-                                                    # session has just finished - evcc creates the session record now,
-                                                    # so we invalidate our session update-window: the additional-data
-                                                    # task launched after this loop will then refetch /api/sessions
-                                                    if domain == JSONKEY_LOADPOINTS:
-                                                        # # for integrated devices we must monitor the 'CONNECTED' key...
-                                                        # is_integrated = self._data[domain][idx].get("chargerFeatureIntegratedDevice", False)
-                                                        # is_heating = self._data[domain][idx].get("chargerFeatureHeating", False)
-                                                        # if not is_heating and is_integrated:
-                                                        #     key_to_check = Tag.CONNECTED.json_key
-                                                        # else:
-                                                        #     key_to_check = Tag.CHARGING.json_key
-                                                        if sub_key == Tag.CHARGING.json_key \
-                                                            and self._data[domain][idx].get(sub_key) is True and value is False:
-                                                            _LOGGER.debug(f"loadpoint[{idx}] '{sub_key}' changed from TRUE to FALSE -> force a session refresh")
-                                                            self._SESSIONS_LAST_UPDATE_HOUR = -1
+                                # now let's see, if we can process the data...
+                                if self._data is not None:
+                                    for key, value in ws_data.items():
+                                        if "." in key:
+                                            key_parts = key.split(".")
+                                            if len(key_parts) > 2:
+                                                domain = key_parts[0]
+                                                idx = int(key_parts[1])
+                                                sub_key = key_parts[2]
+                                                if domain in self._data:
+                                                    if len(self._data[domain]) > idx:
+                                                        if not sub_key in self._data[domain][idx]:
+                                                            _LOGGER.debug(f"adding '{sub_key}' to {domain}[{idx}]")
 
-                                                    self._data[domain][idx][sub_key] = value
+                                                        # a loadpoint 'charging' transition true->false means a charging
+                                                        # session has just finished - evcc creates the session record now,
+                                                        # so we invalidate our session update-window: the additional-data
+                                                        # task launched after this loop will then refetch /api/sessions
+                                                        if domain == JSONKEY_LOADPOINTS:
+                                                            # # for integrated devices we must monitor the 'CONNECTED' key...
+                                                            # is_integrated = self._data[domain][idx].get("chargerFeatureIntegratedDevice", False)
+                                                            # is_heating = self._data[domain][idx].get("chargerFeatureHeating", False)
+                                                            # if not is_heating and is_integrated:
+                                                            #     key_to_check = Tag.CONNECTED.json_key
+                                                            # else:
+                                                            #     key_to_check = Tag.CHARGING.json_key
+                                                            if sub_key == Tag.CHARGING.json_key \
+                                                                and self._data[domain][idx].get(sub_key) is True and value is False:
+                                                                _LOGGER.debug(f"loadpoint[{idx}] '{sub_key}' changed from TRUE to FALSE -> force a session refresh")
+                                                                self._SESSIONS_LAST_UPDATE_HOUR = -1
+
+                                                        self._data[domain][idx][sub_key] = value
+                                                    else:
+                                                        # we need to add a new entry to the list... - well
+                                                        # if we get index 4 but length is only 2 we must add multiple
+                                                        # empty entries to the list...
+                                                        while len(self._data[domain]) <= idx:
+                                                            self._data[domain].append({})
+
+                                                        self._data[domain][idx] = {sub_key: value}
+                                                        _LOGGER.debug(f"adding index {idx} to '{domain}' -> {self._data[domain][idx]}")
                                                 else:
-                                                    # we need to add a new entry to the list... - well
-                                                    # if we get index 4 but length is only 2 we must add multiple
-                                                    # empty entries to the list...
-                                                    while len(self._data[domain]) <= idx:
-                                                        self._data[domain].append({})
-
-                                                    self._data[domain][idx] = {sub_key: value}
-                                                    _LOGGER.debug(f"adding index {idx} to '{domain}' -> {self._data[domain][idx]}")
+                                                    _LOGGER.info(f"unhandled [{domain} not in data] 3part: {key} - ignoring: {value} data: {self._data}")
+                                                # if domain == "loadpoints":
+                                                #     pass
+                                                # elif domain == "vehicles":
+                                                #     pass
+                                            elif len(key_parts) == 2:
+                                                # currently only 'forcast.solar'
+                                                domain = key_parts[0]
+                                                sub_key = key_parts[1]
+                                                if domain in self._data:
+                                                    if not sub_key in self._data[domain]:
+                                                        _LOGGER.debug(f"adding '{sub_key}' to {domain}")
+                                                    self._data[domain][sub_key] = value
+                                                else:
+                                                    _LOGGER.info(f"unhandled [{domain} not in data] 2part: {key} - domain {domain} not in self.data - ignoring: {value}")
                                             else:
-                                                _LOGGER.info(f"unhandled [{domain} not in data] 3part: {key} - ignoring: {value} data: {self._data}")
-                                            # if domain == "loadpoints":
-                                            #     pass
-                                            # elif domain == "vehicles":
-                                            #     pass
-                                        elif len(key_parts) == 2:
-                                            # currently only 'forcast.solar'
-                                            domain = key_parts[0]
-                                            sub_key = key_parts[1]
-                                            if domain in self._data:
-                                                if not sub_key in self._data[domain]:
-                                                    _LOGGER.debug(f"adding '{sub_key}' to {domain}")
-                                                self._data[domain][sub_key] = value
-                                            else:
-                                                _LOGGER.info(f"unhandled [{domain} not in data] 2part: {key} - domain {domain} not in self.data - ignoring: {value}")
+                                                _LOGGER.info(f"unhandled [not parsable key] {key} - ignoring: {value}")
                                         else:
-                                            _LOGGER.info(f"unhandled [not parsable key] {key} - ignoring: {value}")
-                                    else:
-                                        if key in self._data:
-                                            self._data[key] = value
-                                        else:
-                                            if key != "releaseNotes":
+                                            if key in self._data:
                                                 self._data[key] = value
-                                                _LOGGER.info(f"added '{key}' to self._data and assign: {value}")
+                                            else:
+                                                if key != "releaseNotes":
+                                                    self._data[key] = value
+                                                    _LOGGER.info(f"added '{key}' to self._data and assign: {value}")
 
-                                # END of for loop
-                                # _LOGGER.debug(f"key: {key} value: {value}")
-                                self._ws_notify_coordinator_for_updated_data_debounced()
+                                    # END of for loop
+                                    # _LOGGER.debug(f"key: {key} value: {value}")
+                                    self._ws_notify_coordinator_for_updated_data_debounced()
 
                         except Exception as e:
                             _LOGGER.info(f"Could not read JSON from: {msg} - caused {e}")
@@ -411,18 +470,20 @@ class EvccApiBridge:
         self.ws_connected = False
 
     def _ws_start_async_additional_data_update_task_if_needed(self):
-        if self._debounced_additional_data_update_task is None or self._debounced_additional_data_update_task.done():
-            async def _task():
-                await self.read_all_data(request_all=False, request_tariffs=True, request_sessions=True, request_config=True)
-                if self.coordinator is not None and self._data_coordinator_update_needed:
-                    self._ws_notify_coordinator_for_updated_data_debounced()
-                # we sleep the current task for 0.5 seconds since we don't want to check with every websocket message
-                # IF we must update other data...
-                await asyncio.sleep(0.5)
-            self._debounced_additional_data_update_task = asyncio.create_task(_task())
-        else:
-            # if the task is already running, we don't need to do anything...'
-            pass
+        # only checking every minute for a possible ... read_all_data()
+        current_minute = datetime.now(timezone.utc).minute
+        if self._ws_ADDITIONAL_DATA_UPDATE_TASK_CHECK_MINUTE != current_minute:
+            self._ws_ADDITIONAL_DATA_UPDATE_TASK_CHECK_MINUTE = current_minute
+            if self._debounced_additional_data_update_task is None or self._debounced_additional_data_update_task.done():
+                async def _task():
+                    await self.read_all_data(request_all=False, request_tariffs=True, request_sessions=True, request_config=True)
+                    if self.coordinator is not None and self._data_coordinator_update_needed:
+                        self._ws_notify_coordinator_for_updated_data_debounced()
+
+                self._debounced_additional_data_update_task = asyncio.create_task(_task())
+            else:
+                # if the task is already running, we don't need to do anything...'
+                pass
 
     def _ws_notify_coordinator_for_updated_data_debounced(self):
         if self._debounced_update_task is not None:
@@ -430,25 +491,23 @@ class EvccApiBridge:
 
         async def _task():
             try:
-                await asyncio.sleep(0.2)
                 if self.coordinator is not None:
-                    now_time = time()
-                    # only update every second...
-                    if now_time - self._ws_LAST_NEW_DATA_NOTIFY >= 1:
-                        self._ws_LAST_NEW_DATA_NOTIFY = now_time
-                        self.coordinator.async_set_updated_data(self._data)
-                    else:
-                        #_LOGGER.debug("_ws_update_data_debounced:task(): update was skipped due 1 sec update interval...")
-                        pass
+                    elapsed = time.time() - self._ws_LAST_NEW_DATA_NOTIFY
+                    if elapsed < MAX_WS_NEW_DATA_NOTIFICATION_DELAY:
+                        time_to_sleep = MAX_WS_NEW_DATA_NOTIFICATION_DELAY - elapsed
+                        #_LOGGER.debug(f"_ws_debounce_coordinator_update(): sleeping for {sec_to_sleep} seconds before notifying for updated data")
+                        await asyncio.sleep(time_to_sleep)
+
+                    self.coordinator.async_set_updated_data(self._data)
+                    self._ws_LAST_NEW_DATA_NOTIFY = time.time()
 
             except asyncio.CancelledError:
-                #_LOGGER.debug("_ws_update_data_debounced:task(): task was cancelled (normal during reconnect)")
+                #_LOGGER.debug("_ws_update_data_debounced:task(): task was canceled (normal during reconnect)")
                 pass
             except Exception as e:
                 _LOGGER.info(f"_ws_update_data_debounced:task(): ERROR: {type(e).__name__}: {e}", exc_info=True)
 
         self._debounced_update_task = asyncio.create_task(_task())
-        self._ws_LAST_UPDATE = time()
 
     async def read_all_data(self, request_all:bool=True,
                             request_tariffs:bool=False,
@@ -461,12 +520,13 @@ class EvccApiBridge:
             _LOGGER.debug(f"going to request 'state' data from evcc@{self.host}")
             json_resp = await self.read_state_data()
             if len(json_resp) == 0:
+                if self._data is None:
+                    self._data = {}
                 return {}
         else:
             if self._data is None:
                 self._data = {}
             json_resp = self._data
-
 
         self._data_coordinator_update_needed = False
         now_utc = datetime.now(timezone.utc)
@@ -504,10 +564,9 @@ class EvccApiBridge:
                 if self._data is not None and ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW in self._data:
                     json_resp[ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW] = self._data[ADDITIONAL_ENDPOINTS_DATA_SESSIONS_RAW]
 
-
         # additional configuration endpoint data
         if request_all or request_config:
-            now_time = time()
+            now_time = time.time()
             request_vehicle_data = self._request_ext_vehicle_data and self._CONFIG_VEHICLE_LAST_UPDATE + self._CONFIG_VEHICLE_UPDATE_INTERVAL_IN_SECONDS <= now_time
             request_meter_data = self._request_ext_meter_data and self._CONFIG_METER_LAST_UPDATE + self._CONFIG_METER_UPDATE_INTERVAL_IN_SECONDS <= now_time
             if request_vehicle_data or request_meter_data:
@@ -628,6 +687,15 @@ class EvccApiBridge:
                 for a_device_id in value_list:
                     if a_device_type not in json_resp[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF][EVCCCONF_KEY_DATA]:
                         json_resp[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF][EVCCCONF_KEY_DATA][a_device_type] = {}
+
+                    # me must check for disabled devices
+                    if (isinstance(value_list, dict)):
+                        a_obj = value_list.get(a_device_id, {})
+                        if isinstance(a_obj, dict) and len(a_obj) > 0 and (a_obj.get("disable", False) or a_obj.get("disabled", False)):
+                            _LOGGER.debug(f"skipping disabled {a_device_type} '{a_device_id}' -> {a_obj}")
+                            json_resp[ADDITIONAL_ENDPOINTS_DATA_EVCCCONF][EVCCCONF_KEY_DATA][a_device_type][a_device_id.lower()] = a_obj
+                            continue
+
                     req = f"{self.host}/api/config/devices/{a_device_type}/{a_device_id}/status"
                     if log_requests:
                         _LOGGER.debug(f"GET request: {req}")
@@ -1055,6 +1123,8 @@ class EvccApiBridge:
                         return True
 
             except BaseException as ex:
+                if isinstance(ex, RuntimeError) and "session is closed" in str(ex).lower:
+                    _LOGGER.debug(f"{dump_object(self.web_session, max_depth=3)}")
                 _LOGGER.warning(f"ensure_session_is_authorized(): caused {type(ex).__name__} -> {ex}")
         else:
             return False
@@ -1353,6 +1423,52 @@ class EvccApiBridge:
                 _LOGGER.error(f"could not write vehicle plan for vehicle: {vehicle_id}, error: {err}")
                 return {"err": f"could not write vehicle plan: {err}"}
 
+    async def loadpoint_disable(self, new_state:bool, loadpoint_idx_as_int:int):
+        if self._admin_password is None:
+            return {"evcc_intg_error": "No admin password set",
+                    "evcc_intg_message": "Please update your integration setup"}
+
+        loadpoint_config_data = self._data.get(ADDITIONAL_ENDPOINTS_DATA_EVCCCONF, {}).get(EVCCCONF_KEY_CONFIG, {}).get(EVCCCONF_DEVICE_TYPES.CHARGER.value)
+        if loadpoint_config_data is None:
+            return {"evcc_intg_error": "No loadpoint config data found",
+                    "evcc_intg_message": "Please update your integration setup"}
+
+        loadpoint_list = self._data.get("loadpoints", [])
+        if len(loadpoint_list) <= loadpoint_idx_as_int:
+            return {"evcc_intg_error": "No loadpoint at specified index",
+                    "evcc_intg_message": "Please update your integration setup"}
+
+        a_loadpoint_name = loadpoint_list[loadpoint_idx_as_int].get("name", "@@@evc_integ")
+        if a_loadpoint_name == "@@@evc_integ":
+            return {"evcc_intg_error": "Loadpoint name is unknown",
+                    "evcc_intg_message": "Please update your integration setup"}
+
+        if not a_loadpoint_name.startswith("db:"):
+            return {"evcc_intg_error": "Loadpoint not supported",
+                    "evcc_intg_message": "Your loadpoint must be configured via evcc UI"}
+
+        the_loadpoint_obj_to_modify = None
+        for a_loadpoint_obj in loadpoint_config_data.values():
+            if a_loadpoint_name == a_loadpoint_obj.get("name"):
+                the_loadpoint_obj_to_modify = dict(a_loadpoint_obj)
+                break
+
+        if the_loadpoint_obj_to_modify is None:
+            return {"evcc_intg_error": "Loadpoint name is unknown (internal error)",
+                    "evcc_intg_message": "Please update your integration setup"}
+
+        # finally setting the new state...
+        the_loadpoint_obj_to_modify["disable"]= new_state
+
+        req_url = f"{self.host}/api/config/loadpoints/{the_loadpoint_obj_to_modify.get('id')}"
+        r_json = await _do_request(method=self.web_session.put(url=req_url, json=the_loadpoint_obj_to_modify, ssl=False, timeout=static_5sec_timeout))
+        # the request will return NO DATA!
+        if isinstance(r_json, dict) and len(r_json) == 0:
+            return {"result": "OK",
+                    "message": "Your evcc server will be restarted in 5 seconds, in another 20 seconds the integration will be reloaded"}
+
+        return {"evcc_intg_error": "unknown error while put request",
+               "evcc_intg_message": "Please check the debug log of the integration for details"}
 
     ##################################################################################
     # EVCC CARD ADDON
@@ -1430,7 +1546,6 @@ class EvccApiBridge:
                 except Exception as err:
                     _LOGGER.info(f"read_sessions_raw(): could not parse 'created' {created} -> {type(err).__name__}: {err}")
         return filtered
-
 
     async def evcc_card_read_loadpoint_plan_static_preview(self, lp_idx: str, kind: str, value: str, rfc_date: str) -> dict:
         # here we have no caching strategy... so we must 'hope' the evcc-card will not hammer

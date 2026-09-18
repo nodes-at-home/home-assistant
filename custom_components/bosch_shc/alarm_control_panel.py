@@ -18,9 +18,10 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.device_registry import async_get as get_dev_reg
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import DOMAIN, LOGGER
 from .entity import async_migrate_to_new_unique_id
 
 PARALLEL_UPDATES = 1
@@ -89,13 +90,29 @@ class IntrusionSystemAlarmControlPanel(AlarmControlPanelEntity):  # type: ignore
         """Return the device info."""
         info = DeviceInfo(
             identifiers={(DOMAIN, self._device.id)},
-            name=self._device.name,
+            # #393: this device's raw name ("Intrusion Detection System") is
+            # a hardcoded literal in boschshcpy, not user-customizable.
+            translation_key="intrusion_system",
             manufacturer=self._device.manufacturer,
             model=self._device.device_model,
         )
         root_device_id = self._device.root_device_id
-        if root_device_id is not None:
-            info["via_device"] = (DOMAIN, root_device_id)
+        # boschshcpy may render the hub identifier and a device's
+        # root_device_id differently, so the lookup can miss; link only
+        # when it resolves instead of raising out of setup (matches
+        # ha-core#177711's via_device -> via_device_id migration).
+        if root_device_id is not None and (
+            hub := get_dev_reg(self.hass).async_get_device_by_identifier(
+                (DOMAIN, root_device_id), self._entry_id
+            )
+        ):
+            info["via_device_id"] = hub.id
+        else:
+            LOGGER.debug(
+                "No hub device found for root_device_id %s (device %s)",
+                root_device_id,
+                self._device.id,
+            )
         return info
 
     @property
@@ -136,10 +153,12 @@ class IntrusionSystemAlarmControlPanel(AlarmControlPanelEntity):  # type: ignore
             ):
                 return AlarmControlPanelState.ARMED_HOME
 
-            if (
-                self._device.active_configuration_profile
-                == SHCIntrusionSystem.Profile.CUSTOM_PROTECTION
+            if self._device.active_configuration_profile in (
+                SHCIntrusionSystem.Profile.CUSTOM_PROTECTION,
+                SHCIntrusionSystem.Profile.UNKNOWN,
             ):
+                # UNKNOWN = a real custom IDS profile beyond the 3 built-ins;
+                # must not fall through to None while genuinely armed.
                 return AlarmControlPanelState.ARMED_CUSTOM_BYPASS
         return None
 

@@ -12,6 +12,7 @@ LOGGER = logging.getLogger(__package__)
 class Printers(StrEnum):
     A1 = "A1"
     A1MINI = "A1MINI"
+    A2L = "A2L"
     P1P = "P1P"
     P1S = "P1S"
     P2S = "P2S"
@@ -299,6 +300,7 @@ class BambuUrl(IntEnum):
     PROJECTS = 8,
     USERDETAIL = 9,
     PREFERENCE = 10,
+    CSRF = 11,
 
 BAMBU_URL = {
     BambuUrl.LOGIN: 'https://api.bambulab.com/v1/user-service/user/login',
@@ -310,4 +312,17 @@ BAMBU_URL = {
     BambuUrl.TASKS: 'https://api.bambulab.com/v1/user-service/my/tasks',
     BambuUrl.PROJECTS: 'https://api.bambulab.com/v1/iot-service/api/user/project',
     BambuUrl.PREFERENCE: 'https://api.bambulab.com/v1/design-user-service/my/preference',
+    BambuUrl.CSRF: 'https://bambulab.com/api/sign-in/csrf',
 }
+
+# AMS tray `state` — see docs/merge-request-ams-tray-state.md
+UNKNOWN_TRAY_LABEL = "?"
+
+AMS_TRAY_STATE_LEGACY_MAX = 3
+
+class AMSTrayStateFlags(IntEnum):
+    SPOOL = 0x01,
+    METADATA = 0x02,
+    MOTION = 0x04,
+    STEADY = 0x08,
+    RFID = 0x10,

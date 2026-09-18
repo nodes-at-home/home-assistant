@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import ftplib
 import json
 import math
@@ -40,6 +41,7 @@ from .utils import (
     get_upgrade_url,
     upgrade_template,
     get_wiki_url_for_hms_error,
+    ams_tray_spool_loaded,
 )
 from .const import (
     LOGGER,
@@ -53,6 +55,7 @@ from .const import (
     PRINT_TYPE_OPTIONS,
     AIRDUCT_MODES,
     TempEnum, Print_Fun_Values,
+    UNKNOWN_TRAY_LABEL,
 )
 from .commands import (
     CHAMBER_LIGHT_ON,
@@ -68,6 +71,19 @@ from .commands import (
     BUZZER_SET_BEEPING,
     HEATBED_LIGHT_ON,
     HEATBED_LIGHT_OFF,
+)
+from .media_sources import (
+    Ftps990MediaSource,
+    RemoteMediaError,
+    RemoteMediaFile,
+    RemoteMediaSource,
+    ProgressCallback,
+    Tcp6000MediaSource,
+    canonical_storage,
+    dedupe_remote_files,
+    sort_newest_first,
+    source_priority,
+    storage_cache_segment,
 )
 
 class Device:
@@ -128,16 +144,21 @@ class Device:
                 if send_ready_event:
                     self._client.callback("event_printer_ready")
 
-        self._client.callback("event_printer_data_update")
+        # Only notify Home Assistant when something actually changed. The printer pushes
+        # status roughly once a second; without this gate every push forces all entities
+        # to recompute and rewrite their state.
+        if send_event:
+            self._client.callback("event_printer_data_update")
 
     @property
     def has_full_printer_data(self):
         return (self.push_all_data != None) and (self.get_version_data != None)
 
     def info_update(self, data):
+        had_full_printer_data = self.has_full_printer_data
         self.info.info_update(data = data)
         self.home_flag.info_update(data = data)
-        self.ams.info_update(data = data)
+        ams_info_changed = self.ams.info_update(data = data)
 
         if data.get("command") == "get_version":
             send_ready_event = self.get_version_data is None and self.push_all_data is not None
@@ -145,6 +166,11 @@ class Device:
                 LOGGER.debug("Reached first push of version data.")
             self.get_version_data = data
             if send_ready_event:
+                self._client.callback("event_printer_ready")
+            elif had_full_printer_data and ams_info_changed:
+                # A later get_version response can fill in AMS identity metadata that was
+                # missing during initial startup. Re-run entity setup so placeholder AMS
+                # entries are replaced with entities using the real serial/model.
                 self._client.callback("event_printer_ready")
 
 
@@ -154,6 +180,7 @@ class Device:
 
     def supports_feature(self, feature):
         a1_printers = {Printers.A1, Printers.A1MINI}
+        a2_printers = {Printers.A2L}
         h2_printers = {Printers.H2C, Printers.H2D, Printers.H2DPRO, Printers.H2S}
         p1_printers = {Printers.P1P, Printers.P1S}
         p2_printers = {Printers.P2S}
@@ -169,9 +196,9 @@ class Device:
         if feature == Features.CAMERA_RTSP:
             return model in (h2_printers | p2_printers | x1_printer | x1e_printer | x2_printers)
         elif feature == Features.CAMERA_IMAGE:
-            return model in (a1_printers | p1_printers)
+            return model in (a1_printers | a2_printers | p1_printers)
         elif feature == Features.SUPPORTS_EARLY_FTP_DOWNLOAD:
-            return model in (a1_printers | p1_printers)
+            return model in (a1_printers | a2_printers | p1_printers)
 
         # Now check that we have a version. All tests after this are expected to only be called after the
         # first full set of data from the printer has been received and so version will be available.
@@ -181,17 +208,17 @@ class Device:
 
         # All following features should only be every checked after full initialization data is available.
         if feature == Features.AUX_FAN:
-            return model not in a1_printers
+            return model not in (a1_printers | a2_printers)
         elif feature == Features.CHAMBER_FAN:
             # The P1P may not have a fan but we don't have a perfectly reliable way to detect that. The p1s upgrade
             # flag would largely be good though but not accessible here.
-            return model not in a1_printers
+            return model not in (a1_printers | a2_printers)
         elif feature == Features.CHAMBER_TEMPERATURE:
             return model in (h2_printers | p2_printers | x1_printer | x1e_printer | x2_printers)
         elif feature == Features.AMS:
             return len(self.ams.data) != 0
         elif feature == Features.K_VALUE:
-            return model in (a1_printers | p1_printers)
+            return model in (a1_printers | a2_printers | p1_printers)
         elif feature == Features.AMS_TEMPERATURE:
             if model in a1_printers:
                 return self.supports_sw_version("01.06.10.33")
@@ -233,7 +260,7 @@ class Device:
                 return self.supports_sw_version("01.06.10.33")
             return True
         elif feature == Features.PROMPT_SOUND:
-            if model in (a1_printers | h2_printers | p2_printers | x2_printers):
+            if model in (a1_printers | a2_printers | h2_printers | p2_printers | x2_printers):
                 return not self.print_fun.mqtt_signature_required
             return False
         elif feature == Features.AMS_SWITCH_COMMAND:
@@ -270,6 +297,8 @@ class Device:
         elif feature == Features.AMS_DRYING_SETTINGS:
             if model in p2_printers:
                 return self.supports_sw_version("01.01.50.40")
+            if model == Printers.H2C:
+                return self.supports_sw_version("01.01.50.00")
             return False
         elif feature == Features.CHAMBER_LIGHT_2:
             return model in (h2_printers | x2_printers)
@@ -311,7 +340,8 @@ class Device:
     @property
     def is_core_xy(self) -> bool:
         return (self.info.device_type != Printers.A1 and
-                self.info.device_type != Printers.A1MINI)
+                self.info.device_type != Printers.A1MINI and
+                self.info.device_type != Printers.A2L)
 
 @dataclass
 class Lights:
@@ -447,10 +477,10 @@ class Camera:
         #   "tutk_server": "disable"
         # }
 
-        self.timelapse = data.get("ipcam", {}).get("timelapse", self.timelapse)
-        self.recording = data.get("ipcam", {}).get("ipcam_record", self.recording)
-        self.resolution = data.get("ipcam", {}).get("resolution", self.resolution)
-        self.rtsp_url = data.get("ipcam", {}).get("rtsp_url", self.rtsp_url)
+        self.timelapse = (data.get("ipcam") or {}).get("timelapse", self.timelapse)
+        self.recording = (data.get("ipcam") or {}).get("ipcam_record", self.recording)
+        self.resolution = (data.get("ipcam") or {}).get("resolution", self.resolution)
+        self.rtsp_url = (data.get("ipcam") or {}).get("rtsp_url", self.rtsp_url)
         if self._client._enable_camera:
             if self.rtsp_url == "disable":
                 if not self._fired_camera_disabled_event:
@@ -651,24 +681,34 @@ class Fans:
                 self._cooling_fan_speed_override_time = None
         self._heatbreak_fan_speed = data.get("heatbreak_fan_speed", self._heatbreak_fan_speed)
         self._heatbreak_fan_speed_percentage = fan_percentage(self._heatbreak_fan_speed)
-        if data.get('device') and data["device"].get('airduct') and data["device"]["airduct"].get('parts') and next((item for item in data["device"]["airduct"]["parts"] if item["id"] == 160), None):
-            fan_part = next(item for item in data["device"]["airduct"]["parts"] if item["id"] == 160)
-            self._secondary_aux_fan_speed = fan_part.get("value", self._secondary_aux_fan_speed)
-            self._secondary_aux_fan_speed_percentage = fan_percentage(self._secondary_aux_fan_speed)
+        airduct_parts = data.get("device", {}).get("airduct", {}).get("parts")
+        if airduct_parts:
+            fan_part = next((item for item in airduct_parts if item.get("id") == 160), None)
+            if fan_part is not None:
+                # airduct.parts[].state is already a percentage (0-100); write
+                # it directly into the percentage field. fan_percentage()
+                # expects a raw 0-15 PWM value and would multiply by ~6.67.
+                self._secondary_aux_fan_speed_percentage = fan_part.get(
+                    "state", self._secondary_aux_fan_speed_percentage
+                )
         if self._secondary_aux_fan_speed_override_time is not None:
             delta = datetime.now() - self._secondary_aux_fan_speed_override_time
             if delta.seconds > 5:
-                self._cooling_fan_speed_override_time = None
+                self._secondary_aux_fan_speed_override_time = None
 
         return (old_data != f"{self.__dict__}")
 
-    def set_fan_speed(self, fan: FansEnum, percentage: int):
+    def set_fan_speed(self, fan: FansEnum, percentage: int) -> bool:
         """Set fan speed"""
         percentage = round(percentage / 10) * 10
         command = fan_percentage_to_gcode(fan, percentage)
 
+        # Do not report a local override when the broker rejected the publish.
+        if not self._client.publish(command):
+            return False
+
         if fan == FansEnum.PART_COOLING:
-            self._cooling_fan_speed = percentage
+            self._cooling_fan_speed_override = percentage
             self._cooling_fan_speed_override_time = datetime.now()
         elif fan == FansEnum.AUXILIARY:
             self._aux_fan_speed_override = percentage
@@ -680,10 +720,8 @@ class Fans:
             self._secondary_aux_fan_speed_override = percentage
             self._secondary_aux_fan_speed_override_time = datetime.now()
 
-        LOGGER.debug(command)
-        self._client.publish(command)
-
         self._client.callback("event_printer_data_update")
+        return True
 
     def get_fan_speed(self, fan: FansEnum) -> int:
         if fan == FansEnum.PART_COOLING:
@@ -705,8 +743,8 @@ class Fans:
             return self._heatbreak_fan_speed_percentage
         elif fan == FansEnum.SECONDARY_AUXILIARY:
             if self._secondary_aux_fan_speed_override_time is not None:
-                return self._chamber_fan_speed_override
-            return self._chamber_fan_speed_percentage
+                return self._secondary_aux_fan_speed_override
+            return self._secondary_aux_fan_speed_percentage
 
 @dataclass
 class Upgrade:
@@ -734,6 +772,7 @@ class Upgrade:
             Printers.P1S: "p1",
             Printers.A1MINI: "a1-mini",
             Printers.A1: "a1",
+            Printers.A2L: "a2",
             Printers.X1C: "x1",
             Printers.X1E: "x1e",
             Printers.X2D: "x2",
@@ -864,6 +903,40 @@ class Upgrade:
         return (old_data != f"{self.__dict__}")
 
 
+# Filament sources are identified two different ways and the numbering is not the same.
+#
+# A flat *slot* index is what print.ams_mapping and the cloud amsDetailMapping 'ams' field use.
+# The four regular AMS units reserve slots 0-15 as 'unit * 4 + tray', and AMS HT units follow
+# on from there at 16-23, one slot each. Observed in an amsDetailMapping entry pairing
+# {'ams': 16} with {'amsId': 128, 'slotId': 0}.
+#
+# A *unit* id is what the module names (n3s/128), amsDetailMapping 'amsId' and the active tray
+# report. Regular units are 0-3 and AMS HT units are 128-135.
+AMS_TRAYS_PER_UNIT = 4
+AMS_UNIT_COUNT = 4
+AMS_SLOT_COUNT = AMS_UNIT_COUNT * AMS_TRAYS_PER_UNIT
+AMS_HT_COUNT = 8
+AMS_HT_SLOT_BASE = AMS_SLOT_COUNT
+AMS_HT_SLOT_END = AMS_HT_SLOT_BASE + AMS_HT_COUNT
+AMS_HT_UNIT_BASE = 128
+AMS_HT_UNIT_END = AMS_HT_UNIT_BASE + AMS_HT_COUNT
+
+
+def ams_slot_name(index: int) -> str | None:
+    """Human readable name for an AMS slot index, or None if the index isn't a real slot."""
+    if 0 <= index < AMS_SLOT_COUNT:
+        return f"AMS {(index // AMS_TRAYS_PER_UNIT) + 1} Tray {(index % AMS_TRAYS_PER_UNIT) + 1}"
+
+    # An AMS HT holds a single spool so there is no tray number to disambiguate. Accept the unit
+    # id as well as the slot index since both numbering schemes appear in the payloads.
+    if AMS_HT_SLOT_BASE <= index < AMS_HT_SLOT_END:
+        return f"AMS HT {index - AMS_HT_SLOT_BASE + 1}"
+    if AMS_HT_UNIT_BASE <= index < AMS_HT_UNIT_END:
+        return f"AMS HT {index - AMS_HT_UNIT_BASE + 1}"
+
+    return None
+
+
 @dataclass
 class PrintJob:
     """Return all information related content"""
@@ -874,6 +947,9 @@ class PrintJob:
     gcode_file: str
     gcode_file_downloaded: str
     _subtask_name: str
+    model_id: str
+    task_id: str
+    plate_idx: int
     start_time: datetime
     end_time: datetime
     remaining_time: int
@@ -901,6 +977,9 @@ class PrintJob:
         self.gcode_file = ""
         self.gcode_file_downloaded = ""
         self._subtask_name = ""
+        self.model_id = ""
+        self.task_id = ""
+        self.plate_idx = 0
         self.start_time = None
         self.end_time = None
         self.remaining_time = 0
@@ -909,8 +988,8 @@ class PrintJob:
         self.print_error = 0
         self.print_weight = 0
         self.ams_mapping = []
-        self._ams_print_weights = [0.0] * 136 # TODO: Convert to a dict in the future?
-        self._ams_print_lengths = [0.0] * 136 # TODO: Convert to a dict in the future?
+        self._ams_print_weights = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
+        self._ams_print_lengths = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
         self.print_length = 0
         self.print_bed_type = "unknown"
         self.file_type_icon = "mdi:file"
@@ -943,11 +1022,10 @@ class PrintJob:
         elif self._client._device.external_spool[1].active:
             values["External Spool 2"] = self.print_weight
         else:
-            for i in range(16):
-                if self._ams_print_weights[i] != 0:
-                    ams_index = (i // 4) + 1
-                    ams_tray = (i % 4) + 1
-                    values[f"AMS {ams_index} Tray {ams_tray}"] = self._ams_print_weights[i]
+            for index, weight in enumerate(self._ams_print_weights):
+                name = ams_slot_name(index)
+                if weight != 0 and name is not None:
+                    values[name] = weight
         return values
 
     @property
@@ -958,11 +1036,10 @@ class PrintJob:
         elif self._client._device.external_spool[1].active:
             values["External Spool 2"] = self.print_length
         else:
-            for i in range(16):
-                if self._ams_print_lengths[i] != 0:
-                    ams_index = (i // 4) + 1
-                    ams_tray = (i % 4) + 1
-                    values[f"AMS {ams_index} Tray {ams_tray}"] = self._ams_print_lengths[i]
+            for index, length in enumerate(self._ams_print_lengths):
+                name = ams_slot_name(index)
+                if length != 0 and name is not None:
+                    values[name] = length
         return values
     
     @property
@@ -1017,6 +1094,25 @@ class PrintJob:
         self._subtask_name = data.get("subtask_name", self._subtask_name)
         if old_subtask_name != self._subtask_name:
             LOGGER.debug(f"SUBTASK_NAME: {self._subtask_name}")
+
+        self.model_id = data.get("model_id", self.model_id)
+        self.task_id = data.get("task_id", self.task_id)
+        self.plate_idx = data.get("plate_idx", self.plate_idx)
+
+        # Printer-initiated prints and reprints can reach RUNNING before the
+        # printer reports a subtask name. In that case model data is initially
+        # loaded using the newest 3mf on the printer as a fallback, which may
+        # belong to an older print. Resolve the model again once the real task
+        # name arrives so the cover image and metadata match the active print.
+        if (
+            old_subtask_name == ""
+            and self._subtask_name != ""
+            and self._loaded_model_data
+            and self.gcode_state not in ("IDLE", "FAILED", "FINISH", "unknown")
+        ):
+            LOGGER.debug("SUBTASK_NAME ARRIVED AFTER MODEL DATA; RELOADING MODEL")
+            self._clear_model_data()
+            self._update_task_data()
         self.file_type_icon = "mdi:file" if self._print_type != "cloud" else "mdi:cloud-outline"
         self.current_layer = data.get("layer_num", self.current_layer)
         self.total_layers = data.get("total_layer_num", self.total_layers)
@@ -1181,6 +1277,355 @@ class PrintJob:
     #     subtask_name = Lovers Valentine Day Shadowbox
     #     FILE: /cache/Lovers Valentine Day Shadowbox.3mf
     # 
+
+    def _remote_media_sources(self) -> list[RemoteMediaSource]:
+        if not self._client.ftp_enabled:
+            return []
+
+        try:
+            self._client.probe_remote_media_sources()
+        except Exception as e:
+            LOGGER.debug(f"Remote media source probe failed during media trigger: {type(e)} Args: {e}")
+
+        sources: list[RemoteMediaSource] = []
+        if self._client.tcp6000_media_supported is True:
+            sources.append(Tcp6000MediaSource(self._client))
+        sources.append(Ftps990MediaSource(self._client))
+        return sources
+
+    def _close_remote_media_sources(self, sources: list[RemoteMediaSource]) -> None:
+        for source in sources:
+            try:
+                source.close()
+            except Exception:
+                pass
+
+    def _collect_remote_files(
+        self,
+        sources: list[RemoteMediaSource],
+        media_type: str,
+        extensions: list[str],
+        ftps_search_paths: list[str] | None = None,
+    ) -> list[RemoteMediaFile]:
+        files: list[RemoteMediaFile] = []
+        for source in sources:
+            try:
+                source_files = source.list_files(
+                    media_type=media_type,
+                    extensions=extensions,
+                    search_paths=ftps_search_paths if source.name == Ftps990MediaSource.name else None,
+                )
+                LOGGER.debug(
+                    f"{source.name} found {len(source_files)} {media_type} candidate(s)"
+                )
+                files.extend(source_files)
+            except Exception as e:
+                LOGGER.debug(
+                    f"{source.name} failed listing {media_type}: {type(e)} Args: {e}"
+                )
+        return sort_newest_first(dedupe_remote_files(files))
+
+    def _download_remote_file_atomic(
+        self,
+        source: RemoteMediaSource,
+        remote_file: RemoteMediaFile,
+        final_path: Path,
+        progress_callback: ProgressCallback | None = None,
+    ) -> int:
+        final_path.parent.mkdir(parents=True, exist_ok=True)
+        part_path = Path(f"{final_path}.part")
+        try:
+            if part_path.exists():
+                part_path.unlink()
+        except Exception:
+            pass
+
+        try:
+            downloaded_size = source.download_file(
+                remote_file,
+                part_path,
+                progress_callback=progress_callback,
+            )
+            expected_size = int(remote_file.size or 0)
+            if expected_size > 0 and downloaded_size != expected_size:
+                raise RemoteMediaError(
+                    f"Remote download size mismatch for {remote_file.path}: "
+                    f"{downloaded_size} != {expected_size}"
+                )
+            os.replace(part_path, final_path)
+            return downloaded_size
+        except Exception:
+            try:
+                if part_path.exists():
+                    part_path.unlink()
+            except Exception:
+                pass
+            raise
+
+    def _same_remote_media_file(self, left: RemoteMediaFile, right: RemoteMediaFile) -> bool:
+        if left.media_type != right.media_type:
+            return False
+        if canonical_storage(left.storage) != canonical_storage(right.storage):
+            return False
+        left_path = left.path.replace("\\", "/").strip("/").lower()
+        right_path = right.path.replace("\\", "/").strip("/").lower()
+        if left_path and right_path and left_path == right_path:
+            return True
+        if left.size > 0 and right.size > 0 and left.size != right.size:
+            return False
+        return left.basename.lower() == right.basename.lower()
+
+    def _remote_file_aliases(
+        self,
+        remote_files: list[RemoteMediaFile],
+        selected: RemoteMediaFile,
+    ) -> list[RemoteMediaFile]:
+        aliases = [
+            file for file in remote_files
+            if self._same_remote_media_file(file, selected)
+        ]
+        return sorted(
+            aliases,
+            key=lambda file: (source_priority(file.source), file.sort_time, file.size),
+            reverse=True,
+        )
+
+    def _remote_file_is_stable(
+        self,
+        source: RemoteMediaSource,
+        remote_file: RemoteMediaFile,
+        media_type: str,
+        extensions: list[str],
+        ftps_search_paths: list[str] | None = None,
+        wait_seconds: float = 1.0,
+    ) -> bool:
+        expected_size = int(remote_file.size or 0)
+        if expected_size <= 0:
+            return True
+
+        time.sleep(wait_seconds)
+        try:
+            refreshed_files = source.list_files(
+                media_type=media_type,
+                extensions=extensions,
+                search_paths=ftps_search_paths if source.name == Ftps990MediaSource.name else None,
+            )
+        except Exception as e:
+            LOGGER.debug(
+                f"Could not confirm remote file stability for {remote_file.path}: {type(e)} Args: {e}"
+            )
+            return True
+
+        refreshed = next(
+            (file for file in refreshed_files if self._same_remote_media_file(file, remote_file)),
+            None,
+        )
+        if refreshed is None:
+            LOGGER.debug(f"Remote file disappeared before download: {remote_file.path}")
+            return False
+        if int(refreshed.size or 0) != expected_size:
+            LOGGER.debug(
+                f"Remote file is still changing: {remote_file.path} "
+                f"{expected_size} -> {refreshed.size}"
+            )
+            return False
+        return True
+
+    def _model_filenames_to_try(self) -> list[str]:
+        filenames_to_try = []
+
+        if self._subtask_name != '':
+            if self._subtask_name.endswith('.3mf'):
+                filenames_to_try.append(self._subtask_name)
+            else:
+                filenames_to_try.append(f"{self._subtask_name}.3mf")
+                filenames_to_try.append(f"{self._subtask_name}.gcode.3mf")
+
+        if (self.gcode_file != '') and (self._subtask_name != self.gcode_file):
+            if self.gcode_file.endswith('.3mf'):
+                filenames_to_try.append(self.gcode_file)
+            else:
+                filenames_to_try.append(f"{self.gcode_file}.3mf")
+                filenames_to_try.append(f"{self.gcode_file}.gcode.3mf")
+
+        return filenames_to_try
+
+    def _remote_model_matches(self, remote_file: RemoteMediaFile, candidate: str) -> bool:
+        candidate = candidate.replace("\\", "/").lstrip("/")
+        remote_path = remote_file.path.replace("\\", "/").lstrip("/")
+        remote_name = remote_file.basename.replace("\\", "/")
+        return remote_path == candidate or remote_name == candidate.rsplit("/", 1)[-1]
+
+    def _model_candidate_score(self, remote_file: RemoteMediaFile) -> tuple[int, datetime, int, int]:
+        path = remote_file.path.replace("\\", "/").lower()
+        name = remote_file.basename.lower()
+        in_cache = 1 if "/cache/" in path or path.startswith("cache/") else 0
+        gcode_3mf = 1 if name.endswith(".gcode.3mf") else 0
+        source_rank = 1 if remote_file.source == Tcp6000MediaSource.name else 0
+        return (in_cache, remote_file.sort_time, gcode_3mf, source_rank)
+
+    def _select_model_file(
+        self,
+        remote_files: list[RemoteMediaFile],
+        filenames_to_try: list[str],
+    ) -> RemoteMediaFile | None:
+        selected_files = self._select_model_files(remote_files, filenames_to_try)
+        return selected_files[0] if selected_files else None
+
+    def _select_model_files(
+        self,
+        remote_files: list[RemoteMediaFile],
+        filenames_to_try: list[str],
+    ) -> list[RemoteMediaFile]:
+        remote_files = [file for file in remote_files if "Metadata" not in file.path]
+        for filename in filenames_to_try:
+            matches = [
+                file for file in remote_files
+                if self._remote_model_matches(file, filename)
+            ]
+            if matches:
+                selected = sorted(matches, key=self._model_candidate_score, reverse=True)[0]
+                LOGGER.debug(
+                    f"Selected model candidate {selected.path} from {selected.source}/{selected.storage}"
+                )
+                return self._remote_file_aliases(matches, selected)
+
+        if self._subtask_name == "":
+            LOGGER.debug("Falling back to newest remote 3mf file across media sources.")
+            sorted_files = sort_newest_first(remote_files)
+            if not sorted_files:
+                return []
+            return self._remote_file_aliases(remote_files, sorted_files[0])
+
+        return []
+
+    def _model_cache_paths(self, remote_file: RemoteMediaFile) -> tuple[Path, Path]:
+        cache_root = Path(self._client.cache_path) / "prints"
+        size = int(remote_file.size)
+        filename = remote_file.basename
+
+        if remote_file.source == Ftps990MediaSource.name:
+            relative_path = Path(remote_file.path.lstrip('/'))
+            subdir = relative_path.parent
+        else:
+            subdir = Path("cache")
+
+        if size <= 0:
+            cache_file_path = cache_root / subdir / filename
+            cache_file_path_legacy = cache_file_path
+        elif filename.startswith(f"{size}-"):
+            cache_file_path = cache_root / subdir / filename
+            cache_file_path_legacy = cache_root / subdir / filename.removeprefix(f"{size}-")
+        else:
+            cache_file_path = cache_root / subdir / f"{size}-{filename}"
+            cache_file_path_legacy = cache_root / subdir / filename
+
+        return cache_file_path, cache_file_path_legacy
+
+    def _download_model_file_from_remote(
+        self,
+        source: RemoteMediaSource,
+        remote_file: RemoteMediaFile,
+        progress_callback=None,
+    ) -> str | None:
+        cache_file_path, cache_file_path_legacy = self._model_cache_paths(remote_file)
+        size = int(remote_file.size)
+        cache_file_path.parent.mkdir(parents=True, exist_ok=True)
+
+        if size > 0 and cache_file_path.exists() and cache_file_path.stat().st_size == size:
+            LOGGER.debug(f"File already in cache: {cache_file_path}")
+            os.utime(cache_file_path, None)
+            return str(cache_file_path)
+
+        if size > 0 and cache_file_path_legacy.exists() and cache_file_path_legacy.stat().st_size == size:
+            LOGGER.debug(f"File already in legacy cache: {cache_file_path_legacy}")
+            extensions = [
+                ".3mf",
+                ".gcode",
+                ".png",
+                ".slice_info.config",
+            ]
+            for extension in extensions:
+                src = cache_file_path_legacy.with_suffix("").with_suffix(extension)
+                dst = cache_file_path.with_suffix("").with_suffix(extension)
+                if src.exists():
+                    LOGGER.debug(f"Moving {src} -> {dst}")
+                    try:
+                        shutil.move(str(src), str(dst))
+                    except Exception as e:
+                        LOGGER.debug(f"Failed moving {src} -> {dst}: {e}")
+            os.utime(cache_file_path, None)
+            return str(cache_file_path)
+
+        total_start_time = time.time()
+        last_percentage = -1
+        self._ftp_download_percentage = 0
+
+        def download_progress_callback(percentage: int) -> None:
+            nonlocal last_percentage
+            if last_percentage == percentage:
+                return
+            LOGGER.debug(f"Remote model download progress: {percentage:.0f}%")
+            self._ftp_download_percentage = int(percentage)
+            last_percentage = percentage
+            self._client.callback("event_printer_data_update")
+            if progress_callback:
+                progress_callback(percentage)
+
+        try:
+            downloaded_size = self._download_remote_file_atomic(
+                source,
+                remote_file,
+                cache_file_path,
+                progress_callback=download_progress_callback,
+            )
+            self._ftp_download_percentage = 100
+            download_time = time.time() - total_start_time
+            download_speed = downloaded_size / download_time if download_time > 0 else 0
+            LOGGER.debug(
+                f"Successfully downloaded '{remote_file.path}' from {remote_file.source}/"
+                f"{remote_file.storage} to cache. Time: {download_time:.0f}s, "
+                f"Speed: {download_speed/1024:.0f} KB/s"
+            )
+            return str(cache_file_path)
+        except Exception as e:
+            LOGGER.debug(
+                f"Failed downloading model {remote_file.path} from {remote_file.source}/"
+                f"{remote_file.storage}: {type(e)} Args: {e}"
+            )
+            return None
+
+    def _attempt_remote_model_download(self, sources: list[RemoteMediaSource]) -> str | None:
+        filenames_to_try = self._model_filenames_to_try()
+        remote_files = self._collect_remote_files(
+            sources,
+            media_type="model",
+            extensions=['.3mf'],
+            ftps_search_paths=self.ftp_search_paths,
+        )
+        selected_files = self._select_model_files(remote_files, filenames_to_try)
+        if not selected_files:
+            return None
+
+        for selected in selected_files:
+            source = next((item for item in sources if item.name == selected.source), None)
+            if source is None:
+                LOGGER.debug(f"No media source object found for selected model source {selected.source}")
+                continue
+            if not self._remote_file_is_stable(
+                source,
+                selected,
+                media_type="model",
+                extensions=['.3mf'],
+                ftps_search_paths=self.ftp_search_paths,
+            ):
+                continue
+
+            result = self._download_model_file_from_remote(source, selected)
+            if result is not None:
+                return result
+
+        return None
 
     # The cached files also include the file size appended to them so that new prints of the same model
     # filename but different settings can be cached independently. This keeps the print history truer and
@@ -1440,7 +1885,7 @@ class PrintJob:
         self._prune_old_files(directory=cache_file_path,
                               extensions=['.3mf'],
                               keep=self._client._print_cache_count,
-                              extra_extensions=['.jpg', '.png', '.slice_info.config', '.gcode'])
+                              extra_extensions=['.jpg', '.jpeg', '.png', '.slice_info.config', '.gcode'])
 
     async def async_prune_timelapse_files(self):
         loop = asyncio.get_event_loop()
@@ -1452,27 +1897,49 @@ class PrintJob:
         LOGGER.debug("Pruning timelapse history")
         cache_file_path = os.path.join(self._client.cache_path, "timelapse")
         self._prune_old_files(directory=cache_file_path,
-                              extensions=['.mp4','.avi'],
+                              extensions=['.mp4','.avi','.mov'],
                               keep=self._client._timelapse_cache_count,
-                              extra_extensions=['.jpg', '.png'])
+                              extra_extensions=['.jpg', '.jpeg', '.png'])
             
-    def _prune_old_files(self, directory: str, extensions: List[str], keep: int, extra_extensions=[]):
+    def _cleanup_stale_part_files(self, dir_path: Path, older_than_seconds: int = 24 * 60 * 60) -> int:
+        cutoff_time = time.time() - older_than_seconds
+        deleted_count = 0
+        for part_file in dir_path.rglob("*.part"):
+            if not part_file.is_file():
+                continue
+            try:
+                if os.path.getmtime(part_file) >= cutoff_time:
+                    continue
+                os.remove(part_file)
+                deleted_count += 1
+                LOGGER.debug(f"Deleted stale partial download: {part_file}")
+            except Exception as e:
+                LOGGER.error(f"Failed to delete stale partial download {part_file}: {e}")
+        return deleted_count
+
+    def _prune_old_files(self, directory: str, extensions: List[str], keep: int, extra_extensions=None):
+        dir_path = Path(directory)
+        if not dir_path.is_dir():
+            return
+
+        self._cleanup_stale_part_files(dir_path)
 
         if keep == -1:
             # Cache pruning is disabled.
             LOGGER.debug("Skipping as pruning is disabled.")
             return
 
-        dir_path = Path(directory)
-        if not dir_path.is_dir():
-            return
+        if extra_extensions is None:
+            extra_extensions = []
         
         LOGGER.debug(f"{dir_path}")
+
+        extension_set = {extension.lower() for extension in extensions}
         
         # Get list of files matching the provided list of extensions
         matching_files = [
             f for f in dir_path.rglob('*')            
-            if f.is_file() and f.suffix in extensions
+            if f.is_file() and f.suffix.lower() in extension_set
         ]
         
         # Sort files by last modification time, newest first
@@ -1503,6 +1970,49 @@ class PrintJob:
                         LOGGER.debug(f"Deleted associated: {assoc_file}")
                     except Exception as e:
                         LOGGER.error(f"Failed to delete associated {assoc_file}: {e}")
+
+    def _timelapse_cache_path(self, remote_file: RemoteMediaFile) -> Path:
+        if remote_file.source == Ftps990MediaSource.name:
+            return Path(self._client.cache_path) / remote_file.path.lstrip('/')
+
+        storage_segment = storage_cache_segment(remote_file.storage)
+        return Path(self._client.cache_path) / "timelapse" / storage_segment / remote_file.basename
+
+    def _download_timelapse_thumbnail(
+        self,
+        source: RemoteMediaSource,
+        remote_file: RemoteMediaFile,
+        local_file_path: Path,
+    ) -> None:
+        filename_without_extension, _ = os.path.splitext(remote_file.basename)
+        thumbnail_filename = f"{filename_without_extension}.jpg"
+        thumbnail_local_path = local_file_path.parent / thumbnail_filename
+        if thumbnail_local_path.exists():
+            return
+
+        remote_dir = os.path.dirname(remote_file.path.replace("\\", "/"))
+        if remote_dir:
+            thumbnail_path = f"{remote_dir}/thumbnail/{thumbnail_filename}"
+        else:
+            thumbnail_path = f"thumbnail/{thumbnail_filename}"
+
+        thumbnail_remote = RemoteMediaFile(
+            name=thumbnail_filename,
+            path=thumbnail_path,
+            size=0,
+            media_type="timelapse",
+            source=remote_file.source,
+            storage=remote_file.storage,
+            modified=remote_file.modified,
+        )
+
+        try:
+            LOGGER.debug(f"Downloading timelapse thumbnail '{thumbnail_path}'")
+            self._download_remote_file_atomic(source, thumbnail_remote, thumbnail_local_path)
+        except Exception as e:
+            LOGGER.debug(
+                f"Failed to download timelapse thumbnail {thumbnail_path}: {type(e)} Args: {e}"
+            )
     
     def _download_timelapse(self):
         # If we are running in connection test mode, skip updating the last print task data.
@@ -1517,69 +2027,78 @@ class PrintJob:
         
     def _async_download_timelapse(self):
         current_thread = threading.current_thread()
-        current_thread.setName(f"{self._client._device.info.device_type}-FTP-{threading.get_native_id()}")
+        current_thread.setName(f"{self._client._device.info.device_type}-Media-{threading.get_native_id()}")
         start_time = datetime.now()
-        LOGGER.debug(f"Downloading latest timelapse by FTP")
+        LOGGER.debug("Downloading latest timelapse from remote media sources")
 
-        # Open the FTP connection
-        ftp = self._client.ftp_connection()
-        video_extensions = ['.mp4','.avi']
-        file_path = self._find_latest_file(ftp, ['/timelapse'], video_extensions)
-        if file_path is not None:
-            # timelapse_path is of form '/timelapse/foo.mp4'
-            local_file_path = os.path.join(self._client.cache_path, file_path.lstrip('/'))
-            directory_path = os.path.dirname(local_file_path)
-            os.makedirs(directory_path, exist_ok=True)
+        sources = self._remote_media_sources()
+        try:
+            video_extensions = ['.mp4','.avi','.mov']
+            candidates = self._collect_remote_files(
+                sources,
+                media_type="timelapse",
+                extensions=video_extensions,
+                ftps_search_paths=['/timelapse'],
+            )
+            if not candidates:
+                LOGGER.debug("No remote timelapse candidates found.")
+            else:
+                selected_aliases = self._remote_file_aliases(candidates, candidates[0])
+                for remote_file in selected_aliases:
+                    source = next((item for item in sources if item.name == remote_file.source), None)
+                    if source is None:
+                        LOGGER.debug(f"No media source object found for selected timelapse source {remote_file.source}")
+                        continue
+                    if not self._remote_file_is_stable(
+                        source,
+                        remote_file,
+                        media_type="timelapse",
+                        extensions=video_extensions,
+                        ftps_search_paths=['/timelapse'],
+                        wait_seconds=2.0,
+                    ):
+                        continue
 
-            try:
-                # Get the file size from FTP
-                size = ftp.size(file_path)
-                LOGGER.debug(f"Timelapse file exists. Size: {size} bytes.")
-                
-                # Check if file already exists with same size
-                should_download = False
-                if os.path.exists(local_file_path):
-                    local_file_size = os.path.getsize(local_file_path)
-                    if local_file_size == size:
-                        LOGGER.debug(f"Timelapse file found in cache.")
-                    else:
-                        LOGGER.debug(f"Timelapse file size differs (local: {local_file_size}, remote: {size}). Re-downloading.")
-                        should_download = True
-                else:
-                    LOGGER.debug(f"Timelapse file doesn't exist locally. Downloading.")
-                    should_download = True
-                
-                if should_download:
-                    # Download video
-                    with open(local_file_path, 'wb') as f:
-                        LOGGER.debug(f"Downloading '{file_path}'")
-                        ftp.retrbinary(f"RETR {file_path}", f.write)
-                        f.flush()
-                    
-                    # Download thumbnail
-                    filename = os.path.basename(file_path)
-                    filename_without_extension, _ = os.path.splitext(filename)
-                    thumbnail_filename = f"{filename_without_extension}.jpg"
-                    thumbnail_path = os.path.join(os.path.dirname(file_path), 'thumbnail', thumbnail_filename)
-                    thumbnail_local_path = os.path.join(os.path.dirname(local_file_path), thumbnail_filename)
-                    with open(thumbnail_local_path, 'wb') as f:
-                        LOGGER.info(f"Downloading '{thumbnail_path}'")
-                        ftp.retrbinary(f"RETR {thumbnail_path}", f.write)
-                        f.flush()
-                    
-            except ftplib.error_perm as e:
-                if '550' not in str(e.args): # 550 is unavailable.
-                    LOGGER.debug(f"Failed to download timelapse at '{file_path}': {e}")
-            except Exception as e:
-                LOGGER.debug(f"Unexpected exception downloading timelapse at '{file_path}': {type(e)} Args: {e}")
+                    try:
+                        local_file_path = self._timelapse_cache_path(remote_file)
+                        should_download = False
+                        if local_file_path.exists():
+                            local_file_size = local_file_path.stat().st_size
+                            if remote_file.size > 0 and local_file_size == remote_file.size:
+                                LOGGER.debug("Timelapse file found in cache.")
+                                os.utime(local_file_path, None)
+                            else:
+                                LOGGER.debug(
+                                    f"Timelapse file size differs (local: {local_file_size}, "
+                                    f"remote: {remote_file.size}). Re-downloading."
+                                )
+                                should_download = True
+                        else:
+                            LOGGER.debug("Timelapse file doesn't exist locally. Downloading.")
+                            should_download = True
 
-        ftp.quit()
+                        if should_download:
+                            LOGGER.debug(
+                                f"Downloading timelapse '{remote_file.path}' from "
+                                f"{remote_file.source}/{remote_file.storage}"
+                            )
+                            self._download_remote_file_atomic(source, remote_file, local_file_path)
+
+                        self._download_timelapse_thumbnail(source, remote_file, local_file_path)
+                        break
+                    except Exception as e:
+                        LOGGER.debug(
+                            f"Failed downloading timelapse {remote_file.path} from "
+                            f"{remote_file.source}/{remote_file.storage}: {type(e)} Args: {e}"
+                        )
+        finally:
+            self._close_remote_media_sources(sources)
 
         end_time = datetime.now()
 
         self.prune_timelapse_files()
 
-        LOGGER.debug(f"Done downloading timelapse by FTP. Elapsed time = {(end_time-start_time).seconds}s") 
+        LOGGER.debug(f"Done downloading timelapse from remote media. Elapsed time = {(end_time-start_time).seconds}s") 
 
     def _update_task_data(self):
         self._loaded_model_data = True
@@ -1595,11 +2114,11 @@ class PrintJob:
     def _download_task_data_from_printer(self):
         if self._ftpThread is None:
             # Only start a new thread if there
-            LOGGER.debug("Starting FTP thread.")
+            LOGGER.debug("Starting remote media thread.")
             self._ftpThread = threading.Thread(target=self._async_download_task_data_from_printer)
             self._ftpThread.start()
         else:
-            LOGGER.debug("FTP thread already running.")
+            LOGGER.debug("Remote media thread already running.")
             self._ftpRunAgain = True
 
     def _clear_model_data(self):
@@ -1615,8 +2134,8 @@ class PrintJob:
 
     def _async_download_task_data_from_printer(self):
         current_thread = threading.current_thread()
-        current_thread.setName(f"{self._client._device.info.device_type}-FTP-{threading.get_native_id()}")
-        LOGGER.debug(f"FTP thread starting.")
+        current_thread.setName(f"{self._client._device.info.device_type}-Media-{threading.get_native_id()}")
+        LOGGER.debug(f"Remote media thread starting.")
 
         try:
             while True:
@@ -1626,35 +2145,35 @@ class PrintJob:
                 if not self._ftpRunAgain:
                     break
                 end_time = datetime.now()
-                LOGGER.debug("FTP thread re-running. Elapsed time = {(end_time-start_time).seconds}s")
+                LOGGER.debug(f"Remote media thread re-running. Elapsed time = {(end_time-start_time).seconds}s")
         except Exception as e:
-            LOGGER.error(f"FTP thread failed with exception {e}")
+            LOGGER.error(f"Remote media thread failed with exception {e}")
 
         end_time = datetime.now()
-        LOGGER.info(f"FTP thread exiting. Elapsed time = {(end_time-start_time).seconds}s")
+        LOGGER.info(f"Remote media thread exiting. Elapsed time = {(end_time-start_time).seconds}s")
         self._ftpThread = None
 
     def _async_download_task_data_from_printer_worker(self):
-        # Open the FTP connection
-        ftp = self._client.ftp_connection()
+        model_file_path = None
+        sources = self._remote_media_sources()
+        try:
+            for i in range(1,13):
+                model_file_path = self._attempt_remote_model_download(sources)
+                if model_file_path is not None:
+                    break
 
-        for i in range(1,13):
-            model_file_path = self._attempt_ftp_download(ftp)
-            if model_file_path is not None:
-                break
-
-            if not self._client._device.supports_feature(Features.SUPPORTS_EARLY_FTP_DOWNLOAD):
-                # The X1 has a weird behavior where the downloaded file doesn't exist for several seconds into the RUNNING phase and even
-                # then it is still being downloaded in place so we might try to grab it mid-download and get a corrupt file. Try 13 times
-                # 5 seconds apart over 60s.
-                if i != 12:
-                    LOGGER.debug(f"Sleeping 5s for X1/H2/P2 retry")
-                    time.sleep(5)
-                    LOGGER.debug(f"Try #{i+1} for X1/H2/P2")
-            else:
-                break
-
-        ftp.quit()
+                if not self._client._device.supports_feature(Features.SUPPORTS_EARLY_FTP_DOWNLOAD):
+                    # The X1 has a weird behavior where the downloaded file doesn't exist for several seconds into the RUNNING phase and even
+                    # then it is still being downloaded in place so we might try to grab it mid-download and get a corrupt file. Try 13 times
+                    # 5 seconds apart over 60s.
+                    if i != 12:
+                        LOGGER.debug(f"Sleeping 5s for X1/H2/P2 retry")
+                        time.sleep(5)
+                        LOGGER.debug(f"Try #{i+1} for X1/H2/P2")
+                else:
+                    break
+        finally:
+            self._close_remote_media_sources(sources)
 
         if model_file_path is None:
             LOGGER.debug("No model file found.")
@@ -1697,8 +2216,8 @@ class PrintJob:
                 plate_filament_count = len(plate.findall('filament'))
 
                 # Reset filament data
-                self._ams_print_weights = [0.0] * 136 # TODO: Convert to a dict in the future?
-                self._ams_print_lengths = [0.0] * 136 # TODO: Convert to a dict in the future?
+                self._ams_print_weights = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
+                self._ams_print_lengths = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
 
                 for metadata in plate:
                     if (metadata.get('key') == 'index'):
@@ -1706,16 +2225,20 @@ class PrintJob:
                         plate_number = metadata.get('value')
                         LOGGER.debug(f"Plate: {plate_number}")
                         
-                        # Now we have the plate number, extract the cover image from the archive
-                        self._client._device.cover_image.set_image(archive.read(f"Metadata/plate_{plate_number}.png"))
-                        LOGGER.debug(f"Cover image: Metadata/plate_{plate_number}.png")
+                        # MQTT is authoritative for the plate that is actively printing.
+                        # A printer can retain/reuse a 3mf whose slice_info points at a
+                        # different plate, which otherwise makes the cover image stale.
+                        active_plate_number = str(self.plate_idx) if self.plate_idx else plate_number
+                        cover_entry_name = f"Metadata/plate_{active_plate_number}.png"
+                        self._client._device.cover_image.set_image(archive.read(cover_entry_name))
+                        LOGGER.debug(f"Cover image: {cover_entry_name}")
 
                         # Save the cover image to the cache
                         try:
                             # Save the cover image directly to the cache
                             cover_filename = os.path.splitext(os.path.basename(model_file_path))[0] + '.png'
                             cover_path = os.path.join(model_dir, cover_filename)
-                            with archive.open(f"Metadata/plate_{plate_number}.png") as cover_entry, open(cover_path, "wb") as target_path:
+                            with archive.open(cover_entry_name) as cover_entry, open(cover_path, "wb") as target_path:
                                 shutil.copyfileobj(cover_entry, target_path)
                             LOGGER.debug(f"Cover image saved to: {cover_path}")
                         except Exception as e:
@@ -1736,7 +2259,11 @@ class PrintJob:
                         self.print_bed_type = json.loads(archive.read(f"Metadata/plate_{plate_number}.json")).get('bed_type')
                     elif (metadata.get('key') == 'weight'):
                         LOGGER.debug(f"Weight: {metadata.get('value')}")
-                        self.print_weight = metadata.get('value')
+                        try:
+                            # The XML attribute is a string; print_weight is a float everywhere else.
+                            self.print_weight = float(metadata.get('value'))
+                        except (TypeError, ValueError) as e:
+                            LOGGER.error(f"Failed to parse print weight: {e}")
                     elif (metadata.get('key') == 'prediction'):
                         # Estimated print length in seconds
                         LOGGER.debug(f"Print time: {metadata.get('value')}s")
@@ -1758,11 +2285,12 @@ class PrintJob:
                             # Filament count should be greater than the zero-indexed filament ID
                             if filament_count > filament_index:
                                 ams_index = self.ams_mapping[filament_index]
-                                if ams_index < 16: # BUG - This will not yet handle AMS HT devices
+                                ams_name = ams_slot_name(ams_index)
+                                if ams_name is not None:
                                     # We add the filament as you can map multiple slicer filaments to the same physical filament.
                                     self._ams_print_weights[ams_index] += float(metadata.get('used_g'))
                                     self._ams_print_lengths[ams_index] += float(metadata.get('used_m'))
-                                    log_label = f"AMS Tray {ams_index + 1}"
+                                    log_label = ams_name
                                 else:
                                     LOGGER.debug(f"ams_mapping: {self.ams_mapping}")
                             elif plate_filament_count > 0:
@@ -1867,8 +2395,8 @@ class PrintJob:
             return
 
         self._task_data = self._client.bambu_cloud.get_latest_task_for_printer(self._client._serial)
-        self._ams_print_weights = [0.0] * 136 # TODO: Convert to a dict in the future?
-        self._ams_print_lengths = [0.0] * 136 # TODO: Convert to a dict in the future?
+        self._ams_print_weights = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
+        self._ams_print_lengths = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
         if self._task_data is None:
             LOGGER.debug("No bambu cloud task data found for printer.")
             self._client._device.cover_image.set_image(None)
@@ -1879,8 +2407,12 @@ class PrintJob:
             self.end_time = None
         else:
             LOGGER.debug("Updating bambu cloud task data found for printer.")
+            # For local prints with FTP available, the printer's 3mf is the
+            # authoritative image source. Bambu Cloud's "latest task" can lag
+            # behind the active print and return a stale cover.
+            use_cloud_cover = not (self._print_type == "local" and self._client.ftp_enabled)
             url = self._task_data.get('cover', '')
-            if url != "":
+            if use_cloud_cover and url != "":
                 data = self._client.bambu_cloud.download(url)
                 self._client._device.cover_image.set_image(data)
 
@@ -1892,7 +2424,7 @@ class PrintJob:
                 for ams_data in ams_print_data:
                     index = ams_data['ams']
                     weight = ams_data['weight']
-                    if 0 <= index < len(self._ams_print_weights):
+                    if ams_slot_name(index) is not None:
                         self._ams_print_weights[index] = weight
                         self._ams_print_lengths[index] = self.print_length * weight / self.print_weight
                     else:
@@ -1927,7 +2459,7 @@ class PrintJob:
                     if cloud_dt.tzinfo is None:
                         cloud_dt = cloud_dt.replace(tzinfo=tz.UTC)
                     # Convert everything to UTC-aware datetime
-                    self.start_time = cloud_dt.astimezone(tz.UTC)
+                    self.end_time = cloud_dt.astimezone(tz.UTC)
                     LOGGER.debug(f"CLOUD END TIME2: {self.end_time}")
 
     def _identify_objects_in_pick_image(self, image: Image) -> set:
@@ -2191,7 +2723,7 @@ class Info:
         #   },
 
         if not self._force_ip:
-            info = data.get('net', {}).get('info', [])
+            info = (data.get('net') or {}).get('info', [])
             for net in info:
                 ip_int = net.get("ip", 0)
                 if ip_int != 0:
@@ -2253,7 +2785,7 @@ class Info:
         # and new versions provided for each component. While the X1 lists only the new version
         # in separate string properties.
 
-        self.new_version_state = data.get("upgrade_state",{}).get("new_version_state", self.new_version_state)
+        self.new_version_state = (data.get("upgrade_state") or {}).get("new_version_state", self.new_version_state)
 
         # Nozzle data is provided differently for dual-nozzle printers (at least)
         # New (H2D):
@@ -2396,8 +2928,13 @@ class Info:
         if str == "":
             return "unknown"
 
-        # Second character indicates standard vs high flow
-        if nozzle_type_code[1] == "H":
+        # Second character indicates flow type (TPU high flow, high flow, standard)
+        # There is only one TPU High-Flow nozzle offered as of this writing, and
+        # Bambu Lab does not characterize the material.
+        if nozzle_type_code[1] == "U":
+            return "tpu_high_flow"
+
+        if nozzle_type_code[1] in ("H", "E"):
             flow_prefix = "high_flow_"
         else:
             flow_prefix = ""
@@ -2422,6 +2959,8 @@ class Hotend:
         self.type_name: str = "unknown"
         self.serial: str = ""
         self.tm: int = 0
+        # Total nozzle printing time in seconds (the printer's ``p_t`` field).
+        self.print_time: int = 0
         self.wear: int = 0
         self.stat: int = 0
         self.color_m: str = "00000000"
@@ -2456,6 +2995,7 @@ class Hotend:
             self.type_name = Info._nozzle_type_name(type_code) if type_code else "unknown"
         self.serial = data.get("sn", self.serial)
         self.tm = data.get("tm", self.tm)
+        self.print_time = data.get("p_t", self.print_time)
         self.wear = data.get("wear", self.wear)
         self.stat = data.get("stat", self.stat)
         self.color_m = data.get("color_m", self.color_m)
@@ -2515,7 +3055,7 @@ class HotendRack:
 
         # Initialize rack slots that don't exist yet
         for slot_id in self.RACK_SLOT_IDS:
-            if slot_id not in self.hotends:
+            if slot_id not in self.hotends: 
                 self.hotends[slot_id] = Hotend(slot_id)
 
         # Update hotend data from info array
@@ -2622,7 +3162,7 @@ class AMSList:
         else:
             return self.data[self.active_ams_index].tray[self.active_tray_index]
 
-    def info_update(self, data):
+    def info_update(self, data) -> bool:
         old_data = f"{self.__dict__}"
 
         # First determine if this the version info data or the json payload data. We use the version info to determine
@@ -2694,6 +3234,7 @@ class AMSList:
                 data_changed = True
 
         data_changed = data_changed or (old_data != f"{self.__dict__}")
+        return data_changed
 
     def print_update(self, data) -> bool:
         old_data = f"{self.__dict__}"
@@ -2847,6 +3388,7 @@ class AMSList:
 class AMSTray:
     """Return all AMS tray related info"""
     empty: bool
+    state: int
     idx: int
     name: str
     type: str
@@ -2869,6 +3411,8 @@ class AMSTray:
     def __init__(self, client):
         self._client = client
         self.empty = True
+        self.state = 8
+        self._state_reported = False
         self.idx = ""
         self.name = ""
         self.type = ""
@@ -2889,13 +3433,18 @@ class AMSTray:
         self.bed_temp = 0
 
     @property
+    def unknown(self) -> bool:
+        """True when a spool is loaded but vendor/material/colour are not assigned."""
+        return not self.empty and self.name == UNKNOWN_TRAY_LABEL
+
+    @property
     def remain(self) -> int:
         return self._remain
 
     @property
     def active(self) -> bool:
         return self._active
-    
+
     @active.setter
     def active(self, value: bool):
         self._active = value
@@ -2904,47 +3453,52 @@ class AMSTray:
     def remain_enabled(self) -> bool:
         return self._client._device.supports_feature(Features.AMS_FILAMENT_REMAINING) and self._client._device.home_flag.ams_calibrate_remaining
 
+    def _reset_empty_slot(self) -> None:
+        """Clear tray fields when no spool is loaded."""
+        self.empty = True
+        self.idx = ""
+        self.name = "Empty"
+        self.type = "Empty"
+        self.sub_brands = ""
+        self.color = "00000000"
+        self.nozzle_temp_min = 0
+        self.nozzle_temp_max = 0
+        self._remain = -1
+        self.tag_uid = ""
+        self.tray_uuid = ""
+        self.k = 0
+        self.tray_weight = 0
+        self.cols = []
+        self.ctype = 0
+        self.dry_temp = 0
+        self.dry_time = 0
+        self.bed_temp = 0
+
+    def _resolve_tray_name(self, idx: str, tray_type: str) -> str:
+        """Human-readable tray name; empty tray_type means unknown (?)."""
+        if not tray_type or tray_type in ("", "Empty"):
+            return UNKNOWN_TRAY_LABEL
+        if idx:
+            name = get_filament_name(idx, self._client.slicer_settings.custom_filaments)
+            if name not in ("unknown", "Empty"):
+                return name
+        return tray_type
+
     def print_update(self, data) -> bool:
         old_data = f"{self.__dict__}"
 
-        # Detect empty tray notifications by checking if payload contains ONLY metadata fields.
-        # Empty trays send just {"id": "X"} or {"id": "X", "state": Y} with no filament data.
-        # Any other field beyond id/state indicates filament data (works for both X1 full
-        # payloads and P1 delta payloads, and is future-proof if Bambu adds new fields).
-        METADATA_ONLY_FIELDS = {'id', 'state'}
-        payload_fields = set(data.keys())
-        is_empty_notification = ('id' in data) and payload_fields.issubset(METADATA_ONLY_FIELDS)
+        metadata_only = ('id' in data) and set(data.keys()).issubset({'id', 'state'})
 
-        if is_empty_notification:
-            # Tray is empty - reset all fields to defaults
-            self.empty = True
-            self.idx = ""
-            self.name = "Empty"
-            self.type = "Empty"
-            self.sub_brands = ""
-            self.color = "00000000"
-            self.nozzle_temp_min = 0
-            self.nozzle_temp_max = 0
-            self._remain = -1
-            self.tag_uid = ""
-            self.tray_uuid = ""
-            self.k = 0
-            self.tray_weight = 0
-            self.cols = []
-            self.ctype = 0
-            self.dry_temp = 0
-            self.dry_time = 0
-            self.bed_temp = 0
+        if 'state' in data:
+            self._state_reported = True
+
+        if metadata_only:
+            self.state = int(data['state']) if 'state' in data else 0
         else:
-            # Tray has filament data - update fields normally
-            # Using .get() preserves existing values for delta updates
-            self.empty = False
+            if 'state' in data:
+                self.state = int(data['state'])
             self.idx = data.get('tray_info_idx', self.idx)
-            self.name = get_filament_name(self.idx, self._client.slicer_settings.custom_filaments)
             self.type = data.get('tray_type', self.type)
-            if self.name == "unknown":
-                # Fallback to the type if the name is unknown
-                self.name = self.type
             self.sub_brands = data.get('tray_sub_brands', self.sub_brands)
             self.color = data.get('tray_color', self.color)
             self.nozzle_temp_min = data.get('nozzle_temp_min', self.nozzle_temp_min)
@@ -2959,8 +3513,44 @@ class AMSTray:
             self.dry_temp = data.get('tray_temp', self.dry_temp)
             self.dry_time = data.get('tray_time', self.dry_time)
             self.bed_temp = data.get('bed_temp', self.bed_temp)
-        
+
+        self._resolve_loaded_state(metadata_only)
+
         return (old_data != f"{self.__dict__}")
+
+    def _has_filament_metadata(self) -> bool:
+        """True when tray metadata indicates a spool is present.
+
+        Fallback for firmware that never reports a per-tray ``state`` field:
+        presence of a filament profile id or a real material type means a
+        spool is loaded.
+        """
+        if self.idx:
+            return True
+        return bool(self.type) and self.type not in ("", "Empty")
+
+    def _resolve_loaded_state(self, metadata_only: bool) -> None:
+        """Determine empty/loaded status.
+
+        Prefer the per-tray ``state`` bitfield when the printer reports one;
+        otherwise fall back to filament metadata so printers whose firmware
+        omits ``state`` still surface loaded spools instead of showing empty.
+        """
+        if self._state_reported:
+            loaded = ams_tray_spool_loaded(self.state)
+        else:
+            loaded = self._has_filament_metadata()
+        if loaded:
+            self.empty = False
+            name = self._resolve_tray_name(self.idx, self.type)
+            self.name = name
+            if name == UNKNOWN_TRAY_LABEL:
+                if not self.type or self.type in ("", "Empty"):
+                    self.type = UNKNOWN_TRAY_LABEL
+                if not self.sub_brands:
+                    self.sub_brands = UNKNOWN_TRAY_LABEL
+        else:
+            self._reset_empty_slot()
 
 
 @dataclass
@@ -2969,8 +3559,20 @@ class ExternalSpool(AMSTray):
     _index: int
 
     def __init__(self, client, index: int):
+        self._physically_empty = True
         super().__init__(client)
         self._index = index
+
+    @property
+    def empty(self) -> bool:
+        """True when no spool is mounted, or this external slot is not active."""
+        if self._physically_empty:
+            return True
+        return not self.active
+
+    @empty.setter
+    def empty(self, value: bool) -> None:
+        self._physically_empty = bool(value)
 
     @property
     def active(self) -> bool:
@@ -2990,6 +3592,42 @@ class ExternalSpool(AMSTray):
     @property
     def remain_enabled(self) -> bool:
         return False
+
+    def _reset_empty_slot(self) -> None:
+        """Clear tray fields when no external spool is mounted."""
+        self._physically_empty = True
+        self.idx = ""
+        self.name = "Empty"
+        self.type = "Empty"
+        self.sub_brands = ""
+        self.color = "00000000"
+        self.nozzle_temp_min = 0
+        self.nozzle_temp_max = 0
+        self._remain = -1
+        self.tag_uid = ""
+        self.tray_uuid = ""
+        self.k = 0
+        self.tray_weight = 0
+        self.cols = []
+        self.ctype = 0
+        self.dry_temp = 0
+        self.dry_time = 0
+        self.bed_temp = 0
+
+    def _resolve_loaded_state(self, metadata_only: bool) -> None:
+        """External spool: keep filament data; empty reflects active status."""
+        if metadata_only:
+            self._reset_empty_slot()
+            return
+
+        self._physically_empty = False
+        name = self._resolve_tray_name(self.idx, self.type)
+        self.name = name
+        if name == UNKNOWN_TRAY_LABEL:
+            if not self.type or self.type in ("", "Empty"):
+                self.type = UNKNOWN_TRAY_LABEL
+            if not self.sub_brands:
+                self.sub_brands = UNKNOWN_TRAY_LABEL
 
     def print_update(self, data) -> bool:
 
@@ -3096,7 +3734,7 @@ class Speed:
             if option == speed:
                 self._id = id
                 self.name = speed
-                command = SPEED_PROFILE_TEMPLATE
+                command = copy.deepcopy(SPEED_PROFILE_TEMPLATE)
                 command['print']['param'] = f"{id}"
                 self._client.publish(command)
                 self._client.callback("event_speed_update")
@@ -3122,7 +3760,7 @@ class StageAction:
             self._print_type = "unknown"
 
         # New way it is presented
-        self._id = int(data.get("stage", {}).get("_id", self._id))
+        self._id = int((data.get("stage") or {}).get("_id", self._id))
         # Old way it's presented
         self._id = int(data.get("stg_cur", self._id))
         if (self._print_type == "idle") and (self._id == 0):

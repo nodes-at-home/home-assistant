@@ -159,6 +159,12 @@ async def async_setup_entry(  # noqa: C901
                     entry_id=config_entry.entry_id,
                 )
             )
+            entities.append(
+                ValveTappetStateSensor(
+                    device=sensor,
+                    entry_id=config_entry.entry_id,
+                )
+            )
 
     for sensor in list(session.device_helper.wallthermostats) + list(
         session.device_helper.roomthermostats
@@ -440,28 +446,28 @@ async def async_setup_entry(  # noqa: C901
                 entry_id=config_entry.entry_id,
             )
         )
-        # WalkTest state sensor: only created when WalkTest service is present.
-        if (
-            getattr(sensor, "supports_walk_test", False)
-            and sensor.walk_state is not None
-        ):
-            entities.append(
-                WalkStateSensor(
-                    device=sensor,
-                    entry_id=config_entry.entry_id,
-                )
-            )
-        # DetectionTest state sensor: the local-API counterpart of WalkTest.
-        if getattr(sensor, "supports_detection_test", False):
-            entities.append(
-                DetectionStateSensor(
-                    device=sensor,
-                    entry_id=config_entry.entry_id,
-                )
-            )
         # Installation profile is exposed as a writable `select` entity
         # (InstallationProfileSelect), not a sensor — see select.py (#353).
         if diagnostic_enabled:
+            # WalkTest state sensor: only created when WalkTest service is present.
+            if (
+                getattr(sensor, "supports_walk_test", False)
+                and sensor.walk_state is not None
+            ):
+                entities.append(
+                    WalkStateSensor(
+                        device=sensor,
+                        entry_id=config_entry.entry_id,
+                    )
+                )
+            # DetectionTest state sensor: the local-API counterpart of WalkTest.
+            if getattr(sensor, "supports_detection_test", False):
+                entities.append(
+                    DetectionStateSensor(
+                        device=sensor,
+                        entry_id=config_entry.entry_id,
+                    )
+                )
             await async_migrate_to_new_unique_id(
                 hass,
                 Platform.SENSOR,
@@ -529,19 +535,22 @@ async def async_setup_entry(  # noqa: C901
                     )
                 )
 
-    for siren in getattr(session.device_helper, "outdoor_sirens", []):
-        if device_excluded(siren, config_entry.options):
-            continue
-        if getattr(siren, "supports_power_supply", False):
-            entities.append(
-                SirenBatterySensor(device=siren, entry_id=config_entry.entry_id)
-            )
-            entities.append(
-                SirenMainPowerSensor(device=siren, entry_id=config_entry.entry_id)
-            )
-            entities.append(
-                SirenSolarChargingSensor(device=siren, entry_id=config_entry.entry_id)
-            )
+    if diagnostic_enabled:
+        for siren in getattr(session.device_helper, "outdoor_sirens", []):
+            if device_excluded(siren, config_entry.options):
+                continue
+            if getattr(siren, "supports_power_supply", False):
+                entities.append(
+                    SirenBatterySensor(device=siren, entry_id=config_entry.entry_id)
+                )
+                entities.append(
+                    SirenMainPowerSensor(device=siren, entry_id=config_entry.entry_id)
+                )
+                entities.append(
+                    SirenSolarChargingSensor(
+                        device=siren, entry_id=config_entry.entry_id
+                    )
+                )
 
     # KeypadTrigger mapping (Universal Switch II button->scenario): diagnostic,
     # only created when the device actually exposes the service (spec-grounded).
@@ -647,6 +656,7 @@ ENERGY_SENSOR = "energy"
 ENERGY_YIELD_SENSOR = "energy_yield"
 POWER_YIELD_SENSOR = "power_yield"
 VALVE_TAPPET_SENSOR = "valvetappet"
+VALVE_TAPPET_STATE_SENSOR = "valve_tappet_state"
 ILLUMINANCE_SENSOR = "illuminance"
 BATTERY_LEVEL_SENSOR = "battery_level"
 COMBINED_RATING_SENSOR = "combined_rating"
@@ -661,6 +671,38 @@ PRESENCE_SIMULATION_RUNNING_START_SENSOR = "running_start"
 PRESENCE_SIMULATION_RUNNING_END_SENSOR = "running_end"
 REFERENCE_MOVING_TIME_TTB_SENSOR = "reference_moving_time_ttb"
 REFERENCE_MOVING_TIME_BTT_SENSOR = "reference_moving_time_btt"
+
+
+def _temperature_value(device: _TemperatureDevice) -> float | None:
+    """Return the device's temperature, or None on a partial-poll error.
+
+    SHCThermostat/SHCWallThermostat/SHCMotionDetector2's temperature mixin
+    already returns None when the underlying service is entirely absent, but
+    SHCTwinguard's temperature ultimately reads
+    AirQualityLevelService.temperature, which indexes the raw state dict
+    directly (self.state["temperature"]) rather than using .get() -- a
+    partial Bosch API poll that omits the field raises KeyError instead of
+    returning None like every other device covered by this value_fn.
+    """
+    try:
+        return device.temperature
+    except (KeyError, AttributeError) as err:
+        LOGGER.debug("Unable to read temperature for %s: %s", device.name, err)
+        return None
+
+
+def _purity_value(device: SHCTwinguard) -> int | None:
+    """Return the Twinguard purity (ppm), or None on a partial-poll error.
+
+    AirQualityLevelService.purity indexes self.state["purity"] directly
+    (unlike humidity, which uses .get() with a default) -- a partial poll
+    that omits the field raises KeyError instead of a graceful fallback.
+    """
+    try:
+        return device.purity
+    except (KeyError, AttributeError) as err:
+        LOGGER.debug("Unable to read purity for %s: %s", device.name, err)
+        return None
 
 
 def _air_quality_value(device: SHCTwinguard) -> str | None:
@@ -783,6 +825,23 @@ def _battery_level_value(device: SHCBatteryDevice) -> str | None:
         return None
 
 
+def _valve_tappet_state_value(device: SHCThermostat) -> str | None:
+    """Return the valve motor status enum string, or None on unknown value.
+
+    Dedicated ENUM sensor for ValveTappetService.State (#410) — the same
+    value ValveTappetSensor already surfaces as the buried
+    valve_tappet_state extra_state_attribute, which can't be used as an
+    automation trigger/condition. This exposes it as a first-class state so
+    valve motor errors (VALVE_TOO_TIGHT, NO_MOTOR_ERROR, ...) can be alerted
+    on directly.
+    """
+    try:
+        return str(device.valvestate.name.lower())
+    except (ValueError, AttributeError) as err:
+        LOGGER.warning("Unknown valve tappet state for %s: %s", device.name, err)
+        return None
+
+
 def _combined_rating_value(device: SHCTwinguard) -> str | None:
     """Return the combined rating enum name, or None on unknown value."""
     try:
@@ -868,7 +927,7 @@ SENSOR_DESCRIPTIONS: dict[str, SHCSensorEntityDescription[Any]] = {
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,
-        value_fn=lambda device: device.temperature,
+        value_fn=_temperature_value,
     ),
     TERMINAL_TEMPERATURE_SENSOR: SHCSensorEntityDescription[SHCWallThermostat](
         key=TERMINAL_TEMPERATURE_SENSOR,
@@ -902,7 +961,7 @@ SENSOR_DESCRIPTIONS: dict[str, SHCSensorEntityDescription[Any]] = {
         native_unit_of_measurement=UnitOfRatio.PARTS_PER_MILLION,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=0,
-        value_fn=lambda device: device.purity,
+        value_fn=_purity_value,
     ),
     AIR_QUALITY_SENSOR: SHCSensorEntityDescription[SHCTwinguard](
         key=AIR_QUALITY_SENSOR,
@@ -1003,6 +1062,35 @@ SENSOR_DESCRIPTIONS: dict[str, SHCSensorEntityDescription[Any]] = {
         suggested_display_precision=0,
         value_fn=lambda device: device.position,
         attributes_fn=_valve_tappet_attributes,
+    ),
+    VALVE_TAPPET_STATE_SENSOR: SHCSensorEntityDescription[SHCThermostat](
+        # First-class, alertable ENUM sensor for ValveTappetService.State
+        # (#410) — distinct from ValveTappetSensor's buried attribute above.
+        key=VALVE_TAPPET_STATE_SENSOR,
+        translation_key="valve_tappet_state",
+        device_class=SensorDeviceClass.ENUM,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        # Mirrors boschshcpy's ValveTappetService.State members (services_impl.py).
+        options=[
+            "valve_adaption_successful",
+            "valve_adaption_in_progress",
+            "valve_adaption_requested",
+            "range_too_big",
+            "range_too_small",
+            "run_to_start_position",
+            "start_position_requested",
+            "in_start_position",
+            "not_available",
+            "no_valve_body_error",
+            "no_motor_error",
+            "valve_too_tight",
+            "fix_motor_logic_requested",
+            "fix_motor_logic_in_progress",
+            "fix_motor_logic_successful",
+            "error",
+            "unknown",
+        ],
+        value_fn=_valve_tappet_state_value,
     ),
     ILLUMINANCE_SENSOR: SHCSensorEntityDescription[_IlluminanceDevice](
         # Metadata (state_class/device_class/unit) stays static; native_value
@@ -1452,6 +1540,16 @@ class ValveTappetSensor(SHCSensor[SHCThermostat]):  # type: ignore[misc]
         super().__init__(device, self.entity_description, entry_id)
 
 
+class ValveTappetStateSensor(SHCSensor[SHCThermostat]):  # type: ignore[misc]
+    """Diagnostic ENUM sensor for the valve motor status (#410)."""
+
+    entity_description = SENSOR_DESCRIPTIONS[VALVE_TAPPET_STATE_SENSOR]
+
+    def __init__(self, device: SHCThermostat, entry_id: str) -> None:
+        """Initialize a valve tappet state sensor."""
+        super().__init__(device, self.entity_description, entry_id)
+
+
 class IlluminanceLevelSensor(SHCSensor[_IlluminanceDevice]):  # type: ignore[misc]
     """Representation of an SHC illuminance level reporting sensor."""
 
@@ -1638,7 +1736,6 @@ class SHCOpenWindowsSensor(SensorEntity):  # type: ignore[misc]
     _attr_has_entity_name = True
     _attr_translation_key = "open_windows_doors"
     _attr_should_poll = True
-    _attr_native_unit_of_measurement = "doors/windows"
 
     def __init__(
         self,

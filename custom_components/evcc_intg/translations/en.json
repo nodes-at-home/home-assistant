@@ -70,14 +70,33 @@
       "fields": {
         "vehicle": {"name": "Vehicle name/ID", "description": "Enter the vehicle name from your evcc configuration (e.g.: vehicle_1 or db:7)"}
       }
+    },
+    "activate_loadpoint": {
+      "name": "Enable evcc loadpoint",
+      "description": "Activate a previously deactivated loadpoint in your evcc configuration. This service restarts your evcc server after 5 seconds and then restarts this HA-evcc integration in Home Assistant after another 20 seconds.",
+      "fields": {
+        "loadpoint": {"name": "Loadpoint ID", "description": "A number starting from 1...n (where 1'st your first configured loadpoint)"}
+      }
+    },
+    "deactivate_loadpoint": {
+      "name": "Disable evcc loadpoint",
+      "description": "The selected loadpoint will be disabled in your evcc configuration. This service restarts your evcc server after 5 seconds and then restarts this HA-evcc integration in Home Assistant after another 20 seconds.",
+      "fields": {
+        "loadpoint": {"name": "Loadpoint ID", "description": "A number starting from 1...n (where 1'st your first configured loadpoint)"}
+      }
     }
-
   },
   "entity": {
     "binary_sensor": {
       "charging": {"name": "Charging"},
       "connected": {"name": "Connected"},
       "enabled": {"name": "Enabled"},
+      "disabled_in_config": {"name": "Disabled in evcc configuration",
+        "state": {
+          "on": "Yes",
+          "off": "No"
+        }
+      },
       "smartcostactive": {"name": "Smart Grid Charging"},
       "smartfeedinpriorityactive": {"name": "Smart Feedin limit"},
       "vehicledetectionactive": {"name": "Vehicle detection"},
@@ -309,9 +328,18 @@
         "name": "Modus",
         "state": {
           "off": "Off",
+          "smart": "Smart",
+          "now": "Fast",
           "pv": "Solar",
-          "minpv": "Min+Solar",
-          "now": "Fast"
+          "minpv": "Min+Solar"
+        }
+      },
+      "alwayscharge":{
+        "name": "Always charge \u267e\ufe0f",
+        "state": {
+          "off": "Off",
+          "on": "On",
+          "once": "Once"
         }
       },
       "phasesconfigured": {
@@ -395,7 +423,16 @@
 
       "auxpower": {"name": "Power AUX"},
       "batterycapacity": {"name": "Battery capacity"},
-      "batteryenergy": {"name": "Battery energy"},
+      "batteryenergy": {"name": "Battery charge-energy"},
+      "battery_0_energy": {"name": "Battery 1 charge-energy"},
+      "battery_1_energy": {"name": "Battery 2 charge-energy"},
+      "battery_2_energy": {"name": "Battery 3 charge-energy"},
+      "battery_3_energy": {"name": "Battery 4 charge-energy"},
+      "batteryreturnenergy": {"name": "Battery return energy"},
+      "battery_0_returnenergy": {"name": "Battery 1 return energy"},
+      "battery_1_returnenergy": {"name": "Battery 2 return energy"},
+      "battery_2_returnenergy": {"name": "Battery 3 return energy"},
+      "battery_3_returnenergy": {"name": "Battery 4 return energy"},
       "batterymode": {"name": "Battery mode [CODE]"},
       "batterymode_value": {"name": "Battery mode"},
       "batterypower": {"name": "Power battery"},
@@ -412,6 +449,8 @@
       "gridcurrents_1": {"name": "Grid Current P2"},
       "gridcurrents_2": {"name": "Grid Current P3"},
       "gridpower": {"name": "Power Grid"},
+      "gridenergy": {"name": "Energy Grid"},
+      "gridreturnenergy": {"name": "Energy Feedin"},
       "homepower": {"name": "Power Home"},
       "pvpower": {"name": "Power Solar"},
       "pv_0_power": {"name": "Power Solar 1"},
@@ -501,6 +540,7 @@
 
       "configmeter_power": {"name": "Power"},
       "configmeter_energy": {"name": "Energy"},
+      "configmeter_return_energy": {"name": "Feedin"},
       "configmeter_soc": {"name": "Charge"},
       "configmeter_temp": {"name": "Temperature"},
       "configmeter_phasecurrents_0": {"name": "Current P1"},

@@ -299,6 +299,20 @@ async def async_setup_entry(  # noqa: C901
                 device_name=room_name,
             )
         )
+        entities.append(
+            SummerModeSensor(
+                device=climate,
+                entry_id=config_entry.entry_id,
+                device_name=room_name,
+            )
+        )
+        entities.append(
+            VentilationModeSensor(
+                device=climate,
+                entry_id=config_entry.entry_id,
+                device_name=room_name,
+            )
+        )
 
     for siren in getattr(session.device_helper, "outdoor_sirens", []):
         if device_excluded(siren, config_entry.options):
@@ -481,6 +495,46 @@ class ScheduleOverrideActiveSensor(SHCBinarySensor[SHCClimateControl]):  # type:
 
     _attr_translation_key = "schedule_override_active"
     entity_description = _SCHEDULE_OVERRIDE_ACTIVE_DESCRIPTION
+
+
+_SUMMER_MODE_DESCRIPTION = SHCBinarySensorEntityDescription[SHCClimateControl](
+    key="summer_mode",
+    is_on_fn=lambda device: bool(getattr(device, "summer_mode", False)),
+    unique_id_suffix="summer_mode",
+)
+
+
+class SummerModeSensor(SHCBinarySensor[SHCClimateControl]):  # type: ignore[misc]
+    """Room-climate summer-mode indicator (#389).
+
+    Reads RoomClimateControl.summer_mode. climate.py already folds this
+    into hvac_mode=OFF, but that conflates it with any future OFF cause —
+    a dedicated sensor gives automations (and the dashboard) an explicit,
+    unambiguous trigger. getattr-guarded so it tolerates an older
+    boschshcpy pin.
+    """
+
+    _attr_translation_key = "summer_mode"
+    entity_description = _SUMMER_MODE_DESCRIPTION
+
+
+_VENTILATION_MODE_DESCRIPTION = SHCBinarySensorEntityDescription[SHCClimateControl](
+    key="ventilation_mode",
+    is_on_fn=lambda device: bool(getattr(device, "ventilation_mode", False)),
+    unique_id_suffix="ventilation_mode",
+)
+
+
+class VentilationModeSensor(SHCBinarySensor[SHCClimateControl]):  # type: ignore[misc]
+    """Room-climate ventilation-mode indicator (#389).
+
+    Reads RoomClimateControl.ventilation_mode — modeled in boschshcpy but
+    never surfaced as an HA entity before. getattr-guarded so it tolerates
+    an older boschshcpy pin.
+    """
+
+    _attr_translation_key = "ventilation_mode"
+    entity_description = _VENTILATION_MODE_DESCRIPTION
 
 
 _SHUTTER_CALIBRATION_REQUIRED_DESCRIPTION = SHCBinarySensorEntityDescription[
@@ -737,7 +791,9 @@ class MotionDetectionSensor(SHCEntity, BinarySensorEntity):  # type: ignore[misc
     async def async_added_to_hass(self) -> None:
         """Subscribe to SHC events and cache device_id."""
         await super().async_added_to_hass()
-        self._cached_device_id = await async_get_device_id(self.hass, self._device.id)
+        self._cached_device_id = await async_get_device_id(
+            self.hass, self._device.id, self._entry_id
+        )
         # Subscribe AFTER device_id is cached so events never fire with
         # device_id=None during the startup window (#288-cluster).
         if self._service is not None:
@@ -863,7 +919,9 @@ class SmokeDetectorSensor(SHCEntity, BinarySensorEntity):  # type: ignore[misc]
     async def async_added_to_hass(self) -> None:
         """Subscribe to SHC events and cache device_id."""
         await super().async_added_to_hass()
-        self._cached_device_id = await async_get_device_id(self._hass, self._device.id)
+        self._cached_device_id = await async_get_device_id(
+            self._hass, self._device.id, self._entry_id
+        )
         # Subscribe AFTER device_id is cached so events never fire with
         # device_id=None during the startup window (#288-cluster).
         if self._service is not None:
@@ -1050,7 +1108,9 @@ class SmokeDetectionSystemSensor(SHCEntity, BinarySensorEntity):  # type: ignore
     async def async_added_to_hass(self) -> None:
         """Subscribe to SHC events and cache device_id."""
         await super().async_added_to_hass()
-        self._cached_device_id = await async_get_device_id(self._hass, self._device.id)
+        self._cached_device_id = await async_get_device_id(
+            self._hass, self._device.id, self._entry_id
+        )
         # Subscribe AFTER device_id is cached so events never fire with
         # device_id=None during the startup window (#288-cluster).
         if self._service is not None:

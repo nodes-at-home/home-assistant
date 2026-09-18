@@ -8,7 +8,8 @@
       "event_print_error": "Print error",
       "event_print_error_cleared": "Print error cleared",
       "event_printer_error": "HMS error",
-      "event_printer_error_cleared": "HMS error cleared"
+      "event_printer_error_cleared": "HMS error cleared",
+      "event_printer_missing_sdcard": "Missing SD card"
     }
   },
   "config": {
@@ -37,7 +38,8 @@
       "verifyCode": "Verification code is required. Check your email or phone.",
       "code_expired": "Verification code expired. New code requested. Check your email or phone.",
       "code_incorrect": "Verification code was incorrect. Please re-enter.",
-      "tfaCode": "2FA code is required. Please enter it now."
+      "tfaCode": "2FA code is required. Please enter it now.",
+      "tfa_csrf_fallback": "Bambu Lab's two factor authentication endpoint is currently rejecting requests. A verification code has been sent to your email or phone instead - please enter it below."
     },
     "step": {
       "user": {
@@ -135,7 +137,8 @@
       "verifyCode": "Verification code is required. Check your email or phone.",
       "code_expired": "Verification code expired. New code requested. Check your email or phone.",
       "code_incorrect": "Verification code was incorrect. Please re-enter.",
-      "tfaCode": "2FA code is required. Please enter it now."
+      "tfaCode": "2FA code is required. Please enter it now.",
+      "tfa_csrf_fallback": "Bambu Lab's two factor authentication endpoint is currently rejecting requests. A verification code has been sent to your email or phone instead - please enter it below."
     },
     "step": {
       "init": {
@@ -397,6 +400,9 @@
       "heatbreak_fan_speed": {
         "name": "Heatbreak fan speed"
       },
+      "secondary_aux_fan_speed": {
+        "name": "Secondary aux fan speed"
+      },
       "model_download_percentage": {
         "name": "Model download"
       },
@@ -628,6 +634,7 @@
           "high_flow_hardened_steel": "High flow hardened steel",
           "high_flow_stainless_steel": "High flow stainless steel",
           "high_flow_tungsten_carbide": "High flow tungsten carbide",
+          "tpu_high_flow": "TPU High-Flow",
           "unknown": "Unknown"
         }
       },
@@ -854,6 +861,9 @@
           "filament_id": { "name": "Filament ID" },
           "filament_name": { "name": "Filament name" }
         }
+      },
+      "hotend_rack_hotend_used_time": {
+        "name": "Hotend {hotend_id} used time"
       }
     },
     "camera": {
@@ -893,6 +903,10 @@
     "authentication_failed": {
       "title": "Authentication Failed",
       "description": "Attempting to connect to Bambu Lab failed for {device}. Please reconfigure the integration and provide fresh credentials."
+    },
+    "access_code_rejected": {
+      "title": "Access Code Rejected",
+      "description": "The printer rejected the configured access code for {device}. This usually means the code was regenerated, for example by a factory reset. Read the new access code from the printer's network settings screen and reconfigure the integration with it."
     },
     "no_external_storage": {
       "title": "No USB or SD Card Detected",

@@ -110,6 +110,9 @@ class Tag(ApiKey, Enum):
     BATTERYENERGY = ApiKey(json_key="batteryEnergy", type=EP_TYPE.SITE)
     BATTERYENERGY_AS_OBJ = ApiKey(entity_key="batteryEnergy", json_key="energy", subtype=BATTERY.json_key, type=EP_TYPE.SITE)
 
+    # returnEnergy only exist sind 0.31x
+    BATTERYRETURNENERGY_AS_OBJ = ApiKey(entity_key="batteryReturnEnergy", json_key="returnEnergy", subtype=BATTERY.json_key, type=EP_TYPE.SITE)
+
     # "pvPower": 8871.22,
     PVPOWER = ApiKey(json_key="pvPower", type=EP_TYPE.SITE)
 
@@ -124,6 +127,8 @@ class Tag(ApiKey, Enum):
 
     # "gridPower": -6280.24,
     GRIDPOWER = ApiKey(json_key="gridPower", type=EP_TYPE.SITE)
+    GRIDENERGY = ApiKey(json_key="gridEnergy", type=EP_TYPE.SITE)
+    GRIDRETURNENERGY = ApiKey(json_key="gridReturnEnergy", type=EP_TYPE.SITE)
 
     # "grid": { "currents": [17.95, 7.71, 1.99],
     #           "power": -6280.24,
@@ -275,6 +280,9 @@ class Tag(ApiKey, Enum):
     # "planProjectedStart": "2025-02-20T13:00:00+01:00",
     PLANPROJECTEDSTART = ApiKey(json_key="planProjectedStart", type=EP_TYPE.LOADPOINTS)
 
+    # "disabled": false,
+    DISABLEDINEVCCCONFIG = ApiKey(entity_key="disabled_in_config", json_key="disabled", type=EP_TYPE.LOADPOINTS)
+
     # "enabled": false,
     ENABLED = ApiKey(json_key="enabled", type=EP_TYPE.LOADPOINTS)
 
@@ -366,10 +374,23 @@ class Tag(ApiKey, Enum):
     LP_VEHICLEWELCOMEACTIVE = ApiKey(json_key="vehicleWelcomeActive", type=EP_TYPE.LOADPOINTS)
 
     # "mode": "off", -> (off/pv/minpv/now)
-    MODE = ApiKey(
+    MODE_PV_MINPV = ApiKey(
         json_key="mode", type=EP_TYPE.LOADPOINTS,
         writeable=True, write_key="mode", options=["off", "pv", "minpv", "now"]
     )
+
+    # "mode": "off", -> (off/smart/now)
+    MODE_SMART = ApiKey(
+        json_key="mode", type=EP_TYPE.LOADPOINTS,
+        writeable=True, write_key="mode", options=["off", "smart", "now"]
+    )
+
+    # /api/loadpoints/{id}/alwayscharge/{off|on|once}
+    ALWAYS_CHARGE = ApiKey(
+        json_key="alwaysCharge", type=EP_TYPE.LOADPOINTS,
+        writeable=True, write_key="alwayscharge", options=["off", "on", "once"]
+    )
+
     # "limitSoc": 0, -> write 'limitsoc' in %
     LIMITSOC = ApiKey(json_key="limitSoc", type=EP_TYPE.LOADPOINTS, writeable=True, write_key="limitsoc")
 
@@ -497,6 +518,7 @@ class Tag(ApiKey, Enum):
     ###################################
     # a SHUTDOWN Button for the evcc Server (that requires admin password)
     EVCC_SHUTDOWN = ApiKey(entity_key="evcc_shutdown", json_key=f"{INTERNAL_ONLY}_shutdown", type=EP_TYPE.EVCCCONF, write_key ="system/shutdown", expected_http_status_response=204)
+    EVCCCONF_LOAPOINT_STATE = ApiKey(entity_key="configloadpoint_state", json_key=f"{INTERNAL_ONLY}_loadpoint_state", type=EP_TYPE.EVCCCONF, write_key ="config/loadpoints/{lp_id}")
 
     # request: http://{host}/api/config/devices/vehicle/ford_mach_e/status
     # response: {'capacity': {'value': 91.4, 'error': ''}, 'chargeStatus': {'value': 'A', 'error': ''}, 'icon': {'value': 'ford-mustang-mach-e', 'error': ''}, 'odometer': {'value': 19017, 'error': ''}, 'range': {'value': 516, 'error': ''}, 'soc': {'value': 100, 'error': ''}, 'vehicleLimitSoc': {'value': 100, 'error': ''}}
@@ -515,6 +537,7 @@ class Tag(ApiKey, Enum):
     # https://github.com/evcc-io/evcc/blob/master/server/http_config_helper.go -> func testInstance(instance any) map[string]testResult
     EVCCCONF_METERPOWER         = ApiKey(entity_key="configmeter_power", json_key="power", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
     EVCCCONF_METERENERGY        = ApiKey(entity_key="configmeter_energy", json_key="energy", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
+    EVCCCONF_METERRETURNENERGY  = ApiKey(entity_key="configmeter_return_energy", json_key="returnEnergy", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
     EVCCCONF_METERSOC           = ApiKey(entity_key="configmeter_soc", json_key="soc", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
     EVCCCONF_METERTEMP          = ApiKey(entity_key="configmeter_temp", json_key="temp", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)
     EVCCCONF_METERPHASECURRENTS = ApiKey(entity_key="configmeter_phasecurrents", json_key="phaseCurrents", type=EP_TYPE.EVCCCONF, subtype=EVCCCONF_DEVICE_TYPES.METER.value)

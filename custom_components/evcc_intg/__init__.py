@@ -15,7 +15,7 @@ from homeassistant.core import HomeAssistant, Event, SupportsResponse, CoreState
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import entity_registry, config_validation as config_val, device_registry as device_reg
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
-from homeassistant.helpers.device_registry import DeviceEntry
+from homeassistant.helpers.device_registry import DeviceEntry, async_entries_for_config_entry
 from homeassistant.helpers.entity import Entity, EntityDescription
 from homeassistant.helpers.event import async_track_time_interval, async_call_later
 from homeassistant.helpers.storage import STORAGE_DIR
@@ -53,7 +53,7 @@ from custom_components.evcc_intg.pyevcc_ha.const import (
     JSONKEY_CIRCUITS,
     EP_TYPE
 )
-from custom_components.evcc_intg.pyevcc_ha.keys import Tag, camel_to_snake
+from custom_components.evcc_intg.pyevcc_ha.keys import Tag, camel_to_snake, IS_TRIGGER
 from .const import (
     NAME,
     NAME_SHORT,
@@ -65,6 +65,8 @@ from .const import (
     SERVICE_SET_VEHICLE_PLAN,
     SERVICE_DEL_LOADPOINT_PLAN,
     SERVICE_DEL_VEHICLE_PLAN,
+    SERVICE_ACTIVATE_LOADPOINT,
+    SERVICE_DEACTIVATE_LOADPOINT,
     CONF_INCLUDE_EVCC,
     CONF_USE_WS,
     CONF_EXTENDED_VEHICLE_DATA,
@@ -75,7 +77,7 @@ from .const import (
     CONFIG_VERSION,
     CONFIG_MINOR_VERSION,
     EVCC_JSON_KEY_NAME,
-    EVCC_JSON_ORIGIN_OBJECT
+    EVCC_JSON_ORIGIN_OBJECT,
 )
 from .entity import CustomFriendlyNameEntity
 from .service import EvccService
@@ -192,6 +194,10 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
                                      supports_response=SupportsResponse.OPTIONAL)
         hass.services.async_register(DOMAIN, SERVICE_DEL_VEHICLE_PLAN, evcc_services.del_vehicle_plan,
                                      supports_response=SupportsResponse.OPTIONAL)
+        hass.services.async_register(DOMAIN, SERVICE_ACTIVATE_LOADPOINT, evcc_services.activate_loadpoint,
+                                     supports_response=SupportsResponse.OPTIONAL)
+        hass.services.async_register(DOMAIN, SERVICE_DEACTIVATE_LOADPOINT, evcc_services.deactivate_loadpoint,
+                                     supports_response=SupportsResponse.OPTIONAL)
 
         # If Home Assistant is already in a running state, start the watchdog
         # immediately, else trigger it after Home Assistant has finished starting.
@@ -236,6 +242,8 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
         hass.services.async_remove(DOMAIN, SERVICE_SET_VEHICLE_PLAN)
         hass.services.async_remove(DOMAIN, SERVICE_DEL_LOADPOINT_PLAN)
         hass.services.async_remove(DOMAIN, SERVICE_DEL_VEHICLE_PLAN)
+        hass.services.async_remove(DOMAIN, SERVICE_ACTIVATE_LOADPOINT)
+        hass.services.async_remove(DOMAIN, SERVICE_DEACTIVATE_LOADPOINT)
 
     return unload_ok
 
@@ -286,25 +294,24 @@ async def check_device_registry(hass: HomeAssistant, purge_all: bool = False, co
             a_device_reg = device_reg.async_get(hass)
             if a_device_reg is not None:
                 devices_to_delete = []
-                for a_device_entry in list(a_device_reg.devices.values()):
-                    if hasattr(a_device_entry, "identifiers"):
-                        ident_value = a_device_entry.identifiers
+                all_domain_devices = []
+                for a_config_entry in hass.config_entries.async_entries(DOMAIN):
+                    all_domain_devices.extend(async_entries_for_config_entry(a_device_reg, a_config_entry.entry_id))
+                for a_device_entry in all_domain_devices:
 
-                        if f"{ident_value}".__contains__(DOMAIN):
+                    if purge_all and config_entry_id is not None:
+                        if config_entry_id in a_device_entry.config_entries:
+                            devices_to_delete.append(a_device_entry.id)
 
-                            if purge_all and config_entry_id is not None:
-                                if config_entry_id in a_device_entry.config_entries:
-                                    devices_to_delete.append(a_device_entry.id)
+                    elif hasattr(a_device_entry, "manufacturer"):
+                        manufacturer_value = a_device_entry.manufacturer
+                        if not f"{manufacturer_value}".__eq__(MANUFACTURER):
+                            _LOGGER.info(f"check_device_registry(): found a OLD {DOMAIN} DeviceEntry: {a_device_entry}")
+                            devices_to_delete.append(a_device_entry.id)
 
-                            elif hasattr(a_device_entry, "manufacturer"):
-                                manufacturer_value = a_device_entry.manufacturer
-                                if not f"{manufacturer_value}".__eq__(MANUFACTURER):
-                                    _LOGGER.info(f"check_device_registry(): found a OLD {DOMAIN} DeviceEntry: {a_device_entry}")
-                                    devices_to_delete.append(a_device_entry.id)
-
-                            #elif intg_version != "UNKNOWN":
-                            #    if not f"{ident_value}".__contains__(intg_version):
-                            #        devices_to_delete.append(a_device_entry.id)
+                    #elif intg_version != "UNKNOWN":
+                    #    if not f"{ident_value}".__contains__(intg_version):
+                    #        devices_to_delete.append(a_device_entry.id)
 
                 if len(devices_to_delete) > 0:
                     devices_to_delete = list(dict.fromkeys(devices_to_delete))
@@ -393,6 +400,9 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
         self._http_session = http_session
         self._cookie_path_on_fs = cookie_path
 
+        # for restart_tasks...
+        self._restart_evcc_and_integration_task = None
+
         # when we use the websocket we need to call the super constructor without update_interval...
         if self.use_ws:
             super().__init__(hass, _LOGGER, name=DOMAIN)
@@ -411,7 +421,11 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
             if self.hass is not None:
                 a_device_reg = device_reg.async_get(self.hass)
                 if a_device_reg is not None:
-                    device = a_device_reg.async_get_device(identifiers=self._device_info_dict["identifiers"])
+                    if hasattr(a_device_reg, "async_get_device_by_identifier"):
+                        device = a_device_reg.async_get_device_by_identifier(identifier=next(iter(self._device_info_dict["identifiers"])), config_entry_id=self.config_entry.entry_id)
+                    else:
+                        device = a_device_reg.async_get_device(identifiers=self._device_info_dict["identifiers"])
+
                     if device:
                         _LOGGER.info(f"call_later_update_device_registry(): device registry update triggered for device {device.name}")
                         if self.bridge.ws_connected and self.bridge.ws_check_last_update():
@@ -542,7 +556,6 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
         else:
             _LOGGER.debug(f"read_evcc_config_on_startup(): NO 'circuits' found [{JSONKEY_CIRCUITS}] in the evcc data: {initdata}")
 
-
         # init our vehicles data... [this is a JSON DICT]
         if JSONKEY_VEHICLES in initdata:
             for a_evcc_veh_name in initdata[JSONKEY_VEHICLES]:
@@ -567,6 +580,12 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
         api_index = 1
         if JSONKEY_LOADPOINTS in initdata:
             for a_loadpoint_object in initdata[JSONKEY_LOADPOINTS]:
+
+                # introduced with 0.314.1 Loadpoints can be disabled now!
+                is_disabled = False
+                if "disabled" in a_loadpoint_object:
+                    is_disabled = a_loadpoint_object["disabled"]
+
                 single_phase_only = False
                 if "chargerSinglePhase" in a_loadpoint_object:
                     single_phase_only = a_loadpoint_object["chargerSinglePhase"]
@@ -588,28 +607,36 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
                 if "chargerFeatureIntegratedDevice" in a_loadpoint_object:
                     is_integrated = a_loadpoint_object["chargerFeatureIntegratedDevice"]
 
-                # sind 0.310.0 no MIN+PV mode + no MAX_CURRENT for 'SwitchDevice'
+                # since 0.310.0 no MIN+PV mode + no MAX_CURRENT for 'SwitchDevice'
                 is_switch_device = False
                 if "chargerFeatureSwitchDevice" in a_loadpoint_object:
                     is_switch_device = a_loadpoint_object["chargerFeatureSwitchDevice"]
 
+                # since https://github.com/evcc-io/evcc/pull/32490
+                # looks like we have different names for the modes - and also a new
+                # 'feature'...
+                is_always_charge_present = False
+                if "alwaysCharge" in a_loadpoint_object:
+                    is_always_charge_present = True
+
                 self._loadpoint[f"{api_index}"] = {
                     EVCC_JSON_KEY_NAME: f"{api_index}",
                     EVCC_JSON_ORIGIN_OBJECT: a_loadpoint_object,
-                    "name": a_loadpoint_object["title"],
-                    "id": slugify(a_loadpoint_object["title"]),
+                    "name": a_loadpoint_object.get("title", f"unknown-{api_index}"),
+                    "id": slugify(a_loadpoint_object.get("title", f"unknown-{api_index}")),
+                    "is_disabled": is_disabled,
                     "has_phase_auto_option": phase_switching_supported,
                     "only_single_phase": single_phase_only,
                     "is_heating": is_heating,
                     "is_integrated": is_integrated,
                     "is_switch_device": is_switch_device,
-                    "vehicle_key": a_loadpoint_object["vehicleName"]
+                    "is_always_charge_present": is_always_charge_present,
+                    "vehicle_key": a_loadpoint_object.get("vehicleName", None)
                 }
 
                 api_index += 1
         else:
             _LOGGER.warning(f"read_evcc_config_on_startup(): NO 'loadpoints' found [{JSONKEY_LOADPOINTS}] in the evcc data: {initdata}")
-
 
         if "smartCostType" in initdata:
             self._cost_type = initdata["smartCostType"]
@@ -986,6 +1013,42 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
         else:
             return await self.bridge.write_loadpoint_plan(idx=loadpoint_idx, energy=None, rfc_date=None)
 
+    async def async_deactivate_loadpoint(self, new_state: bool, loadpoint_idx_as_int: int = -1):
+        # 1. we will set the new loadpoint state
+        # 2. we must trigger a evcc restart...
+        # 3. we must triffer a integration restart...
+        if loadpoint_idx_as_int > -1:
+            response_obj = await self.bridge.loadpoint_disable(new_state, loadpoint_idx_as_int)
+            if isinstance(response_obj, dict):
+                # are there any config errors?
+                if "evcc_intg_error" in response_obj or "evcc_intg_message" in response_obj:
+                    _LOGGER.debug(f"async_loadpoint_set_state(): not executed cause {response_obj}")
+                    return response_obj
+
+                # if not we can proceed with the restart...
+                async def _async_delayed_restart():
+                    # wait 5 sec with the evcc restart
+                    await asyncio.sleep(5)
+                    _LOGGER.info("async_loadpoint_set_state(): RESTART EVCC-SERVER NOW!")
+                    await self.bridge.press_tag(Tag.EVCC_SHUTDOWN, IS_TRIGGER, -1)
+
+                    # 2. then wait another 20 sec (total 25 sec) and restart the integration
+                    await asyncio.sleep(20)
+                    _LOGGER.info("async_loadpoint_set_state(): RESTART INTEGRATION NOW!")
+                    try:
+                        await self.hass.config_entries.async_reload(self._config_entry.entry_id)
+                    except Exception as exc:
+                        _LOGGER.error(f"async_loadpoint_set_state(): failed to reload config entry: {type(exc).__name__} - {exc}")
+
+                if self._restart_evcc_and_integration_task is not None and not self._restart_task.done():
+                    self._restart_evcc_and_integration_task.cancel()
+                self._restart_evcc_and_integration_task = self.hass.async_create_task(_async_delayed_restart())
+
+            return response_obj
+        else:
+            return {"evcc_intg_error": "No loadpoint index provided",
+                    "evcc_intg_message": "WFT?!"}
+
     async def async_press_tag(self, a_tag: Tag, value, idx: str = None, entity: Entity = None) -> dict:
         result = await self.bridge.press_tag(a_tag, value, idx)
         _LOGGER.debug(f"async_press_tag(): press result: {result}")
@@ -1126,13 +1189,13 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
     def device_info_dict(self) -> dict:
         return self._device_info_dict
 
-    def device_info_dict_for_loadpoint(self, addon: str) -> dict:
+    def device_info_dict_for_loadpoint(self, addon: str, is_lp_disabled: bool | None= False) -> dict:
         # check also 'read_evcc_config_on_startup' where we create the default device_info_dict
         unique_device_id = slugify(f"did_{self._config_entry.data.get(CONF_HOST)}_{addon}")
         a_device_info_dict = {
             "identifiers": {(DOMAIN, unique_device_id)},
             "manufacturer": MANUFACTURER,
-            "name": f"{NAME_SHORT} - {self.lang_map["device_name_loadpoint"]} {addon} [{self._system_id}]",
+            "name": f"{NAME_SHORT} - {self.lang_map["device_name_loadpoint"]} {addon} [{self._system_id}]{self.lang_map["disabled_loadpoint"] if is_lp_disabled else ""}",
             "model": f"{self.lang_map["device_name_loadpoint"]} {addon} [{self._system_id}]",
             "sw_version": f"{self._version}"
         }
@@ -1165,16 +1228,21 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
     def device_info_dict_for_meter(self, addon: str) -> dict:
         # check also 'read_evcc_config_on_startup' where we create the default device_info_dict
         unique_device_id = slugify(f"did_{self._config_entry.data.get(CONF_HOST)}_{addon}")
-        device_name_meter = "device_name_meter"
+        device_name_meter_trans_key = "device_name_meter"
         if self.data is not None:
             meter_config_data = self.data.get(ADDITIONAL_ENDPOINTS_DATA_EVCCCONF, {}).get(EVCCCONF_KEY_CONFIG, {}).get(EVCCCONF_DEVICE_TYPES.METER.value, {})
             if meter_config_data is not None and addon in meter_config_data and meter_config_data[addon] is not None and len(str(meter_config_data[addon])) > 0:
-                device_name_meter = f"device_name_meter_{meter_config_data[addon].lower()}"
+                device_name_meter_trans_key = f"device_name_meter_{meter_config_data[addon].lower()}"
+                if device_name_meter_trans_key not in self.lang_map:
+                    _LOGGER.warning(f"device_name_meter_trans_key '{device_name_meter_trans_key}' (for type '{addon}') not found in lang_map - please report this issue to the developer: The key '{device_name_meter_trans_key}' must be added to the static const.py translations - TIA")
+                    # using our default name as FALLBACK
+                    device_name_meter_trans_key = "device_name_meter"
+
         a_device_info_dict = {
             "identifiers": {(DOMAIN, unique_device_id)},
             "manufacturer": MANUFACTURER,
-            "name": f"{NAME_SHORT} - {self.lang_map[device_name_meter]} {addon} [{self._system_id}]",
-            "model": f"{self.lang_map[device_name_meter]} {addon} [{self._system_id}]",
+            "name": f"{NAME_SHORT} - {self.lang_map[device_name_meter_trans_key]} {addon} [{self._system_id}]",
+            "model": f"{self.lang_map[device_name_meter_trans_key]} {addon} [{self._system_id}]",
             "sw_version": f"{self._version}"
         }
         return a_device_info_dict
@@ -1192,7 +1260,7 @@ class EvccBaseEntity(CustomFriendlyNameEntity):
     _attr_name_addon = None
 
     def __init__(self, entity_type:str, coordinator: EvccDataUpdateCoordinator, description: EntityDescription) -> None:
-        super().__init__(coordinator, description)
+        super().__init__(coordinator)
         self.tag = description.tag if hasattr(description, "tag") else None
         self.lp_idx = description.lp_idx if hasattr(description, "lp_idx") else None
         self.evcc_internal_id = description.evcc_internal_id if hasattr(description, "evcc_internal_id") else None
@@ -1226,6 +1294,10 @@ class EvccBaseEntity(CustomFriendlyNameEntity):
 
     @property
     def device_info(self) -> dict:
+        is_lp_disabled = None
+        if self.lp_idx is not None and str(self.lp_idx) in self.coordinator._loadpoint:
+            is_lp_disabled = self.coordinator._loadpoint[str(self.lp_idx)]["is_disabled"]
+
         if self._attr_name_addon is not None:
             if self.tag.type == EP_TYPE.EVCCCONF:
                 if self.tag.subtype == EVCCCONF_DEVICE_TYPES.VEHICLE.value:
@@ -1240,7 +1312,7 @@ class EvccBaseEntity(CustomFriendlyNameEntity):
 
             if self.tag.type == EP_TYPE.SESSIONS and self.tag.subtype is not None:
                 if self.tag.subtype == SESSIONS_KEY_LOADPOINTS:
-                    return self.coordinator.device_info_dict_for_loadpoint(self._attr_name_addon)
+                    return self.coordinator.device_info_dict_for_loadpoint(self._attr_name_addon, is_lp_disabled=is_lp_disabled)
 
                 elif self.tag.subtype == SESSIONS_KEY_VEHICLES:
                     return self.coordinator.device_info_dict_for_vehicle(self._attr_name_addon)
@@ -1253,7 +1325,7 @@ class EvccBaseEntity(CustomFriendlyNameEntity):
 
             # all other sensors with a _attr_name_addon (except CIRCUITS) must be loadpoint data...
             if self.tag.type is not EP_TYPE.CIRCUITS:
-                return self.coordinator.device_info_dict_for_loadpoint(self._attr_name_addon)
+                return self.coordinator.device_info_dict_for_loadpoint(self._attr_name_addon, is_lp_disabled=is_lp_disabled)
 
         # only the main/site device information should show the connection status of a
         # possible existing websocket connection
@@ -1269,11 +1341,6 @@ class EvccBaseEntity(CustomFriendlyNameEntity):
     def unique_id(self):
         """Return a unique ID to use for this entity."""
         return f"{DOMAIN}.{self.entity_id.split('.')[1]}".lower()
-
-    async def async_added_to_hass(self):
-        """Connect to dispatcher listening for entity data notifications."""
-        self.async_on_remove(self.coordinator.async_add_listener(self.async_write_ha_state))
-        await super().async_added_to_hass()
 
     def _friendly_name_internal(self) -> str | None:
         """Return the friendly name.

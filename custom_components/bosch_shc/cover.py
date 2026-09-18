@@ -22,14 +22,19 @@ from homeassistant.components.cover import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
-from homeassistant.core import HomeAssistant
+from homeassistant.core import CALLBACK_TYPE, HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.event import async_call_later
 
 from .const import DOMAIN, LOGGER
 from .entity import SHCEntity, async_migrate_to_new_unique_id, device_excluded
 
 PARALLEL_UPDATES = 1
+
+# #406: seconds to wait for the SHC's own push before force-refreshing;
+# real full travel tops out ~25-30s (#396 calibration rawscans).
+STUCK_STATE_TIMEOUT = 90
 
 
 async def async_setup_entry(
@@ -84,6 +89,11 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
     _last_position = None
     _skip_update = False
     _app_command = False
+    _stuck_check_unsub: CALLBACK_TYPE | None = None
+    # Keypad state is sticky on the SHC — these track whether the reported press
+    # belongs to the movement running now (see _refresh_keypad_event_state, #385).
+    _last_keypad_timestamp: int | None = None
+    _keypad_event_pending = False
 
     def __init__(self, device: SHCDevice, entry_id: str) -> None:
         """Initialize the shutter control cover.
@@ -99,8 +109,58 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
         guard runtime access to the micromodule-only attributes for plain
         `SHCShutterControl` instances.
         """
+        # Seeded before super().__init__ (which calls _update_attr): the press
+        # the SHC still reports at startup is historical, not a fresh one.
+        self._last_keypad_timestamp = getattr(device, "eventtimestamp", None)
         super().__init__(device, entry_id)
         self._device: SHCMicromoduleShutterControl = device  # type: ignore[assignment]
+
+    async def async_will_remove_from_hass(self) -> None:
+        """Unsubscribe from SHC events and cancel any pending stuck-check."""
+        await super().async_will_remove_from_hass()
+        self._cancel_stuck_check()
+
+    def _cancel_stuck_check(self) -> None:
+        if self._stuck_check_unsub is not None:
+            self._stuck_check_unsub()
+            self._stuck_check_unsub = None
+
+    def _schedule_stuck_check(self) -> None:
+        """Arm a one-shot force-refresh in case the SHC's terminal push never arrives (#406)."""
+        self._cancel_stuck_check()
+        if self.hass is None:
+            # Not yet (or no longer) added to hass — e.g. direct unit-test
+            # construction without the full entity-platform lifecycle.
+            return
+        self._stuck_check_unsub = async_call_later(
+            self.hass, STUCK_STATE_TIMEOUT, self._async_check_stuck
+        )
+
+    async def _async_check_stuck(self, _now: Any) -> None:
+        """Force-refresh via direct GET, bypassing long-poll (#183 fire_callbacks=True mechanism)."""
+        self._stuck_check_unsub = None
+        # Without this, a STOPPED from the forced refresh below hits the
+        # untrusted "first echo" branch and stays stuck anyway (#406 review).
+        self._skip_update = False
+        try:
+            await self._device.async_update(fire_callbacks=True)
+        except SHCException as err:
+            LOGGER.debug(
+                "Stuck-state refresh failed for %s, retrying later: %s",
+                self._device.name,
+                err,
+            )
+            self._schedule_stuck_check()
+            return
+        # Still genuinely moving/calibrating (a real slow shutter, not a
+        # dropped push) — re-arm rather than leaving it unmonitored.
+        if self._current_operation_state in (
+            ShutterControlService.State.MOVING,
+            ShutterControlService.State.OPENING,
+            ShutterControlService.State.CLOSING,
+            ShutterControlService.State.CALIBRATING,
+        ):
+            self._schedule_stuck_check()
 
     def _micromodule_keypad_switch_off(self) -> None:
         if self._device.device_model == "MICROMODULE_SHUTTER":
@@ -110,15 +170,68 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
             # stop crash with "'NoneType' object has no attribute 'eventType'"
             # (issue #318). eventType is only local bookkeeping for the
             # physical-switch direction logic, so skipping it is safe.
+            # A HA command defines its own direction, so it supersedes any
+            # pending physical press (#385).
+            self._keypad_event_pending = False
             if getattr(self._device, "_keypad_service", None) is None:
                 return
             # Stopping a micromodule shutter requires setting the eventtype to SWITCH_OFF, in case the manual switch was not put to off position
             self._device.eventtype = KeypadService.KeyEvent.SWITCH_OFF
 
+    def _refresh_keypad_event_state(
+        self, previous_operation_state: ShutterControlService.State | None
+    ) -> None:
+        """Track whether the reported Keypad press belongs to the current move.
+
+        The SHC's Keypad service is sticky: it keeps reporting the last
+        physical button press forever (and replays it on every long-poll
+        resubscribe). Without this gate, the keycode-based direction detection
+        below would apply that press to every later Bosch-app-, scenario- or
+        routine-triggered movement as well — issue #385, where a shutter closed
+        by a Bosch app scenario kept showing "opening" because the last
+        physical press had been an open press.
+
+        A NEW eventTimestamp therefore arms the press ("it belongs to the
+        movement starting now"), and the end of a movement consumes it again.
+        Consumption deliberately keys off the PREVIOUS state: a press arrives
+        while the shutter is still STOPPED (its Keypad long-poll event can even
+        overtake the ShutterControl one), so clearing on every STOPPED update
+        would discard it before the movement starts.
+
+        Residual, unchanged from before: a press that *stops* a movement is
+        indistinguishable from one that starts one when its Keypad event
+        arrives after the STOPPED update, so it stays armed for the next move.
+        It is one-shot — the next completed movement consumes it — and a
+        freshness window on eventTimestamp was deliberately NOT used to close
+        it, since that would make the working physical-switch path depend on
+        SHC-vs-HA clock agreement.
+        """
+        if self._device.device_model != "MICROMODULE_SHUTTER":
+            return
+        keypad_timestamp = getattr(self._device, "eventtimestamp", None)
+        if keypad_timestamp != self._last_keypad_timestamp:
+            self._last_keypad_timestamp = keypad_timestamp
+            self._keypad_event_pending = True
+        elif (
+            self._current_operation_state is ShutterControlService.State.STOPPED
+            and previous_operation_state
+            in (
+                ShutterControlService.State.MOVING,
+                ShutterControlService.State.OPENING,
+                ShutterControlService.State.CLOSING,
+                # endPositionAutoDetect devices end MOVING -> CALIBRATING ->
+                # STOPPED; without this the press would stay armed.
+                ShutterControlService.State.CALIBRATING,
+            )
+        ):
+            self._keypad_event_pending = False
+
     def _update_attr(self) -> None:
         """Recomputes the attributes values either at init or when the device state changes."""
+        previous_operation_state = self._current_operation_state
         self._attr_current_cover_position = self.current_cover_position
         self._current_operation_state = self._device.operation_state
+        self._refresh_keypad_event_state(previous_operation_state)
 
         if self._current_operation_state is ShutterControlService.State.CALIBRATING:
             # A real, separate operationState (APK ground-truth) entered during
@@ -130,15 +243,18 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
             self._attr_is_opening = False
 
         if self._current_operation_state is ShutterControlService.State.STOPPED:
-            self._attr_is_closing = False
-            self._attr_is_opening = False
             if not self._skip_update:
+                # Only clear direction on a trusted STOPPED — an unreliable
+                # HA-command echo (_skip_update) must not wipe it early.
+                self._attr_is_closing = False
+                self._attr_is_opening = False
                 # Refresh the reference position on every rest for level-based
                 # devices, so the next movement's direction is computed against the
                 # actual resting position. This must include physical-switch moves
-                # of MICROMODULE shutters/blinds: their Keypad events arrive as
-                # PRESS_SHORT (not SWITCH_ON), so they never hit the keycode
-                # direction branch below and rely on this reference (issue #294).
+                # of MICROMODULE shutters/blinds: MICROMODULE_BLINDS has no keycode
+                # direction branch at all, and a MICROMODULE_SHUTTER's Keypad event
+                # falls back to this reference whenever its keycode isn't 1/2 (SWITCH_ON
+                # and PRESS_SHORT both hit the keycode branch directly since #385/#294).
                 if (
                     self._device.device_model
                     in ("BBL", "MICROMODULE_SHUTTER", "MICROMODULE_BLINDS")
@@ -146,6 +262,9 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
                 ):
                     self._last_position = self.current_cover_position
                     self._app_command = False
+                # A trusted STOPPED means the SHC did confirm completion —
+                # the #406 safety net below is no longer needed for this move.
+                self._cancel_stuck_check()
             else:
                 # In case of HA commands, the first STOPPED state is not reliable, so we skip it and reset the flag for the next update
                 self._skip_update = False
@@ -165,8 +284,16 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
                         self._attr_is_closing = True
                         self._attr_is_opening = False
             elif self._device.device_model == "MICROMODULE_SHUTTER":
+                # SWITCH_ON (rocker) / PRESS_SHORT (PUSHBUTTON) / PRESS_LONG
+                # (detached long-press pair, #385) all share keycode 1=open/2=close.
                 if (
-                    self._device.eventtype == KeypadService.KeyEvent.SWITCH_ON
+                    self._keypad_event_pending
+                    and self._device.eventtype
+                    in (
+                        KeypadService.KeyEvent.SWITCH_ON,
+                        KeypadService.KeyEvent.PRESS_SHORT,
+                        KeypadService.KeyEvent.PRESS_LONG,
+                    )
                     and self._device.keycode == 1
                 ):
                     # When the event is triggered by the physical switch, we can determine the movement direction based on the keycode (1 for open, 2 for close), as the level attribute is not reliable during movement
@@ -175,7 +302,13 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
                     self._attr_is_opening = True
                     self._target_position = 100
                 elif (
-                    self._device.eventtype == KeypadService.KeyEvent.SWITCH_ON
+                    self._keypad_event_pending
+                    and self._device.eventtype
+                    in (
+                        KeypadService.KeyEvent.SWITCH_ON,
+                        KeypadService.KeyEvent.PRESS_SHORT,
+                        KeypadService.KeyEvent.PRESS_LONG,
+                    )
                     and self._device.keycode == 2
                 ):
                     self._last_position = round(self._device.level * 100.0)
@@ -268,6 +401,7 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
         self._attr_is_closing = False
         self._skip_update = True
         self._app_command = True
+        self._cancel_stuck_check()
 
     @property
     def is_closed(self) -> bool:
@@ -280,6 +414,9 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
     async def async_open_cover(self, **kwargs: Any) -> None:
         """Open the cover."""
         self._micromodule_keypad_switch_off()
+        # Live level, not current_cover_position (#395: that echoes a
+        # still-in-flight prior command's own target while _app_command is set).
+        self._last_position = round(float(self._device.level) * 100.0)
         try:
             await self._device.async_set_level(1.0)
         except SHCException as err:
@@ -293,10 +430,12 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
         self._target_position = 100
         self._skip_update = True
         self._app_command = True
+        self._schedule_stuck_check()
 
     async def async_close_cover(self, **kwargs: Any) -> None:
         """Close cover."""
         self._micromodule_keypad_switch_off()
+        self._last_position = round(float(self._device.level) * 100.0)
         try:
             await self._device.async_set_level(0.0)
         except SHCException as err:
@@ -310,12 +449,13 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
         self._target_position = 0
         self._skip_update = True
         self._app_command = True
+        self._schedule_stuck_check()
 
     async def async_set_cover_position(self, **kwargs: Any) -> None:
         """Move the cover to a specific position."""
         if self._device.device_model == "MICROMODULE_SHUTTER":
             self._micromodule_keypad_switch_off()
-            self._last_position = self.current_cover_position
+        self._last_position = round(float(self._device.level) * 100.0)
         position = kwargs[ATTR_POSITION]
         try:
             await self._device.async_set_level(position / 100.0)
@@ -325,15 +465,27 @@ class ShutterControlCover(SHCEntity, CoverEntity):  # type: ignore[misc]
                 translation_domain=DOMAIN,
                 translation_key="cover_action_failed",
             ) from err
+        # Direction vs. the live baseline above (#395: a no-op override,
+        # e.g. re-asserting a limit already met, must clear stale flags).
+        if position > self._last_position:
+            self._attr_is_opening = True
+            self._attr_is_closing = False
+        elif position < self._last_position:
+            self._attr_is_closing = True
+            self._attr_is_opening = False
+        else:
+            self._attr_is_opening = False
+            self._attr_is_closing = False
         self._target_position = position
         self._skip_update = True
         self._app_command = True
+        self._schedule_stuck_check()
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return the state attributes."""
         return {
-            "operation_state": self._device.operation_state,
+            "operation_state": self._device.operation_state.name,
         }
 
 
@@ -363,6 +515,8 @@ class BlindsControlCover(ShutterControlCover, CoverEntity):  # type: ignore[misc
 
     async def async_open_cover(self, **kwargs: Any) -> None:
         """Open the cover (lift) via ShutterControl.level."""
+        # See ShutterControlCover.async_open_cover (#395).
+        self._last_position = round(float(self._device.level) * 100.0)
         try:
             await self._device.async_set_level(1.0)
         except SHCException as err:
@@ -376,9 +530,11 @@ class BlindsControlCover(ShutterControlCover, CoverEntity):  # type: ignore[misc
         self._target_position = 100
         self._skip_update = True
         self._app_command = True
+        self._schedule_stuck_check()
 
     async def async_close_cover(self, **kwargs: Any) -> None:
         """Close cover (lift) via ShutterControl.level."""
+        self._last_position = round(float(self._device.level) * 100.0)
         try:
             await self._device.async_set_level(0.0)
         except SHCException as err:
@@ -392,9 +548,11 @@ class BlindsControlCover(ShutterControlCover, CoverEntity):  # type: ignore[misc
         self._target_position = 0
         self._skip_update = True
         self._app_command = True
+        self._schedule_stuck_check()
 
     async def async_set_cover_position(self, **kwargs: Any) -> None:
         """Move the cover (lift) to a specific position via ShutterControl.level."""
+        self._last_position = round(float(self._device.level) * 100.0)
         position = kwargs[ATTR_POSITION]
         try:
             await self._device.async_set_level(position / 100.0)
@@ -404,9 +562,20 @@ class BlindsControlCover(ShutterControlCover, CoverEntity):  # type: ignore[misc
                 translation_domain=DOMAIN,
                 translation_key="cover_action_failed",
             ) from err
+        # See ShutterControlCover.async_set_cover_position (#395).
+        if position > self._last_position:
+            self._attr_is_opening = True
+            self._attr_is_closing = False
+        elif position < self._last_position:
+            self._attr_is_closing = True
+            self._attr_is_opening = False
+        else:
+            self._attr_is_opening = False
+            self._attr_is_closing = False
         self._target_position = position
         self._skip_update = True
         self._app_command = True
+        self._schedule_stuck_check()
 
     @property
     def current_cover_position(self) -> int:
@@ -443,6 +612,7 @@ class BlindsControlCover(ShutterControlCover, CoverEntity):  # type: ignore[misc
         self._attr_is_closing = False
         self._skip_update = True
         self._app_command = True
+        self._cancel_stuck_check()
 
     async def async_stop_cover_tilt(self, **kwargs: Any) -> None:
         """Stop the cover tilt.
@@ -462,6 +632,7 @@ class BlindsControlCover(ShutterControlCover, CoverEntity):  # type: ignore[misc
         self._attr_is_closing = False
         self._skip_update = True
         self._app_command = True
+        self._cancel_stuck_check()
 
     @property
     def current_cover_tilt_position(self) -> int:

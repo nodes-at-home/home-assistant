@@ -31,7 +31,7 @@ from .commands import (
     PUSH_ALL,
     START_PUSH,
 )
-from .tests import MockMQTTClient
+from .mock_mqtt_client import MockMQTTClient
 from .utils import safe_json_loads
 
 class WatchdogThread(threading.Thread):
@@ -240,7 +240,10 @@ class MqttThread(threading.Thread):
                     # so this avoids repetitive debug spew.
                     LOGGER.debug(f"Connect: Attempting Connection to {host}")
                 connectionSuccessful = False
-                self._client.client.connect(host, self._client._port, keepalive=5)
+                # Keepalive must comfortably exceed the worst-case time spent in the
+                # message callbacks - the broker drops us after 1.5x keepalive without a
+                # ping, and the watchdog already detects dead connections after 60s.
+                self._client.client.connect(host, self._client._port, keepalive=30)
                 connectionSuccessful = True
 
                 LOGGER.debug("Starting listen loop")
@@ -380,6 +383,9 @@ class BambuClient:
         self._timelapse_cache_count = max(-1, int(config.get('timelapse_cache_count', 0)))
         self._disable_ssl_verify = config.get('disable_ssl_verify', False)
         self._cache_path = config.get('file_cache_path', f'/config/www/media/ha-bambulab/{self._serial}')
+        self._tcp6000_media_supported = None
+        self._tcp6000_media_storages = []
+        self._tcp6000_media_probe_time = 0.0
 
         self._connected = False
         self._device_confirmed = False
@@ -446,6 +452,46 @@ class BambuClient:
         else:
             return create_local_ssl_context()
 
+    @property
+    def tcp6000_media_supported(self):
+        return self._tcp6000_media_supported
+
+    @property
+    def tcp6000_media_storages(self):
+        return self._tcp6000_media_storages
+
+    def probe_remote_media_sources(self, force: bool = False) -> bool:
+        """Probe TCP 6000 media support without listing or downloading files."""
+        from .media_sources import TCP6000_PROBE_TTL_SECONDS
+
+        now = time.time()
+        if not force and self._tcp6000_media_supported is not None and now - self._tcp6000_media_probe_time < TCP6000_PROBE_TTL_SECONDS:
+            return self._tcp6000_media_supported
+        if self._mock or not self.ftp_enabled:
+            self._tcp6000_media_supported = False
+            self._tcp6000_media_storages = []
+            self._tcp6000_media_probe_time = now
+            return False
+
+        try:
+            from .media_sources import Tcp6000MediaSource
+
+            source = Tcp6000MediaSource(self, connect_timeout=3.0, command_timeout=5.0)
+            try:
+                self._tcp6000_media_storages = source.probe()
+                self._tcp6000_media_supported = True
+                LOGGER.debug(f"TCP 6000 media probe succeeded: {self._tcp6000_media_storages}")
+                return True
+            finally:
+                source.close()
+        except Exception as e:
+            self._tcp6000_media_supported = False
+            self._tcp6000_media_storages = []
+            LOGGER.debug(f"TCP 6000 media probe failed: {type(e)} Args: {e}")
+            return False
+        finally:
+            self._tcp6000_media_probe_time = now
+
     def setup_tls(self):
         if self._local_mqtt:
             self.client.tls_set_context(self.local_tls_context)
@@ -479,12 +525,13 @@ class BambuClient:
         else:
             self.client.username_pw_set(self._username, password=self._auth_token)
 
+        await self._device.print_job.async_prune_print_history_files()
+        await self._device.print_job.async_prune_timelapse_files()
+        await loop.run_in_executor(None, self.probe_remote_media_sources)
+
         LOGGER.debug("Starting MQTT listener thread")
         self._mqtt = MqttThread(self)
         self._mqtt.start()
-
-        await self._device.print_job.async_prune_print_history_files()
-        await self._device.print_job.async_prune_timelapse_files()
 
     def subscribe_and_request_info(self):
         self.subscribe()
@@ -551,6 +598,10 @@ class BambuClient:
             if self._last_error_code != result_code:
                 if result_code == 5:
                     LOGGER.error(f"On Disconnect: Printer disconnected with Access Denied error. Check serial, access code and IP address.")
+                    # Tell the integration layer the printer rejected the access code. The usual cause is a
+                    # rotated code (a factory reset regenerates it), which the coordinator can recover from
+                    # Bambu Cloud for cloud-linked printers - or surface as a repair issue for LAN setups.
+                    self.callback("event_printer_access_denied")
                 else:
                     LOGGER.debug(f"On Disconnect: Printer disconnected with error code: {result_code}")
             else:
@@ -570,7 +621,8 @@ class BambuClient:
         if self._watchdog is not None:
             LOGGER.debug("Stopping watchdog thread")
             self._watchdog.stop()
-            self._watchdog.join()
+            if self._watchdog is not threading.current_thread():
+                self._watchdog.join()
         self.stop_camera()
 
     def _on_watchdog_fired(self):
@@ -591,7 +643,14 @@ class BambuClient:
             if not self._loaded_slicer_settings:
                 # Only update slicer settings once per successful connection to the printer.
                 self._loaded_slicer_settings = True
-                self.slicer_settings.update()
+                # This does blocking cloud HTTP calls. Run it off the paho network thread
+                # so a slow cloud response cannot stall the keepalive ping and drop the
+                # MQTT connection.
+                threading.Thread(
+                    target=self.slicer_settings.update,
+                    name=f"{self._device.info.device_type}-SlicerSettings",
+                    daemon=True,
+                ).start()
 
             if self._refreshed:
                 # X1 mqtt payload is inconsistent. Adjust it for consistent logging.
@@ -664,35 +723,38 @@ class BambuClient:
     def disconnect(self):
         """Disconnect the Bambu Client from server"""
         LOGGER.debug("Disconnect: Client Disconnecting")
-        
+
+        # Break the paho network loop before joining the MQTT thread - loop_forever()
+        # only returns once disconnect() has been called, so joining first would always
+        # run into the full join timeout and stall the caller for that long.
+        if self._mqtt is not None:
+            self._mqtt.stop()
+        if self.client is not None:
+            try:
+                self.client.disconnect()
+                self.client.loop_stop()
+            except Exception as e:
+                LOGGER.debug(f"Error during MQTT disconnect: {e}")
+
         # Stop and wait for background threads
         if self._mqtt is not None:
             LOGGER.debug("Stopping MQTT thread")
-            self._mqtt.stop()
             self._mqtt.join(timeout=5)
             self._mqtt = None
-            
+
         if self._watchdog is not None:
             LOGGER.debug("Stopping watchdog thread")
             self._watchdog.stop()
             self._watchdog.join(timeout=5)
             self._watchdog = None
-            
+
         if self._camera is not None:
             LOGGER.debug("Stopping camera thread")
             self._camera.stop()
             self._camera.join(timeout=5)
             self._camera = None
-        
-        # Disconnect MQTT client
-        if self.client is not None:
-            try:
-                self.client.loop_stop()
-                self.client.disconnect()
-            except Exception as e:
-                LOGGER.debug(f"Error during MQTT disconnect: {e}")
-            finally:
-                self.client = None
+
+        self.client = None
 
 
     def ftp_connection(self) -> ImplicitFTP_TLS:
@@ -841,6 +903,9 @@ def create_local_ssl_context():
     context.verify_flags &= ~ssl.VERIFY_X509_STRICT
     # Workaround because some users get this error despite SNI: "certificate verify failed: IP address mismatch"
     context.check_hostname = False
+    # P2S firmware 01.02.00.00 never responds to a TLS 1.3 ClientHello, hanging the
+    # handshake until timeout. TLS 1.2 is answered immediately, so cap it there.
+    context.maximum_version = ssl.TLSVersion.TLSv1_2
     return context
 
 @functools.lru_cache(maxsize=1)
@@ -848,4 +913,7 @@ def create_insecure_ssl_context():
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
     context.check_hostname = False
     context.verify_mode = ssl.CERT_NONE
+    # P2S firmware 01.02.00.00 never responds to a TLS 1.3 ClientHello, hanging the
+    # handshake until timeout. TLS 1.2 is answered immediately, so cap it there.
+    context.maximum_version = ssl.TLSVersion.TLSv1_2
     return context

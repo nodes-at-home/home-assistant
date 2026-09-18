@@ -24,7 +24,8 @@ from custom_components.evcc_intg.pyevcc_ha.const import (
     SESSIONS_KEY_TOTAL,
     EVCCCONF_KEY_CONFIG,
     EVCCCONF_DEVICE_TYPES,
-    EVCCCONF_KEY_DATA
+    EVCCCONF_KEY_DATA,
+    BATTERY_CONTENT
 )
 from custom_components.evcc_intg.pyevcc_ha.keys import Tag, camel_to_snake
 from . import EvccDataUpdateCoordinator, EvccBaseEntity
@@ -93,12 +94,18 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
     multi_loadpoint_config = len(coordinator._loadpoint) > 1
     for a_lp_key in coordinator._loadpoint:
         load_point_config = coordinator._loadpoint[a_lp_key]
+        if load_point_config["is_disabled"]:
+            _LOGGER.debug(f"SENSOR skipping loadpoint {a_lp_key} since it is disabled")
+            continue
         lp_api_index = int(a_lp_key)
         lp_id_addon = load_point_config["id"]
         lp_name_addon = load_point_config["name"]
         lp_has_phase_auto_option = load_point_config["has_phase_auto_option"]
         lp_is_heating = load_point_config["is_heating"]
         lp_is_integrated = load_point_config["is_integrated"]
+        lp_is_switch_device = load_point_config["is_switch_device"]
+        lp_is_always_charge_present = load_point_config["is_always_charge_present"]
+        lp_is_single_phase_only = load_point_config["only_single_phase"]
 
         for a_stub in SENSOR_ENTITIES_PER_LOADPOINT:
             if not lp_is_integrated or a_stub.integrated_supported:
@@ -259,7 +266,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
         for a_meter_key in meter_data:
             # we MUST ensure that the meter_id_addon is a valid HA entity-id
             # (at least 'meter_id_addon' will become part of an entity-id)
-            meter_id_addon = camel_to_snake(a_meter_key).replace(".", "_").replace(":", "_")
+            meter_id_addon = camel_to_snake(a_meter_key).replace(".", "_").replace(":", "_").replace("-", "_")
+            while "__" in meter_id_addon:
+                meter_id_addon = meter_id_addon.replace("__", "_")
             meter_name_addon = a_meter_key
 
             for a_stub in SENSOR_ENTITIES_PER_METER:
@@ -361,7 +370,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, add_
                 _LOGGER.debug(f"SENSOR _check_for_entities_to_enabled(): init is COMPLETED")
 
         except BaseException as err:
-            _LOGGER.warning(f"SENSOR _check_for_entities_to_enabled(): Error: {type(err).__name__} {err}")
+            _LOGGER.warning(f"SENSOR _check_for_entities_to_enabled(): Error: {type(err).__name__} -> {err}")
 
     asyncio.create_task(_check_for_entities_to_enabled())
 
@@ -378,53 +387,92 @@ def compress_general(data, time_key:str, value_key:str):
                 "deltas_in_minutes": [],
                 "values": []}
 
-    start_value = data[0][time_key]
-    parse_from_RFC3339 = None
-    if isinstance(start_value, (int, float, Number)):
-        parse_from_RFC3339 = False
-    elif isinstance(start_value, str):
-        parse_from_RFC3339 = True
-    else:
-        _LOGGER.debug(f"Unsupported time format: for '{start_value}' {type(start_value).__name__}")
+    if isinstance(data[0], dict) and time_key in data[0]:
+        start_value = data[0][time_key]
+        parse_from_RFC3339 = None
+        if isinstance(start_value, (int, float, Number)):
+            parse_from_RFC3339 = False
+        elif isinstance(start_value, str):
+            parse_from_RFC3339 = True
+        else:
+            _LOGGER.debug(f"Unsupported DICT time format: for '{start_value}' {type(start_value).__name__}")
+            return {"start_utc": None,
+                    "deltas_in_minutes": [],
+                    "values": []}
 
-    if parse_from_RFC3339 is not None:
-        # Convert the timestamps to UTC and prepare the output
-        dt_obj = datetime.fromisoformat(start_value).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(start_value, tz=timezone.utc)
-        start_timestamp_utc = dt_obj.isoformat()
-        values = [round(entry[value_key], 4) if not float(entry[value_key]).is_integer() else entry[value_key] for entry in data]
-        deltas = []
-        for i in range(1, len(data)):
-            # Calculate time difference in minutes
-            ts_current = datetime.fromisoformat(data[i][time_key]).astimezone(timezone.utc) if parse_from_RFC3339 else data[i][time_key]
-            ts_previous = datetime.fromisoformat(data[i - 1][time_key]).astimezone(timezone.utc) if parse_from_RFC3339 else data[i - 1][time_key]
-            delta = int((ts_current - ts_previous).total_seconds() // 60.0)
-            deltas.append(delta)
+        if parse_from_RFC3339 is not None:
+            # Convert the timestamps to UTC and prepare the output
+            dt_obj = datetime.fromisoformat(start_value).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(start_value, tz=timezone.utc)
+            start_timestamp_utc = dt_obj.isoformat()
+            values = [round(entry[value_key], 4) if not float(entry[value_key]).is_integer() else entry[value_key] for entry in data]
+            deltas = []
+            for i in range(1, len(data)):
+                # Calculate time difference in minutes
+                ts_current = datetime.fromisoformat(data[i][time_key]).astimezone(timezone.utc) if parse_from_RFC3339 else data[i][time_key]
+                ts_previous = datetime.fromisoformat(data[i - 1][time_key]).astimezone(timezone.utc) if parse_from_RFC3339 else data[i - 1][time_key]
+                if parse_from_RFC3339:
+                    delta = int((ts_current - ts_previous).total_seconds() // 60.0)
+                else:
+                    delta = int((ts_current - ts_previous) // 60.0)
+                deltas.append(delta)
 
-    # {%set json_data=state_attr('sensor.evcc_forecast_grid', 'rates')%}
-    # {% set total_minutes_since_start = (( now() - strptime(json_data['start_utc'], '%Y-%m-%dT%H:%M:%S%z')).total_seconds() // 60)|int %}
-    # {% set tmp = namespace(total=0, index=0) %}
-    # {% for delta in json_data['deltas_in_minutes'] %}
-    #     {% if tmp.total < total_minutes_since_start %}
-    #         {% set tmp.total = tmp.total + delta %}
-    #         {% set tmp.index = tmp.index + 1 %}
-    #     {% else %}
-    #         {% break %}
-    #     {% endif %}
-    # {% endfor %}
-    # {% set relevant_values = json_data['values'][tmp.index:] %}
-    # {% set average_value = (relevant_values|sum) / relevant_values|length if relevant_values|length > 0 else 0 %}
-    # {{ average_value }}
+            # {%set json_data=state_attr('sensor.evcc_forecast_grid', 'rates')%}
+            # {% set total_minutes_since_start = (( now() - strptime(json_data['start_utc'], '%Y-%m-%dT%H:%M:%S%z')).total_seconds() // 60)|int %}
+            # {% set tmp = namespace(total=0, index=0) %}
+            # {% for delta in json_data['deltas_in_minutes'] %}
+            #     {% if tmp.total < total_minutes_since_start %}
+            #         {% set tmp.total = tmp.total + delta %}
+            #         {% set tmp.index = tmp.index + 1 %}
+            #     {% else %}
+            #         {% break %}
+            #     {% endif %}
+            # {% endfor %}
+            # {% set relevant_values = json_data['values'][tmp.index:] %}
+            # {% set average_value = (relevant_values|sum) / relevant_values|length if relevant_values|length > 0 else 0 %}
+            # {{ average_value }}
 
-    # VALUE NOW:
-    # {{json_data['values'][tmp.index]}}
+            # VALUE NOW:
+            # {{json_data['values'][tmp.index]}}
 
-    # SIMPLE AVG value
-    # {%set json_data=state_attr('sensor.evcc_forecast_solar', 'timeseries')%}
-    # {{json_data['values']|sum / json_data['values']|length}}
+            # SIMPLE AVG value
+            # {%set json_data=state_attr('sensor.evcc_forecast_solar', 'timeseries')%}
+            # {{json_data['values']|sum / json_data['values']|length}}
 
-    return {"start_utc":start_timestamp_utc,
-            "deltas_in_minutes": deltas,
-            "values": values}
+            return {"start_utc":start_timestamp_utc,
+                    "deltas_in_minutes": deltas,
+                    "values": values}
+
+    # since evcc 0.314.1
+    elif isinstance(data[0], list):
+        value_idx = None
+        time_idx = 0
+        array_length = len(data[0])
+        if time_key == "ts" and array_length == 2:
+            value_idx = 1
+        elif time_key == "start" and array_length == 3:
+            value_idx = 2
+        else:
+            _LOGGER.debug(f"Unsupported LIST time format: for '{data[0]}' {type(data[0]).__name__}")
+            return {"start_utc": None,
+                    "deltas_in_minutes": [],
+                    "values": []}
+
+        if value_idx is not None and value_idx in [1, 2]:
+            dt_obj = datetime.fromtimestamp(data[0][time_idx], tz=timezone.utc)
+            start_timestamp_utc = dt_obj.isoformat()
+
+            values = [round(entry[value_idx], 4) if not float(entry[value_idx]).is_integer() else entry[value_idx] for entry in data]
+            deltas = []
+            for i in range(1, len(data)):
+                # Calculate time difference in minutes
+                ts_current = data[i][time_idx]
+                ts_previous = data[i - 1][time_idx]
+                delta = int((ts_current - ts_previous) // 60.0)
+                deltas.append(delta)
+
+            return {"start_utc":start_timestamp_utc,
+                    "deltas_in_minutes": deltas,
+                    "values": values}
 
 
 class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
@@ -523,7 +571,7 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                     if a_object is not None and "timeseries" in a_object:
                         a_copy_object = a_object.copy()
                         a_array = a_copy_object["timeseries"]
-                        if a_array is not None and "ts" in a_array[0]:
+                        if a_array is not None and ("ts" in a_array[0] or isinstance(a_array[0], list)):
                             a_copy_object["timeseries"] = compress_timeseries(a_array)
                         else:
                             a_copy_object["timeseries"] = a_array
@@ -533,16 +581,23 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                         # return the original object
                         return a_object
 
-        elif self.tag == Tag.PV:
+        elif self.tag in [Tag.PV, Tag.BATTERY_AS_OBJ]:
             # we check if there is a 'title' (at the given index)
             value = self.coordinator.read_tag(self.tag, self.lp_idx)
             if value is not None and hasattr(self.entity_description, "json_idx") and self.entity_description.json_idx is not None:
                 try:
                     # we just need the first entry of the 'json_idx'
                     array_idx = self.entity_description.json_idx[0]
-                    a_title = value[array_idx].get("title", None)
-                    if a_title is not None:
-                        return {"title": a_title}
+                    if self.tag == Tag.PV:
+                        a_title = value[array_idx].get("title", None)
+                        if a_title is not None:
+                            return {"title": a_title}
+                    elif self.tag == Tag.BATTERY_AS_OBJ:
+                        if self.entity_description.json_idx[1] == BATTERY_CONTENT.SOC.value:
+                            suggestion_obj = value[array_idx].get("suggestion", None)
+                            if suggestion_obj is not None:
+                                return {"suggestion": suggestion_obj}
+
                 except (IndexError, ValueError, TypeError, KeyError) as ex:
                     _LOGGER.info(f"Error reading tag {self.tag} ({self.lp_idx}): {ex}")
 
@@ -555,56 +610,75 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
             if a_key != self._last_calculated_key:
                 self._last_calculated_key = a_key
                 for a_entry in data_list:
-                    if "start" in a_entry and "end" in a_entry:
-                        start_entry = a_entry["start"]
-                        end_entry = a_entry["end"]
+                    if isinstance(a_entry, dict):
+                        if "start" in a_entry and "end" in a_entry:
+                            start_entry = a_entry["start"]
+                            end_entry = a_entry["end"]
 
-                        parse_from_RFC3339 = None
-                        if isinstance(start_entry, (int, float, Number)):
-                            parse_from_RFC3339 = False
-                        elif isinstance(start_entry, str):
-                            parse_from_RFC3339 = True
-                        else:
-                            _LOGGER.error(f"Invalid start_entry type {ts_entry} {type(ts_entry).__name__}")
+                            parse_from_RFC3339 = None
+                            if isinstance(start_entry, (int, float, Number)):
+                                parse_from_RFC3339 = False
+                            elif isinstance(start_entry, str):
+                                parse_from_RFC3339 = True
+                            else:
+                                _LOGGER.error(f"Invalid start_entry type {ts_entry} {type(ts_entry).__name__}")
 
-                        if parse_from_RFC3339 is not None:
-                            start_dt = datetime.fromisoformat(start_entry).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(start_entry, tz=timezone.utc)
-                            end_dt = datetime.fromisoformat(end_entry).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(end_entry, tz=timezone.utc)
-                            if start_dt < current_time < end_dt:
-                                if "val" in a_entry:
-                                    self._last_calculated_value = a_entry["val"]
-                                    break
-                                elif "value" in a_entry:
-                                    self._last_calculated_value = a_entry["value"]
-                                    break
-                                elif "price" in a_entry:
-                                    self._last_calculated_value = a_entry["price"]
-                                    break
+                            if parse_from_RFC3339 is not None:
+                                start_dt = datetime.fromisoformat(start_entry).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(start_entry, tz=timezone.utc)
+                                end_dt = datetime.fromisoformat(end_entry).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(end_entry, tz=timezone.utc)
+                                if start_dt < current_time < end_dt:
+                                    if "val" in a_entry:
+                                        self._last_calculated_value = a_entry["val"]
+                                        break
+                                    elif "value" in a_entry:
+                                        self._last_calculated_value = a_entry["value"]
+                                        break
+                                    elif "price" in a_entry:
+                                        self._last_calculated_value = a_entry["price"]
+                                        break
 
-                    elif "ts" in a_entry:
-                        ts_entry = a_entry["ts"]
-                        parse_from_RFC3339 = None
-                        if isinstance(ts_entry, (int, float, Number)):
-                            parse_from_RFC3339 = False
-                        elif isinstance(ts_entry, str):
-                            parse_from_RFC3339 = True
-                        else:
-                            _LOGGER.error(f"Invalid ts_entry type {ts_entry} {type(ts_entry).__name__}")
+                        elif "ts" in a_entry:
+                            ts_entry = a_entry["ts"]
+                            parse_from_RFC3339 = None
+                            if isinstance(ts_entry, (int, float, Number)):
+                                parse_from_RFC3339 = False
+                            elif isinstance(ts_entry, str):
+                                parse_from_RFC3339 = True
+                            else:
+                                _LOGGER.error(f"Invalid ts_entry type {ts_entry} {type(ts_entry).__name__}")
 
-                        if parse_from_RFC3339 is not None:
-                            timestamp_dt = datetime.fromisoformat(ts_entry).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(ts_entry, tz=timezone.utc)
-                            if (timestamp_dt.day == current_time.day and
-                                    timestamp_dt.hour == current_time.hour and
-                                    int(timestamp_dt.minute // 15) == int(current_time.minute // 15)
-                            ):
-                                if "val" in a_entry:
-                                    self._last_calculated_value = a_entry["val"]
-                                    break
-                                elif "value" in a_entry:
-                                    self._last_calculated_value = a_entry["value"]
-                                    break
-                                elif "price" in a_entry:
-                                    self._last_calculated_value = a_entry["price"]
+                            if parse_from_RFC3339 is not None:
+                                timestamp_dt = datetime.fromisoformat(ts_entry).astimezone(timezone.utc) if parse_from_RFC3339 else datetime.fromtimestamp(ts_entry, tz=timezone.utc)
+                                if (timestamp_dt.day == current_time.day and
+                                        timestamp_dt.hour == current_time.hour and
+                                        int(timestamp_dt.minute // 15) == int(current_time.minute // 15)
+                                ):
+                                    if "val" in a_entry:
+                                        self._last_calculated_value = a_entry["val"]
+                                        break
+                                    elif "value" in a_entry:
+                                        self._last_calculated_value = a_entry["value"]
+                                        break
+                                    elif "price" in a_entry:
+                                        self._last_calculated_value = a_entry["price"]
+                                        break
+
+                    # since evcc 0.314.1
+                    elif isinstance(a_entry, list):
+                        # ok the new structure is implemented here...
+                        # the timeseries is no longer a dict, it's just a list...
+                        # *sigh* thanks for this last minute u-turn... My day was not alreday long enough...
+                        value_index = 2
+                        if len(a_entry) == 2:
+                            value_index = 1
+
+                        timestamp_dt = datetime.fromtimestamp(a_entry[0], tz=timezone.utc)
+                        if (timestamp_dt.day == current_time.day and
+                                timestamp_dt.hour == current_time.hour and
+                                int(timestamp_dt.minute // 15) == int(current_time.minute // 15)
+                        ):
+                            self._last_calculated_value = a_entry[value_index]
+                            break
 
             return self._last_calculated_value
         return None
@@ -660,7 +734,7 @@ class EvccSensor(EvccBaseEntity, SensorEntity, RestoreEntity):
                             value = value[key]
                         elif key in value:
                             value = value[key]
-                    else:
+                    elif value is not None:
                         try:
                             value = value[key]
                         except (IndexError, KeyError, TypeError):

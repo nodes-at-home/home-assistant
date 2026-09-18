@@ -79,6 +79,9 @@ OPT_AUTOMATION_RULES_AS_ENTITIES = "automation_rules_as_entities"
 # Opt-in for the per-room temperature-drop switch+number (its default-on
 # 15s poll was flagged as unnecessary load). Default False = no new entities.
 OPT_TEMPERATURE_DROP_ENTITIES = "temperature_drop_entities"
+# Opt-in (#395): SHC-side automation per keypad button, pulsing a
+# UserDefinedState (already a switch entity) usable as an HA trigger.
+OPT_KEYPAD_HA_BRIDGE = "keypad_ha_bridge"
 
 # Camera Tool companion project
 CAMERA_TOOL_URL = (
@@ -87,6 +90,8 @@ CAMERA_TOOL_URL = (
 CAMERA_TOOL_DOMAIN = "bosch_shc_camera"
 ISSUE_CAMERA_TOOL = "camera_tool_available"
 ISSUE_CERT_EXPIRING = "cert_expiring"
+ISSUE_UPDATE_BATTERY_LOW = "update_battery_low"
+ISSUE_UPDATE_CALIBRATION_REQUIRED = "update_calibration_required"
 
 # Certificate handling
 CERT_EXPIRY_WARNING_DAYS = 30

@@ -69,6 +69,20 @@
       "fields": {
         "vehicle": {"name": "Fahrzeugname/ID", "description": "Gib den Fahrzeugnamen aus Deiner evcc Konfiguration ein (z.B.: vehicle_1 oder db:7)"}
       }
+    },
+    "activate_loadpoint": {
+      "name": "Aktiviert einen Ladepunkt in Deiner evcc Konfiguration",
+      "description": "Aktiviert einen zuvor deaktivierten Ladepunkt in der evcc-Konfiguration. Dieser Service startet nach 5 Sekunden Deinen evcc-Server und nach weiteren 20 Sekunden diese HA-evcc Integration in HomeAssistant neu.",
+      "fields": {
+        "loadpoint": {"name": "Ladepunkt ID", "description": "Eine Zahl beginnend mit 1...n (wobei 1 Dein erster konfigurierter Ladepunkt ist)"}
+      }
+    },
+    "deactivate_loadpoint": {
+      "name": "Deaktiviert einen Ladepunkt in Deiner evcc Konfiguration",
+      "description": "Der ausgewählte Ladepunkt wird in Deiner evcc-Konfiguration deaktiviert. Dieser Service startet nach 5 Sekunden Deinen evcc-Server und nach weiteren 20 Sekunden diese HA-evcc Integration in HomeAssistant neu.",
+      "fields": {
+        "loadpoint": {"name": "Ladepunkt ID", "description": "Eine Zahl beginnend mit 1...n (wobei 1 Dein erster konfigurierter Ladepunkt ist)"}
+      }
     }
   },
   "entity": {
@@ -76,6 +90,11 @@
       "charging": {"name": "Lädt"},
       "connected": {"name": "Verbunden"},
       "enabled": {"name": "Aktiviert"},
+      "disabled_in_config": {"name": "Deaktiviert in evcc Konfiguration",
+        "state": {
+          "on": "Ja",
+          "off": "Nein"
+        }},
       "smartcostactive": {"name": "Smartes Netzladen"},
       "smartfeedinpriorityactive": {"name": "Smarte Einspeisegrenze"},
       "vehicledetectionactive": {"name": "Fahrzeugerkennung"},
@@ -241,9 +260,18 @@
         "name": "Modus",
         "state": {
           "off": "Aus",
+          "smart": "Smart",
+          "now": "Schnell",
           "pv": "PV",
-          "minpv": "Min+PV",
-          "now": "Schnell"
+          "minpv": "Min+PV"
+        }
+      },
+      "alwayscharge":{
+        "name": "Mit min. laden \u267e\ufe0f",
+        "state": {
+          "off": "Aus",
+          "on": "Ein",
+          "once": "Einmalig"
         }
       },
       "phasesconfigured": {
@@ -323,7 +351,16 @@
 
       "auxpower": {"name": "Leistung AUX"},
       "batterycapacity": {"name": "Batterie Kapazität"},
-      "batteryenergy": {"name": "Batterie Energie"},
+      "batteryenergy": {"name": "Batterie Entlade-Energie"},
+      "battery_0_energy": {"name": "Batterie 1 Entlade-Energie"},
+      "battery_1_energy": {"name": "Batterie 2 Entlade-Energie"},
+      "battery_2_energy": {"name": "Batterie 3 Entlade-Energie"},
+      "battery_3_energy": {"name": "Batterie 4 Entlade-Energie"},
+      "batteryreturnenergy": {"name": "Batterie Energie (rückwärts)"},
+      "battery_0_returnenergy": {"name": "Batterie 1 Energie (rückwärts)"},
+      "battery_1_returnenergy": {"name": "Batterie 2 Energie (rückwärts)"},
+      "battery_2_returnenergy": {"name": "Batterie 3 Energie (rückwärts)"},
+      "battery_3_returnenergy": {"name": "Batterie 4 Energie (rückwärts)"},
       "batterymode": {"name": "Batterie Modus [CODE]"},
       "batterymode_value": {"name": "Batterie Modus"},
       "batterypower": {"name": "Leistung Batterie"},
@@ -340,6 +377,8 @@
       "gridcurrents_1": {"name": "Netzstrom P2"},
       "gridcurrents_2": {"name": "Netzstrom P3"},
       "gridpower": {"name": "Leistung Netz"},
+      "gridenergy": {"name": "Netzbezug"},
+      "gridreturnenergy": {"name": "Einspeisung"},
       "homepower": {"name": "Leistung Heim"},
       "pvpower": {"name": "Leistung PV"},
       "pv_0_power": {"name": "Leistung PV 1"},
@@ -414,7 +453,8 @@
       "configvehicle_range": {"name": "Reichweite"},
 
       "configmeter_power": {"name": "Leistung"},
-      "configmeter_energy": {"name": "Energie"},
+      "configmeter_energy": {"name": "Bezug"},
+      "configmeter_return_energy": {"name": "Einspeisung"},
       "configmeter_soc": {"name": "Ladestand"},
       "configmeter_temp": {"name": "Temperatur"},
       "configmeter_phasecurrents_0": {"name": "Strom P1"},

@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 from pathlib import Path
 
+from homeassistant.components.diagnostics import async_redact_data
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import (
     HomeAssistant,
@@ -17,7 +18,6 @@ from homeassistant.helpers import entity_platform
 from homeassistant.components.http import HomeAssistantView
 from aiohttp import web
 import aiofiles
-from homeassistant.helpers import device_registry
 
 from .const import (
     DOMAIN,
@@ -26,6 +26,7 @@ from .const import (
     SERVICE_CALL_EVENT
 )
 from .coordinator import BambuDataUpdateCoordinator
+from .diagnostics import TO_REDACT
 from .frontend import BambuLabCardRegistration
 from .config_flow import CONFIG_VERSION
 
@@ -67,8 +68,7 @@ class PrintHistoryAPIView(HomeAssistantView):
                     files = await coordinator.get_cached_files(file_type='prints')
                     
                     # Get the device ID from the device registry
-                    dev_reg = device_registry.async_get(self.hass)
-                    hadevice = dev_reg.async_get_device(identifiers={(DOMAIN, printer_info.serial)})
+                    hadevice = coordinator.get_ha_printer_device()
                     device_id = hadevice.id if hadevice else None
                     
                     # Get printer name from device registry or use device_type as fallback
@@ -153,8 +153,7 @@ class VideoAPIView(HomeAssistantView):
                     files = await coordinator.get_cached_files(file_type='timelapse')
                     
                     # Get the device ID from the device registry
-                    dev_reg = device_registry.async_get(self.hass)
-                    hadevice = dev_reg.async_get_device(identifiers={(DOMAIN, printer_info.serial)})
+                    hadevice = coordinator.get_ha_printer_device()
                     device_id = hadevice.id if hadevice else None
                     
                     # Get printer name from device registry or use device_type as fallback
@@ -479,7 +478,7 @@ async def async_migrate_entry(hass, config_entry: ConfigEntry):
     LOGGER.debug("config_entry migration from version %s", config_entry.version)
     if config_entry.version == 1:
         old_data = {**config_entry.data}
-        LOGGER.debug(f"OLD DATA: {old_data}")
+        LOGGER.debug(f"OLD DATA: {async_redact_data(old_data, TO_REDACT)}")
 
         # v1 data had just these entries:
         # "device_type": self.config_data["device_type"],

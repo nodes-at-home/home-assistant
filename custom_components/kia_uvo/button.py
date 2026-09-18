@@ -2,16 +2,15 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Callable
 from dataclasses import dataclass
-import logging
 from typing import Final
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-
 from hyundai_kia_connect_api import Vehicle
 
 from .const import DOMAIN
@@ -93,6 +92,13 @@ BUTTON_DESCRIPTIONS: Final[tuple[HyundaiKiaButtonDescription, ...]] = (
             and vehicle.front_left_window_is_open is not None
         ),
     ),
+    HyundaiKiaButtonDescription(
+        key="capture_svm_image",
+        translation_key="capture_svm_image",
+        icon="mdi:camera-iris",
+        press_action="async_request_svm_capture",
+        exists_fn=lambda vehicle: bool(vehicle.supports_svm),
+    ),
 )
 
 
@@ -103,13 +109,12 @@ async def async_setup_entry(
 ) -> None:
     coordinator = hass.data[DOMAIN][config_entry.unique_id]
     entities = []
-    for vehicle_id in coordinator.vehicle_manager.vehicles.keys():
+    for vehicle_id in coordinator.vehicle_manager.vehicles:
         vehicle: Vehicle = coordinator.vehicle_manager.vehicles[vehicle_id]
         for description in BUTTON_DESCRIPTIONS:
-            if description.exists_fn(vehicle):
-                entities.append(
-                    HyundaiKiaConnectButton(coordinator, description, vehicle)
-                )
+            if not description.exists_fn(vehicle):
+                continue
+            entities.append(HyundaiKiaConnectButton(coordinator, description, vehicle))
 
     async_add_entities(entities)
 
@@ -125,7 +130,7 @@ class HyundaiKiaConnectButton(ButtonEntity, HyundaiKiaConnectEntity):
         vehicle: Vehicle,
     ) -> None:
         HyundaiKiaConnectEntity.__init__(self, coordinator, vehicle)
-        self.entity_description = description
+        self.entity_description: HyundaiKiaButtonDescription = description
         self._key = description.key
         self._attr_unique_id = f"{DOMAIN}_{vehicle.id}_{self._key}"
         self._attr_icon = description.icon

@@ -1,6 +1,9 @@
 from enum import Enum
 from typing import Final
 
+# pause between notification for new data at least 2 seconds
+MAX_WS_NEW_DATA_NOTIFICATION_DELAY: Final = 1
+
 JSONKEY_PLANS_DEPRECATED: Final = "plans"
 JSONKEY_PLAN: Final = "plan"
 JSONKEY_PLAN_SOC: Final = "soc"
@@ -76,10 +79,14 @@ class EP_TYPE(Enum):
 class BATTERY_CONTENT(Enum):
     SOC     = "soc"
     POWER   = "power"
+    ENERGY  = "energy"
+    RETURNENERGY  = "returnEnergy"
 
 class GRID_CONTENT(Enum):
     CURRENTS= "currents"
     POWER   = "power"
+    ENERGY  = "energy"
+    RETURNENERGY  = "returnEnergy"
 
 class PV_CONTENT(Enum):
     ENERGY= "energy"
@@ -138,6 +145,8 @@ MAX_CURRENT_LIST: Final = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "1
                            "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62",
                            "63", "64"]
 
+MIN_CURRENT_EXTENDED_LIST: Final = ["0.125", "0.25", "0.5"] + MAX_CURRENT_LIST
+
 BATTERY_LIST: Final = ["0", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60", "65", "70", "75",
                        "80", "85", "90", "95", "100"]
 
@@ -168,7 +177,10 @@ TRANSLATIONS: Final = {
         "device_name_meter_ext": "Zusatzzähler",
         "device_name_meter_pv": "PV-Anlage",
         "device_name_meter_battery": "Speicherbatterie",
+        "device_name_meter_consumer": "Hausverbrauch",
+        "device_name_meter_aux": "Hilfszähler",
         "ws_connected": "WebSocket Verbindung:",
+        "disabled_loadpoint": " (⛔ derzeit in der evcc Konfiguration deaktiviert)",
     },
     "en": {
         "batterymode": {
@@ -196,6 +208,9 @@ TRANSLATIONS: Final = {
         "device_name_meter_ext": "Additional Meter",
         "device_name_meter_pv": "Photovoltaic",
         "device_name_meter_battery": "Home Battery",
+        "device_name_meter_consumer": "Consumer",
+        "device_name_meter_aux": "Auxiliary Meter",
         "ws_connected": "WebSocket connection:",
+        "disabled_loadpoint": " (⛔ currently disabled in evcc the configuration)",
     }
 }

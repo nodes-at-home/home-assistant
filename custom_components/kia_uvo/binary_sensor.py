@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Callable
 from dataclasses import dataclass
-import logging
 from typing import Final
-
-from homeassistant.const import EntityCategory
-from hyundai_kia_connect_api import Vehicle
 
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
@@ -16,8 +13,10 @@ from homeassistant.components.binary_sensor import (
     BinarySensorEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from hyundai_kia_connect_api import Vehicle
 
 from .const import DOMAIN
 from .coordinator import HyundaiKiaConnectDataUpdateCoordinator
@@ -26,7 +25,7 @@ from .entity import HyundaiKiaConnectEntity
 _LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True, kw_only=True)
 class HyundaiKiaBinarySensorEntityDescription(BinarySensorEntityDescription):
     """A class that describes custom binary sensor entities."""
 
@@ -567,7 +566,7 @@ async def async_setup_entry(
     """Set up binary_sensor platform."""
     coordinator = hass.data[DOMAIN][config_entry.unique_id]
     entities: list[HyundaiKiaConnectBinarySensor] = []
-    for vehicle_id in coordinator.vehicle_manager.vehicles.keys():
+    for vehicle_id in coordinator.vehicle_manager.vehicles:
         vehicle: Vehicle = coordinator.vehicle_manager.vehicles[vehicle_id]
         for description in SENSOR_DESCRIPTIONS:
             if getattr(vehicle, description.key, None) is not None:
@@ -575,7 +574,6 @@ async def async_setup_entry(
                     HyundaiKiaConnectBinarySensor(coordinator, description, vehicle)
                 )
     async_add_entities(entities)
-    return True
 
 
 PARALLEL_UPDATES = 0
@@ -605,12 +603,12 @@ class HyundaiKiaConnectBinarySensor(BinarySensorEntity, HyundaiKiaConnectEntity)
         return None
 
     @property
-    def icon(self):
+    def icon(self) -> str | None:
         """Return the icon to use in the frontend, if any."""
         if (
             self.entity_description.on_icon == self.entity_description.off_icon
         ) is None:
-            return BinarySensorEntity.icon
+            return BinarySensorEntity.icon.__get__(self)
         return (
             self.entity_description.on_icon
             if self.is_on

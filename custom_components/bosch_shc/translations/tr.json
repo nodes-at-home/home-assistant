@@ -105,7 +105,8 @@
               "suppress_camera_switches": "Bosch kamera anahtarlarını gizle",
               "room_light_groups": "Oda başına ışık gruplarını etkinleştir",
               "automation_rules_as_entities": "Bosch otomasyon kurallarını varlık olarak göster",
-              "temperature_drop_entities": "Sıcaklık düşüşü varlıklarını etkinleştir"
+              "temperature_drop_entities": "Sıcaklık düşüşü varlıklarını etkinleştir",
+              "keypad_ha_bridge": "Fiziksel butonları HA otomasyonlarına köprüle"
             },
             "data_description": {
               "scenarios_as_buttons": "AÇIK olduğunda: her Bosch SHC senaryosu Home Assistant'ta ayrıca bir düğme varlığı olarak da görünür (trigger_scenario hizmetine ek olarak). Senaryoları doğrudan tetikleyen pano kutucukları ve otomasyonlar için kullanışlıdır. Varsayılan: kapalı.",
@@ -121,7 +122,8 @@
               "suppress_camera_switches": "AÇIK olduğunda: Bosch kameraları (Eyes / 360 / Outdoor Gen2) için gizlilik, ışık ve bildirim anahtarları oluşturulmaz. Bosch Camera Tool ile birlikte kullanın. Varsayılan: kapalı.",
               "room_light_groups": "AÇIK olduğunda: 2 veya daha fazla kısılabilir/renkli ışığa sahip (LEDVANCE, Hue, Light/Shutter Control II dimmerleri) her SHC odası için tek bir toplu `light` varlığı oluşturur ve bir odanın tüm ışıklarını tek bir varlıktan açıp kapatmanızı sağlar — ısıtmanın Room Climate Control ile zaten sahip olduğu oda düzeyinde kontrolü yansıtır. Sadece açma/kapama, parlaklık veya renk toplanması yoktur. Varsayılan: kapalı (yeni varlık oluşturulmaz).",
               "automation_rules_as_entities": "AÇIK olduğunda: Bosch uygulamasında yapılandırılan her otomasyon kuralı için bir anahtar (etkinleştir/devre dışı bırak) ve bir düğme (manuel tetikle) oluşturur — Home Assistant'ın kendi otomasyonlarından tamamen ayrı, Bosch'un kendi yerel kural motoru. Varsayılan: kapalı (yeni varlık yok).",
-              "temperature_drop_entities": "AÇIK olduğunda: her odanın sıcaklık düşüşü (donma önleme/açık pencere) hizmeti için bir anahtar (etkinleştir/devre dışı bırak) ve bir sayı (düşüş değeri) oluşturur. Çoğu kurulum bu özelliği kullanmaz. Varsayılan: kapalı (yeni varlık yok)."
+              "temperature_drop_entities": "AÇIK olduğunda: her odanın sıcaklık düşüşü (donma önleme/açık pencere) hizmeti için bir anahtar (etkinleştir/devre dışı bırak) ve bir sayı (düşüş değeri) oluşturur. Çoğu kurulum bu özelliği kullanmaz. Varsayılan: kapalı (yeni varlık yok).",
+              "keypad_ha_bridge": "AÇIK olduğunda: fiziksel ayrık bir butonu olan her Shutter/Light Control II cihazı için, buton basıldığında sanal bir açma/kapama durumunu tetikleyen küçük bir otomasyonu doğrudan Bosch Smart Home Controller üzerinde oluşturur. Bu durum zaten normal bir anahtar varlığı olarak görünür — kendi Home Assistant otomasyonlarınızda tetikleyici olarak açma/kapama geçişlerini kullanın. Bunu kapatmak, oluşturulan otomasyonları ve durumları kaldırır. Varsayılan: kapalı (yeni varlık yok, kumandada hiçbir şey oluşturulmaz)."
             }
           },
           "presence": {
@@ -164,14 +166,28 @@
       }
     }
   },
+  "device": {
+    "presence_simulation": {
+      "name": "Ev Simülasyonu"
+    },
+    "intrusion_system": {
+      "name": "Alarm sistemi"
+    },
+    "water_alarm_system": {
+      "name": "Su alarmı"
+    },
+    "energy_manager": {
+      "name": "Enerji Yöneticisi"
+    }
+  },
   "entity": {
     "climate": {
       "room_climate_control": {
-        "name": "Oda iklim kontrolü",
+        "name": "Oda Sıcaklığı Kontrolü",
         "state_attributes": {
           "preset_mode": {
             "state": {
-              "boost": "Boost",
+              "boost": "Hızlı Isıtma",
               "eco": "Eco"
             }
           }
@@ -180,19 +196,19 @@
     },
     "button": {
       "smoke_test": {
-        "name": "Duman Testi"
+        "name": "Test Alarmı"
       },
       "walk_test": {
-        "name": "Yürüyüş Testi"
+        "name": "Fonksiyon Testini Başlat"
       },
       "walk_test_stop": {
-        "name": "Yürüyüş Testini Durdur"
+        "name": "Fonksiyon Testini Durdur"
       },
       "detection_test": {
-        "name": "Algılama Testi"
+        "name": "Fonksiyon Testini Başlat"
       },
       "detection_test_stop": {
-        "name": "Algılama Testini Durdur"
+        "name": "Fonksiyon Testini Durdur"
       },
       "reset_tamper": {
         "name": "Müdahaleyi Sıfırla"
@@ -207,10 +223,10 @@
         "name": "Minimum Parlaklık Önizlemesi"
       },
       "reset_energy_summation": {
-        "name": "Enerji Sayacını Sıfırla"
+        "name": "Tüketim Değerini Sıfırla"
       },
       "shutter_recalibrate": {
-        "name": "Yeniden Kalibre Et"
+        "name": "Otomatik Kalibrasyonu Başlat"
       },
       "enable_all_diagnostics": {
         "name": "Tüm Tanılamaları Etkinleştir"
@@ -227,10 +243,10 @@
     },
     "number": {
       "impulse_length": {
-        "name": "Darbe Süresi"
+        "name": "Darbe Uzunluğu"
       },
       "temperature_drop_value": {
-        "name": "Sıcaklık Düşüş Değeri"
+        "name": "Sıcaklık Sapması"
       },
       "energy_saving_power_threshold": {
         "name": "Enerji Tasarrufu Güç Eşiği"
@@ -245,90 +261,196 @@
         "name": "Ekran Parlaklığı"
       },
       "display_on_time": {
-        "name": "Ekran Açık Kalma Süresi"
+        "name": "Ekran Açılma Süresi"
       },
       "siren_alarm_duration": {
-        "name": "Alarm Süresi"
+        "name": "Siren Alarm Süresi"
       },
       "siren_flash_duration": {
-        "name": "Flaş Süresi"
+        "name": "Flaşörlü Işık Alarm Süresi"
       },
       "siren_alarm_delay": {
-        "name": "Alarm Gecikmesi"
+        "name": "Siren Alarm Gecikmesi"
       },
       "siren_flash_delay": {
-        "name": "Flaş Gecikmesi"
+        "name": "Flaşörlü Işık Alarm Gecikmesi"
       },
       "bypass_timeout": {
-        "name": "Atlama Zaman Aşımı"
+        "name": "Mola Fonksiyonu Zaman Aşımı"
+      },
+      "offset": {
+        "name": "Ofset"
+      },
+      "setpointeco": {
+        "name": "Eko Sıcaklığı"
+      },
+      "setpointcomfort": {
+        "name": "Konfor Sıcaklığı"
+      },
+      "dimmer_min": {
+        "name": "Minimum Parlaklık"
+      },
+      "dimmer_max": {
+        "name": "Maksimum Parlaklık"
+      },
+      "dimmer_speed": {
+        "name": "Karartma Hızı"
       }
     },
     "select": {
       "motion_sensitivity": {
-        "name": "Hareket Duyarlılığı"
+        "name": "Hareket Duyarlılığı",
+        "state": {
+          "high": "Yüksek",
+          "middle": "Orta",
+          "low": "Düşük"
+        }
       },
       "vibration_sensitivity": {
-        "name": "Titreşim Duyarlılığı"
+        "name": "Titreşim Duyarlılığı",
+        "state": {
+          "very_high": "Çok Yüksek",
+          "high": "Yüksek",
+          "medium": "Orta",
+          "low": "Ilımlı",
+          "very_low": "Düşük"
+        }
       },
       "state_after_power_outage": {
-        "name": "Güç Kesintisi Sonrası Durum"
+        "name": "Güç Kesintisi Sonrası Durum",
+        "state": {
+          "off": "Kapalı",
+          "on": "Açık",
+          "last_state": "Son Durum"
+        }
       },
       "smoke_sensitivity": {
-        "name": "Duman Duyarlılığı"
+        "name": "Duman Duyarlılığı",
+        "state": {
+          "high": "Yüksek",
+          "middle": "Orta",
+          "low": "Düşük"
+        }
       },
       "display_direction": {
-        "name": "Ekran Yönü"
+        "name": "Ekran Yönü",
+        "state": {
+          "normal": "Normal",
+          "reversed": "180° Döndürülmüş"
+        }
       },
       "displayed_temperature": {
-        "name": "Gösterilen Sıcaklık"
+        "name": "Gösterilen Sıcaklık",
+        "state": {
+          "setpoint": "Ayarlanan Sıcaklık",
+          "measured": "Ölçülen"
+        }
       },
       "terminal_type": {
-        "name": "Terminal Türü"
+        "name": "Sensör Bağlantısı",
+        "state": {
+          "not_connected": "Kullanılmıyor",
+          "floor_sensor_connected": "Zemin Sensörü Bağlı",
+          "floor_sensor_used_for_regulation": "Zemin Sensörü Düzenleme İçin Kullanılıyor",
+          "floor_sensor_displayed": "Kablolu Sıcaklık Sensörü (Regülasyonsuz)",
+          "floor_sensor_displayed_and_used_for_regulation": "Kablolu Sıcaklık Sensörü (Regülasyonlu)",
+          "volt_free_sensor_connected": "Gerilimsiz Sensör Bağlı",
+          "volt_free_sensor_connected_and_used_for_operation": "Potansiyelsiz Kontak",
+          "outdoor_sensor_connected": "Dış Mekan Sıcaklık Sensörü"
+        }
       },
       "valve_type": {
-        "name": "Vana Türü"
+        "name": "Vana Türü",
+        "state": {
+          "normally_close": "Normalde Kapalı",
+          "normally_open": "Normalde Açık"
+        }
       },
       "heater_type": {
-        "name": "Isıtıcı Türü"
+        "name": "Isıtıcı Türü",
+        "state": {
+          "floor_heating": "Yerden Isıtma",
+          "floor_heating_low_energy": "Yerden Isıtma Düşük Enerji",
+          "radiator": "Radyatör",
+          "convector_passive": "Pasif Konvektör (Fansız)",
+          "convector_active": "Aktif Konvektör (Fanlı)",
+          "volt_free_heating": "Merkezi Isıtma"
+        }
       },
       "switch_type": {
-        "name": "Anahtar Türü"
+        "name": "Anahtar Türü",
+        "state": {
+          "none": "Yok",
+          "pushbutton": "Buton",
+          "switch": "Devirmeli Anahtar",
+          "no_switch": "Anahtar Yok"
+        }
       },
       "actuator_type": {
-        "name": "Aktüatör Türü"
+        "name": "Aktüatör Türü",
+        "state": {
+          "normally_closed": "Normalde Kapalı",
+          "normally_open": "Normalde Açık",
+          "unsupported": "Desteklenmiyor"
+        }
       },
       "output_mode": {
-        "name": "Çıkış Modu"
+        "name": "Çıkış Modu",
+        "state": {
+          "attached": "Bağlantılı",
+          "detached": "Herhangi Bir Tuşa Basıldığında Ayrık",
+          "detached_short_press": "Kısa Basışta Ayrık",
+          "detached_long_press": "Uzun Basışta Ayrık",
+          "unsupported": "Desteklenmiyor"
+        }
       },
       "siren_sound_level": {
-        "name": "Ses Seviyesi",
+        "name": "Siren Ses Seviyesi",
         "state": {
-          "low": "Düşük",
+          "low": "Azaltılmış",
           "medium": "Orta",
-          "high": "Yüksek"
+          "high": "Yüksek Sesli"
         }
       },
       "orientation_light_response_time": {
-        "name": "Yönlendirme Işığı Yanıt Süresi"
+        "name": "Yönlendirme Işığı Yanıt Süresi",
+        "state": {
+          "long": "Uzun",
+          "short": "Kısa"
+        }
       },
       "smart_sensitivity_security_level": {
-        "name": "Akıllı Hassasiyet Güvenlik Düzeyi"
+        "name": "Alarm Sistemi Hassasiyeti",
+        "state": {
+          "high": "Yüksek",
+          "middle": "Orta",
+          "low": "Düşük"
+        }
       },
       "smart_sensitivity_comfort_level": {
-        "name": "Akıllı Hassasiyet Konfor Düzeyi"
+        "name": "Diğer Durumlar İçin Hassasiyet",
+        "state": {
+          "high": "Yüksek",
+          "middle": "Orta",
+          "low": "Düşük"
+        }
       },
       "dimmer_phase_control": {
-        "name": "Dimmer Faz Kontrolü"
+        "name": "Dimmer Faz Kontrolü",
+        "state": {
+          "trailing": "Düşen Kenar Faz Kesme",
+          "leading": "Yükselen Kenar Faz Kesme"
+        }
       },
       "installation_profile": {
-        "name": "Kurulum Profili",
+        "name": "Kullanım Amacı",
         "state": {
-          "generic": "İç Mekan (Genel)",
+          "generic": "Standart",
           "outdoor": "Dış Mekan",
-          "light": "Işık",
-          "heating_rcc": "Isıtma (RCC)",
-          "boiler": "Kombi",
-          "mini_pv": "Mini Güneş Paneli"
+          "light": "Lamba",
+          "heating_rcc": "Isıtıcı",
+          "boiler": "Merkezi Isıtma",
+          "mini_pv": "Mini PV Sistemi"
         }
       },
       "thermostat_regulation_algorithm": {
@@ -341,22 +463,40 @@
     },
     "sensor": {
       "open_windows_doors": {
-        "name": "Açık kapılar/pencereler"
+        "name": "Açık Kapılar ve Pencereler"
       },
       "walk_test_state": {
-        "name": "Yürüyüş Testi Durumu"
+        "name": "Fonksiyon Testi Durumu",
+        "state": {
+          "walk_test_started": "Başladı",
+          "walk_test_stopped": "Durduruldu",
+          "unknown": "Bilinmiyor"
+        }
       },
       "battery_level": {
-        "name": "Pil Seviyesi"
+        "name": "Pil Seviyesi",
+        "state": {
+          "ok": "OK",
+          "low_battery": "Düşük",
+          "critical_low": "Kritik",
+          "critically_low_battery": "Kritik düzeyde düşük",
+          "not_available": "Kullanılamıyor"
+        }
       },
       "combined_rating": {
-        "name": "Birleşik Değerlendirme"
+        "name": "Birleşik Değerlendirme",
+        "state": {
+          "good": "İyi",
+          "medium": "Orta",
+          "bad": "Kötü",
+          "unknown": "Bilinmiyor"
+        }
       },
       "air_quality_description": {
         "name": "Hava Kalitesi Açıklaması"
       },
       "communication_quality": {
-        "name": "İletişim Kalitesi",
+        "name": "Sinyal Gücü",
         "state": {
           "good": "İyi",
           "normal": "Normal",
@@ -367,10 +507,10 @@
         }
       },
       "siren_battery": {
-        "name": "Pil"
+        "name": "Pil Şarjı"
       },
       "siren_main_power": {
-        "name": "Güç Kaynağı",
+        "name": "Birincil Kaynak",
         "state": {
           "battery": "Pil",
           "solar": "Güneş",
@@ -389,13 +529,13 @@
         }
       },
       "keypad_trigger": {
-        "name": "Düğme eşlemesi"
+        "name": "Tuş Ataması"
       },
       "floor_temperature": {
         "name": "Zemin Sıcaklığı"
       },
       "purity": {
-        "name": "Saflık"
+        "name": "Hava Saflığı"
       },
       "air_quality": {
         "name": "Hava Kalitesi"
@@ -407,7 +547,7 @@
         "name": "Nem Değerlendirmesi"
       },
       "purity_rating": {
-        "name": "Saflık Değerlendirmesi"
+        "name": "Hava Saflığı Değerlendirmesi"
       },
       "energy_yield": {
         "name": "Enerji Verimi"
@@ -416,10 +556,37 @@
         "name": "Güç Verimi"
       },
       "valve_tappet": {
-        "name": "Valf İticisi"
+        "name": "Valf Konumu"
+      },
+      "valve_tappet_state": {
+        "name": "Vana motoru durumu",
+        "state": {
+          "valve_adaption_successful": "Adaptasyon başarılı",
+          "valve_adaption_in_progress": "Adaptasyon devam ediyor",
+          "valve_adaption_requested": "Adaptasyon istendi",
+          "range_too_big": "Aralık çok büyük",
+          "range_too_small": "Aralık çok küçük",
+          "run_to_start_position": "Başlangıç pozisyonuna gidiyor",
+          "start_position_requested": "Başlangıç pozisyonu istendi",
+          "in_start_position": "Başlangıç pozisyonunda",
+          "not_available": "Kullanılamıyor",
+          "no_valve_body_error": "Vana gövdesi hatası yok",
+          "no_motor_error": "Motor hatası yok",
+          "valve_too_tight": "Vana çok sıkı",
+          "fix_motor_logic_requested": "Motor mantığı düzeltmesi istendi",
+          "fix_motor_logic_in_progress": "Motor mantığı düzeltmesi devam ediyor",
+          "fix_motor_logic_successful": "Motor mantığı düzeltmesi başarılı",
+          "error": "Hata",
+          "unknown": "Bilinmiyor"
+        }
       },
       "detection_test_state": {
-        "name": "Algılama Testi Durumu"
+        "name": "Fonksiyon Testi Durumu",
+        "state": {
+          "detection_test_started": "Başladı",
+          "detection_test_stopped": "Durduruldu",
+          "detection_test_unknown": "Bilinmiyor"
+        }
       },
       "next_setpoint_temperature": {
         "name": "Sonraki Hedef Sıcaklık"
@@ -431,10 +598,10 @@
         "name": "Simülasyon Başlangıç Zamanı"
       },
       "reference_moving_time_bottom_to_top": {
-        "name": "Referans Hareket Süresi (Alttan Üste)"
+        "name": "Açılma Süresi"
       },
       "reference_moving_time_top_to_bottom": {
-        "name": "Referans Hareket Süresi (Üstten Alta)"
+        "name": "Kapanma Süresi"
       },
       "zigbee_routing_quality": {
         "name": "Zigbee Yönlendirme Kalitesi",
@@ -489,6 +656,12 @@
       "schedule_override_active": {
         "name": "Program Geçersiz Kılma Etkin"
       },
+      "summer_mode": {
+        "name": "Isıtma Molası"
+      },
+      "ventilation_mode": {
+        "name": "Sürdürülebilir Havalandırma"
+      },
       "shutter_calibration_required": {
         "name": "Kalibrasyon Gerekli"
       }
@@ -503,24 +676,106 @@
     },
     "switch": {
       "bypass": {
-        "name": "Alarm atlama"
+        "name": "Mola Fonksiyonu"
       },
       "bypass_infinite": {
-        "name": "Atlama Asla Sona Ermez"
+        "name": "Mola Fonksiyonu Asla Sona Ermez"
       },
       "temperature_drop_enabled": {
         "name": "Sıcaklık Düşüşü"
       },
       "automation_rule": {
         "name": "Etkin"
+      },
+      "pet_immunity_enabled": {
+        "name": "Evcil Hayvan / Robot Süpürge"
+      },
+      "smart_sensitivity_enabled": {
+        "name": "Otomatik Hassasiyet"
+      },
+      "tamper_protection_enabled": {
+        "name": "Sabotaj Algılama"
+      },
+      "silent_mode": {
+        "name": "Fısıltı Modu"
+      },
+      "smartplug_routing": {
+        "name": "Menzil Genişletme"
+      },
+      "camera_light": {
+        "name": "Kamera Işığı"
+      },
+      "camera_notification": {
+        "name": "Bildirimler"
+      },
+      "camera_frontlight": {
+        "name": "Ön Işık"
+      },
+      "camera_ambientlight": {
+        "name": "Ortam Işığı"
+      },
+      "energy_saving_mode_enabled": {
+        "name": "Enerji Tasarrufu Modu"
+      },
+      "warning_suppressed": {
+        "name": "Uyarı Bastırıldı"
+      },
+      "nightly_promise_enabled": {
+        "name": "Heartbeat"
+      },
+      "humidity_warning_enabled": {
+        "name": "Nem Uyarısı"
+      },
+      "swap_inputs": {
+        "name": "Tuş Atamasını Değiştir"
+      },
+      "swap_outputs": {
+        "name": "Çıkışları Değiştir"
+      },
+      "pre_alarm_enabled": {
+        "name": "Ön Alarm"
+      },
+      "vibration_enabled": {
+        "name": "Titreşim Algılama"
+      },
+      "intrusion_alarm": {
+        "name": "İzinsiz Giriş Alarmı"
+      },
+      "child_lock": {
+        "name": "Çocuk Kilidi"
       }
     },
     "light": {
       "motion_light": {
-        "name": "Hareket Işığı"
+        "name": "Yönlendirme Işığı"
       },
       "room_light_group": {
         "name": "Işık"
+      }
+    },
+    "valve": {
+      "valve": {
+        "name": "Vana"
+      }
+    },
+    "event": {
+      "key_lower": {
+        "name": "Alt Tuş"
+      },
+      "key_upper": {
+        "name": "Üst Tuş"
+      },
+      "key_lower_left": {
+        "name": "Sol Alt Tuş"
+      },
+      "key_lower_right": {
+        "name": "Sağ Alt Tuş"
+      },
+      "key_upper_left": {
+        "name": "Sol Üst Tuş"
+      },
+      "key_upper_right": {
+        "name": "Sağ Üst Tuş"
       }
     }
   },
@@ -640,6 +895,14 @@
     "cert_expiring": {
       "title": "Bosch SHC istemci sertifikasının süresi yakında doluyor",
       "description": "Bosch SHC istemci sertifikası **{title}** için {days} gün içinde ({expiry} tarihinde) sona erecek. Yenilemek için: denetleyiciyi eşleştirme moduna alın (LED'ler yanıp sönene kadar ön düğmeye basın), ardından **Ayarlar → Cihazlar ve hizmetler → Bosch Smart Home Controller** bölümüne gidip **Yeniden yapılandır**'ı seçin."
+    },
+    "update_battery_low": {
+      "title": "Düşük pil nedeniyle bellenim güncellemesi engellendi",
+      "description": "**{name}** için bir bellenim güncellemesi mevcut, ancak bu cihaz düşük pil seviyesi bildirdiği sürece Bosch Smart Home Controller güncellemeyi başlatmayacak. Pili değiştirin veya şarj edin, ardından güncellemeyi tekrar yüklemeyi deneyin."
+    },
+    "update_calibration_required": {
+      "title": "Manuel kalibrasyon gerekli",
+      "description": "**{name}** için bellenim güncellemesi başarıyla yüklendi, ancak bu termostatın tamamen tamamlanmadan önce manuel bir kalibrasyon adımına ihtiyacı var: cihazdaki düğmeye basın veya Bosch uygulaması üzerinden onaylayın. Home Assistant bu adımı gösteremez; siz bunu yapana kadar güncellemeyi beklemede olarak göstermeye devam eder."
     }
   },
   "exceptions": {
@@ -657,6 +920,9 @@
     },
     "rawscan_entry_not_found": {
       "message": "Bu başlıkla yüklenmiş bir Bosch SHC girişi bulunamadı."
+    },
+    "rawscan_command_failed": {
+      "message": "Rawscan komutu çalıştırılamadı."
     },
     "scenario_not_found": {
       "message": "Senaryo bulunamadı."
