@@ -360,42 +360,18 @@ views:
       - type: entities
         title: Summen
         show_header_toggle: false
-        visibility:
-          - condition: or
-            conditions:
-              - condition: state
-                entity: sensor.vllm_thor_tokens_generation_total_qwen36
-                state_not:
-                  - unavailable
-                  - unknown
-              - condition: state
-                entity: sensor.vllm_thor_tokens_generation_total_qwen38
-                state_not:
-                  - unavailable
-                  - unknown
-              - condition: state
-                entity: sensor.vllm_thor_tokens_generation_total_qwen25_coder
-                state_not:
-                  - unavailable
-                  - unknown
-              - condition: state
-                entity: sensor.vllm_thor_tokens_generation_total_qwen3_routing_classifier
-                state_not:
-                  - unavailable
-                  - unknown
-              - condition: state
-                entity: sensor.vllm_thor_tokens_generation_total_nemotron35
-                state_not:
-                  - unavailable
-                  - unknown
         entities:
           - sensor.vllm_tokens_prompt_daily
           - sensor.vllm_tokens_prompt_yearly
+          - sensor.vllm_tokens_prompt_lifetime
           - sensor.vllm_thor_tokens_prompt_costs
           - type: divider
           - sensor.vllm_tokens_generation_daily
           - sensor.vllm_tokens_generation_yearly
+          - sensor.vllm_tokens_generation_lifetime
           - sensor.vllm_thor_tokens_generation_costs
+          - type: divider
+          - sensor.thor_amortization
       - type: entities
         title: qwen3.6-35b-a3b
         show_header_toggle: false
