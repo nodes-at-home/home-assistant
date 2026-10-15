@@ -72,7 +72,7 @@
         unit_of_measurement: EUR
         device_class: monetary
         state: >-
-          {{ ( states('sensor.vllm_tokens_prompt_yearly') | float(0)
+          {{ ( states('sensor.vllm_thor_tokens_prompt_total') | float(0)
              / 1000000
              * states('input_number.vllm_cost_prompt_per_million_tokens') | float(0) ) | round(2) }}
 
@@ -81,6 +81,17 @@
         unit_of_measurement: EUR
         device_class: monetary
         state: >-
-          {{ ( states('sensor.vllm_tokens_generation_yearly') | float(0)
+          {{ ( states('sensor.vllm_thor_tokens_generation_total') | float(0)
              / 1000000
              * states('input_number.vllm_cost_generation_per_million_tokens') | float(0) ) | round(2) }}
+
+      - name: thor_amortization
+        unique_id: thor_amortization
+        unit_of_measurement: "%"
+        availability: >-
+          {{ is_number(states('sensor.vllm_thor_tokens_prompt_costs'))
+             and is_number(states('sensor.vllm_thor_tokens_generation_costs')) }}
+        state: >-
+          {{ ( ( states('sensor.vllm_thor_tokens_prompt_costs') | float(0)
+                 + states('sensor.vllm_thor_tokens_generation_costs') | float(0) )
+               / 3900 * 100 ) | round(0) | int }}
