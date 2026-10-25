@@ -98,4 +98,4 @@
         state: >-
           {{ ( ( states('sensor.vllm_thor_tokens_prompt_costs') | float(0)
                  + states('sensor.vllm_thor_tokens_generation_costs') | float(0) )
-               / 3900 * 100 ) | round(0) | int }}
+               / 3900 * 100 ) | round(1) }}
