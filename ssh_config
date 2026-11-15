@@ -1,0 +1,8 @@
+# GitHub SSH ueber Port 443 (Port 22 droppt paketweise auf dieser Strecke,
+# Messung 25.10.2026: ssh.github.com:443 stabil 12/12, Port 22 intermittierend).
+# Aktiviert durch: GIT_SSH_COMMAND="ssh -F /config/ssh_config" in /config/git_ssh
+Host github.com
+    Hostname ssh.github.com
+    Port 443
+    HostKeyAlias github.com
+    UserKnownHostsFile /config/ssh_known_hosts

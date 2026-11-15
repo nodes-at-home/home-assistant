@@ -22,3 +22,4 @@ git_ssh
 .cache/
 .deleted/
 .ha-mcp/
+ssh_known_hosts
