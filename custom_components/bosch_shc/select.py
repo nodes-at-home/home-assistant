@@ -163,20 +163,18 @@ _SWITCH_TYPE_OPTIONS = [
     SwitchConfiguration.SwitchType.NO_SWITCH.name.lower(),
 ]
 
-# SwitchConfiguration actuator type: exclude UNKNOWN.
+# SwitchConfiguration actuator type: exclude UNKNOWN and UNSUPPORTED (read-only state).
 _ACTUATOR_TYPE_OPTIONS = [
     SwitchConfiguration.ActuatorType.NORMALLY_CLOSED.name.lower(),
     SwitchConfiguration.ActuatorType.NORMALLY_OPEN.name.lower(),
-    SwitchConfiguration.ActuatorType.UNSUPPORTED.name.lower(),
 ]
 
-# SwitchConfiguration output mode: exclude UNKNOWN.
+# SwitchConfiguration output mode: exclude UNKNOWN and UNSUPPORTED (read-only state).
 _OUTPUT_MODE_OPTIONS = [
     SwitchConfiguration.OutputMode.ATTACHED.name.lower(),
     SwitchConfiguration.OutputMode.DETACHED.name.lower(),
     SwitchConfiguration.OutputMode.DETACHED_SHORT_PRESS.name.lower(),
     SwitchConfiguration.OutputMode.DETACHED_LONG_PRESS.name.lower(),
-    SwitchConfiguration.OutputMode.UNSUPPORTED.name.lower(),
 ]
 
 # SmartSensitivity manual level: HIGH / MIDDLE / LOW (exclude UNKNOWN).
@@ -809,14 +807,7 @@ async def async_setup_entry(  # noqa: C901
 
 
 class SHCSelect[_DeviceT: SHCDevice](SHCEntity, SelectEntity):  # type: ignore[misc]
-    """Generic SHC select entity, driven by a SHCSelectEntityDescription.
-
-    `current_option`/`async_select_option` delegate to the description's
-    `current_option_fn`/`select_option_fn`, so a single class covers every
-    select type — the per-type behavior (which attribute to read, which enum
-    to look values up in, which async setter to call) lives in the
-    description, not in a dedicated subclass.
-    """
+    """Generic SHC select entity, driven by a SHCSelectEntityDescription."""
 
     entity_description: SHCSelectEntityDescription[_DeviceT]
 
@@ -984,6 +975,17 @@ class OutputModeSelect(SHCSelect):
     _attr_entity_category = EntityCategory.CONFIG
     _attr_translation_key = "output_mode"
     _attr_options = _OUTPUT_MODE_OPTIONS
+
+    def __init__(self, device: SHCDevice, entry_id: str) -> None:
+        """Offer only the modes the device advertises in supportedOutputModes."""
+        super().__init__(device, entry_id)
+        advertised = {
+            str(getattr(mode, "value", mode)).lower()
+            for mode in (getattr(device, "supported_output_modes", None) or [])
+        }
+        filtered = [o for o in _OUTPUT_MODE_OPTIONS if o in advertised]
+        if filtered:
+            self._attr_options = filtered
 
 
 class SmartSensitivitySecurityLevelSelect(SHCSelect):

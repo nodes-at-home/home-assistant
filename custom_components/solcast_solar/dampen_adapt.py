@@ -20,6 +20,7 @@ from .const import (
     ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_CONFIGURATION,
     ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_EXCLUDE,
     ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_MINIMUM_HISTORY_DAYS,
+    ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_SWITCH_MARGIN,
     ADVANCED_AUTOMATED_DAMPENING_DELTA_ADJUSTMENT_MODEL,
     ADVANCED_AUTOMATED_DAMPENING_INSIGNIFICANT_FACTOR,
     ADVANCED_AUTOMATED_DAMPENING_MODEL,
@@ -29,6 +30,7 @@ from .const import (
     ADVANCED_OPTIONS,
     ALL,
     AMENDABLE,
+    DEFAULT,
     DEFAULT_DAMPENING_DELTA_ADJUSTMENT_MODEL,
     DT_DATE_FORMAT,
     DT_DATE_FORMAT_UTC,
@@ -71,6 +73,36 @@ _DELTA_RANGE: Final = range(
 )
 
 _MIN_GEN_FRACTION: Final[float] = 0.10
+
+# Mean ranks are fractions such as 46/9, so a lead exactly equal to the switch margin can come out a tiny bit short of it.
+_RANK_TOLERANCE: Final[float] = 1e-9
+
+
+def _prefer_default_model(scores: dict[tuple[int, int], float], margin: float) -> tuple[int, int]:
+    """Return the (model, delta) with the best mean rank, keeping the default model unless another ranks at least margin places better.
+
+    With a margin of 0 the best mean rank wins.
+    """
+    best = min(scores, key=lambda md: (scores[md], md[0], md[1]))
+    default_model = ADVANCED_OPTIONS[ADVANCED_AUTOMATED_DAMPENING_MODEL][DEFAULT]
+    if not margin or best[0] == default_model:
+        return best
+    defaults = [md for md in scores if md[0] == default_model]
+    if defaults:
+        best_default = min(defaults, key=lambda md: (scores[md], md[1]))
+        lead = scores[best_default] - scores[best]
+        if lead < margin - _RANK_TOLERANCE:
+            _LOGGER.debug(
+                "Switch margin %s keeps Model %d Delta %d: Model %d Delta %d leads by %.3f",
+                margin,
+                best_default[0],
+                best_default[1],
+                best[0],
+                best[1],
+                lead,
+            )
+            return best_default
+    return best
 
 
 class _ModelEvalResult(NamedTuple):
@@ -344,7 +376,7 @@ class DampeningAdaptive:
                             self.dampening.api.peak_intervals[interval] > 0
                             and period_value > 0
                             and dampening[interval] < 1.0
-                            and period_start in actuals
+                            and actuals.get(period_start, 0) > 0
                         ):
                             adjusted_dampening[interval] = self.dampening.apply_adjustment(
                                 actuals[period_start], dampening[interval], interval, delta_adjustment
@@ -627,17 +659,13 @@ class DampeningAdaptive:
         no_delta_candidates = {md: s for md, s in borda_scores.items() if md[1] == VALUE_ADAPTIVE_DAMPENING_NO_DELTA}
         adjusted_candidates = {md: s for md, s in borda_scores.items() if md[1] != VALUE_ADAPTIVE_DAMPENING_NO_DELTA}
 
+        margin = self.dampening.api.advanced_options[ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_SWITCH_MARGIN]
+
         if no_delta_candidates:
-            best_nd = min(no_delta_candidates, key=lambda md: (no_delta_candidates[md], md[0]))
-            best_model_no_delta = best_nd[0]
+            best_model_no_delta = _prefer_default_model(no_delta_candidates, margin)[0]
 
         if adjusted_candidates:
-            best_adj = min(
-                adjusted_candidates,
-                key=lambda md: (adjusted_candidates[md], md[0], md[1] if md[1] >= 0 else float("inf")),
-            )
-            best_model_adjusted = best_adj[0]
-            best_delta_adjusted = best_adj[1]
+            best_model_adjusted, best_delta_adjusted = _prefer_default_model(adjusted_candidates, margin)
 
         return _ModelEvalResult(
             daily_model_errors=daily_model_errors,
@@ -915,7 +943,7 @@ class DampeningAdaptive:
         dampening_breadth = [len(combo_dampens[i]) / total_models if total_models > 0 else 0.0 for i in range(INTERVALS_PER_DAY)]
         interval_error_weights = self._build_interval_error_weights(generation_dampening, min_history_days, actuals)
 
-        # Score = (1 - avg_factor) × sqrt(variance) × dampening_breadth, for intervals with adequate
+        # Score = (1 - avg_factor) x sqrt(variance) x dampening_breadth, for intervals with adequate
         # generation only (≥ 10% of peak / _MIN_GEN_FRACTION to exclude pre-dawn/post-dusk).
         # The goal here is dampening quality, not energy magnitude. Where possible, bias this toward
         # intervals where the current dampened forecast is also persistently wrong.
@@ -929,7 +957,7 @@ class DampeningAdaptive:
 
         # Fall back progressively when history-based scoring cannot discriminate.
         if not dampening_impact or max(dampening_impact) == 0.0:
-            # First fallback: drop the variance term — (1 - dampening) × breadth, still generation-gated
+            # First fallback: drop the variance term — (1 - dampening) x breadth, still generation-gated
             dampening_impact = [
                 (1.0 - avg_dampen_factor[i]) * dampening_breadth[i]
                 if normalised_generation[i] >= _MIN_GEN_FRACTION and not interval_has_zero_generation[i]

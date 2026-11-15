@@ -8,6 +8,7 @@ from typing import (
 from custom_components.evcc_intg.pyevcc_ha.const import (
     MIN_CURRENT_LIST,
     MAX_CURRENT_LIST,
+    SOLARSHARE_LIST,
     JSONKEY_EVOPT_REQ,
     JSONKEY_EVOPT_RES,
     JSONKEY_EVOPT_DETAILS,
@@ -22,7 +23,7 @@ from custom_components.evcc_intg.pyevcc_ha.const import (
     SESSIONS_KEY_VEHICLES,
     SESSIONS_KEY_LOADPOINTS,
     EVCCCONF_DEVICE_TYPES,
-    EP_TYPE,
+    EP_TYPE
 )
 
 # from aenum import Enum, extend_enum
@@ -34,13 +35,15 @@ INTERNAL_ONLY: Final = "intg_internal"
 
 CC_P1: Final = re.compile(r"(.)([A-Z][a-z]+)")
 CC_P2: Final = re.compile(r"([a-z0-9])([A-Z])")
+NON_ALNUM_P: Final = re.compile(r"[^\w]+")
 
 def camel_to_snake(a_key: str):
+    a_key = NON_ALNUM_P.sub("_", a_key)
     if a_key.lower().endswith("kwh"):
         a_key = a_key[:-3] + "_kwh"
     a_key = re.sub(CC_P1, r'\1_\2', a_key)
-    return re.sub(CC_P2, r'\1_\2', a_key).lower()
-
+    a_key = re.sub(CC_P2, r'\1_\2', a_key).lower()
+    return re.sub(r"_+", "_", a_key).strip("_")
 
 class ApiKey(NamedTuple):
     type: str
@@ -201,6 +204,13 @@ class Tag(ApiKey, Enum):
     # batteryGridChargeLimit: ??
     BATTERYGRIDCHARGELIMIT = ApiKey(json_key="batteryGridChargeLimit", type=EP_TYPE.SITE, write_key="batterygridchargelimit")
 
+    # POST /api/batterygriddischarge/<status>: allow the home battery to discharge into the grid (experimental)
+    BATTERYGRIDDISCHARGE = ApiKey(json_key="batteryGridDischarge", type=EP_TYPE.SITE, writeable=True, write_key="batterygriddischarge")
+    BATTERYGRIDDISCHARGEACTIVE = ApiKey(json_key="batteryGridDischargeActive", type=EP_TYPE.SITE)
+    # POST|DELETE /api/batterygriddischargelimit/<value>: feed-in price at or above which the battery
+    # discharges into the grid - evcc accepts it only while batteryGridDischarge is enabled
+    BATTERYGRIDDISCHARGELIMIT = ApiKey(json_key="batteryGridDischargeLimit", type=EP_TYPE.SITE, write_key="batterygriddischargelimit")
+
     FORECAST_GRID = ApiKey(entity_key="forecast_grid", json_key="forecast", type=EP_TYPE.SITE)
     FORECAST_SOLAR = ApiKey(entity_key="forecast_solar", json_key="forecast", type=EP_TYPE.SITE)
     FORECAST_FEEDIN = ApiKey(entity_key="forecast_feedin", json_key="forecast", type=EP_TYPE.SITE)
@@ -313,6 +323,8 @@ class Tag(ApiKey, Enum):
     # "disableDelay": 180,
     DISABLEDELAY = ApiKey(json_key="disableDelay", write_key="disable/delay", type=EP_TYPE.LOADPOINTS)
 
+
+
     # "sessionCo2PerKWh": null,
     SESSIONCO2PERKWH = ApiKey(json_key="sessionCo2PerKWh", type=EP_TYPE.LOADPOINTS)
     # "sessionEnergy": 0,
@@ -408,6 +420,9 @@ class Tag(ApiKey, Enum):
 
     # enable/disable BatteryBoost (per Loadpoint)
     BATTERYBOOST = ApiKey(json_key="batteryBoost", type=EP_TYPE.LOADPOINTS, writeable=True, write_key="batteryboost")
+
+    # solarShare 0 -> 1 in 0.1 steps
+    SOLARSHARE = ApiKey(json_key="solarShare", type=EP_TYPE.LOADPOINTS, writeable=True, write_key="solarshare", options=SOLARSHARE_LIST)
 
     # enable/disable BatteryBoost (per Loadpoint)
     BATTERYBOOSTLIMIT = ApiKey(json_key="batteryBoostLimit", type=EP_TYPE.LOADPOINTS, writeable=True, write_key="batteryboostlimit", options=BATTERY_LIST)
@@ -512,6 +527,8 @@ class Tag(ApiKey, Enum):
     EVOPT_REQUEST_OBJECT = ApiKey(json_key=JSONKEY_EVOPT_REQ, type=EP_TYPE.EVOPT)
     EVOPT_RESULT_OBJECT = ApiKey(json_key=JSONKEY_EVOPT_RES, type=EP_TYPE.EVOPT)
     EVOPT_DETAILS_OBJECT = ApiKey(json_key=JSONKEY_EVOPT_DETAILS, type=EP_TYPE.EVOPT)
+    # starts an optimizer run right away, as the button on evcc's optimizer page does
+    OPTIMIZE = ApiKey(entity_key="optimize", json_key=f"{INTERNAL_ONLY}_optimize", type=EP_TYPE.EVOPT, write_key="optimize", expected_http_status_response=200)
 
     ###################################
     # CONFIGURATION

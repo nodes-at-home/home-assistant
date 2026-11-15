@@ -5,6 +5,8 @@ import ftplib
 import json
 import math
 import os
+import io
+import html
 import re
 import threading
 import shutil
@@ -54,8 +56,17 @@ from .const import (
     GCODE_STATE_OPTIONS,
     PRINT_TYPE_OPTIONS,
     AIRDUCT_MODES,
-    TempEnum, Print_Fun_Values,
+    AMS_CONNECTED_NOZZLES,
+    NOZZLE_SIDES,
+    TempEnum,
+    Print_Fun_Values,
+    Print_Flag3_Values,
     UNKNOWN_TRAY_LABEL,
+    AMS_STATUS_MAIN,
+    AMS_STATUS_MAIN_IDLE,
+    AMS_STATUS_MAIN_FILAMENT_CHANGE,
+    AMS_STATUS_MAIN_ASSIST,
+    AMS_FILAMENT_CHANGE_STEPS,
 )
 from .commands import (
     CHAMBER_LIGHT_ON,
@@ -106,6 +117,7 @@ class Device:
         self.extruder = Extruder(client=client)
         self.extruder_tool = ExtruderTool(client=client)
         self.hotend_rack = HotendRack(client=client)
+        self.track_switch = FilamentTrackSwitch(client=client)
         self.push_all_data = None
         self.get_version_data = None
         self.chamber_image = ChamberImage(client = client)
@@ -134,6 +146,7 @@ class Device:
         send_event = send_event | self.print_fun.print_update(data = data)
         send_event = send_event | self.extruder_tool.print_update(data = data)
         send_event = send_event | self.hotend_rack.print_update(data = data)
+        send_event = send_event | self.track_switch.print_update(data = data)
 
         if data.get("command") == "push_status":
             if data.get("msg", 0) == 0:
@@ -153,6 +166,18 @@ class Device:
     @property
     def has_full_printer_data(self):
         return (self.push_all_data != None) and (self.get_version_data != None)
+
+    @property
+    def ams_identities_resolved(self) -> bool:
+        """True when the serial of every AMS the printer reports is known.
+
+        Version payloads can arrive with a blank serial, and the first status push may not
+        include the AMS block. Until both are complete, a registered AMS missing from our
+        data has not been shown to be gone.
+        """
+        if not self.has_full_printer_data or "ams" not in self.push_all_data:
+            return False
+        return all(ams.serial for ams in self.ams.data.values())
 
     def info_update(self, data):
         had_full_printer_data = self.has_full_printer_data
@@ -189,6 +214,17 @@ class Device:
         x2_printers = {Printers.X2D}
         dual_nozzle_printers = {Printers.H2C, Printers.H2D, Printers.H2DPRO, Printers.X2D}
         model = self.info.device_type
+        if model == Printers.H3C:
+            # Explicit support for reported telemetry. The H3C has one extruder,
+            # so never enable the H2C's left/right nozzle entities.
+            if feature == Features.HOTEND_RACK:
+                return bool(self.hotend_rack.hotends)
+            if feature in (Features.AMS_READ_RFID_COMMAND, Features.AMS_SWITCH_COMMAND):
+                return False
+            if feature in (Features.SECONDARY_AUX_FAN, Features.AIRDUCT_MODE,
+                           Features.ACTIVE_CHAMBER_HEATER, Features.CHAMBER_TEMPERATURE,
+                           Features.CAMERA_RTSP):
+                return True
 
         # First check known early feature check scenarios. These are features that can be checked as part of
         # processing the mqtt payload and so may be called before full initialization is complete as it processes
@@ -198,7 +234,7 @@ class Device:
         elif feature == Features.CAMERA_IMAGE:
             return model in (a1_printers | a2_printers | p1_printers)
         elif feature == Features.SUPPORTS_EARLY_FTP_DOWNLOAD:
-            return model in (a1_printers | a2_printers | p1_printers)
+            return model in (a1_printers | a2_printers | p1_printers | p2_printers)
 
         # Now check that we have a version. All tests after this are expected to only be called after the
         # first full set of data from the printer has been received and so version will be available.
@@ -301,7 +337,7 @@ class Device:
                 return self.supports_sw_version("01.01.50.00")
             return False
         elif feature == Features.CHAMBER_LIGHT_2:
-            return model in (h2_printers | x2_printers)
+            return model in h2_printers
         elif feature == Features.DUAL_NOZZLES:
             return model in dual_nozzle_printers
         elif feature == Features.EXTRUDER_TOOL:
@@ -595,7 +631,11 @@ class Temperature:
                     if "temp" in entry:
                         self.nozzle_temps[entry["id"]] = entry["temp"] & 0xFFFF
                         self.target_nozzle_temps[entry["id"]] = (entry["temp"] >> 16) & 0xFFFF
-        else:
+        elif not self._client._device.supports_feature(Features.DUAL_NOZZLES):
+            # Legacy single-extruder payload: only trust it for genuinely single-nozzle
+            # printers. On dual-nozzle machines (H2C/H2D/H2DPRO/X2D) these top-level keys
+            # report whichever nozzle is currently active, so applying them to index 0
+            # stomps the right nozzle's real (idle) temperature with the left nozzle's.
             self.nozzle_temps[0] = round(data.get("nozzle_temper", self.nozzle_temps[0]))
             self.target_nozzle_temps[0] = round(data.get("nozzle_target_temper", self.target_nozzle_temps[0]))
 
@@ -921,6 +961,83 @@ AMS_HT_SLOT_END = AMS_HT_SLOT_BASE + AMS_HT_COUNT
 AMS_HT_UNIT_BASE = 128
 AMS_HT_UNIT_END = AMS_HT_UNIT_BASE + AMS_HT_COUNT
 
+# Characters that cannot appear in a file name on the printer's storage. The printer stores
+# each one in a model name as its hex code with the '%' dropped: a project called
+# "Hase / Osterhase" is saved as "Hase 2f Osterhase.gcode.3mf". The MQTT payload still
+# carries the original name, so the two have to be reconciled before they can be compared.
+FILENAME_ILLEGAL_CHARS = '/\\:*?"<>|'
+
+
+def encode_illegal_filename_chars(name: str) -> str:
+    """The spelling the printer uses on disk for a model name: illegal characters as lowercase hex."""
+    return ''.join(format(ord(c), '02x') if c in FILENAME_ILLEGAL_CHARS else c for c in name)
+
+
+def has_illegal_filename_chars(name: str) -> bool:
+    return any(c in FILENAME_ILLEGAL_CHARS for c in name)
+
+
+# Characters that commonly differ between a task name and the file it was saved as: a file copied
+# by hand often has underscores where the title has spaces.
+FILENAME_SEPARATOR_CHARS = " _-"
+
+
+def task_name_variants(name: str) -> list[str]:
+    """The task name as reported, plus the same with XML character references decoded. The firmware
+    copies a 3mf title into the MQTT task name verbatim, so a title containing & < > or quotes
+    arrives as &amp; &lt; &gt; &quot; while the file on disk carries the real characters."""
+    variants = [name]
+    decoded = html.unescape(name)
+    if decoded != name:
+        variants.append(decoded)
+    return variants
+
+
+# Substitutions observed for a character that cannot appear in a file name: the printer's hex
+# code ("/" -> "2f"), an underscore, or nothing at all (Bambu Studio deletes it when saving to
+# the card). Anything broader lets an illegal character stand for unrelated text, which turns a
+# missed match into a wrong one.
+ILLEGAL_CHAR_SUBSTITUTION = "(?:[0-9a-f]{2}|_)?"
+
+
+def model_name_pattern(name: str) -> re.Pattern:
+    """A pattern matching any on-disk spelling of a model name.
+
+    A run of spaces, underscores, hyphens and illegal characters is treated as one gap: Bambu
+    Studio deletes the illegal characters and collapses the whitespace around them, so
+    "Mini Hase / Osterhase" is saved as "Mini_Hase_Osterhase". Within a gap each illegal
+    character may appear as one of the observed substitutions. Case is ignored.
+    """
+    separator = f"[{re.escape(FILENAME_SEPARATOR_CHARS)}]"
+    gap_chars = FILENAME_SEPARATOR_CHARS + FILENAME_ILLEGAL_CHARS
+    parts = []
+    i = 0
+    while i < len(name):
+        if name[i] not in gap_chars:
+            parts.append(re.escape(name[i]))
+            i += 1
+            continue
+        end = i
+        while end < len(name) and name[end] in gap_chars:
+            end += 1
+        illegal_count = sum(1 for c in name[i:end] if c in FILENAME_ILLEGAL_CHARS)
+        if illegal_count:
+            parts.append(f"{separator}*".join([""] + [ILLEGAL_CHAR_SUBSTITUTION] * illegal_count + [""]))
+        elif i == 0 or end == len(name):
+            parts.append(f"{separator}*")
+        else:
+            parts.append(f"{separator}+")
+        i = end
+    return re.compile("".join(parts), re.IGNORECASE)
+
+
+def strip_model_extension(filename: str) -> str:
+    lowered = filename.lower()
+    for extension in ('.gcode.3mf', '.3mf'):
+        if lowered.endswith(extension):
+            return filename[:-len(extension)]
+    return filename
+
 
 def ams_slot_name(index: int) -> str | None:
     """Human readable name for an AMS slot index, or None if the index isn't a real slot."""
@@ -935,6 +1052,32 @@ def ams_slot_name(index: int) -> str | None:
         return f"AMS HT {index - AMS_HT_UNIT_BASE + 1}"
 
     return None
+
+
+def normalize_ams_slot(index: int) -> int:
+    """A touchscreen-started print reports an AMS HT slot as 'unit * 4 + tray' (unit 129 -> 516).
+    Map that to the flat slot index used everywhere else (16 + unit - 128)."""
+    unit, tray = divmod(index, AMS_TRAYS_PER_UNIT)
+    if tray == 0 and AMS_HT_UNIT_BASE <= unit < AMS_HT_UNIT_END:
+        return AMS_HT_SLOT_BASE + unit - AMS_HT_UNIT_BASE
+    return index
+
+
+def ams_slot_location(index: int) -> dict | None:
+    """AMS unit id and tray for a flat slot index, or None if the index isn't a real slot."""
+    if 0 <= index < AMS_SLOT_COUNT:
+        return {"ams": index // AMS_TRAYS_PER_UNIT, "tray": index % AMS_TRAYS_PER_UNIT}
+    if AMS_HT_SLOT_BASE <= index < AMS_HT_SLOT_END:
+        return {"ams": AMS_HT_UNIT_BASE + index - AMS_HT_SLOT_BASE, "tray": 0}
+    return None
+
+
+def tray_mapping_location(value: int) -> dict | None:
+    """AMS unit id and tray for a print.mapping entry, encoded like extruder 'snow' (unit << 8 | tray)."""
+    # 0xFFFF is a project filament the plate doesn't use. Units 254/255 are the external spools.
+    if value == 0xFFFF:
+        return None
+    return {"ams": value >> 8, "tray": value & 0xFF}
 
 
 @dataclass
@@ -988,6 +1131,7 @@ class PrintJob:
         self.print_error = 0
         self.print_weight = 0
         self.ams_mapping = []
+        self._tray_mapping = None
         self._ams_print_weights = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
         self._ams_print_lengths = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
         self.print_length = 0
@@ -1001,6 +1145,7 @@ class PrintJob:
         self._ftpRunAgain = False
         self._ftpThread = None
         self._ftp_download_percentage = 100
+        self._next_model_retry_at = 0.0
 
     @property
     def model_download_percentage(self) -> int:
@@ -1013,6 +1158,15 @@ class PrintJob:
     @property
     def get_skipped_objects(self) -> str:
         return self._skipped_objects
+
+    @property
+    def get_ams_mapping(self) -> list:
+        """AMS unit and tray per slicer filament, None for filaments without a known slot."""
+        # print.mapping is part of the full status on newer firmware. Older printers only send
+        # ams_mapping, once at the start of a print.
+        if self._tray_mapping is not None:
+            return [tray_mapping_location(value) for value in self._tray_mapping]
+        return [ams_slot_location(index) for index in self.ams_mapping or []]
     
     @property
     def get_print_weights(self) -> dict:
@@ -1116,7 +1270,9 @@ class PrintJob:
         self.file_type_icon = "mdi:file" if self._print_type != "cloud" else "mdi:cloud-outline"
         self.current_layer = data.get("layer_num", self.current_layer)
         self.total_layers = data.get("total_layer_num", self.total_layers)
-        self.ams_mapping = data.get("ams_mapping", self.ams_mapping)
+        if "ams_mapping" in data:
+            self.ams_mapping = [normalize_ams_slot(index) for index in data["ams_mapping"]]
+        self._tray_mapping = data.get("mapping", self._tray_mapping)
         self._skipped_objects = data.get("s_obj", self._skipped_objects)
 
         # Initialize task data at startup.
@@ -1181,14 +1337,17 @@ class PrintJob:
                     self._update_task_data()
 
             if self.gcode_state == "RUNNING" and (previously_idle or previous_gcode_state == "PREPARE"):
-                # We haven't yet downloaded model data off the printer. I've observed three scenarios where this happens:
-                # 1. This is a lan mode print where the gcode was pushed to the printer before the print ever started so
-                # 2. On the P1 I've observed a bug where the download completes but the gcode_file_prepare_percent never reaches 100.
-                # If we transition to the running gcode_state without observing 100% we assume the download did actually complete.
-                # 3. On the X1C for a local Bambu Studio slice sent via the cloud we see the download percentage immediately
-                # jump to 100% at the same time we see the PREPARE phase start but if we try and download then, the model file
-                # is not present.
-                LOGGER.debug("REACHED RUNNING WITHOUT DOWNLOADING MODEL")
+                # We haven't yet downloaded model data off the printer. Scenarios where this happens:
+                # 1. This is a lan mode print where the gcode was pushed to the printer before the print ever started
+                # 2. On the P1/P2/A1 download completes or prepare_percent never reaches 100
+                # 3. Home Assistant restarted mid-print or upon print completion without previous state
+                LOGGER.debug(f"REACHED {self.gcode_state} WITHOUT DOWNLOADING MODEL")
+                self._update_task_data()
+
+            # The printer can refuse media transfers for the entire initial
+            # X1 retry window. Try again later while the same job is running.
+            elif self.gcode_state == "RUNNING" and time.monotonic() >= self._next_model_retry_at:
+                LOGGER.debug("RETRYING MISSING ACTIVE PRINT MEDIA")
                 self._update_task_data()
 
         # When a print is canceled by the user, this is the payload that's sent. A couple of seconds later
@@ -1434,21 +1593,33 @@ class PrintJob:
     def _model_filenames_to_try(self) -> list[str]:
         filenames_to_try = []
 
+        # The 3mf the printer says it is printing identifies this job. A task name doesn't: an
+        # older job with the same name can still be on the printer under a different file name.
+        if self.gcode_file.endswith('.3mf'):
+            filenames_to_try.append(self.gcode_file)
+
         if self._subtask_name != '':
-            if self._subtask_name.endswith('.3mf'):
-                filenames_to_try.append(self._subtask_name)
-            else:
-                filenames_to_try.append(f"{self._subtask_name}.3mf")
-                filenames_to_try.append(f"{self._subtask_name}.gcode.3mf")
+            # The raw name is only worth trying when it could be a file name at all. One containing
+            # a path separator never is, and its truncated basename could match an unrelated file.
+            names = []
+            for task_name in task_name_variants(self._subtask_name):
+                if '/' not in task_name and '\\' not in task_name:
+                    names.append(task_name)
+                if has_illegal_filename_chars(task_name):
+                    names.append(encode_illegal_filename_chars(task_name))
+            names = list(dict.fromkeys(names))
+            for name in names:
+                if name.endswith('.3mf'):
+                    filenames_to_try.append(name)
+                else:
+                    filenames_to_try.append(f"{name}.3mf")
+                    filenames_to_try.append(f"{name}.gcode.3mf")
 
-        if (self.gcode_file != '') and (self._subtask_name != self.gcode_file):
-            if self.gcode_file.endswith('.3mf'):
-                filenames_to_try.append(self.gcode_file)
-            else:
-                filenames_to_try.append(f"{self.gcode_file}.3mf")
-                filenames_to_try.append(f"{self.gcode_file}.gcode.3mf")
+        if (self.gcode_file != '') and not self.gcode_file.endswith('.3mf') and (self._subtask_name != self.gcode_file):
+            filenames_to_try.append(f"{self.gcode_file}.3mf")
+            filenames_to_try.append(f"{self.gcode_file}.gcode.3mf")
 
-        return filenames_to_try
+        return list(dict.fromkeys(filenames_to_try))
 
     def _remote_model_matches(self, remote_file: RemoteMediaFile, candidate: str) -> bool:
         candidate = candidate.replace("\\", "/").lstrip("/")
@@ -1456,12 +1627,30 @@ class PrintJob:
         remote_name = remote_file.basename.replace("\\", "/")
         return remote_path == candidate or remote_name == candidate.rsplit("/", 1)[-1]
 
+    def _rank_model_candidates(self, remote_files: list[RemoteMediaFile]) -> list[RemoteMediaFile]:
+        """Best candidate first. Newest wins so an older file in /cache can't beat the job that
+        was just sent, but that can only be judged if every candidate has a timestamp."""
+        all_dated = all(file.modified is not None for file in remote_files)
+
+        def score(remote_file: RemoteMediaFile) -> tuple:
+            in_cache, sort_time, gcode_3mf, source_rank = self._model_candidate_score(remote_file)
+            if all_dated:
+                return (sort_time, in_cache, gcode_3mf, source_rank)
+            return (in_cache, sort_time, gcode_3mf, source_rank)
+
+        return sorted(remote_files, key=score, reverse=True)
+
     def _model_candidate_score(self, remote_file: RemoteMediaFile) -> tuple[int, datetime, int, int]:
         path = remote_file.path.replace("\\", "/").lower()
         name = remote_file.basename.lower()
         in_cache = 1 if "/cache/" in path or path.startswith("cache/") else 0
         gcode_3mf = 1 if name.endswith(".gcode.3mf") else 0
-        source_rank = 1 if remote_file.source == Tcp6000MediaSource.name else 0
+        if remote_file.source == Ftps990MediaSource.name:
+            source_rank = 2
+        elif remote_file.source == Tcp6000MediaSource.name:
+            source_rank = 1
+        else:
+            source_rank = 0
         return (in_cache, remote_file.sort_time, gcode_3mf, source_rank)
 
     def _select_model_file(
@@ -1484,11 +1673,42 @@ class PrintJob:
                 if self._remote_model_matches(file, filename)
             ]
             if matches:
-                selected = sorted(matches, key=self._model_candidate_score, reverse=True)[0]
+                ranked = self._rank_model_candidates(matches)
+                selected = ranked[0]
                 LOGGER.debug(
                     f"Selected model candidate {selected.path} from {selected.source}/{selected.storage}"
                 )
-                return self._remote_file_aliases(matches, selected)
+                # Aliases of the selected file first, then every other match as a
+                # fallback. A copy on a different storage volume is not an alias
+                # (_same_remote_media_file rejects it), but it is often the only
+                # copy the printer will actually serve.
+                aliases = self._remote_file_aliases(matches, selected)
+                remaining = [
+                    file for file in ranked
+                    if not self._same_remote_media_file(file, selected)
+                ]
+                return aliases + remaining
+
+        if self._subtask_name != "":
+            # No candidate spelling matched. Accept a file whose name matches the task name once
+            # case, separators and the substitution of illegal characters are allowed to differ.
+            pattern = model_name_pattern(html.unescape(self._subtask_name))
+            matches = [
+                file for file in remote_files
+                if pattern.fullmatch(strip_model_extension(file.basename))
+            ]
+            if matches:
+                selected = self._rank_model_candidates(matches)[0]
+                LOGGER.debug(
+                    f"Matched task name '{self._subtask_name}' to {selected.path} from "
+                    f"{selected.source}/{selected.storage} by pattern"
+                )
+                aliases = self._remote_file_aliases(matches, selected)
+                remaining = [
+                    file for file in sorted(matches, key=self._model_candidate_score, reverse=True)
+                    if not self._same_remote_media_file(file, selected)
+                ]
+                return aliases + remaining
 
         if self._subtask_name == "":
             LOGGER.debug("Falling back to newest remote 3mf file across media sources.")
@@ -2126,6 +2346,14 @@ class PrintJob:
         self._loaded_model_data = False
         self._client._device.cover_image.set_image(None)
         self._clear_pick_data()
+        # These figures describe one specific job. If they survive and the next
+        # print's 3mf is never found, the previous print's filament usage is
+        # reported as this one's.
+        self.print_weight = 0
+        self.print_length = 0
+        self._ams_print_weights = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
+        self._ams_print_lengths = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
+        self.gcode_file_downloaded = ""
 
     def _clear_pick_data(self):
         LOGGER.debug("Clearing pick data")
@@ -2153,10 +2381,265 @@ class PrintJob:
         LOGGER.info(f"Remote media thread exiting. Elapsed time = {(end_time-start_time).seconds}s")
         self._ftpThread = None
 
+    def _try_active_cover_from_printer(self, sources: list[RemoteMediaSource]) -> bool:
+        """Load the active print's plate thumbnail directly from the printer."""
+        if not self.gcode_file or not self.plate_idx:
+            return False
+
+        metadata_dir = self.gcode_file.replace("\\", "/").rsplit("/", 1)[0]
+        cover_path = f"{metadata_dir}/plate_{self.plate_idx}.png"
+
+        for source in sources:
+            if source.name != Tcp6000MediaSource.name:
+                continue
+
+            remote_file = RemoteMediaFile(
+                name=os.path.basename(cover_path),
+                path=cover_path,
+                size=0,
+                media_type="model",
+                source=source.name,
+                storage="",
+            )
+            local_path = Path(self._client.cache_path) / "prints" / "active-cover.png"
+
+            try:
+                self._download_remote_file_atomic(source, remote_file, local_path)
+                data = local_path.read_bytes()
+                if data:
+                    self._client._device.cover_image.set_image(data)
+                    LOGGER.debug(f"Loaded active cover directly from {cover_path}")
+                    return True
+            except Exception as e:
+                LOGGER.debug(
+                    f"Direct active cover lookup failed for {cover_path}: "
+                    f"{type(e)} Args: {e}"
+                )
+
+        return False
+
+    def _parse_and_apply_model_metadata(
+        self,
+        slice_info_bytes: bytes,
+        cover_image_bytes: bytes | None = None,
+        plate_json_bytes: bytes | None = None,
+        pick_image_bytes: bytes | None = None,
+    ) -> bool:
+        try:
+            slice_info = ElementTree.fromstring(slice_info_bytes)
+            plate = slice_info.find('plate')
+            # "Export all sliced file" writes one <plate> per sliced plate. Use the one MQTT says is
+            # printing, falling back to the first plate as before when it isn't listed.
+            if self.plate_idx:
+                for candidate in slice_info.findall('plate'):
+                    if candidate.find(f"metadata[@key='index'][@value='{self.plate_idx}']") is not None:
+                        plate = candidate
+                        break
+
+            if plate is None:
+                LOGGER.debug("No <plate> element found in slice_info.config")
+                return False
+
+            print_length = 0
+            plate_number = None
+            _printable_objects = {}
+            filament_count = len(self.ams_mapping)
+            plate_filament_count = len(plate.findall('filament'))
+
+            # Reset filament data
+            self._ams_print_weights = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
+            self._ams_print_lengths = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
+
+            if cover_image_bytes is not None:
+                self._client._device.cover_image.set_image(cover_image_bytes)
+                LOGGER.debug(f"Cover image set successfully ({len(cover_image_bytes)} bytes).")
+
+            for metadata in plate:
+                if (metadata.get('key') == 'index'):
+                    # Index is the plate number being printed
+                    plate_number = metadata.get('value')
+                    LOGGER.debug(f"Plate: {plate_number}")
+
+                    if plate_json_bytes is not None:
+                        try:
+                            self.print_bed_type = json.loads(plate_json_bytes.decode('utf-8')).get('bed_type')
+                        except Exception as e:
+                            LOGGER.debug(f"Failed to parse plate json bed_type: {e}")
+
+                elif (metadata.get('key') == 'weight'):
+                    LOGGER.debug(f"Weight: {metadata.get('value')}")
+                    try:
+                        # The XML attribute is a string; print_weight is a float everywhere else.
+                        self.print_weight = float(metadata.get('value'))
+                    except (TypeError, ValueError) as e:
+                        LOGGER.error(f"Failed to parse print weight: {e}")
+                elif (metadata.get('key') == 'prediction'):
+                    # Estimated print length in seconds
+                    LOGGER.debug(f"Print time: {metadata.get('value')}s")
+                elif (metadata.tag == 'object'):
+                    # Get the list of printable objects present on the plate before slicing.
+                    # This includes hidden objects which need to be filtered out later.
+                    if metadata.get('skipped') == "false":
+                        _printable_objects[metadata.get('identify_id')] = metadata.get('name')
+                elif (metadata.tag == 'filament'):
+                    try:
+                        # Filament used for the current print job. The plate info contains filaments
+                        # identified in the order they appear in the slicer. These IDs must be
+                        # mapped to the AMS tray mappings provided by MQTT print.ams_mapping
+
+                        # Zero-index the filament ID
+                        filament_index = int(metadata.get('id')) - 1
+                        log_label = "External spool"
+
+                        # Filament count should be greater than the zero-indexed filament ID
+                        if filament_count > filament_index:
+                            ams_index = self.ams_mapping[filament_index]
+                            ams_name = ams_slot_name(ams_index)
+                            if ams_name is not None:
+                                # We add the filament as you can map multiple slicer filaments to the same physical filament.
+                                self._ams_print_weights[ams_index] += float(metadata.get('used_g'))
+                                self._ams_print_lengths[ams_index] += float(metadata.get('used_m'))
+                                log_label = ams_name
+                            else:
+                                LOGGER.debug(f"ams_mapping: {self.ams_mapping}")
+                        elif plate_filament_count > 0:
+                            # Multi filament print but the AMS mapping is unknown
+                            # The data is only sent in the mqtt payload once and isn't part of the 'full' data so the integration must be
+                            # live and listening to capture it.
+                            LOGGER.debug(f"filament_index: {filament_index}")
+                            log_label = "AMS Tray unknown"
+                        else:
+                            LOGGER.debug(f"plate_filament_count: {plate_filament_count}")
+
+                        LOGGER.debug(f"{log_label}: {metadata.get('used_m')}m | {metadata.get('used_g')}g")
+
+                        # Increase the total print length
+                        print_length += float(metadata.get('used_m'))
+                    except Exception as e:
+                        LOGGER.error(f"Failed to parse filament data: {e}")
+
+            self.print_length = print_length
+
+            if pick_image_bytes is not None and plate_number is not None:
+                try:
+                    self._client._device.pick_image.set_image(pick_image_bytes)
+                    pick_image = Image.open(io.BytesIO(pick_image_bytes))
+                    identify_ids = self._identify_objects_in_pick_image(image=pick_image)
+
+                    # Filter the printable objects from slice_info.config, removing
+                    # any that weren't identified in the pick image.
+                    self._printable_objects = {identify_id: _printable_objects[identify_id] for identify_id in identify_ids if identify_id in _printable_objects}
+                except Exception as e:
+                    LOGGER.error(f"Failed to extract pick image: {e}")
+
+            self._client.callback("event_printer_data_update")
+            return True
+        except Exception as e:
+            LOGGER.error(f"Error parsing slice_info.config metadata: {e}")
+            return False
+
+    def _attempt_direct_metadata_download(self) -> bool:
+        """Attempt to download slice_info.config and plate image directly via FTPS (e.g. for P1/P2/A1 printers in LAN mode)."""
+        ftp = None
+        try:
+            ftp = self._client.ftp_connection()
+            metadata_dirs = ["/data/Metadata", "/Metadata"]
+            target_dir = None
+            files = []
+
+            for mdir in metadata_dirs:
+                try:
+                    ftp.cwd(mdir)
+                    target_dir = mdir
+                    files = ftp.nlst()
+                    break
+                except Exception:
+                    continue
+
+            if not target_dir or not files:
+                LOGGER.debug("No Metadata directory found on printer via FTPS.")
+                return False
+
+            slice_info_file = next((f for f in files if f.endswith("slice_info.config")), None)
+            if not slice_info_file:
+                LOGGER.debug(f"slice_info.config not found in {target_dir}")
+                return False
+
+            slice_info_buf = io.BytesIO()
+            ftp.retrbinary(f"RETR {slice_info_file}", slice_info_buf.write)
+            slice_info_bytes = slice_info_buf.getvalue()
+
+            plate_elem = ElementTree.fromstring(slice_info_bytes).find('plate')
+            plate_number = None
+            if plate_elem is not None:
+                for meta in plate_elem:
+                    if meta.get('key') == 'index':
+                        plate_number = meta.get('value')
+                        break
+
+            active_plate = str(self.plate_idx) if self.plate_idx else plate_number
+            cover_png_file = None
+            if active_plate and f"plate_{active_plate}.png" in files:
+                cover_png_file = f"plate_{active_plate}.png"
+            elif plate_number and f"plate_{plate_number}.png" in files:
+                cover_png_file = f"plate_{plate_number}.png"
+            elif "plate_1.png" in files:
+                cover_png_file = "plate_1.png"
+            else:
+                cover_png_file = next((f for f in files if f.startswith("plate_") and f.endswith(".png")), None)
+
+            cover_image_bytes = None
+            if cover_png_file:
+                try:
+                    cover_buf = io.BytesIO()
+                    ftp.retrbinary(f"RETR {cover_png_file}", cover_buf.write)
+                    cover_image_bytes = cover_buf.getvalue()
+                except Exception as e:
+                    LOGGER.debug(f"Failed to download {cover_png_file}: {e}")
+
+            target_plate = plate_number or active_plate or "1"
+            plate_json_bytes = None
+            target_plate_json = f"plate_{target_plate}.json"
+            if target_plate_json in files:
+                try:
+                    pjson_buf = io.BytesIO()
+                    ftp.retrbinary(f"RETR {target_plate_json}", pjson_buf.write)
+                    plate_json_bytes = pjson_buf.getvalue()
+                except Exception as e:
+                    LOGGER.debug(f"Failed to download {target_plate_json}: {e}")
+
+            pick_image_bytes = None
+            target_pick = f"pick_{target_plate}.png"
+            if target_pick in files:
+                try:
+                    pick_buf = io.BytesIO()
+                    ftp.retrbinary(f"RETR {target_pick}", pick_buf.write)
+                    pick_image_bytes = pick_buf.getvalue()
+                except Exception as e:
+                    LOGGER.debug(f"Failed to download {target_pick}: {e}")
+
+            return self._parse_and_apply_model_metadata(
+                slice_info_bytes=slice_info_bytes,
+                cover_image_bytes=cover_image_bytes,
+                plate_json_bytes=plate_json_bytes,
+                pick_image_bytes=pick_image_bytes,
+            )
+        except Exception as e:
+            LOGGER.debug(f"Direct metadata download failed: {type(e)} Args: {e}")
+            return False
+        finally:
+            if ftp:
+                try:
+                    ftp.quit()
+                except Exception:
+                    pass
+
     def _async_download_task_data_from_printer_worker(self):
         model_file_path = None
+        cover_loaded = False
         sources = self._remote_media_sources()
         try:
+            cover_loaded = self._try_active_cover_from_printer(sources)
             for i in range(1,13):
                 model_file_path = self._attempt_remote_model_download(sources)
                 if model_file_path is not None:
@@ -2170,14 +2653,26 @@ class PrintJob:
                         LOGGER.debug(f"Sleeping 5s for X1/H2/P2 retry")
                         time.sleep(5)
                         LOGGER.debug(f"Try #{i+1} for X1/H2/P2")
+                        # Retry active cover if TCP 6000 wasn't available on first attempt
+                        if not cover_loaded:
+                            cover_loaded = self._try_active_cover_from_printer(sources)
                 else:
                     break
         finally:
             self._close_remote_media_sources(sources)
 
         if model_file_path is None:
-            LOGGER.debug("No model file found.")
-            return
+            LOGGER.debug("No model .3mf file found. Attempting direct metadata download from printer...")
+            if self._attempt_direct_metadata_download():
+                LOGGER.info("Direct metadata download from printer succeeded.")
+                self.prune_print_history_files()
+                return True
+            LOGGER.debug("Direct metadata download also failed.")
+            if not cover_loaded:
+                self._next_model_retry_at = time.monotonic() + 300
+                self._loaded_model_data = False
+            self.prune_print_history_files()
+            return False
 
         result = False
         
@@ -2188,147 +2683,85 @@ class PrintJob:
 
             # Open the 3mf zip archive
             with ZipFile(model_file_path) as archive:
-                # Extract the slicer XML config and parse the plate tree
-                plate = ElementTree.fromstring(archive.read('Metadata/slice_info.config')).find('plate')
-                
-                # Iterate through each config element and extract the data
-                # Example contents:
-                # {'key': 'index', 'value': '2'}
-                # {'key': 'printer_model_id', 'value': 'C12'}
-                # {'key': 'nozzle_diameters', 'value': '0.4'}
-                # {'key': 'timelapse_type', 'value': '0'}
-                # {'key': 'prediction', 'value': '5935'}
-                # {'key': 'weight', 'value': '20.91'}
-                # {'key': 'outside', 'value': 'false'}
-                # {'key': 'support_used', 'value': 'false'}
-                # {'key': 'label_object_enabled', 'value': 'true'}
-                # {'identify_id': '123', 'name': 'ModelObjectOne.stl', 'skipped': 'false'}
-                # {'identify_id': '394', 'name': 'ModelObjectTwo.stl', 'skipped': 'false'}
-                # {'id': '1', 'tray_info_idx': 'GFA01', 'type': 'PLA', 'color': '#000000', 'used_m': '5.45', 'used_g': '17.32'}
-                # {'id': '2', 'tray_info_idx': 'GFA01', 'type': 'PLA', 'color': '#8D8C8F', 'used_m': '0.84', 'used_g': '2.66'}
-                # {'id': '3', 'tray_info_idx': 'GFA01', 'type': 'PLA', 'color': '#FFFFFF', 'used_m': '0.29', 'used_g': '0.93'}
-                
-                # Start a total print length count to be compiled from each filament
-                print_length = 0
+                slice_info_bytes = archive.read('Metadata/slice_info.config')
+                slice_info = ElementTree.fromstring(slice_info_bytes)
+                plate = slice_info.find('plate')
+                if self.plate_idx:
+                    for candidate in slice_info.findall('plate'):
+                        if candidate.find(f"metadata[@key='index'][@value='{self.plate_idx}']") is not None:
+                            plate = candidate
+                            break
+
                 plate_number = None
-                _printable_objects = {}
-                filament_count = len(self.ams_mapping)
-                plate_filament_count = len(plate.findall('filament'))
+                if plate is not None:
+                    for meta in plate:
+                        if meta.get('key') == 'index':
+                            plate_number = meta.get('value')
+                            break
 
-                # Reset filament data
-                self._ams_print_weights = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
-                self._ams_print_lengths = [0.0] * AMS_HT_UNIT_END # TODO: Convert to a dict in the future?
+                active_plate_number = str(self.plate_idx) if self.plate_idx else plate_number
+                namelist_map = {name.lower(): name for name in archive.namelist()}
 
-                for metadata in plate:
-                    if (metadata.get('key') == 'index'):
-                        # Index is the plate number being printed
-                        plate_number = metadata.get('value')
-                        LOGGER.debug(f"Plate: {plate_number}")
-                        
-                        # MQTT is authoritative for the plate that is actively printing.
-                        # A printer can retain/reuse a 3mf whose slice_info points at a
-                        # different plate, which otherwise makes the cover image stale.
-                        active_plate_number = str(self.plate_idx) if self.plate_idx else plate_number
-                        cover_entry_name = f"Metadata/plate_{active_plate_number}.png"
-                        self._client._device.cover_image.set_image(archive.read(cover_entry_name))
-                        LOGGER.debug(f"Cover image: {cover_entry_name}")
+                candidates = []
+                if active_plate_number:
+                    candidates.append(f"Metadata/plate_{active_plate_number}.png")
+                if plate_number and plate_number != active_plate_number:
+                    candidates.append(f"Metadata/plate_{plate_number}.png")
+                candidates.append("Metadata/plate_1.png")
 
-                        # Save the cover image to the cache
-                        try:
-                            # Save the cover image directly to the cache
-                            cover_filename = os.path.splitext(os.path.basename(model_file_path))[0] + '.png'
-                            cover_path = os.path.join(model_dir, cover_filename)
-                            with archive.open(cover_entry_name) as cover_entry, open(cover_path, "wb") as target_path:
-                                shutil.copyfileobj(cover_entry, target_path)
-                            LOGGER.debug(f"Cover image saved to: {cover_path}")
-                        except Exception as e:
-                            LOGGER.error(f"Failed to save cover image: {e}")
+                cover_entry_name = None
+                for c in candidates:
+                    if c.lower() in namelist_map:
+                        cover_entry_name = namelist_map[c.lower()]
+                        break
 
-                        try:
-                            # Save the gcode file to the cache
+                if not cover_entry_name:
+                    for name in archive.namelist():
+                        nl = name.lower()
+                        if nl.endswith(".png") and ("plate" in nl or "cover" in nl) and "pick" not in nl:
+                            cover_entry_name = name
+                            break
+
+                cover_image_bytes = None
+                if cover_entry_name:
+                    try:
+                        cover_image_bytes = archive.read(cover_entry_name)
+                        LOGGER.debug(f"Read cover image ({len(cover_image_bytes)} bytes) from {cover_entry_name}")
+                        cover_filename = os.path.splitext(os.path.basename(model_file_path))[0] + '.png'
+                        cover_path = os.path.join(model_dir, cover_filename)
+                        with open(cover_path, "wb") as f:
+                            f.write(cover_image_bytes)
+                        LOGGER.debug(f"Cover image saved to: {cover_path}")
+                    except Exception as e:
+                        LOGGER.error(f"Failed to save cover image: {e}")
+
+                target_plate = plate_number or active_plate_number or "1"
+                plate_json_bytes = None
+                for jc in [f"Metadata/plate_{target_plate}.json", f"Metadata/plate_{active_plate_number}.json", "Metadata/plate_1.json"]:
+                    if jc and jc.lower() in namelist_map:
+                        plate_json_bytes = archive.read(namelist_map[jc.lower()])
+                        break
+
+                pick_image_bytes = None
+                for pc in [f"Metadata/pick_{target_plate}.png", f"Metadata/pick_{active_plate_number}.png", "Metadata/pick_1.png"]:
+                    if pc and pc.lower() in namelist_map:
+                        pick_image_bytes = archive.read(namelist_map[pc.lower()])
+                        break
+
+                if plate_number:
+                    try:
+                        gcode_entry = f"Metadata/plate_{plate_number}.gcode"
+                        if gcode_entry in archive.namelist():
                             gcode_filename = os.path.splitext(os.path.basename(model_file_path))[0] + '.gcode'
                             gcode_path = os.path.join(model_dir, gcode_filename)
-                            with archive.open(f"Metadata/plate_{plate_number}.gcode") as gcode_entry, open(gcode_path, "wb") as target_path:
-                                shutil.copyfileobj(gcode_entry, target_path)
+                            with archive.open(gcode_entry) as ge, open(gcode_path, "wb") as tp:
+                                shutil.copyfileobj(ge, tp)
                                 self.gcode_file_downloaded = gcode_filename
-                        except Exception as e:
-                            self.gcode_file_downloaded = "ERROR"
-                            LOGGER.error(f"Error while extracting gcode zip entry to target path. {repr(e)}")
-                        
-                        # And extract the plate type from the plate json.
-                        self.print_bed_type = json.loads(archive.read(f"Metadata/plate_{plate_number}.json")).get('bed_type')
-                    elif (metadata.get('key') == 'weight'):
-                        LOGGER.debug(f"Weight: {metadata.get('value')}")
-                        try:
-                            # The XML attribute is a string; print_weight is a float everywhere else.
-                            self.print_weight = float(metadata.get('value'))
-                        except (TypeError, ValueError) as e:
-                            LOGGER.error(f"Failed to parse print weight: {e}")
-                    elif (metadata.get('key') == 'prediction'):
-                        # Estimated print length in seconds
-                        LOGGER.debug(f"Print time: {metadata.get('value')}s")
-                    elif (metadata.tag == 'object'):
-                        # Get the list of printable objects present on the plate before slicing.
-                        # This includes hidden objects which need to be filtered out later.
-                        if metadata.get('skipped') == f"false":
-                            _printable_objects[metadata.get('identify_id')] = metadata.get('name')
-                    elif (metadata.tag == 'filament'):
-                        try:
-                            # Filament used for the current print job. The plate info contains filaments
-                            # identified in the order they appear in the slicer. These IDs must be
-                            # mapped to the AMS tray mappings provided by MQTT print.ams_mapping
+                    except Exception as e:
+                        self.gcode_file_downloaded = "ERROR"
+                        LOGGER.error(f"Error while extracting gcode zip entry to target path: {repr(e)}")
 
-                            # Zero-index the filament ID
-                            filament_index = int(metadata.get('id')) - 1
-                            log_label = f"External spool"
-                            
-                            # Filament count should be greater than the zero-indexed filament ID
-                            if filament_count > filament_index:
-                                ams_index = self.ams_mapping[filament_index]
-                                ams_name = ams_slot_name(ams_index)
-                                if ams_name is not None:
-                                    # We add the filament as you can map multiple slicer filaments to the same physical filament.
-                                    self._ams_print_weights[ams_index] += float(metadata.get('used_g'))
-                                    self._ams_print_lengths[ams_index] += float(metadata.get('used_m'))
-                                    log_label = ams_name
-                                else:
-                                    LOGGER.debug(f"ams_mapping: {self.ams_mapping}")
-                            elif plate_filament_count > 0:
-                                # Multi filament print but the AMS mapping is unknown
-                                # The data is only sent in the mqtt payload once and isn't part of the 'full' data so the integration must be
-                                # live and listening to capture it.
-                                LOGGER.debug(f"filament_index: {filament_index}")
-                                log_label = f"AMS Tray unknown"
-                            else:
-                                LOGGER.debug(f"plate_filament_count: {plate_filament_count}")
-
-                            LOGGER.debug(f"{log_label}: {metadata.get('used_m')}m | {metadata.get('used_g')}g")
-
-                            # Increase the total print length
-                            print_length += float(metadata.get('used_m'))
-                        except Exception as e:
-                            LOGGER.error(f"Failed to parse filament data: {e}")
-                
-                self.print_length = print_length
-
-                if plate_number is not None:
-                    try:
-                        image = archive.read(f"Metadata/pick_{plate_number}.png")
-                        self._client._device.pick_image.set_image(image)
-                        # Process the pick image for objects
-                        pick_image = Image.open(archive.open(f"Metadata/pick_{plate_number}.png"))
-                        identify_ids = self._identify_objects_in_pick_image(image=pick_image)
-                        
-                        # Filter the printable objects from slice_info.config, removing
-                        # any that weren't detected in the pick image
-                        self._printable_objects = {k: _printable_objects[k] for k in identify_ids if k in _printable_objects}
-                    except:
-                        LOGGER.debug(f"Unable to load 'Metadata/pick_{plate_number}.png' from archive")
-
-                # Save the slice_info.config file only if file cache is enabled
                 try:
-                    slice_info_bytes = archive.read('Metadata/slice_info.config')
-                    # Save the slice_info.config in the same directory as the model file
                     slice_info_filename = os.path.splitext(os.path.basename(model_file_path))[0] + '.slice_info.config'
                     slice_info_path = os.path.join(model_dir, slice_info_filename)
                     with open(slice_info_path, "wb") as f:
@@ -2336,13 +2769,16 @@ class PrintJob:
                 except Exception as e:
                     LOGGER.error(f"Failed to save slice_info.config: {e}")
 
-            archive.close()
+                result = self._parse_and_apply_model_metadata(
+                    slice_info_bytes=slice_info_bytes,
+                    cover_image_bytes=cover_image_bytes,
+                    plate_json_bytes=plate_json_bytes,
+                    pick_image_bytes=pick_image_bytes,
+                )
 
-            self._client.callback("event_printer_data_update")
-            result = True
         except Exception as e:
             LOGGER.error(f"Unexpected error parsing model data: {e}")
-        
+
         self.prune_print_history_files()
 
         return result
@@ -2408,31 +2844,39 @@ class PrintJob:
         else:
             LOGGER.debug("Updating bambu cloud task data found for printer.")
             # For local prints with FTP available, the printer's 3mf is the
-            # authoritative image source. Bambu Cloud's "latest task" can lag
-            # behind the active print and return a stale cover.
-            use_cloud_cover = not (self._print_type == "local" and self._client.ftp_enabled)
+            # authoritative source. Bambu Cloud's "latest task" can lag behind
+            # the active print, and a print started from the printer's own
+            # touchscreen registers no cloud task at all, so the newest one can
+            # belong to an arbitrarily older job.
+            use_cloud_task = not (self._print_type == "local" and self._client.ftp_enabled)
             url = self._task_data.get('cover', '')
-            if use_cloud_cover and url != "":
+            if use_cloud_task and url != "":
                 data = self._client.bambu_cloud.download(url)
                 self._client._device.cover_image.set_image(data)
 
-            self.print_length = self._task_data.get('length', self.print_length * 100) / 100
             self.print_bed_type = self._task_data.get('bedType', self.print_bed_type)
-            self.print_weight = self._task_data.get('weight', self.print_weight)
-            ams_print_data = self._task_data.get('amsDetailMapping', [])
-            if self.print_weight != 0:
-                for ams_data in ams_print_data:
-                    index = ams_data['ams']
-                    weight = ams_data['weight']
-                    if ams_slot_name(index) is not None:
-                        self._ams_print_weights[index] = weight
-                        self._ams_print_lengths[index] = self.print_length * weight / self.print_weight
-                    else:
-                        # Common case is this is a machine without an AMS and we get index == 255 (not 254 as might be expected)
-                        # And probably also a machine with an AMS but you did a print from the external spool.
-                        # This could also hit if you have reconfigured your printer and removed an AMS.
-                        LOGGER.debug(f"AMS tray {index} not found in _ams_print_weights")
-                        LOGGER.debug(f"ams_print_data: {ams_print_data}")
+
+            # The cover was already guarded against that staleness. The print
+            # figures need the same guard: filament usage attributed to another
+            # job, and to that job's trays, is silently wrong rather than
+            # visibly missing.
+            if use_cloud_task:
+                self.print_length = self._task_data.get('length', self.print_length * 100) / 100
+                self.print_weight = self._task_data.get('weight', self.print_weight)
+                ams_print_data = self._task_data.get('amsDetailMapping', [])
+                if self.print_weight != 0:
+                    for ams_data in ams_print_data:
+                        index = ams_data['ams']
+                        weight = ams_data['weight']
+                        if ams_slot_name(index) is not None:
+                            self._ams_print_weights[index] = weight
+                            self._ams_print_lengths[index] = self.print_length * weight / self.print_weight
+                        else:
+                            # Common case is this is a machine without an AMS and we get index == 255 (not 254 as might be expected)
+                            # And probably also a machine with an AMS but you did a print from the external spool.
+                            # This could also hit if you have reconfigured your printer and removed an AMS.
+                            LOGGER.debug(f"AMS tray {index} not found in _ams_print_weights")
+                            LOGGER.debug(f"ams_print_data: {ams_print_data}")
 
             status = self._task_data['status']
             LOGGER.debug(f"CLOUD PRINT STATUS: {status}")
@@ -2612,7 +3056,7 @@ class Info:
     nozzle_diameters: dict[int, float|None]
     nozzle_types: dict[int, str|None]
     usage_hours: float
-    extruder_filament_state: bool
+    hw_switch_state: int
     door_open: bool
     airduct_mode: int
         
@@ -2634,7 +3078,7 @@ class Info:
         self.nozzle_diameters = {0: None, 1: None, 15: None}
         self.nozzle_types = {0: None, 1: None, 15: None}
         self.usage_hours = client._usage_hours
-        self.extruder_filament_state = False
+        self.hw_switch_state = 0
         self.door_open = False
         self.airduct_mode = 0
         self.airduct_modes_available = []
@@ -2845,6 +3289,9 @@ class Info:
                 if entry.get("modeId") in AIRDUCT_MODES
             ]
 
+        # Bit 0 is the right (or only) extruder, bit 1 the left.
+        self.hw_switch_state = data.get("hw_switch_state", self.hw_switch_state)
+
         # Compute if there's a delta before we check the wifi_signal value.
         changed = (old_data != f"{self.__dict__}")
 
@@ -2858,11 +3305,20 @@ class Info:
                 # It's been long enough. We can send this one.
                 self.wifi_sent = datetime.now()
                 changed = True
-        
-        # "hw_switch_state": 1,
-        self.extruder_filament_state = bool(data.get("hw_switch_state", self.extruder_filament_state))
 
         return changed
+
+    @property
+    def extruder_filament_state(self) -> bool:
+        return self.hw_switch_state != 0
+
+    @property
+    def left_extruder_filament_state(self) -> bool:
+        return bool(self.hw_switch_state & 0x2)
+
+    @property
+    def right_extruder_filament_state(self) -> bool:
+        return bool(self.hw_switch_state & 0x1)
 
     @property
     def active_nozzle_diameter(self) -> float | None:
@@ -2966,6 +3422,9 @@ class Hotend:
         self.color_m: str = "00000000"
         self.fila_id: str = ""
         self._active: bool = False
+        self.temperature: int | None = None
+        self.target_temperature: int | None = None
+        self.filament_source: int | None = None
 
     @property
     def active(self) -> bool:
@@ -3000,6 +3459,13 @@ class Hotend:
         self.stat = data.get("stat", self.stat)
         self.color_m = data.get("color_m", self.color_m)
         self.fila_id = data.get("fila_id", self.fila_id)
+        source = data.get("snow")
+        if isinstance(source, int) and not isinstance(source, bool):
+            self.filament_source = source
+        packed_temp = data.get("temp")
+        if isinstance(packed_temp, int) and not isinstance(packed_temp, bool):
+            self.temperature = packed_temp & 0xFFFF
+            self.target_temperature = (packed_temp >> 16) & 0xFFFF
         return old_data != f"{self.__dict__}"
 
 
@@ -3017,6 +3483,41 @@ class HotendRack:
         self.tar_id: int = 0
         self.holder_pos: int = 0
         self.holder_stat: int = 0
+        self.mounted_slot_id: int | None = None
+
+    @property
+    def is_swaptek(self) -> bool:
+        return self._client._device.info.device_type == Printers.H3C
+
+    def linked_filament(self, slot_id: int):
+        """Return the nonempty spool explicitly linked by the printer."""
+        tool = self.hotends.get(slot_id)
+        if tool is None or tool.filament_source is None:
+            return None
+        ams_id, tray_id = tool.filament_source >> 8, tool.filament_source & 0xFF
+        unit = self._client._device.ams.data.get(ams_id)
+        if unit is None or not 0 <= tray_id < len(unit.tray):
+            return None
+        tray = unit.tray[tray_id]
+        return None if tray.empty else tray
+
+    def filament_diameter(self, slot_id: int) -> float | None:
+        """Reported spool diameter; never infer it from nozzle/tool type."""
+        tray = self.linked_filament(slot_id)
+        return tray.filament_diameter if tray is not None else None
+
+    def filament_attributes(self, slot_id: int) -> dict:
+        tray = self.linked_filament(slot_id)
+        source = self.hotends[slot_id].filament_source
+        return {
+            "filament_diameter": tray.filament_diameter if tray is not None else None,
+            "filament_name": tray.name if tray is not None else None,
+            "filament_type": tray.type if tray is not None else None,
+            "remaining_weight_g": tray.remaining_weight_g if tray is not None else None,
+            "remaining_percent": tray.remain if tray is not None and tray.remain >= 0 else None,
+            "ams_id": source >> 8 if tray is not None else None,
+            "ams_slot": (source & 0xFF) + 1 if tray is not None else None,
+        }
 
     def is_slot_occupied(self, slot_id: int) -> bool:
         """Check if a rack slot physically has a hotend."""
@@ -3054,7 +3555,7 @@ class HotendRack:
                 changed = True
 
         # Initialize rack slots that don't exist yet
-        for slot_id in self.RACK_SLOT_IDS:
+        for slot_id in (range(16, 25) if self.is_swaptek else self.RACK_SLOT_IDS):
             if slot_id not in self.hotends: 
                 self.hotends[slot_id] = Hotend(slot_id)
 
@@ -3062,6 +3563,24 @@ class HotendRack:
         if nozzle_info is not None and isinstance(nozzle_info, list):
             for entry in nozzle_info:
                 nid = entry.get("id")
+                if self.is_swaptek:
+                    # addr_id identifies the PrintTool even while its live id is 0
+                    # on the carriage. Parked ids are 16 + addr_id.
+                    address = entry.get("addr_id")
+                    if isinstance(address, int) and 0 <= address < 9:
+                        slot_id = 16 + address
+                        if isinstance(nid, int) and nid < 16:
+                            if self.mounted_slot_id != slot_id:
+                                self.mounted_slot_id = slot_id
+                                changed = True
+                        elif nid == slot_id and self.mounted_slot_id == slot_id:
+                            # Delta updates may report only the returned tool.
+                            self.mounted_slot_id = None
+                            changed = True
+                        normalized = dict(entry, id=slot_id)
+                        if self.hotends[slot_id].print_update(normalized):
+                            changed = True
+                    continue
                 if nid is not None and nid in self.hotends:
                     # Rack slot data (IDs 16-21)
                     if self.hotends[nid].print_update(entry):
@@ -3070,6 +3589,13 @@ class HotendRack:
                     # Extruder nozzle with valid serial — update the mounted hotend's rack slot
                     if self.hotends[self.tar_id].print_update(entry):
                         changed = True
+
+        if self.is_swaptek:
+            for slot_id, hotend in self.hotends.items():
+                active = slot_id == self.mounted_slot_id
+                if hotend.active != active:
+                    hotend.active = active
+                    changed = True
 
         # Holder data
         holder_data = data.get("device", {}).get("holder", {})
@@ -3088,6 +3614,7 @@ class AMSInstance:
     """Return all AMS instance related info"""
     model: str
     tray: list[AMSTray]
+    zones: dict[int, dict] = field(default_factory=dict)
 
     _active: bool = False
     serial: str = ""
@@ -3101,11 +3628,16 @@ class AMSInstance:
     drying_temperature: int = 0
     drying_duration: int = 0
     drying_filament: str = ""
+    connected_nozzle: str | None = None
+    status: str = "idle"
 
     def __init__(self, client, model, index):
         self.model = model
         self.index = index
-        if index >= 128:
+        self.zones = {}
+        if model == "AMS 3H":
+            self.tray = [AMSTray(client) for _ in range(9)]
+        elif index >= 128:
             self.tray = [None]
             self.tray[0] = AMSTray(client)
         else:
@@ -3114,6 +3646,13 @@ class AMSInstance:
             self.tray[1] = AMSTray(client)
             self.tray[2] = AMSTray(client)
             self.tray[3] = AMSTray(client)
+
+    @property
+    def device_name_suffix(self) -> str:
+        """Use the model name for AMS 3H instead of treating its bus ID as a count."""
+        if self.model == "AMS 3H":
+            return "AMS_3H"
+        return f"AMS_{self.index + 1 if self.index < 128 else self.index}"
 
     @property
     def active(self):
@@ -3127,13 +3666,28 @@ class AMSList:
 
     _nozzle_tray_index: dict
     _nozzle_ams_index: dict
+    _nozzle_target_ams_index: dict
+    _ams_status: int = 0
     _first_initialization_done: bool = False
 
     def __init__(self, client):
         self._client = client
         self._nozzle_tray_index = { 0: 0, 1: 0, 15: 0}
         self._nozzle_ams_index = { 0: 0, 1: 0, 15: 0}
+        self._nozzle_target_ams_index = { 0: 255, 1: 255, 15: 255}
         self.data = {}
+
+    @property
+    def target_ams_index(self):
+        active_nozzle = self._client._device.extruder.active_nozzle_index
+        return self._nozzle_target_ams_index[active_nozzle]
+
+    def _status_description(self) -> str:
+        main = (self._ams_status >> 8) & 0xFF
+        sub = self._ams_status & 0xFF
+        if main == AMS_STATUS_MAIN_FILAMENT_CHANGE:
+            return AMS_FILAMENT_CHANGE_STEPS.get(sub, AMS_STATUS_MAIN[main])
+        return AMS_STATUS_MAIN.get(main, "unknown")
 
     @property
     def active_ams_index(self):
@@ -3196,7 +3750,13 @@ class AMSList:
             name = module["name"]
             index = -1
             model = ""
-            if name.startswith("ams/"):
+            if name == "n10a" or name.startswith("n10a/"):
+                model = "AMS 3H"
+                try:
+                    index = int(module["id"] if "id" in module else name.split("/", 1)[1])
+                except (KeyError, IndexError, TypeError, ValueError):
+                    continue
+            elif name.startswith("ams/"):
                 model = "AMS"
                 index = int(name[4:])
             elif name.startswith("ams_f1/"):
@@ -3220,6 +3780,9 @@ class AMSList:
                     if self.data[index].model != model:
                         data_changed = True
                         self.data[index].model = model
+                    if model == "AMS 3H":
+                        while len(self.data[index].tray) < 9:
+                            self.data[index].tray.append(AMSTray(self._client))
                     if self.data[index].serial != module['sn']:
                         data_changed = True
                         self.data[index].serial = module['sn']
@@ -3306,8 +3869,21 @@ class AMSList:
                     if "snow" in entry:
                         tray_now = entry["snow"]
                         self._nozzle_ams_index[entry["id"]] = tray_now >> 8
-                        self._nozzle_tray_index[entry["id"]] = tray_now & 0x3
+                        self._nozzle_tray_index[entry["id"]] = tray_now & 0xFF
+                    if "star" in entry:
+                        self._nozzle_target_ams_index[entry["id"]] = entry["star"] >> 8
         else:
+            tray_tar = ams_data.get('tray_tar')
+            if tray_tar is not None:
+                tray_tar = int(tray_tar)
+                if tray_tar >= 254:
+                    # 255 = no target (unload), 254 = external spool
+                    self._nozzle_target_ams_index[0] = 255
+                elif tray_tar >= 80:
+                    self._nozzle_target_ams_index[0] = tray_tar
+                else:
+                    self._nozzle_target_ams_index[0] = tray_tar >> 2
+
             tray_now = ams_data.get('tray_now')
             if tray_now is not None:
                 tray_now = int(tray_now)
@@ -3328,54 +3904,120 @@ class AMSList:
                     self._nozzle_ams_index[0] = tray_now >> 2
                     self._nozzle_tray_index[0] = tray_now & 0x3
 
-        if len(ams_data) != 0:
-            ams_list = ams_data.get("ams", [])
+        # Newer AMS payloads and incremental updates may omit legacy fields.
+        # Keep existing values when a field is absent/invalid; zone measurements
+        # must not be interpreted as a single legacy humidity/temperature value.
+        def optional_number(payload, key, converter):
+            value = payload.get(key)
+            if value is None or isinstance(value, bool):
+                return None
+            try:
+                result = converter(value)
+                return result if math.isfinite(result) else None
+            except (TypeError, ValueError, OverflowError):
+                return None
+
+        if isinstance(ams_data, dict):
+            ams_list = ams_data.get("ams") or []
             for ams in ams_list:
-                index = int(ams['id'])
-                # May get data before info so create entry if necessary
+                if not isinstance(ams, dict):
+                    continue
+                index = optional_number(ams, "id", int)
+                if index is None or index < 0:
+                    LOGGER.debug("Ignoring AMS update with invalid or missing id")
+                    continue
+                # Status can arrive before version metadata.
                 if index not in self.data:
                     self.data[index] = AMSInstance(self._client, "Unknown", index)
+                instance = self.data[index]
+                # Preserve each independently reported drying zone and its slot map.
+                for zone in ams.get("zone_info") or []:
+                    if not isinstance(zone, dict):
+                        continue
+                    zone_id = optional_number(zone, "zone_id", int)
+                    if zone_id is None or zone_id < 0:
+                        continue
+                    previous = instance.zones.setdefault(zone_id, {})
+                    previous.update(zone)
+                if ams.get("zone_info") and any(
+                    isinstance(t, dict) and optional_number(t, "id", int) in range(4, 9)
+                    for t in ams.get("tray") or []
+                ):
+                    while len(instance.tray) < 9:
+                        instance.tray.append(AMSTray(self._client))
 
-                # Sometimes when the AMS is being powered on it may send bogus humidity and temperature values.
-                # So ignore these values if they are out of a sensible range.
+                for key, attribute, converter, minimum, maximum in (
+                    ("humidity", "humidity_index", int, 1, 5),
+                    ("humidity_raw", "humidity", int, 1, 100),
+                    ("temp", "temperature", float, 0, 100),
+                    ("dry_time", "remaining_drying_time", int, 0, math.inf),
+                ):
+                    value = optional_number(ams, key, converter)
+                    if value is not None and minimum <= value <= maximum:
+                        setattr(instance, attribute, value)
 
-                humidity_index = int(ams['humidity'])
-                if 1 <= humidity_index <= 5 and self.data[index].humidity_index != humidity_index:
-                    self.data[index].humidity_index = humidity_index
+                dry_setting = ams.get("dry_setting")
+                if isinstance(dry_setting, dict):
+                    for key, attribute in (
+                        ("dry_temperature", "drying_temperature"),
+                        ("dry_duration", "drying_duration"),
+                    ):
+                        value = optional_number(dry_setting, key, int)
+                        if value is not None:
+                            setattr(instance, attribute, max(value, 0))
+                    filament = dry_setting.get("dry_filament")
+                    if isinstance(filament, str):
+                        instance.drying_filament = filament
 
-                humidity = int(ams.get("humidity_raw", 0))
-                if 1 <= humidity <= 100 and self.data[index].humidity != humidity:
-                    self.data[index].humidity = humidity
+                if ams.get("info") is not None:
+                    try:
+                        info = ams["info"]
+                        info = int(info, 16) if isinstance(info, str) else int(info)
+                    except (TypeError, ValueError, OverflowError):
+                        LOGGER.debug("Ignoring invalid AMS nozzle info: %r", ams["info"])
+                    else:
+                        instance.connected_nozzle = AMS_CONNECTED_NOZZLES.get((info >> 8) & 0xF)
 
-                temperature = float(ams['temp'])
-                if 0 <= temperature <= 100 and self.data[index].temperature != temperature:
-                    self.data[index].temperature = temperature
+                for tray in ams.get("tray") or []:
+                    if not isinstance(tray, dict):
+                        continue
+                    tray_id = optional_number(tray, "id", int)
+                    if tray_id is None or not 0 <= tray_id < len(instance.tray):
+                        LOGGER.debug("Ignoring unsupported AMS tray id: %r", tray.get("id"))
+                        continue
+                    instance.tray[tray_id].print_update(tray)
 
-                if self.data[index].remaining_drying_time != int(ams.get('dry_time', 0)):
-                    self.data[index].remaining_drying_time = int(ams.get('dry_time', 0))
+            # tray_exist_bits: hex bitmask of slots that physically hold a spool,
+            # bit (ams_index * 4 + tray_index) for 4-slot AMS units. Reported even
+            # by firmware (e.g. P1S) that never sends the per-tray `state` field.
+            exist_bits = ams_data.get("tray_exist_bits")
+            if exist_bits is not None:
+                try:
+                    bits = int(str(exist_bits), 16)
+                except ValueError:
+                    bits = None
+                if bits is not None:
+                    for ams_index, ams_instance in self.data.items():
+                        if ams_index >= 128:
+                            continue
+                        for tray_id, ams_tray in enumerate(ams_instance.tray):
+                            ams_tray.exists = bool((bits >> (ams_index * 4 + tray_id)) & 1)
 
-                dry_setting = ams.get('dry_setting', {})
-                if dry_setting:
-                    temp = dry_setting.get('dry_temperature', -1)
-                    if self.data[index].drying_temperature != max(temp, 0):
-                        self.data[index].drying_temperature = max(temp, 0)
+        if data.get("ams_status") is not None:
+            self._ams_status = int(data["ams_status"])
 
-                    duration = dry_setting.get('dry_duration', -1)
-                    if self.data[index].drying_duration != max(duration, 0):
-                        self.data[index].drying_duration = max(duration, 0)
-
-                    filament = dry_setting.get('dry_filament', "")
-                    if self.data[index].drying_filament != filament:
-                        self.data[index].drying_filament = filament
-
-                tray_list = ams['tray']
-                for tray in tray_list:
-                    tray_id = int(tray['id'])
-                    self.data[index].tray[tray_id].print_update(tray)
+        # ams_status is reported once per printer. A filament change or a loaded filament is attributed to
+        # the AMS units involved (current or target tray); other states can't be attributed so go to every unit.
+        status = self._status_description()
+        is_tray_specific = ((self._ams_status >> 8) & 0xFF) in (AMS_STATUS_MAIN_FILAMENT_CHANGE, AMS_STATUS_MAIN_ASSIST)
 
         # Now that we've populated the AMS/Trays (if this is first time through), we must
         # loop over all the ams and trays to set active states correctly.
         for index in self.data:
+            if is_tray_specific and index not in (self.active_ams_index, self.target_ams_index):
+                self.data[index].status = AMS_STATUS_MAIN[AMS_STATUS_MAIN_IDLE]
+            else:
+                self.data[index].status = status
             self.data[index]._active = (index == self.active_ams_index)
             for tray_id, tray in enumerate(self.data[index].tray):
                 active_tray = (index == self.active_ams_index) and (self.active_tray_index == tray_id)
@@ -3404,6 +4046,8 @@ class AMSTray:
     _active: bool
     cols: list
     ctype: int
+    filament_diameter: float | None
+    remaining_weight_g: float | None
     dry_temp = int
     dry_time = int
     bed_temp = int
@@ -3413,6 +4057,11 @@ class AMSTray:
         self.empty = True
         self.state = 8
         self._state_reported = False
+        # Physical spool presence from the AMS-level tray_exist_bits mask.
+        # None = not reported (yet). Unlike `empty`, this does not depend on
+        # filament metadata, so it is True for a freshly inserted spool without
+        # an RFID tag on firmware that omits the per-tray `state` field.
+        self.exists = None
         self.idx = ""
         self.name = ""
         self.type = ""
@@ -3431,6 +4080,8 @@ class AMSTray:
         self.dry_temp = 0
         self.dry_time = 0
         self.bed_temp = 0
+        self.filament_diameter: float | None = None
+        self.remaining_weight_g: float | None = None
 
     @property
     def unknown(self) -> bool:
@@ -3473,6 +4124,8 @@ class AMSTray:
         self.dry_temp = 0
         self.dry_time = 0
         self.bed_temp = 0
+        self.filament_diameter = None
+        self.remaining_weight_g = None
 
     def _resolve_tray_name(self, idx: str, tray_type: str) -> str:
         """Human-readable tray name; empty tray_type means unknown (?)."""
@@ -3510,9 +4163,25 @@ class AMSTray:
             self.tray_weight = data.get('tray_weight', self.tray_weight)
             self.cols = data.get('cols', self.cols)
             self.ctype = data.get('ctype', self.ctype)
-            self.dry_temp = data.get('tray_temp', self.dry_temp)
-            self.dry_time = data.get('tray_time', self.dry_time)
+            self.dry_temp = data.get('drying_temp', data.get('tray_temp', self.dry_temp))
+            self.dry_time = data.get('drying_time', data.get('tray_time', self.dry_time))
             self.bed_temp = data.get('bed_temp', self.bed_temp)
+
+        if "tray_diameter" in data:
+            value = data["tray_diameter"]
+            try:
+                diameter = float(value) if not isinstance(value, bool) else math.nan
+                self.filament_diameter = diameter if math.isfinite(diameter) and diameter > 0 else None
+            except (TypeError, ValueError, OverflowError):
+                self.filament_diameter = None
+
+        if "remain_g" in data:
+            value = data["remain_g"]
+            try:
+                weight = float(value) if not isinstance(value, bool) else math.nan
+                self.remaining_weight_g = weight if math.isfinite(weight) and weight >= 0 else None
+            except (TypeError, ValueError, OverflowError):
+                self.remaining_weight_g = None
 
         self._resolve_loaded_state(metadata_only)
 
@@ -3538,6 +4207,10 @@ class AMSTray:
         """
         if self._state_reported:
             loaded = ams_tray_spool_loaded(self.state)
+        elif metadata_only:
+            # Firmware without a state field reports an emptied slot as a bare {"id": n}.
+            # The fields from before the spool was removed must not keep it looking loaded.
+            loaded = False
         else:
             loaded = self._has_filament_metadata()
         if loaded:
@@ -3565,10 +4238,8 @@ class ExternalSpool(AMSTray):
 
     @property
     def empty(self) -> bool:
-        """True when no spool is mounted, or this external slot is not active."""
-        if self._physically_empty:
-            return True
-        return not self.active
+        """True when no spool is mounted. Whether the slot is feeding is in `active`."""
+        return self._physically_empty
 
     @empty.setter
     def empty(self, value: bool) -> None:
@@ -3615,8 +4286,9 @@ class ExternalSpool(AMSTray):
         self.bed_temp = 0
 
     def _resolve_loaded_state(self, metadata_only: bool) -> None:
-        """External spool: keep filament data; empty reflects active status."""
-        if metadata_only:
+        """External spool: keep filament data; empty only when nothing is mounted."""
+        # The holder has no sensor, so blank filament fields mean nothing is mounted.
+        if metadata_only or not self._has_filament_metadata():
             self._reset_empty_slot()
             return
 
@@ -3745,11 +4417,15 @@ class StageAction:
     """Return Stage Action information"""
     _id: int
     _print_type: str
+    _gcode_state: str
     description: str
 
     def __init__(self):
         self._id = 255
         self._print_type = ""
+        self._gcode_state = ""
+        self.planned = []
+        self.step = None
         self.description = get_current_stage(self._id)
 
     def print_update(self, data) -> bool:
@@ -3758,7 +4434,9 @@ class StageAction:
         self._print_type = data.get("print_type", self._print_type)
         if self._print_type.lower() not in PRINT_TYPE_OPTIONS:
             self._print_type = "unknown"
+        self._gcode_state = data.get("gcode_state", self._gcode_state)
 
+        old_stage_id = self._id
         # New way it is presented
         self._id = int((data.get("stage") or {}).get("_id", self._id))
         # Old way it's presented
@@ -3766,9 +4444,49 @@ class StageAction:
         if (self._print_type == "idle") and (self._id == 0):
             # On boot the printer reports stg_cur == 0 incorrectly instead of 255. Attempt to correct for this.
             self._id = 255
+        if self._gcode_state == "FAILED":
+            # After a cancelled print the printer keeps reporting the stage it was in. Nothing is running.
+            self._id = 255
+        self._update_step(data)
         self.description = get_current_stage(self._id)
+        if self.description == "unknown" and self._id not in (255, -1):
+            # Log only on a stage transition to identify new printer stages
+            # without flooding the logs with repeated MQTT updates.
+            if old_stage_id != self._id:
+                LOGGER.debug("Unknown printer stage ID: %s", self._id)
 
         return (old_data != f"{self.__dict__}")
+
+    def _update_step(self, data) -> None:
+        # stg lists the stages the printer plans to run before it starts printing,
+        # e.g. [29, 2, 13, 11, 4, 8, 14, 3, 54, 1, 51]. stg_cur walks through it.
+        planned = data.get("stg")
+        if isinstance(planned, list):
+            planned = [int(stage) for stage in planned]
+            if planned != self.planned:
+                self.planned = planned
+                self.step = None
+        if self._id not in self.planned:
+            self.step = None
+            return
+        # Search forward from the current step so a stage that appears twice
+        # in the plan counts on rather than jumping back.
+        start = self.step - 1 if self.step else 0
+        if self._id in self.planned[start:]:
+            self.step = self.planned.index(self._id, start) + 1
+        else:
+            self.step = self.planned.index(self._id) + 1
+
+    @property
+    def attributes(self) -> dict:
+        """Planned pre-print stages and the 1-based position of the current one."""
+        if not self.planned:
+            return {}
+        return {
+            "planned_stages": [get_current_stage(stage) for stage in self.planned],
+            "step": self.step,
+            "total_steps": len(self.planned),
+        }
 
 @dataclass
 class HMSList:
@@ -4015,8 +4733,10 @@ class HomeFlag:
         self._value = 0
         self._client = client
         self._sw_ver = ""
-        self._device_type = ""
+        self._device_type = client._device_type
         self._fired_missing_sdcard_event = False
+        self.reported_storage: list[dict] | None = None
+        self._external_storage_kib: dict[str, int | None] = {"total": None, "free": None}
 
     def info_update(self, data):
         modules = data.get("module", [])
@@ -4026,6 +4746,28 @@ class HomeFlag:
     def print_update(self, data: dict) -> bool:
         old_data = f"{self.__dict__}"
         self._value = int(data.get("home_flag", str(self._value)))
+        storage = (data.get("device") or {}).get("storage")
+        if isinstance(storage, list):
+            # Keep protocol values as reported; do not assume capacity units or
+            # infer an SD card from a USB device. Missing delta fields preserve it.
+            self.reported_storage = [
+                {key: entry[key] for key in ("name", "total", "used") if key in entry}
+                for entry in storage if isinstance(entry, dict)
+            ]
+            if self.usb_connected is False:
+                self._external_storage_kib = {"total": None, "free": None}
+        cam = (data.get("device") or {}).get("cam") or {}
+        for metric in ("total", "free"):
+            key = f"tl_external_{metric}_kb"
+            if key in cam and self.usb_connected is not False:
+                value = cam[key]
+                try:
+                    # Bambu Studio's DevStorage reads these explicit KB fields;
+                    # leave device.storage's undocumented capacity units alone.
+                    capacity = int(value) if not isinstance(value, (bool, float)) else -1
+                    self._external_storage_kib[metric] = capacity if capacity >= 0 else None
+                except (TypeError, ValueError, OverflowError):
+                    self._external_storage_kib[metric] = None
         if self.sdcard_status == "missing":
             if not self._fired_missing_sdcard_event:
                 self._fired_missing_sdcard_event = True
@@ -4035,7 +4777,35 @@ class HomeFlag:
         return (old_data != f"{self.__dict__}")
 
     @property
+    def usb_connected(self) -> bool | None:
+        """Presence reported by the storage list, not a writable/health test."""
+        if self.reported_storage is None:
+            return None
+        return any(entry.get("name") == "usb" for entry in self.reported_storage)
+
+    def usb_capacity_kib(self, metric: str) -> int | None:
+        """External timelapse storage counters, only attributed to a reported USB."""
+        if self.usb_connected is not True:
+            return None
+        total = self._external_storage_kib["total"]
+        free = self._external_storage_kib["free"]
+        if total is None or total <= 0:
+            return None
+        if metric == "total":
+            return total
+        if free is None or free > total:
+            return None
+        if metric == "free":
+            return free
+        if metric == "used":
+            return total - free
+        return None
+
+    @property
     def sdcard_status(self) -> str:
+        if self._device_type == Printers.H3C:
+            # The legacy SD-card flag is not a USB/internal-storage health check.
+            return "not_applicable"
         if (self._value & Home_Flag_Values.SD_CARD_ABNORMAL) != 0:
             return "abnormal"
         if (self._value & Home_Flag_Values.SD_CARD_PRESENT) != 0:
@@ -4106,19 +4876,34 @@ class PrintFun:
     _int_value: int
     _encryption_enabled: bool
     _fired_encryption_enabled_event: bool
-    
+    _flag3_authorization_control: bool
+
     def __init__(self, client):
         self._value = ""
         self._client = client
         self._encryption_enabled = False
         self._int_value: int = 0
         self._fired_encryption_enabled_event = False
+        self._flag3_authorization_control = False
 
     def print_update(self, data: dict) -> bool:
         old_data = f"{self.__dict__}"
         self._value = data.get("fun", str(self._value))
         self._int_value = int(self._value, 16) if self._value else 0
-        self._encryption_enabled = (self._int_value & Print_Fun_Values.MQTT_SIGNATURE_REQUIRED) != 0
+
+        # Some firmware reports an empty "fun" and signals the newer authorization
+        # control system through bit 16 of "flag3" instead. "flag3" is only present
+        # in full status frames, so latch the bit once it has been seen.
+        flag3 = data.get("flag3")
+        if isinstance(flag3, int) and (flag3 & Print_Flag3_Values.AUTHORIZATION_CONTROL_ENABLED) != 0:
+            self._flag3_authorization_control = True
+
+        if self._value:
+            # "fun" is authoritative whenever the printer reports it.
+            self._encryption_enabled = (self._int_value & Print_Fun_Values.MQTT_SIGNATURE_REQUIRED) != 0
+        else:
+            self._encryption_enabled = self._flag3_authorization_control
+
         if self._encryption_enabled:
             if not self._fired_encryption_enabled_event:
                 self._fired_encryption_enabled_event = True
@@ -4237,10 +5022,12 @@ class ExtruderTool:
     
 class Extruder:
     _active_nozzle_index: int
+    _active_nozzle: str | None
 
     def __init__(self, client):
         self._client = client
         self._active_nozzle_index = 0
+        self._active_nozzle = None
 
     def print_update (self, data):
         # Handle ext_tool update
@@ -4249,9 +5036,61 @@ class Extruder:
         extruder_state = data.get("device", {}).get("extruder", {}).get("state")
         if extruder_state is not None:
             self._active_nozzle_index = (extruder_state >> 4) & 0xF
+            # Index is 15 while switching nozzles (#1815), keep the last known side.
+            if self._active_nozzle_index in (0, 1):
+                self._active_nozzle = "right" if self._active_nozzle_index == 0 else "left"
                         
         return (old_data != f"{self.__dict__}")
 
     @property
     def active_nozzle_index(self):
         return self._active_nozzle_index
+
+    @property
+    def active_nozzle(self) -> str | None:
+        return self._active_nozzle
+
+class FilamentTrackSwitch:
+    """Filament Track Switch routing two AMS inputs to either extruder."""
+
+    def __init__(self, client):
+        self._client = client
+        self.installed = False
+        self.inputs = [-1, -1]
+        self.outputs = [-1, -1]
+
+    def print_update(self, data) -> bool:
+        old_data = f"{self.__dict__}"
+
+        # "fila_switch": {
+        #   "in": [32768, 2],  // tray loaded at each input, encoded like extruder snow; -1 when empty
+        #   "out": [1, 0],     // extruder each input feeds
+        #   ...
+        # }
+        device_data = data.get("device", {})
+        if "fila_switch" in device_data:
+            fila_switch = device_data["fila_switch"] or {}
+            self.installed = bool(fila_switch)
+            self.inputs = fila_switch.get("in", self.inputs)
+            self.outputs = fila_switch.get("out", self.outputs)
+
+        return (old_data != f"{self.__dict__}")
+
+    def input_nozzle(self, index: int) -> str | None:
+        if self.inputs[index] < 0:
+            return "empty"
+        return NOZZLE_SIDES.get(self.outputs[index])
+
+    def input_tray(self, index: int) -> tuple[int, int] | None:
+        """Return the (ams index, tray index) loaded at an input."""
+        if self.inputs[index] < 0:
+            return None
+        return self.inputs[index] >> 8, self.inputs[index] & 0xFF
+
+    def ams_nozzle(self, ams_index: int) -> str | None:
+        """Return the nozzle an AMS is routed to, if its filament is at an input."""
+        for index in range(len(self.inputs)):
+            location = self.input_tray(index)
+            if location is not None and location[0] == ams_index:
+                return self.input_nozzle(index)
+        return None

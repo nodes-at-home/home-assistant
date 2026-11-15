@@ -8,6 +8,7 @@ from typing import Any, ClassVar, cast
 
 from homeassistant.components.climate import ClimateEntity, ClimateEntityDescription
 from homeassistant.components.climate.const import (
+    ATTR_HVAC_MODE,
     ClimateEntityFeature,
     HVACAction,
     HVACMode,
@@ -36,7 +37,7 @@ async def async_setup_entry(
     for vehicle in coordinator.vehicle_manager.vehicles.values():
         if vehicle.air_control_is_on is not None:
             entities.append(HyundaiKiaCarClimateControlSwitch(coordinator, vehicle))
-    async_add_entities(entities, True)
+    async_add_entities(entities)
 
 
 PARALLEL_UPDATES = 1
@@ -65,6 +66,7 @@ class HyundaiKiaCarClimateControlSwitch(HyundaiKiaConnectEntity, ClimateEntity):
     }
 
     def get_internal_heat_int_for_climate_request(self) -> int:
+        """Map the current rear window / steering wheel heater state to the API heating code."""
         if (
             self.vehicle.steering_wheel_heater_is_on
             and self.vehicle.back_window_heater_is_on
@@ -108,14 +110,18 @@ class HyundaiKiaCarClimateControlSwitch(HyundaiKiaConnectEntity, ClimateEntity):
         )
 
     @property
-    def temperature_unit(self) -> str:
+    def native_temperature_unit(self) -> str:
         """Get the Cars Climate Control Temperature Unit."""
         if self.vehicle._air_temperature_unit:
             return UnitOfTemperature(self.vehicle._air_temperature_unit)
+        # The library has no unit until the car reports a setpoint (e.g.
+        # airTemp "OFF" at startup), so fall back to HA's unit system.
+        if self.hass is not None:
+            return self.hass.config.units.temperature_unit
         return UnitOfTemperature.CELSIUS
 
     @property
-    def current_temperature(self) -> float | None:
+    def native_current_temperature(self) -> float | None:
         """Return the current in-car temperature, or None.
 
         The API exposes only the HVAC setpoint (`air_temperature`); the
@@ -125,14 +131,18 @@ class HyundaiKiaCarClimateControlSwitch(HyundaiKiaConnectEntity, ClimateEntity):
         return None
 
     @property
-    def target_temperature(self) -> float | None:
+    def native_target_temperature(self) -> float | None:
         """Get the desired in-car target temperature."""
-        return cast(float | None, self.vehicle.air_temperature)
+        if self.vehicle.air_temperature is not None:
+            return cast(float | None, self.vehicle.air_temperature)
+        return self.climate_config.set_temp
 
     @property
     def target_temperature_step(self) -> float | None:
         """Get the step size for adjusting the in-car target temperature."""
-        # TODO: get from lib
+        # Fahrenheit setpoints are whole degrees; Celsius ones take halves.
+        if self.native_temperature_unit == UnitOfTemperature.FAHRENHEIT:
+            return 1
         return 0.5
 
     @property
@@ -141,7 +151,7 @@ class HyundaiKiaCarClimateControlSwitch(HyundaiKiaConnectEntity, ClimateEntity):
         # TODO: get the exact per-region range from the lib
         # USA/CA report Fahrenheit; the hardcoded 14-30 °C bounds made the
         # climate slider unusable (14-30 °F) for those vehicles.
-        if self.temperature_unit == UnitOfTemperature.FAHRENHEIT:
+        if self.native_temperature_unit == UnitOfTemperature.FAHRENHEIT:
             return 62
         return 14
 
@@ -149,14 +159,13 @@ class HyundaiKiaCarClimateControlSwitch(HyundaiKiaConnectEntity, ClimateEntity):
     def max_temp(self) -> float:
         """Get the maximum settable temperature."""
         # TODO: get the exact per-region range from the lib
-        if self.temperature_unit == UnitOfTemperature.FAHRENHEIT:
+        if self.native_temperature_unit == UnitOfTemperature.FAHRENHEIT:
             return 82
         return 30
 
     @property
     def hvac_mode(self) -> HVACMode | None:
         """Get the configured climate control operation mode."""
-
         if not self.vehicle.air_control_is_on:
             return HVACMode.OFF
 
@@ -195,7 +204,16 @@ class HyundaiKiaCarClimateControlSwitch(HyundaiKiaConnectEntity, ClimateEntity):
 
     async def async_turn_on(self) -> None:
         """Turn the in-car climate control on."""
-        await self.async_set_hvac_mode(HVACMode.HEAT)
+        await self.async_set_hvac_mode(HVACMode.AUTO)
+
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        if (
+            self.vehicle.air_temperature is not None
+            and self.climate_config.set_temp is None
+        ):
+            self.climate_config.set_temp = self.vehicle.air_temperature
+        super()._handle_coordinator_update()
 
     async def async_turn_off(self) -> None:
         """Turn the in-car climate control off."""
@@ -203,7 +221,6 @@ class HyundaiKiaCarClimateControlSwitch(HyundaiKiaConnectEntity, ClimateEntity):
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Set the operation mode of the in-car climate control."""
-
         if hvac_mode == HVACMode.OFF:
             await self.coordinator.async_stop_climate(self.vehicle.id)
         else:
@@ -219,6 +236,12 @@ class HyundaiKiaCarClimateControlSwitch(HyundaiKiaConnectEntity, ClimateEntity):
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set the desired in-car temperature. Does not turn on the AC."""
+        if (hvac_mode := kwargs.get(ATTR_HVAC_MODE)) is not None:
+            if kwargs.get(ATTR_TEMPERATURE) is not None:
+                self.climate_config.set_temp = kwargs.get(ATTR_TEMPERATURE)
+            await self.async_set_hvac_mode(hvac_mode)
+            return
+
         old_temp = self.climate_config.set_temp
         self.climate_config.set_temp = kwargs.get(ATTR_TEMPERATURE)
 
@@ -238,3 +261,9 @@ class HyundaiKiaCarClimateControlSwitch(HyundaiKiaConnectEntity, ClimateEntity):
                 self.vehicle.id, self.climate_config
             )
         self.async_write_ha_state()
+
+    # Home Assistant before 2026.11 reads the legacy property names.
+    if not hasattr(ClimateEntity, "native_temperature_unit"):
+        temperature_unit = native_temperature_unit
+        current_temperature = native_current_temperature
+        target_temperature = native_target_temperature

@@ -36,20 +36,22 @@ from .const import (
     OPTION_NAME,
     PLATFORMS,
     SERVICE_CALL_EVENT,
+    SERVICE_CALL_FUTURES,
+    SERVICE_CALL_ID,
     FILAMENT_DATA,
 )
 
+from .makerworld import create_makerworld_coordinator
 from .pybambu import BambuClient
 from .pybambu.bambu_cloud import BambuCloud
+from .pybambu.utils import build_print_project_file_command
 from .pybambu.const import (
     AMS_MODELS,
     AMS_DRYING_MODELS,
     AMS_MODELS_AND_EXTERNAL_SPOOL,
     Features,
-    Printers
 )
 from .pybambu.commands import (
-    PRINT_PROJECT_FILE_TEMPLATE,
     SEND_GCODE_TEMPLATE,
     SKIP_OBJECTS_TEMPLATE,
     MOVE_AXIS_GCODE,
@@ -80,6 +82,10 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
         config['user_language'] = hass.config.language
         config['file_cache_path'] = self.get_file_cache_directory(config['serial'])
         self.client = BambuClient(config)
+
+        # Account level MakerWorld stats. None when the entry has no cloud
+        # connection, or when another entry on the same account already owns them.
+        self.makerworld = create_makerworld_coordinator(hass, entry, self.client.bambu_cloud)
             
         self._updatedDevice = False
         self._shutdown = False
@@ -213,6 +219,9 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
     def _is_service_call_for_me(self, data: dict):
         dev_reg = device_registry.async_get(self._hass)
         hadevice = self.get_ha_printer_device()
+        if hadevice is None:
+            # This printer isn't registered yet so the call can't be for it.
+            return False
 
         device_id = data.get('device_id')
         entity_id = data.get('entity_id')
@@ -227,6 +236,8 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
             if device_id == hadevice.id:
                 return True
             ams_device = dev_reg.async_get(device_id)
+            if ams_device is None:
+                return False
             via_device_id = ams_device.via_device_id
             if via_device_id is not None and (via_device_id == hadevice.id):
                 return True
@@ -263,10 +274,35 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def _handle_service_call_event(self, event: Event) -> Any:
         data = event.data
-        if not self._is_service_call_for_me(data):
+        # handle_service_call waits on this future, so every path that handles the call must
+        # resolve it. Otherwise the caller only ever sees "Service call timed out".
+        try:
+            is_for_me = self._is_service_call_for_me(data)
+        except Exception:
+            # Every printer sees the call. Resolving its future here could discard the
+            # result from the printer this call was actually meant for.
+            LOGGER.exception(f"Unable to determine the target of service call '{data.get('service')}'")
+            return
+        if not is_for_me:
             # Call is not for this instance.
             return
-        
+
+        try:
+            result = self._run_service_call(data)
+        except Exception:
+            LOGGER.exception(f"Service call '{data.get('service')}' failed")
+            result = False
+
+        futures = self._hass.data[DOMAIN].get(SERVICE_CALL_FUTURES) or {}
+        future = futures.get(data.get(SERVICE_CALL_ID))
+        if future is None:
+            # The caller already timed out, or the integration was reloaded meanwhile.
+            LOGGER.error(f"No pending service call for '{data.get('service')}'")
+            return
+        if not future.done():
+            future.set_result(False if result is None else result)
+
+    def _run_service_call(self, data: dict) -> Any:
         service_call_name = data['service']
         write_action = True
         if service_call_name == 'get_filament_data':
@@ -278,12 +314,6 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
                 self._report_encryption_enabled_issue(True)
                 return False
 
-        future = self._hass.data[DOMAIN]['service_call_future']
-        if future is None:
-            LOGGER.error("Future is None")
-            future.set_result(False)
-            return
-        
         result = None
         match service_call_name:
             case "skip_objects":
@@ -317,11 +347,8 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
             case _:
                 LOGGER.error(f"Unknown service call: {data}")
 
-        if result is None:
-            result = False
+        return result
 
-        future.set_result(result)
-        
     def _service_call_skip_objects(self, data: dict):
         # All command templates are deep-copied before mutation - filling in the shared
         # global corrupts concurrent service calls and later reuses of the template.
@@ -552,7 +579,7 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
 
         if entity_unique_id.endswith('_external_spool'):
             ams_index = 255
-            tray_index = 0
+            tray_index = 254
         elif not self.get_model().supports_feature(Features.AMS):
             LOGGER.error(f"AMS not available")
             return False
@@ -562,7 +589,11 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
                 LOGGER.error("Unable to locate AMS.")
                 return
             ams_tray = self.get_model().ams.data[ams_index].tray[tray_index]
-            if ams_tray.empty:
+            # A spool without an RFID tag carries no filament metadata until
+            # set_filament writes it, so on firmware that omits the per-tray
+            # `state` field `empty` stays True for it. Trust the AMS presence bit
+            # in that case, or set_filament could never configure such a spool.
+            if ams_tray.empty and ams_tray.exists is not True:
                 LOGGER.error(f"AMS {ams_index + 1} tray {tray_index + 1} is empty")
                 return
         else:
@@ -582,7 +613,10 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
         command['print']['ams_id'] = ams_index
         command['print']['tray_info_idx'] = data.get('tray_info_idx', '')
         command['print']['tray_id'] = tray_index
-        command['print']['tray_color'] = data.get('tray_color', '')
+        if ams_index == 255:
+            # Bambu Studio sends slot_id 0 here too, an X2D hangs without it
+            command['print']['slot_id'] = 0
+        command['print']['tray_color'] = tray_color
         command['print']['tray_type'] = data.get('tray_type', '')
         command['print']['nozzle_temp_min'] = data.get('nozzle_temp_min', '200')
         command['print']['nozzle_temp_max'] = data.get('nozzle_temp_max', '240')
@@ -706,36 +740,7 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
         self.client.publish(command)
 
     def _service_call_print_project_file(self, data: dict):
-        command = copy.deepcopy(PRINT_PROJECT_FILE_TEMPLATE)
-        filepath = data.get("filepath")
-        plate = data.get("plate", 1)
-        timelapse = data.get("timelapse", False)
-        bed_leveling = data.get("bed_leveling", False)
-        flow_cali = data.get("flow_cali", False)
-        vibration_cali = data.get("vibration_cali", False)
-        layer_inspect = data.get("layer_inspect", False)
-        use_ams = data.get("use_ams", False)
-        ams_mapping = data.get("ams_mapping")
-
-        command["print"]["param"] = f"Metadata/plate_{plate}.gcode"
-        if '//' in filepath:
-            command["print"]["url"] = filepath
-        else:
-            if self.config_entry.data["device_type"] in [Printers.H2C, Printers.H2S, Printers.H2D]:
-                command["print"]["url"] = f"ftp:///{filepath}"
-            else:
-                command["print"]["url"] = f"file:///sdcard/{filepath}"
-
-        command["print"]["timelapse"] = timelapse
-        command["print"]["bed_leveling"] = bed_leveling
-        command["print"]["flow_cali"] = flow_cali
-        command["print"]["vibration_cali"] = vibration_cali
-        command["print"]["layer_inspect"] = layer_inspect
-        command["print"]["use_ams"] = use_ams
-        if use_ams:
-            command["print"]["ams_mapping"] = [int(x) for x in ams_mapping.split(',')]
-        command["print"]["subtask_name"] = os.path.basename(filepath)
-
+        command = build_print_project_file_command(self.config_entry.data["device_type"], data)
         self.client.publish(command)
 
     async def _async_update_data(self):
@@ -868,6 +873,10 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
 
         config_entry_id=self.config_entry.entry_id
         dev_reg = device_registry.async_get(self._hass)
+        # Without a complete picture of the attached AMS units, a registered one that is missing
+        # from our data may simply not have been identified yet. A later version payload that
+        # fills in the serial fires event_printer_ready, which brings us back here.
+        ams_identities_resolved = self.get_model().ams_identities_resolved
         ams_devices_to_remove = []
         for device in device_registry.async_entries_for_config_entry(dev_reg, config_entry_id):
             # This device is associated with this printer.
@@ -882,7 +891,7 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
                 # available. Older versions registered that placeholder with an empty
                 # identifier; always discard it so the real serial can own the device.
                 ams_serial = list(device.identifiers)[0][1]
-                if is_placeholder_ams or ams_serial not in existing_ams_devices:
+                if is_placeholder_ams or (ams_identities_resolved and ams_serial not in existing_ams_devices):
                     LOGGER.debug(f"Found stale attached AMS with serial {ams_serial}")
                     ams_devices_to_remove.append(device.id)
 
@@ -940,7 +949,7 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
 
         HA 2026.8 deprecated the via_device identifier tuple in favor of
         via_device_id; older versions don't accept via_device_id at all."""
-        if "via_device_id" in DeviceInfo.__optional_keys__:
+        if "via_device_id" in DeviceInfo.__annotations__:
             printer_device = self.get_ha_printer_device()
             if printer_device is not None:
                 device_info["via_device_id"] = printer_device.id
@@ -961,13 +970,10 @@ class BambuDataUpdateCoordinator(DataUpdateCoordinator):
         )
 
     def get_ams_device(self, index):
-        # Adjust indices to be 1-based for normal AMS, 128-based for HT.
-        ams_index = index
-        if ams_index < 128:
-            ams_index = index + 1
         printer_serial = self.config_entry.data["serial"]
         device_type = self.config_entry.data["device_type"]
-        device_name = f"{device_type}_{printer_serial}_AMS_{ams_index}"
+        ams = self.get_model().ams.data[index]
+        device_name = f"{device_type}_{printer_serial}_{ams.device_name_suffix}"
         ams_serial = self.get_model().ams.data[index].serial
         model = self.get_model().ams.data[index].model
 

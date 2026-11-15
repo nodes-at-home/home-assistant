@@ -390,8 +390,7 @@
         "name": "Typ aktuátoru",
         "state": {
           "normally_closed": "Normálně zavřený",
-          "normally_open": "Normálně otevřený",
-          "unsupported": "Nepodporováno"
+          "normally_open": "Normálně otevřený"
         }
       },
       "output_mode": {
@@ -400,8 +399,7 @@
           "attached": "Spojeno",
           "detached": "Odpojeno při libovolném stisknutí",
           "detached_short_press": "Odpojeno při krátkém stisknutí",
-          "detached_long_press": "Odpojeno při dlouhém stisknutí",
-          "unsupported": "Nepodporováno"
+          "detached_long_press": "Odpojeno při dlouhém stisknutí"
         }
       },
       "siren_sound_level": {
@@ -795,7 +793,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "Alarm narušení zrušen",
       "ALARM_OFF": "Alarm vypnut",
       "ALARM_ON": "Alarm zapnut",
-      "ALARM_MUTED": "Alarm ztlumen"
+      "ALARM_MUTED": "Alarm ztlumen",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "{subtype} krátce stisknuto",
@@ -885,6 +884,36 @@
           "description": "Název SHC. Ponechte prázdné, chcete-li použít první nakonfigurovaný SHC."
         }
       }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
+        }
+      }
     }
   },
   "issues": {
@@ -942,6 +971,9 @@
     "alarm_state_failed": {
       "message": "Změna stavu alarmu se nezdařila."
     },
+    "diagnostic_entities_disabled": {
+      "message": "Diagnostické entity jsou pro tuto SHC vypnuty. Zapněte „Vytvořit diagnostické senzory“ v možnostech integrace a stiskněte tlačítko znovu."
+    },
     "button_press_failed": {
       "message": "Stisknutí tlačítka se nezdařilo."
     },
@@ -968,6 +1000,12 @@
     },
     "update_not_ready": {
       "message": "Aktualizaci firmwaru pro {name} nelze právě teď aktivovat (aktuální stav: {state})."
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   }
 }

@@ -26,6 +26,7 @@ ADVANCED_API_RAISE_ISSUES: Final[str] = "api_raise_issues"
 ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_CONFIGURATION: Final[str] = "automated_dampening_adaptive_model_configuration"
 ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_EXCLUDE: Final[str] = "automated_dampening_adaptive_model_exclude"
 ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_MINIMUM_HISTORY_DAYS: Final[str] = "automated_dampening_adaptive_model_minimum_history_days"
+ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_SWITCH_MARGIN: Final[str] = "automated_dampening_adaptive_model_switch_margin"
 ADVANCED_AUTOMATED_DAMPENING_DELTA_ADJUSTMENT_MODEL: Final[str] = "automated_dampening_delta_adjustment_model"
 ADVANCED_AUTOMATED_DAMPENING_ELEVATION_ADJUSTMENT: Final[str] = "automated_dampening_elevation_adjustment"
 ADVANCED_AUTOMATED_DAMPENING_GENERATION_FETCH_DELAY: Final[str] = "automated_dampening_generation_fetch_delay"
@@ -42,6 +43,7 @@ ADVANCED_AUTOMATED_DAMPENING_NO_LIMITING_CONSISTENCY: Final[str] = "automated_da
 ADVANCED_AUTOMATED_DAMPENING_PRESERVE_UNMATCHED_FACTORS: Final[str] = "automated_dampening_preserve_unmatched_factors"
 ADVANCED_AUTOMATED_DAMPENING_SIMILAR_PEAK: Final[str] = "automated_dampening_similar_peak"
 ADVANCED_AUTOMATED_DAMPENING_SUPPRESSION_ENTITY: Final[str] = "automated_dampening_suppression_entity"
+ADVANCED_DNS_TIMEOUT_RETRIES: Final[str] = "dns_timeout_retries"
 ADVANCED_ENTITY_LOGGING: Final[str] = "entity_logging"
 ADVANCED_ESTIMATED_ACTUALS_FETCH_DELAY: Final[str] = "estimated_actuals_fetch_delay"
 ADVANCED_ESTIMATED_ACTUALS_LOG_APE_PERCENTILES: Final[str] = "estimated_actuals_log_ape_percentiles"
@@ -52,6 +54,7 @@ ADVANCED_GRANULAR_DAMPENING_DELTA_ADJUSTMENT: Final[str] = "granular_dampening_d
 ADVANCED_HISTORY_MAX_DAYS: Final[str] = "history_max_days"
 ADVANCED_LOG_UPDATE_FAILURE_ONLY: Final[str] = "log_update_failure_only"
 ADVANCED_RELOAD_ON_ADVANCED_CHANGE: Final[str] = "reload_on_advanced_change"
+ADVANCED_SSL_VERIFY: Final[str] = "ssl_verify"
 ADVANCED_SOLCAST_PORT: Final[str] = "solcast_port"
 ADVANCED_SOLCAST_URL: Final[str] = "solcast_url"
 ADVANCED_TRIGGER_ON_API_AVAILABLE: Final[str] = "trigger_on_api_available"
@@ -121,6 +124,7 @@ DAY_NAME: Final[str] = "dayname"
 DEFAULT: Final[str] = "default"
 DEFAULT_DAMPENING_ADAPTIVE_MODEL_MINIMUM_HISTORY_DAYS: Final[int] = 3  # Minimum number of days of history for adaptive dampening model
 DEFAULT_DAMPENING_ADAPTIVE_MODEL_MINIMUM_UNDAMPENED_ACTUAL: Final[float] = 0.0  # Default to accepting all days
+DEFAULT_DAMPENING_ADAPTIVE_MODEL_SWITCH_MARGIN: Final[float] = 0.0  # Mean rank lead another model needs to replace the default model
 DEFAULT_DAMPENING_DELTA_ADJUSTMENT_MODEL: Final[int] = 0  # Logarithmic adjustment is default model
 DEFAULT_DAMPENING_ELEVATION_ADJUSTMENT: Final[bool] = True  # Whether to adjust historical generation by sun elevation ratio
 DEFAULT_DAMPENING_INSIGNIFICANT: Final[float] = 0.95  # Dampening factors considered insignificant for automated dampening
@@ -133,6 +137,7 @@ DEFAULT_DAMPENING_MODEL_DAYS: Final[int] = 14  # Number of days over which to mo
 DEFAULT_DAMPENING_NO_LIMITING_CONSISTENCY: Final[bool] = False  # Whether to ignore intervals that have been limited at least once
 DEFAULT_DAMPENING_SIMILAR_PEAK: Final[float] = 0.90  # Factor to consider similar estimated actual peak generation for automated dampening
 DEFAULT_DAMPENING_SUPPRESSION_ENTITY: Final[str] = "solcast_suppress_auto_dampening"  # Entity ID to invalidate generation when active
+DEFAULT_DNS_TIMEOUT_RETRIES: Final[int] = 5  # Additional immediate retries for DNS resolution timeout failures
 DEFAULT_ESTIMATED_ACTUALS_FETCH_DELAY: Final[int] = 0  # Minutes to wait after midnight before get estimated actuals (plus random offset)
 DEFAULT_FORECAST_DAYS: Final[int] = 14  # Minimum 8, maximum 14
 DEFAULT_FORECAST_DAY_SENSORS: Final[int] = 8  # Minimum 8, maximum 14
@@ -309,6 +314,7 @@ LAST_14D: Final[str] = "last_14d"
 LEARN_MORE: Final[str] = "learn_more"
 MANUFACTURER: Final[str] = "BJReplay"
 MAXIMUM: Final[str] = "max"
+MAX_HOURS: Final[int] = 336
 MESSAGE: Final[str] = "message"
 METHOD: Final[str] = "method"
 MINIMUM: Final[str] = "min"
@@ -437,6 +443,13 @@ ADVANCED_OPTIONS: Final[dict[str, dict[str, Any]]] = {
         OPTION_LESS_THAN_OR_EQUAL: [ADVANCED_AUTOMATED_DAMPENING_MODEL_DAYS],
         OPTION_REQUIRES: [ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_CONFIGURATION],
     },
+    ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_SWITCH_MARGIN: {
+        ADVANCED_TYPE: ADVANCED_OPTION.FLOAT,
+        MINIMUM: 0.0,
+        MAXIMUM: 11.0,
+        DEFAULT: DEFAULT_DAMPENING_ADAPTIVE_MODEL_SWITCH_MARGIN,
+        OPTION_REQUIRES: [ADVANCED_AUTOMATED_DAMPENING_ADAPTIVE_MODEL_CONFIGURATION],
+    },
     ADVANCED_AUTOMATED_DAMPENING_DELTA_ADJUSTMENT_MODEL: {
         ADVANCED_TYPE: ADVANCED_OPTION.INT,
         MINIMUM: 0,
@@ -523,6 +536,12 @@ ADVANCED_OPTIONS: Final[dict[str, dict[str, Any]]] = {
         DEFAULT: DEFAULT_DAMPENING_SIMILAR_PEAK,
     },
     ADVANCED_AUTOMATED_DAMPENING_SUPPRESSION_ENTITY: {ADVANCED_TYPE: ADVANCED_OPTION.STR, DEFAULT: DEFAULT_DAMPENING_SUPPRESSION_ENTITY},
+    ADVANCED_DNS_TIMEOUT_RETRIES: {
+        ADVANCED_TYPE: ADVANCED_OPTION.INT,
+        MINIMUM: 0,
+        MAXIMUM: 20,
+        DEFAULT: DEFAULT_DNS_TIMEOUT_RETRIES,
+    },
     ADVANCED_ENTITY_LOGGING: {ADVANCED_TYPE: ADVANCED_OPTION.BOOL, DEFAULT: SENSOR_UPDATE_LOGGING},
     ADVANCED_ESTIMATED_ACTUALS_FETCH_DELAY: {
         ADVANCED_TYPE: ADVANCED_OPTION.INT,
@@ -563,6 +582,7 @@ ADVANCED_OPTIONS: Final[dict[str, dict[str, Any]]] = {
     ADVANCED_RELOAD_ON_ADVANCED_CHANGE: {ADVANCED_TYPE: ADVANCED_OPTION.BOOL, DEFAULT: False},
     ADVANCED_SOLCAST_PORT: {ADVANCED_TYPE: ADVANCED_OPTION.INT, MINIMUM: 0, MAXIMUM: 65535, DEFAULT: DEFAULT_SOLCAST_PORT},
     ADVANCED_SOLCAST_URL: {ADVANCED_TYPE: ADVANCED_OPTION.STR, DEFAULT: DEFAULT_SOLCAST_HTTPS_URL},
+    ADVANCED_SSL_VERIFY: {ADVANCED_TYPE: ADVANCED_OPTION.BOOL, DEFAULT: True},
     ADVANCED_TRIGGER_ON_API_AVAILABLE: {ADVANCED_TYPE: ADVANCED_OPTION.STR, DEFAULT: ""},
     ADVANCED_TRIGGER_ON_API_UNAVAILABLE: {ADVANCED_TYPE: ADVANCED_OPTION.STR, DEFAULT: ""},
     ADVANCED_USER_AGENT: {ADVANCED_TYPE: ADVANCED_OPTION.STR, DEFAULT: DEFAULT},

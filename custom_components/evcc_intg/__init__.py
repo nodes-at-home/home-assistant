@@ -85,7 +85,6 @@ from .service import EvccService
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 WEBSOCKET_WATCHDOG_INTERVAL: Final = timedelta(minutes=5, seconds=1)
-CONFIG_SCHEMA = config_val.removed(DOMAIN, raise_if_present=False)
 DEVICE_REG_CLEANUP_RUNNING = False
 
 
@@ -184,20 +183,22 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
         hass.data[DOMAIN][config_entry.entry_id] = coordinator
         await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
 
-        # initialize our service...
-        evcc_services = EvccService(hass, config_entry, coordinator)
-        hass.services.async_register(DOMAIN, SERVICE_SET_LOADPOINT_PLAN, evcc_services.set_loadpoint_plan,
-                                     supports_response=SupportsResponse.OPTIONAL)
-        hass.services.async_register(DOMAIN, SERVICE_SET_VEHICLE_PLAN, evcc_services.set_vehicle_plan,
-                                     supports_response=SupportsResponse.OPTIONAL)
-        hass.services.async_register(DOMAIN, SERVICE_DEL_LOADPOINT_PLAN, evcc_services.del_loadpoint_plan,
-                                     supports_response=SupportsResponse.OPTIONAL)
-        hass.services.async_register(DOMAIN, SERVICE_DEL_VEHICLE_PLAN, evcc_services.del_vehicle_plan,
-                                     supports_response=SupportsResponse.OPTIONAL)
-        hass.services.async_register(DOMAIN, SERVICE_ACTIVATE_LOADPOINT, evcc_services.activate_loadpoint,
-                                     supports_response=SupportsResponse.OPTIONAL)
-        hass.services.async_register(DOMAIN, SERVICE_DEACTIVATE_LOADPOINT, evcc_services.deactivate_loadpoint,
-                                     supports_response=SupportsResponse.OPTIONAL)
+        # initialize our services - once for the domain, a call selects its evcc
+        # instance via 'config_entry_id' (see EvccService)
+        if not hass.services.has_service(DOMAIN, SERVICE_SET_LOADPOINT_PLAN):
+            evcc_services = EvccService(hass)
+            hass.services.async_register(DOMAIN, SERVICE_SET_LOADPOINT_PLAN, evcc_services.set_loadpoint_plan,
+                                         supports_response=SupportsResponse.OPTIONAL)
+            hass.services.async_register(DOMAIN, SERVICE_SET_VEHICLE_PLAN, evcc_services.set_vehicle_plan,
+                                         supports_response=SupportsResponse.OPTIONAL)
+            hass.services.async_register(DOMAIN, SERVICE_DEL_LOADPOINT_PLAN, evcc_services.del_loadpoint_plan,
+                                         supports_response=SupportsResponse.OPTIONAL)
+            hass.services.async_register(DOMAIN, SERVICE_DEL_VEHICLE_PLAN, evcc_services.del_vehicle_plan,
+                                         supports_response=SupportsResponse.OPTIONAL)
+            hass.services.async_register(DOMAIN, SERVICE_ACTIVATE_LOADPOINT, evcc_services.activate_loadpoint,
+                                         supports_response=SupportsResponse.OPTIONAL)
+            hass.services.async_register(DOMAIN, SERVICE_DEACTIVATE_LOADPOINT, evcc_services.deactivate_loadpoint,
+                                         supports_response=SupportsResponse.OPTIONAL)
 
         # If Home Assistant is already in a running state, start the watchdog
         # immediately, else trigger it after Home Assistant has finished starting.
@@ -220,7 +221,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
         # async_at_start(hass, delayed_startup_logic)
 
         # ok we are done...
-        _LOGGER.debug(f"async_setup_entry(): completed successfully for entry: {config_entry.entry_id}")
+        _LOGGER.info(f"async_setup_entry(): completed successfully for entry: {config_entry.entry_id}")
         return True
 
 async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
@@ -238,12 +239,14 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
                 pass
             hass.data[DOMAIN].pop(config_entry.entry_id)
 
-        hass.services.async_remove(DOMAIN, SERVICE_SET_LOADPOINT_PLAN)
-        hass.services.async_remove(DOMAIN, SERVICE_SET_VEHICLE_PLAN)
-        hass.services.async_remove(DOMAIN, SERVICE_DEL_LOADPOINT_PLAN)
-        hass.services.async_remove(DOMAIN, SERVICE_DEL_VEHICLE_PLAN)
-        hass.services.async_remove(DOMAIN, SERVICE_ACTIVATE_LOADPOINT)
-        hass.services.async_remove(DOMAIN, SERVICE_DEACTIVATE_LOADPOINT)
+        # the services serve all evcc instances - remove them only with the last one
+        if not any(key != "manifest_version" for key in hass.data.get(DOMAIN, {})):
+            hass.services.async_remove(DOMAIN, SERVICE_SET_LOADPOINT_PLAN)
+            hass.services.async_remove(DOMAIN, SERVICE_SET_VEHICLE_PLAN)
+            hass.services.async_remove(DOMAIN, SERVICE_DEL_LOADPOINT_PLAN)
+            hass.services.async_remove(DOMAIN, SERVICE_DEL_VEHICLE_PLAN)
+            hass.services.async_remove(DOMAIN, SERVICE_ACTIVATE_LOADPOINT)
+            hass.services.async_remove(DOMAIN, SERVICE_DEACTIVATE_LOADPOINT)
 
     return unload_ok
 
@@ -648,17 +651,8 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
             if self._currency == "EUR":
                 self._currency = "€"
 
-        _version_info = None
-        _version_info_raw = None
-        if Tag.VERSION.json_key in initdata:
-            _version_info_raw = initdata[Tag.VERSION.json_key]
-            # we need to check for possible NightlyBuild tags in the Version key
-            if " (" in _version_info_raw:
-                _version_info = _version_info_raw.split(" (")[0].strip()
-            elif "-" in _version_info_raw:
-                _version_info = _version_info_raw[:_version_info_raw.index('-')]
-            else:
-                _version_info = _version_info_raw
+        # need to read the initial evcc version information (and truncate possible nightly build tags)
+        _version_info, _version_info_raw = EvccApiBridge.read_version(initdata)
 
         # here we have an issue, when there is no grid data
         # available (or is no object) at system start....
@@ -687,9 +681,8 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
                 self._battery_data_as_object = True
         elif _version_info is not None and len(_version_info) > 0:
             try:
-                # TODO LATER: we don't know in which release the battery object will be
-                # refactored... [so we keep this open right now]
-                if Version(_version_info) >= Version("999.209.8"):
+                # since evcc 0.301 the battery data is an object...
+                if Version(_version_info) >= Version("0.301.0"):
                     self._battery_data_as_object = True
 
             except BaseException as exc:
@@ -1101,9 +1094,9 @@ class EvccDataUpdateCoordinator(DataUpdateCoordinator):
                     elif a_tag == Tag.VEHICLEREPEATINGPLAN008 and post_data_len > 6:
                         post_data[6][Tag.VEHICLEREPEATINGPLAN008.json_key] = new_state
                     elif a_tag == Tag.VEHICLEREPEATINGPLAN009 and post_data_len > 7:
-                        post_data[6][Tag.VEHICLEREPEATINGPLAN009.json_key] = new_state
+                        post_data[7][Tag.VEHICLEREPEATINGPLAN009.json_key] = new_state
                     elif a_tag == Tag.VEHICLEREPEATINGPLAN010 and post_data_len > 8:
-                        post_data[6][Tag.VEHICLEREPEATINGPLAN010.json_key] = new_state
+                        post_data[8][Tag.VEHICLEREPEATINGPLAN010.json_key] = new_state
                     else:
                         post_data = value
 

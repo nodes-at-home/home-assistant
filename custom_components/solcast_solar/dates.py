@@ -5,6 +5,8 @@ from datetime import UTC, datetime as dt, timedelta, tzinfo
 import json
 from typing import Any
 
+from homeassistant.util import dt as dt_util
+
 from .const import PERIOD_START
 
 
@@ -34,25 +36,30 @@ class DateTimeHelper:
             datetime: The UTC date and time representing midnight local time.
 
         """
-        for_when = (dt.now(self._tz) + timedelta(days=future)).astimezone(self._tz)
+        for_when = (dt_util.now(self._tz) + timedelta(days=future)).astimezone(self._tz)
         return for_when.replace(hour=0, minute=0, second=0, microsecond=0).astimezone(UTC)
 
     def dst(self, dt_obj: dt | None = None) -> bool:
         """Return whether a given date is daylight savings time, or for zones using winter time whether summer time."""
         result = False
         if dt_obj is not None:
-            delta = timedelta(hours=1) if not self.is_dublin else timedelta(hours=0)
-            result = dt_obj.astimezone(self._tz).dst() == delta
+            local = dt_obj.astimezone(self._tz)
+            if self.is_dublin:
+                # Irish summer time is UTC+1. Not tzinfo.dst(): some time zone databases mark Dublin winter -1 hour,
+                # others summer +1 hour.
+                result = local.utcoffset() == timedelta(hours=1)
+            else:
+                result = local.dst() == timedelta(hours=1)
         return result
 
     def hour_start_utc(self) -> dt:
         """Return the UTC datetime representing the start of the current hour."""
-        return dt.now(self._tz).replace(minute=0, second=0, microsecond=0).astimezone(UTC)
+        return dt_util.now(self._tz).replace(minute=0, second=0, microsecond=0).astimezone(UTC)
 
     @property
     def is_dublin(self) -> bool:
         """Return whether the timezone is Dublin, which has unique DST."""
-        return str(self._tz) in ("Europe/Dublin", "Dublin")
+        return str(self._tz) in ("Europe/Dublin", "Dublin", "Eire")
 
     def is_interval_dst(self, interval: dict[str, Any]) -> bool:
         """Return whether an interval is daylight savings time, or for zones using winter time whether summer time."""
@@ -60,15 +67,15 @@ class DateTimeHelper:
 
     def now_utc(self) -> dt:
         """Return the UTC datetime as at the previous minute boundary."""
-        return dt.now(self._tz).replace(second=0, microsecond=0).astimezone(UTC)
+        return dt_util.now(self._tz).replace(second=0, microsecond=0).astimezone(UTC)
 
     def real_now_utc(self) -> dt:
         """Return the UTC datetime including seconds/microseconds."""
-        return dt.now(self._tz).astimezone(UTC)
+        return dt_util.now(self._tz).astimezone(UTC)
 
     def utc_previous_midnight(self) -> dt:
         """Return the UTC datetime representing midnight UTC of the current day."""
-        return dt.now().astimezone(UTC).replace(hour=0, minute=0, second=0, microsecond=0)
+        return dt_util.now().astimezone(UTC).replace(hour=0, minute=0, second=0, microsecond=0)
 
 
 class DateTimeEncoder(json.JSONEncoder):

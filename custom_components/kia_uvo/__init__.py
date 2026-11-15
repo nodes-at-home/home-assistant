@@ -1,3 +1,5 @@
+"""The Hyundai / Kia Connect integration."""
+
 import hashlib
 import logging
 
@@ -48,6 +50,7 @@ PLATFORMS: list[str] = [
 
 
 async def async_setup(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
+    """Set up the integration (config entries only, no YAML)."""
     return True
 
 
@@ -56,10 +59,10 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     coordinator = HyundaiKiaConnectDataUpdateCoordinator(hass, config_entry)
     try:
         await coordinator.async_config_entry_first_refresh()
-    except ConfigEntryAuthFailed as AuthError:
-        raise ConfigEntryAuthFailed(AuthError) from AuthError
+    except ConfigEntryAuthFailed:
+        raise
     except Exception as ex:
-        raise ConfigEntryNotReady(f"Config Not Ready: {ex}")
+        raise ConfigEntryNotReady(f"Config Not Ready: {ex}") from ex
 
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][config_entry.unique_id] = coordinator
@@ -80,8 +83,9 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
 
 
 async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
+    """Migrate an old config entry to the current version."""
     if config_entry.version == 1:
-        _LOGGER.debug(f"{DOMAIN} - config data- {config_entry}")
+        _LOGGER.debug("%s - config data- %s", DOMAIN, config_entry)
         username = config_entry.data.get(CONF_USERNAME)
         password = config_entry.data.get(CONF_PASSWORD)
         pin = config_entry.data.get(CONF_PIN, DEFAULT_PIN)

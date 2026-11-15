@@ -124,6 +124,46 @@ WEBSOCKET_SLOW_RECONNECT_INTERVAL: Final = 3600
 # Valve duration configuration
 CONF_VALVE_DURATIONS: Final = "valve_durations"
 DEFAULT_VALVE_DURATION_SECONDS: Final = 3600
+# How long a valve shows "opening" or "closing" after a command at most, if
+# no update reports the valve open or closed in the meantime (#408). The
+# gateway forwards a command within seconds, and the valve reports its new
+# activity over the WebSocket; a minute covers a slow radio link without
+# leaving a failed command looking pending for long.
+VALVE_COMMAND_PENDING_SECONDS: Final = 60
+
+# Lawn mower Start button (#399). The default keeps the historical behaviour:
+# Start resumes the schedule (START_DONT_OVERRIDE). "Mow now" is opt-in.
+CONF_START_MOWING_BEHAVIOR: Final = "start_mowing_behavior"
+CONF_MOW_NOW_DURATION: Final = "mow_now_duration"
+START_MOWING_RESUME_SCHEDULE: Final = "resume_schedule"
+START_MOWING_MOW_NOW: Final = "mow_now"
+# 180 minutes, same duration as the "Start Mowing Now" button.
+DEFAULT_MOW_NOW_DURATION: Final = 10800
+
+# Valve last_error_code values from the Gardena API v2 ValveError enum.
+VALVE_ERROR_CODES: Final = (
+    "no_message",
+    "concurrent_limit_reached",
+    "not_connected",
+    "valve_current_max_exceeded",
+    "total_current_max_exceeded",
+    "watering_canceled",
+    "master_valve",
+    "watering_duration_too_short",
+    "valve_broken",
+    "frost_prevents_starting",
+    "low_battery_prevents_starting",
+    "valve_power_supply_failed",
+    "unknown",
+)
+
+# What a valve is doing, as its activity sensor reports it (#408): the API's
+# ValveActivity values, lowercased.
+VALVE_ACTIVITIES: Final = (
+    "closed",
+    "manual_watering",
+    "scheduled_watering",
+)
 
 # Attribute names
 ATTR_BATTERY_STATE: Final = "battery_state"

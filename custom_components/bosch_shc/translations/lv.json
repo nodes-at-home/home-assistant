@@ -390,8 +390,7 @@
         "name": "Aktuatora veids",
         "state": {
           "normally_closed": "Parasti aizvērts",
-          "normally_open": "Parasti atvērts",
-          "unsupported": "Netiek atbalstīts"
+          "normally_open": "Parasti atvērts"
         }
       },
       "output_mode": {
@@ -400,8 +399,7 @@
           "attached": "Sasaistīts",
           "detached": "Atvienots ar jebkuru pogas nospiedienu",
           "detached_short_press": "Atvienots ar īsu nospiedienu",
-          "detached_long_press": "Atvienots ar garu nospiedienu",
-          "unsupported": "Netiek atbalstīts"
+          "detached_long_press": "Atvienots ar garu nospiedienu"
         }
       },
       "siren_sound_level": {
@@ -795,7 +793,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "Ielaušanās trauksme notīrīta",
       "ALARM_OFF": "Trauksme izslēgta",
       "ALARM_ON": "Trauksme ieslēgta",
-      "ALARM_MUTED": "Trauksme apklusināta"
+      "ALARM_MUTED": "Trauksme apklusināta",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "{subtype} īsi nospiesta",
@@ -885,6 +884,36 @@
           "description": "SHC nosaukums. Atstājiet tukšu, lai izmantotu pirmo konfigurēto SHC."
         }
       }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
+        }
+      }
     }
   },
   "issues": {
@@ -933,6 +962,9 @@
     "alarm_state_failed": {
       "message": "Trauksmes stāvokļa maiņa neizdevās."
     },
+    "diagnostic_entities_disabled": {
+      "message": "Šim SHC diagnostikas vienības ir izslēgtas. Integrācijas opcijās ieslēdziet „Izveidot diagnostikas sensorus” un vēlreiz nospiediet pogu."
+    },
     "button_press_failed": {
       "message": "Pogas nospiešana neizdevās."
     },
@@ -968,6 +1000,12 @@
     },
     "zigbee_topology_write_failed": {
       "message": "Neizdevās ierakstīt Zigbee topoloģijas eksportu mapē www/bosch_shc/."
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   }
 }

@@ -390,8 +390,7 @@
         "name": "Τύπος ενεργοποιητή",
         "state": {
           "normally_closed": "Κανονικά κλειστό",
-          "normally_open": "Κανονικά ανοιχτό",
-          "unsupported": "Μη υποστηριζόμενο"
+          "normally_open": "Κανονικά ανοιχτό"
         }
       },
       "output_mode": {
@@ -400,8 +399,7 @@
           "attached": "Συζευγμένο",
           "detached": "Αποσυνδεδεμένο με οποιοδήποτε πάτημα",
           "detached_short_press": "Αποσυνδεδεμένο με σύντομο πάτημα",
-          "detached_long_press": "Αποσυνδεδεμένο με παρατεταμένο πάτημα",
-          "unsupported": "Μη υποστηριζόμενο"
+          "detached_long_press": "Αποσυνδεδεμένο με παρατεταμένο πάτημα"
         }
       },
       "siren_sound_level": {
@@ -795,7 +793,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "Ο συναγερμός εισβολής εκκαθαρίστηκε",
       "ALARM_OFF": "Συναγερμός off",
       "ALARM_ON": "Συναγερμός on",
-      "ALARM_MUTED": "Συναγερμός σε σίγαση"
+      "ALARM_MUTED": "Συναγερμός σε σίγαση",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "Σύντομο πάτημα {subtype}",
@@ -885,6 +884,36 @@
           "description": "Τίτλος του SHC. Αφήστε το κενό για να χρησιμοποιήσετε το πρώτο διαμορφωμένο SHC."
         }
       }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
+        }
+      }
     }
   },
   "issues": {
@@ -942,6 +971,9 @@
     "alarm_state_failed": {
       "message": "Η αλλαγή κατάστασης συναγερμού απέτυχε."
     },
+    "diagnostic_entities_disabled": {
+      "message": "Οι οντότητες διάγνωσης είναι απενεργοποιημένες για αυτό το SHC. Ενεργοποιήστε το «Δημιουργία διαγνωστικών αισθητήρων» στις επιλογές της ενσωμάτωσης και πατήστε ξανά το κουμπί."
+    },
     "button_press_failed": {
       "message": "Το πάτημα του κουμπιού απέτυχε."
     },
@@ -968,6 +1000,12 @@
     },
     "update_not_ready": {
       "message": "Η ενημέρωση υλικολογισμικού για το {name} δεν μπορεί να ενεργοποιηθεί αυτή τη στιγμή (τρέχουσα κατάσταση: {state})."
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   }
 }

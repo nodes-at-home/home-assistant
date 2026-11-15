@@ -1678,7 +1678,7 @@ Object.defineProperty(module.exports, "__esModule", {
 
 
 parcelRegister("6c3D1", function(module, exports) {
-module.exports = import("./problem-dialog.386b9567.js").then(()=>parcelRequire('gIkwD'));
+module.exports = import("./problem-dialog.5b02cc8c.js").then(()=>parcelRequire('gIkwD'));
 
 });
 
@@ -2827,21 +2827,21 @@ const $d71beedfb309b5b1$export$8093665c9ba8ead9 = (hass, config, sensors, elemen
     ${0}
     ${0}
   </div>`), shouldShowIndicator ? (0, $ci0wX.html)($d71beedfb309b5b1$var$t || ($d71beedfb309b5b1$var$t = $d71beedfb309b5b1$var$_`<span
-          class="status-entities"
-          ?has-problems=${0}
-          @click=${0}
-          >${0}</span
-        >`), problemExists, ()=>(0, $7d7b3d36776b9b07$export$dcf8bd1e24f4d8e9)(element, {
+            class="status-entities"
+            ?has-problems=${0}
+            @click=${0}
+            >${0}</span
+          >`), problemExists, ()=>(0, $7d7b3d36776b9b07$export$dcf8bd1e24f4d8e9)(element, {
             entities: ids,
             config: config,
             ownerHost: element
         }), problemSensors.length) : (0, $ci0wX.nothing), sensors.mold && (0, $93ab8e068532bba3$export$4bb1c5099bd99a57)(sensors.mold, config) ? (0, $ci0wX.html)($d71beedfb309b5b1$var$t1 || ($d71beedfb309b5b1$var$t1 = $d71beedfb309b5b1$var$_`<div class="mold-indicator">
-          <ha-state-icon
-            .hass=${0}
-            .stateObj=${0}
-          ></ha-state-icon>
-          <span class="mold-text">${0}</span>
-        </div>`), hass, sensors.mold, (0, $8jUVR.stateDisplay)(hass, sensors.mold)) : (0, $ci0wX.nothing));
+            <ha-state-icon
+              .hass=${0}
+              .stateObj=${0}
+            ></ha-state-icon>
+            <span class="mold-text">${0}</span>
+          </div>`), hass, sensors.mold, (0, $8jUVR.stateDisplay)(hass, sensors.mold)) : (0, $ci0wX.nothing));
 };
 const $d71beedfb309b5b1$export$6697a659ce63852 = (hass, entity, config, options = {})=>{
     var _config_features;
@@ -3315,16 +3315,16 @@ class $2ae3348658708615$export$babe2268d47cd6 extends (0, $jc0SV.SubscribeEntity
       <div class="color"></div>
       ${0}
     `), this._showImage && hui ? (0, $ci0wX.html)($2ae3348658708615$var$t || ($2ae3348658708615$var$t = $2ae3348658708615$var$_`
-            <div class="image">
-              <hui-image
-                .hass=${0}
-                .image=${0}
-                .cameraImage=${0}
-                .cameraView=${0}
-                .fitMode=${0}
-              ></hui-image>
-            </div>
-          `), this.hass, hui.image, hui.camera_image, hui.camera_view, 'cover') : (0, $ci0wX.nothing));
+              <div class="image">
+                <hui-image
+                  .hass=${0}
+                  .image=${0}
+                  .cameraImage=${0}
+                  .cameraView=${0}
+                  .fitMode=${0}
+                ></hui-image>
+              </div>
+            `), this.hass, hui.image, hui.camera_image, hui.camera_view, 'cover') : (0, $ci0wX.nothing));
     }
     constructor(...args){
         super(...args), /**
@@ -3972,23 +3972,143 @@ const $62a596c6a9bc2e04$export$30c823bc834d6ab4 = (0, $f554b0d97be25fc9$export$2
 
 
 var $ec08780371c7cdf9$exports = {};
+
+var $kJycS = parcelRequire("kJycS");
+
+var $1izJ2 = parcelRequire("1izJ2");
 "use strict";
 /**
  * https://github.com/home-assistant/frontend/blob/dev/src/common/number/format_number.ts
  */ Object.defineProperty($ec08780371c7cdf9$exports, "__esModule", {
     value: true
 });
-$ec08780371c7cdf9$exports.isNumericFromAttributes = $ec08780371c7cdf9$exports.isNumericState = void 0;
+$ec08780371c7cdf9$exports.getDefaultFormatOptions = $ec08780371c7cdf9$exports.formatNumberToParts = $ec08780371c7cdf9$exports.formatNumber = $ec08780371c7cdf9$exports.numberFormatToLocale = $ec08780371c7cdf9$exports.isNumericFromAttributes = $ec08780371c7cdf9$exports.isNumericState = void 0;
+var $3a7f8b9693ade338$exports = {};
+"use strict";
+/**
+ * https://github.com/home-assistant/frontend/blob/dev/src/data/translation.ts
+ */ Object.defineProperty($3a7f8b9693ade338$exports, "__esModule", {
+    value: true
+});
+$3a7f8b9693ade338$exports.NumberFormat = void 0;
+var $3a7f8b9693ade338$var$NumberFormat;
+(function(NumberFormat) {
+    NumberFormat["language"] = "language";
+    NumberFormat["system"] = "system";
+    NumberFormat["comma_decimal"] = "comma_decimal";
+    NumberFormat["decimal_comma"] = "decimal_comma";
+    NumberFormat["quote_decimal"] = "quote_decimal";
+    NumberFormat["space_comma"] = "space_comma";
+    NumberFormat["none"] = "none";
+})($3a7f8b9693ade338$var$NumberFormat || ($3a7f8b9693ade338$exports.NumberFormat = $3a7f8b9693ade338$var$NumberFormat = {}));
+
+
 /**
  * Returns true if the entity is considered numeric based on the attributes it has
  * @param stateObj The entity state object
  */ const $ec08780371c7cdf9$var$isNumericState = (stateObj)=>(0, $ec08780371c7cdf9$exports.isNumericFromAttributes)(stateObj.attributes);
 $ec08780371c7cdf9$exports.isNumericState = $ec08780371c7cdf9$var$isNumericState;
-const $ec08780371c7cdf9$var$isNumericFromAttributes = (attributes, numericDeviceClasses)=>{
+const $ec08780371c7cdf9$var$isNumericFromAttributes = (attributes, // Local extension: HA upstream only checks unit_of_measurement / state_class.
+numericDeviceClasses)=>{
     var _attributes_device_class;
     return !!attributes.unit_of_measurement || !!attributes.state_class || (numericDeviceClasses || []).includes((_attributes_device_class = attributes.device_class) !== null && _attributes_device_class !== void 0 ? _attributes_device_class : '');
 };
 $ec08780371c7cdf9$exports.isNumericFromAttributes = $ec08780371c7cdf9$var$isNumericFromAttributes;
+const $ec08780371c7cdf9$var$numberFormatToLocale = (localeOptions)=>{
+    switch(localeOptions.number_format){
+        case $3a7f8b9693ade338$exports.NumberFormat.comma_decimal:
+            return [
+                'en-US',
+                'en'
+            ]; // Use United States with fallback to English formatting 1,234,567.89
+        case $3a7f8b9693ade338$exports.NumberFormat.decimal_comma:
+            return [
+                'de',
+                'es',
+                'it'
+            ]; // Use German with fallback to Spanish then Italian formatting 1.234.567,89
+        case $3a7f8b9693ade338$exports.NumberFormat.space_comma:
+            return [
+                'fr',
+                'sv',
+                'cs'
+            ]; // Use French with fallback to Swedish and Czech formatting 1 234 567,89
+        case $3a7f8b9693ade338$exports.NumberFormat.quote_decimal:
+            return [
+                'de-CH'
+            ]; // Use German (Switzerland) formatting 1'234'567.89
+        case $3a7f8b9693ade338$exports.NumberFormat.system:
+            return undefined;
+        default:
+            return localeOptions.language;
+    }
+};
+$ec08780371c7cdf9$exports.numberFormatToLocale = $ec08780371c7cdf9$var$numberFormatToLocale;
+// Constructing an Intl.NumberFormat is comparatively expensive, and these
+// formatters are created on every numeric state render. The number of distinct
+// (locale, options) combinations is small and bounded in practice, so cache the
+// instances instead of rebuilding them on every call.
+const $ec08780371c7cdf9$var$numberFormatCache = new Map();
+const $ec08780371c7cdf9$var$getNumberFormatter = (locale, options)=>{
+    const key = JSON.stringify([
+        locale,
+        options
+    ]);
+    let formatter = $ec08780371c7cdf9$var$numberFormatCache.get(key);
+    if (!formatter) {
+        formatter = new Intl.NumberFormat(locale, options);
+        $ec08780371c7cdf9$var$numberFormatCache.set(key, formatter);
+    }
+    return formatter;
+};
+/**
+ * Formats a number based on the user's preference with thousands separator(s) and decimal character for better legibility.
+ *
+ * @param num The number to format
+ * @param localeOptions The user-selected language and formatting, from `hass.locale`
+ * @param options Intl.NumberFormatOptions to use
+ */ const $ec08780371c7cdf9$var$formatNumber = (num, localeOptions, options)=>(0, $ec08780371c7cdf9$exports.formatNumberToParts)(num, localeOptions, options).map((part)=>part.value).join('');
+$ec08780371c7cdf9$exports.formatNumber = $ec08780371c7cdf9$var$formatNumber;
+/**
+ * Returns an array of objects containing the formatted number in parts
+ * Similar to Intl.NumberFormat.prototype.formatToParts()
+ *
+ * Input params - same as for formatNumber()
+ */ const $ec08780371c7cdf9$var$formatNumberToParts = (num, localeOptions, options)=>{
+    const locale = localeOptions ? (0, $ec08780371c7cdf9$exports.numberFormatToLocale)(localeOptions) : undefined;
+    if ((localeOptions === null || localeOptions === void 0 ? void 0 : localeOptions.number_format) !== $3a7f8b9693ade338$exports.NumberFormat.none && !Number.isNaN(Number(num))) return $ec08780371c7cdf9$var$getNumberFormatter(locale, (0, $ec08780371c7cdf9$exports.getDefaultFormatOptions)(num, options)).formatToParts(Number(num));
+    if (!Number.isNaN(Number(num)) && num !== '' && (localeOptions === null || localeOptions === void 0 ? void 0 : localeOptions.number_format) === $3a7f8b9693ade338$exports.NumberFormat.none) // If NumberFormat is none, use en-US format without grouping.
+    return $ec08780371c7cdf9$var$getNumberFormatter('en-US', (0, $ec08780371c7cdf9$exports.getDefaultFormatOptions)(num, (0, $1izJ2._)((0, $kJycS._)({}, options), {
+        useGrouping: false
+    }))).formatToParts(Number(num));
+    return [
+        {
+            type: 'literal',
+            value: num
+        }
+    ];
+};
+$ec08780371c7cdf9$exports.formatNumberToParts = $ec08780371c7cdf9$var$formatNumberToParts;
+/**
+ * Generates default options for Intl.NumberFormat
+ * @param num The number to be formatted
+ * @param options The Intl.NumberFormatOptions that should be included in the returned options
+ */ const $ec08780371c7cdf9$var$getDefaultFormatOptions = (num, options)=>{
+    const defaultOptions = (0, $kJycS._)({
+        maximumFractionDigits: 2
+    }, options);
+    if (typeof num !== 'string') return defaultOptions;
+    // Keep decimal trailing zeros if they are present in a string numeric value
+    if (!options || options.minimumFractionDigits === undefined && options.maximumFractionDigits === undefined) {
+        var _num_split_;
+        var _num_split__length;
+        const digits = num.includes('.') ? (_num_split__length = (_num_split_ = num.split('.')[1]) === null || _num_split_ === void 0 ? void 0 : _num_split_.length) !== null && _num_split__length !== void 0 ? _num_split__length : 0 : 0;
+        defaultOptions.minimumFractionDigits = digits;
+        defaultOptions.maximumFractionDigits = digits;
+    }
+    return defaultOptions;
+};
+$ec08780371c7cdf9$exports.getDefaultFormatOptions = $ec08780371c7cdf9$var$getDefaultFormatOptions;
 
 
 /**
@@ -4554,7 +4674,10 @@ const $138ab67ea0f87e5c$var$STATE_COLORED_DOMAIN = new Set([
 // slightly modified from frontend/src/common/entity/state_color.ts
 const $138ab67ea0f87e5c$var$stateColorCss = (stateObj, scope, active, state)=>{
     const compareState = state !== null && state !== void 0 ? state : stateObj === null || stateObj === void 0 ? void 0 : stateObj.state;
-    if (compareState === $c216464f2b025d6e$exports.UNAVAILABLE && !active) return `var(--state-unavailable-color)`;
+    if (compareState === $c216464f2b025d6e$exports.UNAVAILABLE && !active) return (0, $07b9c57e5fc7188f$exports.computeCssVariable)([
+        `--state-color-${scope}-theme`,
+        '--state-unavailable-color'
+    ]);
     const properties = (0, $138ab67ea0f87e5c$exports.stateColorProperties)(stateObj, scope, active, state);
     if (properties) return (0, $07b9c57e5fc7188f$exports.computeCssVariable)(properties);
     return undefined;
@@ -5898,22 +6021,22 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $g28NR.HassConfigMix
         ${0}
       </ha-card>
     `), cardStyle, this._isActive, this._hass, this._config, (0, $52a5e6cbabf7b8e2$export$a80b3bd66acc52ff)(this, this._hass, this._roomInformation, actions, this._config, this._sensors, this._isIconActive), roomEntity, (0, $1e40c00d469c9d00$exports.hasFeature)(this._config, 'slider') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t || ($01f4c5d41a54ca3c$var$t = $01f4c5d41a54ca3c$var$_`
-                <entity-slider
-                  .config=${0}
-                  .hass=${0}
-                ></entity-slider>
-              `), this._config, this._hass) : (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t1 || ($01f4c5d41a54ca3c$var$t1 = $01f4c5d41a54ca3c$var$_`
-                <entity-collection
-                  .config=${0}
-                  .hass=${0}
-                ></entity-collection>
-              `), this._config, this._hass), problems, (0, $558a5ff0fe4616cd$export$cd0a0c83f075ecc7)(this._hass, this._config), (0, $1e40c00d469c9d00$exports.hasFeature)(this._config, 'full_card_actions') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t2 || ($01f4c5d41a54ca3c$var$t2 = $01f4c5d41a54ca3c$var$_`
-              <div
-                class="card-overlay"
-                @action=${0}
-                .actionHandler=${0}
-              ></div>
-            `), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, actions), (0, $b96673d7637fba33$export$8a44987212de21b)(actions)) : (0, $ci0wX.nothing));
+                  <entity-slider
+                    .config=${0}
+                    .hass=${0}
+                  ></entity-slider>
+                `), this._config, this._hass) : (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t1 || ($01f4c5d41a54ca3c$var$t1 = $01f4c5d41a54ca3c$var$_`
+                  <entity-collection
+                    .config=${0}
+                    .hass=${0}
+                  ></entity-collection>
+                `), this._config, this._hass), problems, (0, $558a5ff0fe4616cd$export$cd0a0c83f075ecc7)(this._hass, this._config), (0, $1e40c00d469c9d00$exports.hasFeature)(this._config, 'full_card_actions') ? (0, $ci0wX.html)($01f4c5d41a54ca3c$var$t2 || ($01f4c5d41a54ca3c$var$t2 = $01f4c5d41a54ca3c$var$_`
+                <div
+                  class="card-overlay"
+                  @action=${0}
+                  .actionHandler=${0}
+                ></div>
+              `), (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, actions), (0, $b96673d7637fba33$export$8a44987212de21b)(actions)) : (0, $ci0wX.nothing));
     }
     constructor(...args){
         super(...args), /**
@@ -5997,6 +6120,8 @@ class $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9 extends (0, $g28NR.HassConfigMix
 ], $01f4c5d41a54ca3c$export$90a7a1e0555e0bc9.prototype, "_hass", void 0);
 
 
+
+var $kJycS = parcelRequire("kJycS");
 
 var $2QgUB = parcelRequire("2QgUB");
 
@@ -6400,7 +6525,7 @@ $4851f26bdeb7e50a$export$27ddacf6292c3059.styles = (0, $2SS2a.css)($4851f26bdeb7
       justify-content: center;
       padding: 0 2px;
       overflow: hidden;
-      font-size: 0.65rem;
+      font-size: var(--user-badge-font-size, 0.65rem);
       line-height: 1;
       white-space: nowrap;
     }
@@ -6423,9 +6548,18 @@ const $aeaea6f5f5e584ed$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($aeaea6f5f5e58
     pointer-events: none;
   }
 
+  ha-tile-badge {
+    --mdc-icon-size: var(--user-badge-icon-size, 12px) !important;
+    transform: scale(calc(var(--user-badge-size, 16px) / 16px));
+  }
+
   :host([position='top-right']) {
     top: -5%;
     right: -5%;
+  }
+
+  :host([position='top-right']) ha-tile-badge {
+    transform-origin: top right;
   }
 
   :host([position='top-left']) {
@@ -6433,19 +6567,31 @@ const $aeaea6f5f5e584ed$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($aeaea6f5f5e58
     left: -5%;
   }
 
+  :host([position='top-left']) ha-tile-badge {
+    transform-origin: top left;
+  }
+
   :host([position='bottom-right']) {
     bottom: -5%;
     right: -5%;
+  }
+
+  :host([position='bottom-right']) ha-tile-badge {
+    transform-origin: bottom right;
   }
 
   :host([position='bottom-left']) {
     bottom: -5%;
     left: -5%;
   }
+
+  :host([position='bottom-left']) ha-tile-badge {
+    transform-origin: bottom left;
+  }
 `));
 
 
-let $7191b93f31a09a17$var$_ = (t)=>t, $7191b93f31a09a17$var$t, $7191b93f31a09a17$var$t1, $7191b93f31a09a17$var$t2;
+let $7191b93f31a09a17$var$_ = (t)=>t, $7191b93f31a09a17$var$t, $7191b93f31a09a17$var$t1, $7191b93f31a09a17$var$t2, $7191b93f31a09a17$var$t3;
 class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $jc0SV.SubscribeEntityStateMixin)((0, $htQni.HassUpdateMixin)((0, $g28NR.HassConfigMixin)((0, $2r9I1.LitElement)))) {
     /**
    * Returns the component's styles
@@ -6478,35 +6624,39 @@ class $7191b93f31a09a17$export$37acb3580601e69a extends (0, $jc0SV.SubscribeEnti
         (0, $dTmXl.d)(config, 'badge', 'render', id);
         // For homeassistant mode, use renderTileBadge (HA's native badge helper)
         const badge = this._badge;
-        if (badge.mode === 'homeassistant') return (0, $5abff3d3a915abb3$exports.renderTileBadge)(state, hass);
+        if (badge.mode === 'homeassistant') return (0, $ci0wX.html)($7191b93f31a09a17$var$t || ($7191b93f31a09a17$var$t = $7191b93f31a09a17$var$_`
+        ${0}
+        ${0}
+      `), (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)(badge.styles), (0, $5abff3d3a915abb3$exports.renderTileBadge)(state, hass));
         const matchingState = (0, $1c79672e60888038$export$7d2846cf165df04b)(state, badge);
         // For if_match mode, only render if a state match is found
         if (badge.mode === 'if_match' && !matchingState) return 0, $ci0wX.nothing;
         var _matchingState_label;
         const label = (_matchingState_label = matchingState === null || matchingState === void 0 ? void 0 : matchingState.label) !== null && _matchingState_label !== void 0 ? _matchingState_label : badge.label;
-        return (0, $ci0wX.html)($7191b93f31a09a17$var$t2 || ($7191b93f31a09a17$var$t2 = $7191b93f31a09a17$var$_`
+        const hostStyles = (matchingState === null || matchingState === void 0 ? void 0 : matchingState.styles) ? (0, $kJycS._)({}, badge.styles, matchingState.styles) : badge.styles;
+        return (0, $ci0wX.html)($7191b93f31a09a17$var$t3 || ($7191b93f31a09a17$var$t3 = $7191b93f31a09a17$var$_`
       ${0}
       <ha-tile-badge
         style=${0}
       >
         ${0}
       </ha-tile-badge>
-    `), (matchingState === null || matchingState === void 0 ? void 0 : matchingState.styles) ? (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)(matchingState.styles) : (0, $ci0wX.nothing), (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)({
+    `), (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)(hostStyles), (0, $709101fc184637c4$export$1e5b4ce2fa884e6a)({
             '--tile-badge-background-color': (0, $2acaa25b6d047245$export$de247ce18e8ed95f)(matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon_color)
-        }), label ? (0, $ci0wX.html)($7191b93f31a09a17$var$t || ($7191b93f31a09a17$var$t = $7191b93f31a09a17$var$_`
-              <room-badge-label
-                .hass=${0}
-                .config=${0}
-                .entityId=${0}
-                .label=${0}
-              ></room-badge-label>
-            `), hass, config, id !== null && id !== void 0 ? id : '', label) : (0, $ci0wX.html)($7191b93f31a09a17$var$t1 || ($7191b93f31a09a17$var$t1 = $7191b93f31a09a17$var$_`
-              <ha-state-icon
-                .hass=${0}
-                .stateObj=${0}
-                .icon=${0}
-              ></ha-state-icon>
-            `), hass, state, matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon));
+        }), label ? (0, $ci0wX.html)($7191b93f31a09a17$var$t1 || ($7191b93f31a09a17$var$t1 = $7191b93f31a09a17$var$_`
+                <room-badge-label
+                  .hass=${0}
+                  .config=${0}
+                  .entityId=${0}
+                  .label=${0}
+                ></room-badge-label>
+              `), hass, config, id !== null && id !== void 0 ? id : '', label) : (0, $ci0wX.html)($7191b93f31a09a17$var$t2 || ($7191b93f31a09a17$var$t2 = $7191b93f31a09a17$var$_`
+                <ha-state-icon
+                  .hass=${0}
+                  .stateObj=${0}
+                  .icon=${0}
+                ></ha-state-icon>
+              `), hass, state, matchingState === null || matchingState === void 0 ? void 0 : matchingState.icon));
     }
     constructor(...args){
         super(...args), /**
@@ -7373,14 +7523,14 @@ class $f0a2b09abb3b359a$export$fe6c0dc6457f5df9 extends (0, $2r9I1.LitElement) {
                 e.stopPropagation();
                 this._removeBadgeItem(index);
             }, this.hass ? (0, $ci0wX.html)($f0a2b09abb3b359a$var$t || ($f0a2b09abb3b359a$var$t = $f0a2b09abb3b359a$var$_`
-                        <ha-form
-                          .hass=${0}
-                          .data=${0}
-                          .schema=${0}
-                          .computeLabel=${0}
-                          @value-changed=${0}
-                        ></ha-form>
-                      `), this.hass, item, (0, $e9b7a98281a80f12$export$7154f02cb7867cee)(this.hass), (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, this.hass), (ev)=>this._badgeValueChanged(index, ev)) : (0, $ci0wX.nothing), (()=>{
+                          <ha-form
+                            .hass=${0}
+                            .data=${0}
+                            .schema=${0}
+                            .computeLabel=${0}
+                            @value-changed=${0}
+                          ></ha-form>
+                        `), this.hass, item, (0, $e9b7a98281a80f12$export$7154f02cb7867cee)(this.hass), (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, this.hass), (ev)=>this._badgeValueChanged(index, ev)) : (0, $ci0wX.nothing), (()=>{
                 if (!item.mode) {
                     const statesEditor = this.hass ? (0, $ci0wX.html)($f0a2b09abb3b359a$var$t1 || ($f0a2b09abb3b359a$var$t1 = $f0a2b09abb3b359a$var$_`
                             <room-summary-states-row-editor
@@ -7399,15 +7549,15 @@ class $f0a2b09abb3b359a$export$fe6c0dc6457f5df9 extends (0, $2r9I1.LitElement) {
                 return 0, $ci0wX.nothing;
             })());
         }), canAddMore ? (0, $ci0wX.html)($f0a2b09abb3b359a$var$t3 || ($f0a2b09abb3b359a$var$t3 = $f0a2b09abb3b359a$var$_`
-            <mwc-button class="add-badge" outlined @click=${0}>
-              <ha-icon icon="mdi:plus" slot="icon"></ha-icon>
-              ${0}
-            </mwc-button>
-          `), this._addBadge, addButtonLabel) : (0, $ci0wX.html)($f0a2b09abb3b359a$var$t4 || ($f0a2b09abb3b359a$var$t4 = $f0a2b09abb3b359a$var$_`
-            <div class="max-badges-message">
-              ${0}
-            </div>
-          `), (0, $cfP8R.localize)(this.hass, 'editor.badge.max_badges') || `Maximum ${maxBadges} badges allowed`));
+              <mwc-button class="add-badge" outlined @click=${0}>
+                <ha-icon icon="mdi:plus" slot="icon"></ha-icon>
+                ${0}
+              </mwc-button>
+            `), this._addBadge, addButtonLabel) : (0, $ci0wX.html)($f0a2b09abb3b359a$var$t4 || ($f0a2b09abb3b359a$var$t4 = $f0a2b09abb3b359a$var$_`
+              <div class="max-badges-message">
+                ${0}
+              </div>
+            `), (0, $cfP8R.localize)(this.hass, 'editor.badge.max_badges') || `Maximum ${maxBadges} badges allowed`));
     }
     constructor(...args){
         super(...args), this._expandedBadges = new Set();
@@ -7530,51 +7680,11 @@ class $8e72cbf99a87388e$export$12e5e4192ee344c7 extends (0, $2r9I1.LitElement) {
       ${0}
       ${0}
     `), this.label || `${this.hass.localize('ui.panel.lovelace.editor.card.generic.entities')} (${this.hass.localize('ui.panel.lovelace.editor.card.config.optional')})`, this.single ? (0, $ci0wX.html)($8e72cbf99a87388e$var$t1 || ($8e72cbf99a87388e$var$t1 = $8e72cbf99a87388e$var$_`
-            <div class="entities">
-              ${0}
-            </div>
-          `), (0, $bvVEG.repeat)(items, (item, index)=>this._getKey(item, index), (item, index)=>(0, $ci0wX.html)($8e72cbf99a87388e$var$t || ($8e72cbf99a87388e$var$t = $8e72cbf99a87388e$var$_`
-                  <div class="entity">
-                    <ha-entity-picker
-                      allow-custom-entity
-                      hide-clear-icon
-                      .hass=${0}
-                      .value=${0}
-                      .index=${0}
-                      .includeEntities=${0}
-                      @value-changed=${0}
-                    ></ha-entity-picker>
-                    <ha-icon-button
-                      .label=${0}
-                      class="remove-icon"
-                      .index=${0}
-                      @click=${0}
-                    >
-                      <ha-icon icon="mdi:close"></ha-icon>
-                    </ha-icon-button>
-                    <ha-icon-button
-                      .label=${0}
-                      class="edit-icon"
-                      .index=${0}
-                      @click=${0}
-                    >
-                      <ha-icon icon="mdi:pencil"></ha-icon>
-                    </ha-icon-button>
-                  </div>
-                `), this.hass, this._getEntityId(item), index, this.availableEntities, this._valueChanged, this.hass.localize('ui.components.entity.entity-picker.clear'), index, this._removeRow, this.hass.localize('ui.components.entity.entity-picker.edit'), index, this._editRow))) : (0, $ci0wX.html)($8e72cbf99a87388e$var$t3 || ($8e72cbf99a87388e$var$t3 = $8e72cbf99a87388e$var$_`
-            <ha-sortable
-              handle-selector=".handle"
-              @item-moved=${0}
-            >
               <div class="entities">
                 ${0}
               </div>
-            </ha-sortable>
-          `), this._rowMoved, (0, $bvVEG.repeat)(items, (item, index)=>this._getKey(item, index), (item, index)=>(0, $ci0wX.html)($8e72cbf99a87388e$var$t2 || ($8e72cbf99a87388e$var$t2 = $8e72cbf99a87388e$var$_`
+            `), (0, $bvVEG.repeat)(items, (item, index)=>this._getKey(item, index), (item, index)=>(0, $ci0wX.html)($8e72cbf99a87388e$var$t || ($8e72cbf99a87388e$var$t = $8e72cbf99a87388e$var$_`
                     <div class="entity">
-                      <div class="handle">
-                        <ha-icon icon="mdi:drag"></ha-icon>
-                      </div>
                       <ha-entity-picker
                         allow-custom-entity
                         hide-clear-icon
@@ -7582,6 +7692,7 @@ class $8e72cbf99a87388e$export$12e5e4192ee344c7 extends (0, $2r9I1.LitElement) {
                         .value=${0}
                         .index=${0}
                         .includeEntities=${0}
+                        .includeDomains=${0}
                         @value-changed=${0}
                       ></ha-entity-picker>
                       <ha-icon-button
@@ -7601,14 +7712,57 @@ class $8e72cbf99a87388e$export$12e5e4192ee344c7 extends (0, $2r9I1.LitElement) {
                         <ha-icon icon="mdi:pencil"></ha-icon>
                       </ha-icon-button>
                     </div>
-                  `), this.hass, this._getEntityId(item), index, this.availableEntities, this._valueChanged, this.hass.localize('ui.components.entity.entity-picker.clear'), index, this._removeRow, this.hass.localize('ui.components.entity.entity-picker.edit'), index, this._editRow))), this.single && items.length > 0 ? (0, $ci0wX.nothing) : (0, $ci0wX.html)($8e72cbf99a87388e$var$t4 || ($8e72cbf99a87388e$var$t4 = $8e72cbf99a87388e$var$_`
-            <ha-entity-picker
-              class=${0}
-              .hass=${0}
-              .includeEntities=${0}
-              @value-changed=${0}
-            ></ha-entity-picker>
-          `), addEntityClass, this.hass, this.availableEntities, this._addEntity));
+                  `), this.hass, this._getEntityId(item), index, this.availableEntities, this.includeDomains, this._valueChanged, this.hass.localize('ui.components.entity.entity-picker.clear'), index, this._removeRow, this.hass.localize('ui.components.entity.entity-picker.edit'), index, this._editRow))) : (0, $ci0wX.html)($8e72cbf99a87388e$var$t3 || ($8e72cbf99a87388e$var$t3 = $8e72cbf99a87388e$var$_`
+              <ha-sortable
+                handle-selector=".handle"
+                @item-moved=${0}
+              >
+                <div class="entities">
+                  ${0}
+                </div>
+              </ha-sortable>
+            `), this._rowMoved, (0, $bvVEG.repeat)(items, (item, index)=>this._getKey(item, index), (item, index)=>(0, $ci0wX.html)($8e72cbf99a87388e$var$t2 || ($8e72cbf99a87388e$var$t2 = $8e72cbf99a87388e$var$_`
+                      <div class="entity">
+                        <div class="handle">
+                          <ha-icon icon="mdi:drag"></ha-icon>
+                        </div>
+                        <ha-entity-picker
+                          allow-custom-entity
+                          hide-clear-icon
+                          .hass=${0}
+                          .value=${0}
+                          .index=${0}
+                          .includeEntities=${0}
+                          .includeDomains=${0}
+                          @value-changed=${0}
+                        ></ha-entity-picker>
+                        <ha-icon-button
+                          .label=${0}
+                          class="remove-icon"
+                          .index=${0}
+                          @click=${0}
+                        >
+                          <ha-icon icon="mdi:close"></ha-icon>
+                        </ha-icon-button>
+                        <ha-icon-button
+                          .label=${0}
+                          class="edit-icon"
+                          .index=${0}
+                          @click=${0}
+                        >
+                          <ha-icon icon="mdi:pencil"></ha-icon>
+                        </ha-icon-button>
+                      </div>
+                    `), this.hass, this._getEntityId(item), index, this.availableEntities, this.includeDomains, this._valueChanged, this.hass.localize('ui.components.entity.entity-picker.clear'), index, this._removeRow, this.hass.localize('ui.components.entity.entity-picker.edit'), index, this._editRow))), this.single && items.length > 0 ? (0, $ci0wX.nothing) : (0, $ci0wX.html)($8e72cbf99a87388e$var$t4 || ($8e72cbf99a87388e$var$t4 = $8e72cbf99a87388e$var$_`
+              <ha-entity-picker
+                allow-custom-entity
+                class=${0}
+                .hass=${0}
+                .includeEntities=${0}
+                .includeDomains=${0}
+                @value-changed=${0}
+              ></ha-entity-picker>
+            `), addEntityClass, this.hass, this.availableEntities, this.includeDomains, this._addEntity));
     }
     _addEntity(ev) {
         ev.stopPropagation(); // Stop the picker's event from bubbling up
@@ -7809,6 +7963,11 @@ $8e72cbf99a87388e$export$12e5e4192ee344c7.styles = (0, $2SS2a.css)($8e72cbf99a87
         attribute: false
     })
 ], $8e72cbf99a87388e$export$12e5e4192ee344c7.prototype, "availableEntities", void 0);
+(0, $2QgUB.__decorate)([
+    (0, $aaQtJ.property)({
+        attribute: false
+    })
+], $8e72cbf99a87388e$export$12e5e4192ee344c7.prototype, "includeDomains", void 0);
 
 
 
@@ -7892,18 +8051,18 @@ class $43564874ab3ed043$export$5062b3ea8745e421 extends (0, $2r9I1.LitElement) {
       ></ha-form>
       ${0}
     `), this.hass, this._config, schema, (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, this.hass), this._valueChanged, this._config.entity_id && this.type !== 'light' ? (0, $ci0wX.html)($43564874ab3ed043$var$t2 || ($43564874ab3ed043$var$t2 = $43564874ab3ed043$var$_`
-            <room-summary-states-row-editor
-              .hass=${0}
-              .states=${0}
-              .entityId=${0}
-              .mode=${0}
-              .isSensor=${0}
-              .isMainEntity=${0}
-              label=${0}
-              @states-value-changed=${0}
-            ></room-summary-states-row-editor>
-            ${0} ${0}
-          `), this.hass, states, this._config.entity_id, 'states', this.type === 'sensor', this.isMainEntity, (0, $cfP8R.localize)(this.hass, 'editor.entity.states'), this._statesValueChanged, thresholdsEditor, badgesEditor) : (0, $ci0wX.nothing));
+              <room-summary-states-row-editor
+                .hass=${0}
+                .states=${0}
+                .entityId=${0}
+                .mode=${0}
+                .isSensor=${0}
+                .isMainEntity=${0}
+                label=${0}
+                @states-value-changed=${0}
+              ></room-summary-states-row-editor>
+              ${0} ${0}
+            `), this.hass, states, this._config.entity_id, 'states', this.type === 'sensor', this.isMainEntity, (0, $cfP8R.localize)(this.hass, 'editor.entity.states'), this._statesValueChanged, thresholdsEditor, badgesEditor) : (0, $ci0wX.nothing));
     }
     /**
    * Removes empty string properties from a config object
@@ -8854,14 +9013,11 @@ var $2SS2a = parcelRequire("2SS2a");
 let $97576b6c0b409321$var$_ = (t)=>t, $97576b6c0b409321$var$t;
 const $97576b6c0b409321$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($97576b6c0b409321$var$t || ($97576b6c0b409321$var$t = $97576b6c0b409321$var$_`
   :host {
-    /* Lanes needed for the current entity count, capped by the user max.
-       --entity-count is set inline by the component; doing the division in
-       CSS keeps --user-entities-wrap overridable from themes/card-mod. */
-    --entity-columns: clamp(
-      1,
-      round(up, calc(var(--entity-count, 1) / var(--user-entities-wrap, 4))),
-      var(--user-entities-max-columns, 99)
-    );
+    /* Fallback for engines without CSS round() (older Android WebViews in the
+       Companion app). Without it --entity-columns is invalid, aspect-ratio
+       drops to auto and the strip shrinks to its content, so icon sizes vary
+       per card (#484). Precomputed by the component at the default wrap of 4. */
+    --entity-columns: var(--entity-columns-fallback, 1);
     height: 100%;
     display: grid;
     grid-auto-flow: column;
@@ -8893,6 +9049,19 @@ const $97576b6c0b409321$export$9dd6ff9ea0189349 = (0, $2SS2a.css)($97576b6c0b409
     direction: rtl;
   }
 
+  /* Lanes needed for the current entity count, capped by the user max.
+     --entity-count is set inline by the component; doing the division in
+     CSS keeps --user-entities-wrap overridable from themes/card-mod. */
+  @supports (width: calc(round(up, 1.5) * 1px)) {
+    :host {
+      --entity-columns: clamp(
+        1,
+        round(up, calc(var(--entity-count, 1) / var(--user-entities-wrap, 4))),
+        var(--user-entities-max-columns, 99)
+      );
+    }
+  }
+
   /* Keep icon labels/state text left-to-right despite the rtl grid. */
   :host > * {
     direction: ltr;
@@ -8918,6 +9087,8 @@ class $b96a40707b142c90$export$b15c5e7ddecda86e extends (0, $htQni.HassUpdateMix
             this._entities = states;
             // Drives --entity-columns (strip width) in styles.ts
             this.style.setProperty('--entity-count', `${states.length}`);
+            // Used when the browser lacks CSS round() (see styles.ts)
+            this.style.setProperty('--entity-columns-fallback', `${Math.max(1, Math.ceil(states.length / 4))}`);
         }
         this._hass = hass;
     }
@@ -9998,10 +10169,10 @@ class $21884f49b48db948$export$8063c4212d705050 extends (0, $htQni.HassUpdateMix
         ${0}
       </div>
     `), (0, $6f5f72559a4d178c$export$3703ea65b0ac4726)(iconStyles), iconStyle, (0, $b96673d7637fba33$export$3d3654ce4577c53d)(this, this.entity), (0, $b96673d7637fba33$export$8a44987212de21b)(this.entity), this.isMainRoomEntity, this.entity, (_this_isActive = this.isActive) !== null && _this_isActive !== void 0 ? _this_isActive : false, this.hass, this._config, this._hideIconContent ? (0, $ci0wX.nothing) : (0, $ci0wX.html)($21884f49b48db948$var$t1 || ($21884f49b48db948$var$t1 = $21884f49b48db948$var$_`<ha-state-icon
-              .hass=${0}
-              .stateObj=${0}
-              .icon=${0}
-            ></ha-state-icon>`), this.hass, state, icon), badgeElements, (0, $48eb237c515e3f80$export$69e61e2a00cc1668)(this.hass, this._config, this.entity, this.isMainRoomEntity), (0, $64ed32997eb866dd$export$25d11e1ce3afd7f7)(this.hass, this.entity, this._hideIconContent));
+                .hass=${0}
+                .stateObj=${0}
+                .icon=${0}
+              ></ha-state-icon>`), this.hass, state, icon), badgeElements, (0, $48eb237c515e3f80$export$69e61e2a00cc1668)(this.hass, this._config, this.entity, this.isMainRoomEntity), (0, $64ed32997eb866dd$export$25d11e1ce3afd7f7)(this.hass, this.entity, this._hideIconContent));
     }
     constructor(...args){
         super(...args), /**
@@ -11722,6 +11893,13 @@ var $cfP8R = parcelRequire("cfP8R");
 parcelRequire("fPVm8");
 var $ci0wX = parcelRequire("ci0wX");
 let $f2a06477c32045b7$var$_ = (t)=>t, $f2a06477c32045b7$var$t, $f2a06477c32045b7$var$t1;
+/**
+ * Domains offered by the light entity picker. Matches the domains accepted by
+ * the light sub-element editor so both pickers agree.
+ */ const $f2a06477c32045b7$var$LIGHT_DOMAINS = [
+    'light',
+    'switch'
+];
 function $f2a06477c32045b7$export$eb43fb94789f71b0(params) {
     const { hass: hass, config: config, entities: entities, onValueChanged: onValueChanged, onLightsRowChanged: onLightsRowChanged, onEditDetailElement: onEditDetailElement } = params;
     const infoText = 'editor.background.multi_light_background_info';
@@ -11732,6 +11910,7 @@ function $f2a06477c32045b7$export$eb43fb94789f71b0(params) {
         .hass=${0}
         .lights=${0}
         .availableEntities=${0}
+        .includeDomains=${0}
         field="lights"
         label=${0}
         @value-changed=${0}
@@ -11748,7 +11927,7 @@ function $f2a06477c32045b7$export$eb43fb94789f71b0(params) {
         @value-changed=${0}
       ></ha-form>
     </div>
-  `), infoText ? (0, $ci0wX.html)($f2a06477c32045b7$var$t || ($f2a06477c32045b7$var$t = $f2a06477c32045b7$var$_` <div class="info-header">${0}</div> `), (0, $cfP8R.localize)(hass, infoText)) : (0, $ci0wX.nothing), hass, config.lights, entities, hass.localize('editor.background.light_entities') || 'Light entities', onLightsRowChanged, onEditDetailElement, (0, $cfP8R.localize)(hass, 'editor.features.features_info'), hass, config, [
+  `), infoText ? (0, $ci0wX.html)($f2a06477c32045b7$var$t || ($f2a06477c32045b7$var$t = $f2a06477c32045b7$var$_` <div class="info-header">${0}</div> `), (0, $cfP8R.localize)(hass, infoText)) : (0, $ci0wX.nothing), hass, config.lights, entities, $f2a06477c32045b7$var$LIGHT_DOMAINS, hass.localize('editor.background.light_entities') || 'Light entities', onLightsRowChanged, onEditDetailElement, (0, $cfP8R.localize)(hass, 'editor.features.features_info'), hass, config, [
         (0, $ebeb8808033cc92f$export$7f37e4e3829f238c)(hass)
     ], (schema)=>(0, $58c2b5810601848d$export$851056343f01ae23)(schema, hass), onValueChanged);
 }
@@ -13068,7 +13247,7 @@ $1e8946f92a148373$exports.customCards = $1e8946f92a148373$var$customCardsWindow.
 
 
 var $649c526c16197344$exports = {};
-$649c526c16197344$exports = JSON.parse("{\"name\":\"room-summary-card\",\"version\":\"2.1.0\",\"author\":{\"name\":\"Patrick Masters\",\"url\":\"https://curiouscat.consulting/projects/ha-room-summary-card?utm_source=github-room-summary-card&utm_medium=package-metadata&utm_campaign=oss-presence&utm_content=author-url\"},\"license\":\"ISC\",\"prettier\":\"@homeassistant-extras/config/prettier\",\"description\":\"Custom card Home Assistant which can show a summary of room entities.\",\"homepage\":\"https://homeassistant-extras.github.io/room-summary-card/\",\"repository\":{\"type\":\"git\",\"url\":\"https://github.com/homeassistant-extras/room-summary-card.git\"},\"bugs\":{\"url\":\"https://github.com/homeassistant-extras/room-summary-card/issues\"},\"source\":\"src/index.ts\",\"module\":\"dist/room-summary-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"@parcel/resolver-default\":{\"packageExports\":true},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"lint\":\"eslint .\",\"lint:fix\":\"eslint . --fix\",\"format\":\"prettier --write .\",\"pass\":\"yarn format && yarn typecheck && yarn lint && yarn test\",\"typecheck\":\"tsc --noEmit && tsc -p tsconfig.test.json --noEmit\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc yarn test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"test:e2e\":\"playwright test\",\"test:e2e:auth\":\"source .env && npx playwright codegen --save-storage=$PLAYWRIGHT_HA_STORAGE_STATE $PLAYWRIGHT_HA_ORIGIN\",\"update\":\"npx npm-check-updates -u && yarn install\"},\"devDependencies\":{\"@eslint/js\":\"^10.0.1\",\"@homeassistant-extras/config\":\"^0.3.1\",\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^4.0.0\",\"@parcel/transformer-inline-string\":\"^2.16.4\",\"@playwright/test\":\"^1.62.1\",\"@testing-library/dom\":\"^10.4.1\",\"@trivago/prettier-plugin-sort-imports\":\"^6.0.2\",\"@types/chai\":\"^5.2.3\",\"@types/jsdom\":\"^30.0.0\",\"@types/mocha\":\"^10.0.10\",\"@types/node\":\"^26.4.0\",\"@types/sinon\":\"^22.0.0\",\"chai\":\"^6.2.2\",\"eslint\":\"^10.9.1\",\"eslint-plugin-lit\":\"^2.3.1\",\"eslint-plugin-wc\":\"^3.1.0\",\"globals\":\"^17.11.0\",\"jsdom\":\"^30.0.1\",\"mocha\":\"^11.8.0\",\"nyc\":\"^18.0.0\",\"parcel\":\"^2.16.4\",\"prettier\":\"3.9.6\",\"prettier-plugin-organize-imports\":\"^4.3.0\",\"sinon\":\"^22.1.0\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^6.0.3\",\"typescript-eslint\":\"^8.68.0\"},\"dependencies\":{\"@homeassistant-extras/hass\":\"^0.6.0\",\"@lit/task\":\"^1.0.3\",\"async-memoize-one\":\"^1.2.1\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.3.3\",\"memoize-one\":\"^6.0.0\"}}");
+$649c526c16197344$exports = JSON.parse("{\"name\":\"room-summary-card\",\"version\":\"2.4.0\",\"author\":{\"name\":\"Patrick Masters\",\"url\":\"https://curiouscat.consulting/projects/ha-room-summary-card?utm_source=github-room-summary-card&utm_medium=package-metadata&utm_campaign=oss-presence&utm_content=author-url\"},\"license\":\"ISC\",\"prettier\":\"@homeassistant-extras/config/prettier\",\"description\":\"Custom card Home Assistant which can show a summary of room entities.\",\"homepage\":\"https://homeassistant-extras.github.io/room-summary-card/\",\"repository\":{\"type\":\"git\",\"url\":\"https://github.com/homeassistant-extras/room-summary-card.git\"},\"bugs\":{\"url\":\"https://github.com/homeassistant-extras/room-summary-card/issues\"},\"source\":\"src/index.ts\",\"module\":\"dist/room-summary-card.js\",\"targets\":{\"module\":{\"includeNodeModules\":true}},\"@parcel/resolver-default\":{\"packageExports\":true},\"scripts\":{\"watch\":\"parcel watch\",\"build\":\"parcel build\",\"lint\":\"eslint .\",\"lint:fix\":\"eslint . --fix\",\"format\":\"prettier --write .\",\"pass\":\"yarn format && yarn typecheck && yarn lint && yarn test\",\"typecheck\":\"tsc --noEmit && tsc -p tsconfig.test.json --noEmit\",\"test\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha\",\"test:coverage\":\"nyc yarn test\",\"test:watch\":\"TS_NODE_PROJECT='./tsconfig.test.json' mocha --watch\",\"test:e2e\":\"playwright test\",\"test:e2e:auth\":\"source .env && npx playwright codegen --save-storage=$PLAYWRIGHT_HA_STORAGE_STATE $PLAYWRIGHT_HA_ORIGIN\",\"update\":\"npx npm-check-updates -u && yarn install\"},\"devDependencies\":{\"@eslint/js\":\"^10.0.1\",\"@homeassistant-extras/config\":\"^0.3.1\",\"@istanbuljs/nyc-config-typescript\":\"^1.0.2\",\"@open-wc/testing\":\"^5.0.0\",\"@parcel/transformer-inline-string\":\"^2.16.4\",\"@playwright/test\":\"^1.64.0\",\"@testing-library/dom\":\"^10.4.2\",\"@trivago/prettier-plugin-sort-imports\":\"^6.0.2\",\"@types/chai\":\"^5.2.3\",\"@types/jsdom\":\"^30.0.0\",\"@types/mocha\":\"^10.0.10\",\"@types/node\":\"^26.6.4\",\"@types/sinon\":\"^22.0.0\",\"chai\":\"^6.3.0\",\"eslint\":\"^10.12.0\",\"eslint-plugin-lit\":\"^2.3.1\",\"eslint-plugin-wc\":\"^3.1.0\",\"globals\":\"^17.13.0\",\"jsdom\":\"^30.1.2\",\"mocha\":\"^12.0.3\",\"nyc\":\"^18.0.0\",\"parcel\":\"^2.16.4\",\"prettier\":\"3.9.9\",\"prettier-plugin-organize-imports\":\"^4.3.0\",\"sinon\":\"^22.1.0\",\"ts-node\":\"^10.9.2\",\"tsconfig-paths\":\"^4.2.0\",\"typescript\":\"^6.0.3\",\"typescript-eslint\":\"^8.71.1\"},\"dependencies\":{\"@homeassistant-extras/hass\":\"^0.8.0\",\"@lit/task\":\"^1.0.3\",\"async-memoize-one\":\"^1.2.1\",\"fast-deep-equal\":\"^3.1.3\",\"lit\":\"^3.3.3\",\"memoize-one\":\"^6.0.0\"}}");
 
 
 // Register the custom element with the browser

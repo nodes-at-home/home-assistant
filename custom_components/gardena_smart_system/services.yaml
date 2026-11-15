@@ -20,8 +20,6 @@ reload:
 
 websocket_diagnostics:
   description: Get WebSocket connection diagnostics and status information.
-  response:
-    optional: true
   fields:
     detailed:
       description: Include detailed connection information.
@@ -33,8 +31,16 @@ websocket_diagnostics:
 valve_open:
   description: Open a valve for the specified duration.
   fields:
+    entity_id:
+      description: One or more Gardena valve entities. The easiest target in automations; takes precedence over service_id and device_id.
+      example: "valve.irrigation_lawn"
+      selector:
+        entity:
+          integration: gardena_smart_system
+          domain: valve
+          multiple: true
     device_id:
-      description: The HA device ID or Gardena device UUID. Required if service_id is not provided.
+      description: The HA device ID or Gardena device UUID. Required if neither entity_id nor service_id is provided.
       example: "d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3"
       selector:
         text:
@@ -56,10 +62,18 @@ valve_open:
           mode: box
 
 valve_close:
-  description: Close a valve immediately.
+  description: Close a valve immediately. On a controller with several valves, omitting service_id closes every valve.
   fields:
+    entity_id:
+      description: One or more Gardena valve entities. The easiest target in automations; takes precedence over service_id and device_id.
+      example: "valve.irrigation_lawn"
+      selector:
+        entity:
+          integration: gardena_smart_system
+          domain: valve
+          multiple: true
     device_id:
-      description: The HA device ID or Gardena device UUID. Required if service_id is not provided.
+      description: The HA device ID or Gardena device UUID. Required if neither entity_id nor service_id is provided. Applies to every valve on that device.
       example: "d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3"
       selector:
         text:
@@ -70,10 +84,18 @@ valve_close:
         text:
 
 valve_pause:
-  description: Pause automatic valve operation.
+  description: Pause automatic valve operation. On a controller with several valves, omitting service_id pauses every valve. Omit duration to keep the device's own pause length.
   fields:
+    entity_id:
+      description: One or more Gardena valve entities. The easiest target in automations; takes precedence over service_id and device_id.
+      example: "valve.irrigation_lawn"
+      selector:
+        entity:
+          integration: gardena_smart_system
+          domain: valve
+          multiple: true
     device_id:
-      description: The HA device ID or Gardena device UUID. Required if service_id is not provided.
+      description: The HA device ID or Gardena device UUID. Required if neither entity_id nor service_id is provided. Applies to every valve on that device.
       example: "d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3"
       selector:
         text:
@@ -82,12 +104,31 @@ valve_pause:
       example: "d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3:2"
       selector:
         text:
+    duration:
+      description: How long to skip the schedule, in seconds. Must be a multiple of 60. Omit it to leave the device's own pause length unchanged.
+      required: false
+      example: "3600"
+      selector:
+        number:
+          min: 60
+          max: 14400
+          step: 60
+          unit_of_measurement: seconds
+          mode: box
 
 valve_unpause:
-  description: Resume automatic valve operation.
+  description: Resume automatic valve operation. On a controller with several valves, omitting service_id resumes every valve.
   fields:
+    entity_id:
+      description: One or more Gardena valve entities. The easiest target in automations; takes precedence over service_id and device_id.
+      example: "valve.irrigation_lawn"
+      selector:
+        entity:
+          integration: gardena_smart_system
+          domain: valve
+          multiple: true
     device_id:
-      description: The HA device ID or Gardena device UUID. Required if service_id is not provided.
+      description: The HA device ID or Gardena device UUID. Required if neither entity_id nor service_id is provided. Applies to every valve on that device.
       example: "d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3"
       selector:
         text:

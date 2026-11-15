@@ -35,6 +35,7 @@ from .const import (
     DOMAIN,
     LOGGER,
     OPT_AUTOMATION_RULES_AS_ENTITIES,
+    OPT_DIAGNOSTIC_ENTITIES,
     OPT_SCENARIOS_AS_BUTTONS,
     OPT_SCENARIOS_FILTER,
 )
@@ -417,11 +418,13 @@ class ResetEnergySummationButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
 class ShutterRecalibrateButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
     """Button that triggers a Shutter Control II end-position (re)calibration run.
 
-    Fully modeled in boschshcpy (ShutterControlService.
-    async_reset_calibration_and_open / SHCShutterControl.
-    async_reset_calibration_and_open) but never wired into an HA entity.
-    Confirmed via APK decompile (ShutterControlInteractor.
-    RESET_CALIBRATION_AND_OPEN_COMMAND) that the operation takes no params.
+    hass#396: `resetCalibrationAndOpen` does NOT calibrate — confirmed by
+    Bosch (2026-09-21), it only resets the calibration flag and drives the
+    shutter fully open, meant to give the calibration wizard a defined
+    starting position (no PUT-operation existed for device services when the
+    original shutter integration was written). The real calibration run is
+    triggered via `SHCShutterControl.async_calibrate()`, which PUTs the
+    ShutterControl DeviceServiceState with `operationState: "CALIBRATING"`.
     """
 
     _attr_entity_category = EntityCategory.CONFIG
@@ -439,10 +442,19 @@ class ShutterRecalibrateButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
     async def async_press(self) -> None:
         """Trigger the end-position (re)calibration run."""
         try:
-            await self._device.async_reset_calibration_and_open()
+            await self._device.async_calibrate()
         except SHCException as err:
             raise HomeAssistantError(
                 f"Shutter recalibration failed for {self._device.name}: {err}",
+                translation_domain=DOMAIN,
+                translation_key="button_press_failed",
+            ) from err
+        except AttributeError as err:
+            # async_calibrate() needs boschshcpy>=0.6.11 (hass#396) — a stale
+            # pin would otherwise let this escape as a raw AttributeError.
+            raise HomeAssistantError(
+                f"Shutter recalibration requires a newer boschshcpy library "
+                f"for {self._device.name}: {err}",
                 translation_domain=DOMAIN,
                 translation_key="button_press_failed",
             ) from err
@@ -689,7 +701,7 @@ class DimmerPreviewMinButton(SHCEntity, ButtonEntity):  # type: ignore[misc]
 class SHCEnableAllDiagnosticsButton(ButtonEntity):  # type: ignore[misc]
     """Button that enables every disabled-by-default diagnostic entity for this SHC.
 
-    Diagnostic entities (Zigbee routing quality, communication quality,
+    Most diagnostic entities (Zigbee routing quality, communication quality,
     etc.) ship with entity_registry_enabled_default=False, HA's convention
     for advanced/noisy sensors. Not an SHC device, so this does not inherit
     SHCEntity — scoped to the config entry like SHCScenarioButton.
@@ -729,6 +741,15 @@ class SHCEnableAllDiagnosticsButton(ButtonEntity):  # type: ignore[misc]
         """Clear disabled_by=INTEGRATION on every diagnostic entity of this entry."""
         if self._reload_in_progress:
             return
+        # #417: option off -> no diagnostic sensors exist; a silent no-op
+        # looks like a broken button, so raise an actionable error instead.
+        entry = self.hass.config_entries.async_get_entry(self._entry_id)
+        if entry is not None and not entry.options.get(OPT_DIAGNOSTIC_ENTITIES, True):
+            raise HomeAssistantError(
+                "Diagnostic entities are turned off for this SHC",
+                translation_domain=DOMAIN,
+                translation_key="diagnostic_entities_disabled",
+            )
         registry = er.async_get(self.hass)
         to_enable = [
             entity_entry.entity_id
@@ -738,16 +759,44 @@ class SHCEnableAllDiagnosticsButton(ButtonEntity):  # type: ignore[misc]
             if entity_entry.entity_category == EntityCategory.DIAGNOSTIC
             and entity_entry.disabled_by == er.RegistryEntryDisabler.INTEGRATION
         ]
+        if not to_enable:
+            # #417: log at INFO (not debug) so a silent no-op -- nothing
+            # left disabled-by-default to enable -- is still visible.
+            user_disabled = sum(
+                1
+                for entity_entry in er.async_entries_for_config_entry(
+                    registry, self._entry_id
+                )
+                if entity_entry.entity_category == EntityCategory.DIAGNOSTIC
+                and entity_entry.disabled_by == er.RegistryEntryDisabler.USER
+            )
+            LOGGER.info(
+                "Enable-all-diagnostics: no disabled-by-default diagnostic "
+                "entities found for this SHC; nothing to enable"
+            )
+            if user_disabled:
+                LOGGER.info(
+                    "Enable-all-diagnostics: %d diagnostic entities were disabled "
+                    "by the user and are left alone; enable them in Settings > "
+                    "Devices & services > Entities",
+                    user_disabled,
+                )
+            return
         for entity_id in to_enable:
             registry.async_update_entity(entity_id, disabled_by=None)
-        if to_enable:
-            # Newly-enabled entities only actually start after a reload.
-            # Guarded above against overlapping reloads from a rapid double-press.
-            self._reload_in_progress = True
-            try:
-                await self.hass.config_entries.async_reload(self._entry_id)
-            finally:
-                self._reload_in_progress = False
+        LOGGER.info(
+            "Enable-all-diagnostics: enabled %d previously-disabled diagnostic "
+            "entities, reloading integration: %s",
+            len(to_enable),
+            ", ".join(to_enable),
+        )
+        # Newly-enabled entities only actually start after a reload.
+        # Guarded above against overlapping reloads from a rapid double-press.
+        self._reload_in_progress = True
+        try:
+            await self.hass.config_entries.async_reload(self._entry_id)
+        finally:
+            self._reload_in_progress = False
 
 
 class SHCAutomationRuleTriggerButton(ButtonEntity):  # type: ignore[misc]

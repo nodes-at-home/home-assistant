@@ -5,7 +5,12 @@ import logging
 from typing import Any, Dict, Optional
 
 from homeassistant.core import HomeAssistant, ServiceCall
-from homeassistant.helpers import config_validation as cv, device_registry as dr
+from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import (
+    config_validation as cv,
+    device_registry as dr,
+    entity_registry as er,
+)
 import voluptuous as vol
 
 from .const import DOMAIN
@@ -29,11 +34,13 @@ SERVICE_SCHEMA_DURATION = vol.Schema({
 SERVICE_SCHEMA_MOWER = vol.Schema({
     vol.Required("device_id"): cv.string,
     vol.Optional("duration", default=1800): vol.All(
-        cv.positive_int, vol.Range(min=60, max=30000)
+        cv.positive_int, vol.Range(min=60, max=86400)
     ),
 })
 
 SERVICE_SCHEMA_VALVE = vol.Schema({
+    # A valve entity of this integration: the easiest target in automations (#408).
+    vol.Optional("entity_id"): cv.entity_ids,
     vol.Optional("device_id"): cv.string,
     vol.Optional("service_id"): cv.string,
     vol.Optional("duration", default=3600): vol.All(
@@ -41,7 +48,29 @@ SERVICE_SCHEMA_VALVE = vol.Schema({
     ),
 })
 
+def _duration_multiple_of_60(value: int) -> int:
+    """Gardena durations must be a positive multiple of 60 seconds."""
+    if value % 60 != 0:
+        raise vol.Invalid("duration must be a positive multiple of 60 seconds")
+    return value
+
+
+SERVICE_SCHEMA_VALVE_PAUSE = vol.Schema({
+    # A valve entity of this integration: the easiest target in automations (#408).
+    vol.Optional("entity_id"): cv.entity_ids,
+    vol.Optional("device_id"): cv.string,
+    vol.Optional("service_id"): cv.string,
+    # No default: omitting duration leaves the device's own pause length.
+    vol.Optional("duration"): vol.All(
+        cv.positive_int,
+        vol.Range(min=60, max=14400),
+        _duration_multiple_of_60,
+    ),
+})
+
 SERVICE_SCHEMA_VALVE_BASE = vol.Schema({
+    # A valve entity of this integration: the easiest target in automations (#408).
+    vol.Optional("entity_id"): cv.entity_ids,
     vol.Optional("device_id"): cv.string,
     vol.Optional("service_id"): cv.string,
 })
@@ -118,7 +147,7 @@ class ValveCommand(GardenaCommand):
         """Initialize valve command."""
         super().__init__(service_id, "VALVE_CONTROL")
         self.attributes["command"] = command
-        if seconds and command == "START_SECONDS_TO_OVERRIDE":
+        if seconds and command in ("START_SECONDS_TO_OVERRIDE", "PAUSE"):
             self.attributes["seconds"] = seconds
 
 
@@ -207,7 +236,7 @@ class GardenaServiceManager:
             DOMAIN,
             "valve_pause",
             self._service_valve_pause,
-            schema=SERVICE_SCHEMA_VALVE_BASE,
+            schema=SERVICE_SCHEMA_VALVE_PAUSE,
         )
         self.hass.services.async_register(
             DOMAIN,
@@ -268,7 +297,7 @@ class GardenaServiceManager:
         """Get service ID for device and service type.
 
         Only use for device types that have a single service (MOWER, POWER_SOCKET, SENSOR).
-        For VALVE, use _resolve_valve_service_id instead.
+        For VALVE, use _resolve_valve_service_ids instead.
         """
         coordinator = self._get_coordinator(device_id)
         if not coordinator:
@@ -292,60 +321,98 @@ class GardenaServiceManager:
         else:
             return None
 
-    def _resolve_valve_service_id(self, call: ServiceCall) -> Optional[str]:
-        """Resolve valve service ID from call data.
+    def _resolve_valve_service_ids(self, call: ServiceCall, *, fan_out: bool) -> list[str]:
+        """Resolve the VALVE service ids targeted by a service call.
 
-        Supports either:
-        - service_id directly (e.g. '<device-uuid>:2')
-        - device_id (resolves to the single VALVE service, or errors if multiple)
+        ``entity_id`` targets those valve entities (#408). ``service_id``
+        always targets that one valve. ``device_id`` targets the
+        only valve on the device. When the device has several valves, schedule
+        commands (pause, unpause, close) apply to every valve (#396, #388).
+        Opening still requires ``service_id``, because a controller can only
+        water a couple of zones at once. A call that matches nothing raises
+        HomeAssistantError instead of reporting success.
         """
+        if (entity_ids := call.data.get("entity_id")):
+            if isinstance(entity_ids, str):
+                entity_ids = [entity_ids]
+            return [self._valve_service_id_for_entity(eid) for eid in entity_ids]
+
         if (sid := call.data.get("service_id")):
-            return sid
+            return [sid]
 
         device_id = call.data.get("device_id")
         if not device_id:
-            _LOGGER.error("Either device_id or service_id must be provided")
-            return None
+            raise HomeAssistantError(
+                "One of entity_id, service_id or device_id must be provided"
+            )
 
         device_id = self._resolve_device_id(device_id)
         coordinator = self._get_coordinator(device_id)
         if not coordinator:
-            _LOGGER.error("No coordinator found for device %s", device_id)
-            return None
+            raise HomeAssistantError(f"No coordinator found for device {device_id}")
 
         device = coordinator.get_device_by_id(device_id)
-        if not device or "VALVE" not in device.services:
-            _LOGGER.error("No VALVE service found for device %s", device_id)
-            return None
-
-        services = device.services["VALVE"]
+        services = device.services.get("VALVE") if device else None
         if not isinstance(services, list) or len(services) == 0:
-            _LOGGER.error("No VALVE service found for device %s", device_id)
-            return None
+            raise HomeAssistantError(f"No VALVE service found for device {device_id}")
 
-        if len(services) == 1:
-            return services[0].id
+        if len(services) == 1 or fan_out:
+            return [service.id for service in services]
 
-        _LOGGER.error(
-            "Device %s has %d VALVE services; pass service_id to choose one (available: %s)",
-            device_id, len(services), [s.id for s in services],
+        available = [service.id for service in services]
+        raise HomeAssistantError(
+            f"Device {device_id} has {len(services)} VALVE services; "
+            f"pass service_id to choose one (available: {available})"
         )
-        return None
+
+    def _valve_service_id_for_entity(self, entity_id: str) -> str:
+        """The VALVE service id behind a valve entity of this integration.
+
+        Read from the entity registry and the coordinators, not from the
+        entity's state, so an entity that is unavailable at the moment still
+        resolves. The unique ids are ``<device>_<service>`` for a Smart
+        Irrigation Control output or a generic valve, and
+        ``<device>_water_control`` for a Water Control (valve.py).
+        """
+        entry = er.async_get(self.hass).async_get(entity_id)
+        if entry is None or entry.platform != DOMAIN or entry.domain != "valve":
+            raise HomeAssistantError(f"{entity_id} is not a Gardena valve")
+
+        for entry_id, coordinator in self.hass.data[DOMAIN].items():
+            if entry_id == "service_manager" or not hasattr(coordinator, "locations"):
+                continue
+            for location in coordinator.locations.values():
+                for device in location.devices.values():
+                    valves = device.services.get("VALVE") or []
+                    for valve in valves:
+                        if entry.unique_id == f"{device.id}_{valve.id}":
+                            return valve.id
+                    if valves and entry.unique_id == f"{device.id}_water_control":
+                        return valves[0].id
+
+        raise HomeAssistantError(f"No Gardena valve found for {entity_id}")
 
     async def _send_command(self, service_id: str, command: GardenaCommand) -> bool:
-        """Send command to device."""
+        """Send command to device.
+
+        Command failures raise HomeAssistantError (via GardenaCommandError)
+        so automations can use continue_on_error (issue #390).
+        """
         coordinator = self._get_coordinator(service_id.split(":")[0] if ":" in service_id else service_id)
         if not coordinator:
-            _LOGGER.error("No coordinator found for device")
-            return False
-        
+            raise HomeAssistantError("No coordinator found for device")
+
         try:
             await coordinator.client.send_command(service_id, command.to_dict())
             _LOGGER.debug(f"Command {command.command_type} sent successfully to {service_id}")
             return True
+        except HomeAssistantError:
+            raise
         except Exception as e:
             _LOGGER.error(f"Failed to send command {command.command_type} to {service_id}: {e}")
-            return False
+            raise HomeAssistantError(
+                f"Failed to send command {command.command_type} to {service_id}: {e}"
+            ) from e
 
     # Mower services
     async def _service_mower_start(self, call: ServiceCall) -> None:
@@ -453,40 +520,33 @@ class GardenaServiceManager:
     # Valve services
     async def _service_valve_open(self, call: ServiceCall) -> None:
         """Open valve for specified duration."""
-        service_id = self._resolve_valve_service_id(call)
-        if not service_id:
-            return
-
+        service_ids = self._resolve_valve_service_ids(call, fan_out=False)
         duration = call.data["duration"]
-        command = ValveCommand(service_id, "START_SECONDS_TO_OVERRIDE", seconds=duration)
-        await self._send_command(service_id, command)
+        for service_id in service_ids:
+            command = ValveCommand(service_id, "START_SECONDS_TO_OVERRIDE", seconds=duration)
+            await self._send_command(service_id, command)
 
     async def _service_valve_close(self, call: ServiceCall) -> None:
         """Close valve."""
-        service_id = self._resolve_valve_service_id(call)
-        if not service_id:
-            return
-
-        command = ValveCommand(service_id, "STOP_UNTIL_NEXT_TASK")
-        await self._send_command(service_id, command)
+        service_ids = self._resolve_valve_service_ids(call, fan_out=True)
+        for service_id in service_ids:
+            command = ValveCommand(service_id, "STOP_UNTIL_NEXT_TASK")
+            await self._send_command(service_id, command)
 
     async def _service_valve_pause(self, call: ServiceCall) -> None:
         """Pause valve operation."""
-        service_id = self._resolve_valve_service_id(call)
-        if not service_id:
-            return
-
-        command = ValveCommand(service_id, "PAUSE")
-        await self._send_command(service_id, command)
+        service_ids = self._resolve_valve_service_ids(call, fan_out=True)
+        duration = call.data.get("duration")
+        for service_id in service_ids:
+            command = ValveCommand(service_id, "PAUSE", seconds=duration)
+            await self._send_command(service_id, command)
 
     async def _service_valve_unpause(self, call: ServiceCall) -> None:
         """Unpause valve operation."""
-        service_id = self._resolve_valve_service_id(call)
-        if not service_id:
-            return
-
-        command = ValveCommand(service_id, "UNPAUSE")
-        await self._send_command(service_id, command)
+        service_ids = self._resolve_valve_service_ids(call, fan_out=True)
+        for service_id in service_ids:
+            command = ValveCommand(service_id, "UNPAUSE")
+            await self._send_command(service_id, command)
 
 
     # WebSocket services

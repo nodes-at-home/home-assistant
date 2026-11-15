@@ -390,8 +390,7 @@
         "name": "액추에이터 유형",
         "state": {
           "normally_closed": "상시 닫힘",
-          "normally_open": "상시 열림",
-          "unsupported": "지원되지 않음"
+          "normally_open": "상시 열림"
         }
       },
       "output_mode": {
@@ -400,8 +399,7 @@
           "attached": "연동됨",
           "detached": "아무 버튼이나 누르면 분리",
           "detached_short_press": "짧게 누르면 분리",
-          "detached_long_press": "길게 누르면 분리",
-          "unsupported": "지원되지 않음"
+          "detached_long_press": "길게 누르면 분리"
         }
       },
       "siren_sound_level": {
@@ -795,7 +793,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "침입 알람 해제됨",
       "ALARM_OFF": "알람 꺼짐",
       "ALARM_ON": "알람 켜짐",
-      "ALARM_MUTED": "알람 음소거"
+      "ALARM_MUTED": "알람 음소거",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "{subtype} 짧게 누름",
@@ -885,6 +884,36 @@
           "description": "SHC의 제목입니다. 처음 구성된 SHC를 사용하려면 비워 두세요."
         }
       }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
+        }
+      }
     }
   },
   "issues": {
@@ -933,6 +962,9 @@
     "alarm_state_failed": {
       "message": "알람 상태 변경에 실패했습니다."
     },
+    "diagnostic_entities_disabled": {
+      "message": "이 SHC의 진단 엔티티가 꺼져 있습니다. 통합 옵션에서 \"진단 센서 생성\"을 켠 다음 버튼을 다시 누르세요."
+    },
     "button_press_failed": {
       "message": "버튼 누르기에 실패했습니다."
     },
@@ -968,6 +1000,12 @@
     },
     "zigbee_topology_write_failed": {
       "message": "Zigbee 토폴로지 내보내기를 www/bosch_shc/에 쓸 수 없습니다."
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   }
 }

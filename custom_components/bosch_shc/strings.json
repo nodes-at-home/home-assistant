@@ -236,10 +236,10 @@
         "name": "Temperature deviation"
       },
       "energy_saving_power_threshold": {
-        "name": "Energy saving power threshold"
+        "name": "Energy-saving power threshold"
       },
       "energy_saving_enter_duration": {
-        "name": "Energy saving enter duration"
+        "name": "Energy-saving enter duration"
       },
       "led_brightness": {
         "name": "LED brightness"
@@ -384,8 +384,7 @@
         "name": "Actuator type",
         "state": {
           "normally_closed": "Normally closed",
-          "normally_open": "Normally open",
-          "unsupported": "Unsupported"
+          "normally_open": "Normally open"
         }
       },
       "output_mode": {
@@ -394,8 +393,7 @@
           "attached": "Coupled",
           "detached": "Disconnected on any key press",
           "detached_short_press": "Disconnected on short press",
-          "detached_long_press": "Disconnected on long press",
-          "unsupported": "Unsupported"
+          "detached_long_press": "Disconnected on long press"
         }
       },
       "smart_sensitivity_security_level": {
@@ -713,7 +711,7 @@
         "name": "Ambient light"
       },
       "energy_saving_mode_enabled": {
-        "name": "Energy saving mode"
+        "name": "Energy-saving mode"
       },
       "warning_suppressed": {
         "name": "Warning suppressed"
@@ -808,6 +806,9 @@
     "alarm_state_failed": {
       "message": "Alarm state change failed."
     },
+    "diagnostic_entities_disabled": {
+      "message": "Diagnostic entities are turned off for this SHC. Turn on \"Create diagnostic sensors\" in the integration options, then press the button again."
+    },
     "button_press_failed": {
       "message": "Button press failed."
     },
@@ -843,6 +844,12 @@
     },
     "zigbee_topology_write_failed": {
       "message": "Could not write the Zigbee topology export to www/bosch_shc/."
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   },
   "device_automation": {
@@ -861,7 +868,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "Intrusion alarm cleared",
       "ALARM_OFF": "Alarm off",
       "ALARM_ON": "Alarm on",
-      "ALARM_MUTED": "Alarm muted"
+      "ALARM_MUTED": "Alarm muted",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "{subtype} short clicked",
@@ -906,7 +914,7 @@
         },
         "command": {
           "name": "Rawscan command",
-          "description": "Rawscan command to trigger. Possible commands are 'devices', 'device', 'services', 'device_services', 'device_service', 'rooms', 'scenarios', 'info', 'information', 'public_information', 'intrusion_detection'"
+          "description": "Rawscan command to trigger. Possible commands are 'devices', 'device', 'services', 'device_services', 'device_service', 'rooms', 'scenarios', 'info', 'information', 'public_information', 'intrusion_detection', 'smoke_system_state', 'smoke_configuration'"
         },
         "device_id": {
           "name": "Device id",
@@ -949,6 +957,36 @@
         "title": {
           "name": "SHC name",
           "description": "Title of the SHC. Leave empty to use the first configured SHC."
+        }
+      }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
         }
       }
     }

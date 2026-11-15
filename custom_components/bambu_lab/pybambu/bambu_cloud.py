@@ -96,14 +96,14 @@ class BambuCloud:
 
     def _get_headers(self):
         return {
-            'User-Agent': 'bambu_network_agent/01.09.05.01',
-            'X-BBL-Client-Name': 'OrcaSlicer',
-            'X-BBL-Client-Type': 'slicer',
-            'X-BBL-Client-Version': '01.09.05.51',
+            'User-Agent': 'ha-bambulab/v1',
+            'X-BBL-Client-Name': 'ha-bambulab',
+            'X-BBL-Client-Type': 'homeautomation',
+            'X-BBL-Client-Version': '01.00.00.00',
             'X-BBL-Language': 'en-US',
             'X-BBL-OS-Type': 'linux',
             'X-BBL-OS-Version': '6.2.0',
-            'X-BBL-Agent-Version': '01.09.05.01',
+            'X-BBL-Agent-Version': '01.00.00.00',
             'X-BBL-Executable-info': '{}',
             'X-BBL-Agent-OS-Type': 'linux',
             'accept': 'application/json',
@@ -146,9 +146,9 @@ class BambuCloud:
         
         LOGGER.debug(f"Response: {response.status_code}")
 
-    def _get(self, urlenum: BambuUrl):
+    def _get(self, urlenum: BambuUrl, suffix: str = ""):
         try:
-            url = get_Url(urlenum, self._region)
+            url = get_Url(urlenum, self._region) + suffix
             headers=self._get_headers_with_auth_token()
             if CONNECTION_MECHANISM == ConnectionMechanismEnum.CURL_CFFI:
                 if not curl_available:
@@ -297,7 +297,13 @@ class BambuCloud:
             "tfaCode": code
         }
 
-        csrf_response = self._get(BambuUrl.CSRF)
+        try:
+            csrf_response = self._get(BambuUrl.CSRF)
+        except PermissionError as e:
+            # This endpoint is a website route that has already moved once. Report it as a
+            # CSRF failure so the config flow can fall back to code login.
+            LOGGER.error(f"Failed to retrieve CSRF token: {e.args[0] if e.args else e}")
+            raise CsrfObtainError() from e
 
         if csrf_response.status_code != 204 or csrf_response.cookies.get('bbl_csrf_token') is None:
             LOGGER.error(f"Failed to retrieve CSRF token: {csrf_response.status_code}")
@@ -307,7 +313,12 @@ class BambuCloud:
         headers['x-bbl-csrf-token'] = csrf_response.cookies.get('bbl_csrf_token')
         headers['Cookie'] = f"bbl_csrf_token={csrf_response.cookies.get('bbl_csrf_token')}"
 
-        response = self._post(BambuUrl.TFA_LOGIN, headers=headers, json=data)
+        response = self._post(BambuUrl.TFA_LOGIN, headers=headers, json=data, return400=True)
+        if response.status_code == 400:
+            LOGGER.debug(f"Response: '{response.text}'")
+            if 'Incorrect code' in response.text:
+                raise CodeIncorrectError()
+            raise PermissionError(response.status_code, response.text)
 
         LOGGER.debug(f"Response: {response.status_code}")
         if response.status_code == 200:
@@ -598,6 +609,117 @@ class BambuCloud:
             if task['deviceId'] == deviceId:
                 tasks.append(task)
         return tasks
+
+    # The account's own MakerWorld profile. One authenticated response carries
+    # everything: the counts below plus the points balance ('point') and the
+    # boosts the account's models have received ('boostGained'). Verified shape
+    # (fields we don't use omitted):
+    #
+    # {
+    #     "uid": 1234567890,
+    #     "name": "Some Creator",
+    #     "handle": "somecreator",
+    #     "point": 8400,
+    #     "pointRegular": 8400,
+    #     "pointExclusive": 0,
+    #     "boost": 2,                     <- boost tokens available to give out
+    #     "boostGained": 210,             <- boosts this account's models received
+    #     "fanCount": 150,
+    #     "followCount": 8,
+    #     "likeCount": 1800,
+    #     "collectionCount": 3400,
+    #     "downloadCount": 12800,         <- agrees with nothing MakerWorld shows
+    #     "personal": { "userLevel": { "level": 9 } },
+    #     "MWCount": {
+    #         "myDesignDownloadCount": 4200,
+    #         "myInstanceDownloadCount": 5100,
+    #         "designCount": 12,
+    #         "myDesignPrintCount": 3100,
+    #         "myInstancePrintCount": 2900
+    #     }
+    # }
+    #
+    # The public profile at USER_PROFILE returns the same counts for any uid but
+    # no points and no boosts, so it only serves as a fallback.
+
+    def get_makerworld_profile(self, uid: str | None = None) -> dict:
+        """Retrieve the account's MakerWorld profile."""
+        LOGGER.debug("Getting MakerWorld profile from Bambu Cloud")
+        try:
+            return self._get(BambuUrl.MY_PROFILE).json()
+        except Exception as e:
+            LOGGER.debug(f"Failed to retrieve own MakerWorld profile: {e}")
+
+        if uid is None:
+            return None
+
+        LOGGER.debug("Falling back to the public MakerWorld profile")
+        try:
+            return self._get(BambuUrl.USER_PROFILE, suffix=f"/{uid}").json()
+        except Exception as e:
+            LOGGER.debug(f"Failed to retrieve public MakerWorld profile: {e}")
+            return None
+
+    # The points ledger. Only the totals in the response header are of interest;
+    # 'total' is the number of transactions, not a points figure. Verified shape:
+    #
+    # {
+    #     "total": 640,
+    #     "totalIncome": 15000,
+    #     "totalExpense": 6600,
+    #     "totalRegularIncome": 15000,
+    #     "totalRegularExpense": 6600,
+    #     "totalExclusiveIncome": 0,
+    #     "totalExclusiveExpense": 0,
+    #     "hits": [ ... one transaction per the limit in the url ... ]
+    # }
+    #
+    # MakerWorld shows income minus expense as the points balance.
+
+    def get_makerworld_points(self) -> dict:
+        """Retrieve the MakerWorld points ledger totals for the account."""
+        LOGGER.debug("Getting MakerWorld points from Bambu Cloud")
+        try:
+            response = self._get(BambuUrl.POINT_BILL)
+            return response.json()
+        except Exception as e:
+            LOGGER.debug(f"Failed to retrieve MakerWorld points: {e}")
+            return None
+
+    # Boost tokens. Verified shape:
+    #
+    # {
+    #     "availableTotal": 2,
+    #     "usedTotal": 40,
+    #     "expiredTotal": 1,
+    #     "total": 2,
+    #     "hits": []
+    # }
+
+    def get_makerworld_boosts(self) -> dict:
+        """Retrieve the account's boost token counts."""
+        LOGGER.debug("Getting MakerWorld boost tokens from Bambu Cloud")
+        try:
+            response = self._get(BambuUrl.BOOST_RIGHT)
+            return response.json()
+        except Exception as e:
+            LOGGER.debug(f"Failed to retrieve MakerWorld boost tokens: {e}")
+            return None
+
+    def get_uid(self) -> str | None:
+        """The numeric account id, which doubles as the MakerWorld profile id."""
+        # The cloud login already stores this as the mqtt username in 'u_<uid>' form.
+        if self._username.startswith("u_") and self._username[2:].isdigit():
+            return self._username[2:]
+
+        LOGGER.debug("Username is not in u_<uid> form. Falling back to the preference API.")
+        try:
+            response = self._get(BambuUrl.PREFERENCE)
+            uid = response.json().get('uid', None)
+        except Exception as e:
+            LOGGER.debug(f"Failed to retrieve uid from preference API: {e}")
+            return None
+        return str(uid) if uid is not None else None
 
     def get_device_type_from_device_product_name(self, device_product_name: str):
         if device_product_name == "X1 Carbon":

@@ -390,8 +390,7 @@
         "name": "执行器类型",
         "state": {
           "normally_closed": "常闭",
-          "normally_open": "常开",
-          "unsupported": "不支持"
+          "normally_open": "常开"
         }
       },
       "output_mode": {
@@ -400,8 +399,7 @@
           "attached": "联动",
           "detached": "按任意按键时断开",
           "detached_short_press": "短按时断开",
-          "detached_long_press": "长按时断开",
-          "unsupported": "不支持"
+          "detached_long_press": "长按时断开"
         }
       },
       "siren_sound_level": {
@@ -795,7 +793,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "入侵警报已清除",
       "ALARM_OFF": "警报关闭",
       "ALARM_ON": "警报开启",
-      "ALARM_MUTED": "警报已静音"
+      "ALARM_MUTED": "警报已静音",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "{subtype} 短按",
@@ -885,6 +884,36 @@
           "description": "SHC 的标题。留空以使用第一个已配置的 SHC。"
         }
       }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
+        }
+      }
     }
   },
   "issues": {
@@ -933,6 +962,9 @@
     "alarm_state_failed": {
       "message": "警报状态更改失败。"
     },
+    "diagnostic_entities_disabled": {
+      "message": "此 SHC 的诊断实体已关闭。请在集成选项中开启“创建诊断传感器”，然后再次按下按钮。"
+    },
     "button_press_failed": {
       "message": "按钮按下失败。"
     },
@@ -968,6 +1000,12 @@
     },
     "zigbee_topology_write_failed": {
       "message": "无法将 Zigbee 拓扑导出写入 www/bosch_shc/。"
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   }
 }

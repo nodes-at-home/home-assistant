@@ -3,13 +3,16 @@
 from __future__ import annotations
 
 import contextlib
-import json
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any, Callable
 
 import homeassistant.helpers.config_validation as cv
-import voluptuous as vol
+
+try:
+    import probatio as vol
+except ImportError:  # HA < 2026.10
+    import voluptuous as vol  # type: ignore[no-redef]
 from boschshcpy import (
     AlarmService,
     BatteryLevelService,
@@ -784,13 +787,14 @@ class MotionDetectionSensor(SHCEntity, BinarySensorEntity):  # type: ignore[misc
                 self._service = service
                 break
 
-        self._ha_stop_unsub = hass.bus.async_listen_once(
-            EVENT_HOMEASSISTANT_STOP, self._handle_ha_stop
-        )
-
     async def async_added_to_hass(self) -> None:
         """Subscribe to SHC events and cache device_id."""
         await super().async_added_to_hass()
+        # Here, not in __init__: HA never calls async_will_remove_from_hass
+        # for a disabled entity, which would leak the listener.
+        self._ha_stop_unsub = self.hass.bus.async_listen_once(
+            EVENT_HOMEASSISTANT_STOP, self._handle_ha_stop
+        )
         self._cached_device_id = await async_get_device_id(
             self.hass, self._device.id, self._entry_id
         )
@@ -912,13 +916,16 @@ class SmokeDetectorSensor(SHCEntity, BinarySensorEntity):  # type: ignore[misc]
                 self._service = service
                 break
 
-        self._ha_stop_unsub: Callable[[], None] | None = hass.bus.async_listen_once(
-            EVENT_HOMEASSISTANT_STOP, self._handle_ha_stop
-        )
+        self._ha_stop_unsub: Callable[[], None] | None = None
 
     async def async_added_to_hass(self) -> None:
         """Subscribe to SHC events and cache device_id."""
         await super().async_added_to_hass()
+        # Here, not in __init__: HA never calls async_will_remove_from_hass
+        # for a disabled entity, which would leak the listener.
+        self._ha_stop_unsub = self._hass.bus.async_listen_once(
+            EVENT_HOMEASSISTANT_STOP, self._handle_ha_stop
+        )
         self._cached_device_id = await async_get_device_id(
             self._hass, self._device.id, self._entry_id
         )
@@ -1101,13 +1108,16 @@ class SmokeDetectionSystemSensor(SHCEntity, BinarySensorEntity):  # type: ignore
                 self._service = service
                 break
 
-        self._ha_stop_unsub: Callable[[], None] | None = hass.bus.async_listen_once(
-            EVENT_HOMEASSISTANT_STOP, self._handle_ha_stop
-        )
+        self._ha_stop_unsub: Callable[[], None] | None = None
 
     async def async_added_to_hass(self) -> None:
         """Subscribe to SHC events and cache device_id."""
         await super().async_added_to_hass()
+        # Here, not in __init__: HA never calls async_will_remove_from_hass
+        # for a disabled entity, which would leak the listener.
+        self._ha_stop_unsub = self._hass.bus.async_listen_once(
+            EVENT_HOMEASSISTANT_STOP, self._handle_ha_stop
+        )
         self._cached_device_id = await async_get_device_id(
             self._hass, self._device.id, self._entry_id
         )
@@ -1326,65 +1336,12 @@ class TwinguardAlarmTracker:
         self._hass.async_create_task(self.async_refresh())
 
     async def _extract_trigger_ids_from_messages(self) -> set[str]:
-        """Extract active Twinguard trigger ids from SMOKE_ALARM messages."""
+        """Return the ids of the devices that triggered the active smoke alarm."""
         try:
-            messages = await self._session.api.get_messages()
-
-            trigger_ids: set[str] = set()
-            for message in messages:
-                # Defensive: messageCode may not be a dict (malformed payload).
-                message_code = message.get("messageCode", {})
-                if not isinstance(message_code, dict):
-                    continue
-                if message_code.get("name") != "SMOKE_ALARM":
-                    continue
-                if message.get("sourceId") != self._smoke_detection_system.id:
-                    continue
-
-                # Defensive: arguments may not be a dict (malformed payload).
-                # triggerId==device.id is assumed based on observed message shape;
-                # pending rawscan confirmation (#203).
-                arguments = message.get("arguments", {})
-                if not isinstance(arguments, dict):
-                    continue
-
-                events = self._parse_surveillance_events(
-                    arguments.get("surveillanceEvents")
-                )
-                # A message that contains an ALARM_OFF event signals the end of that
-                # alarm cycle — skip the whole message so we don't re-add its triggers.
-                if any(event.get("type") == "ALARM_OFF" for event in events):
-                    continue
-
-                for event in events:
-                    trigger_id = event.get("triggerId")
-                    if trigger_id:
-                        trigger_ids.add(trigger_id)
-
+            return await self._smoke_detection_system.async_triggered_device_ids()
         except Exception as err:  # noqa: BLE001
             LOGGER.warning("Unable to fetch Bosch SHC messages: %s", err)
             return self._active_trigger_ids
-
-        return trigger_ids
-
-    @staticmethod
-    def _parse_surveillance_events(raw_events: Any) -> list[dict[str, Any]]:
-        """Parse surveillanceEvents from a Bosch SHC message payload.
-
-        The field may already be a list (native JSON parse) or a JSON-encoded
-        string (observed in some firmware versions).
-        """
-        if isinstance(raw_events, list):
-            return [e for e in raw_events if isinstance(e, dict)]
-        if not raw_events:
-            return []
-        try:
-            parsed = json.loads(raw_events)
-        except (TypeError, json.JSONDecodeError):
-            return []
-        if not isinstance(parsed, list):
-            return []
-        return [e for e in parsed if isinstance(e, dict)]
 
     def _notify_listeners(self) -> None:
         """Notify all registered entity listeners."""

@@ -40,6 +40,8 @@ async def async_setup_entry(
                     entities.append(GardenaStartOverrideButton(coordinator, device, mower_service))
                     # Return to Dock button
                     entities.append(GardenaReturnToDockButton(coordinator, device, mower_service))
+                    # Park button (return to dock without schedule)
+                    entities.append(GardenaParkButton(coordinator, device, mower_service))
 
 
     _LOGGER.info(f"Created {len(entities)} button entities")
@@ -54,11 +56,12 @@ class GardenaStartOverrideButton(GardenaEntity, ButtonEntity):
     def __init__(self, coordinator: GardenaSmartSystemCoordinator, device, mower_service) -> None:
         """Initialize the Gardena Start Override button."""
         super().__init__(coordinator, device, "MOWER")
-        self._attr_name = f"{device.name} Start Mowing Now"
+        self._attr_translation_key = "start_mowing_now"
+        self._keep_entity_id("button", f"{device.name} Start Mowing Now")
         self._mower_service = mower_service
         self._attr_unique_id = f"{device.id}_start_override"
         self._attr_icon = "mdi:play"
-        _LOGGER.info(f"Initialized start override button: {self._attr_name} with unique_id: {self._attr_unique_id}")
+        _LOGGER.info(f"Initialized start override button: {self._log_name} with unique_id: {self._attr_unique_id}")
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -78,7 +81,7 @@ class GardenaStartOverrideButton(GardenaEntity, ButtonEntity):
 
     async def async_press(self) -> None:
         """Handle the button press - Start mowing immediately."""
-        _LOGGER.info(f"=== START OVERRIDE button pressed for {self._attr_name} ===")
+        _LOGGER.info(f"=== START OVERRIDE button pressed for {self._log_name} ===")
         _LOGGER.info(f"Starting immediate mowing for {self.device.name} ({self._mower_service.id})")
         
         if self._mower_service:
@@ -98,12 +101,12 @@ class GardenaStartOverrideButton(GardenaEntity, ButtonEntity):
             try:
                 await self.coordinator.client.send_command(self._mower_service.id, command_data)
                 await self.coordinator.async_request_refresh()
-                _LOGGER.info(f"=== START OVERRIDE button action completed for {self._attr_name} ===")
+                _LOGGER.info(f"=== START OVERRIDE button action completed for {self._log_name} ===")
             except Exception as e:
-                _LOGGER.error(f"Error in start override button for {self._attr_name}: {e}")
+                _LOGGER.error(f"Error in start override button for {self._log_name}: {e}")
                 raise
         else:
-            _LOGGER.error(f"No mower service available for {self._attr_name}")
+            _LOGGER.error(f"No mower service available for {self._log_name}")
 
 
 class GardenaReturnToDockButton(GardenaEntity, ButtonEntity):
@@ -112,11 +115,12 @@ class GardenaReturnToDockButton(GardenaEntity, ButtonEntity):
     def __init__(self, coordinator: GardenaSmartSystemCoordinator, device, mower_service) -> None:
         """Initialize the Gardena Return to Dock button."""
         super().__init__(coordinator, device, "MOWER")
-        self._attr_name = f"{device.name} Return to Dock"
+        self._attr_translation_key = "return_to_dock"
+        self._keep_entity_id("button", f"{device.name} Return to Dock")
         self._mower_service = mower_service
         self._attr_unique_id = f"{device.id}_return_to_dock"
         self._attr_icon = "mdi:home"
-        _LOGGER.info(f"Initialized return to dock button: {self._attr_name} with unique_id: {self._attr_unique_id}")
+        _LOGGER.info(f"Initialized return to dock button: {self._log_name} with unique_id: {self._attr_unique_id}")
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -136,7 +140,7 @@ class GardenaReturnToDockButton(GardenaEntity, ButtonEntity):
 
     async def async_press(self) -> None:
         """Handle the button press - Return to dock."""
-        _LOGGER.info(f"=== RETURN TO DOCK button pressed for {self._attr_name} ===")
+        _LOGGER.info(f"=== RETURN TO DOCK button pressed for {self._log_name} ===")
         _LOGGER.info(f"Returning to dock for {self.device.name} ({self._mower_service.id})")
 
         if self._mower_service:
@@ -153,11 +157,48 @@ class GardenaReturnToDockButton(GardenaEntity, ButtonEntity):
             try:
                 await self.coordinator.client.send_command(self._mower_service.id, command_data)
                 await self.coordinator.async_request_refresh()
-                _LOGGER.info(f"=== RETURN TO DOCK button action completed for {self._attr_name} ===")
+                _LOGGER.info(f"=== RETURN TO DOCK button action completed for {self._log_name} ===")
             except Exception as e:
-                _LOGGER.error(f"Error in return to dock button for {self._attr_name}: {e}")
+                _LOGGER.error(f"Error in return to dock button for {self._log_name}: {e}")
                 raise
         else:
-            _LOGGER.error(f"No mower service available for {self._attr_name}")
+            _LOGGER.error(f"No mower service available for {self._log_name}")
 
+class GardenaParkButton(GardenaEntity, ButtonEntity):
+    """Representation of a Gardena Park button (return to dock without schedule resume)."""
+
+    def __init__(self, coordinator: GardenaSmartSystemCoordinator, device, mower_service) -> None:
+        """Initialize the Gardena Park Until Further Notice button."""
+        super().__init__(coordinator, device, "MOWER")
+        self._attr_translation_key = "park_until_further_notice"
+        self._keep_entity_id("button", f"{device.name} Park Until Further Notice")
+        self._mower_service = mower_service
+        self._attr_unique_id = f"{device.id}_park"
+        self._attr_icon = "mdi:home-lock"
+        _LOGGER.debug(f"Initialized park button: {self._log_name}")
+
+    async def async_press(self) -> None:
+        """Handle the button press - Park until further notice."""
+        _LOGGER.debug(f"PARK UNTIL FURTHER NOTICE button pressed for {self._log_name}")
+        _LOGGER.debug(f"Parking {self.device.name}")
+
+        if self._mower_service:
+            command_data = {
+                "data": {
+                    "id": "park_button",
+                    "type": "MOWER_CONTROL",
+                    "attributes": {
+                        "command": "PARK_UNTIL_FURTHER_NOTICE",
+                    },
+                }
+            }
+            _LOGGER.debug(f"Sending park command")
+            try:
+                await self.coordinator.client.send_command(self._mower_service.id, command_data)
+                await self.coordinator.async_request_refresh()
+            except Exception as e:
+                _LOGGER.error(f"Error in park button for {self._log_name}: {e}")
+                raise
+        else:
+            _LOGGER.error(f"No mower service available for {self._log_name}")
 

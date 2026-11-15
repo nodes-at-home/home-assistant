@@ -1,9 +1,11 @@
 """Support for Gardena Smart System devices."""
+
 import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.device_registry import DeviceEntry
 
 from .const import DOMAIN
@@ -21,6 +23,8 @@ PLATFORMS = [
     Platform.VALVE,
     Platform.BUTTON,
 ]
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
@@ -47,33 +51,51 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Gardena Smart System from a config entry."""
     _LOGGER.info("Setting up Gardena Smart System component")
-    
+
     # Create client
+    from .credential_validation import dev_mode_enabled
     from .gardena_client import GardenaSmartSystemClient
-    
+
+    # SSL verification is on unless GARDENA_DEV_MODE=true (local macOS HA via
+    # `make ha-start`). Never hardcode this on for production.
+    dev_mode = dev_mode_enabled()
+    if dev_mode:
+        _LOGGER.warning(
+            "GARDENA_DEV_MODE is set: TLS certificate verification is DISABLED "
+            "for the Gardena API and WebSocket. Never use this on a production "
+            "Home Assistant instance"
+        )
+
     client = GardenaSmartSystemClient(
         client_id=entry.data["client_id"],
         client_secret=entry.data["client_secret"],
-        dev_mode=True,  # Enable dev mode to bypass SSL issues on macOS
+        dev_mode=dev_mode,
     )
-    
+
     # Create coordinator
     coordinator = GardenaSmartSystemCoordinator(
         hass,
         client=client,
     )
-    
+    coordinator.config_entry_id = entry.entry_id
+
     # Store coordinator in hass data
     hass.data[DOMAIN][entry.entry_id] = coordinator
-    
+    entry.async_on_unload(entry.add_update_listener(_async_update_listener))
+
     # Start the coordinator
     await coordinator.async_config_entry_first_refresh()
-    
+
     # Forward the setup to the platforms
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-    
+
     _LOGGER.info("Gardena Smart System component setup finished")
     return True
+
+
+async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Reload when integration options change."""
+    await hass.config_entries.async_reload(entry.entry_id)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

@@ -390,8 +390,7 @@
         "name": "Type d'actionneur",
         "state": {
           "normally_closed": "Normalement fermé",
-          "normally_open": "Normalement ouvert",
-          "unsupported": "Non pris en charge"
+          "normally_open": "Normalement ouvert"
         }
       },
       "output_mode": {
@@ -400,8 +399,7 @@
           "attached": "Couplé",
           "detached": "Découplé à chaque appui",
           "detached_short_press": "Découplé sur appui court",
-          "detached_long_press": "Découplé sur appui long",
-          "unsupported": "Non pris en charge"
+          "detached_long_press": "Découplé sur appui long"
         }
       },
       "siren_sound_level": {
@@ -795,7 +793,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "Alarme d'intrusion effacée",
       "ALARM_OFF": "Alarme désactivée",
       "ALARM_ON": "Alarme activée",
-      "ALARM_MUTED": "Alarme mise en sourdine"
+      "ALARM_MUTED": "Alarme mise en sourdine",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "{subtype} appui court",
@@ -885,6 +884,36 @@
           "description": "Titre du SHC. Laissez vide pour utiliser le premier SHC configuré."
         }
       }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
+        }
+      }
     }
   },
   "issues": {
@@ -933,6 +962,9 @@
     "alarm_state_failed": {
       "message": "Échec du changement d'état de l'alarme."
     },
+    "diagnostic_entities_disabled": {
+      "message": "Les entités de diagnostic sont désactivées pour ce SHC. Activez « Créer des capteurs de diagnostic » dans les options de l'intégration, puis appuyez de nouveau sur le bouton."
+    },
     "button_press_failed": {
       "message": "Échec de l'appui sur le bouton."
     },
@@ -968,6 +1000,12 @@
     },
     "zigbee_topology_write_failed": {
       "message": "Impossible d'écrire l'export de la topologie Zigbee dans www/bosch_shc/."
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   }
 }

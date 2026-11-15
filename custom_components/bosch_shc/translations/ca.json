@@ -390,8 +390,7 @@
         "name": "Tipus d'actuador",
         "state": {
           "normally_closed": "Normalment tancat",
-          "normally_open": "Normalment obert",
-          "unsupported": "No compatible"
+          "normally_open": "Normalment obert"
         }
       },
       "output_mode": {
@@ -400,8 +399,7 @@
           "attached": "Acoblat",
           "detached": "Desacoblat amb qualsevol pulsació",
           "detached_short_press": "Desacoblat amb pulsació curta",
-          "detached_long_press": "Desacoblat amb pulsació llarga",
-          "unsupported": "No compatible"
+          "detached_long_press": "Desacoblat amb pulsació llarga"
         }
       },
       "siren_sound_level": {
@@ -795,7 +793,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "Alarma d'intrusió esborrada",
       "ALARM_OFF": "Alarma desactivada",
       "ALARM_ON": "Alarma activada",
-      "ALARM_MUTED": "Alarma silenciada"
+      "ALARM_MUTED": "Alarma silenciada",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "{subtype} premut breument",
@@ -885,6 +884,36 @@
           "description": "Títol de l'SHC. Deixeu-ho buit per utilitzar el primer SHC configurat."
         }
       }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
+        }
+      }
     }
   },
   "issues": {
@@ -942,6 +971,9 @@
     "alarm_state_failed": {
       "message": "No s'ha pogut canviar l'estat de l'alarma."
     },
+    "diagnostic_entities_disabled": {
+      "message": "Les entitats de diagnòstic estan desactivades per a aquest SHC. Activa «Crear sensors de diagnòstic» a les opcions de la integració i torna a prémer el botó."
+    },
     "button_press_failed": {
       "message": "La pulsació del botó ha fallat."
     },
@@ -968,6 +1000,12 @@
     },
     "update_not_ready": {
       "message": "L'actualització de firmware per a {name} no es pot activar ara mateix (estat actual: {state})."
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   }
 }

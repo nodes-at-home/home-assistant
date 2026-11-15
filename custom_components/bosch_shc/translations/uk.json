@@ -390,8 +390,7 @@
         "name": "Тип виконавчого пристрою",
         "state": {
           "normally_closed": "Нормально закритий",
-          "normally_open": "Нормально відкритий",
-          "unsupported": "Не підтримується"
+          "normally_open": "Нормально відкритий"
         }
       },
       "output_mode": {
@@ -400,8 +399,7 @@
           "attached": "Пов'язано",
           "detached": "Відокремлено при будь-якому натисканні",
           "detached_short_press": "Відокремлено при короткому натисканні",
-          "detached_long_press": "Відокремлено при довгому натисканні",
-          "unsupported": "Не підтримується"
+          "detached_long_press": "Відокремлено при довгому натисканні"
         }
       },
       "siren_sound_level": {
@@ -795,7 +793,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "Тривогу вторгнення скинуто",
       "ALARM_OFF": "Тривога вимкнена",
       "ALARM_ON": "Тривога увімкнена",
-      "ALARM_MUTED": "Тривога заглушена"
+      "ALARM_MUTED": "Тривога заглушена",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "{subtype} коротке натискання",
@@ -885,6 +884,36 @@
           "description": "Назва SHC. Залиште порожнім, щоб використати перший налаштований SHC."
         }
       }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
+        }
+      }
     }
   },
   "issues": {
@@ -933,6 +962,9 @@
     "alarm_state_failed": {
       "message": "Не вдалося змінити стан сигналізації."
     },
+    "diagnostic_entities_disabled": {
+      "message": "Діагностичні сутності вимкнено для цього SHC. Увімкніть «Створювати діагностичні датчики» у параметрах інтеграції та натисніть кнопку ще раз."
+    },
     "button_press_failed": {
       "message": "Не вдалося натиснути кнопку."
     },
@@ -968,6 +1000,12 @@
     },
     "zigbee_topology_write_failed": {
       "message": "Не вдалося записати експорт топології Zigbee до www/bosch_shc/."
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   }
 }

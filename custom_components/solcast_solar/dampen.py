@@ -23,6 +23,7 @@ from homeassistant.const import ATTR_UNIT_OF_MEASUREMENT
 from homeassistant.core import State
 from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import entity_registry as er
+from homeassistant.util import dt as dt_util
 
 from .const import (
     ADVANCED_AUTOMATED_DAMPENING_DELTA_ADJUSTMENT_MODEL,
@@ -196,18 +197,18 @@ def compute_energy_intervals(
         and len(sample_time) == len(sample_generation_time)
         and len(sample_time) == len(sample_timedelta)
     ):
-        for idx, (interval, kWh, report_time, time_delta) in enumerate(
+        for idx, (interval, kwh, report_time, time_delta) in enumerate(
             zip(sample_time, sample_generation, sample_generation_time, sample_timedelta, strict=True)
         ):
             is_excessive = False
             if interval != last_interval:
                 last_interval = interval
                 if uniform_increment:
-                    if round(kWh, 4) > upper:
+                    if round(kwh, 4) > upper:
                         is_excessive = True
                         ignored[interval] = True
-                elif time_delta > upper and kWh > 0.0003:
-                    if kWh > 0.14:
+                elif time_delta > upper and kwh > 0.0003:
+                    if kwh > 0.14:
                         is_excessive = True
                         ignored[interval] = True
                 if is_excessive:
@@ -220,20 +221,20 @@ def compute_energy_intervals(
                 prev_interval_start = delta_start.replace(minute=delta_start.minute // 30 * 30, second=0, microsecond=0)
 
                 if prev_report_time == period_start:
-                    generation_intervals[current_interval_start] += kWh
+                    generation_intervals[current_interval_start] += kwh
                     prev_report_time = report_time
                     continue
 
                 if report_time == period_end:
                     if prev_interval_start in generation_intervals:
-                        generation_intervals[prev_interval_start] += kWh
+                        generation_intervals[prev_interval_start] += kwh
                     prev_report_time = report_time
                     continue
 
-                if time_upper and time_delta > time_upper and kWh > 0.0003:
-                    generation_intervals[current_interval_start] += kWh
+                if time_upper and time_delta > time_upper and kwh > 0.0003:
+                    generation_intervals[current_interval_start] += kwh
                 elif prev_interval_start == current_interval_start:
-                    generation_intervals[interval] += kWh
+                    generation_intervals[interval] += kwh
                 else:
                     total_seconds = (delta_end - delta_start).total_seconds()
                     if total_seconds > 0:
@@ -251,9 +252,9 @@ def compute_energy_intervals(
 
                         for crossed_interval, proportion in intervals_crossed:
                             if crossed_interval in generation_intervals:
-                                generation_intervals[crossed_interval] += kWh * proportion
+                                generation_intervals[crossed_interval] += kwh * proportion
             elif not is_excessive and idx == 0:
-                generation_intervals[interval] += kWh
+                generation_intervals[interval] += kwh
 
             prev_report_time = report_time
 
@@ -361,7 +362,8 @@ class Dampening:
                 continue
 
             tilt = float(site[SITE_ATTRIBUTE_TILT])
-            panel_azimuth = float(site[SITE_ATTRIBUTE_AZIMUTH])
+            # Solcast azimuth is N=0, W=+90, E=-90; astral gives a compass bearing (E=90, W=270).
+            panel_azimuth = -float(site[SITE_ATTRIBUTE_AZIMUTH]) % 360.0
 
             past_gain = self._tilt_incidence_gain(elev_past, azimuth_past, tilt, panel_azimuth)
             target_gain = self._tilt_incidence_gain(elev_target, azimuth_target, tilt, panel_azimuth)
@@ -1058,7 +1060,7 @@ class Dampening:
 
         # Trim, sort and serialise.
         self.data_generation = {
-            LAST_UPDATED: dt.now(UTC).replace(microsecond=0),
+            LAST_UPDATED: dt_util.now(UTC).replace(microsecond=0),
             GENERATION: sorted(
                 filter(
                     lambda generated: generated[PERIOD_START] >= self.api.dt_helper.day_start_utc(future=-22),
@@ -1199,7 +1201,7 @@ class Dampening:
             self.api.data_undampened[SITE_INFO].update({site: {FORECASTS: copy.deepcopy(forecasts_undampened)}})
 
         if apply_dampening:
-            self.api.data_undampened[LAST_UPDATED] = dt.now(UTC).replace(microsecond=0)
+            self.api.data_undampened[LAST_UPDATED] = dt_util.now(UTC).replace(microsecond=0)
             await self.api.sites_cache.serialise_data(self.api.data_undampened, self.api.filename_undampened)
 
         if apply_dampening:
@@ -1496,7 +1498,7 @@ class Dampening:
             dst_offset = (
                 1
                 if self.api.dt_helper.dst(
-                    dt.now(self.api.tz).replace(hour=interval // 2, minute=30 * (interval % 2), second=0, microsecond=0)
+                    dt_util.now(self.api.tz).replace(hour=interval // 2, minute=30 * (interval % 2), second=0, microsecond=0)
                 )
                 else 0
             )
@@ -1506,15 +1508,16 @@ class Dampening:
                     _LOGGER.debug("Interval %s is intentionally ignored, skipping", interval_time)
                 continue
             # Build (timestamp, gen, elevation_ratio) triplets for matching intervals
-            # that have non-zero generation. The ratio is retained so that per-pair
-            # raw dampening factors (gen/act) can be normalised to target_day's sun
-            # geometry in the 1/2/3 models below.
+            # that have non-zero generation. The ratio normalises generation to target_day's
+            # sun geometry for the default model, which compares it with the peak of other
+            # days. Models 1/2/3 compare generation with the estimated actual of the same
+            # interval, which already shares its sun geometry, so they use no ratio.
             sample_triplets: list[tuple[dt, float, float]] = []
             for timestamp in matching:
                 raw_gen = round(generation.get(timestamp, 0.0), 3)
                 if raw_gen == 0.0:
                     continue
-                if apply_elevation_adjustment and target_day is not None:
+                if apply_elevation_adjustment and target_day is not None and dampening_model not in (1, 2, 3):
                     ratio = self.elevation_adjustment_ratio(timestamp, self._target_timestamp(timestamp, target_day))
                 else:
                     ratio = 1.0
@@ -1536,7 +1539,6 @@ class Dampening:
                     case 1 | 2 | 3:
                         if len(matching) >= self.api.advanced_options[ADVANCED_AUTOMATED_DAMPENING_MINIMUM_MATCHING_INTERVALS]:
                             actual_samples: list[float] = [actuals.get(timestamp, 0.0) for timestamp, _, _ in sample_triplets]
-                            ratio_samples: list[float] = [ratio for _, _, ratio in sample_triplets]
                             if verbose_log:
                                 _LOGGER.debug(
                                     "Selected %d estimated actuals for %s: %s",
@@ -1556,20 +1558,13 @@ class Dampening:
                             ):
                                 if len(actual_samples) == len(generation_samples):
                                     raw_factors: list[float] = []
-                                    for act, gen, ratio in zip(actual_samples, generation_samples, ratio_samples, strict=True):
+                                    for act, gen in zip(actual_samples, generation_samples, strict=True):
                                         if act <= 0:
                                             raw_factors.append(1.0)
                                             continue
-                                        # Normalise each historical pair's factor to target_day's sun geometry.
                                         # Cap at 1.0 since dampening cannot amplify.
-                                        raw_factors.append(min((gen / act) * ratio, 1.0))
+                                        raw_factors.append(min(gen / act, 1.0))
                                     if verbose_log:
-                                        if apply_elevation_adjustment and any(r != 1.0 for r in ratio_samples):
-                                            _LOGGER.debug(
-                                                "Elevation ratios applied for %s: %s",
-                                                interval_time,
-                                                ", ".join(f"{r:.3f}" for r in ratio_samples),
-                                            )
                                         _LOGGER.debug(
                                             "Candidate factors for %s: %s",
                                             interval_time,
@@ -1687,7 +1682,7 @@ class Dampening:
 
                 if (
                     record_adjustment
-                    and period_start.astimezone(self.api.tz).date() == dt.now(self.api.tz).date()
+                    and period_start.astimezone(self.api.tz).date() == dt_util.now(self.api.tz).date()
                     and round(factor, 3) != round(factor_pre_adjustment, 3)
                 ):
                     _LOGGER.debug(

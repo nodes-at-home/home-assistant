@@ -42,7 +42,9 @@ class TestGardenaEntity:
         assert entity.device == mock_device
         assert entity.service_type == "MOWER"
         assert entity._attr_unique_id == "test-device-1_MOWER"
-        assert entity._attr_name == "Test Device Lawn Mower"
+        # The name shown is translated; the log keeps the plain one.
+        assert entity._log_name == "Test Device Lawn Mower"
+        assert entity.has_entity_name is True
 
     def _make_location(self, device):
         """Create a mock location containing the device."""
@@ -239,6 +241,32 @@ class TestGardenaBatteryEntity:
         assert entity.battery_level is None
 
 
+class TestGardenaBatterySensorIcon:
+    """Battery sensors must not hardcode an icon (issue #386)."""
+
+    def test_battery_sensor_has_no_hardcoded_icon(self):
+        """device_class BATTERY already picks a level-based icon."""
+        from .sensor import GardenaBatterySensor
+
+        coordinator = Mock(spec=GardenaSmartSystemCoordinator)
+        coordinator.last_update_success = True
+        coordinator.websocket_client = None
+        coordinator.locations = {}
+
+        device = Mock(spec=GardenaDevice)
+        device.id = "device-1"
+        device.name = "Mower"
+        device.serial = "12345"
+        device.services = {}
+
+        common_service = Mock(spec=GardenaCommonService)
+        common_service.id = "common-1"
+
+        entity = GardenaBatterySensor(coordinator, device, common_service)
+        assert getattr(entity, "_attr_icon", None) is None
+        assert entity._attr_device_class is not None
+
+
 class TestGardenaOnlineEntity:
     """Test GardenaOnlineEntity."""
 
@@ -312,4 +340,113 @@ class TestGardenaOnlineEntity:
 
         entity = GardenaOnlineEntity(mock_coordinator, mock_device)
 
-        assert entity.is_on is False 
+        assert entity.is_on is False
+
+
+class TestGardenaValveErrorSensor:
+    """Valve last_error_code sensor (#382)."""
+
+    def _entity(self, last_error_code="NO_MESSAGE", name="Zone 1", valves=1):
+        from .models import GardenaValveService
+        from .sensor import GardenaValveErrorSensor
+
+        valve_service = GardenaValveService(
+            id="device-1:1",
+            type="VALVE",
+            device_id="device-1",
+            name=name,
+            last_error_code=last_error_code,
+        )
+        device = Mock(spec=GardenaDevice)
+        device.id = "device-1"
+        device.name = "Irrigation"
+        device.serial = "12345"
+        others = [
+            GardenaValveService(id=f"device-1:{n}", type="VALVE", device_id="device-1", name=f"Zone {n}")
+            for n in range(2, valves + 1)
+        ]
+        device.services = {"VALVE": [valve_service, *others]}
+
+        coordinator = Mock(spec=GardenaSmartSystemCoordinator)
+        coordinator.last_update_success = True
+        coordinator.websocket_client = None
+        coordinator.locations = {}
+        coordinator.get_device_by_id.return_value = device
+
+        return GardenaValveErrorSensor(coordinator, device, valve_service)
+
+    def test_name_identifies_the_valve(self):
+        """Each valve on a controller gets its own error sensor name (#408)."""
+        entity = self._entity(valves=2)
+        assert entity.translation_key == "valve_error_of"
+        assert entity.translation_placeholders == {"valve": "Zone 1"}
+
+    def test_a_single_valve_goes_by_its_device(self):
+        entity = self._entity()
+        assert entity.translation_key == "valve_error"
+        assert not entity.translation_placeholders
+        assert "valve_broken" in entity.options
+        assert "wheel_motor_blocked_left" not in entity.options
+
+    def test_error_code_is_lowercased(self):
+        entity = self._entity(last_error_code="VALVE_BROKEN")
+        assert entity.native_value == "valve_broken"
+
+    def test_missing_code_is_no_message(self):
+        entity = self._entity(last_error_code=None)
+        assert entity.native_value == "no_message" 
+
+class TestGardenaValveAvailability:
+    """A Smart Irrigation Control output with no valve connected (#409)."""
+
+    def _entity(self, valve_state, rf_link_state="ONLINE", found=True):
+        from .models import GardenaValveService
+        from .valve import GardenaValve
+
+        valve_service = GardenaValveService(
+            id="device-1:1",
+            type="VALVE",
+            device_id="device-1",
+            name="Valve 1",
+            state=valve_state,
+            activity="CLOSED",
+        )
+        common = GardenaCommonService(
+            id="device-1",
+            type="COMMON",
+            device_id="device-1",
+            rf_link_state=rf_link_state,
+        )
+        device = Mock(spec=GardenaDevice)
+        device.id = "device-1"
+        device.name = "Irrigation"
+        device.serial = "12345"
+        device.model_type = "Smart Irrigation Control"
+        device.services = {"VALVE": [valve_service], "COMMON": [common]}
+
+        location = Mock()
+        location.devices = {device.id: device}
+        coordinator = Mock(spec=GardenaSmartSystemCoordinator)
+        coordinator.last_update_success = True
+        coordinator.websocket_client = None
+        coordinator.locations = {"location-1": location}
+        coordinator.get_device_by_id.return_value = device if found else None
+
+        return GardenaValve(coordinator, device, valve_service)
+
+    def test_connected_valve_is_available(self):
+        assert self._entity("OK").available is True
+
+    def test_output_without_valve_is_unavailable(self):
+        """The API reports such an output in state UNAVAILABLE."""
+        assert self._entity("UNAVAILABLE").available is False
+
+    def test_offline_controller_stays_unavailable(self):
+        assert self._entity("OK", rf_link_state="OFFLINE").available is False
+
+    def test_valve_with_a_warning_stays_available(self):
+        """A warning is reported by the error sensor, not by hiding the valve."""
+        assert self._entity("WARNING").available is True
+
+    def test_service_missing_from_fresh_data_falls_back_to_the_device(self):
+        assert self._entity("UNAVAILABLE", found=False).available is True

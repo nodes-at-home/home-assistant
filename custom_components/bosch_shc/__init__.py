@@ -14,7 +14,11 @@ from pathlib import Path
 from typing import Any
 
 import aiohttp
-import voluptuous as vol
+
+try:
+    import probatio as vol
+except ImportError:  # HA < 2026.10
+    import voluptuous as vol  # type: ignore[no-redef]
 from boschshcpy import SHCSessionAsync, SHCUniversalSwitch
 from boschshcpy.api import JSONRPCError
 from boschshcpy.api_async import build_ssl_context
@@ -63,7 +67,11 @@ from .certificate import parse_certificate
 from .const import (
     ATTR_EVENT_SUBTYPE,
     ATTR_EVENT_TYPE,
+    ATTR_INTERVAL,
     ATTR_LAST_TIME_TRIGGERED,
+    ATTR_OVERLAP,
+    ATTR_REFERENCE_TIME,
+    ATTR_ROUNDING,
     ATTR_SERVICE_ID,
     ATTR_TITLE,
     CAMERA_TOOL_DOMAIN,
@@ -87,6 +95,7 @@ from .const import (
     OPT_SSL_SKIP_VERIFY,
     OPT_SSL_VERIFY_HOSTNAME,
     SERVICE_EXPORT_ZIGBEE_TOPOLOGY,
+    SERVICE_GET_MEASUREMENT_HISTORY,
     SERVICE_REFRESH_ZIGBEE_ROUTING,
     SERVICE_TRIGGER_RAWSCAN,
     SERVICE_TRIGGER_SCENARIO,
@@ -137,6 +146,23 @@ RAWSCAN_TRIGGER_SCHEMA = vol.Schema(
 EXPORT_ZIGBEE_TOPOLOGY_SCHEMA = vol.Schema(
     {
         vol.Optional(ATTR_TITLE, default=""): cv.string,
+    }
+)
+
+GET_MEASUREMENT_HISTORY_SCHEMA = vol.Schema(
+    {
+        vol.Optional(ATTR_TITLE, default=""): cv.string,
+        vol.Required(ATTR_DEVICE_ID): cv.string,
+        vol.Optional(ATTR_REFERENCE_TIME): vol.All(vol.Coerce(int), vol.Range(min=0)),
+        vol.Optional(ATTR_INTERVAL, default=86400): vol.All(
+            vol.Coerce(int), vol.Range(min=1)
+        ),
+        vol.Optional(ATTR_ROUNDING, default=3600): vol.All(
+            vol.Coerce(int), vol.Range(min=1)
+        ),
+        vol.Optional(ATTR_OVERLAP, default=0): vol.All(
+            vol.Coerce(int), vol.Range(min=0)
+        ),
     }
 )
 
@@ -226,6 +252,8 @@ def _register_rawscan_service(hass: HomeAssistant) -> None:
                     "information": api.get_information,
                     "public_information": api.get_public_information,
                     "intrusion_detection": api.get_domain_intrusion_detection,
+                    "smoke_system_state": api.get_smoke_system_state,
+                    "smoke_configuration": api.get_smoke_configuration,
                 }
                 if command not in commands:
                     raise ServiceValidationError(
@@ -242,6 +270,7 @@ def _register_rawscan_service(hass: HomeAssistant) -> None:
                     SHCConnectionError,
                     aiohttp.ClientError,
                     asyncio.TimeoutError,
+                    ValueError,
                 ) as err:
                     raise ServiceValidationError(
                         f"Failed to execute rawscan command '{command}': {err}",
@@ -362,6 +391,85 @@ def _register_export_zigbee_topology_service(hass: HomeAssistant) -> None:
         SERVICE_EXPORT_ZIGBEE_TOPOLOGY,
         export_topology_service_call,
         schema=EXPORT_ZIGBEE_TOPOLOGY_SCHEMA,
+        supports_response=SupportsResponse.ONLY,
+    )
+
+
+def _register_get_measurement_history_service(hass: HomeAssistant) -> None:
+    """Register the get_measurement_history service if not already registered.
+
+    Read-only: asks the SHC for one page of a sensor's stored measurements
+    (the Bosch app uses this for the Twinguard charts). One request per call,
+    no paging or polling.
+    """
+    if hass.services.has_service(DOMAIN, SERVICE_GET_MEASUREMENT_HISTORY):
+        return
+
+    async def measurement_history_service_call(call: ServiceCall) -> ServiceResponse:
+        """Fetch one page of measurement history from the SHC."""
+        title = call.data[ATTR_TITLE]
+        for config_entry in hass.config_entries.async_entries(DOMAIN):
+            if not hasattr(config_entry, "runtime_data"):
+                continue
+            if config_entry.state is not ConfigEntryState.LOADED:
+                continue
+            runtime: SHCData = config_entry.runtime_data
+            if title not in ("", runtime.title):
+                continue
+            reference_time = call.data.get(ATTR_REFERENCE_TIME)
+            if reference_time is None:
+                reference_time = int(dt_util.utcnow().timestamp())
+            try:
+                page = await runtime.session.api.get_measurements_page(
+                    call.data[ATTR_DEVICE_ID],
+                    reference_time,
+                    call.data[ATTR_INTERVAL],
+                    call.data[ATTR_ROUNDING],
+                    call.data[ATTR_OVERLAP],
+                )
+            except (json.JSONDecodeError, UnicodeDecodeError) as err:
+                raise ServiceValidationError(
+                    f"The SHC returned an unreadable measurement history reply: {err}",
+                    translation_domain=DOMAIN,
+                    translation_key="measurement_history_failed",
+                ) from err
+            except ValueError as err:
+                raise ServiceValidationError(
+                    f"Invalid measurement history request: {err}",
+                    translation_domain=DOMAIN,
+                    translation_key="measurement_history_invalid",
+                    translation_placeholders={"error": str(err)},
+                ) from err
+            except (
+                JSONRPCError,
+                SHCException,
+                SHCConnectionError,
+                aiohttp.ClientError,
+                asyncio.TimeoutError,
+            ) as err:
+                raise ServiceValidationError(
+                    f"Failed to read measurement history: {err}",
+                    translation_domain=DOMAIN,
+                    translation_key="measurement_history_failed",
+                ) from err
+            if not isinstance(page, dict):
+                raise ServiceValidationError(
+                    "The SHC returned an unexpected measurement history reply.",
+                    translation_domain=DOMAIN,
+                    translation_key="measurement_history_failed",
+                )
+            return {"history": page}
+        raise ServiceValidationError(
+            f"No loaded Bosch SHC entry with title '{title}' found.",
+            translation_domain=DOMAIN,
+            translation_key="rawscan_entry_not_found",
+        )
+
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_GET_MEASUREMENT_HISTORY,
+        measurement_history_service_call,
+        schema=GET_MEASUREMENT_HISTORY_SCHEMA,
         supports_response=SupportsResponse.ONLY,
     )
 
@@ -703,6 +811,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:  #
                 + dh.micromodule_dimmers
                 + dh.light_switches_bsm
             )
+            bool_devices = [
+                d
+                for d in bool_devices
+                if "ChildProtection"
+                in getattr(d, "device_service_ids", ("ChildProtection",))
+            ]
             return thermostats, bool_devices
 
         async def _set_child_lock_one(device: Any, lock_state: bool) -> None:
@@ -723,11 +837,20 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:  #
                     err,
                 )
 
+        _child_lock_batch = asyncio.Lock()
+
         async def _apply_child_lock(lock_state: bool) -> None:
-            """Set child lock on all SHC devices (async; on the event loop)."""
-            thermostats, bool_devices = _child_lock_devices(session)
-            for device in thermostats + bool_devices:
-                await _set_child_lock_one(device, lock_state)
+            """Set child lock on all SHC devices (async; on the event loop).
+
+            Batches run one at a time and stop once superseded, so an older
+            batch can't overwrite devices a newer one already set.
+            """
+            async with _child_lock_batch:
+                thermostats, bool_devices = _child_lock_devices(session)
+                for device in thermostats + bool_devices:
+                    if _last_lock_state[0] != lock_state:
+                        return
+                    await _set_child_lock_one(device, lock_state)
 
         @callback  # type: ignore[untyped-decorator]
         def _evaluate_child_lock(*_args: Any) -> None:
@@ -846,6 +969,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:  #
                     err,
                 )
 
+        _silent_batch = asyncio.Lock()
+
         async def _apply_silent(silent_on: bool) -> None:
             """Set silent mode on all capable SHC devices (async; on the loop)."""
             dh = session.device_helper
@@ -856,8 +981,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:  #
                 for d in (list(dh.thermostats) + list(dh.roomthermostats))
                 if getattr(d, "supports_silentmode", False)
             ]
-            for device in devices:
-                await _set_silent_one(device, silent_on)
+            async with _silent_batch:
+                for device in devices:
+                    if _last_silent_state[0] != silent_on:
+                        return  # superseded by a newer batch
+                    await _set_silent_one(device, silent_on)
 
         @callback  # type: ignore[untyped-decorator]
         def _evaluate_silent(*_args: Any) -> None:
@@ -960,22 +1088,41 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:  #
 
     session.subscribe_scenario_callback("shc", _scenario_trigger)
 
-    for switch_device in (
-        session.device_helper.universal_switches if session.device_helper else []
-    ):
-        event_listener = SwitchDeviceEventListener(hass, entry, switch_device)
-        await event_listener.async_setup()
-        entry.runtime_data.switch_event_listeners.append(event_listener)
+    try:
+        for switch_device in (
+            session.device_helper.universal_switches if session.device_helper else []
+        ):
+            event_listener = SwitchDeviceEventListener(hass, entry, switch_device)
+            await event_listener.async_setup()
+            entry.runtime_data.switch_event_listeners.append(event_listener)
 
-    # Register rawscan diagnostic service when the option is enabled (default: on).
-    # The service is domain-scoped but opt-in: only register when at least one
-    # entry enables it; unregister when the last enabling entry is unloaded.
-    if entry.options.get(OPT_ENABLE_RAWSCAN, True):
-        _register_rawscan_service(hass)
-    _register_export_zigbee_topology_service(hass)
-    _register_refresh_zigbee_routing_service(hass)
+        # Register rawscan diagnostic service when the option is enabled (default: on).
+        # The service is domain-scoped but opt-in: only register when at least one
+        # entry enables it; unregister when the last enabling entry is unloaded.
+        if entry.options.get(OPT_ENABLE_RAWSCAN, True):
+            _register_rawscan_service(hass)
+        _register_export_zigbee_topology_service(hass)
+        _register_refresh_zigbee_routing_service(hass)
+        _register_get_measurement_history_service(hass)
 
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+        await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    except BaseException:
+        # Polling already runs; async_unload_entry is not called for a failed
+        # setup, so tear it down here (listeners, scenario cb, session).
+        session.unsubscribe_scenario_callback("shc")
+        for listener in entry.runtime_data.switch_event_listeners:
+            listener.shutdown()
+        entry.runtime_data.switch_event_listeners.clear()
+        if entry.runtime_data.polling_handler is not None:
+            entry.runtime_data.polling_handler()
+        task = entry.runtime_data.zigbee_routing_refresh_task
+        if task is not None:
+            task.cancel()
+            with contextlib.suppress(asyncio.CancelledError, Exception):
+                await task
+        with contextlib.suppress(Exception):
+            await session.stop_polling()
+        raise
 
     # Surface a dismissible tip when cameras are present and the dedicated
     # Camera Tool is not already installed; remove it otherwise.
@@ -1007,6 +1154,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:  #
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     runtime: SHCData = entry.runtime_data
+    # Platforms first: if they refuse to unload the entities stay, so the
+    # session/polling they depend on must stay alive too.
+    unload_ok = bool(await hass.config_entries.async_unload_platforms(entry, PLATFORMS))
+    if not unload_ok:
+        return False
     runtime.session.unsubscribe_scenario_callback("shc")
 
     if runtime.polling_handler is not None:
@@ -1031,7 +1183,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             await runtime.zigbee_routing_refresh_task
     await runtime.session.stop_polling()
 
-    unload_ok = bool(await hass.config_entries.async_unload_platforms(entry, PLATFORMS))
     if unload_ok:
         # Issue ids are scoped per entry (see async_setup_entry) so a removed
         # controller's warnings don't linger in Repairs forever.
@@ -1062,6 +1213,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             hass.services.async_remove(DOMAIN, SERVICE_EXPORT_ZIGBEE_TOPOLOGY)
         if hass.services.has_service(DOMAIN, SERVICE_REFRESH_ZIGBEE_ROUTING):
             hass.services.async_remove(DOMAIN, SERVICE_REFRESH_ZIGBEE_ROUTING)
+        if hass.services.has_service(DOMAIN, SERVICE_GET_MEASUREMENT_HISTORY):
+            hass.services.async_remove(DOMAIN, SERVICE_GET_MEASUREMENT_HISTORY)
 
     return unload_ok
 

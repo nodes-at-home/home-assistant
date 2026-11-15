@@ -390,8 +390,7 @@
         "name": "アクチュエータータイプ",
         "state": {
           "normally_closed": "常時閉",
-          "normally_open": "常時開",
-          "unsupported": "非対応"
+          "normally_open": "常時開"
         }
       },
       "output_mode": {
@@ -400,8 +399,7 @@
           "attached": "連動",
           "detached": "キー操作で切断",
           "detached_short_press": "短押しで切断",
-          "detached_long_press": "長押しで切断",
-          "unsupported": "非対応"
+          "detached_long_press": "長押しで切断"
         }
       },
       "siren_sound_level": {
@@ -795,7 +793,8 @@
       "INTRUSION_ALARM_OFF_REQUESTED": "侵入アラーム解除",
       "ALARM_OFF": "アラームオフ",
       "ALARM_ON": "アラームオン",
-      "ALARM_MUTED": "アラームミュート"
+      "ALARM_MUTED": "アラームミュート",
+      "PRE_ALARM": "Light smoke pre-alarm"
     },
     "trigger_type": {
       "PRESS_SHORT": "{subtype}が短押しされた",
@@ -885,6 +884,36 @@
           "description": "SHCのタイトル。空欄のままにすると、最初に設定されたSHCが使用されます。"
         }
       }
+    },
+    "get_measurement_history": {
+      "name": "Get measurement history",
+      "description": "Reads one page of stored measurements (for example Twinguard temperature or humidity) from the SHC and returns it in the response. The SHC endpoint was found in the Bosch app and is not yet confirmed on real hardware. All times are in seconds.",
+      "fields": {
+        "title": {
+          "name": "SHC name",
+          "description": "Title of the SHC"
+        },
+        "device_id": {
+          "name": "Device id",
+          "description": "Id of the sensor device, for example a Twinguard"
+        },
+        "reference_time": {
+          "name": "Reference time",
+          "description": "Epoch seconds the page is anchored to. Defaults to now."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Length of the page in seconds. Defaults to one day."
+        },
+        "rounding": {
+          "name": "Rounding",
+          "description": "Rounding step in seconds. Defaults to one hour."
+        },
+        "overlap": {
+          "name": "Overlap",
+          "description": "Overlap with the previous page in seconds. Defaults to 0."
+        }
+      }
     }
   },
   "issues": {
@@ -933,6 +962,9 @@
     "alarm_state_failed": {
       "message": "アラーム状態の変更に失敗しました。"
     },
+    "diagnostic_entities_disabled": {
+      "message": "この SHC では診断エンティティがオフになっています。統合のオプションで「診断センサーを作成する」をオンにしてから、もう一度ボタンを押してください。"
+    },
     "button_press_failed": {
       "message": "ボタンの押下に失敗しました。"
     },
@@ -968,6 +1000,12 @@
     },
     "zigbee_topology_write_failed": {
       "message": "Zigbeeトポロジーのエクスポートをwww/bosch_shc/に書き込めませんでした。"
+    },
+    "measurement_history_failed": {
+      "message": "Failed to read measurement history from the SHC."
+    },
+    "measurement_history_invalid": {
+      "message": "Invalid measurement history request: {error}"
     }
   }
 }
